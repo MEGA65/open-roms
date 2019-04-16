@@ -30,3 +30,16 @@ What we will need to do to minimise the risks, is to describe the creation of ea
 extensive commentary in terms of the specifications, including to explore different potential implementations of
 the specification, with justification of which particular implementation is being used.  Where the result is considerably
 similar to the original, then further justification will be required to explain how this is inevitable.
+
+# Justifying the interoperability requirement of every routine
+
+For each routine, there should also exist a *.interop file that in comments explains the requirement, and is
+followed by one or more test programs that can be demonstrated to not work if this region of the original ROM
+does not perform the prescribed function, or if the function is moved to another location in the ROM.
+
+To be as defensive as possible on this front, we need to ideally demonstrate clearly that said program jumps/
+calls the prescribed routine at the specific location, so that it is unambiguous that the function must exist
+at the location.  A good way to cover this for many situations would be to generate logs of many programs
+running, and capturing exactly which entry points are called from where. That is, to generate a call-graph
+that is the combination of many program runs, so that we can build up a map of what is required in terms of
+correct function of the system.  This then defines the interface exactly from the perspective of interoperability.

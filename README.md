@@ -43,3 +43,8 @@ at the location.  A good way to cover this for many situations would be to gener
 running, and capturing exactly which entry points are called from where. That is, to generate a call-graph
 that is the combination of many program runs, so that we can build up a map of what is required in terms of
 correct function of the system.  This then defines the interface exactly from the perspective of interoperability.
+
+We can capture this information using x64 -remotemonitor, and then making a program that connects to port 6510
+and uses reset 0 to reset the CPU, and then types step and sends carriage returns repeatedly, and logs the
+instruction stream.  If a program is loaded and run, then this will capture the instruction stream, and allow us
+to generate this call graph.

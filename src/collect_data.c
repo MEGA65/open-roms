@@ -149,7 +149,7 @@ int main (int argc, char *argv[]) {
     while(1) {
       nBytes = read(sockfd, buffer, sizeof(buffer));
       if (nBytes >= 1) {
-	write(sockfd,"step\rstep\rstep\rstep\r",5*4);
+	write(sockfd,"step\rstep\rstep\rstep\r",5*1);
 	// fprintf(stdout,"%d: %s\n",nBytes,buffer);
 	int pc,sp,cycles;
 	int nf=sscanf(buffer,".C:%x%*[^:]:%*x X:%*x Y:%*x SP:%x %*[^ ] %d",&pc,&sp,&cycles);

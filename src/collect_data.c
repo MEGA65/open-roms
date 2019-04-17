@@ -215,7 +215,12 @@ int main (int argc, char *argv[]) {
 	  //	  fprintf(stderr,"%d cycles\n",cycles);
 	}
 
-	if (cycles>=collect_cycles)  break;
+	// Terminate emulator when done
+	if (cycles>=collect_cycles) {
+	  write(sockfd,"\rquit\r",6);
+	  usleep(1000000);
+	  break;
+	}
 	
       }  else usleep(1);
     }

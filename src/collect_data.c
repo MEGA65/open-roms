@@ -66,6 +66,9 @@ int set_nonblock(int fd)
 
 int main (int argc, char *argv[]) {
 
+  int rom_top=0xffff;
+  int rom_bottom=0xe400;
+  
     int sockfd, rc, i, serverPort, nBytes;
     struct sockaddr_in localAddr, servAddr;
     struct hostent *h;
@@ -138,14 +141,42 @@ int main (int argc, char *argv[]) {
 
     write(sockfd,"reset 0\r",strlen("reset 0\n"));
 
+    int last_pc=0, last_sp=0xff;
+
+    int max_cycles=0;
+    
     unsigned char buffer[65536];
     while(1) {
-    nBytes = read(sockfd, buffer, sizeof(buffer));
-    if (nBytes >= 1) {
-       fprintf(stdout,"%d: %s\n",nBytes,buffer);
-       write(sockfd,"step\r",5);
+      nBytes = read(sockfd, buffer, sizeof(buffer));
+      if (nBytes >= 1) {
+	write(sockfd,"step\r",5);
+	// fprintf(stdout,"%d: %s\n",nBytes,buffer);
+	int pc,sp,cycles;
+	int nf=sscanf(buffer,".C:%x%*[^:]:%*x X:%*x Y:%*x SP:%x %*[^ ] %d",&pc,&sp,&cycles);
+	if (nf==3) {
+	  //	    fprintf(stdout,"%x %x %d\n",pc,sp,cycles);
+	  // Detect entry into ROM via code 
+	  if (pc>=rom_bottom&&pc<=rom_top) {
+	    if (last_pc<rom_bottom||last_pc>rom_top) {
+	      // PC has just entered the ROM
+	      fprintf(stdout,"$%04x called from $%04x @ cycle %d\n",pc,last_pc,cycles);
+	    }
+	  }
+	  // Detect entry into ROM via interrupt
+	  if (pc>=rom_bottom&&pc<=rom_top)
+	    if (sp==(last_sp-3)) {
+	      // PC has just entered the ROM
+	      fprintf(stdout,"$%04x called from via interrupt @ cycle %d\n",pc,cycles);
+	    }
+	  last_pc=pc; last_sp=sp;
+	}
 
-    } else usleep(10000);
+	if (cycles>(max_cycles+10000)) {
+	  max_cycles=cycles;
+	  fprintf(stderr,"%d cycles\n",cycles);
+	}
+	
+      } else usleep(10000);
     }
     close(sockfd);
     return 0;

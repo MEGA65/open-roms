@@ -149,7 +149,7 @@ int main (int argc, char *argv[]) {
     while(1) {
       nBytes = read(sockfd, buffer, sizeof(buffer));
       if (nBytes >= 1) {
-	write(sockfd,"step\r",5);
+	write(sockfd,"step\rstep\rstep\rstep\r",5*4);
 	// fprintf(stdout,"%d: %s\n",nBytes,buffer);
 	int pc,sp,cycles;
 	int nf=sscanf(buffer,".C:%x%*[^:]:%*x X:%*x Y:%*x SP:%x %*[^ ] %d",&pc,&sp,&cycles);
@@ -173,10 +173,10 @@ int main (int argc, char *argv[]) {
 
 	if (cycles>(max_cycles+10000)) {
 	  max_cycles=cycles;
-	  fprintf(stderr,"%d cycles\n",cycles);
+	  //	  fprintf(stderr,"%d cycles\n",cycles);
 	}
 	
-      } else usleep(10000);
+      }  else usleep(1);
     }
     close(sockfd);
     return 0;

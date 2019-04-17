@@ -67,7 +67,7 @@ int set_nonblock(int fd)
 
 int main (int argc, char *argv[]) {
 
-  int collect_cycles=0;
+  int collect_cycles=5000000;
   
   // KERNAL part is actually just under 7KB
   int rom_bottom=0xe4b7;
@@ -89,6 +89,7 @@ int main (int argc, char *argv[]) {
       break;
     case 'c':
       collect_cycles=atoi(optarg);
+      break;
     default: /* '?' */
       fprintf(stderr, "Usage: %s [-b <ROM bottom hex>] [-t <ROM top hex>] [-f <file to load and run>] [-c <cycles to collect data>]\n",
 	      argv[0]);
@@ -163,25 +164,6 @@ int main (int argc, char *argv[]) {
 
     int max_cycles=0;
 
-    if (filename) {
-      /*
-	To load and a program in VICE via the monitor interface:
-	bload "filename" 0 07ff
-	> 07ff 0 0
-	keybuf run\x0d
-	
-      */
-      char cmd[1024];
-      snprintf(cmd,1024,"bload \"%s\" 0 07ff\r",filename);
-      write(sockfd,cmd,strlen(cmd));
-      usleep(1000000);
-      write(sockfd,"> 07ff 0 0\r",11);
-      usleep(100000);
-      write(sockfd,"keybuf run\x0d",11);
-    }
-
-  
-    
     unsigned char buffer[65536];
     while(1) {
       nBytes = read(sockfd, buffer, sizeof(buffer));
@@ -191,7 +173,7 @@ int main (int argc, char *argv[]) {
 	int pc,sp,cycles;
 	int nf=sscanf((char *)buffer,".C:%x%*[^:]:%*x X:%*x Y:%*x SP:%x %*[^ ] %d",&pc,&sp,&cycles);
 	if (nf==3) {
-	  //	    fprintf(stdout,"%x %x %d\n",pc,sp,cycles);
+	  // fprintf(stdout,"%x %x %d\n",pc,sp,cycles);
 	  // Detect entry into ROM via code 
 	  if (pc>=rom_bottom&&pc<=rom_top) {
 	    if (last_pc<rom_bottom||last_pc>rom_top) {
@@ -208,6 +190,26 @@ int main (int argc, char *argv[]) {
 	  last_pc=pc; last_sp=sp;
 	}
 
+	// LOAD only after BASIC has started
+	if (last_pc==0xe5cd&&filename) {
+	  /*
+	    To load and a program in VICE via the monitor interface:
+	    bload "filename" 0 07ff
+	    > 07ff 0 0
+	    keybuf run\x0d
+	    
+	  */
+	  char cmd[1024];
+	  snprintf(cmd,1024,"bload \"%s\" 0 07ff\r",filename);
+	  write(sockfd,cmd,strlen(cmd));
+	  usleep(1000000);
+	  write(sockfd,"> 07ff 0 0\r",11);
+	  usleep(100000);
+	  write(sockfd,"keybuf run\\x0d\r",15);
+
+	  filename=NULL;
+	}
+	
 	if (cycles>(max_cycles+10000)) {
 	  max_cycles=cycles;
 	  //	  fprintf(stderr,"%d cycles\n",cycles);

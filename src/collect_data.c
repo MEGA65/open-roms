@@ -25,6 +25,7 @@ Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #include <string.h>
 #include <stdlib.h>
 #include <fcntl.h>
+#include <getopt.h>
 
 //file found = 1
 //file not found = 0
@@ -66,16 +67,38 @@ int set_nonblock(int fd)
 
 int main (int argc, char *argv[]) {
 
+  int collect_cycles=0;
+  
   // KERNAL part is actually just under 7KB
   int rom_bottom=0xe4b7;
   int rom_top=0xffff;
+  char *filename=NULL;
+
+  int opt;
   
-    int sockfd, rc, i, serverPort, nBytes;
+  while ((opt = getopt(argc, argv, "f:b:t:c:")) != -1) {
+    switch (opt) {
+    case 'b':
+      rom_bottom=strtoll(optarg,NULL,16);
+      break;
+    case 't':
+      rom_top=strtoll(optarg,NULL,16);
+      break;
+    case 'f':
+      filename=optarg;
+      break;
+    case 'c':
+      collect_cycles=atoi(optarg);
+    default: /* '?' */
+      fprintf(stderr, "Usage: %s [-b <ROM bottom hex>] [-t <ROM top hex>] [-f <file to load and run>] [-c <cycles to collect data>]\n",
+	      argv[0]);
+      exit(-1);
+    }
+  }
+
+    int sockfd, rc, serverPort, nBytes;
     struct sockaddr_in localAddr, servAddr;
     struct hostent *h;
-    char option=' ';
-    char fNf='0';
-    char s;
 
     /* Check parameters from command line */
 
@@ -145,6 +168,25 @@ int main (int argc, char *argv[]) {
     int last_pc=0, last_sp=0xff;
 
     int max_cycles=0;
+
+    if (filename) {
+      /*
+	To load and a program in VICE via the monitor interface:
+	bload "filename" 0 07ff
+	> 07ff 0 0
+	keybuf run\x0d
+	
+      */
+      char cmd[1024];
+      snprintf(cmd,1024,"bload \"%s\" 0 07ff\r",filename);
+      write(sockfd,cmd,strlen(cmd));
+      usleep(1000000);
+      write(sockfd,"> 07ff 0 0\r",11);
+      usleep(100000);
+      write(sockfd,"keybuf run\x0d",11);
+    }
+
+  
     
     unsigned char buffer[65536];
     while(1) {
@@ -153,7 +195,7 @@ int main (int argc, char *argv[]) {
 	write(sockfd,"step\rstep\rstep\rstep\r",5*1);
 	// fprintf(stdout,"%d: %s\n",nBytes,buffer);
 	int pc,sp,cycles;
-	int nf=sscanf(buffer,".C:%x%*[^:]:%*x X:%*x Y:%*x SP:%x %*[^ ] %d",&pc,&sp,&cycles);
+	int nf=sscanf((char *)buffer,".C:%x%*[^:]:%*x X:%*x Y:%*x SP:%x %*[^ ] %d",&pc,&sp,&cycles);
 	if (nf==3) {
 	  //	    fprintf(stdout,"%x %x %d\n",pc,sp,cycles);
 	  // Detect entry into ROM via code 
@@ -176,6 +218,8 @@ int main (int argc, char *argv[]) {
 	  max_cycles=cycles;
 	  //	  fprintf(stderr,"%d cycles\n",cycles);
 	}
+
+	if (cycles>=collect_cycles)  break;
 	
       }  else usleep(1);
     }

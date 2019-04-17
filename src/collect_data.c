@@ -102,20 +102,14 @@ int main (int argc, char *argv[]) {
 
     /* Check parameters from command line */
 
-    if(argc != 3)//check number of argc in command line
-    {
-        fprintf(stderr,"Usage: tcpclient [IP_server] [server_port]\n");
-        return -1;
-    }
-
-    serverPort = atoi(argv[2]);
+    serverPort = 6510;
     if(serverPort<=0 || serverPort>65535)//check number of TCP server port
     {
         fprintf(stderr, "The port number given is wrong.\n");
         return -1;
     }
 
-    h = gethostbyname(argv[1]);
+    h = gethostbyname("localhost");
     if(h==NULL)//check assigment of TCP server host
     {
         perror("Unknown host ");

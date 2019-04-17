@@ -66,8 +66,9 @@ int set_nonblock(int fd)
 
 int main (int argc, char *argv[]) {
 
+  // KERNAL part is actually just under 7KB
+  int rom_bottom=0xe4b7;
   int rom_top=0xffff;
-  int rom_bottom=0xe400;
   
     int sockfd, rc, i, serverPort, nBytes;
     struct sockaddr_in localAddr, servAddr;

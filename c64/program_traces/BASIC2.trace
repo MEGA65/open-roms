@@ -1,0 +1,164 @@
+Starting TCP client...
+$fd83 called from $0000 @ cycle 19663
+$ff48 called from via interrupt @ cycle 2162254
+$ff9c called from $e403 @ cycle 2163111
+$ff99 called from $e40b @ cycle 2163152
+$ffd2 called from $e10c @ cycle 2164650
+$ff48 called from via interrupt @ cycle 2195080
+$ffd2 called from $e10c @ cycle 2205007
+$ffd2 called from $e10c @ cycle 2205341
+$ffd2 called from $e10c @ cycle 2205663
+$ffd2 called from $e10c @ cycle 2206028
+$ffd2 called from $e10c @ cycle 2206392
+$ffd2 called from $e10c @ cycle 2206756
+$ffd2 called from $e10c @ cycle 2207078
+$ffd2 called from $e10c @ cycle 2207442
+$ffd2 called from $e10c @ cycle 2207807
+$ffd2 called from $e10c @ cycle 2208129
+$ffd2 called from $ab2d @ cycle 2208494
+$ffd2 called from $e10c @ cycle 2208859
+$ffd2 called from $e10c @ cycle 2209181
+$ffd2 called from $e10c @ cycle 2209546
+$ffd2 called from $e10c @ cycle 2209911
+$ffd2 called from $e10c @ cycle 2210233
+$ffd2 called from $e10c @ cycle 2210597
+$ffd2 called from $e10c @ cycle 2210962
+$ffd2 called from $e10c @ cycle 2211327
+$ff48 called from via interrupt @ cycle 2211498
+$ffd2 called from $e10c @ cycle 2211911
+$ffd2 called from $e10c @ cycle 2212233
+$ffd2 called from $e10c @ cycle 2212598
+$ffd2 called from $e10c @ cycle 2212963
+$ffd2 called from $e10c @ cycle 2213328
+$ffd2 called from $e10c @ cycle 2213650
+$ffd2 called from $e10c @ cycle 2214015
+$ffd2 called from $e10c @ cycle 2214380
+$ffd2 called from $e10c @ cycle 2214702
+$ffd2 called from $e10c @ cycle 2215067
+$ffd2 called from $e10c @ cycle 2215432
+$ffd2 called from $e10c @ cycle 2215754
+$ffd2 called from $e10c @ cycle 2216119
+$ffd2 called from $e10c @ cycle 2216484
+$ffd2 called from $e10c @ cycle 2216848
+$ffd2 called from $e10c @ cycle 2217170
+$ffd2 called from $e10c @ cycle 2217492
+$ffd2 called from $e10c @ cycle 2217814
+$ffd2 called from $e10c @ cycle 2218105
+$ffd2 called from $e10c @ cycle 2218396
+$ffd2 called from $e10c @ cycle 2218718
+$ffd2 called from $e10c @ cycle 2219040
+$ffd2 called from $e10c @ cycle 2219362
+$ffd2 called from $e10c @ cycle 2219684
+$ffd2 called from $e10c @ cycle 2220006
+$ffd2 called from $e10c @ cycle 2220328
+$ffd2 called from $e10c @ cycle 2220650
+$ffd2 called from $e10c @ cycle 2220972
+$ffd2 called from $e10c @ cycle 2221294
+$ffd2 called from $e10c @ cycle 2221616
+$ffd2 called from $e10c @ cycle 2221938
+$ffd2 called from $e10c @ cycle 2222260
+$ffd2 called from $e10c @ cycle 2222582
+$ffd2 called from $e10c @ cycle 2222904
+$ffd2 called from $e10c @ cycle 2223226
+$ffd2 called from $e10c @ cycle 2223548
+$ff48 called from $be7e @ cycle 2227932
+$ff48 called from via interrupt @ cycle 2227932
+$ffd2 called from $e10c @ cycle 2231020
+$ffd2 called from $e10c @ cycle 2231342
+$ffd2 called from $e10c @ cycle 2231707
+$ffd2 called from $e10c @ cycle 2232072
+$ffd2 called from $e10c @ cycle 2232394
+$ffd2 called from $e10c @ cycle 2233474
+$ffd2 called from $e10c @ cycle 2233796
+$ffd2 called from $e10c @ cycle 2234161
+$ffd2 called from $e10c @ cycle 2234526
+$ffd2 called from $e10c @ cycle 2234848
+$ffd2 called from $e10c @ cycle 2235213
+$ffd2 called from $e10c @ cycle 2235578
+$ffd2 called from $e10c @ cycle 2235900
+$ffd2 called from $e10c @ cycle 2236265
+$ffd2 called from $e10c @ cycle 2236630
+$ffd2 called from $e10c @ cycle 2236952
+$ffd2 called from $e10c @ cycle 2237274
+$ffd2 called from $e10c @ cycle 2237596
+$ffd2 called from $e10c @ cycle 2237918
+$ffd2 called from $e10c @ cycle 2238240
+$ffd2 called from $e10c @ cycle 2238562
+$ffd2 called from $e10c @ cycle 2238884
+$ffd2 called from $e10c @ cycle 2239206
+$ffe7 called from $a660 @ cycle 2239561
+$ffd2 called from $e10c @ cycle 2240208
+$ffd2 called from $e10c @ cycle 2240499
+$ffd2 called from $e10c @ cycle 2240895
+$ffd2 called from $e10c @ cycle 2241217
+$ffd2 called from $e10c @ cycle 2241539
+$ffd2 called from $e10c @ cycle 2241861
+$ffd2 called from $e10c @ cycle 2242183
+$ffd2 called from $e10c @ cycle 2242505
+$ffd2 called from $e10c @ cycle 2242827
+$ffd2 called from $e10c @ cycle 2243118
+$ff90 called from $a47d @ cycle 2243507
+$ffcf called from $e112 @ cycle 2243553
+$ff48 called from via interrupt @ cycle 2244344
+$ff48 called from via interrupt @ cycle 2260763
+$ff48 called from via interrupt @ cycle 2277186
+$ff48 called from via interrupt @ cycle 2293609
+$ff48 called from via interrupt @ cycle 2310031
+$ff48 called from via interrupt @ cycle 2326454
+$ff48 called from via interrupt @ cycle 2342875
+$ff48 called from via interrupt @ cycle 2359296
+$ff48 called from via interrupt @ cycle 2375719
+$ff48 called from via interrupt @ cycle 2392139
+$ff48 called from via interrupt @ cycle 2408561
+$ff48 called from via interrupt @ cycle 2424998
+$ff48 called from via interrupt @ cycle 2441408
+$ff48 called from via interrupt @ cycle 2457830
+$ff48 called from via interrupt @ cycle 2474249
+$ff48 called from via interrupt @ cycle 2490673
+$ff48 called from via interrupt @ cycle 2507094
+$ff48 called from via interrupt @ cycle 2523515
+$ff48 called from via interrupt @ cycle 2539938
+$ff48 called from via interrupt @ cycle 2556360
+$ff48 called from via interrupt @ cycle 2572783
+$ff48 called from via interrupt @ cycle 2589204
+$ff48 called from via interrupt @ cycle 2605627
+$ff48 called from via interrupt @ cycle 2622062
+$ff48 called from via interrupt @ cycle 2638472
+$ff48 called from via interrupt @ cycle 2654893
+$ff48 called from via interrupt @ cycle 2671313
+$ff48 called from via interrupt @ cycle 2687737
+$ff48 called from via interrupt @ cycle 2704159
+$ff48 called from via interrupt @ cycle 2720582
+$ff48 called from via interrupt @ cycle 2737003
+$ff48 called from via interrupt @ cycle 2753424
+$ff48 called from via interrupt @ cycle 2769847
+$ff48 called from via interrupt @ cycle 2786267
+$ff48 called from via interrupt @ cycle 2802689
+$ff48 called from via interrupt @ cycle 2819126
+$ff48 called from via interrupt @ cycle 2835536
+$ff48 called from via interrupt @ cycle 2851957
+$ff48 called from via interrupt @ cycle 2868380
+$ff48 called from via interrupt @ cycle 2884801
+$ff48 called from via interrupt @ cycle 2901222
+$ff48 called from via interrupt @ cycle 2917643
+$ff48 called from via interrupt @ cycle 2934067
+$ff48 called from via interrupt @ cycle 2950488
+$ff48 called from via interrupt @ cycle 2966909
+$ff48 called from via interrupt @ cycle 2983332
+$ff48 called from via interrupt @ cycle 2999755
+$ff48 called from via interrupt @ cycle 3016190
+$ff48 called from via interrupt @ cycle 3032600
+$ff48 called from via interrupt @ cycle 3049021
+$ff48 called from via interrupt @ cycle 3065441
+$ff48 called from via interrupt @ cycle 3081865
+$ff48 called from via interrupt @ cycle 3098287
+$ff48 called from via interrupt @ cycle 3114710
+$ff48 called from via interrupt @ cycle 3131131
+$ff48 called from via interrupt @ cycle 3147551
+$ff48 called from via interrupt @ cycle 3180395
+$ff48 called from via interrupt @ cycle 3196817
+$ff48 called from via interrupt @ cycle 3213254
+$ff48 called from via interrupt @ cycle 3229664
+$ff48 called from via interrupt @ cycle 3246085
+$ff48 called from via interrupt @ cycle 3262506
+

@@ -53,7 +53,7 @@ int set_nonblock(int fd)
         retVal=-1;
         break;
       }
-    if (fcntl(fd, F_SETFL, flags | O_NONBLOCK) == -1)
+    if (fcntl(fd, F_SETFL, flags | O_NONBLOCK | O_NDELAY) == -1)
     {
       perror("fcntl");
 //      LOG_ERROR("set_nonblock: fcntl(%d,F_SETFL,n|O_NONBLOCK)",fd);

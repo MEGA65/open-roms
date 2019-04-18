@@ -7,9 +7,6 @@ src/preprocess:	src/preprocess.c Makefile
 	gcc -g -Wall -o src/preprocess src/preprocess.c
 
 
-c64/kernal-disasembly.html:
-	wget -O c64/kernal-disassembly.html http://www.ffd2.com/fridge/docs/c64-diss.html
-
 newkern:	c64/kernal/OUT.BIN
 	cat e000-e4d2 c64/kernal/OUT.BIN  >newkern
 

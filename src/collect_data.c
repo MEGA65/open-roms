@@ -64,6 +64,10 @@ int set_nonblock(int fd)
   return retVal;
 }
 
+#define MAX_KEYS 1024
+int key_times[MAX_KEYS];
+char key_sequences[MAX_KEYS][1024];
+int key_count=0;
 
 int main (int argc, char *argv[]) {
 
@@ -76,7 +80,7 @@ int main (int argc, char *argv[]) {
 
   int opt;
   
-  while ((opt = getopt(argc, argv, "f:b:t:c:")) != -1) {
+  while ((opt = getopt(argc, argv, "f:b:t:c:k:v:")) != -1) {
     switch (opt) {
     case 'b':
       rom_bottom=strtoll(optarg,NULL,16);
@@ -90,8 +94,26 @@ int main (int argc, char *argv[]) {
     case 'c':
       collect_cycles=atoi(optarg);
       break;
+    case 'v':
+      system(optarg);
+      sleep(3);
+      break;
+    case 'k':
+      // Scheduled key events
+      if (key_count>=MAX_KEYS) {
+	fprintf(stderr,"Too many -k arguments. Increase MAX_KEYS?\n");
+	exit(-1);
+      }
+      if (sscanf(optarg,"%d:%[^~]",&key_times[key_count],key_sequences[key_count])<2) {
+	fprintf(stderr,"Malformed argument to -k. Must be <cycle number>:<VICE compatible key sequence>\n"
+		"  RETURN should be written \\x0d\n"
+		"\n");
+	exit(-1);
+      }
+      key_count++;
+      break;
     default: /* '?' */
-      fprintf(stderr, "Usage: %s [-b <ROM bottom hex>] [-t <ROM top hex>] [-f <file to load and run>] [-c <cycles to collect data>]\n",
+      fprintf(stderr, "Usage: %s [-v <vice command line>] [-b <ROM bottom hex>] [-t <ROM top hex>] [-f <file to load and run>] [-c <cycles to collect data>] [[-k <time>:<key sequence> ] ...]\n",
 	      argv[0]);
       exit(-1);
     }
@@ -160,6 +182,8 @@ int main (int argc, char *argv[]) {
 
     write(sockfd,"reset 0\r",strlen("reset 0\n"));
 
+    int current_key=0;
+    
     int last_pc=0, last_sp=0xff;
 
     int max_cycles=0;
@@ -208,6 +232,14 @@ int main (int argc, char *argv[]) {
 	  write(sockfd,"keybuf run\\x0d\r",15);
 
 	  filename=NULL;
+	}
+
+	if (current_key<key_count&&cycles>key_times[current_key]) {
+	  char cmd[1024];
+	  snprintf(cmd,1024,"keybuf %s\r",key_sequences[current_key]);
+	  write(sockfd,cmd,strlen(cmd));
+	  fprintf(stderr,">>> Keyboard injection: %s\n\r",cmd);
+	  current_key++;
 	}
 	
 	if (cycles>(max_cycles+10000)) {

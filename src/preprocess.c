@@ -16,7 +16,7 @@
 #define MAX_FILES (128*1024)
 typedef struct source_file {
   char *file;
-  u_int32_t address;
+  int address;
 } source_file;
 
 source_file source_files[MAX_FILES];
@@ -67,7 +67,7 @@ int main(int argc,char **argv)
 	if (!strcmp(&de->d_name[strlen(de->d_name)-2],".s")) {
 	  if (source_count>=MAX_FILES) DO_ERROR("Too many source files. Increase MAX_FILES?");
 	  source_files[source_count].file=strdup(de->d_name);
-	  source_files[source_count].address=0x7fffffff;
+	  source_files[source_count].address=-1;
 	  source_count++;
 	}
       }

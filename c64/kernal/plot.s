@@ -1,1 +1,2 @@
 plot:
+	rts

@@ -17,6 +17,11 @@
 typedef struct source_file {
   char *file;
   int address;
+
+  // For getting routine sizes from first run of ophis
+  int low_addr;
+  int high_addr;
+  int size;
 } source_file;
 
 source_file source_files[MAX_FILES];
@@ -30,6 +35,25 @@ static int compare_source(const void* a, const void* b)
   if (aa->address<bb->address) return -1;
   if (aa->address>bb->address) return 1;
   return strcmp(aa->file,bb->file);
+}
+
+int dump_file(FILE *out,const char *name)
+{
+  int retVal=0;
+  FILE *f=NULL;
+  
+  do {
+    f=fopen(name,"r");
+    if (!f) DO_ERROR("Failed to read file for input");
+    char line[8192];
+    while(!feof(f)) {
+      line[0]=0; fgets(line,8192,f);
+      fprintf(out,"%s",line);
+    }
+  } while(0);
+
+  if (f) fclose(f);
+  return retVal;
 }
 
 void usage(void)
@@ -98,10 +122,62 @@ int main(int argc,char **argv)
     fprintf(stderr,"Sorted.\n");
     
     for(int i=0;i<source_count;i++) {
-      printf("$%04X : %s\n",
-	     source_files[i].address!=0x7ffffff?source_files[i].address:0,
-	     source_files[i].file);
+      fprintf(stderr,"$%04X : %s\n",
+	      source_files[i].address!=0x7ffffff?source_files[i].address:0,
+	      source_files[i].file);
     }
+
+    // First pass is to work out the size of each routine, so that we can pack them optimally
+    // around the routines that are located at fixed addresses.
+    unlink("temp.map");
+    unlink("temp.s");
+    FILE *out=fopen("temp.s","w");
+    if (!out) DO_ERROR("Could not write to temp.s");
+    fprintf(out,"\t.org 0\n");
+    for(int i=0;i<source_count;i++) {
+      fprintf(out,"; Source file '%s'\n",source_files[i].file);
+      fprintf(out,"__routine_start_%s:\n",source_files[i].file);
+      char path[8192];
+      snprintf(path,8192,"%s/%s",directory,source_files[i].file);
+      if (dump_file(out,path)) DO_ERROR("Could not read source file");
+      fprintf(out,"__routine_end_%s:\n",source_files[i].file);
+    }
+    fclose(out);
+    char cmd[8192];
+    snprintf(cmd,8192,"Ophis/bin/ophis temp.s -m temp.map");
+    fprintf(stderr,"Running first pass to get size of routines...\n");
+    system(cmd);
+
+    // Parse temp.map contents to get size of every routine
+    fprintf(stderr,"Reading sizes of routines...\n");
+    out=fopen("temp.map","r");
+    if (!out) DO_ERROR("Could not open temp.map for reading. Did Ophis fail due to an error in one of the assembly files?");
+    while(!feof(out)) {
+      int addr;
+      char routine[8192];
+      char line[8192];
+      line[0]=0; fgets(line,8192,out);
+      if (sscanf(line,"$%x __routine_start_%[^ \n]",&addr,routine)==2) {
+	for(int i=0;i<source_count;i++)
+	  if (!strcmp(routine,source_files[i].file))
+	    { source_files[i].low_addr=addr;
+	      source_files[i].size=source_files[i].high_addr-source_files[i].low_addr;
+	      break; }
+      }
+      if (sscanf(line,"$%x __routine_end_%[^ \n]",&addr,routine)==2) {
+	for(int i=0;i<source_count;i++)
+	  if (!strcmp(routine,source_files[i].file))
+	    { source_files[i].high_addr=addr;
+	      source_files[i].size=source_files[i].high_addr-source_files[i].low_addr;
+	      break; }
+      }
+    }
+    fclose(out);
+
+    for(int i=0;i<source_count;i++)
+      fprintf(stderr,"%s : %d bytes\n",source_files[i].file,source_files[i].size);
+    
+    if (retVal) break;
     
   } while(0);
 

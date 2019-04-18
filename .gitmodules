@@ -1,0 +1,3 @@
+[submodule "Ophis"]
+	path = Ophis
+	url = git@github.com:gardners/Ophis.git

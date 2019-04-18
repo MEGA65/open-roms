@@ -4,7 +4,7 @@ src/collect_data:	src/collect_data.c Makefile
 	gcc -Wall -o src/collect_data src/collect_data.c
 
 src/preprocess:	src/preprocess.c Makefile
-	gcc -Wall -o src/preprocess src/preprocess.c
+	gcc -g -Wall -o src/preprocess src/preprocess.c
 
 
 c64/kernal-disasembly.html:

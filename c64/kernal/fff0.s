@@ -3,4 +3,4 @@
 ; To set: C=0, to get, C=1
 ; X=row, Y=column
 
-	.word plot
+	jmp plot

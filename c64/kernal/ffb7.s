@@ -1,3 +1,3 @@
-; Read I/O status word
+; Read I/O statusjmp
 ; C64 Programmer's Reference Guide Page 273
-	.word readst
+	jmp readst

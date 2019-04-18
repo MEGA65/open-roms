@@ -22,6 +22,9 @@ typedef struct source_file {
   int low_addr;
   int high_addr;
   int size;
+
+  // For knowing when we have output the various routines
+  int written;
 } source_file;
 
 source_file source_files[MAX_FILES];
@@ -174,8 +177,81 @@ int main(int argc,char **argv)
     }
     fclose(out);
 
+    fprintf(stderr,"Got routine sizes:\n");
     for(int i=0;i<source_count;i++)
       fprintf(stderr,"%s : %d bytes\n",source_files[i].file,source_files[i].size);
+
+    // Now write the routines out in a deterministic order that respects the requirement
+    // of some routines to be at fixed addresses.
+
+    // Start at beginning of actual kernal data
+    int address=0xe4d3;
+    
+    unlink("temp.s");
+    out=fopen("temp.s","w");
+    if (!out) DO_ERROR("Could not write to temp.s");
+    fprintf(out,"\t.org $%04x\n",address);
+    for(int i=0;i<source_count;i++) source_files[i].written=0;
+    int written_count;
+
+    // XXX - We should use dynamic programming optimisation to pack the routines
+    // optimally in the space, so that when we get near to full, we don't run out
+    // of space due to fragmentation.
+    for(written_count=0;written_count<source_count;written_count++) {
+      // First, find the next allocated address
+      int next_allocated_address=0xffff;
+      int next_fixed_routine=-1;
+      for(int i=0;i<source_count;i++)
+	if (!source_files[i].written) {
+	  if (source_files[i].address>address)
+	    if (source_files[i].address<next_allocated_address) {
+	      next_allocated_address=source_files[i].address;
+	      next_fixed_routine=i;
+	    }
+	}
+      int space=next_allocated_address-address;
+
+      int biggest=-1;
+      int biggest_size=-1;
+      for(int i=0;i<source_count;i++)
+	if (!source_files[i].written) {
+	  if (source_files[i].address==-1) {
+	    if (source_files[i].size>biggest_size) {
+	      if (source_files[i].size<=space) {
+		biggest_size=source_files[i].size;
+		biggest=i;
+	      }
+	    }
+	  }
+	}
+
+      fprintf(stderr,"At address $%04x, next allocated address is $%04X. Current space is %d bytes\n",
+	      address,next_allocated_address,space);
+      if (biggest>-1)
+	fprintf(stderr,"Biggest floating routine that fits is '%s' (%d bytes)\n",
+		source_files[biggest].file,biggest_size);
+      if (biggest==-1) {
+	// Nothing else fits here.  So write next_fixed_routine
+	fprintf(stderr,"Writing file %s\n",source_files[next_fixed_routine].file);
+	fprintf(out,"; Source file %s\n",source_files[next_fixed_routine].file);
+	fprintf(out,"\t.checkpc $%04x\n\t.advance $%04x,$00\n",
+		next_allocated_address,next_allocated_address);
+	char filename[8192];
+	snprintf(filename,8192,"%s/%s",directory,source_files[next_fixed_routine].file);
+	if (dump_file(out,filename)) DO_ERROR("Could not dump fixed address routine");
+	source_files[next_fixed_routine].written=1;
+	address=next_allocated_address+source_files[next_fixed_routine].size;
+      } else {
+	fprintf(out,"; Source file %s\n",source_files[biggest].file);
+	fprintf(stderr,"Writing file %s\n",source_files[biggest].file);
+	char filename[8192];
+	snprintf(filename,8192,"%s/%s",directory,source_files[biggest].file);
+	if (dump_file(out,filename)) DO_ERROR("Could not dump floating routine");
+	source_files[biggest].written=1;
+	address+=source_files[biggest].size;
+      }
+    }
+    fclose(out);
     
     if (retVal) break;
     

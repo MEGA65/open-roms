@@ -92,10 +92,12 @@ int main(int argc,char **argv)
     while((de=readdir(d))!=NULL) {
       if (strlen(de->d_name)>2) {
 	if (!strcmp(&de->d_name[strlen(de->d_name)-2],".s")) {
-	  if (source_count>=MAX_FILES) DO_ERROR("Too many source files. Increase MAX_FILES?");
-	  source_files[source_count].file=strdup(de->d_name);
-	  source_files[source_count].address=-1;
-	  source_count++;
+	  if (strcmp(de->d_name,"combined.s")) {
+	    if (source_count>=MAX_FILES) DO_ERROR("Too many source files. Increase MAX_FILES?");
+	    source_files[source_count].file=strdup(de->d_name);
+	    source_files[source_count].address=-1;
+	    source_count++;
+	  }
 	}
       }
     }

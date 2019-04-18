@@ -11,3 +11,5 @@ cartridge_check_l1:
 	jmp ($8000)
 cartridge_signature:
 	.byte $C3,$C2,$CD,$38,$30
+no_cartridge:
+	rts

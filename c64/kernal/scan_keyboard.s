@@ -98,7 +98,7 @@ scan_keyboard:
 KeyInRow:
 	ldy #7
 *
-	asl
+	ror
 	bcs nokey
 	jsr KeyFound
 nokey:
@@ -148,8 +148,12 @@ OverFlow:
     ;; // Exit Routine for: No Activity
 
 NoActivityDetected:
-    ;; // Exit With A = #$01, Carry Set & Reset BufferOld.
-
+	;; So cancel all bucky keys
+	lda key_bucky_state
+	sta key_last_bucky_state
+	lda #$00
+	sta key_bucky_state
+	
     stx BufferOld
     stx BufferOld+1
     stx BufferOld+2
@@ -254,8 +258,8 @@ skip0:
 	lda ScanResult+6
 	eor #$ff
 	and #%10000000     ;// Left Shift
-	asl
-	asl
+	rol
+	rol
 	and #$01
 	ora key_bucky_state
 	sta key_bucky_state

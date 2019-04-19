@@ -47,5 +47,5 @@ no_blink_cursor:
 
 hide_cursor_if_visible:
 	bit cursor_is_visible
-	bne undraw_cursor
+	bpl undraw_cursor
 	rts

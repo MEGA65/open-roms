@@ -1,4 +1,3 @@
-irq_handler:
 	;; The IRQ is a commonly messed with thing on the C64,
 	;; so we need to handle entry points that are commonly
 	;; relied upon, including:
@@ -6,20 +5,13 @@ irq_handler:
 	;; $EA61 - Check keyboard, but don't update timer? https://github.com/cc65/cc65/issues/324
 	;; $EA81 - https://www.lemon64.com/forum/viewtopic.php?t=2112&sid=6ea01982b26da69783120a7923ca46fb
 	;; Also the $0314 vector is widely used (e.g., https://www.lemon64.com/forum/viewtopic.php?t=2112&sid=6ea01982b26da69783120a7923ca46fb)
-	
-	;; Save registers
-	pha
-	txa
-	pha
-	tya
-	pha
 
-	;; Call interrupt routine
-	;; (but only if initialised)
-	lda $0314
-	ora $0315
-	beq no_handler_installed
-	jmp ($0314)
-no_handler_installed:
+return_from_interrupt:
+	;; Restore registers and return
+	pla
+	tay
+	pla
+	tax
+	pla
+	rti
 	
-	jmp return_from_interrupt

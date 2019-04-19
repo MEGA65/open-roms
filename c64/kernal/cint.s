@@ -14,6 +14,13 @@ cint:
 
 	;; Set keyboard decode vector  (Compute's Mapping the 64 p215)
 
+	;; Set initial variables for our improved keyboard scan routine
+	lda #$ff
+	ldx #7
+*	sta BufferOld,x
+	dex
+	bpl -
+	
 	;; Set key repeat delay (Compute's Mapping the 64 p215)
 	;; Making some numbers up here: Repeat every ~1/10th sec
 	;; But require key to be held for 4x that long before

@@ -24,6 +24,8 @@ reset_entry:
 	; Resetting IO vectors is obviously required, if we want interrupts to run
 	; also affirmed by c64 prg p269
 	jsr restor
+	;;  "Compute's Mapping the 64" p236
+	jsr cint
 
 	; What do we do when finished?  A C64 jumps into the BASIC ROM
 	; c64 prg p269

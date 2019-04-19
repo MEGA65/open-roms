@@ -314,47 +314,17 @@ skip0:
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ;; // Scan Keyboard Matrix
 
-    lda #%11111110
-    sta $dc00
-    ldy $dc01
-    sty ScanResult+7
-    sec
-
+	ldx #7
+	lda #%11111110
+*	sta $dc00
+	pha
+	lda $dc01
+	sta ScanResult,x
+	pla
+	sec
         rol
-        sta $dc00
-        ldy $dc01
-        sty ScanResult+6
-
-        rol
-        sta $dc00
-        ldy $dc01
-        sty ScanResult+5
-
-        rol
-        sta $dc00
-        ldy $dc01
-        sty ScanResult+4
-
-        rol
-        sta $dc00
-        ldy $dc01
-        sty ScanResult+3
-
-        rol
-        sta $dc00
-        ldy $dc01
-        sty ScanResult+2
-
-        rol
-        sta $dc00
-        ldy $dc01
-        sty ScanResult+1
-
-        rol
-        sta $dc00
-        ldy $dc01
-        sty ScanResult+0
-
+	dex
+	bpl -
 
 
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

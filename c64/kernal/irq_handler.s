@@ -21,8 +21,10 @@ irq_handler:
 	;; (but only if initialised)
 	lda $0314
 	ora $0315
-	beq no_handler_installed
+	beq default_irq_handler
 	jmp ($0314)
-no_handler_installed:
+default_irq_handler:	
+
+	jsr blink_cursor
 	
 	jmp return_from_interrupt

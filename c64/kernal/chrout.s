@@ -11,10 +11,12 @@ chrout:
 	pha
 	tya
 	pha
+
+	jsr hide_cursor_if_visible
+
 	lda last_printed_character_ascii
 	tax
 	
-
 	;; Check for special characters
 
 	;; Linefeed (simply ignored)

@@ -184,47 +184,17 @@ scan_keyboard:
     ;; // Routine for Scanning a Matrix Row
 
 KeyInRow:
+	ldy #7
+*
 	asl
-	bcs nokey0
+	bcs nokey
 	jsr KeyFound
-nokey0:
+nokey:
 	inx
-        asl
-        bcs nokey1
-        jsr KeyFound
-nokey1:	
-        inx
-        asl
-        bcs nokey2
-        jsr KeyFound
-nokey2:	
-        inx
-        asl
-        bcs nokey3
-        jsr KeyFound
-nokey3:	
-        inx
-        asl
-        bcs nokey4
-        jsr KeyFound
-nokey4:	
-        inx
-        asl
-        bcs nokey5
-        jsr KeyFound
-nokey5:	
-        inx
-        asl
-        bcs nokey6
-        jsr KeyFound
-nokey6:	
-        inx
-        asl
-        bcs nokey7
-        jsr KeyFound
-nokey7:	
+	dey
+	bpl -
 
-    rts
+	rts
 
 
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

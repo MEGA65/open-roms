@@ -1,3 +1,31 @@
-; Function defined on pp272-273 of C64 Programmers Reference Guide
+	;; Function defined on pp272-273 of C64 Programmers Reference Guide 
+	;; Compute's Mapping the 64 p215
 cint:
+	;; Set up default IO values (Compute's Mapping the 64 p215)
+	lda #$1b    		; Enable text mode
+	sta $d011
+	lda #$c8		; 40 column etc
+	sta $d016
+	
+	;; Initialise cursor blink flags  (Compute's Mapping the 64 p215)
+
+	;; Set keyboard decode vector  (Compute's Mapping the 64 p215)
+
+	;; Set key repeat delay (Compute's Mapping the 64 p215)
+
+	;; Set key frequency counters (Compute's Mapping the 64 p215)
+
+	;; Set current colour for text (Compute's Mapping the 64 p215)
+	lda #$0e  		; light blue by default
+	sta $0286
+
+	;; Set maximum keyboard buffer size (Compute's Mapping the 64 p215)
+	lda #10
+	sta key_buffer_size
+	
+	;; Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
+	;; 	jmp clear_screen
+
+
 	rts
+

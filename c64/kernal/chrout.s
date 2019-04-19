@@ -16,6 +16,18 @@ chrout:
 	;; Write character on the screen
 	ldy current_screen_x
 
+	;; Carriage return
+	cmp #$0d
+	beq screen_advance_to_next_line
+
+	;; Clear screen
+	cmp #$93
+	bne not_clearscreen
+	jsr clear_screen
+	jmp chrout_done
+	
+not_clearscreen:	
+	
 	;;  Convert PETSCII to screen code
 	cmp #$40
 	bcc chrout_l1
@@ -37,9 +49,9 @@ chrout_l1:
 	jsr screen_grow_logical_line
 	cpy #79
 	bcc no_screen_advance_to_next_line
-	jsr screen_advance_to_next_line
+	jmp screen_advance_to_next_line
 no_screen_advance_to_next_line:
-
+chrout_done:	
 	;; Restore X and Y
 	pla
 	tay
@@ -64,4 +76,4 @@ screen_advance_to_next_line:
 	;; XXX -- implement this check and scrolling of the screen
 	;; and updating the screen line links.
 	
-	rts
+	jmp chrout_done

@@ -141,11 +141,13 @@ int main(int argc,char **argv)
     fprintf(out,"\t.org 0\n");
     for(int i=0;i<source_count;i++) {
       fprintf(out,"; Source file '%s'\n",source_files[i].file);
-      fprintf(out,"__routine_start_%s:\n",source_files[i].file);
+      if (source_files[i].file[0]!=',')
+	fprintf(out,"__routine_start_%s:\n",source_files[i].file);
       char path[8192];
       snprintf(path,8192,"%s/%s",directory,source_files[i].file);
       if (dump_file(out,path)) DO_ERROR("Could not read source file");
-      fprintf(out,"__routine_end_%s:\n",source_files[i].file);
+      if (source_files[i].file[0]!=',')
+	fprintf(out,"__routine_end_%s:\n",source_files[i].file);
     }
     fclose(out);
     char cmd[8192];

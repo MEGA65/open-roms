@@ -156,6 +156,15 @@
     .alias TempZP            $B6  ;// 1 byte
     .alias SimultaneousKeys  $F7  ;// 1 byte
 
+	;; Reuse RS232 variables, since they should not be used
+	;; by other things
+	;; These are initialised in cinit all to $FF
+    .alias BufferOld         $293 ; 3 bytes
+	.alias Buffer 	$297 	; 4 bytes
+	.alias BufferQuantity $29B ; 1 byte
+
+
+	
     ;// Operational Variables
     .alias MaxKeyRollover 3
 
@@ -180,7 +189,8 @@ KeyInRow:
 	asl
 	bcs nokey0
 	jsr KeyFound
-nokey0:	
+nokey0:
+	inx
         asl
         bcs nokey1
         jsr KeyFound
@@ -233,11 +243,10 @@ KeyFound:
 	;; was: ldy KeyTable,x
 	pha
 	txa
-	tay
-	pla
 	
 	ldx KeyQuantity
-	sty BufferNew,x
+	sta BufferNew,x
+	pla
 	ldx TempZP
 	rts
 
@@ -535,13 +544,4 @@ Return:  ;; // A is preset
 TooManyNewKeys:
     sec
     rts
-
-BufferOld:
-    .byte $ff, $ff, $ff
-
-Buffer:
-    .byte $ff, $ff, $ff, $ff
-
-BufferQuantity:
-    .byte $ff
 

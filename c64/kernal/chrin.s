@@ -22,7 +22,7 @@ chrin:
 	sta keyboard_buffer,x
 	inx
 	iny
-	cpy keys_in_key_buffer
+	cpy key_buffer_size
 	bne -
 	dec keys_in_key_buffer
 	cli

@@ -75,6 +75,7 @@ scan_keyboard:
 
 	;; Convert matrix position to key code
 	;; XXX - Add offset of $40, $80 or $C0 if shift, CONTROL or C= are held down
+	and #$3f
 	tax
 	lda keyboard_matrixes,x
 
@@ -86,6 +87,7 @@ scan_keyboard:
 	inc keys_in_key_buffer
 	
 	*
+	lda keys_in_key_buffer
 
 	rts
 	

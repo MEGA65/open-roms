@@ -9,4 +9,10 @@ ioinit:
 	LDA #$27
 	STA $01
 
+	;; Compute's Mapping the 64, p156
+	lda #$0e
+	sta $D020
+	lda #$06
+	sta $D021
+	
 	rts

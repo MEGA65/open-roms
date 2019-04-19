@@ -33,10 +33,10 @@
 	.alias cursor_is_visible $CF
 	.alias input_source $D0
 	.alias current_screen_line_ptr $D1
-	.alias current_screen_line_logical_column $D3
+	.alias current_screen_x $D3
 	.alias quote_mode_flag $D4
 	.alias max_logical_line_length $D5
-	.alias cursor_physical_screen_line $D6
+	.alias current_screen_y $D6
 	.alias last_printed_character_ascii $D7
 	.alias insert_mode $D8
 	; Bits 0 -3 = bits 8-11 of screen line address

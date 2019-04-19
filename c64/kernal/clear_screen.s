@@ -56,5 +56,6 @@ clearscreen_l3:
 	sta $db00-24,y    	; so we only erase 1000 bytes
 	iny
 	bne clearscreen_l3
-	
-	rts
+
+	;; (Compute's Mapping the 64 p216)
+	jmp home_cursor

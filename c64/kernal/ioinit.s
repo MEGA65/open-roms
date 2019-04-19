@@ -20,10 +20,13 @@ ioinit:
 	lda #$7f
 	sta $DC0D 		; First disable all
 
-	;; Set timer interval to ~1/50th of a second
-	lda #<20000
+	;; Set timer interval to ~1/60th of a second
+	;; (This value was calculated by running a custom IRQ haandler on a C64
+	;; with original KERNAL, and writing the values of $DC04/5 to the screen
+	;; in the IRQ handler to see roughly what value the timers must be set to)
+	lda #<16380
 	sta $dc04
-	lda #>20000
+	lda #>16380
 	sta $dc05
 
 	;; Enable timer interrupt

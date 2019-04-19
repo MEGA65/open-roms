@@ -1,9 +1,6 @@
 ; Function defined on pp272-273 of C64 Programmers Reference Guide
 chrout:
 	;; Crude implementation of character output	
-	sta $0400
-	inc $0401
-	jmp chrout
 	
 	;; Write character on the screen
 	ldy current_screen_x
@@ -13,7 +10,7 @@ chrout:
 	;; to insert a 2nd line in this logical line.
 	;; (eg Compute's Mapping the 64 p41)
 	ldx current_screen_y
-	iny current_screen_x
+	iny
 	sty current_screen_x
 	cpy #40
 	beq screen_grow_logical_line

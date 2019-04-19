@@ -15,12 +15,13 @@ set_pointer_to_current_screen_line:
 sptcsl_l2:	
 	;; XXX - Should we read the columns per line from
 	;; somewhere?
-	lda #<40
+	ldy #<40
 	;; Double line length if line is linked
-	bit screen_line_link_table,x
+	lda screen_line_link_table,x
 	bpl sptcsl_l1
-	asl
+	ldy #<80
 sptcsl_l1:
+	tya
 	clc
 	adc current_screen_line_ptr+0
 	lda current_screen_line_ptr+1

@@ -72,10 +72,30 @@ screen_advance_to_next_line:
 	lda #0
 	sta current_screen_x
 	;;  Advance line number
+	ldy current_screen_y
 	inc current_screen_y
+
+	;; Advance screen pointer to next line
+	lda screen_line_link_table,y
+	bpl line_not_linked
+	jsr advance_screen_pointer_40_bytes
+
+line_not_linked:	
+	jsr advance_screen_pointer_40_bytes
+	
 	;; Work out if we have gone off the bottom of the screen?
 
 	;; XXX -- implement this check and scrolling of the screen
 	;; and updating the screen line links.
 	
 	jmp chrout_done
+
+advance_screen_pointer_40_bytes:
+	lda current_screen_line_ptr+0
+	clc
+	adc #<40
+	sta current_screen_line_ptr+0
+	lda current_screen_line_ptr+1
+	adc #>40
+	sta current_screen_line_ptr+1
+	rts

@@ -60,3 +60,13 @@
 	;; 128 = all keys repeat
 	;; 64 = no keys repeat
 	.alias key_repeat_flags $028A ; p58
+	;; https://www.c64-wiki.com/wiki/Page_2
+	.alias key_repeat_speed $028B
+	.alias key_first_repeat_delay $028C
+	;; bit 0 = shift, 1 = Vendor Key, 2 = Control
+	.alias key_bucky_state $028D
+	.alias key_last_bucky_state $028E
+	.alias keyboard_decoding_ptr $028F
+	.alias enable_case_switch $0291
+	.alias screen_scroll_disable $0292
+	.alias pal_or_ntsc $02A6

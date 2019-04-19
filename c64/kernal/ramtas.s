@@ -58,7 +58,7 @@ ramtas_l2:
 	eor #$FF
 	stx $8000
 	cmp $8000
-	bne ramtas_32K_RAM
+	beq ramtas_32K_RAM
 	sta $8000
 	lda #$A0
 	sta MEMSIZ+1

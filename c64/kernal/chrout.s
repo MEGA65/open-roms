@@ -19,6 +19,11 @@ chrout:
 	
 	;; Check for special characters
 
+	cmp #$00
+	bne not_00
+	jmp chrout_done
+not_00:
+	
 	;; Linefeed (simply ignored)
 	;; Trivia: BASIC does CRLF with READY. prompt
 	cmp #$0a

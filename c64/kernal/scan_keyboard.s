@@ -78,6 +78,8 @@ scan_keyboard:
 	and #$3f
 	tax
 	lda keyboard_matrixes,x
+	;; But don't insert $00 characters
+	beq +
 
 	;; Stash key into keyboard buffer
 	ldx keys_in_key_buffer
@@ -87,7 +89,6 @@ scan_keyboard:
 	inc keys_in_key_buffer
 	
 	*
-	lda keys_in_key_buffer
 
 	rts
 	

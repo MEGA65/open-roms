@@ -159,9 +159,19 @@
     ;// Operational Variables
     .alias MaxKeyRollover 3
 
-Keyboard:
-    jmp Main
+scan_keyboard:
+	;; Call main keyboard scanning routine
+	jsr Main
+	bcc +
+	rts
+*
+	;; Work out what is new and needs to be added
+	;; to the input buffer.
+	;; Also update the bucky key status flags etc
 
+
+	rts
+	
 
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ;; // Routine for Scanning a Matrix Row
@@ -372,26 +382,57 @@ skip0:
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ;; // Check and flag Non Alphanumeric Keys
 
-    lda ScanResult+6
-    eor #$ff
-    and #%10000000     ;// Left Shift
-    lsr
-    sta NonAlphaFlagY
-    lda ScanResult+0
-    eor #$ff
-    and #%10100100     ;// RUN STOP - C= - CTRL
-    ora NonAlphaFlagY
-    sta NonAlphaFlagY
-    lda ScanResult+1
-    eor #$ff
-    and #%00011000     ;// Right SHIFT - CLR HOME
-    ora NonAlphaFlagY
-    sta NonAlphaFlagY
+	;; Store last row of keyboard scan result,
+	;; so that RUN/STOP etc can be checked easily
+	;; (Compute's Mapping the 64, p27)
+	lda ScanResult+0
+	sta BUCKYSTATUS
 
-    lda ScanResult+7  ;// The rest
-    eor #$ff
-    sta NonAlphaFlagX
+	;; Store de-bounce data for bucky keys
+	;; (Compute's Mapping the 64, p58-59)
+	lda key_bucky_state
+	sta key_last_bucky_state
 
+	;; Build bucky state
+	lda #$00
+	sta key_bucky_state
+	lda ScanResult+6
+	eor #$ff
+	and #%10000000     ;// Left Shift
+	asl
+	asl
+	and #$01
+	ora key_bucky_state
+	sta key_bucky_state
+
+	;; Right shift
+	lda ScanResult+1
+	eor #$ff
+	lsr
+	lsr
+	lsr
+	lsr
+	and #$01
+	ora key_bucky_state
+	sta key_bucky_state
+	
+	;; Control
+	lda ScanResult+0
+	eor #$ff
+	and #$04
+	ora key_bucky_state
+	sta key_bucky_state
+
+	;; C= key
+	lda ScanResult+0
+	eor #$ff
+	lsr
+	lsr
+	lsr
+	lsr
+	and #$02
+	ora key_bucky_state
+	sta key_bucky_state
 
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ;; // Check for pressed key(s)

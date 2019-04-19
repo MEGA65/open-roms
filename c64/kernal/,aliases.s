@@ -49,6 +49,7 @@
 
 
 	; "Compute's Mapping the 64" book
+	.alias keyboard_buffer $0277
 	.alias MEMSTR $0281
 	.alias MEMSIZ $0283 	; NOTE: Mapping the 64 erroniously has the hex as $282, while the DEC is correct
 	.alias text_colour $0286 ; p55

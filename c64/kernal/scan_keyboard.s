@@ -72,6 +72,18 @@ scan_keyboard:
 	beq +
 	;; Got a key, turn it from matrix position to key value,
 	;; and stuff it in the keyboard buffer
+
+	;; Convert matrix position to key code
+	;; XXX - Add offset of $40, $80 or $C0 if shift, CONTROL or C= are held down
+	tax
+	lda keyboard_matrixes,x
+
+	;; Stash key into keyboard buffer
+	ldx keys_in_key_buffer
+	cpx key_buffer_size
+	beq +
+	sta keyboard_buffer,x
+	inc keys_in_key_buffer
 	
 	*
 

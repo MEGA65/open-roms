@@ -35,8 +35,7 @@ cint:
 	sta key_buffer_size
 	
 	;; Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
-	;; 	jmp clear_screen
-
+	jmp clear_screen
 
 	rts
 

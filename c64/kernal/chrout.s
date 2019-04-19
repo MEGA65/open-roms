@@ -12,12 +12,13 @@ chrout:
 	tya
 	pha
 	lda last_printed_character_ascii
+	tax
 	
 	;; Write character on the screen
 	ldy current_screen_x
 
 	;; Carriage return
-	cmp #$0d
+	cmp #$0d		
 	beq screen_advance_to_next_line
 
 	;; Clear screen
@@ -52,12 +53,13 @@ chrout_l1:
 	jmp screen_advance_to_next_line
 no_screen_advance_to_next_line:
 chrout_done:	
-	;; Restore X and Y
+	;; Restore X and Y, set carry to mark success on exit
 	pla
 	tay
 	pla
 	tax
-	
+	lda last_printed_character_ascii
+	clc 			; indicate success
 	rts
 
 screen_grow_logical_line:

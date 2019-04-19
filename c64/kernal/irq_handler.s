@@ -26,5 +26,6 @@ irq_handler:
 default_irq_handler:	
 
 	jsr blink_cursor
+	jsr scan_keyboard
 	
 	jmp return_from_interrupt

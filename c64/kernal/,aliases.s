@@ -4,7 +4,6 @@
 ;	(https://www.c64-wiki.com/wiki/Zeropage)
 
 	.alias TXTTAB $2B
-	.alias MEMSIZ $37
 	.alias IOSTATUS $90
 	; Keys down clears bits. STOP=bit 7, C= bit 6, SPACE bit 4, CTRL bit 2
 	.alias BUCKYSTATUS $91
@@ -48,4 +47,16 @@
 	.alias rs232_rx_buffer_ptr $F7
 	.alias rs232_tx_buffer_ptr $F9
 
-	
+
+	; "Compute's Mapping the 64" book
+	.alias MEMSTR $0281
+	.alias MEMSIZ $0283 	; NOTE: Mapping the 64 erroniously has the hex as $282, while the DEC is correct
+	.alias text_colour $0286 ; p55
+	.alias colour_under_cursor $0287 ; p56
+	.alias HIBASE $0288     ; p56 (high byte of start of screen)
+	.alias key_buffer_size $0289 ; p57
+
+	;; 0 = cursor keys, insert, delete and space repeat, but nothing else
+	;; 128 = all keys repeat
+	;; 64 = no keys repeat
+	.alias key_repeat_flags $028A ; p58

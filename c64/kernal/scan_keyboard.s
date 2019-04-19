@@ -151,8 +151,6 @@
 	;; (Carefully avoiding $A7 which is used by 64NET)
     .alias BufferNew         $A9  ;// 3 bytes
     .alias KeyQuantity       $A8  ;// 1 byte
-    .alias NonAlphaFlagX     $B4  ;// 1 byte
-    .alias NonAlphaFlagY     $B5  ;// 1 byte
     .alias TempZP            $B6  ;// 1 byte
     .alias SimultaneousKeys  $F7  ;// 1 byte
 
@@ -326,6 +324,7 @@ skip0:
 	dex
 	bpl -
 
+	;; X gets back to $FF here, which is assumed below
 
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ;; // Check for Control Port #1 Activity (again)
@@ -345,7 +344,6 @@ skip0:
 
     ;; // Reset Non-AlphaNumeric Flag
     inx
-    stx NonAlphaFlagY
 
     ;; // Set max keys allowed before ignoring result
     lda #MaxKeyRollover
@@ -506,9 +504,7 @@ Return:  ;; // A is preset
     stx BufferOld+1
     ldx BufferNew+2
     stx BufferOld+2
-    ;; // Handle Non Alphanumeric Keys
-    ldx NonAlphaFlagX
-    ldy NonAlphaFlagY
+
     rts
 
 TooManyNewKeys:

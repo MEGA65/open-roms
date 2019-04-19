@@ -11,27 +11,6 @@
 ;;         By: TWW/CTR
 
 
-;;     Preparatory Settings
-;;     ~~~~~~~~~~~~~~~~~~~~
-;;         None
-
-
-;;     Destroys
-;;     ~~~~~~~~
-;;         Accumulator
-;;         X-Register
-;;         Y-Register
-;;         Carry / Zero / Negative
-;;         $dc00
-;;         $dc01
-;;         $50-$5f
-
-
-;;     Footprint
-;;     ~~~~~~~~~
-;;         #$206 Bytes
-
-
 ;;     Information
 ;;     ~~~~~~~~~~~
 ;;         The routine uses "2 Key rollower" or up to 3 if the key-combination doesen't induce shadowing.
@@ -40,91 +19,9 @@
 ;;         SHIFT LOCK is not detected due to unreliability.
 
 
-;;     Usage
-;;     ~~~~~
-;;       Example Code:
-
-;;             jsr Keyboard
-;;             bcs NoValidInput
-;;                 stx TempX
-;;                 sty TempY
-;;                 cmp #$ff
-;;                 beq NoNewAphanumericKey
-;;                     // Check A for Alphanumeric keys
-;;                     sta $0400
-;;             NoNewAphanumericKey:
-;;             // Check X & Y for Non-Alphanumeric Keys
-;;             ldx TempX
-;;             ldy TempY
-;;             stx $0401
-;;             sty $0402
-;;        NoValidInput:  // This may be substituted for an errorhandler if needed.
-
-
-;;     Returned
-;;     ~~~~~~~~
-
-;;         +=================================================+
-;;         |             Returned in Accumulator             |
-;;         +===========+===========+=============+===========+
-;;         |  $00 - @  |  $10 - p  |  $20 - SPC  |  $30 - 0  |
-;;         |  $01 - a  |  $11 - q  |  $21 -      |  $31 - 1  |
-;;         |  $02 - b  |  $12 - r  |  $22 -      |  $32 - 2  |
-;;         |  $03 - c  |  $13 - s  |  $23 -      |  $33 - 3  |
-;;         |  $04 - d  |  $14 - t  |  $24 -      |  $34 - 4  |
-;;         |  $05 - e  |  $15 - u  |  $25 -      |  $35 - 5  |
-;;         |  $06 - f  |  $16 - v  |  $26 -      |  $36 - 6  |
-;;         |  $07 - g  |  $17 - w  |  $27 -      |  $37 - 7  |
-;;         |  $08 - h  |  $18 - x  |  $28 -      |  $38 - 8  |
-;;         |  $09 - i  |  $19 - y  |  $29 -      |  $39 - 9  |
-;;         |  $0a - j  |  $1a - z  |  $2a - *    |  $3a - :  |
-;;         |  $0b - k  |  $1b -    |  $2b - +    |  $3b - ;  |
-;;         |  $0c - l  |  $1c - £  |  $2c - ,    |  $3c -    |
-;;         |  $0d - m  |  $1d -    |  $2d - -    |  $3d - =  |
-;;         |  $0e - n  |  $1e - ^  |  $2e - .    |  $3e -    |
-;;         |  $0f - o  |  $1f - <- |  $2f - /    |  $3f -    |
-;;         +-----------+-----------+-------------+-----------+
-
-;;         +================================================================================
-;;         |                             Return in X-Register                              |
-;;         +=========+=========+=========+=========+=========+=========+=========+=========+
-;;         |  Bit 7  |  Bit 6  |  Bit 5  |  Bit 4  |  Bit 3  |  Bit 2  |  Bit 1  |  Bit 0  |
-;;         +---------+---------+---------+---------+---------+---------+---------+---------+
-;;         | CRSR UD |   F5    |   F3    |   F1    |   F7    | CRSR RL | RETURN  |INST/DEL |
-;;         +---------+---------+---------+---------+---------+---------+---------+---------+
-
-;;         +================================================================================
-;;         |                             Return in Y-Register                              |
-;;         +=========+=========+=========+=========+=========+=========+=========+=========+
-;;         |  Bit 7  |  Bit 6  |  Bit 5  |  Bit 4  |  Bit 3  |  Bit 2  |  Bit 1  |  Bit 0  |
-;;         +---------+---------+---------+---------+---------+---------+---------+---------+
-;;         |RUN STOP | L-SHIFT |   C=    | R-SHIFT |CLR/HOME |  CTRL   |         |         |
-;;         +---------+---------+---------+---------+---------+---------+---------+---------+
-
-;;         CARRY:
-;;           - Set = Error Condition (Check A for code):
-;;               A = #$01 => No keyboard activity is detected.
-;;               A = #$02 => Control Port #1 Activity is detected.
-;;               A = #$03 => Key Shadowing / Ghosting is detected.
-;;               A = #$04 => 2 or 3 new keys is detected within one scan
-;;               A = #$05 => Awaiting "No Activity" state
-;;           - Clear = Valid input
-;;               A =  #$ff => No new Alphanumeric Keys detected (some key(s) being held down AND/OR some Non-Alphanumeric key is causing valid return).
-;;               A <> #$ff => New Alphanumeric Key returned. Non-Alphanumeric keys may also be returned in X or Y Register
-
-;;     Issues/ToDo:
-;;     ~~~~~~~~~~~~
-;;         - None
-
-
-;;     Improvements:
-;;     ~~~~~~~~~~~~~
-;;         - Replace the subroutine with a pseudocommand and account for speedcode parameter (Memory vs. Cycles).
-;;         - Shorten the routine / Optimize if possible.
-
-
 ;;     History:
 ;;     ~~~~~~~~
+;;     V3.0 - Hacked to pieces by PGS to work as KERNAL keyboard scan routine
 ;;     V2.5 - New test tool.
 ;;            Added return of error codes.
 ;;            Fixed a bug causing Buffer Overflow.
@@ -139,9 +36,6 @@
 
 ;; ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-    ;; .pc = * "Keyboard Scan Routine"
-
-
 	;; // ZERO PAGE Varibles
 	;; $250-$258 is the 81st - 88th characters in BASIC input, a carry over from VIC-20
 	;; and not used on C64, so safe for us to use, probably.
@@ -152,14 +46,13 @@
     .alias BufferNew         $A9  ;// 3 bytes
     .alias KeyQuantity       $A8  ;// 1 byte
     .alias TempZP            $B6  ;// 1 byte
-    .alias SimultaneousKeys  $F7  ;// 1 byte
 
 	;; Reuse RS232 variables, since they should not be used
 	;; by other things
 	;; These are initialised in cinit all to $FF
     .alias BufferOld         $293 ; 3 bytes
 	.alias Buffer 	$297 	; 4 bytes
-	.alias BufferQuantity $29B ; 1 byte
+	.alias BufferQuantity $B4 ; 1 byte
 
 
 	
@@ -175,7 +68,12 @@ scan_keyboard:
 	;; Work out what is new and needs to be added
 	;; to the input buffer.
 	;; Also update the bucky key status flags etc
-
+	cmp #$ff
+	beq +
+	;; Got a key, turn it from matrix position to key value,
+	;; and stuff it in the keyboard buffer
+	
+	*
 
 	rts
 	
@@ -227,7 +125,8 @@ OverFlow:
     pla
     pla
     ;// Don't manipulate last legal buffer as the routine will fix itself once it gets valid input again.
-    sec
+	sec
+	lda #$ff
     rts
 
 
@@ -240,7 +139,8 @@ NoActivityDetected:
     stx BufferOld
     stx BufferOld+1
     stx BufferOld+2
-    sec
+	sec
+	lda #$ff
     rts
 
 
@@ -249,7 +149,8 @@ NoActivityDetected:
 
 ControlPort:
     ;; // Exit with A = #$02, Carry Set. Keep BufferOld to verify input after Control Port activity ceases
-    sec
+	sec
+	lda #$ff
     rts
 
 
@@ -312,17 +213,12 @@ skip0:
     stx BufferNew+1
     stx BufferNew+2
 
-    ;; // Reset Non-AlphaNumeric Flag
+	;; Make X = $00, assumed below
     inx
 
     ;; // Set max keys allowed before ignoring result
     lda #MaxKeyRollover
     sta KeyQuantity
-
-    ;; // Counter to check for simultaneous alphanumeric key-presses
-    lda #$fe
-    sta SimultaneousKeys
-
 
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ;; // Check and flag Non Alphanumeric Keys
@@ -428,7 +324,7 @@ skip0:
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ;; // Key Scan Completed
 
-    ;; // Put any new key (not in old scan) into buffer
+	;; // Put any new key (not in old scan) into buffer
     ldx #MaxKeyRollover-1
 *      lda BufferNew,x
         cmp #$ff
@@ -439,13 +335,15 @@ skip0:
         beq Exist
         cmp BufferOld+2
         beq Exist
-            ;; // New Key Detected
-            inc BufferQuantity
-            ldy BufferQuantity
-            sta Buffer,y
-            ;; // Keep track of how many new Alphanumeric keys are detected
-            inc SimultaneousKeys
-            beq TooManyNewKeys
+
+        ;; // New Key Detected
+	ldy BufferQuantity
+	cpy #MaxKeyRollover
+	bcc TooManyNewKeys
+
+	iny
+	sty BufferQuantity
+        sta Buffer,y
     Exist:
         dex
         bpl -
@@ -478,6 +376,8 @@ Return:  ;; // A is preset
     rts
 
 TooManyNewKeys:
-    sec
+	sec
+	lda #$ff
+	sta BufferQuantity
     rts
 

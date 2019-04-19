@@ -16,10 +16,11 @@ cint:
 
 	;; Set initial variables for our improved keyboard scan routine
 	lda #$ff
-	ldx #7
+	ldx #6
 *	sta BufferOld,x
 	dex
 	bpl -
+	sta BufferQuantity
 	
 	;; Set key repeat delay (Compute's Mapping the 64 p215)
 	;; Making some numbers up here: Repeat every ~1/10th sec

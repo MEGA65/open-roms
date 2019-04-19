@@ -28,13 +28,4 @@ default_irq_handler:
 	jsr blink_cursor
 	jsr scan_keyboard
 
-	lda KeyQuantity
-	sta $0400
-	lda Buffer+0
-	sta $0401
-	lda Buffer+1
-	sta $0402
-	lda Buffer+2
-	sta $0403
-	
 	jmp return_from_interrupt

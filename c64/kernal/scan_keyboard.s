@@ -181,7 +181,6 @@ KeyInRow:
 	bcs nokey0
 	jsr KeyFound
 nokey0:	
-        inx
         asl
         bcs nokey1
         jsr KeyFound
@@ -224,14 +223,23 @@ nokey7:
     ;; // Routine for handling: Key Found
 
 KeyFound:
-    stx TempZP
-    dec KeyQuantity
-    bmi OverFlow
-    ldy KeyTable,x
-    ldx KeyQuantity
-    sty BufferNew,x
-    ldx TempZP
-    rts
+	stx TempZP
+	dec KeyQuantity
+	bmi OverFlow
+
+	;; Originally, we resolved the keys.
+	;; Now we just return the matrix position, so that
+	;; we can do C64-style bucky modifications as normal
+	;; was: ldy KeyTable,x
+	pha
+	txa
+	tay
+	pla
+	
+	ldx KeyQuantity
+	sty BufferNew,x
+	ldx TempZP
+	rts
 
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ;; // Routine for handling: Overflow
@@ -242,7 +250,6 @@ OverFlow:
     pla
     pla
     ;// Don't manipulate last legal buffer as the routine will fix itself once it gets valid input again.
-    lda #$03
     sec
     rts
 
@@ -252,13 +259,11 @@ OverFlow:
 
 NoActivityDetected:
     ;; // Exit With A = #$01, Carry Set & Reset BufferOld.
-    lda #$00
-    sta SimultaneousAlphanumericKeysFlag  ;// Clear the too many keys flag once a "no activity" state is detected.
+
     stx BufferOld
     stx BufferOld+1
     stx BufferOld+2
     sec
-    lda #$01
     rts
 
 
@@ -268,7 +273,6 @@ NoActivityDetected:
 ControlPort:
     ;; // Exit with A = #$02, Carry Set. Keep BufferOld to verify input after Control Port activity ceases
     sec
-    lda #$02
     rts
 
 
@@ -288,12 +292,6 @@ Main:
     cpx $dc01
     beq NoActivityDetected
 
-    lda SimultaneousAlphanumericKeysFlag
-    beq skip0
-        ;; // Waiting for all keys to be released before accepting new input.
-        lda #$05
-        sec
-        rts
 skip0:
 
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -536,22 +534,7 @@ Return:  ;; // A is preset
 
 TooManyNewKeys:
     sec
-    lda #$ff
-    sta BufferQuantity
-    sta SimultaneousAlphanumericKeysFlag
-    lda #$04
     rts
-
-;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-KeyTable:
-    .byte $ff, $ff, $ff, $ff, $ff, $ff, $ff, $ff  ;// CRSR DOWN, F5, F3, F1, F7, CRSR RIGHT, RETURN, INST DEL
-    .byte $ff, $05, $13, $1a, $34, $01, $17, $33  ;// LEFT SHIFT, "E", "S", "Z", "4", "A", "W", "3"
-    .byte $18, $14, $06, $03, $36, $04, $12, $35  ;// "X", "T", "F", "C", "6", "D", "R", "5"
-    .byte $16, $15, $08, $02, $38, $07, $19, $37  ;// "V", "U", "H", "B", "8", "G", "Y", "7"
-    .byte $0e, $0f, $0b, $0d, $30, $0a, $09, $39  ;// "N", "O" (Oscar), "K", "M", "0" (Zero), "J", "I", "9"
-    .byte $2c, $00, $3a, $2e, $2d, $0c, $10, $2b  ;// ",", "@", ":", ".", "-", "L", "P", "+"
-    .byte $2f, $1e, $3d, $ff, $ff, $3b, $2a, $1c  ;// "/", "^", "=", RIGHT SHIFT, HOME, ";", "*", "£"
-    .byte $ff, $11, $ff, $20, $32, $ff, $1f, $31  ;// RUN STOP, "Q", "C=" (CMD), " " (SPC), "2", "CTRL", "<-", "1"
 
 BufferOld:
     .byte $ff, $ff, $ff
@@ -562,5 +545,3 @@ Buffer:
 BufferQuantity:
     .byte $ff
 
-SimultaneousAlphanumericKeysFlag:
-    .byte $00

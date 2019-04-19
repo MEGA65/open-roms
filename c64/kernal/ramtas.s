@@ -45,6 +45,9 @@ ramtas_l2:
 	
 	;;  Work out RAM size and put in MEMSTR and MEMSIZ
 	;; "Compute's Mapping the 64", p54
+	;;  http://unusedino.de/ec64/technical/project64/mapping_c64.html
+	lda #>$0800
+	sta MEMSTR+1
 	lda #$00
 	sta MEMSTR+0
 	sta MEMSIZ+0

@@ -19,7 +19,7 @@ chrout:
 	;;  Convert PETSCII to screen code
 	cmp #$40
 	bcc chrout_l1
-	cmp #$59
+	cmp #$41+26
 	bcs chrout_l1
 	and #$1f
 

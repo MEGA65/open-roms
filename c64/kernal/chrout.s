@@ -14,9 +14,16 @@ chrout:
 	lda last_printed_character_ascii
 	tax
 	
-	;; Write character on the screen
-	ldy current_screen_x
 
+	;; Check for special characters
+
+	;; Linefeed (simply ignored)
+	;; Trivia: BASIC does CRLF with READY. prompt
+	cmp #$0a
+	bne not_0a
+	jmp chrout_done
+not_0a:
+	
 	;; Carriage return
 	cmp #$0d		
 	beq screen_advance_to_next_line
@@ -37,7 +44,11 @@ not_clearscreen:
 	and #$1f
 
 chrout_l1:	
+	;; Write normal character on the screen
+	ldy current_screen_x
 	sta (current_screen_line_ptr),y
+
+	;; XXX - Update colour RAM also
 
 	;; Advance the column, and scroll screen down if we need
 	;; to insert a 2nd line in this logical line.

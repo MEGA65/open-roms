@@ -31,6 +31,12 @@ extensive commentary in terms of the specifications, including to explore differ
 the specification, with justification of which particular implementation is being used.  Where the result is considerably
 similar to the original, then further justification will be required to explain how this is inevitable.
 
+In our favour, there is a long history of the publication of information that has been derived from disassembling the
+C64 and related Computer's ROMs, e.g., https://www.cubic.org/~doj/c64/mapping128.pdf
+We can refer to the contents of such publications, without having to actually look at the contents of the ROMs ourselves.
+That is, we can treat the KERNAL and BASIC ROMs as black boxes with specifications and descriptions already captured in these
+long standing publications.
+
 # Justifying the interoperability requirement of every routine
 
 For each routine, there should also exist a *.interop file that in comments explains the requirement, and is
@@ -58,6 +64,7 @@ to generate this call graph.
 4. Implement the routines in the order that the entry points are discovered.
 5. Where an entry point does not correspond to a public API of the KERNAL, research the function by searching for it in Google. Implement it according to the first matching reference.
 6. Where an entry point means that previously implemented routines have to be moved to make space at a specific address, move only those routines required to do so, to the next available address.
+7. Where understanding of the inner workings of a routine are required to replicate it, secondary sources, such as the "Mapping the C128" or "C64 Programmer's Reference Guide" should be used. When those do not provide the answer, internet searches based on the name of the routine should be done, and failing that, based on the routine's address if it has no well known name or insufficient material is turned up.  Reference to actual disassemblies of the ROMs is not to be made, to ensure that we have strong defences against any claim of copyright infringement.
 
 To organise this as we develop, we will assemble the ROM from many separate source files, each with a single routine in it, and with the name of the file matching the routine.  Where code must be placed at a specific address, the file should be called xxxx.routine.s, where xxxx is the address.  We will write a special preprocessor that will take the routines and put them in the correct deterministic order, and make
 sure that no address placement violations occur.  To make this easier to do, we are using the Ophis assembler, as it makes it quite easy to check such things.

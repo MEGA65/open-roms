@@ -38,8 +38,6 @@ not_0a:
 not_0d:	
 
 	;; Check for cursor movement keys
-	sta $0400
-	
 	cmp #$11
 	bne not_11
 	inc current_screen_y
@@ -92,6 +90,16 @@ delete_non_zero_column:
 	jmp chrout_done
 	
 not_14:	
+
+	;; Home cursor
+	cmp #$13
+	bne not_13
+	lda #0
+	sta current_screen_x
+	sta current_screen_y
+	jsr calculate_screen_line_pointer
+	jmp chrout_done
+not_13:	
 	
 	;; Clear screen
 	cmp #$93

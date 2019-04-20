@@ -254,6 +254,8 @@ int main(int argc,char **argv)
       } else {
 	fprintf(out,"\n; Source file %s @ $%04x\n",source_files[biggest].file,address);
 	fprintf(stderr,"Writing file %s\n",source_files[biggest].file);
+	fprintf(out,"\t.checkpc $%04x\n\t.advance $%04x,$00\n",address,address);
+		
 	char filename[8192];
 	snprintf(filename,8192,"%s/%s",directory,source_files[biggest].file);
 	if (dump_file(out,filename)) DO_ERROR("Could not dump floating routine");

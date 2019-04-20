@@ -139,7 +139,9 @@ int main(int argc,char **argv)
     unlink("temp.s");
     FILE *out=fopen("temp.s","w");
     if (!out) DO_ERROR("Could not write to temp.s");
-    fprintf(out,"\t.org 0\n");
+    // Start at $100, so that no local data gets accesses using ZP addressing modes during this pass,
+    // which would otherwise upset things later
+    fprintf(out,"\t.org $100\n");
     for(int i=0;i<source_count;i++) {
       fprintf(out,"; Source file '%s'\n",source_files[i].file);
       if (source_files[i].file[0]!=',')

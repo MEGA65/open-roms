@@ -35,6 +35,20 @@ not_0a:
 	cmp #$0d		
 	beq screen_advance_to_next_line
 
+	;; Check for cursor movement keys
+	cmp #$11
+	bne not_11
+	inc current_screen_y
+	jsr calculate_screen_line_pointer
+	jmp chrout_done
+not_11:	
+	cmp #$1d
+	bne not_1d
+	inc current_screen_x
+	jsr calculate_screen_line_pointer
+	jmp chrout_done
+not_1d:	
+	
 	cmp #$14
 	bne not_14
 
@@ -48,13 +62,14 @@ delete_at_column_0:
 	jmp chrout_done
 not_row_0:
 	dec current_screen_y
-	lda #39
-	sta current_screen_x
-	jsr retreat_screen_pointer_40_bytes
 	lda screen_line_link_table,y
 	bpl line_not_linked_del
-	jsr retreat_screen_pointer_40_bytes
+	lda #79
+	.byte $2c 		; BIT absolute mode, which we use to skip the next two instruction bytes
 line_not_linked_del:
+	lda #39
+	sta current_screen_x
+	jsr calculate_screen_line_pointer
 	jmp chrout_done
 
 delete_non_zero_column:	
@@ -120,21 +135,63 @@ screen_advance_to_next_line:
 	ldy current_screen_y
 	inc current_screen_y
 
-	;; Advance screen pointer to next line
-	lda screen_line_link_table,y
-	bpl line_not_linked
-	jsr advance_screen_pointer_40_bytes
-
-line_not_linked:	
-	jsr advance_screen_pointer_40_bytes
+	jsr calculate_screen_line_pointer
 	
 	;; Work out if we have gone off the bottom of the screen?
-
-	;; XXX -- implement this check and scrolling of the screen
-	;; and updating the screen line links.
+	;; 1040 > 1024, so if high byte of screen pointer is >= (HIBASE+4),
+	;; then we are off the bottom of the screen
+	lda current_screen_line_ptr+1
+	sec
+	sbc HIBASE
+	cmp #3
+	bcc +
 	
+	;; Off the bottom of the screen
+	jsr scroll_screen_up
+
+*
 	jmp chrout_done
 
+scroll_screen_up:
+	;;  XXX - Not implemented
+	rts
+	
+calculate_screen_line_pointer:
+	;;  Reset pointer to start of screen
+	lda HIBASE
+	sta current_screen_line_ptr+1
+	lda #0
+	sta current_screen_line_ptr+0
+
+	;; Add 40 for every line, or 80 if the lines are linked
+	ldx current_screen_y
+*
+	;; Stop if we have counted enough lines
+	beq +
+
+	;; Add 40 or 80 based on whether the line is linked
+	;; or not.
+	ldy #40
+	lda screen_line_link_table,x
+	bpl cslp_l1
+	ldy #80
+cslp_l1:
+	;; Add computed line length to pointer value
+	tya
+	clc
+	adc current_screen_line_ptr+0
+	sta current_screen_line_ptr+0
+	lda current_screen_line_ptr+1
+	adc #0
+	sta current_screen_line_ptr+1
+	
+	;; Loop back to next line
+	dex
+	jmp -
+*
+	rts
+	
+	
 retreat_screen_pointer_40_bytes:
 	lda current_screen_line_ptr+0
 	sec

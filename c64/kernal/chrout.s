@@ -193,10 +193,10 @@ add_40_to_screen_x:
 normalise_screen_x_y:	
 	;; Normalise X and Y values
 
-	lda current_screen_x
-	sta $0400
-	lda current_screen_y
-	sta $0401
+	;; lda current_screen_x
+	;; sta $0400
+	;; lda current_screen_y
+	;; sta $0401
 	
 	;; If X < 0, then make X = X + 40 (or 80, if previous line is linked)
 *	lda current_screen_x
@@ -253,10 +253,10 @@ x_not_too_big:
 	;; into account 
 
 	
-	lda current_screen_x
-	sta $0403
-	lda current_screen_y
-	sta $0404
+	;; lda current_screen_x
+	;; sta $0403
+	;; lda current_screen_y
+	;; sta $0404
 	rts
 
 calculate_screen_line_pointer:

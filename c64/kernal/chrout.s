@@ -32,10 +32,14 @@ not_00:
 not_0a:
 	
 	;; Carriage return
-	cmp #$0d		
-	beq screen_advance_to_next_line
+	cmp #$0d
+	bne not_0d
+	jmp screen_advance_to_next_line
+not_0d:	
 
 	;; Check for cursor movement keys
+	sta $0400
+	
 	cmp #$11
 	bne not_11
 	inc current_screen_y
@@ -48,6 +52,18 @@ not_11:
 	jsr calculate_screen_line_pointer
 	jmp chrout_done
 not_1d:	
+	cmp #$91
+	bne not_91
+	dec current_screen_y
+	jsr calculate_screen_line_pointer
+	jmp chrout_done
+not_91:	
+	cmp #$9d
+	bne not_9d
+	dec current_screen_x
+	jsr calculate_screen_line_pointer
+	jmp chrout_done
+not_9d:	
 	
 	cmp #$14
 	bne not_14

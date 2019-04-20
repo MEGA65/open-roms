@@ -136,7 +136,10 @@ chrout_l1:
 	bcc no_screen_advance_to_next_line
 	jmp screen_advance_to_next_line
 no_screen_advance_to_next_line:
-chrout_done:	
+chrout_done:
+	;; Make cursor immediately visible
+	jsr show_cursor
+	
 	;; Restore X and Y, set carry to mark success on exit
 	pla
 	tay

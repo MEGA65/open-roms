@@ -4,6 +4,19 @@
 	;; cursor_saved_character
 	;; cursor_is_visible
 	;; colour_under_cursor
+
+show_cursor:
+	;; Set cursor as though it had just finished the off phase,
+	;; so that the call to blink_cursor paints it
+	lda #$00
+	sta cursor_blink_countdown
+	sta cursor_is_visible
+	jsr blink_cursor
+	;; Then set the timeout to 1 frame, so that the cursor
+	;; blinks under key repeat conditions, like on the original KERNAL
+	lda #$01
+	sta cursor_blink_countdown
+	rts
 	
 blink_cursor:
 	;; Is the cursor enabled?

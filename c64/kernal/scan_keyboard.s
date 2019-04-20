@@ -390,23 +390,38 @@ KeyHeld:
 	;; compare with key in last_key_matrix_position
 	;; (Compute's Mapping the 64 p36-37)
 	;; if different, reset repeat count down.
+
+	;; Ignore bucky keys, so that repeat can work when a
+	;; bucky is held down.
+	cmp #15
+	beq BuckyHeld
+	cmp #52
+	beq BuckyHeld
+	cmp #58
+	beq BuckyHeld
+	cmp #61
+	beq BuckyHeld
+	
 	cmp last_key_matrix_position
 	beq SameKeyHeld
 	;; Different key held
+	sta last_key_matrix_position
 	pha
 	lda key_first_repeat_delay
 	sta key_repeat_counter
 	pla
+BuckyHeld:
 	jmp Exist
+	
 SameKeyHeld:
 	dec key_repeat_counter
-	bpl +
+	bne +
 	;; Count down ended, so repeat key now
 
 	;; Reload key repeat counter
 	;; (Compute's Mapping the 64 p58)
 	pha
-	lda #6
+	lda #6-2  		; Fudge factor to match speed
 	sta key_repeat_counter
 	pla
 

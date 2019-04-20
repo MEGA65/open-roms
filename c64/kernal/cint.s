@@ -26,7 +26,7 @@ cint:
 	;; Making some numbers up here: Repeat every ~1/10th sec
 	;; But require key to be held for ~1/3sec before
         ;; repeating (Compute's Mapping the 64 p58)
-	lda #22
+	lda #22-2 		; Fudge factor to match speed
 	sta key_first_repeat_delay
 
 	;; Set current colour for text (Compute's Mapping the 64 p215)

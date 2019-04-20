@@ -75,7 +75,13 @@ scan_keyboard:
 
 	;; Convert matrix position to key code
 	;; XXX - Add offset of $40, $80 or $C0 if shift, CONTROL or C= are held down
+	pha
+	lda key_bucky_state
+	and #$7
+	tax
+	pla
 	and #$3f
+	ora keyboard_matrix_lookup,x
 	tax
 	lda keyboard_matrixes,x
 	;; But don't insert $00 characters

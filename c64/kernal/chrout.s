@@ -35,6 +35,33 @@ not_0a:
 	cmp #$0d		
 	beq screen_advance_to_next_line
 
+	cmp #$14
+	bne not_14
+
+	;; Delete
+	ldx current_screen_x
+	bne delete_non_zero_column
+delete_at_column_0:
+	ldy current_screen_y
+	bne not_row_0
+	;; delete from row 0, col 0 does nothing
+	jmp chrout_done
+not_row_0:
+	dec current_screen_y
+	lda #39
+	sta current_screen_x
+	jsr retreat_screen_pointer_40_bytes
+	lda screen_line_link_table,y
+	bpl line_not_linked_del
+	jsr retreat_screen_pointer_40_bytes
+line_not_linked_del:
+	jmp chrout_done
+
+delete_non_zero_column:	
+	jmp chrout_done
+	
+not_14:	
+	
 	;; Clear screen
 	cmp #$93
 	bne not_clearscreen
@@ -108,6 +135,16 @@ line_not_linked:
 	
 	jmp chrout_done
 
+retreat_screen_pointer_40_bytes:
+	lda current_screen_line_ptr+0
+	sec
+	sbc #<40
+	sta current_screen_line_ptr+0
+	lda current_screen_line_ptr+1
+	sbc #>40
+	sta current_screen_line_ptr+1
+	rts
+	
 advance_screen_pointer_40_bytes:
 	lda current_screen_line_ptr+0
 	clc

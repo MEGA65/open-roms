@@ -355,12 +355,12 @@ skip0:
         cmp #$ff
         beq Exist        ;; // Handle 'null' values
         cmp BufferOld
-        beq Exist
+        beq KeyHeld
         cmp BufferOld+1
-        beq Exist
+        beq KeyHeld
         cmp BufferOld+2
-        beq Exist
-
+        beq KeyHeld
+RecordKeypress:	
         ;; // New Key Detected
 	ldy BufferQuantity
 	cpy #MaxKeyRollover
@@ -384,6 +384,35 @@ skip0:
         ldx Buffer+2
         stx Buffer+1
         jmp Return
+
+KeyHeld:
+	;; The key in A is still held down.
+	;; compare with key in last_key_matrix_position
+	;; (Compute's Mapping the 64 p36-37)
+	;; if different, reset repeat count down.
+	cmp last_key_matrix_position
+	beq SameKeyHeld
+	;; Different key held
+	pha
+	lda key_first_repeat_delay
+	sta key_repeat_counter
+	pla
+	jmp Exist
+SameKeyHeld:
+	dec key_repeat_counter
+	bpl +
+	;; Count down ended, so repeat key now
+
+	;; Reload key repeat counter
+	;; (Compute's Mapping the 64 p58)
+	pha
+	lda #6
+	sta key_repeat_counter
+	pla
+
+	jmp RecordKeypress
+	
+*	jmp Exist
 
 BufferEmpty:  ;; // No new Alphanumeric keys to handle.
     lda #$ff

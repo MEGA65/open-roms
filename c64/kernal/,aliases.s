@@ -62,7 +62,7 @@
 	;; 64 = no keys repeat
 	.alias key_repeat_flags $028A ; p58
 	;; https://www.c64-wiki.com/wiki/Page_2
-	.alias key_repeat_speed $028B
+	.alias key_repeat_counter $028B
 	.alias key_first_repeat_delay $028C
 	;; bit 0 = shift, 1 = Vendor Key, 2 = Control
 	.alias key_bucky_state $028D

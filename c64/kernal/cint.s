@@ -24,14 +24,9 @@ cint:
 	
 	;; Set key repeat delay (Compute's Mapping the 64 p215)
 	;; Making some numbers up here: Repeat every ~1/10th sec
-	;; But require key to be held for 4x that long before
-        ;; repeating		
-	lda #$05
-	sta key_repeat_speed
-
-	;; Set key frequency counters (Compute's Mapping the 64 p215)
-	asl
-	asl
+	;; But require key to be held for ~1/3sec before
+        ;; repeating (Compute's Mapping the 64 p58)
+	lda #22
 	sta key_first_repeat_delay
 
 	;; Set current colour for text (Compute's Mapping the 64 p215)

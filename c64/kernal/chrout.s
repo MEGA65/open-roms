@@ -241,7 +241,19 @@ x_not_too_big:
 	bpl +
 	lda #0
 	sta current_screen_y
-*	
+*
+	;; Make sure Y isn't too large for absolute size of
+	;; screen
+	cmp #24
+	bcc +
+	lda #24
+	sta current_screen_y
+*
+	
+	;; Make sure Y isn't too much for the screen, taking
+	;; into account 
+
+	
 	lda current_screen_x
 	sta $0403
 	lda current_screen_y

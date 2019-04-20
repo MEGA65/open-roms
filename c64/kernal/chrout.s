@@ -189,8 +189,8 @@ add_40_to_screen_x:
 	adc #40
 	sta current_screen_x
 	rts
-	
-calculate_screen_line_pointer:
+
+normalise_screen_x_y:	
 	;; Normalise X and Y values
 
 	lda current_screen_x
@@ -249,7 +249,6 @@ x_not_too_big:
 	lda #24
 	sta current_screen_y
 *
-	
 	;; Make sure Y isn't too much for the screen, taking
 	;; into account 
 
@@ -258,7 +257,10 @@ x_not_too_big:
 	sta $0403
 	lda current_screen_y
 	sta $0404
+	rts
 
+calculate_screen_line_pointer:
+	jsr normalise_screen_x_y
 	
 	;;  Reset pointer to start of screen
 	lda HIBASE

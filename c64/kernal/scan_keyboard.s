@@ -166,6 +166,10 @@ NoActivityDetected:
     stx BufferOld+2
 	sec
 	lda #$ff
+	;; Reset key repeat, so that pressing a key that was
+	;; after letting it go in the meantime doesn't result
+	;; in continued repeating
+	sta last_key_matrix_position
     rts
 
 
@@ -430,7 +434,7 @@ SameKeyHeld:
 *	jmp Exist
 
 BufferEmpty:  ;; // No new Alphanumeric keys to handle.
-    lda #$ff
+	lda #$ff
 
 Return:  ;; // A is preset
     clc

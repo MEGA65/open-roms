@@ -182,8 +182,72 @@ screen_advance_to_next_line:
 scroll_screen_up:
 	;;  XXX - Not implemented
 	rts
+
+add_40_to_screen_x:
+	lda current_screen_x
+	clc
+	adc #40
+	sta current_screen_x
+	rts
 	
 calculate_screen_line_pointer:
+	;; Normalise X and Y values
+
+	lda current_screen_x
+	sta $0400
+	lda current_screen_y
+	sta $0401
+	
+	;; If X < 0, then make X = X + 40 (or 80, if previous line is linked)
+*	lda current_screen_x
+	bpl x_not_negative
+	dec current_screen_y
+	;; Check that we didn't go backwards off the top of the screen
+	bpl +
+	lda #0
+	sta current_screen_y
+
+*	jsr add_40_to_screen_x
+
+	;; Check if line is linked, if so, add 40 again
+	ldy current_screen_y
+	lda screen_line_link_table,y
+	bpl +
+	jsr add_40_to_screen_x
+*
+
+x_not_negative:
+	;; Work out if X is too big
+	ldy current_screen_y
+	lda screen_line_link_table,y
+	bpl +
+	lda #80
+	.byte $2C 		; BIT $nnnn, used to skip next instruction
+*	lda #40
+	cmp current_screen_x
+	bcs x_not_too_big
+
+	;; X value is too big, so subtract 40 and increment Y
+	lda current_screen_x
+	sec
+	sbc #40
+	sta current_screen_x
+	inc current_screen_y
+
+x_not_too_big:	
+
+	;; Make sure Y isn't negative
+	lda current_screen_y
+	bpl +
+	lda #0
+	sta current_screen_y
+*	
+	lda current_screen_x
+	sta $0403
+	lda current_screen_y
+	sta $0404
+
+	
 	;;  Reset pointer to start of screen
 	lda HIBASE
 	sta current_screen_line_ptr+1

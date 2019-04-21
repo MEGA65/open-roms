@@ -4,10 +4,11 @@
 	;; If from keyboard, then it gets a whole line of input, and returns the first char.
 	;; Repeated calls after that read out the successive bytes of the line of input.
 chrin:
-
+	;; XXX - Don't corrupt X
+	stx last_printed_character_ascii
+	
 	;; Do we have a line of input we are currently returning?
 	;; If so, return the next byte, and clear the flag when we reach the end.
-	;; XXX - Implement
 
 	;; Do we have a line of input waiting?
 	lda keyboard_input_ready
@@ -22,6 +23,7 @@ chrin:
 	;; Return carriage return and clear pending input flag
 	lda #$00
 	sta keyboard_input_ready
+	ldx last_printed_character_ascii
 	lda #$0d
 	clc
 	rts
@@ -29,6 +31,7 @@ chrin:
 not_end_of_input:
 	;; Return next byte of waiting input and advance index
 	tay
+	ldx last_printed_character_ascii
 	lda (start_of_keyboard_input),y
 	inc keyboard_input_ready
 	clc
@@ -70,11 +73,9 @@ read_from_keyboard:
 	sty end_of_input_line
 	lda #$01
 	sta keyboard_input_ready
-	;; Print the carriage return
-	lda #$0d
-	jsr chrout
 	;; Return first char of line
 	ldy #$00
+	ldx last_printed_character_ascii
 	lda (start_of_keyboard_input),y
 	clc
 	rts
@@ -83,8 +84,7 @@ empty_line:
 	;; For an empty line, just return the carriage return
 	;; (and don't forget to actually print the carriage return, so that
 	;; the cursor advances and screen scrolls as required)
-	lda #$0d
-	jsr chrout
+	ldx last_printed_character_ascii
 	lda #$0d
 	clc
 	rts

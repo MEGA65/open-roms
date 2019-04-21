@@ -49,6 +49,8 @@ read_from_keyboard:
 	bne not_enter
 
 	jsr pop_keyboard_buffer
+
+	jsr hide_cursor_if_visible
 	
 	;; It was enter.
 	;; Note that we have a line of input to return, and return the first byte thereof
@@ -66,10 +68,11 @@ read_from_keyboard:
 	tay
 	iny
 *	dey
-	beq empty_line
+	bmi empty_line
 	lda (current_screen_line_ptr),y
 	cmp #$20
 	beq -
+	iny
 	sty end_of_input_line
 	lda #$01
 	sta keyboard_input_ready

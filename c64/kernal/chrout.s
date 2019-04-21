@@ -435,7 +435,6 @@ scroll_up_if_on_last_line:
 	bcc not_last_line	
 
 is_last_line:	
-	inc $d020
 	
 	dec current_screen_y
 

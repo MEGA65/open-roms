@@ -294,6 +294,20 @@ cslp_l1:
 	dex
 	jmp -
 *
+
+	;; FALL THROUGH
+
+update_colour_line_pointer:	
+	;; Now setup pointer to colour RAM
+	lda current_screen_line_ptr+0
+	sta current_screen_line_colour_ptr+0
+	lda current_screen_line_ptr+1
+	sec
+	sbc HIBASE
+	clc
+	adc #>$d800
+	sta current_screen_line_colour_ptr+1
+	
 	rts
 	
 	
@@ -305,7 +319,8 @@ retreat_screen_pointer_40_bytes:
 	lda current_screen_line_ptr+1
 	sbc #>40
 	sta current_screen_line_ptr+1
-	rts
+
+	jmp update_colour_line_pointer
 	
 advance_screen_pointer_40_bytes:
 	lda current_screen_line_ptr+0
@@ -315,4 +330,6 @@ advance_screen_pointer_40_bytes:
 	lda current_screen_line_ptr+1
 	adc #>40
 	sta current_screen_line_ptr+1
-	rts
+
+	jmp update_colour_line_pointer
+	

@@ -87,8 +87,11 @@ delete_at_column_0:
 	;; delete from row 0, col 0 does nothing
 	jmp chrout_done
 not_row_0:
+	;; Column 0 delete just moves us to the end of the
+	;; previous line, without actually deleting anything
 	dec current_screen_y
 	jsr get_current_line_logical_length
+	lda logical_line_length
 	
 	sta current_screen_x
 	jsr calculate_screen_line_pointer
@@ -98,6 +101,8 @@ delete_non_zero_column:
 	;; Copy rest of line down
 	jsr get_current_line_logical_length
 	ldy current_screen_x
+	cpy logical_line_length
+	beq done_delete
 *
 	lda (current_screen_line_ptr),y
 	dey
@@ -110,9 +115,8 @@ delete_non_zero_column:
 	iny
 	cpy logical_line_length
 	bne -
-
+done_delete:	
 	dec current_screen_x
-	
 	jmp chrout_done
 	
 not_14:	
@@ -190,6 +194,7 @@ get_current_line_logical_length:
 	.byte $2c 		; BIT absolute mode, which we use to skip the next two instruction bytes
 line_not_linked_del:
 	lda #39
+	sta logical_line_length
 	rts
 	
 screen_advance_to_next_line:

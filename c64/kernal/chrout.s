@@ -207,8 +207,105 @@ screen_grow_logical_line:
 	;; Then we need to scroll the screen up
 	jsr scroll_up_if_on_last_line
 	
-	;; XXX - Scroll screen down to make space
-	;; XXX - And scroll up if required
+	;; Scroll screen down to make space
+	;; As we are scrolling down, we start from the end,
+	;; and work backwards.  We can't be as simple and efficient
+	;; here as we are for scrolling up, because we don't know
+	;; how much must be scrolled.
+	;; Simple solution is to work out how many physical lines
+	;; need shifting down, and then move lines at a time after
+	;; initialising the pointers to the end area of the screen.
+	ldx #25-2
+	ldy #0
+count_rows_loop:
+	dex
+	lda screen_line_link_table,y
+	bpl +
+	dex
+*	iny
+	cpy current_screen_y
+	bne count_rows_loop
+	
+	;; Set pointers to end of screen line, and one line
+	;; above.  (It is always one physical line, because
+	;; this can only happen when expanding a line from 40 to
+	;; 80 characters).
+	;; XXX - This is not very efficient, and longer than it
+	;; needs to be. Better would be to work out size to
+	;; copy, and count it down in a pointer somewhere, so
+	;; that loop iteration logic is simpler.
+	lda HIBASE
+	clc
+	adc #3
+	sta current_screen_line_ptr+1
+	sta load_or_scroll_temp_pointer+1
+	lda #>$DBC0
+	sta load_save_verify_end_address+1
+	sta current_screen_line_colour_ptr+1
+
+	lda #<$03C0
+	sta current_screen_line_ptr+0
+	sta current_screen_line_colour_ptr+0
+	;;  souce address is line above
+	sec
+	sbc #40
+	sta load_or_scroll_temp_pointer+0
+	sta load_save_verify_end_address+0
+
+copy_line_down_loop:
+	ldy #39
+cl_inner:
+	lda (load_or_scroll_temp_pointer),y
+	sta (current_screen_line_ptr),y
+	lda (load_save_verify_end_address),y
+	sta (current_screen_line_colour_ptr),y
+	dey
+	bpl cl_inner
+
+	;; Decrement all pointers by 40
+	;; Low bytes are in common pairs
+
+	;; Old source is new destination
+	lda load_or_scroll_temp_pointer+0
+	sta current_screen_line_ptr+0
+	sta current_screen_line_colour_ptr+0
+	lda load_or_scroll_temp_pointer+1
+	sta current_screen_line_ptr+1
+	lda load_save_verify_end_address+1
+	sta current_screen_line_colour_ptr+1
+	
+	;; Decrementing source pointers
+	lda load_or_scroll_temp_pointer+0
+	sec
+	sbc #<40
+	sta load_or_scroll_temp_pointer+0
+	sta load_save_verify_end_address+0
+	lda load_or_scroll_temp_pointer+1
+	sbc #>40
+	sta load_or_scroll_temp_pointer+1
+	;; convert to screen equivalent
+	sec
+	sbc HIBASE
+	clc
+	adc #>$D800
+	sta load_save_verify_end_address+1
+
+	dex
+	bne copy_line_down_loop
+
+	jsr calculate_screen_line_pointer
+
+	;; Erase newly inserted line
+	ldy #79
+	*
+	lda #$20
+	sta (current_screen_line_ptr),y
+	lda text_colour
+	sta (current_screen_line_colour_ptr),y
+	dey
+	cpy #40
+	bne -
+	
 	rts
 
 done_grow_line:

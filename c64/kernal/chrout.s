@@ -225,6 +225,10 @@ count_rows_loop:
 *	iny
 	cpy current_screen_y
 	bne count_rows_loop
+
+	stx $0420
+	cpx #0
+	beq no_copy_down
 	
 	;; Set pointers to end of screen line, and one line
 	;; above.  (It is always one physical line, because
@@ -293,6 +297,7 @@ cl_inner:
 	dex
 	bne copy_line_down_loop
 
+no_copy_down:	
 	jsr calculate_screen_line_pointer
 
 	;; Erase newly inserted line

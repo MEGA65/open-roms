@@ -283,16 +283,14 @@ scroll_copy_loop:
 	sec
 	sbc load_or_scroll_temp_pointer+0
 	tax
-scroll_copy_loop2:
-	lda (load_or_scroll_temp_pointer),y
-	sta (current_screen_line_ptr),y
-	lda (load_save_verify_end_address),y
-	sta (current_screen_line_colour_ptr),y
-	iny
-	dex
-	bne scroll_copy_loop2
-
-	inc $d020
+scroll_copy_loop2:		
+ 	lda (load_or_scroll_temp_pointer),y
+ 	sta (current_screen_line_ptr),y
+ 	lda (load_save_verify_end_address),y
+ 	sta (current_screen_line_colour_ptr),y
+ 	iny
+ 	dex
+ 	bne scroll_copy_loop2
 	
 	;; Shift line linkage list
 	ldy #0
@@ -303,6 +301,8 @@ link_copy:
 	iny
 	dex
 	bne link_copy
+	;; Clear line link flag of last line
+	stx screen_line_link_table+24
 
 	;; Now erase last line
 	lda HIBASE

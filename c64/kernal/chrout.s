@@ -151,11 +151,34 @@ not_13:
 not_clearscreen:	
 	
 	;;  Convert PETSCII to screen code
+
+	;; Unshifted letters
 	cmp #$40
-	bcc chrout_l1
+	bcc not_lower
 	cmp #$41+26
-	bcs chrout_l1
+	bcs not_lower
 	and #$1f
+	jmp chrout_l1
+
+not_lower:	
+	
+	;; Shifted letters
+	cmp #$60
+	bcc not_upper
+	cmp #$60+26
+	bcs not_upper
+	sec
+	sbc #$20
+
+	jmp chrout_l1
+	
+not_upper:
+	cmp #$a0
+	bcc not_vendor
+	sec
+	sbc #$40
+
+not_vendor:	
 
 chrout_l1:	
 	;; Write normal character on the screen

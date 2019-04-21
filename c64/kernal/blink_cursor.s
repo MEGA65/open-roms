@@ -27,17 +27,21 @@ blink_cursor:
 	dec cursor_blink_countdown
 	bpl no_blink_cursor
 
-	;; XXX - Save character colour also!
-	
 	;; Check if cursor was visible or not, and toggle
 	lda cursor_is_visible
 	bne undraw_cursor
 draw_cursor:
 	ldy current_screen_x
 	lda (current_screen_line_ptr),y
-	sta cursor_saved_character
+	sta cursor_saved_character	
 	eor #$80
 	sta (current_screen_line_ptr),y
+	;; Also set cursor colour
+	lda (current_screen_line_colour_ptr),y
+	sta colour_under_cursor
+	lda text_colour
+	sta (current_screen_line_colour_ptr),y
+	
 	lda #1
 	sta cursor_is_visible
 	jmp reset_blink_timer
@@ -46,6 +50,9 @@ undraw_cursor:
 	lda cursor_saved_character
 	ldy current_screen_x
 	sta (current_screen_line_ptr),y
+	lda colour_under_cursor
+	sta (current_screen_line_colour_ptr),y
+	
 	lda #0
 	sta cursor_is_visible
 	;; Fall through

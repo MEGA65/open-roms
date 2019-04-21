@@ -37,6 +37,18 @@ not_0a:
 	jmp screen_advance_to_next_line
 not_0d:	
 
+	;; Check for quote mode
+
+	;; Check for colours
+	ldx #$f
+colour_check_loop:	
+	cmp colour_codes,x
+	bne +
+	stx text_colour
+	jmp chrout_done
+	* dex
+	bpl colour_check_loop
+	
 	;; Check for cursor movement keys
 	cmp #$11
 	bne not_11
@@ -121,7 +133,9 @@ chrout_l1:
 	ldy current_screen_x
 	sta (current_screen_line_ptr),y
 
-	;; XXX - Update colour RAM also
+	;; Set colour
+	lda text_colour
+	sta (current_screen_line_colour_ptr),y
 
 	;; Advance the column, and scroll screen down if we need
 	;; to insert a 2nd line in this logical line.
@@ -333,3 +347,7 @@ advance_screen_pointer_40_bytes:
 
 	jmp update_colour_line_pointer
 	
+colour_codes:
+	;; CHR$ codes for the 16 colours
+	.byte 144,5,28,159,156,30,31,158
+	.byte 129,149,150,151,152,153,154,155

@@ -230,7 +230,6 @@ count_rows_loop:
 	cpy current_screen_y
 	bne count_rows_loop
 
-	stx $0420
 	cpx #0
 	beq no_copy_down
 	bmi no_copy_down
@@ -327,18 +326,21 @@ scroll_up_if_on_last_line:
 	;; Colour RAM is always in fixed place, so is easiest
 	;; to use to check if we are on the last line.
 	;; The last line is at $D800 + 24*40 = $DBC0
-	jsr get_current_line_logical_length
-	lda current_screen_line_colour_ptr+0
-	clc
-	adc logical_line_length
-	sta $0424
-	cmp #<$DBE7
-	bne not_last_line
 	lda current_screen_line_colour_ptr+1
-	sta $0425
 	cmp #>$DBC0
 	bne not_last_line
 
+	lda current_screen_line_colour_ptr+0
+	cmp #<$DBC0
+	beq is_last_line
+	
+	jsr get_current_line_logical_length
+	clc
+	adc current_screen_line_colour_ptr+0
+	cmp #<$DBE7-1
+	bcc not_last_line	
+
+is_last_line:	
 	inc $d020
 	
 	dec current_screen_y

@@ -37,6 +37,7 @@ not_end_of_input:
 	pla
 	tax
 	lda (start_of_keyboard_input),y
+	jsr screen_code_to_petscii
 	inc keyboard_input_ready
 	clc
 	rts
@@ -85,6 +86,7 @@ read_from_keyboard:
 	pla
 	tax
 	lda (start_of_keyboard_input),y
+	jsr screen_code_to_petscii
 	clc
 	rts
 
@@ -126,3 +128,28 @@ pop_keyboard_buffer:
 
 	rts
 	
+screen_code_to_petscii:
+	cmp #$1a
+	bcs not_alpha
+
+	clc
+	adc #$40
+	rts
+	
+not_alpha:
+	cmp #$40
+	bcs not_punctuation
+
+	rts
+
+not_punctuation:	
+	cmp #$5a
+	bcs not_shifted
+
+	clc
+	adc #$80
+
+not_shifted:	
+
+	
+	rts

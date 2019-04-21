@@ -304,6 +304,22 @@ skip0:
 	ora key_bucky_state
 	sta key_bucky_state
 
+	;; Chick for shift + Vendor
+	cmp #$05
+	bne no_case_toggle
+	lda key_last_bucky_state
+	cmp #$05
+	beq no_case_toggle
+
+	lda enable_case_switch
+	beq no_case_toggle
+	
+	lda $D018
+	eor #$02
+	sta $d018
+
+no_case_toggle:	
+	
     ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ;; // Check for pressed key(s)
 

@@ -36,6 +36,8 @@ cint:
 	;; Set maximum keyboard buffer size (Compute's Mapping the 64 p215)
 	lda #10
 	sta key_buffer_size
+	;; Put non-zero value in enable_case_switch
+	sta enable_case_switch
 	
 	;; Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
 	jmp clear_screen

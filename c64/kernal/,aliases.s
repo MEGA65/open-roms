@@ -35,7 +35,7 @@
 	.alias current_screen_line_ptr $D1
 	.alias current_screen_x $D3
 	.alias quote_mode_flag $D4
-	.alias max_logical_line_length $D5
+	.alias logical_line_length $D5
 	.alias current_screen_y $D6
 	.alias last_printed_character_ascii $D7
 	.alias insert_mode $D8

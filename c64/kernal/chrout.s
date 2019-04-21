@@ -88,17 +88,31 @@ delete_at_column_0:
 	jmp chrout_done
 not_row_0:
 	dec current_screen_y
-	lda screen_line_link_table,y
-	bpl line_not_linked_del
-	lda #79
-	.byte $2c 		; BIT absolute mode, which we use to skip the next two instruction bytes
-line_not_linked_del:
-	lda #39
+	jsr get_current_line_logical_length
+	
 	sta current_screen_x
 	jsr calculate_screen_line_pointer
 	jmp chrout_done
 
-delete_non_zero_column:	
+delete_non_zero_column:
+	;; Copy rest of line down
+	jsr get_current_line_logical_length
+	ldy current_screen_x
+*
+	lda (current_screen_line_ptr),y
+	dey
+	sta (current_screen_line_ptr),y
+	iny
+	lda (current_screen_line_colour_ptr),y
+	dey
+	sta (current_screen_line_colour_ptr),y
+	iny
+	iny
+	cpy logical_line_length
+	bne -
+
+	dec current_screen_x
+	
 	jmp chrout_done
 	
 not_14:	
@@ -166,6 +180,16 @@ chrout_done:
 screen_grow_logical_line:
 	;; XXX - Scroll screen down to make space
 
+	rts
+
+get_current_line_logical_length:	
+	ldy current_screen_y
+	lda screen_line_link_table,y
+	bpl line_not_linked_del
+	lda #79
+	.byte $2c 		; BIT absolute mode, which we use to skip the next two instruction bytes
+line_not_linked_del:
+	lda #39
 	rts
 	
 screen_advance_to_next_line:

@@ -37,7 +37,87 @@ not_0a:
 	jmp screen_advance_to_next_line
 not_0d:	
 
+	cmp #$94
+	bne not_94
+
+	;; XXX - Implement insert
+	;; XXX - Abort if line already max length, ie 79th char is not a space
+	;; XXX Set quote mode
+	;; XXX Work out if line needs to be expanded, and if so expand it
+	;; XXX Shuffle chars towards end of line
+	;; Increase insert mode count
+	inc insert_mode
+
+	jmp chrout_done
+not_94:	
+
+	;; DELETE in insert mode embeds control character
+	ldx insert_mode
+	bne not_14
+	
+	cmp #$14
+	bne not_14
+
+	;; Delete
+	ldx current_screen_x
+	bne delete_non_zero_column
+delete_at_column_0:
+	ldy current_screen_y
+	bne not_row_0
+	;; delete from row 0, col 0 does nothing
+	jmp chrout_done
+not_row_0:
+	;; Column 0 delete just moves us to the end of the
+	;; previous line, without actually deleting anything
+	dec current_screen_y
+	jsr get_current_line_logical_length
+	lda logical_line_length
+	
+	sta current_screen_x
+	jsr calculate_screen_line_pointer
+	jmp chrout_done
+
+delete_non_zero_column:
+	;; Copy rest of line down
+	jsr get_current_line_logical_length
+	ldy current_screen_x
+	cpy logical_line_length
+	beq done_delete
+*
+	lda (current_screen_line_ptr),y
+	dey
+	sta (current_screen_line_ptr),y
+	iny
+	lda (current_screen_line_colour_ptr),y
+	dey
+	sta (current_screen_line_colour_ptr),y
+	iny
+	iny
+	cpy logical_line_length
+	bne -
+done_delete:	
+	dec current_screen_x
+	jmp chrout_done	
+not_14:	
+	
 	;; Check for quote mode
+	ldx quote_mode_flag
+	bne is_quote_mode
+	ldx insert_mode
+	bne is_quote_mode
+	jmp not_quote_mode
+
+is_quote_mode:	
+	;; Is it a control code?
+	cmp #$20
+	bcs not_quote_mode
+
+	;; Yes, a control code in quote mode means we display it as a reverse character
+	and #$1F
+	ora #$80
+	jmp output_literal_char
+	
+not_quote_mode:	
 
 	;; Check for colours
 	ldx #$f
@@ -100,53 +180,7 @@ not_91:
 	jsr calculate_screen_line_pointer
 	jmp chrout_done
 not_9d:	
-	
-	cmp #$14
-	bne not_14
-
-	;; Delete
-	ldx current_screen_x
-	bne delete_non_zero_column
-delete_at_column_0:
-	ldy current_screen_y
-	bne not_row_0
-	;; delete from row 0, col 0 does nothing
-	jmp chrout_done
-not_row_0:
-	;; Column 0 delete just moves us to the end of the
-	;; previous line, without actually deleting anything
-	dec current_screen_y
-	jsr get_current_line_logical_length
-	lda logical_line_length
-	
-	sta current_screen_x
-	jsr calculate_screen_line_pointer
-	jmp chrout_done
-
-delete_non_zero_column:
-	;; Copy rest of line down
-	jsr get_current_line_logical_length
-	ldy current_screen_x
-	cpy logical_line_length
-	beq done_delete
-*
-	lda (current_screen_line_ptr),y
-	dey
-	sta (current_screen_line_ptr),y
-	iny
-	lda (current_screen_line_colour_ptr),y
-	dey
-	sta (current_screen_line_colour_ptr),y
-	iny
-	iny
-	cpy logical_line_length
-	bne -
-done_delete:	
-	dec current_screen_x
-	jmp chrout_done
-	
-not_14:	
-
+		
 	;; Home cursor
 	cmp #$13
 	bne not_13
@@ -166,7 +200,7 @@ not_13:
 not_clearscreen:	
 	
 	;;  Convert PETSCII to screen code
-
+	
 	;; Unshifted letters
 	cmp #$40
 	bcc not_lower
@@ -195,12 +229,33 @@ not_upper:
 
 not_vendor:	
 
+output_literal_char:	
+	
 chrout_l1:	
 	;; Write normal character on the screen
+
+	pha
+	
 	ldy current_screen_x
 	ora reverse_video_flag	; Compute's Mapping the 64  p38
 	sta (current_screen_line_ptr),y
 
+	;; Decrement number of chars waiting to be inserted
+	lda insert_mode
+	beq +
+	dec insert_mode
+*	
+	pla
+	cmp #$22
+	bne not_quote
+
+	;;  Toggle quote flag if required
+	lda quote_mode_flag
+	eor #$80
+	sta quote_mode_flag
+
+not_quote:	
+	
 	;; Set colour
 	lda text_colour
 	sta (current_screen_line_colour_ptr),y

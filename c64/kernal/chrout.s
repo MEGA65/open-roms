@@ -220,7 +220,10 @@ scroll_up_if_on_last_line:
 	cmp #>$DBC0
 	bne not_last_line
 
+	dec current_screen_y
 
+	;; FALL THROUGH
+	
 scroll_screen_up:	
 	;; Now scroll the whole screen up either one or two lines
 	;; based on whether the first screen line is linked or not.

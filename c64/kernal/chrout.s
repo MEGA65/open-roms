@@ -196,11 +196,129 @@ screen_grow_logical_line:
 	lda #$80
 	sta screen_line_link_table,y
 
+	;; Now make space for the extra line added.
+	;; If we are on the last physical line of the screen,
+	;; Then we need to scroll the screen up
+	jsr scroll_up_if_on_last_line
+	
 	;; XXX - Scroll screen down to make space
+	;; XXX - And scroll up if required
+	
 
-done_grow_line:	
+done_grow_line:
+not_last_line:	
 	rts
 
+scroll_up_if_on_last_line:
+	;; Colour RAM is always in fixed place, so is easiest
+	;; to use to check if we are on the last line.
+	;; The last line is at $D800 + 24*40 = $DBC0
+	lda current_screen_line_colour_ptr+0
+	cmp #<$DBC0
+	bne not_last_line
+	lda current_screen_line_colour_ptr+1
+	cmp #>$DBC0
+	bne not_last_line
+
+
+scroll_screen_up:	
+	;; Now scroll the whole screen up either one or two lines
+	;; based on whether the first screen line is linked or not.
+
+	jsr hide_cursor_if_visible
+	
+	;; Get pointers to start of screen + colour RAM
+	lda HIBASE
+	sta current_screen_line_ptr+1
+	sta load_or_scroll_temp_pointer+1
+	lda #>$D800
+	sta current_screen_line_colour_ptr+1
+	sta load_save_verify_end_address+1
+	lda #$00
+	sta current_screen_line_ptr+0
+	sta current_screen_line_colour_ptr+0
+	
+	;;  Get pointers to screen/colour RAM source
+	lda screen_line_link_table+0
+	bmi +
+	lda #40
+	.byte $2C 		; BIT $nnnn to skip next instruction
+	*
+	lda #80
+	sta load_or_scroll_temp_pointer+0
+	sta load_save_verify_end_address+0
+
+	;;  Copy first three pages
+	ldy #$00
+	ldx #3
+scroll_copy_loop:
+	lda (load_or_scroll_temp_pointer),y
+	sta (current_screen_line_ptr),y
+	lda (load_save_verify_end_address),y
+	sta (current_screen_line_colour_ptr),y
+
+	iny
+	bne scroll_copy_loop
+
+	inc load_or_scroll_temp_pointer+1
+	inc current_screen_line_ptr+1
+	inc load_save_verify_end_address+1
+	inc current_screen_line_colour_ptr+1
+	dex
+	bne scroll_copy_loop
+
+	;; Copy last partial page
+	;; We need to copy 1000-(3*256)-line length
+	;; = 232 - line length
+	lda 232
+	sec
+	sbc load_or_scroll_temp_pointer+0
+	tax
+scroll_copy_loop2:
+	lda (load_or_scroll_temp_pointer),y
+	sta (current_screen_line_ptr),y
+	lda (load_save_verify_end_address),y
+	sta (current_screen_line_colour_ptr),y
+	iny
+	dex
+	bne scroll_copy_loop2
+
+	inc $d020
+	
+	;; Shift line linkage list
+	ldy #0
+	ldx #24
+link_copy:
+	lda screen_line_link_table+1,y
+	sta screen_line_link_table+0,y
+	iny
+	dex
+	bne link_copy
+
+	;; Now erase last line
+	lda HIBASE
+	clc
+	adc #3
+	sta current_screen_line_ptr+1
+	lda #>$DBC0
+	sta current_screen_line_colour_ptr+1
+	lda #$c0
+	sta current_screen_line_ptr+0
+	sta current_screen_line_colour_ptr+0
+clear_current_physical_line:	
+	ldy #39
+*	lda #$20
+	sta (current_screen_line_ptr),y
+	lda text_colour
+	sta (current_screen_line_colour_ptr),y
+	dey
+	bpl -
+	
+	;; Restore correct line pointers
+	jsr calculate_screen_line_pointer
+
+	rts
+	
 get_current_line_logical_length:	
 	ldy current_screen_y
 	lda screen_line_link_table,y
@@ -236,10 +354,6 @@ screen_advance_to_next_line:
 
 *
 	jmp chrout_done
-
-scroll_screen_up:
-	;;  XXX - Not implemented
-	rts
 
 add_40_to_screen_x:
 	lda current_screen_x

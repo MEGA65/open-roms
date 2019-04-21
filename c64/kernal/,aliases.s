@@ -14,6 +14,8 @@
 	.alias kernal_message_control_flags $9d
 	.alias jiffy_clock_24bits $a0
 	.alias cassette_buffer_bytes_used $A6
+	.alias load_or_scroll_temp_pointer $AC
+	;; We also use the following for temp colour pointer when scrolling
 	.alias load_save_verify_end_address $AE
 	.alias cassette_buffer_ptr $B2
 	.alias current_filename_length $B7

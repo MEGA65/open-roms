@@ -56,6 +56,10 @@ colour_check_loop:
 	clc
 	adc #40
 	sta current_screen_x
+	;; We need to advance the pointer manually, as normalising
+	;; now will break things. The pointer update is required
+	;; so that we can tell if we really are on the bottom phys
+	;; screen line or not
 	jsr scroll_up_if_on_last_line
 	jsr calculate_screen_line_pointer
 	jmp chrout_done
@@ -229,6 +233,7 @@ count_rows_loop:
 	stx $0420
 	cpx #0
 	beq no_copy_down
+	bmi no_copy_down
 	
 	;; Set pointers to end of screen line, and one line
 	;; above.  (It is always one physical line, because
@@ -318,16 +323,24 @@ not_last_line:
 	rts
 
 scroll_up_if_on_last_line:
+
 	;; Colour RAM is always in fixed place, so is easiest
 	;; to use to check if we are on the last line.
 	;; The last line is at $D800 + 24*40 = $DBC0
+	jsr get_current_line_logical_length
 	lda current_screen_line_colour_ptr+0
-	cmp #<$DBC0
+	clc
+	adc logical_line_length
+	sta $0424
+	cmp #<$DBE7
 	bne not_last_line
 	lda current_screen_line_colour_ptr+1
+	sta $0425
 	cmp #>$DBC0
 	bne not_last_line
 
+	inc $d020
+	
 	dec current_screen_y
 
 	;; FALL THROUGH
@@ -591,25 +604,20 @@ update_colour_line_pointer:
 	rts
 	
 	
-retreat_screen_pointer_40_bytes:
-	lda current_screen_line_ptr+0
-	sec
-	sbc #<40
-	sta current_screen_line_ptr+0
-	lda current_screen_line_ptr+1
-	sbc #>40
-	sta current_screen_line_ptr+1
-
-	jmp update_colour_line_pointer
-	
 advance_screen_pointer_40_bytes:
 	lda current_screen_line_ptr+0
 	clc
 	adc #<40
 	sta current_screen_line_ptr+0
+	sta current_screen_line_colour_ptr+0
 	lda current_screen_line_ptr+1
 	adc #>40
 	sta current_screen_line_ptr+1
+	sec
+	sbc HIBASE
+	clc
+	adc #>$D800
+	sta current_screen_line_colour_ptr+1
 
 	jmp update_colour_line_pointer
 	

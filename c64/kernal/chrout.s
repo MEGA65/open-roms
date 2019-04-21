@@ -49,12 +49,14 @@ colour_check_loop:
 	* dex
 	bpl colour_check_loop
 
+	;; Compute's Mapping the 64 p38
 	cmp #$12
 	bne not_12
 	lda #$80
 	sta reverse_video_flag
 	jmp chrout_done
 not_12:
+	;; Compute's Mapping the 64 p 38	
 	cmp #$92
 	bne not_92
 	lda #$00
@@ -196,7 +198,7 @@ not_vendor:
 chrout_l1:	
 	;; Write normal character on the screen
 	ldy current_screen_x
-	ora reverse_video_flag
+	ora reverse_video_flag	; Compute's Mapping the 64  p38
 	sta (current_screen_line_ptr),y
 
 	;; Set colour

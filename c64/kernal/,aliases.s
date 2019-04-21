@@ -28,12 +28,14 @@
 	.alias last_key_matrix_position $C5
 	.alias keys_in_key_buffer $C6
 	.alias reverse_video_flag $C7
+	.alias end_of_input_line $C8
+	.alias start_of_keyboard_input $C9
 	.alias current_key_index_entry $CB
 	.alias cursor_blink_disable $CC
 	.alias cursor_blink_countdown $CD
 	.alias cursor_saved_character $CE
 	.alias cursor_is_visible $CF
-	.alias input_source $D0
+	.alias keyboard_input_ready $D0
 	.alias current_screen_line_ptr $D1
 	.alias current_screen_x $D3
 	.alias quote_mode_flag $D4

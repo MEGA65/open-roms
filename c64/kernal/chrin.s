@@ -23,7 +23,7 @@ chrin:
 	lda #$00
 	sta keyboard_input_ready
 	lda #$0d
-	sec
+	clc
 	rts
 
 not_end_of_input:
@@ -31,7 +31,7 @@ not_end_of_input:
 	tay
 	lda (start_of_keyboard_input),y
 	inc keyboard_input_ready
-	sec
+	clc
 	rts
 	
 
@@ -44,6 +44,8 @@ read_from_keyboard:
 	lda keyboard_buffer
 	cmp #$0d
 	bne not_enter
+
+	jsr pop_keyboard_buffer
 	
 	;; It was enter.
 	;; Note that we have a line of input to return, and return the first byte thereof
@@ -64,16 +66,17 @@ read_from_keyboard:
 	beq empty_line
 	lda (current_screen_line_ptr),y
 	cmp #$20
-	bne -
-	sty keyboard_input_ready
+	beq -
+	sty end_of_input_line
+	lda #$01
+	sta keyboard_input_ready
 	;; Print the carriage return
 	lda #$0d
 	jsr chrout
 	;; Return first char of line
 	ldy #$00
-	lda (current_screen_line_ptr),y
-	inc $d020
-	sec
+	lda (start_of_keyboard_input),y
+	clc
 	rts
 
 empty_line:
@@ -83,7 +86,7 @@ empty_line:
 	lda #$0d
 	jsr chrout
 	lda #$0d
-	sec
+	clc
 	rts
 	
 not_enter:	
@@ -91,6 +94,12 @@ not_enter:
 	lda keyboard_buffer
 	jsr chrout
 
+	jsr pop_keyboard_buffer
+
+	;; Keep looking for input from keyboard until carriage return
+	jmp chrin
+
+pop_keyboard_buffer:	
 	;; Pop key out of keyboard buffer
 	;; Disable interrupts while reading from keyboard buffer
 	;; so that no race conditions can occur
@@ -105,7 +114,6 @@ not_enter:
 	bne -
 	dec keys_in_key_buffer
 	cli
-	
-	lda #$00
-	clc
+
 	rts
+	

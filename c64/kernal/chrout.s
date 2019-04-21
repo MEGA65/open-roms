@@ -52,7 +52,10 @@ colour_check_loop:
 	;; Check for cursor movement keys
 	cmp #$11
 	bne not_11
-	inc current_screen_y
+	lda current_screen_x
+	clc
+	adc #40
+	sta current_screen_x
 	jsr calculate_screen_line_pointer
 	jmp chrout_done
 not_11:	
@@ -64,7 +67,10 @@ not_11:
 not_1d:	
 	cmp #$91
 	bne not_91
-	dec current_screen_y
+	lda current_screen_x
+	sec
+	sbc #40
+	sta current_screen_x
 	jsr calculate_screen_line_pointer
 	jmp chrout_done
 not_91:	
@@ -182,8 +188,17 @@ chrout_done:
 	rts
 
 screen_grow_logical_line:
+	ldy current_screen_y
+	;; Don't grow line if it is already grown
+	lda screen_line_link_table,y
+	bmi done_grow_line
+	
+	lda #$80
+	sta screen_line_link_table,y
+
 	;; XXX - Scroll screen down to make space
 
+done_grow_line:	
 	rts
 
 get_current_line_logical_length:	
@@ -264,9 +279,9 @@ x_not_negative:
 	ldy current_screen_y
 	lda screen_line_link_table,y
 	bpl +
-	lda #80
+	lda #79
 	.byte $2C 		; BIT $nnnn, used to skip next instruction
-*	lda #40
+*	lda #39
 	cmp current_screen_x
 	bcs x_not_too_big
 
@@ -320,7 +335,9 @@ calculate_screen_line_pointer:
 	;; Add 40 or 80 based on whether the line is linked
 	;; or not.
 	ldy #40
-	lda screen_line_link_table,x
+	;; -1 offset is because we count down from N to 1, not
+	;; N-1 to 0.
+	lda screen_line_link_table-1,x
 	bpl cslp_l1
 	ldy #80
 cslp_l1:

@@ -56,6 +56,7 @@ colour_check_loop:
 	clc
 	adc #40
 	sta current_screen_x
+	jsr scroll_up_if_on_last_line
 	jsr calculate_screen_line_pointer
 	jmp chrout_done
 not_11:	
@@ -168,12 +169,17 @@ chrout_l1:
 	iny
 	sty current_screen_x
 	cpy #40
-	bne no_screen_advance_to_next_line
+	bne +
 	jsr screen_grow_logical_line
-	cpy #79
+	ldy current_screen_x
+*
+	cpy #80
 	bcc no_screen_advance_to_next_line
+	lda #0
+	sta current_screen_x
 	jmp screen_advance_to_next_line
 no_screen_advance_to_next_line:
+
 chrout_done:
 	;; Make cursor immediately visible
 	jsr show_cursor
@@ -203,7 +209,7 @@ screen_grow_logical_line:
 	
 	;; XXX - Scroll screen down to make space
 	;; XXX - And scroll up if required
-	
+	rts
 
 done_grow_line:
 not_last_line:	
@@ -223,7 +229,7 @@ scroll_up_if_on_last_line:
 	dec current_screen_y
 
 	;; FALL THROUGH
-	
+
 scroll_screen_up:	
 	;; Now scroll the whole screen up either one or two lines
 	;; based on whether the first screen line is linked or not.
@@ -368,11 +374,6 @@ add_40_to_screen_x:
 normalise_screen_x_y:	
 	;; Normalise X and Y values
 
-	;; lda current_screen_x
-	;; sta $0400
-	;; lda current_screen_y
-	;; sta $0401
-	
 	;; If X < 0, then make X = X + 40 (or 80, if previous line is linked)
 *	lda current_screen_x
 	bpl x_not_negative
@@ -425,13 +426,22 @@ x_not_too_big:
 	sta current_screen_y
 *
 	;; Make sure Y isn't too much for the screen, taking
-	;; into account 
-
+	;; into account the line link table
+	ldy #24 		; max allowable line
+	ldx #0
+link_count_loop:	
+	lda screen_line_link_table,x
+	bpl +
+	dey
+*	inx
+	cpx #25
+	bne link_count_loop
+	tya
+	cmp current_screen_y
+	bcs y_ok
+	sta current_screen_y
+y_ok:	
 	
-	;; lda current_screen_x
-	;; sta $0403
-	;; lda current_screen_y
-	;; sta $0404
 	rts
 
 calculate_screen_line_pointer:

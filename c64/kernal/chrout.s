@@ -48,6 +48,19 @@ colour_check_loop:
 	jmp chrout_done
 	* dex
 	bpl colour_check_loop
+
+	cmp #$12
+	bne not_12
+	lda #$80
+	sta reverse_video_flag
+	jmp chrout_done
+not_12:
+	cmp #$92
+	bne not_92
+	lda #$00
+	sta reverse_video_flag
+	jmp chrout_done
+not_92:	
 	
 	;; Check for cursor movement keys
 	cmp #$11
@@ -183,6 +196,7 @@ not_vendor:
 chrout_l1:	
 	;; Write normal character on the screen
 	ldy current_screen_x
+	ora reverse_video_flag
 	sta (current_screen_line_ptr),y
 
 	;; Set colour

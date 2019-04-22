@@ -8,6 +8,7 @@
 
 return_from_interrupt:
 	;; Restore registers and return
+	;; Sequence according to Compute's Mapping the 64 p73
 	pla
 	tay
 	pla

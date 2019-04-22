@@ -70,7 +70,17 @@ no_blink_cursor:
 
 	rts
 
+disable_cursor:
+	lda #$ff
+	sta cursor_blink_disable
+	;; FALL THROUGH
 hide_cursor_if_visible:
 	bit cursor_is_visible
 	bpl undraw_cursor
 	rts
+
+enable_cursor:
+	lda #$00
+	sta cursor_blink_disable
+	rts
+

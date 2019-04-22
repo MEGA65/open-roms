@@ -45,6 +45,8 @@ not_end_of_input:
 
 read_from_keyboard:	
 
+	jsr enable_cursor
+	
 	;; Wait for a key
 	lda keys_in_key_buffer
 	beq chrin_repeat
@@ -53,6 +55,8 @@ read_from_keyboard:
 	cmp #$0d
 	bne not_enter
 
+	jsr disable_cursor
+	
 	jsr pop_keyboard_buffer
 
 	jsr hide_cursor_if_visible

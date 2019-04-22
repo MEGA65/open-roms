@@ -326,8 +326,7 @@ not_quote:
 no_screen_advance_to_next_line:
 
 chrout_done:
-	;; Make cursor immediately visible
-	jsr show_cursor
+	jsr show_cursor_if_enabled
 	
 	;; Restore X and Y, set carry to mark success on exit
 	pla

@@ -5,6 +5,11 @@
 	;; cursor_is_visible
 	;; colour_under_cursor
 
+show_cursor_if_enabled:
+	bit cursor_blink_disable
+	bpl show_cursor
+	rts
+	
 show_cursor:
 	;; Set cursor as though it had just finished the off phase,
 	;; so that the call to blink_cursor paints it

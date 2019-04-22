@@ -39,7 +39,6 @@ found_message_in_token_stream:
 	jsr print_packed_word
 	lda #$20
 	jsr $ffd2
-	inc $0425
 	pla
 	tay
 	iny
@@ -74,8 +73,6 @@ packed_word_search:
 	rts
 
 found_packed_word:
-	inc $0427
-	
 	;; Y = offset into packed word data - 1
 	iny
 
@@ -109,7 +106,6 @@ found_packed_word:
 	;; X=1-14 = first 14 chars, so subtract one
 	lda packed_message_chars-1,x
 	jsr $FFD2
-	inc $426
 
 	;; See if there is a char in the low nybl to print
 	pla
@@ -137,7 +133,6 @@ has_nybl:
 	;; X=1-14 = first 14 chars, so subtract one
 	lda packed_message_chars-1,x
 	jsr $FFD2
-	inc $426	
 *
 	pla
 	tay

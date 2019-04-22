@@ -135,11 +135,11 @@ has_lo_nybl_char:
 *
 	pla
 	tay
-	cpy #$ff
 	;; FALL THROUGH
 
 no_lo_nybl_char:
 
+	cpy #$ff
 	bne found_packed_word
 	;; Hit end of packed data
 	rts

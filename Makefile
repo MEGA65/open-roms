@@ -6,6 +6,8 @@ src/collect_data:	src/collect_data.c Makefile
 src/preprocess:	src/preprocess.c Makefile
 	gcc -g -Wall -o src/preprocess src/preprocess.c
 
+src/make_error_tables:	src/make_error_tables.c Makefile
+	gcc -g -Wall -o src/make_error_tables src/make_error_tables.c
 
 newrom:	c64/kernal/OUT.BIN c64/basic/OUT.BIN
 	cat c64/basic/OUT.BIN c64/kernal/OUT.BIN  >newrom

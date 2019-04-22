@@ -48,6 +48,9 @@ int word_count=0;
 unsigned char message_tokens[MAX_LEN];
 int token_count=0;
 
+unsigned char packed_words[MAX_LEN];
+int packed_len=0;
+
 struct char_freq {
   char c;
   int count;
@@ -101,8 +104,8 @@ int main(void)
 	int char_num=0;
 	for(char_num=0;char_num<char_max;char_num++)
 	  if (error_list[i][j]==char_freqs[char_num].c) break;
-	if (char_num>(14+16)) {
-	  fprintf(stderr,"Too many unique characters in message list.  Max is 30\n");
+	if (char_num>(14+15)) {
+	  fprintf(stderr,"Too many unique characters in message list.  Max is 29\n");
 	  exit(-1);
 	}
 	if (char_num>=char_max) char_max=char_num+1;
@@ -116,9 +119,11 @@ int main(void)
 
   // Get 14 most frequent out to use as 4-bit tokens 1 - 14.
   // Token 0 = end of word.
-  // Token 15 indicates opposite nybl identifies which of the other 16 possible values is used
-  // for less-frequent letters.
-  // Thus common letters take 4 bits, and uncommon ones take 8.
+  // Token 15 indicates opposite nybl identifies which of the other 15 possible values is used
+  // for less-frequent letters. (Low nybl $0 is reserved to make it easy to find end of each
+  // compressed word, at the cost of one possible symbol).
+  // Thus common letters take 4 bits, and uncommon ones take 8, i.e., they can never be longer,
+  // but can be upto 1/2 the length.
   
   
   for(int i=0;error_list[i];i++) raw_size+=strlen(error_list[i]);
@@ -150,13 +155,93 @@ int main(void)
       }
     }	
 
+  // Now encode the words
+  for(int i=0;i<word_count;i++) {
+    int nybl_waiting=0;
+    int nybl_val=0;
+    for(int j=0;words[i][j];j++) {
+      int char_num;
+      for(char_num=0;char_num<char_max;char_num++)
+	if (words[i][j]==char_freqs[char_num].c) break;
+      fprintf(stderr,"'%c' = char #%d ",words[i][j],char_num);
+      if (char_num<14) {
+	if (nybl_waiting) {
+	  // We have a nybl already waiting, so join them up
+	  int byte=(nybl_val<<4)+char_num;
+	  packed_words[packed_len++]=byte;
+	  nybl_waiting=0;
+	  fprintf(stderr," M[$%02x]",byte);
+	} else {
+	  // Queue this nybl to pack in a byte
+	  nybl_waiting=1;
+	  nybl_val=char_num;
+	  fprintf(stderr," Q[$%x]",char_num);
+	}
+      } else {
+	// It's a less frequent letter that we have to encode
+	// using a whole byte, and flush out any waiting nybl with a
+	// $F token to indicate long code follows.
+	if (nybl_waiting) {
+	  int byte=(nybl_val<<4)+0xF;
+	  packed_words[packed_len++]=byte;
+	  nybl_waiting=0;
+	  fprintf(stderr," F[$%02x]",byte);
+	}
+	packed_words[packed_len++]=0xF1+(char_num-14);
+	fprintf(stderr," L[$%02x]",0xF1+(char_num-14));
+      }
+      fprintf(stderr,"\n");
+    }
+
+    // Flush any pending nybl out, or if none, write $00
+    if (nybl_waiting) {
+      int byte=(nybl_val<<4)+0x0;
+      packed_words[packed_len++]=byte;
+      nybl_waiting=0;
+      fprintf(stderr,"    EF[$%02x]\n",byte);
+    } else {
+      int byte=0x00;
+      packed_words[packed_len++]=byte;
+      nybl_waiting=0;
+      fprintf(stderr,"    E[$%02x]\n",byte);      
+    }
+    
+  }
+  fprintf(stderr,"Words packed in %d bytes\n",packed_len);
   fprintf(stderr,"%d token bytes used to encode all messages.\n",token_count);
 
   int word_bytes=0;
   for(int i=0;i<word_count;i++) word_bytes+=strlen(words[i]);
-  fprintf(stderr,"Plus %d bytes for the words\n",word_bytes);
+  fprintf(stderr,"Plus %d bytes for the words\n",packed_len);
 
-  fprintf(stderr,"Space saving = %d bytes\n",raw_size-word_bytes-token_count);
-	  
+  fprintf(stderr,"Space saving = %d bytes\n",raw_size-packed_len-token_count);
+
+  printf("packed_message_chars:\n");
+  for(int i=0;i<char_max;i++)
+    printf("\t.byte $%02X ; '%c'\n",char_freqs[i].c,char_freqs[i].c);
+
+  printf("packed_message_tokens:\n");
+  for(int i=0;i<token_count;i++)
+    {
+      if ((token_count-i)>=8) {
+	printf("\t.byte $%02x,$%02x,$%02x,$%02x,$%02x,$%02x,$%02x,$%02x\n",
+	       message_tokens[i+0],message_tokens[i+1],message_tokens[i+2],message_tokens[i+3],
+	       message_tokens[i+4],message_tokens[i+5],message_tokens[i+6],message_tokens[i+7]);
+	i+=7;
+      } else
+	printf("\t.byte $%02x\n",message_tokens[i]);
+    }
+  
+  printf("packed_message_words:\n");
+  for(int i=0;i<packed_len;i++)
+    {
+      if ((packed_len-i)>=8) {
+	printf("\t.byte $%02x,$%02x,$%02x,$%02x,$%02x,$%02x,$%02x,$%02x\n",
+	       packed_words[i+0],packed_words[i+1],packed_words[i+2],packed_words[i+3],
+	       packed_words[i+4],packed_words[i+5],packed_words[i+6],packed_words[i+7]);
+	i+=7;
+      } else
+	printf("\t.byte $%02x\n",packed_words[i]);
+    }
   
 }

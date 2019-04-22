@@ -36,6 +36,8 @@ blink_cursor:
 	lda cursor_is_visible
 	bne undraw_cursor
 draw_cursor:
+	jsr calculate_screen_line_pointer
+	
 	ldy current_screen_x
 	lda (current_screen_line_ptr),y
 	sta cursor_saved_character	
@@ -52,6 +54,8 @@ draw_cursor:
 	jmp reset_blink_timer
 
 undraw_cursor:
+	jsr calculate_screen_line_pointer
+
 	lda cursor_saved_character
 	ldy current_screen_x
 	sta (current_screen_line_ptr),y

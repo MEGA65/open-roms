@@ -38,7 +38,7 @@ char *error_list[]={
   "VERIFY",
   "LOAD",
   // Non-error messages
-  "READY.",
+  "READY.\r",
   "LOADING",
   "VERIFYING",
   "SAVING",

@@ -1,6 +1,6 @@
 	;; Clear screen etc, show READY prompt.
 
 basic_warm_start:
-	* 	inc $d020
-	jmp -
+	jsr ready_message
+	jmp basic_main_loop
 	

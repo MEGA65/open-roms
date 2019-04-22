@@ -7,7 +7,9 @@ basic_main_loop:
 	;; Read a line of input
 	ldx #$00
 read_line_loop:	
-	jsr $ffe4 		; KERNAL CHRIN
+	jsr $ffcf 		; KERNAL CHRIN
+	bcs read_line_loop
+	
 	cmp #$0d
 	beq got_line_of_input
 	;; Not carriage return, so try to append to line so far
@@ -21,7 +23,12 @@ read_line_loop:
 	inx
 	jmp read_line_loop
 
-got_line_of_input:	
+got_line_of_input:
+
+	;; Do printing of the new line
+	lda #$0d
+	jsr $ffd2
+	
 	jsr ready_message
 
 	jmp basic_main_loop

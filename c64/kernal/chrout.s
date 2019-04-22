@@ -122,7 +122,9 @@ delete_non_zero_column:
 	ldy current_screen_x
 	cpy logical_line_length
 	beq done_delete
+	dey
 *
+	iny
 	lda (current_screen_line_ptr),y
 	dey
 	sta (current_screen_line_ptr),y
@@ -131,9 +133,15 @@ delete_non_zero_column:
 	dey
 	sta (current_screen_line_colour_ptr),y
 	iny
-	iny
 	cpy logical_line_length
 	bne -
+
+	;; Clear char at end of line
+	jsr get_current_line_logical_length
+	tay
+	lda #$20
+	sta (current_screen_line_ptr),y
+	
 done_delete:	
 	dec current_screen_x
 	jmp chrout_done	

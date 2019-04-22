@@ -40,12 +40,51 @@ not_0d:
 	cmp #$94
 	bne not_94
 
-	;; XXX - Implement insert
-	;; XXX - Abort if line already max length, ie 79th char is not a space
-	;; XXX Set quote mode
-	;; XXX Work out if line needs to be expanded, and if so expand it
-	;; XXX Shuffle chars towards end of line
-	;; Increase insert mode count
+	;; Insert (shift-DELETE)
+	
+	;; Abort if line already max length, ie 79th char is not a space
+	jsr get_current_line_logical_length
+	cmp #79
+	bne definitely_not_too_long
+	tay
+	lda (current_screen_line_ptr),y
+	cmp #$20
+	beq definitely_not_too_long
+
+	;; Line is too long to extend
+	jmp chrout_done
+
+definitely_not_too_long:	
+	;; Work out if line needs to be expanded, and if so expand it
+	ldy #39
+	lda (current_screen_line_ptr),y
+	cmp #$20
+	beq no_need_to_extend
+
+	jsr screen_grow_logical_line
+	
+no_need_to_extend:	
+	;; Shuffle chars towards end of line
+	jsr get_current_line_logical_length
+	tay
+*
+	dey
+	lda (current_screen_line_ptr),y
+	iny
+	sta (current_screen_line_ptr),y
+	dey
+	lda (current_screen_line_colour_ptr),y
+	iny
+	sta (current_screen_line_colour_ptr),y
+
+	dey
+	cpy current_screen_x
+	bne -
+	;; Put space in the inserted gap
+	lda #$20
+	sta (current_screen_line_ptr),y
+
+	;; Increase insert mode count (which causes quote-mode like behaviour)
 	inc insert_mode
 
 	jmp chrout_done

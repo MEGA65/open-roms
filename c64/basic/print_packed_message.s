@@ -46,6 +46,9 @@ found_message_in_token_stream:
 	bne found_message_in_token_stream
 *
 	pla
+	;; Rub out space at the end
+	lda #$14
+	jsr $ffd2
 	rts
 
 print_packed_word:

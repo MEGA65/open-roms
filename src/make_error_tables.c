@@ -43,6 +43,7 @@ char *error_list[]={
   "VERIFYING",
   "SAVING",
   "ERROR", // #33
+  "BYTES FREE.\r\r", // #34
   NULL};
 
 // Token $FF is end of message, so we can have only 255 unique words
@@ -222,6 +223,15 @@ int main(void)
 
   fprintf(stderr,"Space saving = %d bytes\n",raw_size-packed_len-token_count);
 
+  if (packed_len>255) {
+    fprintf(stderr,"ERROR: packed_len>255\n");
+    exit(-1);
+  }
+  if (token_count>255) {
+    fprintf(stderr,"ERROR: token_count>255\n");
+    exit(-1);
+  }
+  
   printf("packed_message_chars:\n");
   for(int i=0;i<char_max;i++)
     printf("\t.byte $%02X ; '%c'\n",char_freqs[i].c,char_freqs[i].c);

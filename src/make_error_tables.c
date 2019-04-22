@@ -37,6 +37,12 @@ char *error_list[]={
   "UNDEF\'D FUNCTION",
   "VERIFY",
   "LOAD",
+  // Non-error messages
+  "READY.",
+  "LOADING",
+  "VERIFYING",
+  "SAVING",
+  
   NULL};
 
 // Token $FF is end of message, so we can have only 255 unique words
@@ -167,15 +173,15 @@ int main(void)
       if (char_num<14) {
 	if (nybl_waiting) {
 	  // We have a nybl already waiting, so join them up
-	  int byte=(nybl_val<<4)+char_num;
+	  int byte=(nybl_val<<4)+(char_num+1);
 	  packed_words[packed_len++]=byte;
 	  nybl_waiting=0;
 	  fprintf(stderr," M[$%02x]",byte);
 	} else {
 	  // Queue this nybl to pack in a byte
 	  nybl_waiting=1;
-	  nybl_val=char_num;
-	  fprintf(stderr," Q[$%x]",char_num);
+	  nybl_val=char_num+1;
+	  fprintf(stderr," Q[$%x]",char_num+1);
 	}
       } else {
 	// It's a less frequent letter that we have to encode

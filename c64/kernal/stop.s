@@ -3,7 +3,18 @@ stop:
 	;; Bit 7 of BUCKYSTATUS contains the state of the STOP key
 	;; (Compute's Mapping the 64, p27)
 
-	;; Get it into the carry flag by rotating left
+	;; BASIC checks carry flag to indicate STOP or not
 	lda BUCKYSTATUS
-	rol
+	and #$80
+	beq stop_pressed
+
+	;;  By trial and error, we know that Z + C = BREAK
+	;; and that neither should be set otherwise
+	lda #$ff
+	clc	
+	rts
+
+stop_pressed:
+	lda #$00
+	sec
 	rts

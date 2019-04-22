@@ -61,7 +61,7 @@ int dump_file(FILE *out,const char *name)
 
 void usage(void)
 {
-  fprintf(stderr,"usage: preprocess [-d <directory>]\n");
+  fprintf(stderr,"usage: preprocess [-d <directory>] [-l <start/low address>] [-h <end/high address>]\n");
   
 }
 
@@ -72,14 +72,19 @@ int main(int argc,char **argv)
   DIR *d=NULL;
   char *directory=".";
   struct dirent *de=NULL;
+
+  int start_address=0xe4d3;
+  int end_address=0xffff+1;
   
   do {
     
     int opt;
 
-    while ((opt=getopt(argc,argv,"d:")) != -1) {
+    while ((opt=getopt(argc,argv,"d:l:h:")) != -1) {
       switch(opt) {
       case 'd': directory=optarg; break;
+      case 'l': start_address=strtol(optarg,NULL,16); break;
+      case 'h': end_address=strtol(optarg,NULL,16)+1; break;
       default:
 	usage();
 	exit(-1);
@@ -192,7 +197,7 @@ int main(int argc,char **argv)
     // of some routines to be at fixed addresses.
 
     // Start at beginning of actual kernal data
-    int address=0xe4d3;
+    int address=start_address;
 
     char filename[8192];
     snprintf(filename,8192,"%s/combined.s",directory);
@@ -265,6 +270,10 @@ int main(int argc,char **argv)
 	address+=source_files[biggest].size;
       }
     }
+
+    fprintf(out,"\t.checkpc $%04x\n\t.advance $%04x,$00\n",
+	    end_address,end_address);
+    
     fclose(out);
     
     if (retVal) break;

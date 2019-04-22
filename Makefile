@@ -18,11 +18,13 @@ newkern:	newrom Makefile
 newbasic:	newrom Makefile
 	dd if=newrom bs=8192 count=1 skip=0 of=newbasic
 
+c64/basic/packed_messages.s:	Makefile src/make_error_tables
+	src/make_error_tables > c64/basic/packed_messages.s
 
 c64/kernal/OUT.BIN:	src/preprocess c64/kernal/*.s
 	src/preprocess -d c64/kernal -l e4d3 -h ffff
 
-c64/basic/OUT.BIN:	src/preprocess c64/basic/*.s
+c64/basic/OUT.BIN:	src/preprocess c64/basic/*.s c64/basic/packed_messages.s
 	src/preprocess -d c64/basic -l a000 -h e4d2
 
 testremote:	newkern newbasic

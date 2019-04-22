@@ -25,7 +25,7 @@ show_cursor:
 	
 blink_cursor:
 	;; Is the cursor enabled?
-	bit cursor_blink_disable
+	lda cursor_blink_disable
 	bne no_blink_cursor
 
 	;; Do we need to redraw things?
@@ -67,7 +67,6 @@ reset_blink_timer:
 	lda #20
 	sta cursor_blink_countdown
 no_blink_cursor:
-
 	rts
 
 disable_cursor:

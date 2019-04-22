@@ -39,11 +39,13 @@ found_message_in_token_stream:
 	jsr print_packed_word
 	lda #$20
 	jsr $ffd2
+	inc $0425
 	pla
 	tay
 	iny
 	bne found_message_in_token_stream
 *
+	pla
 	rts
 
 print_packed_word:

@@ -116,7 +116,7 @@ found_packed_word:
 	tay
 	lda packed_message_words,y
 	and #$0f
-	beq no_lo_nybl_char
+	beq end_of_packed_word
 	cmp #$0f
 	beq no_lo_nybl_char
 
@@ -147,6 +147,7 @@ no_lo_nybl_char:
 
 	cpy #$ff
 	bne found_packed_word
+end_of_packed_word:	
 	;; Hit end of packed data
 	rts
 

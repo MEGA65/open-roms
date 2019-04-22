@@ -1,8 +1,10 @@
 ;	Names of ZP and low memory locations
-;	(Only those of relevance for the KERNAL)
-;	(And only those for now that we feel the need to implement initially)
+;	(Only those for now that we feel the need to implement initially)
 ;	(https://www.c64-wiki.com/wiki/Zeropage)
 
+	.alias temp_string_ptr $35
+
+	
 	.alias TXTTAB $2B
 	.alias IOSTATUS $90
 	; Keys down clears bits. STOP=bit 7, C= bit 6, SPACE bit 4, CTRL bit 2

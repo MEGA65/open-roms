@@ -14,7 +14,7 @@ read_line_loop:
 	cpx #80
 	bcc +
 	;; Report STRING TOO LONG error (Compute's Mapping the 64 p93)
-	ldx #23
+	ldx #22
 	jmp basic_do_error
 *
 	sta basic_input_buffer,x

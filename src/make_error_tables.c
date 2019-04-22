@@ -38,11 +38,11 @@ char *error_list[]={
   "VERIFY",
   "LOAD",
   // Non-error messages
-  "READY.\r",
+  "READY.\r", // #29
   "LOADING",
   "VERIFYING",
   "SAVING",
-  
+  "ERROR", // #33
   NULL};
 
 // Token $FF is end of message, so we can have only 255 unique words

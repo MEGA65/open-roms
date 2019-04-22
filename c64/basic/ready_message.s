@@ -3,5 +3,4 @@ ready_message:
 	;; information.
 	ldx #29
 	jmp print_packed_message
-	
 

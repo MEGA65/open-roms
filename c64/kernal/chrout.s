@@ -247,6 +247,12 @@ not_13:
 not_clearscreen:	
 	
 	;;  Convert PETSCII to screen code
+
+	;; Don't print other control codes
+	cmp #$1f
+	bcs +
+	jmp chrout_done
+*
 	
 	;; Unshifted letters
 	cmp #$40
@@ -276,9 +282,10 @@ not_upper:
 
 not_vendor:	
 
+chrout_l1:
+	
 output_literal_char:	
 	
-chrout_l1:	
 	;; Write normal character on the screen
 
 	pha

@@ -130,6 +130,7 @@ has_lo_nybl_char:
 	;; bytes, as these do not encode characters
 	cpx #$f
 	beq +
+has_nybl:	
 	cpx #0
 	beq +
 	
@@ -156,7 +157,14 @@ is_uncommon_char:
 	and #$0f
 	clc
 	adc #14
-	jmp has_lo_nybl_char
+
+	;; We need to print the low nybl char as well
+	tax
+	tya
+	pha
+
+	jmp has_nybl
+	
 	
 done_printing_word:
 	rts

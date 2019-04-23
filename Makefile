@@ -6,6 +6,9 @@ src/collect_data:	src/collect_data.c Makefile
 src/preprocess:	src/preprocess.c Makefile
 	gcc -g -Wall -o src/preprocess src/preprocess.c
 
+src/similarity:	src/similarity.c Makefile
+	gcc -g -Wall -o src/similarity src/similarity.c
+
 src/make_error_tables:	src/make_error_tables.c Makefile
 	gcc -g -Wall -o src/make_error_tables src/make_error_tables.c
 

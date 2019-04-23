@@ -178,6 +178,7 @@ ReturnNoKeys:
 	lda #$00
 	sta BufferQuantity
 	lda #$FF
+	sta last_key_matrix_position
 	sta Buffer+0
 	sta Buffer+1
 	sta Buffer+2

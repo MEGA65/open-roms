@@ -283,7 +283,6 @@ skip0:
 	lsr
 	lsr
 	and #$01
-	sta $044f
 	ora key_bucky_state
 	sta key_bucky_state
 	
@@ -326,7 +325,7 @@ no_case_toggle:
 
     lda ScanResult+7
     cmp #$ff
-    beq +
+	beq +
         jsr KeyInRow
 *
         ldx #8
@@ -384,19 +383,22 @@ no_case_toggle:
 RecordKeypress:	
         ;; // New Key Detected
 	ldy BufferQuantity
-	cpy #MaxKeyRollover
-	bcc TooManyNewKeys
-
+	cpy #$ff
+	beq +
+	cpy #MaxKeyRollover-1
+	bcs TooManyNewKeys
+*
 	iny
 	sty BufferQuantity
         sta Buffer,y
+	
     Exist:
         dex
         bpl -
 
     ;; // Anything in Buffer?
     ldy BufferQuantity
-    bmi BufferEmpty
+	bmi BufferEmpty
         ;; // Yes: Then return it and tidy up the buffer
         dec BufferQuantity
         lda Buffer

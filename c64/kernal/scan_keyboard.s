@@ -65,6 +65,7 @@ scan_keyboard:
 	sta BufferQuantity
 	
 	;; Decrement key repeat timeout if non-zero
+	inc $0423
 	ldx key_repeat_counter
 	beq sk_start
 	dec key_repeat_counter
@@ -403,9 +404,14 @@ RecordKeypress:
 	bcs TooManyNewKeys
 AcceptKeyEvent:	
         sta Buffer,y
-	sta $0428,y
 	iny
 	sty BufferQuantity
+
+	;; Set initial key repeat delay
+	lda key_first_repeat_delay
+	sta key_repeat_counter
+	inc $0427
+	
 	
 ConsiderNextKey:
         dex
@@ -447,13 +453,17 @@ KeyHeld:
 	pha
 	lda key_first_repeat_delay
 	sta key_repeat_counter
+	inc $0426
 	pla
 BuckyHeld:
 	jmp ConsiderNextKey
 	
 SameKeyHeld:
-	dec key_repeat_counter
-	bpl KeyCanRepeat
+	inc $0425
+	pha
+	lda key_repeat_counter
+	sta $0420
+	bmi KeyCanRepeat
 	bne KeyRepeatWait
 	;; Count down ended, so repeat key now
 KeyCanRepeat:	
@@ -461,11 +471,14 @@ KeyCanRepeat:
 	;; (Compute's Mapping the 64 p58)
 	pha
 	lda #6-2  		; Fudge factor to match speed
+	inc $0424
 	sta key_repeat_counter
+	pla
 	pla
 
 	jmp RecordKeypress
-KeyRepeatWait:	
+KeyRepeatWait:
+	pla
 	jmp ConsiderNextKey
 
 

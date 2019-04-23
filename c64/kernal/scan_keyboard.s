@@ -43,33 +43,33 @@
 	.alias ScanResult        $250 ;// 8 bytes
 	;; Other variables are in RS232 ZP locations for now
 	;; (Carefully avoiding $A7 which is used by 64NET)
-    .alias BufferNew         $A9  ;// 3 bytes
-    .alias KeyQuantity       $A8  ;// 1 byte
-    .alias TempZP            $B6  ;// 1 byte
+	.alias BufferNew         $A9  ;// 3 bytes
+	.alias KeyQuantity       $A8  ;// 1 byte
+	.alias TempZP            $B6  ;// 1 byte
 
 	;; Reuse RS232 variables, since they should not be used
 	;; by other things
 	;; These are initialised in cinit all to $FF
-    .alias BufferOld         $293 ; 3 bytes
+	.alias BufferOld         $293 ; 3 bytes
 	.alias Buffer 	$297 	; 4 bytes
 	.alias BufferQuantity $B4 ; 1 byte
 
 
 	
-    ;// Operational Variables
-    .alias MaxKeyRollover 3
+	;// Operational Variables
+	.alias MaxKeyRollover 3
 
 scan_keyboard:
 	;; Call main keyboard scanning routine
 	jsr Main
-	bcc +
+	bcc sk_success
 	rts
-*
+sk_success:	
 	;; Work out what is new and needs to be added
 	;; to the input buffer.
 	;; Also update the bucky key status flags etc
 	cmp #$ff
-	beq +
+	beq sk_nokey
 	;; Got a key, turn it from matrix position to key value,
 	;; and stuff it in the keyboard buffer
 
@@ -85,39 +85,39 @@ scan_keyboard:
 	tax
 	lda keyboard_matrixes,x
 	;; But don't insert $00 characters
-	beq +
+	beq sk_nokey
 
 	;; Stash key into keyboard buffer
 	ldx keys_in_key_buffer
 	cpx key_buffer_size
-	beq +
+	beq sk_nokey
 	sta keyboard_buffer,x
 	inc keys_in_key_buffer
 	
-	*
+sk_nokey:	
 
 	rts
 	
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Routine for Scanning a Matrix Row
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Routine for Scanning a Matrix Row
 
 KeyInRow:
 	ldy #7
-*
+NextKeyInRow:	
 	ror
 	bcs nokey
 	jsr KeyFound
 nokey:
 	inx
 	dey
-	bpl -
+	bpl NextKeyInRow
 
 	rts
 
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Routine for handling: Key Found
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Routine for handling: Key Found
 
 KeyFound:
 	stx TempZP
@@ -137,22 +137,22 @@ KeyFound:
 	ldx TempZP
 	rts
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Routine for handling: Overflow
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Routine for handling: Overflow
 
 OverFlow:
-    pla  ;// Dirty hack to handle 2 layers of JSR
-    pla
-    pla
-    pla
-    ;// Don't manipulate last legal buffer as the routine will fix itself once it gets valid input again.
+	pla  ;// Dirty hack to handle 2 layers of JSR
+	pla
+	pla
+	pla
+	;// Don't manipulate last legal buffer as the routine will fix itself once it gets valid input again.
 	sec
 	lda #$ff
-    rts
+	rts
 
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Exit Routine for: No Activity
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Exit Routine for: No Activity
 
 NoActivityDetected:
 	;; So cancel all bucky keys
@@ -161,60 +161,58 @@ NoActivityDetected:
 	lda #$00
 	sta key_bucky_state
 	
-    stx BufferOld
-    stx BufferOld+1
-    stx BufferOld+2
 	sec
 	lda #$ff
 	;; Reset key repeat, so that pressing a key that was
 	;; after letting it go in the meantime doesn't result
 	;; in continued repeating
 	sta last_key_matrix_position
-    rts
+	rts
 
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Exit Routine for Control Port Activity
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Exit Routine for Control Port Activity
 
 ControlPort:
-    ;; // Exit with A = #$02, Carry Set. Keep BufferOld to verify input after Control Port activity ceases
+	;; // Exit with A = #$02, Carry Set. Keep BufferOld to verify input after Control Port activity ceases
 	sec
 	lda #$ff
-    rts
+	rts
 
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Configure Data Direction Registers
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Configure Data Direction Registers
 Main:
-    ldx #$ff
-    stx $dc02       ;// Port A - Output
-    ldy #$00
-    sty $dc03       ;// Port B - Input
+	ldx #$ff
+	stx $dc02       ;// Port A - Output
+	ldy #$00
+	sty $dc03       ;// Port B - Input
 
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Check for Port Activity
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Check for Port Activity
 
-    sty $dc00       ;// Connect all Keyboard Rows
-    cpx $dc01
-    beq NoActivityDetected
+	sty $dc00       ;// Connect all Keyboard Rows
+	cpx $dc01
+	beq NoActivityDetected
 
 skip0:
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Check for Control Port #1 Activity
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Check for Control Port #1 Activity
 
-    stx $dc00       ;// Disconnect all Keyboard Rows
-    cpx $dc01       ;// Only Control Port activity will be detected
-    bne ControlPort
+	stx $dc00       ;// Disconnect all Keyboard Rows
+	cpx $dc01       ;// Only Control Port activity will be detected
+	bne ControlPort
 
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Scan Keyboard Matrix
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Scan Keyboard Matrix
 
 	ldx #7
 	lda #%11111110
-*	sta $dc00
+next_row:	
+	sta $dc00
 	pha
 	lda $dc01
 	sta ScanResult,x
@@ -222,35 +220,26 @@ skip0:
 	sec
         rol
 	dex
-	bpl -
+	bpl next_row
 
 	;; X gets back to $FF here, which is assumed below
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Check for Control Port #1 Activity (again)
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Check for Control Port #1 Activity (again)
 
-    stx $dc00       ;// Disconnect all Keyboard Rows
-    cpx $dc01       ;// Only Control Port activity will be detected
-    bne ControlPort
-
-
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Initialize Buffer, Flags and Max Keys
-
-    ;; // Reset current read buffer
-    stx BufferNew
-    stx BufferNew+1
-    stx BufferNew+2
+	stx $dc00       ;// Disconnect all Keyboard Rows
+	cpx $dc01       ;// Only Control Port activity will be detected
+	bne ControlPort
 
 	;; Make X = $00, assumed below
-    inx
+	inx
 
-    ;; // Set max keys allowed before ignoring result
-    lda #MaxKeyRollover
-    sta KeyQuantity
-
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Check and flag Non Alphanumeric Keys
+	;; // Set max keys allowed before ignoring result
+	lda #MaxKeyRollover
+	sta KeyQuantity
+	
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Check and flag Non Alphanumeric Keys
 
 	;; Store last row of keyboard scan result,
 	;; so that RUN/STOP etc can be checked easily
@@ -320,49 +309,49 @@ skip0:
 
 no_case_toggle:	
 	
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Check for pressed key(s)
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Check for pressed key(s)
 
-    lda ScanResult+7
-    cmp #$ff
-	beq +
+	lda ScanResult+7
+	cmp #$ff
+	beq sk6
         jsr KeyInRow
-*
+sk6:	
         ldx #8
         lda ScanResult+6
-        beq +
+        beq sk5
         jsr KeyInRow
-	*
+sk5:	
         ldx #16
         lda ScanResult+5
-        beq +
+        beq sk4
         jsr KeyInRow
-	*
+sk4:	
         ldx #24
         lda ScanResult+4
-        beq +
+        beq sk3
         jsr KeyInRow
-	*
+sk3:	
         ldx #32
         lda ScanResult+3
-        beq +
+        beq sk2
         jsr KeyInRow
-	*
+sk2:	
         ldx #40
         lda ScanResult+2
-        beq +
+        beq sk1
         jsr KeyInRow
-	*
+sk1:	
         ldx #48
         lda ScanResult+1
-        beq +
+        beq sk0
         jsr KeyInRow
-	*
+sk0:	
         ldx #56
         lda ScanResult+0
-        beq +
+        beq skdone
         jsr KeyInRow
-	*
+skdone:	
 
 
 
@@ -370,34 +359,54 @@ no_case_toggle:
     ;; // Key Scan Completed
 
 	;; // Put any new key (not in old scan) into buffer
-    ldx #MaxKeyRollover-1
-*      lda BufferNew,x
+        ldx #MaxKeyRollover-1
+
+ProcessPressedKeys:	
+
+	;; Check if the currently pressed key is continuing to be held down
+	lda BufferNew,x
+	sta $047A,X
         cmp #$ff
-        beq Exist        ;; // Handle 'null' values
+        beq ConsiderNextKey
         cmp BufferOld
         beq KeyHeld
         cmp BufferOld+1
         beq KeyHeld
-        cmp BufferOld+2
+        cmp BufferOld+2	
         beq KeyHeld
-RecordKeypress:	
+
+	;; 
+	
+	sta $0450
+	pha
+	lda BufferOld
+	sta $0452
+	lda BufferOld+1
+	sta $0453
+	lda BufferOld+2
+	sta $0454
+	pla
+
+RecordKeypress:
+
         ;; // New Key Detected
 	ldy BufferQuantity
 	cpy #$ff
-	beq +
+	beq NothingInBQ
 	cpy #MaxKeyRollover-1
 	bcs TooManyNewKeys
-*
+NothingInBQ:	
 	iny
 	sty BufferQuantity
         sta Buffer,y
 	
-    Exist:
+ConsiderNextKey:
         dex
-        bpl -
+        bpl ProcessPressedKeys
 
-    ;; // Anything in Buffer?
-    ldy BufferQuantity
+	;; // Anything in Buffer?
+	ldy BufferQuantity
+
 	bmi BufferEmpty
         ;; // Yes: Then return it and tidy up the buffer
         dec BufferQuantity
@@ -434,14 +443,14 @@ KeyHeld:
 	sta key_repeat_counter
 	pla
 BuckyHeld:
-	jmp Exist
+	jmp ConsiderNextKey
 	
 SameKeyHeld:
 	dec key_repeat_counter
-	bne +
+	bne KeyRepeatWait
 	;; Count down ended, so repeat key now
 
-	;; Reload key repeat counter
+
 	;; (Compute's Mapping the 64 p58)
 	pha
 	lda #6-2  		; Fudge factor to match speed
@@ -449,27 +458,28 @@ SameKeyHeld:
 	pla
 
 	jmp RecordKeypress
-	
-*	jmp Exist
+KeyRepeatWait:	
+	jmp ConsiderNextKey
 
 BufferEmpty:  ;; // No new Alphanumeric keys to handle.
 	lda #$ff
 
 Return:  ;; // A is preset
-    clc
-    ;; // Copy BufferNew to BufferOld
-    ldx BufferNew
-    stx BufferOld
-    ldx BufferNew+1
-    stx BufferOld+1
-    ldx BufferNew+2
-    stx BufferOld+2
+	clc
+	;; // Copy BufferNew to BufferOld
 
-    rts
+	ldx BufferNew
+	stx BufferOld
+	ldx BufferNew+1
+	stx BufferOld+1
+	ldx BufferNew+2
+	stx BufferOld+2
+
+	rts
 
 TooManyNewKeys:
 	sec
 	lda #$ff
 	sta BufferQuantity
-    rts
+	rts
 

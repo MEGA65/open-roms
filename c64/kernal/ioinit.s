@@ -10,9 +10,9 @@ ioinit:
 	STA $01
 
 	;; Compute's Mapping the 64, p156
-	lda #$0e
-	sta $D020
+	;; We use a different colour scheme of white text on all blue
 	lda #$06
+	sta $D020
 	sta $D021
 
 	;; Enable CIA1 IRQ and ~50Hz timer

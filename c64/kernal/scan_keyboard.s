@@ -60,11 +60,39 @@
 	.alias MaxKeyRollover 3
 
 scan_keyboard:
+
+	lda #$ff
+	sta BufferQuantity
+	
+	;; Decrement key repeat timeout if non-zero
+	ldx key_repeat_counter
+	stx $0427
+	beq sk_start
+	dec key_repeat_counter
+	
+sk_start:	
 	;; Call main keyboard scanning routine
 	jsr Main
-	bcc sk_success
+
+	lda BufferQuantity
+	sta $0420
+	beq no_keys_waiting
+	
+	;; Stuff each key pressed into the keyboard buffer
+
+	ldy #$00
+*
+	lda Buffer,y
+	sta $0424,y
+	jsr accept_key
+	iny
+	cpy BufferQuantity
+	bne -
+no_keys_waiting:
+	
 	rts
-sk_success:	
+
+accept_key:	
 	;; Work out what is new and needs to be added
 	;; to the input buffer.
 	;; Also update the bucky key status flags etc
@@ -87,6 +115,8 @@ sk_success:
 	;; But don't insert $00 characters
 	beq sk_nokey
 
+	sta $044c,y
+	
 	;; Stash key into keyboard buffer
 	ldx keys_in_key_buffer
 	cpx key_buffer_size
@@ -146,8 +176,16 @@ OverFlow:
 	pla
 	pla
 	;// Don't manipulate last legal buffer as the routine will fix itself once it gets valid input again.
+
+TooManyNewKeys:
+ReturnNoKeys:	
 	sec
-	lda #$ff
+	lda #$00
+	sta BufferQuantity
+	lda #$FF
+	sta Buffer+0
+	sta Buffer+1
+	sta Buffer+2
 	rts
 
 
@@ -160,25 +198,8 @@ NoActivityDetected:
 	sta key_last_bucky_state
 	lda #$00
 	sta key_bucky_state
-	
-	sec
-	lda #$ff
-	;; Reset key repeat, so that pressing a key that was
-	;; after letting it go in the meantime doesn't result
-	;; in continued repeating
-	sta last_key_matrix_position
-	rts
 
-
-	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-	;; // Exit Routine for Control Port Activity
-
-ControlPort:
-	;; // Exit with A = #$02, Carry Set. Keep BufferOld to verify input after Control Port activity ceases
-	sec
-	lda #$ff
-	rts
-
+	jmp ReturnNoKeys
 
 	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	;; // Configure Data Direction Registers
@@ -203,8 +224,7 @@ skip0:
 
 	stx $dc00       ;// Disconnect all Keyboard Rows
 	cpx $dc01       ;// Only Control Port activity will be detected
-	bne ControlPort
-
+	bne ReturnNoKeys
 
 	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	;; // Scan Keyboard Matrix
@@ -229,7 +249,7 @@ next_row:
 
 	stx $dc00       ;// Disconnect all Keyboard Rows
 	cpx $dc01       ;// Only Control Port activity will be detected
-	bne ControlPort
+	bne ReturnNoKeys
 
 	;; Make X = $00, assumed below
 	inx
@@ -365,7 +385,6 @@ ProcessPressedKeys:
 
 	;; Check if the currently pressed key is continuing to be held down
 	lda BufferNew,x
-	sta $047A,X
         cmp #$ff
         beq ConsiderNextKey
         cmp BufferOld
@@ -375,17 +394,6 @@ ProcessPressedKeys:
         cmp BufferOld+2	
         beq KeyHeld
 
-	;; 
-	
-	sta $0450
-	pha
-	lda BufferOld
-	sta $0452
-	lda BufferOld+1
-	sta $0453
-	lda BufferOld+2
-	sta $0454
-	pla
 
 RecordKeypress:
 
@@ -404,18 +412,9 @@ ConsiderNextKey:
         dex
         bpl ProcessPressedKeys
 
-	;; // Anything in Buffer?
-	ldy BufferQuantity
-
-	bmi BufferEmpty
-        ;; // Yes: Then return it and tidy up the buffer
-        dec BufferQuantity
-        lda Buffer
-        ldx Buffer+1
-        stx Buffer
-        ldx Buffer+2
-        stx Buffer+1
-        jmp Return
+	;; Return success and set of pressed keys
+	clc
+	rts
 
 KeyHeld:
 	;; The key in A is still held down.
@@ -446,10 +445,12 @@ BuckyHeld:
 	jmp ConsiderNextKey
 	
 SameKeyHeld:
+	ldx key_repeat_counter
+	beq KeyCanRepeat
 	dec key_repeat_counter
 	bne KeyRepeatWait
 	;; Count down ended, so repeat key now
-
+KeyCanRepeat:	
 
 	;; (Compute's Mapping the 64 p58)
 	pha
@@ -464,22 +465,4 @@ KeyRepeatWait:
 BufferEmpty:  ;; // No new Alphanumeric keys to handle.
 	lda #$ff
 
-Return:  ;; // A is preset
-	clc
-	;; // Copy BufferNew to BufferOld
-
-	ldx BufferNew
-	stx BufferOld
-	ldx BufferNew+1
-	stx BufferOld+1
-	ldx BufferNew+2
-	stx BufferOld+2
-
-	rts
-
-TooManyNewKeys:
-	sec
-	lda #$ff
-	sta BufferQuantity
-	rts
 

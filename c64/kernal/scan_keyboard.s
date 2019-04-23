@@ -66,7 +66,6 @@ scan_keyboard:
 	
 	;; Decrement key repeat timeout if non-zero
 	ldx key_repeat_counter
-	stx $0427
 	beq sk_start
 	dec key_repeat_counter
 	
@@ -75,7 +74,6 @@ sk_start:
 	jsr Main
 
 	lda BufferQuantity
-	sta $0420
 	beq no_keys_waiting
 	
 	;; Stuff each key pressed into the keyboard buffer
@@ -83,7 +81,6 @@ sk_start:
 	ldy #$00
 *
 	lda Buffer,y
-	sta $0424,y
 	jsr accept_key
 	iny
 	cpy BufferQuantity
@@ -115,8 +112,6 @@ accept_key:
 	;; But don't insert $00 characters
 	beq sk_nokey
 
-	sta $044c,y
-	
 	;; Stash key into keyboard buffer
 	ldx keys_in_key_buffer
 	cpx key_buffer_size
@@ -381,8 +376,8 @@ skdone:
 
 
 
-    ;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    ;; // Key Scan Completed
+	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	;; // Key Scan Completed
 
 	;; // Put any new key (not in old scan) into buffer
         ldx #MaxKeyRollover-1
@@ -391,7 +386,6 @@ ProcessPressedKeys:
 
 	;; Check if the currently pressed key is continuing to be held down
 	lda BufferNew,x
-	sta $0400,x
         cmp #$ff
         beq ConsiderNextKey
         cmp BufferOld
@@ -400,7 +394,6 @@ ProcessPressedKeys:
         beq KeyHeld
         cmp BufferOld+2	
         beq KeyHeld
-
 
 RecordKeypress:
 
@@ -418,6 +411,14 @@ ConsiderNextKey:
         dex
         bpl ProcessPressedKeys
 
+	;; Copy new presses to old list
+	ldx #MaxKeyRollover-1
+*
+	lda BufferNew,x
+	sta BufferOld,x
+	dex
+	bpl -
+	
 	;; Return success and set of pressed keys
 	clc
 	rts
@@ -451,9 +452,8 @@ BuckyHeld:
 	jmp ConsiderNextKey
 	
 SameKeyHeld:
-	ldx key_repeat_counter
-	beq KeyCanRepeat
 	dec key_repeat_counter
+	bpl KeyCanRepeat
 	bne KeyRepeatWait
 	;; Count down ended, so repeat key now
 KeyCanRepeat:	

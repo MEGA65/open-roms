@@ -268,7 +268,7 @@ skip0:
 	sta key_bucky_state
 	lda ScanResult+6
 	eor #$ff
-	and #%10000000     ;// Left Shift
+	and #%10000000     ;// Left shift
 	rol
 	rol
 	and #$01
@@ -283,6 +283,7 @@ skip0:
 	lsr
 	lsr
 	and #$01
+	sta $044f
 	ora key_bucky_state
 	sta key_bucky_state
 	
@@ -293,7 +294,7 @@ skip0:
 	ora key_bucky_state
 	sta key_bucky_state
 
-	;; C= key
+	;; Vendor key
 	lda ScanResult+0
 	eor #$ff
 	lsr
@@ -305,10 +306,10 @@ skip0:
 	sta key_bucky_state
 
 	;; Chick for shift + Vendor
-	cmp #$05
+	cmp #$03
 	bne no_case_toggle
 	lda key_last_bucky_state
-	cmp #$05
+	cmp #$03
 	beq no_case_toggle
 
 	lda enable_case_switch

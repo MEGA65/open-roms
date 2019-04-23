@@ -63,7 +63,7 @@ scan_keyboard:
 
 	lda #$00
 	sta BufferQuantity
-	
+
 	;; Decrement key repeat timeout if non-zero
 	ldx key_repeat_counter
 	beq sk_start
@@ -173,15 +173,19 @@ OverFlow:
 	;// Don't manipulate last legal buffer as the routine will fix itself once it gets valid input again.
 
 TooManyNewKeys:
-ReturnNoKeys:	
+ReturnNoKeys:
 	sec
 	lda #$00
 	sta BufferQuantity
 	lda #$FF
 	sta last_key_matrix_position
-	sta Buffer+0
-	sta Buffer+1
-	sta Buffer+2
+	ldx #MaxKeyRollover-1
+*
+	sta Buffer,x
+	sta BufferOld,x
+	dex
+	bpl -
+
 	rts
 
 
@@ -189,6 +193,7 @@ ReturnNoKeys:
 	;; // Exit Routine for: No Activity
 
 NoActivityDetected:
+
 	;; So cancel all bucky keys
 	lda key_bucky_state
 	sta key_last_bucky_state
@@ -217,7 +222,8 @@ Main:
 
 	sty $dc00       ;// Connect all Keyboard Rows
 	cpx $dc01
-	beq NoActivityDetected
+	bne skip0
+	jmp NoActivityDetected
 
 skip0:
 
@@ -442,6 +448,7 @@ KeyHeld:
 	
 	cmp last_key_matrix_position
 	beq SameKeyHeld
+
 	;; Different key held
 	sta last_key_matrix_position
 	pha

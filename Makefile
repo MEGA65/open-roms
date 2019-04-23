@@ -18,6 +18,13 @@ newkern:	newrom Makefile
 newbasic:	newrom Makefile
 	dd if=newrom bs=8192 count=1 skip=0 of=newbasic
 
+newc65:		newkern newbasic Makefile
+	dd if=/dev/zero bs=4096 count=10 of=newc65
+	cat newbasic chargen chargen newkern >>newc65
+	dd if=/dev/zero bs=65536 count=1 of=padding
+	cat padding >>newc65
+
+
 c64/basic/packed_messages.s:	Makefile src/make_error_tables
 	src/make_error_tables > c64/basic/packed_messages.s
 

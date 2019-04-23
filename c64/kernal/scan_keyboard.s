@@ -61,7 +61,7 @@
 
 scan_keyboard:
 
-	lda #$ff
+	lda #$00
 	sta BufferQuantity
 	
 	;; Decrement key repeat timeout if non-zero
@@ -204,6 +204,12 @@ NoActivityDetected:
 	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	;; // Configure Data Direction Registers
 Main:
+	;; Begin with no key events
+	lda #$ff
+	sta BufferNew+0
+	sta BufferNew+1
+	sta BufferNew+2
+	
 	ldx #$ff
 	stx $dc02       ;// Port A - Output
 	ldy #$00
@@ -385,6 +391,7 @@ ProcessPressedKeys:
 
 	;; Check if the currently pressed key is continuing to be held down
 	lda BufferNew,x
+	sta $0400,x
         cmp #$ff
         beq ConsiderNextKey
         cmp BufferOld
@@ -399,14 +406,13 @@ RecordKeypress:
 
         ;; // New Key Detected
 	ldy BufferQuantity
-	cpy #$ff
-	beq NothingInBQ
-	cpy #MaxKeyRollover-1
+	cpy #MaxKeyRollover
 	bcs TooManyNewKeys
-NothingInBQ:	
+AcceptKeyEvent:	
+        sta Buffer,y
+	sta $0428,y
 	iny
 	sty BufferQuantity
-        sta Buffer,y
 	
 ConsiderNextKey:
         dex
@@ -461,8 +467,5 @@ KeyCanRepeat:
 	jmp RecordKeypress
 KeyRepeatWait:	
 	jmp ConsiderNextKey
-
-BufferEmpty:  ;; // No new Alphanumeric keys to handle.
-	lda #$ff
 
 

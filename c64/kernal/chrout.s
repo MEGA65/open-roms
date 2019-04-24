@@ -68,14 +68,22 @@ no_need_to_extend:
 	jsr get_current_line_logical_length
 	tay
 *
-	dey
-	lda (current_screen_line_ptr),y
-	iny
-	sta (current_screen_line_ptr),y
+	;; Note: While the following routine is obvious to any skilled
+	;; in the art as the most obvious simple and efficient solution,
+	;; if the screen writes are before the colour writes, it results
+	;; in a relatively long verbatim stretch of bytes when compared to
+	;; the C64 KERNAL.  Thus we have swapped the order, just to reduce
+	;; the potential for any argument of copyright infringement, even
+	;; though we really don't believe that the routine can be copyrighted
+	;; due to the lack of creativity.
 	dey
 	lda (current_screen_line_colour_ptr),y
 	iny
 	sta (current_screen_line_colour_ptr),y
+	dey
+	lda (current_screen_line_ptr),y
+	iny
+	sta (current_screen_line_ptr),y
 
 	dey
 	cpy current_screen_x

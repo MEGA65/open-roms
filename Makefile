@@ -42,3 +42,6 @@ testremote:	newkern newbasic
 
 test:	newkern newbasic
 	x64 -kernal newkern -basic newbasic
+
+testsimilarity:	newkern newbasic src/similarity
+	src/similarity kernal newrom 

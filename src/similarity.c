@@ -93,11 +93,34 @@ int main(int argc,char **argv)
 	if (k>2) {
 	  matches[k]++;
 	}
-	if (k>3) {
+	if (k>2) {
+	  char similarity_name[MAX_SIZE];
+	  snprintf(similarity_name,MAX_SIZE,"strings/");
+	  int offset=strlen(similarity_name);
+	  for(int b=0;b<k;b++) {
+	    snprintf(&similarity_name[offset],MAX_SIZE-offset,"%02X",f1[i+b]);
+	    offset+=2;
+	  }
+	  FILE *f=fopen(similarity_name,"r");
+	  if (f) {
+	    // Get explanation why this match is irrelevant
+	    char line[1024]; line[0]=0;
+	    fgets(line,1024,f);
+	    while (line[0]&&line[strlen(line)-1]=='\r') line[strlen(line)-1]=0;
+	    while (line[0]&&line[strlen(line)-1]=='\n') line[strlen(line)-1]=0;
+	    fprintf(stderr,"Ignoring $%04X = $%04X + %d (%s)\n",
+		    i,j,k,line);
+	    break;
+	    fclose(f);
+	  }
+	  
 	  // Display particularly long matches
 	  printf("$%04X = $%04X :",i,j);
-	  for(int b=0;b<k;b++) printf(" %02X",f1[i+b]);
+	  for(int b=0;b<k;b++) {
+	    printf(" %02X",f1[i+b]);
+	  }
 	  printf("\n");
+	  
 	}
       }
 

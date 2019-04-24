@@ -4,46 +4,55 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-// XXX - Find out which of these are standard error messages, and thus not subject
-// to any copyright claims, versus any that are specific to Commodore, and thus
-// could be copyright.
+/*
+  These error messages are generally so well known, that it seems silly to have to even point out that they are
+  so widely used and known, if not completely genericised.
+  The most of them are inherited from the MICROSOFT BASIC on which the C64's BASIC is based, so for those, there
+  cannot even be any claim to copyright over them in any exclusive way.
+
+  However, copyright of such short phrases that express ideas in short form cannot be copyrighted:
+  https://fairuse.stanford.edu/2003/09/09/copyright_protection_for_short/
+  
+  
+
+ */
 char *error_list[]={
-  "TOO MANY FILES",
-  "FILE OPEN",
-  "FILE NOT OPEN",
-  "FILE NOT FOUND",
-  "DEVICE NOT PRESENT",
-  "NOT INPUT FILE",
-  "NOT OUTPUT FILE",
-  "MISSING FILENAME",
-  "ILLEGAL DEVICE NUMBER",
-  "NEXT WITHOUT FOR",
-  "SYNTAX",
-  "RETURN WITHOUT GOSUB",
-  "OUT OF DATA",
-  "ILLEGAL QUANTITY",
-  "OVERFLOW",
-  "OUT OF MEMORY",
-  "UNDEF\'D STATEMENT",
-  "BAD SUBSCRIPT",
-  "REDIM\'D ARRAY",
-  "DIVISION BY ZERO",
-  "ILLEGAL DIRECT",
-  "TYPE MISMATCH",
-  "STRING TOO LONG",
-  "FILE DATA",
-  "FORMULA TOO COMPLEX",
-  "CAN\'T CONTINUE",
-  "UNDEF\'D FUNCTION",
-  "VERIFY",
-  "LOAD",
+  "TOO MANY FILES",        // https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/error-messages/too-many-files
+  "FILE OPEN",             // https://forums.autodesk.com/t5/3ds-max-forum/quot-file-open-error-quot/td-p/4036150
+  "FILE NOT OPEN",         // https://www.synthetos.com/topics/file-not-open-error/
+  "FILE NOT FOUND",        // https://answers.microsoft.com/en-us/windows/forum/windows_10-files/file-not-found-check-the-file-name-and-try-again/0734e837-b9f7-485e-93c5-5592f804b4c8
+  "DEVICE NOT PRESENT",    // https://answers.microsoft.com/en-us/windows/forum/all/device-not-present/d9f96498-cf92-4ba0-9076-a206cf058131
+  "NOT INPUT FILE",        // https://stackoverflow.com/questions/13055889/sed-with-literal-string-not-input-file/37682812 http://iama.stupid.cow.org/OldComputerMagazines/Commodore%20Power-Play%20100%25/Commodore_Power-Play_1985_Issue_16_V4_N04_Aug_Sep.pdf
+  "NOT OUTPUT FILE",       // http://www.un4seen.com/forum/?topic=12547.0
+  "MISSING FILENAME",      // https://arduino.stackexchange.com/questions/22839/missing-filename-compilation-error
+  "ILLEGAL DEVICE NUMBER", // https://comp.unix.solaris.narkive.com/dkqcQFg3/svm-mirror-not-working-illegal-major-device-number
+  "NEXT WITHOUT FOR",      // https://stackoverflow.com/questions/18232928/compile-error-next-without-for-vba
+  "SYNTAX",                // https://en.wikipedia.org/wiki/Syntax_error
+  "RETURN WITHOUT GOSUB",  // https://stackoverflow.com/questions/11467746/return-without-gosub-when-using-subforms-in-access
+  "OUT OF DATA",           // http://forum.qbasicnews.com/index.php?topic=8619.0
+  "ILLEGAL QUANTITY",      // https://community.dynamics.com/ax/f/33/t/238113
+  "OVERFLOW",              // https://www.webopedia.com/TERM/O/overflow_error.html
+  "OUT OF MEMORY",         // https://support.microsoft.com/en-au/help/126962/out-of-memory-error-message-appears-when-you-have-a-large-number-of-pr
+  "UNDEF\'D STATEMENT",    // http://ivanx.com/appleii/magicgoto/
+  "BAD SUBSCRIPT",         // https://www.computing.net/answers/windows-8/how-does-bad-subscript-error-appear-in-gwbasic/2301.html
+  "REDIM\'D ARRAY",        // https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+  "DIVISION BY ZERO",      // https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+  "ILLEGAL DIRECT",        // https://hwiegman.home.xs4all.nl/gw-man/Appendix%20A.html
+  "TYPE MISMATCH",         // https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+  "STRING TOO LONG",       // https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+  "FILE DATA",             // https://www.minitool.com/data-recovery/data-error-crc.html
+  "FORMULA TOO COMPLEX",   // https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+  "CAN\'T CONTINUE",       // https://hwiegman.home.xs4all.nl/gw-man/Appendix%20A.html
+  "UNDEF\'D FUNCTION",     // https://www.saatchiart.com/print/Painting-Undef-d-Function-3495/16167/3829193/view
+  "VERIFY",                // https://forums.openvpn.net/viewtopic.php?t=22040
+  "LOAD",                  // https://www.discogs.com/Gimmik-Load-Error/release/482462
   // Non-error messages
-  "READY.\r", // #29
-  "LOADING",
-  "VERIFYING",
+  "READY.\r", // #29       // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
+  "LOADING",               // https://community.tibco.com/wiki/how-show-loading-prompt-when-reloading-external-data
+  "VERIFYING",             // https://discussions.apple.com/thread/8087203
   "SAVING",
-  "ERROR", // #33
-  "BYTES FREE.\r\r", // #34
+  "ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+  "BYTES FREE.\r\r", // #34 // https://github.com/stefanhaustein/expressionparser
   NULL};
 
 // Token $FF is end of message, so we can have only 255 unique words

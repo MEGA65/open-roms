@@ -5,11 +5,11 @@ memtop:
 	;;  http://unusedino.de/ec64/technical/project64/mapping_c64.html
 	bcc memtop_set
 	
-	LDX MEMSIZ+0
 	LDY MEMSIZ+1
+	LDX MEMSIZ+0
 	rts
 memtop_set:
+	sty MEMSIZ+1
 	stx MEMSIZ+0
-	stx MEMSIZ+1
 	
 	rts

@@ -108,17 +108,25 @@ int main(int argc,char **argv)
 	  if (f1[i]==0xf0) break;
 	  if (f1[i]==0xb0) break;
 	  if (f1[i]==0x10) break;
+	  // Any 2-byte opcode followed by a branch
+	  if (f1[i+2]==0xd0) break;
+	  if (f1[i+2]==0xf0) break;
+	  if (f1[i+2]==0xb0) break;
+	  if (f1[i+2]==0x10) break;
 
+	  
 	  // Common 2-byte instructions followed by
 	  // any single byte are very common and not
 	  // copyrightable.
 	  if (f1[i]==0x85) break;
 	  if (f1[i]==0xa9) break;
+	  if (f1[i]==0x69) break;
 	  if (f1[i]==0xc9) break;
 	  // Similarly for random byte before such instructions
 	  if (f1[i+1]==0x85) break;
-	  if (f1[i+1]==0xa9) break;
-	  if (f1[i+1]==0xc9) break;
+	  if (f1[i+1]==0xa9) break; // LDA #$xx
+	  if (f1[i+1]==0x69) break; // ADC #$xx
+	  if (f1[i+1]==0xc9) break; // CMP #$xx
 	  
 	  // Filter out all 3 byte instructions
 	  switch(f1[i]) {

@@ -1,0 +1,4 @@
+STA $D7 / TXA / PHA / TYA / PHA
+
+Save A in a memory location, and push X and Y onto the stack.
+Nothing creative or copyrightable here.

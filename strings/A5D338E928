@@ -1,0 +1,5 @@
+LDA $D3 / SEC / SBC #40
+
+Load A from a memory location and subtract 40 from it.
+Nothing creative or copyrightable here.  Would be a single
+instruction on many other CPU architectures.

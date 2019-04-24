@@ -1,0 +1,3 @@
+Fragment / CMP #$0D / BNE past JMP / JMP $nnnn
+
+Take the jump if A = $0D.  Nothing creative or copyrightable here.

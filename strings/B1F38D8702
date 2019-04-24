@@ -1,0 +1,4 @@
+LDA ($F3),Y / STA $0287
+
+Copy byte from pointer to memory location.
+Nothing creative or copyrightable here.

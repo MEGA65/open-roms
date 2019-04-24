@@ -116,11 +116,13 @@ int main(int argc,char **argv)
 	  if (f1[i]==0xd0) break;
 	  if (f1[i]==0xf0) break;
 	  if (f1[i]==0xb0) break;
+	  if (f1[i]==0x90) break;
 	  if (f1[i]==0x10) break;
 	  // Any 2-byte opcode followed by a branch
 	  if (f1[i+2]==0xd0) break;
 	  if (f1[i+2]==0xf0) break;
 	  if (f1[i+2]==0xb0) break;
+	  if (f1[i+2]==0x90) break;
 	  if (f1[i+2]==0x10) break;
 
 	  

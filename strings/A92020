@@ -1,0 +1,7 @@
+LDA #$20, then call a routine
+
+LDA #$20
+JSR $xxxx
+
+Obvious sequence for doing this.
+Not copyrightable.

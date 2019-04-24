@@ -100,6 +100,28 @@ int main(int argc,char **argv)
 	// since that is the max length of a 6502 instruction
 	int single_instruction=0;
 	if (k==3) {
+	  // Reject some very common instruction fragments
+
+
+	  // Branch followed by any opcode
+	  if (f1[i]==0xd0) break;
+	  if (f1[i]==0xf0) break;
+	  if (f1[i]==0xb0) break;
+	  if (f1[i]==0x10) break;
+
+	  if (f1[i+1]==0x85) {
+	    // Single byte followed by STA $xx
+	    // Super common, so can be ignored.
+	    break;
+	  }
+
+	  // Common 2-byte instructions followed by
+	  // any single byte are very common and not
+	  // copyrightable.
+	  if (f1[i]==0x85) break;
+	  if (f1[i]==0xa9) break;
+	  if (f1[i]==0xc9) break;
+	  
 	  // Filter out all 3 byte instructions
 	  switch(f1[i]) {
 	  case 0x0C: //   TSB $nnnn

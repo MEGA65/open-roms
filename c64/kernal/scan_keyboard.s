@@ -284,7 +284,7 @@ next_row:
 	lda #$00
 	sta key_bucky_state
 	lda ScanResult+6
-	eor #$ff
+	eor #%10000000
 	and #%10000000     ;// Left shift
 	rol
 	rol
@@ -294,7 +294,7 @@ next_row:
 
 	;; Right shift
 	lda ScanResult+1
-	eor #$ff
+	eor #$10
 	lsr
 	lsr
 	lsr
@@ -305,7 +305,7 @@ next_row:
 	
 	;; Control
 	lda ScanResult+0
-	eor #$ff
+	eor #$04
 	and #$04
 	ora key_bucky_state
 	sta key_bucky_state

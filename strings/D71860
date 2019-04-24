@@ -1,0 +1,5 @@
+fragment / CLC / RTS
+
+Return from subroutine with C clear.
+C flag is frequently used as a convention for returning success
+of failure from a routine, and thus is encountered quite often.

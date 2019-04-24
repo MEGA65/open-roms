@@ -1,0 +1,4 @@
+SBC #$00 / LDA
+
+Perform very small part of an arithmetic calculation.
+Not copyrightable.

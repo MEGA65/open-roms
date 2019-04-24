@@ -1,0 +1,3 @@
+EOR #$FF / AND #$80
+
+Single instruction. Not copyrightable.

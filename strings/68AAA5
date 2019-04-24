@@ -1,0 +1,5 @@
+PLA / TAX / LDA $nn
+
+Restore X register value, load A from ZP memory location.
+Rather common fiddling of register values.
+Not copyrightable.

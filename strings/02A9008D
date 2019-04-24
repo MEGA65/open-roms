@@ -1,0 +1,4 @@
+Fragment / LDA #$00 / STA $xxxx
+
+Store zero in a memory location somewhere.
+Not copyrightable.

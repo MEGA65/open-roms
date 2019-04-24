@@ -45,3 +45,4 @@ test:	newkern newbasic
 
 testsimilarity:	newkern newbasic src/similarity
 	src/similarity kernal newrom 
+	src/similarity basic newrom 

@@ -1,0 +1,4 @@
+PHA / LDY #$00 / TYA
+
+Save A on stack, load Y and A both with zero.
+Simple register manipulation. Not copyrightable.

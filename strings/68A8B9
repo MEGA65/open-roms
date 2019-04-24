@@ -1,0 +1,4 @@
+Restore Y from stack, load A from memory location offset by Y
+
+The 6502 is register poor, so it is very common to pull a register
+from the stack and then use it in some way. Not copyrightable.

@@ -1,0 +1,5 @@
+fragment / CLC / RTS
+
+Clear carry flag before returning from a routine.
+The C flag is often used to indicate success/failure in
+routines. Thus is is not surprising and is not copyrightable.

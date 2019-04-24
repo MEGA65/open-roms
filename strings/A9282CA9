@@ -1,0 +1,43 @@
+LDA #$28 / BIT $nnnn
+
+It is a common convention in 6502 programming to allow easy
+skipping over the next two bytes, to use the BIT instruction
+(opcode $2C) for this. This allows code like:
+
+entry1:
+	LDA #$01
+	.byte $2C
+entry2:
+	LDA #$02
+	.byte $2C
+entry3:
+	LDA #$03
+	...
+	; Do something based on value of A
+
+This works because the BIT $nnnn instruction eats the two bytes
+that follows it as arguments, thus preventing the later LDA #$xx
+instructions from being run.  This typically saves some bytes
+compared to do it any other way.
+
+It is used on all 6502 platforms, for example this discussion
+on the trick for the Atari 2600:
+
+http://atariage.com/forums/topic/100922-two-player-sprites-without-vdel/
+
+It is not copyrightable.
+
+Here is an example as we have used it to save space when determining
+the correct width of a line:
+
+	;;  Get pointers to screen/colour RAM source
+	lda screen_line_link_table+0
+	bmi +
+	lda #40
+	.byte $2C 		; BIT $nnnn to skip next instruction
+	*
+	lda #80
+	sta load_or_scroll_temp_pointer+0
+	sta load_save_verify_end_address+0
+
+Only one of the LDA #40 or LDA #80 instructions will be executed.

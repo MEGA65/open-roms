@@ -1,0 +1,3 @@
+STA $0200,X / INX
+
+Loop fragment. Not copyrightable

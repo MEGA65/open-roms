@@ -1,0 +1,6 @@
+TYA / PHA / JSR $xxxx
+
+Save Y on stack and call a routine.
+This is common when calling routines that might corrupt
+a given register.
+Not creative. Not copyrightable.

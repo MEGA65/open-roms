@@ -1,0 +1,4 @@
+LDX #$02 / LDA #$00
+
+Load X and A registers with values.
+Not copyrightable.

@@ -1,0 +1,4 @@
+TXA / PHA / LDA #$xx
+
+Save X on stack, load A register with a value.
+Simple register manipulation. Not copyrightable.

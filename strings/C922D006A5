@@ -1,0 +1,4 @@
+CMP #$22 / BNE <skip a couple instructions> /  LDA $nn
+
+Take a branch based on value of A.  
+Very common. Not copyrightable.

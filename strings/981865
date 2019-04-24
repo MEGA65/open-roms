@@ -1,0 +1,5 @@
+TYA / CLC / ADC $nn
+
+Perform addition to contents of Y register.
+Would be a single instruction on many architectures.
+Nothing creative. Not copyrightable.

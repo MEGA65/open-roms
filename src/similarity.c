@@ -99,9 +99,6 @@ int main(int argc,char **argv)
 	// Ignore matches of no more than 3 bytes,
 	// since that is the max length of a 6502 instruction
 	if (k>2) {
-	  matches[k]++;
-	}
-	if (k>2) {
 	  char similarity_name[MAX_SIZE];
 	  snprintf(similarity_name,MAX_SIZE,"strings/");
 	  int offset=strlen(similarity_name);
@@ -121,6 +118,9 @@ int main(int argc,char **argv)
 	    break;
 	    fclose(f);
 	  }
+
+	  // Otherwise, the match is unexplained.
+	  matches[k]++;
 	  
 	  // Display particularly long matches
 	  printf("$%04X = $%04X :",i,j);
@@ -136,7 +136,7 @@ int main(int argc,char **argv)
 
   for(int i=0;i<MAX_SIZE;i++) {
     if (matches[i])
-      printf("%6d matches of %d bytes\n",matches[i],i);
+      printf("%6d unexplained matches of %d bytes\n",matches[i],i);
   }
   
   return 0;

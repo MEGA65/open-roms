@@ -418,10 +418,10 @@ count_rows_loop:
 copy_line_down_loop:
 	ldy #39
 cl_inner:
-	lda (load_or_scroll_temp_pointer),y
-	sta (current_screen_line_ptr),y
 	lda (load_save_verify_end_address),y
 	sta (current_screen_line_colour_ptr),y
+	lda (load_or_scroll_temp_pointer),y
+	sta (current_screen_line_ptr),y
 	dey
 	bpl cl_inner
 
@@ -429,13 +429,14 @@ cl_inner:
 	;; Low bytes are in common pairs
 
 	;; Old source is new destination
-	lda load_or_scroll_temp_pointer+0
-	sta current_screen_line_ptr+0
-	sta current_screen_line_colour_ptr+0
-	lda load_or_scroll_temp_pointer+1
-	sta current_screen_line_ptr+1
+	;; Use different registers to minimise byte similarity with C64 KERNAl
+	ldy load_or_scroll_temp_pointer+1
+	sty current_screen_line_ptr+1
 	lda load_save_verify_end_address+1
+	ldy load_or_scroll_temp_pointer+0
 	sta current_screen_line_colour_ptr+1
+	sty current_screen_line_ptr+0
+	sty current_screen_line_colour_ptr+0
 	
 	;; Decrementing source pointers
 	lda load_or_scroll_temp_pointer+0
@@ -462,10 +463,10 @@ no_copy_down:
 	;; Erase newly inserted line
 	ldy #79
 	*
-	lda #$20
-	sta (current_screen_line_ptr),y
 	lda text_colour
 	sta (current_screen_line_colour_ptr),y
+	lda #$20
+	sta (current_screen_line_ptr),y
 	dey
 	cpy #40
 	bne -
@@ -530,10 +531,10 @@ scroll_screen_up:
 	ldy #$00
 	ldx #3
 scroll_copy_loop:
-	lda (load_or_scroll_temp_pointer),y
-	sta (current_screen_line_ptr),y
 	lda (load_save_verify_end_address),y
 	sta (current_screen_line_colour_ptr),y
+	lda (load_or_scroll_temp_pointer),y
+	sta (current_screen_line_ptr),y
 
 	iny
 	bne scroll_copy_loop
@@ -554,10 +555,10 @@ scroll_copy_loop:
 	sbc load_or_scroll_temp_pointer+0
 	tax
 scroll_copy_loop2:		
- 	lda (load_or_scroll_temp_pointer),y
- 	sta (current_screen_line_ptr),y
  	lda (load_save_verify_end_address),y
  	sta (current_screen_line_colour_ptr),y
+ 	lda (load_or_scroll_temp_pointer),y
+ 	sta (current_screen_line_ptr),y
  	iny
  	dex
  	bne scroll_copy_loop2

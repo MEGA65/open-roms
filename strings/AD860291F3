@@ -1,0 +1,3 @@
+LDA $0286 / STA $F3
+
+Copying a byte from one memory location to another is not copyrightable.

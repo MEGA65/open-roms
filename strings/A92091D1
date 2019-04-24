@@ -1,0 +1,5 @@
+LDA #$20 / STA ($D1),Y - Write a space onto screen memory
+
+No simpler sequence for this.  There are many functional requirements
+that require writing space characters to the screen. Not copyrightable.
+No creativity.

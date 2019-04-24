@@ -132,6 +132,7 @@ int main(int argc,char **argv)
 	  if (f1[i]==0x85) break;
 	  if (f1[i]==0xa2) break; // LDX #$xx
 	  if (f1[i]==0xa9) break; // LDA #$xx
+	  if (f1[i]==0xa5) break; // LDA $xx
 	  if (f1[i]==0xa0) break; // LDY #$xx
 	  if (f1[i]==0x69) break;
 	  if (f1[i]==0xc9) break;

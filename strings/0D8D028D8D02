@@ -1,0 +1,5 @@
+ORA $028D / STA $028D
+
+This sequence of ORA + STA on a location is the simplest way to
+perform a logical OR of the contents of the A register and a memory
+location. Nothing creative or copyrightable.

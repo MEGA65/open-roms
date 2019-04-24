@@ -1,0 +1,6 @@
+Most likely LDA $0288 / STA $D2 - Set upper half of screen RAM address
+
+$0288 is publicly documented as the location where screen RAM lives.
+$D1/$D2 is the current pointer to screen memory. This is the simplest
+way to set this.  Also, copying one memory location to another is not
+copyrightable.

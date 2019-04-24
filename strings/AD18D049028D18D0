@@ -1,0 +1,4 @@
+LDA $D018 / EOR #$02 / STA $D018
+
+This is the shortest simplest sequence to toggle bit 1 in
+$D018.  No creativitity. Not copyrightable.

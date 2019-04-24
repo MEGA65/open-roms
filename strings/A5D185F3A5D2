@@ -1,0 +1,4 @@
+STA $D1 / LDA $F3 / STA $D2 - manipulate screen pointers
+
+$D1 = screen RAM pointer
+$F3 = colour RAM pointer

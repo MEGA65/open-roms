@@ -10,7 +10,6 @@ cint:
 	;; Initialise cursor blink flags  (Compute's Mapping the 64 p215)
 	lda #$00
 	sta cursor_blink_disable
-	sta cursor_blink_countdown
 
 	;; Set keyboard decode vector  (Compute's Mapping the 64 p215)
 

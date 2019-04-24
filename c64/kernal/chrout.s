@@ -604,6 +604,9 @@ line_not_linked_del:
 	rts
 	
 screen_advance_to_next_line:
+
+	jsr hide_cursor_if_visible
+	
 	;;  Go to start of line
 	lda #0
 	sta current_screen_x

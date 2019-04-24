@@ -6,8 +6,8 @@
 	;; colour_under_cursor
 
 show_cursor_if_enabled:
-	bit cursor_blink_disable
-	bpl show_cursor
+	bit cursor_is_visible
+	bmi show_cursor
 	rts
 	
 show_cursor:
@@ -37,7 +37,7 @@ blink_cursor:
 	bne undraw_cursor
 draw_cursor:
 	jsr calculate_screen_line_pointer
-	
+
 	ldy current_screen_x
 	lda (current_screen_line_ptr),y
 	sta cursor_saved_character	
@@ -51,6 +51,7 @@ draw_cursor:
 	
 	lda #1
 	sta cursor_is_visible
+	
 	jmp reset_blink_timer
 
 undraw_cursor:
@@ -79,7 +80,7 @@ disable_cursor:
 	;; FALL THROUGH
 hide_cursor_if_visible:
 	bit cursor_is_visible
-	bpl undraw_cursor
+	bmi undraw_cursor
 	rts
 
 enable_cursor:

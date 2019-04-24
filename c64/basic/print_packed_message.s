@@ -54,43 +54,62 @@ print_packed_word:
 	;; A = the word to print
 	tax
 
+	;; Setup pointer to packed words
+	lda #<packed_message_words
+	sta temp_string_ptr+0
+	lda #>packed_message_words
+	sta temp_string_ptr+1
+	
 	;; Find the word in the list
 	ldy #$ff
 packed_word_search:	
 	cpx #$00
 	beq found_packed_word
 	iny
-	lda packed_message_words,y
+	lda (temp_string_ptr),y
 	and #$0f
 	cmp #$00
 	bne +
 	dex
 *
+	;; Advance to next page if required
 	cpy #$ff
 	bne packed_word_search
-	;; Could not find word
-	sec
-	rts
+	inc temp_string_ptr+1
+	jmp packed_word_search
 
 found_packed_word:
+
+	;; Get pointer to start of packed word
+	;; Make sure we don't wrap on a page boundary
+	tya
+	clc
+	adc temp_string_ptr+0
+	sta temp_string_ptr+0
+	lda temp_string_ptr+1
+	adc #$00
+	sta temp_string_ptr+1
+	ldy #$00
+
+next_packed_word_char:
 	;; Y = offset into packed word data - 1
 	iny
-
+	
 	;; Check for end of word
-	lda packed_message_words,y
+	lda (temp_string_ptr),y
 	cmp #$00
-	beq done_printing_word
+	beq end_of_packed_word
 	and #$f0
-	beq done_printing_word
+	beq end_of_packed_word
 
 	;; Check if it is an uncommon char
-	lda packed_message_words,y
+	lda (temp_string_ptr),y
 	and #$f0
 	cmp #$f0
 	beq is_uncommon_char
 
 	;; Is not an uncommon char, so get char of upper nybl
-	lda packed_message_words,y
+	lda (temp_string_ptr),y
 
 	;; Put high nybl into low bits of X
 	lsr
@@ -110,7 +129,7 @@ found_packed_word:
 	;; See if there is a char in the low nybl to print
 	pla
 	tay
-	lda packed_message_words,y
+	lda (temp_string_ptr),y
 	and #$0f
 	beq end_of_packed_word
 	cmp #$0f
@@ -141,7 +160,7 @@ has_nybl:
 no_lo_nybl_char:
 
 	cpy #$ff
-	bne found_packed_word
+	bne next_packed_word_char
 end_of_packed_word:	
 	;; Hit end of packed data
 	rts
@@ -149,7 +168,7 @@ end_of_packed_word:
 is_uncommon_char:
 	;; Lower nybl has offset into low-frequency part of the table
 
-	lda packed_message_words,y
+	lda (temp_string_ptr),y
 	and #$0f
 	clc
 	adc #14
@@ -160,7 +179,3 @@ is_uncommon_char:
 	pha
 
 	jmp has_nybl
-	
-	
-done_printing_word:
-	rts

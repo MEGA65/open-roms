@@ -152,6 +152,7 @@ int main(int argc,char **argv)
 	  // Similarly for random byte before such instructions
 	  if (f1[i+1]==0x85) break;
 	  if (f1[i+1]==0xa9) break; // LDA #$xx
+	  if (f1[i+1]==0xa2) break; // LDX $xx
 	  if (f1[i+1]==0xa5) break; // LDA $xx
 	  if (f1[i+1]==0xa0) break; // LDY #$xx
 	  if (f1[i+1]==0x69) break; // ADC #$xx

@@ -1,0 +1,4 @@
+ADC #40 / STA $D3
+
+Add 40 to a memory location. Single instruction on many architectures.
+Not copyrightable.

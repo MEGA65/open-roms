@@ -1,0 +1,8 @@
+JSR $FFCF / branch based on C flag
+
+$FFCF is a publically documented call point in the C64 KERNAL,
+and indicates its response via the C flag, so such constructions
+in callers are totally expected and anticipated normal use of the
+API.  Since using an API is an expected use of a system, it can
+be argued that there is an implicit license to do such things, in
+the non-existent reality where such a sequence could be copyrighted.

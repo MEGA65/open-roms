@@ -1,0 +1,4 @@
+LDA $D8 / BEQ <skip 2 byte instruction>
+
+Take a branch based on contents of a ZP location.
+Not creative or copyrightable.

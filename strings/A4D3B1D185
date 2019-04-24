@@ -1,0 +1,4 @@
+LDY $D3 / LDA ($D1),Y / STA $xx
+
+Derefernce a pointer in ZP and store retreived value somewhere.
+Not copyrightable.

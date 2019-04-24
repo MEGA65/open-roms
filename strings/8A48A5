@@ -1,0 +1,4 @@
+TXA / PHA / LDA $nn
+
+TXA + PHA is the way to save the X register on the stack.
+ZP loads into A are also very common. Nothing creative or copyrightable here.

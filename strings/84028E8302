@@ -1,0 +1,7 @@
+Do something to $0284 followed by STX $0283
+
+The public API for the C64 KERNAL MEMTOP routine
+requires loading and saving these locations from X and Y
+registers.  Thus this is lacking in creativity and not
+copyrightable, even if it were long enough to somehow
+justify copyright, which we do not believe that it does.

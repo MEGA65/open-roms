@@ -220,7 +220,7 @@ Main:
 	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	;; // Check for Port Activity
 
-	sty $dc00       ;// Connect all Keyboard Rows
+	stx $dc00       ;// Connect all Keyboard Rows
 	cpx $dc01
 	bne skip0
 	jmp NoActivityDetected

@@ -1,0 +1,5 @@
+PLA / TAY / PLA / TAX sequence
+
+This is a common sequence for restoring registers from the stack.
+It is a fragment of the reverse of pushing the registers A X and Y
+in alphabetic order. Not copyrightable.

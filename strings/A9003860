@@ -1,0 +1,9 @@
+LDA #$00 / SEC / RTS - Return failure and 0 from a KERNAL routine
+
+The C64 KERNAL public API indicates that the carry flag should be set
+to report failure of many routines, and those routines can also return
+A=$00 as part of that.  
+Also, returning such values from a routine is not uncommon generally,
+and lacks all creativity. Not copyrightable.
+
+

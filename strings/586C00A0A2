@@ -1,0 +1,17 @@
+CLI + JMP ($A000) + LDX #$xx
+
+The C64 programmer's reference guide explains that the KERNAL 
+clears interrupts and jumps into the cold start vector of
+the BASIC ROM on boot. This is exactly what this snippet does,
+and it is the most obvious solution. Also, it is well established
+best practice to disable interrupt masking only at the last moment
+to minimise the risk of an interrupt being triggered before the 
+called program has a chance to setup what it wants.
+The presence of the LDX #$xx following this is the result of the
+mechanical processes of our linker, and is mere coincidence. As 
+this opcode constitutes >1% of opcodes in a typical 6502 program,
+no reasonable claim can be made based on its presence.
+In short, this fragment is the obvious and most simple implementation
+that implements the described functionality p269 of the C64 PRG, as
+well as being too short and lacking creativity to be eligible for
+copyright protection.

@@ -1,0 +1,5 @@
+Fragment followed by LDA #$00 / STA $xx
+
+This is a very common sequence of actions (putting $00 into ZP location),
+and fully 1/256 of such instances would be expected by random chance to 
+have a $04 byte preceding it.  Not creativity. Not copyrightable.

@@ -27,8 +27,8 @@ chrin_repeat:
 	sta keyboard_input_ready
 	pla
 	tax
-	lda #$0d
 	clc
+	lda #$0d
 	rts
 
 not_end_of_input:
@@ -100,8 +100,8 @@ empty_line:
 	;; the cursor advances and screen scrolls as required)
 	pla
 	tax
-	lda #$0d
 	clc
+	lda #$0d
 	rts
 	
 not_enter:	

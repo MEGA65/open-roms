@@ -1,0 +1,8 @@
+PLA / PLA / JMP
+
+Pulling two values off the stack is a common way to simulate returning
+from a routine, i.e., to remove the return address from the stack.
+That such a sequence is followed by a JMP is not at all surprising,
+given this.  But at the end of the day, pulling things off the stack
+and jumping somewhere without a matching destination cannot possibly
+be copyrightable

@@ -1,0 +1,6 @@
+Fragment followed by LDA $DC0D
+
+$DC0D is a register of the 6526 CIA1 in a C64, so reading it 
+is to be expected.  The presence of a byte before the instruction
+in no way constitutes a creative act, and the whole fragment is too
+small to be worthy of copyright protection in any case.

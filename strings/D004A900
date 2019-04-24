@@ -1,0 +1,15 @@
+Branch over two instructions, first being LDA #$xx
+
+This corresponds to the following sequence:
+
+Bxx +
+LDA #$xx
+(two more bytes not matched
+*
+
+This is the obvious way to conditionally execute two instructions,
+the first of which is LDA #$xx, which is very common.
+
+That the argument of LDA #$xx doesn't match, nor does the following
+two bytes, adds strength to the argument that this is a non-copyrightable
+sequence of bytes.

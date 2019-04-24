@@ -1,0 +1,8 @@
+PLA / TAY / PLA / TAX sequence / followed by LDA $nn
+
+This is a common sequence for restoring registers from the stack.
+It is a fragment of the reverse of pushing the registers A X and Y
+in alphabetic order.
+The frequency of LDA $nn instructions also makes this complete sequence
+no more remarkable.
+ Not copyrightable.

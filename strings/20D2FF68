@@ -1,0 +1,7 @@
+Probably JSR $FFD2 followed by PLA
+
+$FFD2 is a publicly listed API of the C64 KERNAL that prints a character.
+It corrupts the contents of the A register. Thus is it totally expected to restore the A register
+from the stack after calling $FFD2.  That this happens several times in the C64 KERNAL itself
+is evidence of this being boilerplate and not copyrightable on that basis, as well as it simply
+being too short and lacking any creativity etc.

@@ -15,6 +15,6 @@ stop:
 	rts
 
 stop_pressed:
-	lda #$00
 	sec
+	lda #$00
 	rts

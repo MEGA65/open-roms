@@ -10,8 +10,14 @@ ramtas_l1:
 	INY
 	BNE ramtas_l1
 ramtas_l2:
-	STA $0200,Y
+	;; How many ways are there to efficiently erase these two pages
+	;; of RAM? We would like to avoid any unnecessary byte similarity
+	;; with the C64 KERNAL. Thus we do $0300 before $0200, even though
+	;; with the longer sequence of identicale bytes we see no basis for
+	;; it being copyrightable.  Again, we just want to redue the attack
+	;; surface for any misguided suit.
 	STA $0300,Y
+	STA $0200,Y
 	INY
 	BNE ramtas_l2
 

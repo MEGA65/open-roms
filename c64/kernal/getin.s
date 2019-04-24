@@ -6,8 +6,8 @@ getin:
 	bne +
 
 	;; Nothing in keyboard buffer to read
-	lda #$00
 	sec
+	lda #$00
 	rts
 	
 *

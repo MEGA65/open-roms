@@ -1,0 +1,6 @@
+Store $00 somewhere
+
+LDA #$00
+STA $xxxx
+
+This is an obvious way to put $00 into a memory location

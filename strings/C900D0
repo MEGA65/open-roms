@@ -1,0 +1,7 @@
+Compare A with zero before branching
+
+CMP #$00
+Bxx $nnnn
+
+This is a common way to take a branch based on whether the A register
+holds zero or not.

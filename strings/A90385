@@ -1,0 +1,6 @@
+Put $03 into ZP location
+
+LDA #$03
+STA $xx
+
+This is the obvious way to put $03 into a ZP memory location.

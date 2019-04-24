@@ -1,0 +1,8 @@
+Take branch based on whether A = $03
+
+CMP #$03
+Bxx $nnnn
+
+Common instruction sequence and obvious way to
+take a branch based on whether A = $03.
+Not copyrightable.

@@ -1,0 +1,6 @@
+Store $01 to a ZP location
+
+LDA #$01
+STA $xx
+
+Obvious way to do this, so not copyrightable.

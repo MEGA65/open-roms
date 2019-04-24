@@ -1,0 +1,6 @@
+Store $3F somewhere
+
+LDA #$3F
+STA $xxxx
+
+Obvious way to achieve this, so not copyrightable.

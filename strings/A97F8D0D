@@ -1,0 +1,7 @@
+Put $7F -> $xx0D
+
+LDA #$7f
+STA $xx0d
+
+This is the obvious way to put $7F into a memory location ending in $0D.
+Not copyrightable.

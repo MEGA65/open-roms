@@ -1,0 +1,8 @@
+Branch over JMP
+
+Bxx +
+JMP $xxxx
+*
+
+Very common sequence to conditionally jump somewhere.
+Not coppyrightable.

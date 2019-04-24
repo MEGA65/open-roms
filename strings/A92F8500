@@ -1,0 +1,7 @@
+$2F -> CPU data direction port
+
+LDA #$2F
+STA $00
+
+This is the obvious way to put the recommended default value
+into the 6510's data direction register. Not copyrightable.

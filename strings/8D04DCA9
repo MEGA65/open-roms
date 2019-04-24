@@ -1,0 +1,4 @@
+STA $DC04 / LDA #$xx sequence
+
+This is a single instruction with the opcode of a very common
+instruction (LDA #$xx) following.  Not copyrightable.

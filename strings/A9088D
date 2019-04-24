@@ -1,0 +1,7 @@
+Store $08 somewhere
+
+LDA #$08
+STA $xxxx
+
+is the obvious way to put $08 into a memory location.
+Not copyrightable.

@@ -1,0 +1,7 @@
+Branch backwards or return
+
+Bxx *-10
+RTS
+
+This is the obvious way to either branch backwards or return from a routine.
+i.e. it is a typical loop construct. Not copyrightable.

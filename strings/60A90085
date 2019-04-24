@@ -1,0 +1,6 @@
+End of routine followed by $00 -> ZP location
+
+$60 = RTS = return from subroutine. Very common.
+LDA #$00 / STA $xx is also very common.
+It is no suprise to find these together many times in code.
+Not copyrightable.

@@ -1,0 +1,1 @@
+STA $028C / LDA #$0E / STA $0286 / LDA 

@@ -1,0 +1,4 @@
+LDA ($D1),Y / CMP #$20
+
+Compare a byte read from a pointer with a specific value.
+No creativity here. Not copyrightable.

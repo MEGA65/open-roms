@@ -26,18 +26,18 @@ cint:
 	;; Making some numbers up here: Repeat every ~1/10th sec
 	;; But require key to be held for ~1/3sec before
         ;; repeating (Compute's Mapping the 64 p58)
-	lda #22-2 		; Fudge factor to match speed
-	sta key_first_repeat_delay
+	ldx #22-2 		; Fudge factor to match speed
+	stx key_first_repeat_delay
 
 	;; Set current colour for text (Compute's Mapping the 64 p215)
-	lda #$0e  		; light blue by default
-	sta $0286
+	ldx #$0e  		; light blue by default
+	stx $0286
 
 	;; Set maximum keyboard buffer size (Compute's Mapping the 64 p215)
-	lda #10
-	sta key_buffer_size
+	ldx #10
+	stx key_buffer_size
 	;; Put non-zero value in enable_case_switch
-	sta enable_case_switch
+	stx enable_case_switch
 	
 	;; Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
 	jmp clear_screen

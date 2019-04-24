@@ -88,12 +88,13 @@ no_need_to_extend:
 	dey
 	cpy current_screen_x
 	bne -
-	;; Put space in the inserted gap
-	lda #$20
-	sta (current_screen_line_ptr),y
 
 	;; Increase insert mode count (which causes quote-mode like behaviour)
 	inc insert_mode
+	
+	;; Put space in the inserted gap
+	lda #$20
+	sta (current_screen_line_ptr),y
 
 	jmp chrout_done
 not_94:	
@@ -566,10 +567,10 @@ scroll_copy_loop2:
 	;; Fill in scrolled up area
 	ldx load_or_scroll_temp_pointer+0
 scroll_copy_loop3:
-	lda #$20
-	sta (current_screen_line_ptr),y
 	lda text_colour
 	sta (current_screen_line_colour_ptr),y
+	lda #$20
+	sta (current_screen_line_ptr),y
 	iny
 	dex
 	bne scroll_copy_loop3

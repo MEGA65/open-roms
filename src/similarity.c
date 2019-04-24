@@ -108,6 +108,12 @@ int main(int argc,char **argv)
 	// Ignore matches of no more than 3 bytes,
 	// since that is the max length of a 6502 instruction
 	int single_instruction=0;
+	if (k==5) {
+	  if (f1[i]==0xa9&&f1[i+2]==0x8d) break; // LDA #$xx / STA $nnnn
+	}
+	if (k==4) {
+	  if (f1[i]==0xa9&&f1[i+2]==0x85) break; // LDA #$xx / STA $nn
+	}
 	if (k==3) {
 	  // Reject some very common instruction fragments
 
@@ -118,6 +124,12 @@ int main(int argc,char **argv)
 	  if (f1[i]==0xb0) break;
 	  if (f1[i]==0x90) break;
 	  if (f1[i]==0x10) break;
+	  // Any single byte followed by a branch
+	  if (f1[i+1]==0xd0) break;
+	  if (f1[i+1]==0xf0) break;
+	  if (f1[i+1]==0xb0) break;
+	  if (f1[i+1]==0x90) break;
+	  if (f1[i+1]==0x10) break;
 	  // Any 2-byte opcode followed by a branch
 	  if (f1[i+2]==0xd0) break;
 	  if (f1[i+2]==0xf0) break;

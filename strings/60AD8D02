@@ -1,0 +1,7 @@
+RTS + LDA $028D
+
+RTS is a very common instruction, as is loading A from absolute address.
+The RTS is the end of a routine, and the LDA $028D thus the start of
+another. Thus this would occur whenever a routine begins with loading
+A from $028D, immediately after another routine.  Nothing creative.
+Not copyrightable.

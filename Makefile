@@ -43,6 +43,9 @@ testremote:	newkern newbasic
 test:	newkern newbasic
 	x64 -kernal newkern -basic newbasic
 
+testm65:	newc65
+	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R newc65 -4
+
 testsimilarity:	newkern newbasic src/similarity
 	src/similarity kernal newrom 
 	src/similarity basic newrom 

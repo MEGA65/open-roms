@@ -134,8 +134,9 @@ int main(int argc,char **argv)
 	  if (f1[i]==0xa9) break; // LDA #$xx
 	  if (f1[i]==0xa5) break; // LDA $xx
 	  if (f1[i]==0xa0) break; // LDY #$xx
-	  if (f1[i]==0x69) break;
-	  if (f1[i]==0xc9) break;
+	  if (f1[i]==0x69) break; // ORA #$xx ?
+	  if (f1[i]==0xc9) break; // CMP #$xx
+	  if (f1[i]==0x91) break; // STA ($nn),Y
 	  // Similarly for random byte before such instructions
 	  if (f1[i+1]==0x85) break;
 	  if (f1[i+1]==0xa9) break; // LDA #$xx

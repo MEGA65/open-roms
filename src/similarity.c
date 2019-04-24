@@ -22,9 +22,18 @@ int phase_mask[MAX_SIZE+MAX_SIZE];
 
 int main(int argc,char **argv)
 {
-  if (argc!=3) {
-    fprintf(stderr,"usage: similarity <file1> <file2>\n");
+  int verbose=0;
+  
+  if (argc<3) {
+    fprintf(stderr,"usage: similarity <file1> <file2> [verbose]\n");
     exit(-1);
+  }
+  if (argc==4) {
+    if (!strcmp(argv[3],"verbose")) verbose=1;
+    else {
+      fprintf(stderr,"Unrecognised directive.\n");
+      exit(-1);
+    }    
   }
 
   for(int i=0;i<MAX_SIZE;i++) matches[i]=0;
@@ -119,7 +128,8 @@ int main(int argc,char **argv)
 	  // any single byte are very common and not
 	  // copyrightable.
 	  if (f1[i]==0x85) break;
-	  if (f1[i]==0xa9) break;
+	  if (f1[i]==0xa2) break; // LDX #$xx
+	  if (f1[i]==0xa9) break; // LDA #$xx
 	  if (f1[i]==0x69) break;
 	  if (f1[i]==0xc9) break;
 	  // Similarly for random byte before such instructions
@@ -218,8 +228,9 @@ int main(int argc,char **argv)
 	    fgets(line,1024,f);
 	    while (line[0]&&line[strlen(line)-1]=='\r') line[strlen(line)-1]=0;
 	    while (line[0]&&line[strlen(line)-1]=='\n') line[strlen(line)-1]=0;
-	    fprintf(stderr,"Ignoring $%04X = $%04X + %d (%s)\n",
-		    i,j,k,line);
+	    if (verbose)
+	      fprintf(stderr,"Ignoring $%04X = $%04X + %d (%s)\n",
+		      i,j,k,line);
 	    break;
 	    fclose(f);
 	  }

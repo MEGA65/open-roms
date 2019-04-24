@@ -9,8 +9,8 @@ src/preprocess:	src/preprocess.c Makefile
 src/similarity:	src/similarity.c Makefile
 	gcc -g -Wall -o src/similarity src/similarity.c
 
-src/make_error_tables:	src/make_error_tables.c Makefile
-	gcc -g -Wall -o src/make_error_tables src/make_error_tables.c
+src/compress_text:	src/compress_text.c Makefile
+	gcc -g -Wall -o src/compress_text src/compress_text.c
 
 newrom:	c64/kernal/OUT.BIN c64/basic/OUT.BIN
 	cat c64/basic/OUT.BIN c64/kernal/OUT.BIN  >newrom
@@ -28,8 +28,8 @@ newc65:		newkern newbasic Makefile
 	cat padding >>newc65
 
 
-c64/basic/packed_messages.s:	Makefile src/make_error_tables
-	src/make_error_tables > c64/basic/packed_messages.s
+c64/basic/packed_messages.s:	Makefile src/compress_text
+	src/compress_text > c64/basic/packed_messages.s
 
 c64/kernal/OUT.BIN:	src/preprocess c64/kernal/*.s
 	src/preprocess -d c64/kernal -l e4d3 -h ffff

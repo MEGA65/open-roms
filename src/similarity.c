@@ -15,8 +15,10 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-#define MAX_SIZE 8192
+#define MAX_SIZE 65536
 int matches[MAX_SIZE];
+
+int phase_mask[MAX_SIZE+MAX_SIZE];
 
 int main(int argc,char **argv)
 {
@@ -26,7 +28,8 @@ int main(int argc,char **argv)
   }
 
   for(int i=0;i<MAX_SIZE;i++) matches[i]=0;
-
+  bzero(phase_mask,sizeof(phase_mask));
+  
   unsigned char *f1,*f2;
   int s1,s2;
   struct stat st;
@@ -62,14 +65,48 @@ int main(int argc,char **argv)
   for(int i=0;i<s1;i++) {
     for(int j=0;j<s2;j++) {
       int k,l;
+
+      int phase=s2+i-j;
+
+      if (phase<0) {
+	fprintf(stderr,"Phase < 0 : %04x %04x -> %d\n",i,j,phase);
+	exit(-1);
+      }
+
+      if (phase>=(MAX_SIZE+MAX_SIZE)) {
+	fprintf(stderr,"Phase too large : %04x %04x -> %d\n",i,j,phase);
+	exit(-1);
+      }
+      
+      if (phase_mask[phase]) {
+	phase_mask[phase]--;
+	continue;
+      }
+      
       for(k=0;((i+k)<s1)&&((j+k)<s2);k++)
 	if (f1[i+k]!=f2[j+k]) break;
       // Ignore matches that are all the same byte
       for(l=1;l<k;l++) if (f1[i+l]!=f1[i]) break;
       if (l<k) {
-	if (k) matches[k]++;
+	// Ignore matches of no more than 3 bytes,
+	// since that is the max length of a 6502 instruction
+	if (k>2) {
+	  matches[k]++;
+	}
+	if (k>3) {
+	  // Display particularly long matches
+	  printf("$%04X = $%04X :",i,j);
+	  for(int b=0;b<k;b++) printf(" %02X",f1[i+b]);
+	  printf("\n");
+	}
       }
-     
+
+      // When we find a match, we should then mask off this region,
+      // so that we don't find all the sub-sets of the matches.
+      // e.g. matching BASIC at $100 will result in a match of ASIC at $101
+      // and SIC at $102 etc.  These are all the same match, so should be
+      // suppressed.
+      phase_mask[phase]=k;
     }
   }
 

@@ -85,6 +85,14 @@ int main(int argc,char **argv)
       
       for(k=0;((i+k)<s1)&&((j+k)<s2);k++)
 	if (f1[i+k]!=f2[j+k]) break;
+
+      // When we find a match, we should then mask off this region,
+      // so that we don't find all the sub-sets of the matches.
+      // e.g. matching BASIC at $100 will result in a match of ASIC at $101
+      // and SIC at $102 etc.  These are all the same match, so should be
+      // suppressed.
+      phase_mask[phase]=k;
+      
       // Ignore matches that are all the same byte
       for(l=1;l<k;l++) if (f1[i+l]!=f1[i]) break;
       if (l<k) {
@@ -123,13 +131,6 @@ int main(int argc,char **argv)
 	  
 	}
       }
-
-      // When we find a match, we should then mask off this region,
-      // so that we don't find all the sub-sets of the matches.
-      // e.g. matching BASIC at $100 will result in a match of ASIC at $101
-      // and SIC at $102 etc.  These are all the same match, so should be
-      // suppressed.
-      phase_mask[phase]=k;
     }
   }
 

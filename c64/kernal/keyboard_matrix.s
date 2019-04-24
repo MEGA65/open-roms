@@ -7,14 +7,14 @@ keyboard_matrixes:
 	;; Unshifted matrix built by refering to
 	;; Compute's Mapping the 64 p38-39
 	;; and C64 PRG pages 379-381
-	.byte 20,13,$1D,136,133,134,135,17
-	.byte $33,87,$41,$34,90,83,$45,$00
+	.byte $14,$0D,$1D,$88,$85,$86,$87,17
+	.byte $33,87,$41,$34,$5A,83,$45,$00
 	.byte $35,$52,$44,$36,$43,$46,$54,88
 	.byte $37,$59,$47,$38,$42,$48,$55,$56
 	.byte $39,$49,$4A,$30,$4D,$4B,$4F,$4E
 	.byte $2B,$50,$4C,45,46,58,$40,44
 	.byte $5C,$2A,59,$13,$00,$3D,94,$2F
-	.byte $31,$5F,$00,$32,$20,$00,$51,3
+	.byte $31,$5F,$00,$32,$20,$00,$51,$03
 
 	;; Shifted keyboard
 	;; Values computed by running a program like:

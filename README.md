@@ -121,6 +121,22 @@ this tool to be overly senstive in an abundance of caution. As with everything i
 we are going above and beyond to establish beyond reasonable doubt that our software does not
 infringe the copyrights of the owners of the C64/C65/C128 and other ROMs.
 
+# A note on common furniture of a BASIC system
+
+The "READY." prompt and error messages constitute the majority of the obvious "furniture" of
+a computer like the C64.  However, both these elements have since been widely copied to the
+point of being genericised in our view.  It is only the exact combination of the phraseology
+of the C64's startup screen combined with the double-blue colour scheme that would seem to
+stand any chance of enjoying any protection.  The number of coffee mugs and T-shirts with
+READY. or similar printed on them, and which have been available for decades without
+challenge from any rights holders would seem to confirm this view.  Also, the lack of defence
+against such things acts to diminish any residual rights that might have ever existed.
+
+In an abundance of caution, we are using a different colour scheme than the C64: Namely,
+solid blue with white text, which has long since been used on many other computer systems,
+such as QuickBASIC on DOS, and in many application programs.  Such a colour scheme is
+unprotectable in our view.
+
 # Note regarding trademarks
 
 Commodore and other trademarks are trade-marks of their owners, whoever that may be at any particular point in time.  

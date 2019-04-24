@@ -1,0 +1,16 @@
+End of interrupt restore registers and resume sequence
+
+This is the standard form of returning from an interrupt on a 6502:
+
+PLA
+TAY
+PLA
+TAX
+PLA
+RTI
+
+See, for example: 
+
+http://6502.org/tutorials/register_preservation.html
+
+Not copyrightable.

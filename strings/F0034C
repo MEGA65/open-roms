@@ -1,0 +1,10 @@
+Jump conditionally
+
+Conditionally take a JMP
+
+Bxx +
+JMP $xxxx
+*
+
+This is a very common instruction sequence.
+Not copyrightable.

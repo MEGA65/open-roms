@@ -1,0 +1,5 @@
+tail end of access to $0284, followed by RTS
+
+This small fragment is a return from subroutine, where
+the last thing the subroutine does is access memory location $0284.
+This is not copyrightable.

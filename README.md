@@ -69,3 +69,52 @@ to generate this call graph.
 To organise this as we develop, we will assemble the ROM from many separate source files, each with a single routine in it, and with the name of the file matching the routine.  Where code must be placed at a specific address, the file should be called xxxx.routine.s, where xxxx is the address.  We will write a special preprocessor that will take the routines and put them in the correct deterministic order, and make
 sure that no address placement violations occur.  To make this easier to do, we are using the Ophis assembler, as it makes it quite easy to check such things.
 
+# Defending against potential copyright infringement claims
+
+Our overall goal is to avoid any potential challenge against this software based on
+claims of copyright infringement from whoever may own the copyright to Commodore 64,
+65 or 128 computer ROMs.  Therefore, in addition to the above procedure, we have a
+tool called similarity that can be run against one of the Commodore ROMs and our
+open-source ROMs to look for any similarity exceeding 2 bytes, and provides an
+explanation for every such similarity, or shows the sequence of bytes.
+
+Matches of single bytes are excluded, because every byte value is statistically
+likely to be present in any substantial program, and thuss cannot possible be copyright.
+As similar argument applies to pairs of bytes.
+
+For 3 byte sequences, we ignore all single CPU instructions, as it cannot be argued that
+any specific instruction of the 6502 processor could be copyrighted in its binary form.
+
+We also automatically exclude some very common 3 byte sequences, such as any branch
+followed by its 1 byte argument and any following opcode.  There is simply no creative
+value possible in a pairingg of two instructions, the first of which is a branch.
+
+Similarly, any 3 byte sequence that ends in storing a value into a zero page location is
+excluded on the basis that such sequences occur with extreme frequency, and are a natural
+result of writing 6502 code.
+
+Similarly loading or comparing the A register, followed by any single instruction cannot
+possibly be copyrightable.  Similarly for many other 2-byte instructions.
+
+All other matches of at least 3 bytes are searched for in the strings/ directory for
+a file with matching name, and if present, the first line of that file is shown as 
+an explanation.  These files contain our opinions on why such sequences cannot be 
+copyrightable, or failing that, the subject of any claim of copyright infringement with
+respect to the C64/C65/C128 ROMs by their owners.
+
+That is, we are seeking to be totally transparent in the creation of our free ROMs
+for these 8-bit computers, and providing reasoned arguments in advance for all to see.
+This should appease potential users of them, while also providing clear justification
+to anyone who might seek to bring any legal challenge against them.  Basically if you
+can't provide a strong argument as to why our reasoning on a given byte sequence is
+fatally flawed, then we have every intention to seek dismissal of any case with prejudice
+and seeking costs, because we have provided you with access to information that disproves
+such a case along with the software, and bringing or threatening to bring any case
+against the authors or distributors of this software based on copyright infringement against
+the C64/C65/C128 ROMs is therefore clearly vexatious, since it is bought without refuting
+our publicly documented explanation as to why this software is not infringing.
+
+# Note regarding trademarks
+
+Commodore and other trademarks are trade-marks of their owners, whoever that may be at any particular point in time.  
+

@@ -98,6 +98,22 @@ int main(int argc,char **argv)
       if (l<k) {
 	// Ignore matches of no more than 3 bytes,
 	// since that is the max length of a 6502 instruction
+	int single_instruction=0;
+	if (k==3) {
+	  // Filter out certain common instructions
+	  switch(f1[i]) {
+	  case 0x20: // JSR $xxxx
+	  case 0x4c: // JMP $xxxx
+	  case 0x6c: // JMP ($xxxx)
+	  case 0x8d: // STA $xxxx
+	  case 0xad: // LDA $xxxx
+	    single_instruction=1;
+	    break;
+	  }
+	}
+	if (single_instruction) break;
+	    
+
 	if (k>2) {
 	  char similarity_name[MAX_SIZE];
 	  snprintf(similarity_name,MAX_SIZE,"strings/");

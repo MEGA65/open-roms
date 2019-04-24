@@ -1,0 +1,3 @@
+LDA ($AE),Y / STA ($F3),Y
+
+Copy byte from one pointer to  another.  Nothing copyrightable here.

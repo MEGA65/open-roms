@@ -1,0 +1,41 @@
+Copy screen + colour RAM to the left one place
+
+This sequence of instructions:
+
+loop:
+         INY
+         LDA ($D1),Y
+         DEY
+         STA ($D1),Y
+         INY
+         LDA ($F3),Y
+         DEY
+         STA ($F3),Y
+         INY
+         CPY $D5
+         BNE loop
+
+is the obvious any minimal way to copy the screen and colour RAM data.
+The constants $D1 and $F3 are fixed by the publicly documented interface
+of the KERNAL to point to the screen and colour RAM of the screen.
+
+The Y register is the only register that can be used to post-increment an
+indirect address on the 6502.
+
+Thus the only efficient manner to copy a string to the left one byte
+is to read, decrement Y by one to get the destination address, store,
+then increment Y again so that it points to the source offset, now read
+the colour RAM byte, add one to Y so that we point to the destination,
+and then write it.  
+
+Similarly the check against $D5 (current length of line) is also
+necessary for working out when to terminate the loop.  
+
+In fact, about the only variant possible would be to swap the $D1 and $F3
+constants so that the colour RAM is copied before the screen RAM in each
+loop, instead of after it.
+
+It is telling that this routine was the result of independent implementation
+of this routine, without looking at the KERNALs routine, in terms of supporting
+the argument that the routine is the obvious manner in which to do this.
+

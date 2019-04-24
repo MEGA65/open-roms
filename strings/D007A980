@@ -1,0 +1,4 @@
+Branch over LDA #$80 and some more 
+
+Branching is extremely common, as is loading the accumulator
+with any specific value.  Nothing creative or copyrightable here.

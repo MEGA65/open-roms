@@ -1,0 +1,5 @@
+LDA $DC0D / LDA $xxxx
+
+LDA $DC0D clears pending interrupts on CIA1. 
+Only one whole instruction.
+Not copyrightable.

@@ -1,0 +1,5 @@
+LDA ($AC),Y / STA ($D1),Y
+
+Copy a byte from one pointer to another.
+Nothing creative here.
+Not copyrightable.

@@ -100,13 +100,74 @@ int main(int argc,char **argv)
 	// since that is the max length of a 6502 instruction
 	int single_instruction=0;
 	if (k==3) {
-	  // Filter out certain common instructions
+	  // Filter out all 3 byte instructions
 	  switch(f1[i]) {
-	  case 0x20: // JSR $xxxx
-	  case 0x4c: // JMP $xxxx
-	  case 0x6c: // JMP ($xxxx)
-	  case 0x8d: // STA $xxxx
-	  case 0xad: // LDA $xxxx
+	  case 0x0C: //   TSB $nnnn
+	  case 0x0D: //   ORA $nnnn
+	  case 0x0E: //   ASL $nnnn
+	  case 0x19: //   ORA $nnnn,Y
+	  case 0x1C: //   TRB $nnnn
+	  case 0x1D: //   ORA $nnnn,X
+	  case 0x1E: //   ASL $nnnn,X
+	  case 0x20: //   JSR $nnnn
+	  case 0x22: //   JSR ($nnnn)
+	  case 0x23: //   JSR ($nnnn,X)
+	  case 0x2C: //   BIT $nnnn
+	  case 0x2D: //   AND $nnnn
+	  case 0x2E: //   ROL $nnnn
+	  case 0x39: //   AND $nnnn,Y
+	  case 0x3C: //   BIT $nnnn,X
+	  case 0x3D: //   AND $nnnn,X
+	  case 0x3E: //   ROL $nnnn,X
+	  case 0x4C: //   JMP $nnnn
+	  case 0x4D: //   EOR $nnnn
+	  case 0x4E: //   LSR $nnnn
+	  case 0x59: //   EOR $nnnn,Y
+	  case 0x5D: //   EOR $nnnn,X
+	  case 0x5E: //   LSR $nnnn,X
+	  case 0x6C: //   JMP ($nnnn)
+	  case 0x6D: //   ADC $nnnn
+	  case 0x6E: //   ROR $nnnn
+	  case 0x79: //   ADC $nnnn,Y
+	  case 0x7C: //   JMP ($nnnn,X)
+	  case 0x7D: //   ADC $nnnn,X
+	  case 0x7E: //   ROR $nnnn,X
+	  case 0x8B: //   STY $nnnn,X
+	  case 0x8C: //   STY $nnnn
+	  case 0x8D: //   STA $nnnn
+	  case 0x8E: //   STX $nnnn
+	  case 0x99: //   STA $nnnn,Y
+	  case 0x9B: //   STX $nnnn,Y
+	  case 0x9C: //   STZ $nnnn
+	  case 0x9D: //   STA $nnnn,X
+	  case 0x9E: //   STZ $nnnn,X
+	  case 0xAB: //   LDZ $nnnn
+	  case 0xAC: //   LDY $nnnn
+	  case 0xAD: //   LDA $nnnn
+	  case 0xAE: //   LDX $nnnn
+	  case 0xB9: //   LDA $nnnn,Y
+	  case 0xBB: //   LDZ $nnnn,X
+	  case 0xBC: //   LDY $nnnn,X
+	  case 0xBD: //   LDA $nnnn,X
+	  case 0xBE: //   LDX $nnnn,Y
+	  case 0xCB: //   ASW $nnnn
+	  case 0xCC: //   CPY $nnnn
+	  case 0xCD: //   CMP $nnnn
+	  case 0xCE: //   DEC $nnnn
+	  case 0xD9: //   CMP $nnnn,Y
+	  case 0xDC: //   CPZ $nnnn
+	  case 0xDD: //   CMP $nnnn,X
+	  case 0xDE: //   DEC $nnnn,X
+	  case 0xEB: //   ROW $nnnn
+	  case 0xEC: //   CPX $nnnn
+	  case 0xED: //   SBC $nnnn
+	  case 0xEE: //   INC $nnnn
+	  case 0xF4: //   PHW #$nnnn
+	  case 0xF9: //   SBC $nnnn,Y
+	  case 0xFC: //   PHW $nnnn
+	  case 0xFD: //   SBC $nnnn,X
+	  case 0xFE: //   INC $nnnn,X
+	    
 	    single_instruction=1;
 	    break;
 	  }

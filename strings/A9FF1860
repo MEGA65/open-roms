@@ -1,0 +1,6 @@
+LDA #$FF / CLC / RTS
+
+Return $FF in A with C clear from a routine.
+Nothing creative or copyrightable here.
+This is a common exit formulation from routines, to set A to something,
+and set or clear the C flag.

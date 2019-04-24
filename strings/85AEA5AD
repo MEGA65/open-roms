@@ -1,0 +1,4 @@
+LDA $AE / STA $AD
+
+Copy a byte between ZP locations.
+Nothing creative or copyrightable here.

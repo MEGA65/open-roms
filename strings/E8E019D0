@@ -1,0 +1,5 @@
+INX / CPX #$19 / BRANCH somewhere
+
+Looks like a fragment of a loop that waits until X reaches $19
+before terminating.
+Nothing creative or copyrightable here.

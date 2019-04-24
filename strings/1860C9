@@ -1,0 +1,8 @@
+CLC / RTS / CMP #$xx
+
+Clear carry flag when exiting a routine (very common constrution).
+What happens to be after the RTS is from another routine, and it is 
+mere coincidence that it makes such a thing.
+Of course, as there are many routines that end with CLC, it is quite
+likely that such matches will happen by pure chance.
+Nothing creative or copyrightable.

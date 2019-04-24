@@ -1,0 +1,4 @@
+CMP #$0D / BNE <past JMP> / JMP somewhere
+
+Jump to a routine based on whether A has a given value.
+Nothing creative or copyrightable here.

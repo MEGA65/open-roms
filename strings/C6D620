@@ -1,0 +1,4 @@
+DEC $D6 / JSR $nnnn
+
+Only one whole instruction here.
+Not copyrightable.

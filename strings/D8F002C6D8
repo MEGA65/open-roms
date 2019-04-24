@@ -1,0 +1,4 @@
+ FRagment / BRANCH <skip next instruction> / DEC $D8
+
+Condionally decrement a ZP location.
+Nothing creative or copyrightable here.

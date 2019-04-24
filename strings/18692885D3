@@ -1,0 +1,5 @@
+CLC / ADC #40 / STA $D3
+
+Add 40 to something and store in $D3.
+This would be a single instruction on many architectures.
+Nothing creative or copyrightable here.

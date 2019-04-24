@@ -1,0 +1,3 @@
+LDY $D3 /  STA ($D1),Y
+
+store a value relative to a pointer.  Nothing creative or copyrightable here. 

@@ -1,0 +1,5 @@
+LDA #$27 / CMP $D3
+
+Load A with a given value and compare it to contents of a ZP location.
+This would be a single instruction on many architectures.
+Nothing creative or copyrightable.

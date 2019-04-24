@@ -114,6 +114,13 @@ against the authors or distributors of this software based on copyright infringe
 the C64/C65/C128 ROMs is therefore clearly vexatious, since it is bought without refuting
 our publicly documented explanation as to why this software is not infringing.
 
+Note that just because we provide an explanation of a byte sequence, or because our similarity
+tool considers it worth explaining, it does not constitute an admission on our part that such
+a sequence may be subject to copyright.  Rather, we have purposely created and configured 
+this tool to be overly senstive in an abundance of caution. As with everything in this software,
+we are going above and beyond to establish beyond reasonable doubt that our software does not
+infringe the copyrights of the owners of the C64/C65/C128 and other ROMs.
+
 # Note regarding trademarks
 
 Commodore and other trademarks are trade-marks of their owners, whoever that may be at any particular point in time.  

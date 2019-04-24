@@ -1,0 +1,10 @@
+Clear CIA1 interrupt status
+
+LDA #$7F
+STA $DC0D
+
+This is a well known sequence for clearing CIA1 interrupts
+on the C64.
+It is the simplest implementation to write $7F into location
+$DC0D.
+For each of these reasons it cannot be subject to copyright.

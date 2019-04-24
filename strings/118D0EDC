@@ -1,0 +1,12 @@
+Do something with $11, then write to $DC0E
+
+This is probably the tail end of something like:
+
+LDA #$11
+STA $DC0E
+
+Putting a value into a memory location is not copyrightable.
+
+$DC0E is one of the control registers for a 6526 CIA on
+the Commodore 64, and thus writing to it is totally normal
+and expected.

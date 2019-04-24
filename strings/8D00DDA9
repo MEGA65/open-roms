@@ -1,0 +1,12 @@
+Store something in $DD00, then load something into the A register
+
+STA $DD00
+LDA #$xx
+
+Writing to a memory location is not copyrightable.
+Loading something into the A register happens very frequently.
+Thus the only non-random thing about this pair of instructions
+is that the C64 has an important IO register at $DD00, which
+makes it much more likely that such a sequence will occur as
+a random part of writing programs.  It is in any case not
+copyrightable.

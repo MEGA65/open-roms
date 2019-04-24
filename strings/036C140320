@@ -1,0 +1,22 @@
+Jump to routine at vector $0314
+
+This corresponds to
+
+Bxx +
+JMP ($0314)
+*
+JSR $xxxx
+
+That is, based on the result of some branch instruction, 
+optionally jump to the routine whose address is stored in
+$0314 - $0315.
+The use of a jump table is not copyrightable of itself.
+The location of jump table vectors at $0314 on the C64 is publicly
+documented.  
+There are also unrelated systems using jumptables with the constant
+$0314, e.g.:
+https://github.com/mamedev/mame/blob/master/src/mame/drivers/mosaic.cpp
+http://www.microchip.com/forums/download.axd?file=1;895201
+
+In short, there is absolutely no reason to be able to even entertain
+copyrighting jumping through a vector at $0314.

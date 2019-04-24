@@ -1,0 +1,16 @@
+End of routine fragment
+
+The three instances of this in the C64 KERNAL are something like:
+
+XXX $02xx
+RTS
+Bxx $xxxx
+
+Each time it does something different, which emphasises that this 
+is a piece of simple machinery that can occur by chance, especially
+when variables are stored in the area $0200 - $02FF, which is common.
+For example, the BBC micro uses this area in this way:
+http://8bs.com/mag/32/bbcmemmap1.txt
+
+In any case, such a short sequence devoid of independent meaning is
+not copyrightable. 

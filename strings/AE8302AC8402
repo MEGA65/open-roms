@@ -1,0 +1,15 @@
+Load X and Y from pointer at $0283
+
+LDX $0283
+LDY $0284
+
+Loading two registers from two successive memory locations
+is not copyrightable.
+
+On the C64, these locations typically hold the top of memory
+pointer, thus even if the sequence were somehow copyrightable,
+which we do not admit, it is an obvious and expected sequence
+whenever one wishes to load the start of memory pointer into 
+registers to be worked with.  Thus it must be held to be both
+fair use and exempt under interoperability provisions in various
+copyright acts, if the defence were required.

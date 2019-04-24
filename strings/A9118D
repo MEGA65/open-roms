@@ -1,0 +1,5 @@
+Store value $11 somewhere in memory
+LDA #$11
+STA $xxxx
+
+This is the obvious way to put $11 into a memory location, and thus not copyrightable.

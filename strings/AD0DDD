@@ -1,0 +1,4 @@
+Read from $DD0D
+
+This single instruction reads the value stored in $DD0D.
+This cannot be copyrighted.

@@ -1,0 +1,3 @@
+Enable CIA1 TimerA interrupt minimal instruction sequence
+LDA #$81
+STA $DC0D

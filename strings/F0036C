@@ -1,0 +1,11 @@
+Branch over following JMP ($nnnn) instruction
+A branch with argument $03 skips the following 3 bytes.
+A JSR instruction has the initial byte value of $20.
+Therefore $F0 $XX $20 is part of a 
+Bxx +
+JMP ($xxxx)
+*
+
+instruction sequence.
+This is a very common construction, and the logical way to 
+conditionally call a routine via a vector, and therefore is not copyrightable.

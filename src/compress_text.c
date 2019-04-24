@@ -4,6 +4,119 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+//   https://www.c64-wiki.com/wiki/BASIC_token
+/*
+  The URLs here provide examples of other BASIC dialects that include the specified commands
+  or keywords.
+  All except VERIFY are known with certainty to be part of other BASIC dialects, and thus
+  cannot be subject to copyright infringement when implemented on a C64.
+
+  The VERIFY Command however appears in other programming languages, and as a single word,
+  is the obvious complement to LOAD and SAVE when considering the following storage functions:
+
+  1. Load a file from storage into memory.
+  2. Save a file from memory to storage.
+  3. Verify that a file has been correctly written from memory to storage.
+
+  Note that verify is the key verb in the behaviour of this function. Therefore it is the
+  obvious choice for the name for such a function, taking into account the convention of
+  LOAD and SAVE. Indeed, that this is so is highlighted by the fact that it was used in the
+  C64 ROM.  Therefore there is no exercise of creativity here, and a reasonable person would
+  likely select this name independently. Also, single words cannot be copyright.
+  
+  Further, the list is a list of facts, and thus not copyrightable.
+
+  We sourced the list from a public source, https://www.c64-wiki.com/wiki/BASIC, which has
+  been public on the internet for a long time, as have many other similar sources.
+  That website offers the page under the GFDL license, and we can therefore take the list
+  under those license terms if we wish, should the need arise.
+
+  Note that in providing these justifications above, we do not in any way acknowledge that 
+  without these conditions that the BASIC keyword list could be copyright, but provide this
+  information as a further layer of defence against any claims that it could somehow 
+  infringe on the copyrights of the C64/C65/C128 etc ROMs.
+
+*/
+char *keyword_list[]={
+  "END",     // https://www.landsnail.com/a2ref.htm
+  "FOR",     // https://www.landsnail.com/a2ref.htm
+  "NEXT",     // https://www.landsnail.com/a2ref.htm
+  "DATA",     // https://www.landsnail.com/a2ref.htm
+  "INPUT#",     // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
+  "INPUT",     // https://www.landsnail.com/a2ref.htm
+  "DIM",     // https://www.landsnail.com/a2ref.htm
+  "READ",     // https://www.landsnail.com/a2ref.htm
+  "LET",     // https://en.wikipedia.org/wiki/Atari_BASIC
+  "GOTO",     // https://www.landsnail.com/a2ref.htm
+  "RUN",     // https://www.landsnail.com/a2ref.htm
+  "IF",     // https://www.landsnail.com/a2ref.htm
+  "RESTORE",     // https://www.landsnail.com/a2ref.htm
+  "GOSUB",     // https://www.landsnail.com/a2ref.htm
+  "RETURN",     // https://www.landsnail.com/a2ref.htm
+  "REM",     // https://www.landsnail.com/a2ref.htm
+  "STOP",     // https://www.landsnail.com/a2ref.htm
+  "ON",     // https://www.landsnail.com/a2ref.htm
+  "WAIT",     // http://www.picaxe.com/BASIC-Commands/Time-Delays/wait/
+  "LOAD",     // https://www.landsnail.com/a2ref.htm
+  "SAVE",     // https://www.landsnail.com/a2ref.htm
+  "VERIFY",     // https://golang.org/cmd/go/
+  "DEF",     // https://www.landsnail.com/a2ref.htm
+  "POKE",     // https://www.landsnail.com/a2ref.htm
+  "PRINT#",     // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
+  "PRINT",     // https://www.landsnail.com/a2ref.htm
+  "CONT",     // https://www.landsnail.com/a2ref.htm
+  "LIST",     // https://www.landsnail.com/a2ref.htm
+  "CLR",     // Apple I Replica Creation: Back to the Garage, p125
+  "CMD",     // https://en.wikipedia.org/wiki/List_of_DOS_commands
+  "SYS",     // https://www.lifewire.com/dos-commands-4070427
+  "OPEN",     // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
+  "CLOSE",     // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
+  "GET",     // https://www.landsnail.com/a2ref.htm
+  "NEW",     // https://www.landsnail.com/a2ref.htm
+  "TAB(",     // http://www.antonis.de/qbebooks/gwbasman/tab.html
+  "TO",     // https://www.landsnail.com/a2ref.htm
+  "FN",     // https://www.landsnail.com/a2ref.htm
+  "SPC(",     // http://www.antonis.de/qbebooks/gwbasman/spc.html
+  "THEN",     // https://www.landsnail.com/a2ref.htm
+  "NOT",     // https://www.landsnail.com/a2ref.htm
+  "STEP",     // https://www.landsnail.com/a2ref.htm
+  "+",     // https://www.landsnail.com/a2ref.htm
+  "−",     // https://www.landsnail.com/a2ref.htm
+  "*",     // https://www.landsnail.com/a2ref.htm
+  "/",     // https://www.landsnail.com/a2ref.htm
+  "^",     // https://www.landsnail.com/a2ref.htm
+  "AND",     // https://www.landsnail.com/a2ref.htm
+  "OR",     // https://www.landsnail.com/a2ref.htm
+  ">",     // https://www.landsnail.com/a2ref.htm
+  "=",     // https://www.landsnail.com/a2ref.htm
+  "<",     // https://www.landsnail.com/a2ref.htm
+  "SGN",     // https://www.landsnail.com/a2ref.htm
+  "INT",     // https://www.landsnail.com/a2ref.htm
+  "ABS",     // https://www.landsnail.com/a2ref.htm
+  "USR",     // https://www.landsnail.com/a2ref.htm
+  "FRE",     // http://www.antonis.de/qbebooks/gwbasman/fre.html
+  "POS",     // http://www.antonis.de/qbebooks/gwbasman/pos.html
+  "SQR",     // https://www.landsnail.com/a2ref.htm
+  "RND",     // https://www.landsnail.com/a2ref.htm
+  "LOG",     // https://www.landsnail.com/a2ref.htm
+  "EXP",     // https://www.landsnail.com/a2ref.htm
+  "COS",     // https://www.landsnail.com/a2ref.htm
+  "SIN",     // https://www.landsnail.com/a2ref.htm
+  "TAN",     // https://www.landsnail.com/a2ref.htm
+  "ATN",     // https://www.landsnail.com/a2ref.htm
+  "PEEK",     // https://www.landsnail.com/a2ref.htm
+  "LEN",     // https://www.landsnail.com/a2ref.htm
+  "STR$",     // https://www.landsnail.com/a2ref.htm
+  "VAL",     // https://www.landsnail.com/a2ref.htm
+  "ASC",     // https://www.landsnail.com/a2ref.htm
+  "CHR$",     // https://www.landsnail.com/a2ref.htm
+  "LEFT$",     // https://www.landsnail.com/a2ref.htm
+  "RIGHT$",     // https://www.landsnail.com/a2ref.htm
+  "MID$",     // https://www.landsnail.com/a2ref.htm
+  "GO",     // https://en.wikipedia.org/wiki/Goto
+  NULL    
+};
+
 /*
   These error messages are generally so well known, that it seems silly to have to even point out that they are
   so widely used and known, if not completely genericised.
@@ -12,9 +125,6 @@
 
   However, copyright of such short phrases that express ideas in short form cannot be copyrighted:
   https://fairuse.stanford.edu/2003/09/09/copyright_protection_for_short/
-  
-  
-
  */
 char *error_list[]={
   "TOO MANY FILES",        // https://docs.microsoft.com/en-us/dotnet/visual-basic/language-reference/error-messages/too-many-files

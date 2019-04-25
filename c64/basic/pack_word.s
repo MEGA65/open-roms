@@ -83,6 +83,7 @@ have_nybl_before_exception_char:
 	;; FALL THROUGH
 	
 write_literal_and_terminate_if_required:	
+
 	;; Clear have nybl flag
 	lda #$00
 	sta tokenise_work3
@@ -163,7 +164,7 @@ whole_byte_symbol:
 	;; It's a $Fx symbol.
 	;; But if we have a nybl to flush, then we handle it like
 	;; a full exception character
-	
+
 	ldy tokenise_work3
 	beq nothing_to_flush
 	
@@ -180,8 +181,8 @@ nothing_to_flush:
 	;; Write the symbol as it is, or the literal
 	;; if it has been passed to us via fall-through
 	jsr write_unpacked_char
-	
-	;; Fall through
+
+	jsr end_string_if_required
 	
 consider_next_char:	
 	;; Pack next char
@@ -232,11 +233,11 @@ not_nybl_char:
 	cpy #27
 	bcs not_a_match
 	;; It's a $Fx character.
-	;; Since the lowest index is $F, and it should be encoded as $F1
-	;; we need to add $E2
+	;; Since the lowest index is $E, and it should be encoded as $F1
+	;; we need to add $E3
 	tya
 	clc
-	adc #$E2
+	adc #$E3
 	rts
 	
 not_a_match:

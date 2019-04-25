@@ -26,6 +26,12 @@ pack_word:
 	;; is incomplete, which is important for searching for abbreviated
 	;; key words.)
 
+	;; Make sure we have a sane request
+	lda tokenise_work1
+	bne +
+	sec
+	rts
+*	
 	;; Initialise internal variables
 	lda #$00
 	sta tokenise_work2
@@ -213,9 +219,9 @@ get_packed_char_index:
 find_char_loop:	
 	cmp packed_message_chars,y
 	bne not_a_match
-
+enumerate:	
 	;; Is it a nybl abbreviable char?
-	cpy #13
+	cpy #14
 	bcs not_nybl_char
 	;; Yes, so add 1 and return it
 	iny
@@ -230,7 +236,7 @@ not_nybl_char:
 	;; we need to add $E2
 	tya
 	clc
-	adc #$E3
+	adc #$E2
 	rts
 	
 not_a_match:

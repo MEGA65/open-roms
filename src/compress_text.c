@@ -177,6 +177,9 @@ int token_count=0;
 unsigned char packed_words[MAX_LEN];
 int packed_len=0;
 
+unsigned char packed_keywords[MAX_LEN];
+int packedkey_len=0;
+
 struct char_freq {
   unsigned char c;
   int count;
@@ -269,18 +272,39 @@ int pack_word(const char *w,unsigned char *out,int *len)
 	out[(*len)++]=byte;
 	nybl_waiting=0;
 	fprintf(stderr," F[$%02x]",byte);
-      }
-      if (char_num < (14+13)) {
-	out[(*len)++]=0xF1+(char_num-14);
-	fprintf(stderr," L[$%02x]",0xF1+(char_num-14));
-      } else {
-	if (!(char_num&0xf)) {
-	  fprintf(stderr,"ERROR: Extended characters must have non-zero low-nybl\n");
+	if (char_num&0x80) {
+	  fprintf(stderr,"ERROR: Extended characters must be < 0x80\n");
 	  exit(-1);
 	}
-	out[(*len)++]=0xFE;
-	out[(*len)++]=char_num;
-	fprintf(stderr," X[$FE,$%02x]",char_num);
+	if (w[j+1]) {
+	  out[(*len)++]=(char_num<<1)+1;
+	  fprintf(stderr," XS[$%02x]",char_num);
+	}
+        else {
+	  out[(*len)++]=(char_num<<1)+0;
+	  fprintf(stderr," XS0[$%02x]",char_num);
+	  return 0;
+	}
+      } else {
+	if (char_num < (14+13)) {
+	  out[(*len)++]=0xF1+(char_num-14);
+	  fprintf(stderr," L[$%02x]",0xF1+(char_num-14));
+	} else {
+	  if (char_num&0x80) {
+	    fprintf(stderr,"ERROR: Extended characters must be < 0x80\n");
+	    exit(-1);
+	  }
+
+	  if (w[j+1]) {
+	    out[(*len)++]=(char_num<<1)+1;
+	    fprintf(stderr," X[$%02x]",char_num);
+	  }
+	  else {
+	    out[(*len)++]=(char_num<<1)+0;
+	    fprintf(stderr," X0[$%02x]",char_num);
+	    return 0;
+	  }
+	}
       }
     }
     fprintf(stderr,"\n");
@@ -304,6 +328,7 @@ int pack_word(const char *w,unsigned char *out,int *len)
 int main(void)
 {
   int raw_size=0;
+  int keyraw_size=0;
 
   // Get letter frequencies
   for(int i=0;i<26;i++) char_freqs[i].count=0;
@@ -327,7 +352,7 @@ int main(void)
   
   
   for(int i=0;error_list[i];i++) raw_size+=strlen(error_list[i]);
-  fprintf(stderr,"Error list takes %d bytes raw.\n",raw_size);
+  for(int i=0;keyword_list[i];i++) keyraw_size+=strlen(keyword_list[i]);
 
   for(int i=0;error_list[i];i++)
     {
@@ -359,14 +384,12 @@ int main(void)
   for(int i=0;i<word_count;i++) {
     pack_word(words[i],packed_words,&packed_len);    
   }
-  fprintf(stderr,"Words packed in %d bytes\n",packed_len);
-  fprintf(stderr,"%d token bytes used to encode all messages.\n",token_count);
+  for(int i=0;i<keyword_list[i];i++) {
+    pack_word(keyword_list[i],packed_keywords,&packedkey_len);    
+  }
 
   int word_bytes=0;
   for(int i=0;i<word_count;i++) word_bytes+=strlen(words[i]);
-  fprintf(stderr,"Plus %d bytes for the words\n",packed_len);
-
-  fprintf(stderr,"Space saving = %d bytes\n",raw_size-packed_len-token_count);
 
   if (packed_len>255) {
     fprintf(stderr,"ERROR: packed_len>255\n");
@@ -404,5 +427,24 @@ int main(void)
       } else
 	printf("\t.byte $%02x\n",packed_words[i]);
     }
+
+  printf("packed_keywords:\n");
+  for(int i=0;i<packedkey_len;i++)
+    {
+      if ((packed_len-i)>=8) {
+	printf("\t.byte $%02x,$%02x,$%02x,$%02x,$%02x,$%02x,$%02x,$%02x\n",
+	       packed_keywords[i+0],packed_keywords[i+1],packed_keywords[i+2],packed_keywords[i+3],
+	       packed_keywords[i+4],packed_keywords[i+5],packed_keywords[i+6],packed_keywords[i+7]);
+	i+=7;
+      } else
+	printf("\t.byte $%02x\n",packed_keywords[i]);
+    }
+  
+  fprintf(stderr,"%d token bytes used to encode all messages.\n",token_count);
+  fprintf(stderr,"Plus %d bytes for the words\n",packed_len);
+  fprintf(stderr,"Space saving = %d bytes\n",raw_size-packed_len-token_count);
+  fprintf(stderr,"Error list takes %d bytes raw.\n",raw_size);
+  fprintf(stderr,"Keyword list takes %d bytes raw.\n",keyraw_size);
+  fprintf(stderr,"Keyword list takes %d bytes packed.\n",packedkey_len);
   
 }

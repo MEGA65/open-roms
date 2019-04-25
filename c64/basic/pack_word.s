@@ -56,44 +56,70 @@ pack_char_loop:
 	cpx tokenise_work1
 	beq at_end
 	lda #$FF
-at_end: .byte $2C
-	LDA #$FE
+	.byte $2C
+at_end:	LDA #$FE
 	dex
-	ldy tokenise_work2
-	sta $0100,y
-	inc tokenise_work2
-	
-	jmp output_exception_byte
+	jsr write_unpacked_char
+
+output_exception_byte:	
+	lda $0200,x
+	jsr write_unpacked_char
+	jmp consider_next_char
 
 have_nybl_before_exception_char:
 	;; Or existing byte with #$0F, and clear nybl flag
 	ldy tokenise_work2
-	dey
 	lda $0100,y
 	ora #$0f
 	sta $0100,y
+	inc tokenise_work2
 
+	;; FALL THROUGH
+	
+write_literal_and_terminate_if_required:	
 	;; Clear have nybl flag
 	lda #$00
 	sta tokenise_work3
-	
-	;; FAll through
 
-output_exception_byte:	
-	ldy tokenise_work2
 	lda $0200,x
+	jsr write_unpacked_char
+	jsr output_exception_byte
+	jsr end_string_if_required
+	
+end_string_if_required:
+	;; Check if X points to last char of string to be packed
+	inx
+	cpx tokenise_work1
+	beq +
+	dex
+	rts
+*
+	dex
+	;;  Fall through
+	
+end_string:
+	;; Write end of string sequence if required
+	inc $d020
+	lda #$00
+	jsr write_unpacked_char
+	rts
+	
+write_unpacked_char:	
+	ldy tokenise_work2
 	sta $0100,y
 	iny
 	sty tokenise_work2
-	jmp consider_next_char
-
+	rts
+	
 not_exception_char:
 	;; It wasn't an exception char, so write the symbol out
 	cmp #$10
 	bcs whole_byte_symbol
-	;; Nybl value
+
+	;; Nybl encoded value: Put in upper half or lower half of a byte?
 	ldy tokenise_work3
 	bne store_low_nybl
+
 	;; Store in high nybl -- so shift it into the hi nybl
 	asl
 	asl
@@ -103,42 +129,50 @@ not_exception_char:
 	sta $0100,y
 	bne stored_nybl 	; Must be taken, as A cannot be $00
 	
-store_low_nybl:	
+store_low_nybl:
+	;; Low nybl gets added to high nybl already stored in the byte
 	ldy tokenise_work2
 	ora $0100,y
 	sta $0100,y
+
 stored_nybl:	
 	;; Now toggle the nybl flag
 	lda tokenise_work3
 	eor #$ff
 	sta tokenise_work3
-	;; And advance the offset if required
-	bne consider_next_char
+	;; And advance the offset if we filled this byte up
+	bne consider_next_char 	; Taken if byte has a nybl free, i.e., don't advance pointer while half byte remains free
+
+	;; Count the filled up byte
 	inc tokenise_work2
+
+	;; Add termination byte if required
+	;; (This re-writes the same byte again, which we don't care about
+	jsr end_string_if_required
+	
 	jmp consider_next_char
 
 whole_byte_symbol:
+	;; It's a $Fx symbol.
+	;; But if we have a nybl to flush, then we handle it like
+	;; a full exception character
+	
 	ldy tokenise_work3
 	beq nothing_to_flush
+	
 	;; Set low nybl to $F to mark next byte as literal
 	ldy tokenise_work2
 	lda $0100,y
 	ora #$0f
 	sta $0100,y
 	inc tokenise_work2
-	;; Clear nybl flag
-	lda #$00
-	sta tokenise_work3
-	;; Load literal byte for storing in output
-	lda $0200,x
-	;; FALL THROUGH
 
+	jmp write_literal_and_terminate_if_required
+	
 nothing_to_flush:
 	;; Write the symbol as it is, or the literal
 	;; if it has been passed to us via fall-through
-	ldy tokenise_work2
-	sta $0100,y
-	inc tokenise_work2
+	jsr write_unpacked_char
 	
 	;; Fall through
 	
@@ -160,6 +194,7 @@ consider_next_char:
 	;; Last byte was full, so we need at $00 on the end
 	;; (unless a $FE token was written 2 bytes ago)
 	ldy tokenise_work2
+	iny
 	lda #$00
 	sta $0100,y
 	inc tokenise_work2	
@@ -194,7 +229,7 @@ not_nybl_char:
 	;; we need to add $E2
 	tya
 	clc
-	adc #$E2
+	adc #$E3
 	rts
 	
 not_a_match:

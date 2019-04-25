@@ -37,12 +37,11 @@ got_line_of_input:
 	jsr pack_word
 
 	;; Print the packed word
-	ldx tokenise_work2
-	dex
-*	lda $0100,x
-	sta $0608,x
-	dex
-	bpl -
+	lda #<$0100
+	sta temp_string_ptr+0
+	lda #>$0100
+	sta temp_string_ptr+1
+	jsr print_packed_string
 	
 	jsr ready_message
 

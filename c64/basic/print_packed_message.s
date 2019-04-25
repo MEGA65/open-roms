@@ -103,6 +103,8 @@ found_packed_word:
 	lda temp_string_ptr+1
 	adc #$00
 	sta temp_string_ptr+1
+
+print_packed_string:	
 	ldy #$ff
 
 next_packed_word_char:

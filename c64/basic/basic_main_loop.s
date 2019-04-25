@@ -118,6 +118,7 @@ word_boundary:
 	adc #<packed_keywords
 	sta temp_string_ptr+0
 	lda #>packed_keywords
+	adc #$00
 	sta temp_string_ptr+1
 	;; Print the token we found
 	jsr print_packed_string

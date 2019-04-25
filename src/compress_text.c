@@ -392,14 +392,29 @@ int main(void)
     fprintf(stderr,"$%03X : ",i);
     int old_offset=packed_len;
     pack_word(words[i],packed_words,&packed_len);
-    fprintf(stderr,"    Packing word: ");
-    for(int j=old_offset;j<packed_len;j++)
-      fprintf(stderr," $%02X",packed_words[j]);
-    fprintf(stderr,"\n");
+    if ((packed_len-old_offset)>=strlen(words[i])) {
+      if ((packed_len-old_offset)>strlen(words[i]))
+	fprintf(stderr,"    Packed word '%s' longer than original: ",words[i]);
+      else
+	fprintf(stderr,"    Packed word '%s' no smaller than original: ",words[i]);
+      for(int j=old_offset;j<packed_len;j++)
+	fprintf(stderr," $%02X",packed_words[j]);
+      fprintf(stderr,"\n");
+    }
   }
   for(int i=0;keyword_list[i];i++) {
     fprintf(stderr,"$%03X : ",i);
+    int old_offset=packedkey_len;
     pack_word(keyword_list[i],packed_keywords,&packedkey_len);    
+    if ((packedkey_len-old_offset)>=strlen(keyword_list[i])) {
+      if ((packedkey_len-old_offset)>strlen(keyword_list[i])) 
+	fprintf(stderr,"    Packed word '%s' longer than original: ",keyword_list[i]);
+      else
+	fprintf(stderr,"    Packed word '%s' no smaller than original: ",keyword_list[i]);
+      for(int j=old_offset;j<packedkey_len;j++)
+	fprintf(stderr," $%02X",packed_keywords[j]);
+      fprintf(stderr,"\n");
+    }
   }
 
   int word_bytes=0;

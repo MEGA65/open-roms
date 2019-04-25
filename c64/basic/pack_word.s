@@ -107,7 +107,6 @@ end_string_if_required:
 	
 end_string:
 	;; Write end of string sequence if required
-	inc $d020
 	lda #$00
 	jsr write_unpacked_char
 	rts

@@ -115,8 +115,10 @@ next_packed_word_char:
 	lda (temp_string_ptr),y
 	cmp #$00
 	beq end_of_packed_word
+	cmp #$fe
+	beq last_literal
 	and #$f0
-	beq end_of_packed_word
+	beq end_of_packed_word	
 
 	;; Check if it is an uncommon char
 	lda (temp_string_ptr),y
@@ -189,7 +191,15 @@ end_of_packed_word:
 	;; Hit end of packed data
 	rts
 
-next_is_literal_char:	
+last_literal:
+	jsr unpack_literal_char
+	rts
+	
+next_is_literal_char:
+	jsr unpack_literal_char
+	jmp ready_for_next_char
+
+unpack_literal_char:	
 	;; Output the literal char, and ready for next char
 	iny
 	tya
@@ -198,7 +208,7 @@ next_is_literal_char:
 	jsr $ffd2
 	pla
 	tay
-	jmp ready_for_next_char
+	rts
 	
 is_uncommon_char:
 	;; Lower nybl has offset into low-frequency part of the table

@@ -80,11 +80,17 @@ next_in_match:
 	;; Keyword matches!
 	inc $d020
 	tya
+
+	;; We actually point one by late, so rewind to find start of token
+	lda tokenise_work3
+	sec
+	sbc #$01
 	clc
 	adc #<packed_keywords
 	sta temp_string_ptr+0
 	lda #>packed_keywords
 	sta temp_string_ptr+1
+	;; Print the token we found
 	jsr print_packed_string
 	
 done_searching_for_token:	

@@ -91,8 +91,7 @@ write_literal_and_terminate_if_required:
 	lda $0200,x
 	jsr write_unpacked_char
 
-	jsr end_string_if_required
-	jmp consider_next_char
+	jmp end_string_if_required
 	
 end_string_if_required:
 	;; Check if X points to last char of string to be packed
@@ -100,7 +99,7 @@ end_string_if_required:
 	cpx tokenise_work1
 	beq +
 	dex
-	rts
+	jmp consider_next_char
 *
 	dex
 	;;  Fall through
@@ -154,10 +153,8 @@ stored_nybl:
 	inc tokenise_work2
 
 	;; Add termination byte if required
-	;; (This re-writes the same byte again, which we don't care about
-	jsr end_string_if_required
-	
-	jmp consider_next_char
+	;; (This re-writes the same byte again, which we don't care about)
+	jmp end_string_if_required
 
 whole_byte_symbol:
 	;; It's a $Fx symbol.
@@ -181,7 +178,7 @@ nothing_to_flush:
 	;; if it has been passed to us via fall-through
 	jsr write_unpacked_char
 
-	jsr end_string_if_required
+	jmp end_string_if_required
 	
 consider_next_char:	
 	;; Pack next char

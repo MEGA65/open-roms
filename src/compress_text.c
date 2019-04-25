@@ -81,7 +81,7 @@ char *keyword_list[]={
   "NOT",     // https://www.landsnail.com/a2ref.htm
   "STEP",     // https://www.landsnail.com/a2ref.htm
   "+",     // https://www.landsnail.com/a2ref.htm
-  "−",     // https://www.landsnail.com/a2ref.htm
+  "-",     // https://www.landsnail.com/a2ref.htm
   "*",     // https://www.landsnail.com/a2ref.htm
   "/",     // https://www.landsnail.com/a2ref.htm
   "^",     // https://www.landsnail.com/a2ref.htm
@@ -178,7 +178,7 @@ unsigned char packed_words[MAX_LEN];
 int packed_len=0;
 
 struct char_freq {
-  char c;
+  unsigned char c;
   int count;
 };
 
@@ -190,7 +190,8 @@ int cmpfreq(const void *a,const void *b)
   return 0;
 }
 
-struct char_freq char_freqs[31];
+#define MAX_CHARS 256
+struct char_freq char_freqs[MAX_CHARS];
 int char_max=0;
 
 int find_word(char *w)
@@ -218,30 +219,103 @@ void end_of_message(void)
   message_tokens[token_count++]=0xFF;
 }
 
+int calc_stats(const char *s)
+{
+  for(int j=0;s[j];j++)
+    if (s[j]!=' ') {
+      int char_num=0;
+      for(char_num=0;char_num<char_max;char_num++)
+	if (s[j]==char_freqs[char_num].c) break;
+      if (s[j]&0x80) fprintf(stderr,"Word '%s' contains funny char 0x%02x\n",s,s[j]);
+      if (char_num>MAX_CHARS) {
+	fprintf(stderr,"Too many unique characters in message list.  Max is %d\n",MAX_CHARS);
+	exit(-1);
+      }
+      if (char_num>=char_max) char_max=char_num+1;
+      char_freqs[char_num].c=s[j];
+      char_freqs[char_num].count++;
+    }
+  return 0;
+}
+
+int pack_word(const char *w,unsigned char *out,int *len)
+{
+  int nybl_waiting=0;
+  int nybl_val=0;
+  for(int j=0;w[j];j++) {
+    int char_num;
+    for(char_num=0;char_num<char_max;char_num++)
+      if (w[j]==char_freqs[char_num].c) break;
+    fprintf(stderr,"'%c' = char #%d ",w[j],char_num);
+    if (char_num<14) {
+      if (nybl_waiting) {
+	// We have a nybl already waiting, so join them up
+	int byte=(nybl_val<<4)+(char_num+1);
+	out[(*len)++]=byte;
+	nybl_waiting=0;
+	fprintf(stderr," M[$%02x]",byte);
+      } else {
+	// Queue this nybl to pack in a byte
+	nybl_waiting=1;
+	nybl_val=char_num+1;
+	fprintf(stderr," Q[$%x]",char_num+1);
+      }
+    } else {
+      // It's a less frequent letter that we have to encode
+      // using a whole byte, and flush out any waiting nybl with a
+      // $F token to indicate long code follows.
+      if (nybl_waiting) {
+	int byte=(nybl_val<<4)+0xF;
+	out[(*len)++]=byte;
+	nybl_waiting=0;
+	fprintf(stderr," F[$%02x]",byte);
+      }
+      if (char_num < (14+13)) {
+	out[(*len)++]=0xF1+(char_num-14);
+	fprintf(stderr," L[$%02x]",0xF1+(char_num-14));
+      } else {
+	if (!(char_num&0xf)) {
+	  fprintf(stderr,"ERROR: Extended characters must have non-zero low-nybl\n");
+	  exit(-1);
+	}
+	out[(*len)++]=0xFE;
+	out[(*len)++]=char_num;
+	fprintf(stderr," X[$FE,$%02x]",char_num);
+      }
+    }
+    fprintf(stderr,"\n");
+  }
+  
+  // Flush any pending nybl out, or if none, write $00
+  if (nybl_waiting) {
+    int byte=(nybl_val<<4)+0x0;
+    out[(*len)++]=byte;
+    nybl_waiting=0;
+    fprintf(stderr,"    EF[$%02x]\n",byte);
+  } else {
+    int byte=0x00;
+    out[(*len)++]=byte;
+    nybl_waiting=0;
+    fprintf(stderr,"    E[$%02x]\n",byte);      
+  }
+  return 0;
+}
+
 int main(void)
 {
   int raw_size=0;
 
   // Get letter frequencies
   for(int i=0;i<26;i++) char_freqs[i].count=0;
-  for(int i=0;error_list[i];i++) {
-    for(int j=0;error_list[i][j];j++)
-      if (error_list[i][j]!=' ') {
-	int char_num=0;
-	for(char_num=0;char_num<char_max;char_num++)
-	  if (error_list[i][j]==char_freqs[char_num].c) break;
-	if (char_num>(14+15)) {
-	  fprintf(stderr,"Too many unique characters in message list.  Max is 29\n");
-	  exit(-1);
-	}
-	if (char_num>=char_max) char_max=char_num+1;
-	char_freqs[char_num].c=error_list[i][j];
-	char_freqs[char_num].count++;
-      }
-  }
+  for(int i=0;error_list[i];i++) calc_stats(error_list[i]);
+  for(int i=0;keyword_list[i];i++) calc_stats(keyword_list[i]);
+  
   qsort(char_freqs,char_max,sizeof(struct char_freq),cmpfreq);
-  fprintf(stderr,"Letter frequencies:\n");
-  for(int i=0;i<char_max;i++) fprintf(stderr,"'%c' : %d\n",char_freqs[i].c,char_freqs[i].count);
+  fprintf(stderr,"Letter frequencies of %d chars:\n",char_max);
+  for(int i=0;i<char_max;i++) fprintf(stderr,"%02x '%c' : %d\n",
+				      char_freqs[i].c,
+				      char_freqs[i].c,
+				      char_freqs[i].count);
 
   // Get 14 most frequent out to use as 4-bit tokens 1 - 14.
   // Token 0 = end of word.
@@ -283,55 +357,7 @@ int main(void)
 
   // Now encode the words
   for(int i=0;i<word_count;i++) {
-    int nybl_waiting=0;
-    int nybl_val=0;
-    for(int j=0;words[i][j];j++) {
-      int char_num;
-      for(char_num=0;char_num<char_max;char_num++)
-	if (words[i][j]==char_freqs[char_num].c) break;
-      fprintf(stderr,"'%c' = char #%d ",words[i][j],char_num);
-      if (char_num<14) {
-	if (nybl_waiting) {
-	  // We have a nybl already waiting, so join them up
-	  int byte=(nybl_val<<4)+(char_num+1);
-	  packed_words[packed_len++]=byte;
-	  nybl_waiting=0;
-	  fprintf(stderr," M[$%02x]",byte);
-	} else {
-	  // Queue this nybl to pack in a byte
-	  nybl_waiting=1;
-	  nybl_val=char_num+1;
-	  fprintf(stderr," Q[$%x]",char_num+1);
-	}
-      } else {
-	// It's a less frequent letter that we have to encode
-	// using a whole byte, and flush out any waiting nybl with a
-	// $F token to indicate long code follows.
-	if (nybl_waiting) {
-	  int byte=(nybl_val<<4)+0xF;
-	  packed_words[packed_len++]=byte;
-	  nybl_waiting=0;
-	  fprintf(stderr," F[$%02x]",byte);
-	}
-	packed_words[packed_len++]=0xF1+(char_num-14);
-	fprintf(stderr," L[$%02x]",0xF1+(char_num-14));
-      }
-      fprintf(stderr,"\n");
-    }
-
-    // Flush any pending nybl out, or if none, write $00
-    if (nybl_waiting) {
-      int byte=(nybl_val<<4)+0x0;
-      packed_words[packed_len++]=byte;
-      nybl_waiting=0;
-      fprintf(stderr,"    EF[$%02x]\n",byte);
-    } else {
-      int byte=0x00;
-      packed_words[packed_len++]=byte;
-      nybl_waiting=0;
-      fprintf(stderr,"    E[$%02x]\n",byte);      
-    }
-    
+    pack_word(words[i],packed_words,&packed_len);    
   }
   fprintf(stderr,"Words packed in %d bytes\n",packed_len);
   fprintf(stderr,"%d token bytes used to encode all messages.\n",token_count);

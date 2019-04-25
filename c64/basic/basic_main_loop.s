@@ -78,7 +78,36 @@ next_in_match:
 	dec tokenise_work4 	; Have we compared all bytes yet?
 	
 	bne next_in_match
+
 	;; Keyword matches!
+
+	;; Now make sure we are on a keyword boundary.
+	;; Offset 0
+	;; previous byte is $x0
+	;; two byte prior is $FE
+
+	;; Get offset of first byte of this token
+	ldx tokenise_work3
+	dex 			; pointer points one late, so rewind it
+
+	;; At start of list?
+	cpx #$00
+	beq word_boundary
+	dex
+	;; Previous byte is $x0 end token?
+	lda packed_keywords,x
+	and #$0f
+	beq word_boundary
+	dex
+	;; Uber-previouss byte is $FE final literal token?
+	lda packed_keywords,x
+	cmp #$fe
+	beq word_boundary
+
+	;; Not a word boundary, so ignore
+	jmp next_kw_offset
+
+word_boundary:	
 	inc $d020
 
 	;; We actually point one by late, so rewind to find start of token

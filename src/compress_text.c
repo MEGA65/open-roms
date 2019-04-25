@@ -464,7 +464,7 @@ int main(void)
   printf("packed_keywords:\n");
   for(int i=0;i<packedkey_len;i++)
     {
-      if ((packed_len-i)>=8) {
+      if ((packedkey_len-i)>=8) {
 	printf("\t.byte $%02x,$%02x,$%02x,$%02x,$%02x,$%02x,$%02x,$%02x\n",
 	       packed_keywords[i+0],packed_keywords[i+1],packed_keywords[i+2],packed_keywords[i+3],
 	       packed_keywords[i+4],packed_keywords[i+5],packed_keywords[i+6],packed_keywords[i+7]);

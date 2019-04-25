@@ -2,8 +2,11 @@
 ;	(Only those for now that we feel the need to implement initially)
 ;	(https://www.c64-wiki.com/wiki/Zeropage)
 
+	.alias tokenise_work1 $7
+	.alias tokenise_work2 $8
+	.alias tokenise_work3 $B
+	.alias tokenise_work4 $F
 	.alias temp_string_ptr $35
-
 	
 	.alias TXTTAB $2B
 	.alias IOSTATUS $90

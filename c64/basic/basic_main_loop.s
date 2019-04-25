@@ -25,9 +25,24 @@ read_line_loop:
 
 got_line_of_input:
 
+	;; Store length of input buffer ready for tokenising
+	stx tokenise_work1
+	
 	;; Do printing of the new line
 	lda #$0d
 	jsr $ffd2
+
+	;; Pack the word from the start
+	ldx #$00
+	jsr pack_word
+
+	;; Print the packed word
+	ldx tokenise_work2
+	dex
+*	lda $0100,x
+	sta $0608,x
+	dex
+	bpl -
 	
 	jsr ready_message
 

@@ -302,12 +302,12 @@ int pack_word(const char *w,unsigned char *out,int *len)
 	} else {
 	  if (w[j+1]) {
 	    out[(*len)++]=0xFF;
-	    out[(*len)++]=char_num;
+	    out[(*len)++]=w[j];
 	    fprintf(stderr," X[$FF,$%02x]",char_num);
 	  }
 	  else {
 	    out[(*len)++]=0xFE;
-	    out[(*len)++]=char_num;
+	    out[(*len)++]=w[j];
 	    fprintf(stderr," X0[$FE,$%02x]\n",char_num);
 	    return 0;
 	  }

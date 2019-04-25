@@ -83,8 +83,9 @@ write_literal_and_terminate_if_required:
 
 	lda $0200,x
 	jsr write_unpacked_char
-	jsr output_exception_byte
+
 	jsr end_string_if_required
+	jmp consider_next_char
 	
 end_string_if_required:
 	;; Check if X points to last char of string to be packed

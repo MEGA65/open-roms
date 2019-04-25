@@ -117,6 +117,8 @@ next_packed_word_char:
 	beq end_of_packed_word
 	cmp #$fe
 	beq last_literal
+	cmp #$ff
+	beq next_is_literal_char
 	and #$f0
 	beq end_of_packed_word	
 

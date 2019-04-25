@@ -6,8 +6,11 @@
 	;; colour_under_cursor
 
 show_cursor_if_enabled:
-	lda cursor_is_visible
-	bne show_cursor
+	lda cursor_blink_disable
+	beq +
+	rts
+*	lda cursor_is_visible
+	beq show_cursor
 	rts
 	
 show_cursor:

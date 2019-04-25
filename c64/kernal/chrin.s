@@ -133,7 +133,7 @@ pop_keyboard_buffer:
 	rts
 	
 screen_code_to_petscii:
-	cmp #$1a
+	cmp #$1b
 	bcs not_alpha
 
 	clc
@@ -147,7 +147,7 @@ not_alpha:
 	rts
 
 not_punctuation:	
-	cmp #$5a
+	cmp #$5b
 	bcs not_shifted
 
 	clc

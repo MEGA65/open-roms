@@ -10,7 +10,7 @@ src/similarity:	src/similarity.c Makefile
 	gcc -g -Wall -o src/similarity src/similarity.c
 
 src/compress_text:	src/compress_text.c Makefile
-	gcc -g -Wall -o src/compress_text src/compress_text.c
+	gcc -g -Wall -o src/compress_text src/compress_text.c -lm
 
 newrom:	c64/kernal/OUT.BIN c64/basic/OUT.BIN
 	cat c64/basic/OUT.BIN c64/kernal/OUT.BIN  >newrom

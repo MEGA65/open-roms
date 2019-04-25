@@ -59,19 +59,33 @@ print_packed_word:
 	sta temp_string_ptr+0
 	lda #>packed_message_words
 	sta temp_string_ptr+1
-	
+
 	;; Find the word in the list
 	ldy #$ff
-packed_word_search:	
+packed_word_search:
+	iny
 	cpx #$00
 	beq found_packed_word
-	iny
+
+	;;  $x0 is an end of work marker
 	lda (temp_string_ptr),y
 	and #$0f
 	cmp #$00
 	bne +
 	dex
 *
+	;; $FE $xx is an end of work marker
+	lda (temp_string_ptr),y
+	cmp #$fe
+	bne +
+	dex 
+	iny 			; skip next byte
+*
+	cmp #$ff
+	bne +
+	iny			; skip next byte
+*
+
 	;; Advance to next page if required
 	cpy #$ff
 	bne packed_word_search
@@ -86,10 +100,12 @@ found_packed_word:
 	clc
 	adc temp_string_ptr+0
 	sta temp_string_ptr+0
+	sta $0426
 	lda temp_string_ptr+1
 	adc #$00
 	sta temp_string_ptr+1
-	ldy #$00
+	sta $0427
+	ldy #$ff
 
 next_packed_word_char:
 	;; Y = offset into packed word data - 1
@@ -159,6 +175,16 @@ has_nybl:
 
 no_lo_nybl_char:
 
+	;; If current byte has $0F in low nybl, then the next
+	;; byte is a whole byte shifted left one bit.
+	;; bit 0 indicates if it is the end of the word.
+	lda (temp_string_ptr),y
+	and #$0f
+	bne +
+
+	;; XXX - Implement decoding of this case
+	
+*
 	cpy #$ff
 	bne next_packed_word_char
 end_of_packed_word:	

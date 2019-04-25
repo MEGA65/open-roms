@@ -6,8 +6,8 @@
 	;; colour_under_cursor
 
 show_cursor_if_enabled:
-	bit cursor_is_visible
-	bmi show_cursor
+	lda cursor_is_visible
+	bne show_cursor
 	rts
 	
 show_cursor:
@@ -79,8 +79,8 @@ disable_cursor:
 	sta cursor_blink_disable
 	;; FALL THROUGH
 hide_cursor_if_visible:
-	bit cursor_is_visible
-	bmi undraw_cursor
+	lda cursor_is_visible
+	bne undraw_cursor
 	rts
 
 enable_cursor:

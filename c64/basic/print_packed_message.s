@@ -100,11 +100,9 @@ found_packed_word:
 	clc
 	adc temp_string_ptr+0
 	sta temp_string_ptr+0
-	sta $0426
 	lda temp_string_ptr+1
 	adc #$00
 	sta temp_string_ptr+1
-	sta $0427
 	ldy #$ff
 
 next_packed_word_char:
@@ -176,21 +174,30 @@ has_nybl:
 no_lo_nybl_char:
 
 	;; If current byte has $0F in low nybl, then the next
-	;; byte is a whole byte shifted left one bit.
-	;; bit 0 indicates if it is the end of the word.
+	;; byte is a whole byte.
 	lda (temp_string_ptr),y
 	and #$0f
-	bne +
+	cmp #$0f
+	beq next_is_literal_char
 
-	;; XXX - Implement decoding of this case
-	
-*
+ready_for_next_char:	
 	cpy #$ff
 	bne next_packed_word_char
 end_of_packed_word:	
 	;; Hit end of packed data
 	rts
 
+next_is_literal_char:	
+	;; Output the literal char, and ready for next char
+	iny
+	tya
+	pha
+	lda (temp_string_ptr),y
+	jsr $ffd2
+	pla
+	tay
+	jmp ready_for_next_char
+	
 is_uncommon_char:
 	;; Lower nybl has offset into low-frequency part of the table
 

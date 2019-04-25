@@ -293,15 +293,8 @@ int pack_word(const char *w,unsigned char *out,int *len)
 	  fprintf(stderr,"ERROR: Extended characters must be < 0x80\n");
 	  exit(-1);
 	}
-	if (w[j+1]) {
-	  out[(*len)++]=(char_num<<1)+1;
-	  fprintf(stderr," XS[$%02x]",char_num);
-	}
-        else {
-	  out[(*len)++]=(char_num<<1)+0;
-	  fprintf(stderr," XS0[$%02x]\n",char_num);
-	  return 0;
-	}
+	out[(*len)++]=w[j];
+	fprintf(stderr," XS[$%02x]",w[j]);
       } else {
 	if (char_num < (14+13)) {
 	  out[(*len)++]=0xF1+(char_num-14);
@@ -396,9 +389,16 @@ int main(void)
 
   // Now encode the words
   for(int i=0;i<word_count;i++) {
-    pack_word(words[i],packed_words,&packed_len);    
+    fprintf(stderr,"$%03X : ",i);
+    int old_offset=packed_len;
+    pack_word(words[i],packed_words,&packed_len);
+    fprintf(stderr,"    Packing word: ");
+    for(int j=old_offset;j<packed_len;j++)
+      fprintf(stderr," $%02X",packed_words[j]);
+    fprintf(stderr,"\n");
   }
   for(int i=0;keyword_list[i];i++) {
+    fprintf(stderr,"$%03X : ",i);
     pack_word(keyword_list[i],packed_keywords,&packedkey_len);    
   }
 

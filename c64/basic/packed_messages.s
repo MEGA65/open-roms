@@ -120,3 +120,4 @@ packed_keywords:
 	.byte $f6,$2f,$24,$00,$f2,$5b,$f9,$00
 	.byte $f1
 	.byte $30
+	.alias packed_keyword_table_len $DA

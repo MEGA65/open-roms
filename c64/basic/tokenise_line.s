@@ -137,7 +137,7 @@ next_kw_offset:
 	;; Advance offset in compressed token list, and stop at the end
 	inc tokenise_work3
 	lda tokenise_work3
-	cmp #$ff
+	cmp #packed_keyword_table_len
 	bne next_in_match
 	jmp done_searching_for_token
 next_in_match:

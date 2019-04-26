@@ -472,6 +472,7 @@ int main(void)
       } else
 	printf("\t.byte $%02x\n",packed_keywords[i]);
     }
+  printf("\t.alias packed_keyword_table_len $%X\n",packedkey_len);
   
   fprintf(stderr,"Error list takes %d bytes raw.\n",raw_size);
   fprintf(stderr,"%d token bytes used to encode all messages.\n",token_count);

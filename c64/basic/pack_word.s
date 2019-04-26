@@ -26,8 +26,23 @@ pack_word:
 	;; is incomplete, which is important for searching for abbreviated
 	;; key words.)
 
+	stx $0441
+
+	ldx #$0f
+	lda #$20
+*
+	sta $0658,x
+	dex
+	bpl -
+	
+	ldx $0441
+	
+	lda #$00
+	sta $043f
+	
 	;; Make sure we have a sane request
 	lda tokenise_work1
+	sta $0440
 	bne +
 	sec
 	rts
@@ -38,8 +53,12 @@ pack_word:
 	sta tokenise_work3
 
 pack_char_loop:
+
+	inc $043f
+	
 	;; Get the next char
 	lda $0200,x
+	
 	;; Work out what type of character we have, and thus
 	;; how we need to pack it.
 	jsr get_packed_char_index
@@ -59,14 +78,16 @@ pack_char_loop:
 	;; No nybl exists before the exception char, so prefix with $FE or $FF
 	;; based on whether we are at the end of the input string or not
 	inx
-	cpx tokenise_work1
+	lda tokenise_work1
+	cmp #$01
 	beq at_end
 	lda #$FF
 	.byte $2C
 at_end:	LDA #$FE
 	dex
 	jsr write_unpacked_char
-
+	;; Fall through
+	
 output_exception_byte:	
 	lda $0200,x
 	jsr write_unpacked_char
@@ -96,7 +117,8 @@ write_literal_and_terminate_if_required:
 end_string_if_required:
 	;; Check if X points to last char of string to be packed
 	inx
-	cpx tokenise_work1
+	lda tokenise_work1
+	cmp #$01
 	beq +
 	dex
 	jmp consider_next_char
@@ -182,8 +204,11 @@ nothing_to_flush:
 	
 consider_next_char:	
 	;; Pack next char
+	lda tokenise_work1
+	sta $0680,x
+	inc $0658,x
 	inx 
-	cpx tokenise_work1
+	dec tokenise_work1
 	bne pack_char_loop
 
 	;; Add 1 to length if nybl waiting to be flushed

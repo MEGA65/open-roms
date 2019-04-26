@@ -29,6 +29,8 @@ tokenise_char:
 	cmp $0113
 	bne +
 
+	;; End of line reached
+	
 	ldx #0
 	stx $0450
 

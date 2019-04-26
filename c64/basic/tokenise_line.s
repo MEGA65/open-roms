@@ -208,12 +208,32 @@ next_in_match:
 
 word_boundary:	
 	;; Found a token whose offset is in tokenise_work3
-	;; No trace back to the start of the compressed keyword list
-	;; to work out what word number we are, so that we can return
+	;; Now trace back to the start of the compressed keyword list
+	;; to work out what keyword number we are, so that we can return
 	;; the token number.
 
 	inc $d020
-	lda #$80 		; Pretend token
+	ldy #$80
+
+	stx $0427
+token_count_loop:
+	lda packed_keywords,x
+	cmp #$fe
+	bne +
+	iny
+*
+	and #$0f
+	cmp #$00
+	bne +
+	iny
+*
+	cpx #$00
+	beq +
+	dex
+	jmp token_count_loop
+*
+	
+	tya
 	clc
 	rts
 	

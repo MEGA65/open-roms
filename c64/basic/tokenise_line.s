@@ -17,6 +17,8 @@ tokenise_line:
 	lda #$00
 	sta $0110
 	sta $0112
+	sta quote_mode_flag
+	
 	lda tokenise_work1
 	sta $0113
 
@@ -35,6 +37,10 @@ tokenise_char:
 	lda #$00
 	sta $0200,x
 	stx tokenise_work1
+
+	;; Clear quote mode flag that is also used by KERNAL for screen display
+	lda #$00
+	sta quote_mode_flag
 	rts
 *
 	;; More to do
@@ -48,6 +54,23 @@ tokenise_char_loop:
 	;; Returns packed length in tokenise_work2 and writes the packed
 	;; word at $0100+
 
+	ldx $0110
+	lda $0200,x
+	cmp #$22
+	bne tk_not_quote
+
+	;; Quote
+	lda quote_mode_flag
+	eor #$ff
+	sta quote_mode_flag
+	jmp tk_literal_char
+	
+tk_not_quote:	
+
+	;; Don't tokenise in quote mode
+	lda quote_mode_flag
+	bne tk_literal_char
+	
 	;; Pack string
 	ldx $0110
 	lda $0111
@@ -72,6 +95,7 @@ tokenise_char_loop:
 	dec $0111
 	bne tokenise_char_loop
 
+tk_literal_char:
 	;; Is not a token, so copy to output verbatim
 	ldx $0110
 	ldy $0112

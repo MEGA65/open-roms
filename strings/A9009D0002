@@ -1,0 +1,4 @@
+LDA #$00 / STA $0200,X
+
+Put zero into a string at offset X.
+Not copyrightable

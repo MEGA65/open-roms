@@ -1,0 +1,4 @@
+fragment / BNE <skip some instructions> / STA $nn
+
+conditionally execute some following instructions.
+Not copyrightable.

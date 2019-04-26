@@ -1,0 +1,4 @@
+EOR #$FF / STA $xx
+
+common sequence for inverting all bits in a byte in ZP.
+Not copyrightable.

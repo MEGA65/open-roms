@@ -1,0 +1,4 @@
+LDA #$00 / STA $0100,Y
+
+Put zero in a byte of the stack.
+Not copyrightable.

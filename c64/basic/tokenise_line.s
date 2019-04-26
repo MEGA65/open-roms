@@ -24,16 +24,11 @@ tokenise_char:
 
 	;; Check if we have reached end of the line?
 	lda $0110
-	tax
-	inc $0400,x
 	cmp $0113
 	bne +
 
 	;; End of line reached
 	
-	ldx #0
-	stx $0450
-
 	;; Finished tokenising line
 	;; Update tokenise_work1 and terminate with null
 	ldx $0112
@@ -43,8 +38,6 @@ tokenise_char:
 	rts
 *
 	;; More to do
-	ldx #1
-	stx $0450
 	
 	;; Maximum keyword length
 	lda #7
@@ -55,20 +48,11 @@ tokenise_char_loop:
 	;; Returns packed length in tokenise_work2 and writes the packed
 	;; word at $0100+
 
-	ldx #2
-	stx $0450
-	
 	;; Pack string
 	ldx $0110
-	stx $044e
 	lda $0111
 	sta tokenise_work1
-	bpl +
-foo:	inc $d020
-	jmp foo
-	
-	*
-	sta $044f
+
 	jsr pack_word
 	lda tokenise_work2
 	cmp #$10
@@ -78,31 +62,16 @@ foo:	inc $d020
 	jmp do_basic_error
 	*
 
-	ldx #3
-	stx $0450
-	
 	;; Search for it in keywords
 	jsr keyword_search
 
-	ldx #4
-	stx $0450
-	
 	;; Did we find a keyword?
 	bcc found_token_in_line
 
-	ldx #5
-	stx $0450
-		
 	;; Nope, so try shorter
-	ldx $0111
-	stx $044d
-	inc $0608,x
 	dec $0111
 	bne tokenise_char_loop
 
-	ldx #6
-	stx $0450
-		
 	;; Is not a token, so copy to output verbatim
 	ldx $0110
 	ldy $0112
@@ -116,9 +85,6 @@ foo:	inc $d020
 
 found_token_in_line:
 
-	ldx #7
-	stx $0450
-	
 	;; Got a token, so write it out
 	ldx $0112
 	sta $0200,x

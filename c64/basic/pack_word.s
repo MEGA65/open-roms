@@ -26,23 +26,9 @@ pack_word:
 	;; is incomplete, which is important for searching for abbreviated
 	;; key words.)
 
-	stx $0441
-
-	ldx #$0f
-	lda #$20
-*
-	sta $0658,x
-	dex
-	bpl -
-	
-	ldx $0441
-	
-	lda #$00
-	sta $043f
 	
 	;; Make sure we have a sane request
 	lda tokenise_work1
-	sta $0440
 	bne +
 	sec
 	rts
@@ -54,8 +40,6 @@ pack_word:
 
 pack_char_loop:
 
-	inc $043f
-	
 	;; Get the next char
 	lda $0200,x
 	
@@ -204,9 +188,6 @@ nothing_to_flush:
 	
 consider_next_char:	
 	;; Pack next char
-	lda tokenise_work1
-	sta $0680,x
-	inc $0658,x
 	inx 
 	dec tokenise_work1
 	bne pack_char_loop

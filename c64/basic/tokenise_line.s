@@ -29,8 +29,9 @@ tokenise_char:
 	cmp $0113
 	bne +
 
-	inc $0428
-	
+	ldx #0
+	stx $0450
+
 	;; Finished tokenising line
 	;; Update tokenise_work1 and terminate with null
 	ldx $0112
@@ -40,8 +41,8 @@ tokenise_char:
 	rts
 *
 	;; More to do
-	inc $0429
-
+	ldx #1
+	stx $0450
 	
 	;; Maximum keyword length
 	lda #7
@@ -52,35 +53,54 @@ tokenise_char_loop:
 	;; Returns packed length in tokenise_work2 and writes the packed
 	;; word at $0100+
 
-	inc $042a
+	ldx #2
+	stx $0450
 	
 	;; Pack string
 	ldx $0110
+	stx $044e
 	lda $0111
 	sta tokenise_work1
+	bpl +
+foo:	inc $d020
+	jmp foo
+	
+	*
 	sta $044f
 	jsr pack_word
+	lda tokenise_work2
+	cmp #$10
+	bcc +
+	;; Packed string too long
+	ldx #16
+	jmp do_basic_error
+	*
 
-	inc $042b
+	ldx #3
+	stx $0450
 	
 	;; Search for it in keywords
 	jsr keyword_search
 
-	php
-	inc $042c
-	plp
+	ldx #4
+	stx $0450
 	
 	;; Did we find a keyword?
 	bcc found_token_in_line
 
-	inc $042d
+	ldx #5
+	stx $0450
 		
 	;; Nope, so try shorter
+	ldx $0111
+	stx $044d
+	inc $0608,x
 	dec $0111
 	bne tokenise_char_loop
 
-	inc $042e
-	
+	ldx #6
+	stx $0450
+		
 	;; Is not a token, so copy to output verbatim
 	ldx $0110
 	ldy $0112
@@ -94,7 +114,8 @@ tokenise_char_loop:
 
 found_token_in_line:
 
-	inc $042f
+	ldx #7
+	stx $0450
 	
 	;; Got a token, so write it out
 	ldx $0112

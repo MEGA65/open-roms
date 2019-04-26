@@ -65,8 +65,22 @@ tokenise_char_loop:
 	sta quote_mode_flag
 	jmp tk_literal_char
 	
-tk_not_quote:	
+tk_not_quote:
+	;; Check for literal characters in various ranges
+	;; (This just speeds the tokeniser up, by avoiding the packed token search
+	;;  for such characters).
 
+	;; SPACE and punctuation before +,- and *
+	cmp #$2a
+	bcc tk_literal_char
+	;; Digits
+	cmp #$30
+	bcc tk_might_be_keyword
+	cmp #$3a
+	bcs tk_might_be_keyword
+	jmp tk_literal_char
+
+tk_might_be_keyword:	
 	;; Don't tokenise in quote mode
 	lda quote_mode_flag
 	bne tk_literal_char
@@ -76,6 +90,12 @@ tk_not_quote:
 	lda $0111
 	sta tokenise_work1
 
+	;; XXX - We should implement an optimisation where we
+	;; trim the last symbol of successively, instead of re-packing the word
+	;; again with one less char each time.
+	;; XXX - We should limit the word length to the length of interesting chars
+	;; that are available.
+	
 	jsr pack_word
 	lda tokenise_work2
 	cmp #$10

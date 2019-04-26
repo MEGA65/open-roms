@@ -27,103 +27,13 @@ got_line_of_input:
 
 	;; Store length of input buffer ready for tokenising
 	stx tokenise_work1
-	
+		
 	;; Do printing of the new line
 	lda #$0d
 	jsr $ffd2
 
-	;; Pack the word from the start
-	ldx #$00
-	jsr pack_word
-
-	;; Search for word in keyword list
-	;; The packed form is canonical, so we can search for the keyword while
-	;; it remains compressed. This also saves a little time.
-	;; Algorithm is simply to find matching first bytes, and then look for
-	;; the rest being a match.
-
-token_search:
-	;; tokenise_work1 = offset in line of input
-	;; tokenise_work2 = length of token we are matching
-	;; tokenise_work3 = offset in token list
-	lda #$00
-	sta tokenise_work1
-	sta tokenise_work3
-next_kw_offset:	
-	;; Advance offset in compressed keyword list, to see if a match
-	;; BEGINS here
-
-	;;  Get count of bytes to compare
-	lda tokenise_work2
-	sta tokenise_work4
+	jsr tokenise_line
 	
-	;; Load current position
-	ldy tokenise_work3
-	ldx tokenise_work1
-	
-	;; Advance offset in compressed token list, and stop at the end
-	inc tokenise_work3
-	lda tokenise_work3
-	cmp #$ff
-	bne next_in_match
-	jmp done_searching_for_token
-next_in_match:
-	lda $0100,x
-	cmp packed_keywords,y
-	bne next_kw_offset
-	;; Advance to next chars in source and target
-	inx
-	iny
-
-	dec tokenise_work4 	; Have we compared all bytes yet?
-	
-	bne next_in_match
-
-	;; Keyword matches!
-
-	;; Now make sure we are on a keyword boundary.
-	;; Offset 0
-	;; previous byte is $x0
-	;; two byte prior is $FE
-
-	;; Get offset of first byte of this token
-	ldx tokenise_work3
-	dex 			; pointer points one late, so rewind it
-
-	;; At start of list?
-	cpx #$00
-	beq word_boundary
-	dex
-	;; Previous byte is $x0 end token?
-	lda packed_keywords,x
-	and #$0f
-	beq word_boundary
-	dex
-	;; Uber-previouss byte is $FE final literal token?
-	lda packed_keywords,x
-	cmp #$fe
-	beq word_boundary
-
-	;; Not a word boundary, so ignore
-	jmp next_kw_offset
-
-word_boundary:	
-	inc $d020
-
-	;; We actually point one by late, so rewind to find start of token
-	lda tokenise_work3
-	sec
-	sbc #$01
-	clc
-	adc #<packed_keywords
-	sta temp_string_ptr+0
-	lda #>packed_keywords
-	adc #$00
-	sta temp_string_ptr+1
-	;; Print the token we found
-	jsr print_packed_string
-	
-done_searching_for_token:	
 	jsr ready_message
 
 	jmp basic_main_loop

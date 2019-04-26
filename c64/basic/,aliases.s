@@ -7,6 +7,7 @@
 	.alias tokenise_work3 $B
 	.alias tokenise_work4 $F
 	.alias temp_string_ptr $35
+	.alias load_or_verify_or_tokenise_work5 $C
 	
 	.alias TXTTAB $2B
 	.alias IOSTATUS $90

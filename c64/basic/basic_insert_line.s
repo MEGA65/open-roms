@@ -15,8 +15,10 @@ basic_insert_line:
 	;; But first, remember where the pointer will be, so that we can
 	;; put the line in there after.
 	lda basic_current_line_ptr+0
+	sta $0438
 	pha
 	lda basic_current_line_ptr+1
+	sta $0439
 	pha
 	
 	;; Get number of bytes in tokenised line after line number
@@ -43,8 +45,10 @@ basic_insert_line:
 	
 	;; Get pointer back
 	pla
+	sta $0411
 	sta basic_current_line_ptr+1
 	pla
+	sta $0410
 	sta basic_current_line_ptr+0
 
 	inc $0427

@@ -14,7 +14,7 @@ basic_shift_mem_up_and_relink:
 	sta memmove_dst+1
 	;; End point of source is just current end of BASIC text
 	lda basic_end_of_text_ptr+0
-	sta memmove_src
+	sta memmove_src+0
 	lda basic_end_of_text_ptr+1
 	sta memmove_src+1
 
@@ -47,14 +47,14 @@ basic_shift_mem_up_and_relink:
 	sta memmove_dst+1
 
 	;; Now make exit easy, by being able to check for zero on size high byte when done
-	inc memmove_size+1
+	inc memmove_size+1	
 	
 	;; Then set Y to the number offset required
 	ldy memmove_size+0
 
 	;; Do the copy
 	jsr shift_mem_up
-
+	
 	;; Now fix the pointer to the next line
 	
 	;; First, we need to point the current BASIC line

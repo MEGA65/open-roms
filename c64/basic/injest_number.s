@@ -11,7 +11,7 @@ ij_not_a_digit:
 	CLC
 	RTS
 	
-inject_number:
+injest_number:
 	;; Clear FAC1
 	jsr erase_fac1
 

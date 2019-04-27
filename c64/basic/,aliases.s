@@ -8,6 +8,26 @@
 	.alias tokenise_work4 $F
 	.alias temp_string_ptr $35
 	.alias load_or_verify_or_tokenise_work5 $C
+	.alias basic_work22 $22
+	.alias basic_work23 $23
+	.alias basic_work24 $24
+	.alias basic_work25 $25
+
+	.alias basic_numeric_work_area $57 ; $57 - $60 inclusive = 10 bytes
+
+	;; Floating point accumulator 1 $61 - $68
+	.alias basic_fac1_exponent $61
+	.alias basic_fac1_mantissa $62 ; $62 - $65
+	.alias basic_fac1_sign $66
+	.alias basic_fac1_overflow $68
+	.alias basic_fac1_mantissa_lob $70
+
+	.alias basic_fac2_exponent $69	
+	.alias basic_fac2_mantissa $6A ; $6A - $6D
+	.alias basic_fac2_sign $6E
+	
+
+	
 	
 	.alias TXTTAB $2B
 	.alias IOSTATUS $90

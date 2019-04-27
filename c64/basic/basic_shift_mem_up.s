@@ -52,20 +52,34 @@ basic_shift_mem_up_and_relink:
 	;; Then set Y to the number offset required
 	ldy memmove_size+0
 
+	stx tokenise_work3
+	
 	;; Do the copy
 	jsr shift_mem_up
 	
 	;; Now fix the pointer to the next line
 	
 	;; First, we need to point the current BASIC line
-	;; pointer to the previously present lines
-	stx tokenise_work3
-relink_up_next_line:	
-	lda tokenise_work3
-	clc
-	adc basic_current_line_ptr+0
-	sta memmove_src+0
+	;; pointer to itself, so that we can add the shift
+	;; to make it end up pointing to the next line
+	ldy #0
+	ldx #<basic_current_line_ptr+0
+	lda basic_current_line_ptr+0
+	jsr poke_under_roms
+	iny
 	lda basic_current_line_ptr+1
+	jsr poke_under_roms
+	
+relink_up_next_line:
+
+	ldy #0
+	ldx #<basic_current_line_ptr+0
+	jsr peek_under_roms
+	clc
+	adc tokenise_work3
+	sta memmove_src+0
+	iny
+	jsr peek_under_roms
 	adc #0
 	sta memmove_src+1
 	ldy #0

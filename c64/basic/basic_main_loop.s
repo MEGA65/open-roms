@@ -105,6 +105,7 @@ ml_bad_line_number:
 
 	;; Delete line if present
 	jsr basic_find_line
+	
 	bcs +
 	jsr basic_delete_line
 *

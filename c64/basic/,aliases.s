@@ -39,9 +39,12 @@
 	.alias basic_fac2_exponent $69	
 	.alias basic_fac2_mantissa $6A ; $6A - $6D
 	.alias basic_fac2_sign $6E
-	
 
-	
+	;; We also re-use FAC2 for memory move pointers, since
+	;; we can't be doing calculations while moving memory
+	.alias memmove_src $69
+	.alias memmove_dst $6b
+	.alias memmove_size $6d	
 	
 	.alias TXTTAB $2B
 	.alias IOSTATUS $90
@@ -123,6 +126,7 @@
 	;; a counter, so that if an NMI occurs, it doesn't crash the machine, but can be captured.
 	.alias missed_nmi_flag         $2A7
 	.alias tiny_nmi_handler		$2A8	
+	.alias shift_mem_up tiny_nmi_handler+shift_mem_up_routine-tiny_nmi_handler_routine
 	.alias peek_under_roms tiny_nmi_handler+peek_under_roms_routine-tiny_nmi_handler_routine
 	.alias poke_under_roms tiny_nmi_handler+poke_under_roms_routine-tiny_nmi_handler_routine
 	.alias memmap_allram tiny_nmi_handler+memmap_allram_routine-tiny_nmi_handler_routine

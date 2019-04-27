@@ -91,6 +91,12 @@ ml_bad_line_number:
 
 	;; Got a valid line number.
 
+	;; First, clear all variables, so that we only have to shove BASIC text around.
+	;; (We could later remove this requirement, and the only effect should be
+	;; to slow things down, and that you might have to either CLR if there is no
+	;; memory free, or else it would auto CLR when you ran out of program space).
+	jsr basic_do_clr
+
 	;; Copy to line number holder
 	lda basic_fac1_mantissa+0
 	sta basic_line_number+0
@@ -98,8 +104,12 @@ ml_bad_line_number:
 	sta basic_line_number+1
 
 	;; Delete line if present
-
+	jsr basic_find_line
+	bcs +
+	jsr basic_delete_line
+*
 	;; Insert new line if non-zero length
+	jsr basic_insert_line
 	
 not_a_line:	
 	

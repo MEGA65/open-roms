@@ -25,6 +25,7 @@
 	.alias basic_start_of_free_space_ptr $31
 	.alias basic_start_of_strings_ptr $33
 	.alias basic_top_of_memory_ptr $37
+	.alias basic_current_line_ptr $3d
 	
 	.alias basic_numeric_work_area $57 ; $57 - $60 inclusive = 10 bytes
 
@@ -115,3 +116,15 @@
 	.alias enable_case_switch $0291
 	.alias screen_scroll_disable $0292
 	.alias pal_or_ntsc $02A6
+
+
+	;; BASIC uses some extra bytes for memory access under ROMs located at $2A7 onwards
+	;; IRQs are disabled when doing such accesses, and a default NMI handler only increments
+	;; a counter, so that if an NMI occurs, it doesn't crash the machine, but can be captured.
+	.alias missed_nmi_flag         $2A7
+	.alias tiny_nmi_handler		$2A8	
+	.alias peek_under_roms tiny_nmi_handler+peek_under_roms_routine-tiny_nmi_handler_routine
+	.alias poke_under_roms tiny_nmi_handler+poke_under_roms_routine-tiny_nmi_handler_routine
+	.alias memmap_allram tiny_nmi_handler+memmap_allram_routine-tiny_nmi_handler_routine
+	.alias memmap_normal tiny_nmi_handler+memmap_normal_routine-tiny_nmi_handler_routine
+	

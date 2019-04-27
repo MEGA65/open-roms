@@ -52,7 +52,7 @@ f1m10_l3:
 	;; All done, return
 	clc
 	rts
-
+*
 	;; Divide mantissa by two, and increment exponent
 	jsr fac1_mantissa_div2
 	inc basic_fac1_exponent

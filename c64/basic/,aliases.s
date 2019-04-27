@@ -6,6 +6,7 @@
 	.alias tokenise_work2 $8
 	.alias tokenise_work3 $B
 	.alias tokenise_work4 $F
+	.alias basic_line_number $14
 	.alias temp_string_ptr $35
 	.alias load_or_verify_or_tokenise_work5 $C
 	.alias basic_work22 $22
@@ -13,6 +14,18 @@
 	.alias basic_work24 $24
 	.alias basic_work25 $25
 
+	;; The various pointers that separate memory regions for BASIC storage
+	;; We have multiple names for the ones that mark the boundary of regions.
+	.alias basic_start_of_text_ptr $2b
+	.alias basic_end_of_text_ptr $2d
+	.alias basic_start_of_vars_ptr $2d
+	.alias basic_end_of_vars_ptr $2f
+	.alias basic_start_of_arrays_ptr $2f
+	.alias basic_end_of_arrays_ptr $31
+	.alias basic_start_of_free_space_ptr $31
+	.alias basic_start_of_strings_ptr $33
+	.alias basic_top_of_memory_ptr $35
+	
 	.alias basic_numeric_work_area $57 ; $57 - $60 inclusive = 10 bytes
 
 	;; Floating point accumulator 1 $61 - $68

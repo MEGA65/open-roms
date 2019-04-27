@@ -6,8 +6,38 @@
 	;; after to produce normalised floating point number.
 
 ij_not_a_digit:
-	;; XXX check for ".", "E", "+" and "-"
+	;; XXX check for "." or "E"
 	;; Other chars terminate the accumulation.
+
+	;; Look for exponentiation marker
+	;; XXX - Implement me!
+	;; Probably should have a flag so that we know if we are accumulating
+	;; exponent or mantissa digits
+	
+	;; Look for decimal point
+	sta $0420
+	cmp #$2e
+	bne ij_not_decimal
+	lda tokenise_work4
+	cmp #$ff
+	beq ij_found_decimal
+	;; More than one decimal point in a number means we have reached the end of the number
+	clc
+	rts
+	
+ij_found_decimal:
+	;; Found decimal.
+	;; Thus start counting digits after the decimal, so that we
+	;; can do the necessary number of divide by 10s on the final
+	;; number.
+	lda #$00
+	sta tokenise_work4
+
+	jmp ij_consider_next_digit
+	
+ij_not_decimal:
+
+	
 	CLC
 	RTS
 	
@@ -22,6 +52,17 @@ injest_number:
 	;; Check if leading char is a - sign
 	;; Note: the - will have been tokenised to $AB
 	;; XXX - implement
+	ldx tokenise_work1
+	lda $0200,x
+	cmp #$AB
+	bne ij_not_minus
+
+	;; Set sign to negative
+	lda #$ff
+	sta basic_fac1_sign
+	
+ij_not_minus:	
+
 	
 ij_loop1:	
 	ldx tokenise_work1

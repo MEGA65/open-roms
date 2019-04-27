@@ -14,6 +14,8 @@ basic_cold_start:
 	;; Print the rest of the start up message
 	ldx #34
 	jsr print_packed_message
+
+	jsr basic_do_new
 	
 	;; jump into warm start loop
 	jmp basic_warm_start

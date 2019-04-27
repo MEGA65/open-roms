@@ -3,10 +3,14 @@ basic_main_loop:
 	;; XXX - Check if direct or program mode, and get next line of input
 	;; the appropriate way.
 	;; XXX - For now, it is hard coded to direct mode
+
+	;; Tell user we are ready
+	jsr ready_message
 	
 	;; Read a line of input
 	ldx #$00
-read_line_loop:	
+read_line_loop:
+
 	jsr $ffcf 		; KERNAL CHRIN
 	bcs read_line_loop
 	
@@ -73,10 +77,33 @@ rsl_l1:	lda $0200,x
 
 	lda tokenise_work1
 	sta $0427
-	
+
+	;; Check if the number is a valid line number
+	;; i.e., 16 bits, no exponent, no decimal
+	lda basic_fac1_mantissa+2
+	ora basic_fac1_mantissa+3
+	ora basic_fac1_exponent
+	beq +
+ml_bad_line_number:	
+	;; Syntax error
+	ldx #10
+	jmp do_basic_error
+*	lda tokenise_work4
+	cmp #$ff
+	beq ml_bad_line_number
+
+	;; Got a valid line number.
+
+	;; Copy to line number holder
+	lda basic_fac1_mantissa+0
+	sta basic_line_number+0
+	lda basic_fac1_mantissa+1
+	sta basic_line_number+1
+
+	;; Delete line if present
+
+	;; Insert new line if non-zero length
 	
 not_a_line:	
 	
-	jsr ready_message
-
 	jmp basic_main_loop

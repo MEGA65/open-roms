@@ -139,7 +139,7 @@ ij_consider_next_digit:
 
 erase_fac1:	
 	lda #$00
-	ldx #7
+	ldx #8
 *
 	sta basic_fac1_exponent,x
 	dex

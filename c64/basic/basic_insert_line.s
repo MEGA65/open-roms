@@ -26,10 +26,21 @@ basic_insert_line:
 	;; Add on the four bytes space we need
 	clc
 	adc #5
+	pha
 	tax
+	
 	;; Make the space
 	jsr basic_shift_mem_up_and_relink
 
+	;; Now increase top of BASIC mem
+	pla
+	clc
+	adc basic_end_of_text_ptr+0
+	sta basic_end_of_text_ptr+0
+	lda basic_end_of_text_ptr+1
+	adc #0
+	sta basic_end_of_text_ptr+1
+	
 	;; Get pointer back
 	pla
 	sta basic_current_line_ptr+1

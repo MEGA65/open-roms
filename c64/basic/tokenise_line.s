@@ -73,7 +73,7 @@ tk_not_quote:
 	;; SPACE and punctuation before +,- and *
 	cmp #$2a
 	bcc tk_literal_char
-	;; Digits
+	;; Don't try to tokenise digits
 	cmp #$30
 	bcc tk_might_be_keyword
 	cmp #$3a
@@ -134,6 +134,13 @@ found_token_in_line:
 	sta $0200,x
 	inx
 	stx $0112
+
+	;; If it is REM, then lock us in quote mode to the end of the line
+	cmp #$8f
+	bne not_rem
+	sta quote_mode_flag
+not_rem:	
+	
 	;; Now skip over the length of the token
 	lda $0110
 	clc

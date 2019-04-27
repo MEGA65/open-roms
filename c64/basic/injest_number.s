@@ -17,7 +17,7 @@ injest_number:
 
 	;; Clear decimal position flag
 	lda #$ff
-	sta tokenise_work2
+	sta tokenise_work4
 
 	;; Check if leading char is a - sign
 	;; Note: the - will have been tokenised to $AB
@@ -44,7 +44,7 @@ ij_loop1:
 	;; If we have seen a decimal point, then we can completely ignore
 	;; the digit, as it is contributing not recordable information
 
-	lda tokenise_work2
+	lda tokenise_work4
 	cmp #$ff
 	bne ij_seen_decimal_point
 	

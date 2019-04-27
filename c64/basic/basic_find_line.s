@@ -29,11 +29,9 @@ not_this_line:
 	;; Not this line, so advance to next line
 	ldy #0
 	ldx #<basic_current_line_ptr
-	jsr peek_under_roms
-	bne more_lines_exist
-	iny
-	jsr peek_under_roms
-	bne more_lines_exist
+	jsr peek_pointer_null_check
+	bcs more_lines_exist
+
 	;; no more lines exist, return failure
 line_num_too_high:	
 	sec

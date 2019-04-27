@@ -76,7 +76,7 @@ ij_accept_precision:
 ij_loop2:	
 	lda basic_fac1_mantissa,x
 	adc #$00
-	sta basic_fac1_mantissa+1,x
+	sta basic_fac1_mantissa,x
 	inx
 	dey
 	bne ij_loop2

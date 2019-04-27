@@ -17,6 +17,15 @@ basic_do_new:
 	lda #<$0803
 	sta basic_start_of_vars_ptr+0
 
+	;; Zero line pointer
+	;; XXX - We should also zero $0800, i.e., basic_start_of_text_ptr - 1
+	ldy #$00
+	tya
+	sta (basic_start_of_text_ptr),y
+	iny
+	sta (basic_start_of_text_ptr),y
+	
+	
 	;; Get top of memory.
 	;; If a cart is present, then it is $7FFF,
 	;; if not, then it is $F7FF, since we support having

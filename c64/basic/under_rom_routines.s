@@ -39,7 +39,6 @@ smu1:
 	lda (memmove_src),y
 	sta (memmove_dst),y
 	dey
-	cpy #$ff
 	bne smu1
 	dec memmove_src+1
 	dec memmove_dst+1
@@ -70,8 +69,10 @@ memmap_normal_routine:
 
 memmap_allram_routine:
 	sei
+	pha
 	lda #$04
 	sta $01
+	pla
 	rts
 
 ram_routines_end:

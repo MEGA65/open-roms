@@ -91,6 +91,16 @@ ml_bad_line_number:
 
 	;; Got a valid line number.
 
+	;; Skip any spaces after the line number
+	ldx tokenise_work1
+skip_spaces:	
+	lda $0200,x
+	cmp #$20
+	bne +
+	inx
+	bne skip_spaces
+*	stx tokenise_work1
+	
 	;; First, clear all variables, so that we only have to shove BASIC text around.
 	;; (We could later remove this requirement, and the only effect should be
 	;; to slow things down, and that you might have to either CLR if there is no

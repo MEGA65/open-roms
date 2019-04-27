@@ -30,31 +30,49 @@ basic_shift_mem_up_and_relink:
 	;; To make life simple for the copy routine that lives in RAM,
 	;; we have to adjust the end pointers down one page and set Y to the low
 	;; byte of the copy size.
-	tay
-	dec memmove_src+1
-	dec memmove_dst+1
+	lda memmove_src+0
+	sec
+	sbc memmove_size+0
+	sta memmove_src+0
+	lda memmove_src+1
+	sbc #0
+	sta memmove_src+1
+
+	lda memmove_dst+0
+	sec
+	sbc memmove_size+0
+	sta memmove_dst+0
+	lda memmove_dst+1
+	sbc #0
+	sta memmove_dst+1
+
+	;; Now make exit easy, by being able to check for zero on size high byte when done
+	inc memmove_size+1
+	
+	;; Then set Y to the number offset required
+	ldy memmove_size+0
 
 	;; Do the copy
 	jsr shift_mem_up
-	
-	;; Now fix the pointer for the BASIC lines
 
+	;; Now fix the pointer to the next line
+	
 	;; First, we need to point the current BASIC line
 	;; pointer to the previously present lines
 	stx tokenise_work3
 relink_up_next_line:	
-	ldx tokenise_work3
+	lda tokenise_work3
 	clc
 	adc basic_current_line_ptr+0
 	sta memmove_src+0
 	lda basic_current_line_ptr+1
 	adc #0
 	sta memmove_src+1
-	ldx #0
-	ldy #<basic_current_line_ptr
+	ldy #0
+	ldx #<basic_current_line_ptr
 	lda memmove_src+0
 	jsr poke_under_roms
-	inx
+	iny
 	lda memmove_src+1
 	jsr poke_under_roms
 

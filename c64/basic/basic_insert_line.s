@@ -58,6 +58,7 @@ basic_insert_line:
 	jsr poke_under_roms
 
 	;; Now store the line body itself
+	inc tokenise_work2
 line_store_loop:
 	ldx tokenise_work1
 	lda $0200,x
@@ -68,7 +69,7 @@ line_store_loop:
 	lda tokenise_work1
 	cmp tokenise_work2
 	bne line_store_loop
-	
+	dec tokenise_work2
 	
 	sec
 	rts

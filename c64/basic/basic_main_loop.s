@@ -75,9 +75,6 @@ rsl_l1:	lda $0200,x
 	
 	jsr injest_number
 
-	lda tokenise_work1
-	sta $0427
-
 	;; Check if the number is a valid line number
 	;; i.e., 16 bits, no exponent, no decimal
 	lda basic_fac1_mantissa+2
@@ -90,7 +87,7 @@ ml_bad_line_number:
 	jmp do_basic_error
 *	lda tokenise_work4
 	cmp #$ff
-	beq ml_bad_line_number
+	bne ml_bad_line_number
 
 	;; Got a valid line number.
 

@@ -11,12 +11,34 @@ basic_do_new:
 	;; Setup pointers to memory storage
 	lda #<$0801
 	sta basic_start_of_text_ptr+0
-	lda >$0801
+	lda #>$0801
 	sta basic_start_of_text_ptr+1
 	sta basic_start_of_vars_ptr+1
 	lda #<$0803
 	sta basic_start_of_vars_ptr+0
 
+	;; Get top of memory.
+	;; If a cart is present, then it is $7FFF,
+	;; if not, then it is $F7FF, since we support having
+	;; programs and variables under ROM.
+	;; i.e., we support 56KB RAM for BASIC, keeping some space
+	;; free for some optimisation structures, e.g., FOR/NEXT loop
+	;; records (without them going on the stack), GOSUB stack
+	;; (same story), expression value cache?
+	
+	sec			; Read, not write value
+	jsr $ff99 		; KERNAL MEMTOP routine
+	cpx #$80
+	bne +
+	lda #>$f7ff
+	.byte $2c
+*	lda #>$7FFF
+	sta basic_top_of_memory_ptr+1
+	sta basic_start_of_strings_ptr+1
+	lda #<$f7ff
+	sta basic_top_of_memory_ptr+0
+	sta basic_start_of_strings_ptr+0	
+	
 	;; FALL THROUGH
 	
 basic_do_clr:

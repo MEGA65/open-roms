@@ -15,7 +15,6 @@ ij_not_a_digit:
 	;; exponent or mantissa digits
 	
 	;; Look for decimal point
-	sta $0420
 	cmp #$2e
 	bne ij_not_decimal
 	lda tokenise_work4

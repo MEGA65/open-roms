@@ -24,7 +24,7 @@
 	.alias basic_end_of_arrays_ptr $31
 	.alias basic_start_of_free_space_ptr $31
 	.alias basic_start_of_strings_ptr $33
-	.alias basic_top_of_memory_ptr $35
+	.alias basic_top_of_memory_ptr $37
 	
 	.alias basic_numeric_work_area $57 ; $57 - $60 inclusive = 10 bytes
 

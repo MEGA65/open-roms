@@ -11,14 +11,16 @@ basic_find_line:
 basic_find_line_loop:	
 	;; Then search for line number
 	;; Line number 
-	ldy #2
+	ldy #3
 	ldx #<basic_current_line_ptr
 	jsr peek_under_roms
-	cmp basic_line_number+0
-	bne not_this_line
-	iny
-	jsr peek_under_roms
 	cmp basic_line_number+1
+	bcs line_num_too_high
+	bne not_this_line
+	dey
+	jsr peek_under_roms
+	cmp basic_line_number+0
+	bcs line_num_too_high
 	bne not_this_line
 
 	clc
@@ -33,6 +35,7 @@ not_this_line:
 	jsr peek_under_roms
 	bne more_lines_exist
 	;; no more lines exist, return failure
+line_num_too_high:	
 	sec
 	rts
 more_lines_exist:	

@@ -27,12 +27,30 @@ got_line_of_input:
 
 	;; Store length of input buffer ready for tokenising
 	stx tokenise_work1
-		
+
+	;; Strip leading spaces from the line
+remove_leading_spaces:	
+	lda $0200
+	cmp #$20
+	bne +
+	ldx #1
+rsl_l1:	lda $0200,x
+	sta $01ff,x
+	inx
+	cpx tokenise_work1
+	bne rsl_l1
+
+	;; Reduce length of input by one
+	dec tokenise_work1
+	;; Stop trying to rim if we run out of input
+	bne remove_leading_spaces
+*
+	
 	;; Do printing of the new line
 	lda #$0d
 	jsr $ffd2
 
-	jsr tokenise_line
+	jsr tokenise_line	
 	
 	jsr ready_message
 

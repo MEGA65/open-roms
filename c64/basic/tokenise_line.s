@@ -235,7 +235,6 @@ word_boundary:
 	inc $d020
 	ldy #$80
 
-	stx $0427
 token_count_loop:
 	lda packed_keywords,x
 	cmp #$fe

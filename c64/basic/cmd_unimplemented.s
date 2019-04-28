@@ -29,7 +29,6 @@ cmd_poke:
 cmd_printhash:
 cmd_print:
 cmd_cont:
-cmd_list:
 cmd_cmd:
 cmd_sys:
 cmd_open:

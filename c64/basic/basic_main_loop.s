@@ -6,7 +6,8 @@ basic_main_loop:
 
 	;; Tell user we are ready
 	jsr ready_message
-	
+
+basic_read_next_line:	
 	;; Read a line of input
 	ldx #$00
 read_line_loop:
@@ -129,7 +130,11 @@ skip_spaces:
 	beq +
 	jsr basic_insert_line
 *
+	;; No READY message after entering or deleting a line of BASIC
+	jmp basic_read_next_line
 	
 not_a_line:	
+
+	;;  XXX - Actually interpret the line
 	
 	jmp basic_main_loop

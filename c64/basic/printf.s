@@ -50,13 +50,82 @@ printf_loop:
 	rts
 
 printf_continues:
+	cmp #$01
+	bne not_hexbyte
+	;; Print a hex byte
+
+	;; Skip the token
+	jsr printf_advance
+	;; Read the low byte
+	jsr $7f4
+	;; Print as hex
+	jsr printf_printhexbyte
+	jmp printf_nextchar
+	
+not_hexbyte:
+	cmp #$02
+	bne not_hexword
+	;; Print a hex word
+
+	;; Skip the token
+	jsr printf_advance
+	jsr printf_advance
+	;; Read the high byte
+	jsr $7f4
+	;; Print as hex
+	jsr printf_printhexbyte
+	;; Skip the token
+	jsr printf_retreat
+	;; Read the low byte
+	jsr $7f4
+	;; Print as hex
+	jsr printf_printhexbyte
+	jsr printf_advance
+	jmp printf_nextchar
+	
+not_hexword:	
 	;; Print character
 	jsr $ffd2
 
 printf_nextchar:
+	jsr printf_advance
+
+	jmp printf_loop
+
+printf_advance:
 	;; Advance pointer to next character
 	inc $7f5
 	bne +
 	inc $7f6
-*
-	jmp printf_loop
+	*
+	rts
+
+printf_retreat:
+	;; Retreat pointer to previous char
+	lda $7f5
+	sec
+	sbc #1
+	sta $7f5
+	lda $7f6
+	sbc #0
+	sta $7f6
+	rts
+
+printf_printhexbyte:
+	pha
+	lsr
+	lsr
+	lsr
+	lsr
+	ora #$30
+	cmp #$3A
+	bcc +
+	adc #6
+*	jsr $ffd2
+	pla
+	and #$0f
+	ora #$30
+	cmp #$3A
+	bcc +
+	adc #6
+*	jmp $ffd2

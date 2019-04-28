@@ -17,12 +17,9 @@ print_integer:
 	pla
 	ldy #23 		; 8 x 3 - 1 = offset of last digit of 128
 lo_loop:	
-	sta $0428,y
 	cmp #$7f
 	bcc bit_clear
 
-	inc $0426
-	
 	;; Bit set, so add the digits
 	pha
 	ldx #2
@@ -51,13 +48,43 @@ next_lo_bit:
 	;; Now do the same for upper byte
 	pla
 	
+	ldy #39 		; 8 x 5 - 1 = offset of last digit of 32768
+hi_loop:	
+	cmp #$7f
+	bcc bit_clear_hi
+
+	
+	;; Bit set, so add the digits
+	pha
+	ldx #4
+	clc
+hi_add_loop:	
+	lda $0100,x
+	adc number_table_hi,y
+	sta $0100,x
+
+	dey
+	dex
+	bpl hi_add_loop
+	pla
+	jmp next_hi_bit	
+	
+bit_clear_hi:
+	dey
+	dey
+	dey
+next_hi_bit:
+	asl
+	cpy #$7f
+	bcc hi_loop	
+	
+	
 	;; Deal with any carries
 	ldx #3
 carry_fix_loop:	
 	lda $0101,x
 	cmp #9
 	bcc +
-	inc $0420
 	inc $0100,x
 	sec
 	sbc #10
@@ -73,7 +100,6 @@ post_carry:
 
 	ldx #4
 *	lda $0100,x
-	sta $0420,x
 	dex
 	bpl -
 	

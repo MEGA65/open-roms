@@ -5,6 +5,10 @@
 	;; printing of hex byte and word values stored at the indicated
 	;; addresses.
 
+	;; .byte 1,$byte = display byte as hex
+	;; .byte 2,$low,$hi = display word as hex
+	;; .byte $f0+n,$low,$hi = display byte at $hi$lo+n as hex
+
 printf:
 	;; Temporary storage is between end of screen at $0400
 	;; and the sprite pointers at $7f8
@@ -83,7 +87,30 @@ not_hexbyte:
 	jsr printf_advance
 	jmp printf_nextchar
 	
-not_hexword:	
+not_hexword:
+	cmp #$f0
+	bcc not_pointer
+
+	;; Treat two-byte arg as base address
+	;; and lower 4 bits of token as offset from
+	;; that location.
+
+	;; Get offset
+	and #$0f
+	tay
+
+	jsr printf_advance
+	jsr $7f4
+	sta $fd
+	jsr printf_advance
+	jsr $7f4
+	sta $fe
+
+	lda ($fd),y
+	jsr printf_printhexbyte
+	jmp printf_nextchar
+
+not_pointer:	
 	;; Print character
 	jsr $ffd2
 

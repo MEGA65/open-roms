@@ -71,7 +71,9 @@ basic_shift_mem_up_and_relink:
 	jsr poke_under_roms
 	
 relink_up_next_line:
-
+	inc $d020
+	jmp relink_up_next_line
+	
 	ldy #0
 	ldx #<basic_current_line_ptr+0
 	jsr peek_under_roms

@@ -24,10 +24,14 @@ basic_shift_mem_up_and_relink:
 	sbc basic_current_line_ptr+1
 	sta memmove_size+1
 	lda basic_end_of_text_ptr+0
-	sbc basic_current_line_ptr+1
-	sta memmove_size+0
-
+	sbc basic_current_line_ptr+0
+	sta memmove_size+0	
+	
 	jsr printf
+	.byte "TOP OF BASIC = $"
+	.byte $f1,<basic_end_of_text_ptr,>basic_end_of_text_ptr
+	.byte $f0,<basic_end_of_text_ptr,>basic_end_of_text_ptr
+	.byte $0d
 	.byte "SHIFTING UP $"
 	.byte $f1,<memmove_size,>memmove_size
 	.byte $f0,<memmove_size,>memmove_size

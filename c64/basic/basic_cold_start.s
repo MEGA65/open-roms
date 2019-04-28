@@ -11,8 +11,16 @@ basic_cold_start:
 	lda #<startup_message
 	jsr print_string
 
-	lda #>64738
-	ldx #<64738
+		
+	;; Work out free bytes, and display
+	jsr basic_do_new
+	lda basic_top_of_memory_ptr+0
+	sec
+	sbc basic_end_of_text_ptr+0
+	tax
+	lda basic_top_of_memory_ptr+1
+	sbc basic_end_of_text_ptr+1
+	
 	jsr print_integer	
 
 	lda #$20
@@ -22,8 +30,6 @@ basic_cold_start:
 	ldx #34
 	jsr print_packed_message
 
-	jsr basic_do_new
-	
 	;; jump into warm start loop
 	jmp basic_warm_start
 	

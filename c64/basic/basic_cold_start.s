@@ -11,6 +11,13 @@ basic_cold_start:
 	lda #<startup_message
 	jsr print_string
 
+	lda #>64738
+	ldx #<64738
+	jsr print_integer	
+
+	lda #$20
+	jsr $ffd2
+	
 	;; Print the rest of the start up message
 	ldx #34
 	jsr print_packed_message
@@ -34,7 +41,4 @@ startup_message:
 	.byte $20,$56,$32,$2e,$30,$2e,$30
 	.byte $0D,$0D
 
-	;; XXX - Hard code in the 38911 for now
-	.byte $33,$38,$39,$31,$31,$20
-	
 	.byte 0

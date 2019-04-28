@@ -25,7 +25,12 @@
 	.alias basic_start_of_free_space_ptr $31
 	.alias basic_start_of_strings_ptr $33
 	.alias basic_top_of_memory_ptr $37
+	.alias basic_current_line_number $39
 	.alias basic_current_line_ptr $3d
+
+	;; Note that the statement point is in the CHRGET/CHRGOT routine
+	;; in ZP RAM.  (Compute's Mapping the 64, p25)
+	.alias basic_current_statement_ptr $7a
 	
 	.alias basic_numeric_work_area $57 ; $57 - $60 inclusive = 10 bytes
 

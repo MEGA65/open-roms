@@ -54,6 +54,11 @@ rsl_l1:	lda $0200,x
 	lda #$0d
 	jsr $ffd2
 
+	;; Ignore empty lines
+	lda tokenise_work1
+	beq basic_read_next_line
+
+	;; Else, tokenise the line
 	jsr tokenise_line	
 
 	;; Has the user entered a line of BASIC beginning with a number?
@@ -135,6 +140,24 @@ skip_spaces:
 	
 not_a_line:	
 
-	;;  XXX - Actually interpret the line
-	
-	jmp basic_main_loop
+	;;  Actually interpret the line
+
+	;; Setup pointer to the statement
+	lda #<$0200
+	sta basic_current_statement_ptr+0
+	lda #>$0200
+	sta basic_current_statement_ptr+1
+
+	;; There is no stored line, so zero that pointer out
+	lda #$00
+	sta basic_current_line_ptr+0
+	sta basic_current_line_ptr+1
+
+	;; Put invalid line number in current line number value,
+	;; so that we know we are in direct mode
+	;; (Compute's Mapping the 64 p19)
+	lda #$ff
+	sta basic_current_line_number+1
+
+	jmp basic_execute_line
+

@@ -165,6 +165,7 @@ char *error_list[]={
   "ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
   "BYTES FREE.\r\r", // #34 // https://github.com/stefanhaustein/expressionparser
   "MEMORY CORRUPT", // #35
+  "NOT IMPLEMENTED", // #36
   NULL};
 
 // Token $FF is end of message, so we can have only 255 unique words

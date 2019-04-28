@@ -82,7 +82,6 @@ rsl_l1:	lda $0200,x
 	ora basic_fac1_exponent
 	beq +
 ml_bad_line_number:
-	inc $0424
 	;; Syntax error
 	ldx #10
 	jmp do_basic_error
@@ -114,19 +113,9 @@ skip_spaces:
 	lda basic_fac1_mantissa+1
 	sta basic_line_number+1
 
-	lda basic_current_line_ptr+0
-	sta $0420
-	lda basic_current_line_ptr+1
-	sta $0421
-	
 	;; Delete line if present
 	jsr basic_find_line
 
-	lda basic_current_line_ptr+0
-	sta $0420
-	lda basic_current_line_ptr+1
-	sta $0421
-	
 	bcs +
 
 	;; Delete the line, whether we are deleting or

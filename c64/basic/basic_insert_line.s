@@ -51,13 +51,10 @@ basic_insert_line:
 	
 	;; Get pointer back
 	pla
-	sta $0411
 	sta basic_current_line_ptr+1
 	pla
-	sta $0410
 	sta basic_current_line_ptr+0
 
-	inc $0427
 	;; Write the line number
 	ldy #2
 	ldx #<basic_current_line_ptr

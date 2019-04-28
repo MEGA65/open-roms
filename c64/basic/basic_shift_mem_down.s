@@ -98,11 +98,21 @@ basic_shift_mem_down_and_relink:
 	;; Get length of deletion back
 	pla
 	sta tokenise_work3
+
+	;; Check if we still have any lines left
+	ldy #0
+	ldx #<basic_current_line_ptr
+	jsr peek_pointer_null_check
+	bcs relink_down_next_line
+	;; Nope, so just return
+	clc
+	rts
+
 	
 relink_down_next_line:
 	;; inc $d020
 	;; jmp relink_down_next_line
-
+	
 	;; Subtract tokenise_work3 from the pointer
 	ldy #0
 	ldx #<basic_current_line_ptr+0

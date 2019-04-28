@@ -27,7 +27,41 @@ list_more_lines:
 	tax
 	pla
 	jsr print_integer
+	lda #$20
+	jsr $ffd2
 
+	;; Iterate through printing out the line
+	;; contents
+	lda #0
+	sta quote_mode_flag
+	
+	ldy #4
+list_print_loop:	
+	ldx #<basic_current_line_ptr
+	jsr peek_under_roms
+	cmp #$00
+	beq list_end_of_line
+	cmp #$22
+	bne list_not_quote
+	lda quote_mode_flag
+	eor #$ff
+	sta quote_mode_flag
+	jmp list_is_literal
+list_not_quote:	
+	cmp #$7f
+	bcc list_is_literal
+
+	;; Display a token
+
+	iny
+	bne list_print_loop
+
+list_is_literal:
+	jsr $ffd2
+	iny
+	bne list_print_loop
+	
+list_end_of_line:	
 	;; Print end of line
 	lda #$0d
 	jsr $ffd2

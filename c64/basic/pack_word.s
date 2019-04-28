@@ -190,8 +190,9 @@ consider_next_char:
 	;; Pack next char
 	inx 
 	dec tokenise_work1
-	bne pack_char_loop
-
+	beq +
+	jmp pack_char_loop
+*
 	;; Add 1 to length if nybl waiting to be flushed
 	;; (but leave flag set so the caller knows if the
 	;; bottom nybl might be different if the string were

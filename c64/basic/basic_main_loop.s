@@ -128,10 +128,15 @@ skip_spaces:
 	sta $0421
 	
 	bcs +
+
 	jsr basic_delete_line
 *
 	;; Insert new line if non-zero length
+	lda tokenise_work1
+	cmp tokenise_work2
+	beq +
 	jsr basic_insert_line
+*
 	
 not_a_line:	
 	

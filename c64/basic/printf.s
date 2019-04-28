@@ -46,6 +46,7 @@ printf_loop:
 	lda $7f0
 	ldx $7f1
 	ldy $7f2
+	plp
 	rts
 
 printf_continues:
@@ -58,4 +59,4 @@ printf_nextchar:
 	bne +
 	inc $7f6
 *
-	jmp print_loop
+	jmp printf_loop

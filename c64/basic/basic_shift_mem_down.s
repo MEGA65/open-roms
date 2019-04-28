@@ -27,21 +27,21 @@ basic_shift_mem_down_and_relink:
 	sbc memmove_src+1
 	sta memmove_size+1
 
-	jsr printf
-	.byte "TOP OF BASIC = $"
-	.byte $f1,<basic_end_of_text_ptr,>basic_end_of_text_ptr
-	.byte $f0,<basic_end_of_text_ptr,>basic_end_of_text_ptr
-	.byte $0d
-	.byte "SHIFTING DOWN $"
-	.byte $f1,<memmove_size,>memmove_size
-	.byte $f0,<memmove_size,>memmove_size
-	.byte " BYTES FROM $"
-	.byte $f1,<memmove_src,>memmove_src
-	.byte $f0,<memmove_src,>memmove_src
-	.byte " TO $"
-	.byte $f1,<memmove_dst,>memmove_dst
-	.byte $f0,<memmove_dst,>memmove_dst
-	.byte $0d,0
+	;; jsr printf
+	;; .byte "TOP OF BASIC = $"
+	;; .byte $f1,<basic_end_of_text_ptr,>basic_end_of_text_ptr
+	;; .byte $f0,<basic_end_of_text_ptr,>basic_end_of_text_ptr
+	;; .byte $0d
+	;; .byte "SHIFTING DOWN $"
+	;; .byte $f1,<memmove_size,>memmove_size
+	;; .byte $f0,<memmove_size,>memmove_size
+	;; .byte " BYTES FROM $"
+	;; .byte $f1,<memmove_src,>memmove_src
+	;; .byte $f0,<memmove_src,>memmove_src
+	;; .byte " TO $"
+	;; .byte $f1,<memmove_dst,>memmove_dst
+	;; .byte $f0,<memmove_dst,>memmove_dst
+	;; .byte $0d,0
 	
 	;; The copy routine that copies under the ROMs is as simple
 	;; as possible to be as small as possible, so we have
@@ -78,17 +78,17 @@ basic_shift_mem_down_and_relink:
 	;; Increase copy page count so we can post-decrement compare with $00
 	inc memmove_size+1
 	
-	jsr printf
-	.byte "REVISED BOUNDS $"
-	.byte $f1,<memmove_size,>memmove_size
-	.byte $f0,<memmove_size,>memmove_size
-	.byte " BYTES FROM $"
-	.byte $f1,<memmove_src,>memmove_src
-	.byte $f0,<memmove_src,>memmove_src
-	.byte " TO $"
-	.byte $f1,<memmove_dst,>memmove_dst
-	.byte $f0,<memmove_dst,>memmove_dst
-	.byte $0d,0
+	;; jsr printf
+	;; .byte "REVISED BOUNDS $"
+	;; .byte $f1,<memmove_size,>memmove_size
+	;; .byte $f0,<memmove_size,>memmove_size
+	;; .byte " BYTES FROM $"
+	;; .byte $f1,<memmove_src,>memmove_src
+	;; .byte $f0,<memmove_src,>memmove_src
+	;; .byte " TO $"
+	;; .byte $f1,<memmove_dst,>memmove_dst
+	;; .byte $f0,<memmove_dst,>memmove_dst
+	;; .byte $0d,0
 
 	;; Get Y value ready for the copy
 	ldy memmove_size+0

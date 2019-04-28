@@ -27,21 +27,21 @@ basic_shift_mem_up_and_relink:
 	sbc basic_current_line_ptr+1
 	sta memmove_size+1
 	
-	jsr printf
-	.byte "TOP OF BASIC = $"
-	.byte $f1,<basic_end_of_text_ptr,>basic_end_of_text_ptr
-	.byte $f0,<basic_end_of_text_ptr,>basic_end_of_text_ptr
-	.byte $0d
-	.byte "SHIFTING UP $"
-	.byte $f1,<memmove_size,>memmove_size
-	.byte $f0,<memmove_size,>memmove_size
-	.byte " BYTES FROM $"
-	.byte $f1,<memmove_src,>memmove_src
-	.byte $f0,<memmove_src,>memmove_src
-	.byte " TO $"
-	.byte $f1,<memmove_dst,>memmove_dst
-	.byte $f0,<memmove_dst,>memmove_dst
-	.byte $0d,0
+	;; jsr printf
+	;; .byte "TOP OF BASIC = $"
+	;; .byte $f1,<basic_end_of_text_ptr,>basic_end_of_text_ptr
+	;; .byte $f0,<basic_end_of_text_ptr,>basic_end_of_text_ptr
+	;; .byte $0d
+	;; .byte "SHIFTING UP $"
+	;; .byte $f1,<memmove_size,>memmove_size
+	;; .byte $f0,<memmove_size,>memmove_size
+	;; .byte " BYTES FROM $"
+	;; .byte $f1,<memmove_src,>memmove_src
+	;; .byte $f0,<memmove_src,>memmove_src
+	;; .byte " TO $"
+	;; .byte $f1,<memmove_dst,>memmove_dst
+	;; .byte $f0,<memmove_dst,>memmove_dst
+	;; .byte $0d,0
 	
 	;; To make life simple for the copy routine that lives in RAM,
 	;; we have to adjust the end pointers down one page and set Y to the low
@@ -70,17 +70,17 @@ basic_shift_mem_up_and_relink:
 
 	stx tokenise_work3
 	
-	jsr printf
-	.byte "REVISED BOUNDS $"
-	.byte $f1,<memmove_size,>memmove_size
-	.byte $f0,<memmove_size,>memmove_size
-	.byte " BYTES FROM $"
-	.byte $f1,<memmove_src,>memmove_src
-	.byte $f0,<memmove_src,>memmove_src
-	.byte " TO $"
-	.byte $f1,<memmove_dst,>memmove_dst
-	.byte $f0,<memmove_dst,>memmove_dst
-	.byte $0d,0
+	;; jsr printf
+	;; .byte "REVISED BOUNDS $"
+	;; .byte $f1,<memmove_size,>memmove_size
+	;; .byte $f0,<memmove_size,>memmove_size
+	;; .byte " BYTES FROM $"
+	;; .byte $f1,<memmove_src,>memmove_src
+	;; .byte $f0,<memmove_src,>memmove_src
+	;; .byte " TO $"
+	;; .byte $f1,<memmove_dst,>memmove_dst
+	;; .byte $f0,<memmove_dst,>memmove_dst
+	;; .byte $0d,0
 	
 	;; Do the copy
 	jsr shift_mem_up

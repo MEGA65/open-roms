@@ -73,12 +73,13 @@ bit_clear_hi:
 	dey
 	dey
 	dey
+	dey
+	dey
 next_hi_bit:
 	asl
 	cpy #$7f
 	bcc hi_loop	
-	
-	
+
 	;; Deal with any carries
 	ldx #3
 carry_fix_loop:	
@@ -94,15 +95,10 @@ carry_fix_loop:
 	bpl carry_fix_loop
 
 post_carry:	
-	
+
 	;; Got digits.
 	;; Skip leading zeros, and print the resulting number
 
-	ldx #4
-*	lda $0100,x
-	dex
-	bpl -
-	
 	;; Skip leading zeros
 	ldy #0
 *	lda $0100,y

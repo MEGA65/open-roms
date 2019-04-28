@@ -20,7 +20,7 @@ basic_cold_start:
 	tax
 	lda basic_top_of_memory_ptr+1
 	sbc basic_end_of_text_ptr+1
-	
+
 	jsr print_integer	
 
 	lda #$20

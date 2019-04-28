@@ -38,7 +38,7 @@ basic_do_new:
 	sec			; Read, not write value
 	jsr $ff99 		; KERNAL MEMTOP routine
 	cpx #$80
-	bne +
+	beq +
 	lda #>$f7ff
 	.byte $2c
 *	lda #>$7FFF

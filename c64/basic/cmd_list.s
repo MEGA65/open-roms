@@ -46,6 +46,7 @@ list_print_loop:
 	lda quote_mode_flag
 	eor #$ff
 	sta quote_mode_flag
+	lda #$22
 	jmp list_is_literal
 list_not_quote:	
 	cmp #$7f
@@ -53,6 +54,30 @@ list_not_quote:
 
 	;; Display a token
 
+	;; Save registers
+	tax
+	tya
+	pha
+
+	;; Get pointer to compressed keyword list
+	lda #<packed_keywords
+	sta temp_string_ptr+0
+	lda #>packed_keywords
+	sta temp_string_ptr+1
+	
+	;; Subtract $80 from token to get offset in word
+	;; list
+	txa
+	and #$7f
+	tax
+
+	;; Now ask for it to be printed
+	ldy #$ff
+	jsr packed_word_search
+
+	pla
+	tay
+	
 	iny
 	bne list_print_loop
 

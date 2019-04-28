@@ -55,7 +55,7 @@ shift_mem_down_routine:
 	;; to the end of the areas, and that Y is correctly initialised
 	;; to allow the copy to begin.
 	jsr memmap_allram
-smd1:	
+smd1:
 	lda (memmove_src),y
 	sta (memmove_dst),y
 	iny

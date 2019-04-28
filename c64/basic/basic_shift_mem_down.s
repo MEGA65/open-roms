@@ -75,8 +75,8 @@ basic_shift_mem_down_and_relink:
 	sbc #0
 	sta memmove_dst+1
 
-	;; Get Y value ready for the copy
-	ldy memmove_size+0
+	;; Increase copy page count so we can post-decrement compare with $00
+	inc memmove_size+1
 	
 	jsr printf
 	.byte "REVISED BOUNDS $"
@@ -90,17 +90,18 @@ basic_shift_mem_down_and_relink:
 	.byte $f0,<memmove_dst,>memmove_dst
 	.byte $0d,0
 
+	;; Get Y value ready for the copy
+	ldy memmove_size+0
+	
 	jsr shift_mem_down
 
-	inc $d020
-	
 	;; Get length of deletion back
 	pla
 	sta tokenise_work3
 	
 relink_down_next_line:
-	inc $d020
-	jmp relink_down_next_line
+	;; inc $d020
+	;; jmp relink_down_next_line
 
 	;; Subtract tokenise_work3 from the pointer
 	ldy #0
@@ -134,5 +135,6 @@ relink_down_loop:
 	jsr peek_pointer_null_check
 	bcs relink_down_next_line
 
+	clc
 	rts
 	

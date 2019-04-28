@@ -27,6 +27,16 @@ basic_delete_line:
 	sbc basic_current_line_ptr+0
 	sta tokenise_work3
 	lda tokenise_work4
+	sbc basic_current_line_ptr+1
+	sta tokenise_work4
+
+	jsr printf
+	.byte "LINE LENGTH IS $"
+	.byte $f0,<tokenise_work4,>tokenise_work4
+	.byte $f0,<tokenise_work3,>tokenise_work3
+	.byte $0d,0
+	
+	lda tokenise_work4
 	sbc #0
 	cmp #$00
 	beq +

@@ -32,7 +32,7 @@ basic_shift_mem_down_and_relink:
 	.byte $f1,<basic_end_of_text_ptr,>basic_end_of_text_ptr
 	.byte $f0,<basic_end_of_text_ptr,>basic_end_of_text_ptr
 	.byte $0d
-	.byte "SHIFTING UP $"
+	.byte "SHIFTING DOWN $"
 	.byte $f1,<memmove_size,>memmove_size
 	.byte $f0,<memmove_size,>memmove_size
 	.byte " BYTES FROM $"
@@ -54,9 +54,10 @@ basic_shift_mem_down_and_relink:
 	;; This means we have to then reduce the source and
 	;; target pointers by the same amount
 
-	lda memmove_size
+	lda memmove_size+0
 	eor #$ff
 	sta tokenise_work3
+	sta memmove_size+0
 
 	lda memmove_src+0
 	sec
@@ -91,6 +92,8 @@ basic_shift_mem_down_and_relink:
 
 	jsr shift_mem_down
 
+	inc $d020
+	
 	;; Get length of deletion back
 	pla
 	sta tokenise_work3

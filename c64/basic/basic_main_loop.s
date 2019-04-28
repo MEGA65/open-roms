@@ -129,9 +129,12 @@ skip_spaces:
 	
 	bcs +
 
+	;; Delete the line, whether we are deleting or
+	;; replacing the line
 	jsr basic_delete_line
 *
-	;; Insert new line if non-zero length
+	;; Insert new line if non-zero length, i.e., that
+	;; we are not just deleting the line.
 	lda tokenise_work1
 	cmp tokenise_work2
 	beq +

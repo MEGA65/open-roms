@@ -24,9 +24,21 @@ basic_shift_mem_up_and_relink:
 	sbc basic_current_line_ptr+1
 	sta memmove_size+1
 	lda basic_end_of_text_ptr+0
-	sbc #0
+	sbc basic_current_line_ptr+1
 	sta memmove_size+0
 
+	jsr printf
+	.byte "SHIFTING UP $"
+	.byte $f1,<memmove_size,>memmove_size
+	.byte $f0,<memmove_size,>memmove_size
+	.byte " BYTES FROM $"
+	.byte $f1,<memmove_src,>memmove_src
+	.byte $f0,<memmove_src,>memmove_src
+	.byte " TO $"
+	.byte $f1,<memmove_dst,>memmove_dst
+	.byte $f0,<memmove_dst,>memmove_dst
+	.byte $0d,0
+	
 	;; To make life simple for the copy routine that lives in RAM,
 	;; we have to adjust the end pointers down one page and set Y to the low
 	;; byte of the copy size.
@@ -54,6 +66,18 @@ basic_shift_mem_up_and_relink:
 
 	stx tokenise_work3
 	
+	jsr printf
+	.byte "REVISED BOUNDS $"
+	.byte $f1,<memmove_size,>memmove_size
+	.byte $f0,<memmove_size,>memmove_size
+	.byte " BYTES FROM $"
+	.byte $f1,<memmove_src,>memmove_src
+	.byte $f0,<memmove_src,>memmove_src
+	.byte " TO $"
+	.byte $f1,<memmove_dst,>memmove_dst
+	.byte $f0,<memmove_dst,>memmove_dst
+	.byte $0d,0
+	
 	;; Do the copy
 	jsr shift_mem_up
 	
@@ -71,8 +95,8 @@ basic_shift_mem_up_and_relink:
 	jsr poke_under_roms
 	
 relink_up_next_line:
-	inc $d020
-	jmp relink_up_next_line
+	;; inc $d020
+	;; jmp relink_up_next_line
 	
 	ldy #0
 	ldx #<basic_current_line_ptr+0

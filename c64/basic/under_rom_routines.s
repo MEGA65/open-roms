@@ -46,7 +46,27 @@ smu1:
 	bne smu1
 	
 	jmp memmap_normal
+
+shift_mem_down_routine:
+	;; Move memmove_size bytes from memmove_src to memmove_dst,
+	;; where memmove_dst > memmove_src
+	;; This means we have to copy from the back end down.
+	;; This routine assumes the pointers are already pointed
+	;; to the end of the areas, and that Y is correctly initialised
+	;; to allow the copy to begin.
+	jsr memmap_allram
+smd1:	
+	lda (memmove_src),y
+	sta (memmove_dst),y
+	iny
+	bne smd1
+	inc memmove_src+1
+	inc memmove_dst+1
+	dec memmove_size+1
+	bne smd1
 	
+	jmp memmap_normal
+
 	
 peek_under_roms_routine:
 	stx peek_under_roms+7 	;Offset of arg of lda ($00),y

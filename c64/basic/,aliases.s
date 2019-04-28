@@ -127,6 +127,7 @@
 	.alias missed_nmi_flag         $2A7
 	.alias tiny_nmi_handler		$2A8	
 	.alias shift_mem_up tiny_nmi_handler+shift_mem_up_routine-tiny_nmi_handler_routine
+	.alias shift_mem_down tiny_nmi_handler+shift_mem_down_routine-tiny_nmi_handler_routine
 	.alias peek_under_roms tiny_nmi_handler+peek_under_roms_routine-tiny_nmi_handler_routine
 	.alias poke_under_roms tiny_nmi_handler+poke_under_roms_routine-tiny_nmi_handler_routine
 	.alias memmap_allram tiny_nmi_handler+memmap_allram_routine-tiny_nmi_handler_routine

@@ -14,11 +14,17 @@ basic_insert_line:
 
 	;; But first, remember where the pointer will be, so that we can
 	;; put the line in there after.
+
+	jsr printf
+	.byte "INSERTING LINE AT $"
+	.byte $f1,<basic_current_line_ptr,>basic_current_line_ptr
+	.byte $f0,<basic_current_line_ptr,>basic_current_line_ptr
+	.byte $0d,0
+	
 	lda basic_current_line_ptr+0
-	sta $0438
 	pha
 	lda basic_current_line_ptr+1
-	sta $0439
+
 	pha
 	
 	;; Get number of bytes in tokenised line after line number
@@ -75,6 +81,6 @@ line_store_loop:
 	bne line_store_loop
 	dec tokenise_work2
 	
-	sec
+	clc
 	rts
 	

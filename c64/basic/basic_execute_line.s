@@ -8,4 +8,8 @@
 basic_execute_line:	
 
 
+	;; If all else fails, it's a syntax error
+	ldx #10
+	jmp do_basic_error
+
 	jmp basic_main_loop

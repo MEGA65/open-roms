@@ -38,7 +38,7 @@ list_more_lines:
 	ldy #4
 list_print_loop:	
 	ldx #<basic_current_line_ptr
-	jsr peek_under_roms
+	jsr peek_under_roms	
 	cmp #$00
 	beq list_end_of_line
 	cmp #$22
@@ -49,6 +49,10 @@ list_print_loop:
 	lda #$22
 	jmp list_is_literal
 list_not_quote:	
+	;; Check quote mode, and display as literal if required
+	ldx quote_mode_flag
+	bne list_is_literal
+	
 	cmp #$7f
 	bcc list_is_literal
 
@@ -56,6 +60,7 @@ list_not_quote:
 
 	;; Save registers
 	tax
+	pha
 	tya
 	pha
 
@@ -77,6 +82,16 @@ list_not_quote:
 
 	pla
 	tay
+	pla
+
+	cmp #$8f
+	bne list_not_rem
+	;; REM command locks quote flag on until the end of the line, allowing
+	;; funny characters in REM statements without problem.
+	inc $0427
+	sta quote_mode_flag 	; Any value other than $00 or $FF will lock quote mode on, so the token value of REM is fine here
+	;; FALL THROUGH
+list_not_rem:		
 	
 	iny
 	bne list_print_loop

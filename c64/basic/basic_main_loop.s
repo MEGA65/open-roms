@@ -79,32 +79,19 @@ rsl_l1:	lda $0200,x
 	lda #$00
 	sta tokenise_work1
 
-	;; Try to read linne number
+	;; Try to read line number
 	lda #<$0200
 	sta basic_current_statement_ptr+0
 	lda #>$0200
-	sta basic_current_statement_ptr+1	
-	jsr injest_number
+	sta basic_current_statement_ptr+1
 
-	;; Copy offset of first position after number back out
+	jsr basic_parse_line_number
+
+	;; Get pointer to next char
 	lda basic_current_statement_ptr+0
 	sta tokenise_work1
-
-	;; Check if the number is a valid line number
-	;; i.e., 16 bits, no exponent, no decimal
-	lda basic_fac1_mantissa+2
-	ora basic_fac1_mantissa+3
-	ora basic_fac1_exponent
-	beq +
-ml_bad_line_number:
-	;; Syntax error
-	ldx #10
-	jmp do_basic_error
-*	lda tokenise_work4
-	cmp #$ff
-	bne ml_bad_line_number
-
-	;; Got a valid line number.
+	
+	;; Got a valid line number -- so do add/del line
 
 	;; Skip any spaces after the line number
 	ldx tokenise_work1
@@ -121,12 +108,6 @@ skip_spaces:
 	;; to slow things down, and that you might have to either CLR if there is no
 	;; memory free, or else it would auto CLR when you ran out of program space).
 	jsr basic_do_clr
-
-	;; Copy to line number holder
-	lda basic_fac1_mantissa+0
-	sta basic_line_number+0
-	lda basic_fac1_mantissa+1
-	sta basic_line_number+1
 
 	;; Delete line if present
 	jsr basic_find_line

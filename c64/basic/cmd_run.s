@@ -1,6 +1,10 @@
 cmd_run:
 	;; XXX - Parse starting line number
 
+	jsr basic_end_of_statement_check
+	bcc +
+
+*
 	;; Reset line pointer to first line of program.
 	lda basic_start_of_text_ptr+0
 	sta basic_current_line_ptr+0

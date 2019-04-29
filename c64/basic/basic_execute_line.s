@@ -2,7 +2,7 @@
 	;; after first checking that we have a colon
 	;; or $00 char
 
-basic_run_next_statement:
+basic_end_of_statement_check:	
 	ldx #<basic_current_statement_ptr
 	ldy #0
 	jsr peek_under_roms
@@ -12,11 +12,16 @@ basic_run_next_statement:
 	cmp #$3a
 	beq +
 
-	;; Nope, so SYNTAX ERROR it is!
-	ldx #10
-	jmp do_basic_error
-
+	;; not end of statement
+	clc
+	rts
 *
+	sec
+	rts
+
+basic_run_next_statement:
+	jsr basic_end_of_statement_check
+	bcc basic_execute_line
 
 	;; Go through the line until its end is reached.
 	;; If we reach the end are in direct mode, then

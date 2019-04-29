@@ -279,6 +279,17 @@ not_clearscreen:
 	jmp chrout_done
 *
 
+	;; Codes $C0-$DF become $40-$5F
+	;; But 
+	cmp #$e0
+	bcs +
+	cmp #$c0
+	bcc +
+	
+	and #$7f
+	jmp not_high_char
+
+*
 	;; Range $20-$3F is unchanged
 	cmp #$40
 	bcc not_high_char

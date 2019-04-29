@@ -175,8 +175,17 @@ is_quote_mode:
 
 	;; Yes, a control code in quote mode means we display it as a reverse character
 	pla
-	and #$1F
-	ora #$80
+
+	;; Low control codes are just +$80
+	clc
+	adc #$80
+	;; If it overflowed, then it is a high control code,
+	;; so we need to make it be $80 + $40 + char
+	;; as we will have flipped back to just $00 + char, we should
+	;; now add $c0 if C is set from overflow
+	bcc low_ctrl_char
+	adc #$bf 		; C=1, so adding $BF + C = add $C0
+low_ctrl_char:	
 	jmp output_literal_char
 *
 	pla

@@ -165,25 +165,23 @@ not_14:
 
 is_quote_mode:	
 	;; Is it a control code?
-	;; = codes <$20 and certain codes like left, up, shift-HOME, RVS-OFF
-	cmp #$91
-	beq +
-	cmp #$9d
-	beq +
-	cmp #$93
-	beq +
-	cmp #$92
-	beq +
-	cmp #$20
-	bcs not_quote_mode
-*
+	;; control codes are $00-$1f and $80-$9f
+	;; (from reading C64 PRG p379-381)
+	;; so we can just check if bits 5 or 6 are set, and if so,
+	;; then it isn't a control character.
+	pha
+	and #$60
+	bne +
+
 	;; Yes, a control code in quote mode means we display it as a reverse character
+	pla
 	and #$1F
 	ora #$80
 	jmp output_literal_char
-	
+*
+	pla
 not_quote_mode:	
-
+	
 	;; Check for colours
 	ldx #$f
 colour_check_loop:	

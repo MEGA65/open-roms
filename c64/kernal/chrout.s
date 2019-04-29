@@ -34,6 +34,10 @@ not_0a:
 	;; Carriage return
 	cmp #$0d
 	bne not_0d
+	;; RETURN clears quote and insert modes
+	lda #$00
+	sta quote_mode_flag
+	sta insert_mode
 	jmp screen_advance_to_next_line
 not_0d:	
 

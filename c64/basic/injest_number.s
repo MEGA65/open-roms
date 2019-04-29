@@ -59,6 +59,9 @@ injest_number:
 	;; Set sign to negative
 	lda #$ff
 	sta basic_fac1_sign
+
+	;; Skip over the minus sign
+	jsr basic_consume_character
 	
 ij_not_minus:	
 
@@ -68,7 +71,7 @@ ij_loop1:
 	lda (basic_current_statement_ptr),y
 	cmp #$30
 	bcc ij_not_a_digit
-	cmp #$39
+	cmp #$3a
 	bcs ij_not_a_digit
 
 	;; It is a digit

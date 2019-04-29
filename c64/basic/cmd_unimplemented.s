@@ -29,7 +29,6 @@ cmd_printhash:
 cmd_print:
 cmd_cont:
 cmd_cmd:
-cmd_sys:
 cmd_open:
 	
 	;; $A0-$AF

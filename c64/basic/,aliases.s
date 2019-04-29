@@ -126,6 +126,12 @@
 	.alias screen_scroll_disable $0292
 	.alias pal_or_ntsc $02A6
 
+	;; Registers for SYS call
+	.alias sys_reg_a $30c
+	.alias sys_reg_x $30d
+	.alias sys_reg_y $30e
+	.alias sys_reg_p $30f
+	.alias sys_jmp   $310
 
 	;; BASIC uses some extra bytes for memory access under ROMs located at $2A7 onwards
 	;; IRQs are disabled when doing such accesses, and a default NMI handler only increments

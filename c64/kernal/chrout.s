@@ -278,34 +278,31 @@ not_clearscreen:
 	bcs +
 	jmp chrout_done
 *
-	
-	;; Unshifted letters
+
+	;; Range $20-$3F is unchanged
 	cmp #$40
-	bcc not_lower
-	cmp #$41+26
-	bcs not_lower
-	and #$1f
-	jmp chrout_l1
-
-not_lower:	
+	bcc not_high_char
 	
-	;; Shifted letters
-	cmp #$60
-	bcc not_upper
-	cmp #$60+26
-	bcs not_upper
-	sec
-	sbc #$20
+	;; Unshifted letters and symbols from $40-$5F
+	;; all end up being -$40
+	;; (C64 PRG p376)
 
-	jmp chrout_l1
-	
-not_upper:
-	cmp #$a0
-	bcc not_vendor
+	;; But anything >= $80 needs to be -$40
+	;; (C64 PRG p380-381)
+	;; And bit 7 should be cleared, only to be
+	;; set by reverse video
 	sec
 	sbc #$40
 
-not_vendor:	
+	;; Fix shifted chars by adding $20 again
+	cmp #$20
+	bcc not_high_char
+	cmp #$40
+	bcs not_high_char
+	clc
+	adc #$20
+
+not_high_char:	
 
 chrout_l1:
 	

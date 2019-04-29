@@ -153,7 +153,19 @@ not_punctuation:
 	clc
 	adc #$80
 
+	rts
+	
 not_shifted:	
 
+	cmp #$80
+	bcs not_vendor
+
+	;; $60-$7F -> $A0-$BF
+
+	clc
+	adc #$40
+	
+	rts
+not_vendor:	
 	
 	rts

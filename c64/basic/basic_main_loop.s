@@ -78,8 +78,17 @@ rsl_l1:	lda $0200,x
 	sta tokenise_work2
 	lda #$00
 	sta tokenise_work1
-	
+
+	;; Try to read linne number
+	lda #<$0200
+	sta basic_current_statement_ptr+0
+	lda #>$0200
+	sta basic_current_statement_ptr+1	
 	jsr injest_number
+
+	;; Copy offset of first position after number back out
+	lda basic_current_statement_ptr+0
+	sta tokenise_work1
 
 	;; Check if the number is a valid line number
 	;; i.e., 16 bits, no exponent, no decimal

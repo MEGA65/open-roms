@@ -1,6 +1,6 @@
-	;; Parse a number from the input buffer at $0200+tokenise_work1
+	;; Parse a number from the input buffer at (basic_current_statement_ptr)
 	;; Result is put into FAC1.
-	;; tokenise_work1 is updated with first position after the number.
+	;; basic_current_statement_ptr is updated with first position after the number.
 
 	;; XXX - Remember decimal position and exponent, and apply them
 	;; after to produce normalised floating point number.
@@ -51,8 +51,8 @@ injest_number:
 	;; Check if leading char is a - sign
 	;; Note: the - will have been tokenised to $AB
 	;; XXX - implement
-	ldx tokenise_work1
-	lda $0200,x
+	ldy #$00
+	lda (basic_current_statement_ptr),y
 	cmp #$AB
 	bne ij_not_minus
 
@@ -63,9 +63,9 @@ injest_number:
 ij_not_minus:	
 
 	
-ij_loop1:	
-	ldx tokenise_work1
-	lda $0200,x
+ij_loop1:
+	ldy #$00
+	lda (basic_current_statement_ptr),y
 	cmp #$30
 	bcc ij_not_a_digit
 	cmp #$39
@@ -102,8 +102,8 @@ ij_accept_precision:
 	bne ij_consider_next_digit
 	
 	;; Get digit
-	ldx tokenise_work1
-	lda $0200,x
+	ldy #$00
+	lda (basic_current_statement_ptr),y
 	sec
 	sbc #$30
 
@@ -131,7 +131,7 @@ ij_loop2:
 
 ij_consider_next_digit:	
 	;; Consider next digit
-	inc tokenise_work1
+	jsr basic_consume_character
 	jmp ij_loop1
 	
 	rts

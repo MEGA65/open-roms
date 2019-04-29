@@ -7,6 +7,13 @@ basic_end_of_statement_check:
 	ldy #0
 	jsr peek_under_roms
 
+	;; Consume any spaces
+	cmp #$20
+	bne no_space_to_skip
+	jsr basic_consume_character
+	jmp basic_end_of_statement_check
+
+no_space_to_skip:
 	cmp #$00
 	beq +
 	cmp #$3a

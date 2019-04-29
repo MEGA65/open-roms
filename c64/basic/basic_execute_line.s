@@ -27,9 +27,19 @@ no_space_to_skip:
 	rts
 
 basic_execute_statement:
+
 	;; Skip over any white space and :
 	jsr basic_end_of_statement_check
 
+	;; jsr printf
+	;; .byte "LINE PTR = $"
+	;; .byte $f1,<basic_current_line_ptr,>basic_current_line_ptr
+	;; .byte $f0,<basic_current_line_ptr,>basic_current_line_ptr
+	;; .byte ", STATEMENT PTR = $"
+	;; .byte $f1,<basic_current_statement_ptr,>basic_current_statement_ptr
+	;; .byte $f0,<basic_current_statement_ptr,>basic_current_statement_ptr
+	;; .byte $d,0
+		
 	;; Go through the line until its end is reached.
 	;; If we reach the end are in direct mode, then
 	;; go back to reading input, else look for the
@@ -42,6 +52,8 @@ basic_execute_statement:
 	ldx #<basic_current_statement_ptr
 	ldy #0
 	jsr peek_under_roms
+	cmp #$00
+	beq basic_end_of_line
 	
 	;; The checks should be done in order of frequency, so that we are as
 	;; fast as possible.
@@ -123,6 +135,15 @@ basic_not_direct_mode:
 	jmp basic_main_loop
 	
 basic_execute_from_current_line:
+	;; Check if pointer is null, if so, we are at the end of
+	;; the program.
+	ldy #0
+	ldx #<basic_current_line_ptr
+	jsr peek_pointer_null_check
+	bcs +
+	;; End of program reached
+	jmp basic_main_loop
+*
 	;; Skip pointer and line number to get address of first statement
 	lda basic_current_line_ptr+0
 	clc

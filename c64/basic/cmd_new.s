@@ -1,11 +1,16 @@
 
 cmd_new:
 	jsr basic_do_new
+
+	;; NEW command terminates execution
+	;; (Confirmed on a C64)
 	jmp basic_main_loop
 
 cmd_clr:
 	jsr basic_do_clr
-	jmp basic_main_loop
+	;; CLR command does not stop execution
+	;; (Cconfirmed on a c64)
+	jmp basic_run_next_statement
 	
 basic_do_new:	
 	;; Setup pointers to memory storage

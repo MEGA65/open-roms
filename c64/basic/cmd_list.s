@@ -15,6 +15,9 @@ list_loop:
 	jsr peek_pointer_null_check
 	bcs list_more_lines
 
+	;; LIST terminates any running program,
+	;; because it has fiddled with the current line pointer.
+	;; (Confirmed by testing on a C64)
 	jmp basic_main_loop
 
 list_more_lines:

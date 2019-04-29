@@ -165,9 +165,18 @@ not_14:
 
 is_quote_mode:	
 	;; Is it a control code?
+	;; = codes <$20 and certain codes like left, up, shift-HOME, RVS-OFF
+	cmp #$91
+	beq +
+	cmp #$9d
+	beq +
+	cmp #$93
+	beq +
+	cmp #$92
+	beq +
 	cmp #$20
 	bcs not_quote_mode
-
+*
 	;; Yes, a control code in quote mode means we display it as a reverse character
 	and #$1F
 	ora #$80

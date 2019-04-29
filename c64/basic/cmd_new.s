@@ -10,7 +10,7 @@ cmd_clr:
 	jsr basic_do_clr
 	;; CLR command does not stop execution
 	;; (Cconfirmed on a c64)
-	jmp basic_run_next_statement
+	jmp basic_execute_statement
 	
 basic_do_new:	
 	;; Setup pointers to memory storage

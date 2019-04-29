@@ -29,4 +29,4 @@ cmd_sys:
 	;; Call the routine.
 	jsr sys_jmp
 	
-	jmp basic_run_next_statement
+	jmp basic_execute_statement

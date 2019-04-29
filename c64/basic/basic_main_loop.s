@@ -149,5 +149,5 @@ not_a_line:
 	lda #$ff
 	sta basic_current_line_number+1
 
-	jmp basic_execute_line
+	jmp basic_execute_statement
 

@@ -26,6 +26,7 @@
 	.alias basic_start_of_strings_ptr $33
 	.alias basic_top_of_memory_ptr $37
 	.alias basic_current_line_number $39
+	.alias basic_previous_line_number $3b
 	.alias basic_current_line_ptr $3d
 
 	;; Note that the statement point is in the CHRGET/CHRGOT routine

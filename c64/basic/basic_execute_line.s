@@ -85,9 +85,54 @@ basic_end_of_line:
 
 	;; XXX - If not in direct mode, then advance to next line, if there is
 	;; one.
-	
+
+	;; Are we in direct mode
+	lda basic_current_line_number+1
+	cmp #$ff
+	bne basic_not_direct_mode
+
+	;; Yes, we were in direct mode, so stop now
 	jmp basic_main_loop
 
+basic_not_direct_mode:
+	;; Copy line number to previous line number
+	lda basic_current_line_number+0
+	sta basic_previous_line_number+0
+	lda basic_current_line_number+1
+	sta basic_previous_line_number+1
+	
+	;; Advance the basic line pointer to the next line
+	jsr basic_follow_link_to_next_line
+
+	;; Are we at the end of the program?
+	lda basic_current_line_ptr+0
+	ora basic_current_line_ptr+1
+	bne basic_execute_from_current_line
+
+	;; End of program found
+	jmp basic_main_loop
+	
+basic_execute_from_current_line:
+	;; Skip pointer and line number to get address of first statement
+	lda basic_current_line_ptr+0
+	clc
+	adc #4
+	sta basic_current_statement_ptr+0
+	lda basic_current_line_ptr+1
+	adc #0
+	sta basic_current_statement_ptr+1
+
+	;; Store line number
+	ldx #<basic_current_line_ptr
+	ldy #2
+	jsr peek_under_roms
+	sta basic_current_line_number+0
+	iny
+	jsr peek_under_roms
+	sta basic_current_line_number+1
+
+	jmp basic_execute_line
+	
 basic_command_jump_table:
 	;; $80 - $8F
 	.word cmd_end-1

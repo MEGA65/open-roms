@@ -22,6 +22,18 @@ do_basic_error:
 	ldx #33
 	jsr print_packed_message
 
+	lda basic_current_line_number+1
+	cmp #$ff
+	beq +
+
+	;; We were in a program, so show IN <line>
+	jsr printf
+	.byte " IN ",0
+
+	lda basic_current_line_number+1
+	ldx basic_current_line_number+0
+	jsr print_integer
+*
 	;; New lines
 	lda #$0d
 	jsr $ffd2

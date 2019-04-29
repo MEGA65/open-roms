@@ -10,7 +10,6 @@ cmd_dim:
 cmd_read:
 cmd_let:
 cmd_goto:
-cmd_run:
 cmd_if:
 cmd_restore:
 cmd_gosub:

@@ -101,8 +101,7 @@ tk_might_be_keyword:
 	cmp #$10
 	bcc +
 	;; Packed string too long
-	ldx #16
-	jmp do_basic_error
+	jmp do_STRING_TOO_LONG_error
 	*
 
 	;; Search for it in keywords

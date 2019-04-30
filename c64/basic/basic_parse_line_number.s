@@ -10,8 +10,8 @@ basic_parse_line_number:
 	ora basic_fac1_exponent
 	beq +
 ml_bad_line_number:
-	ldx #10
-	jmp do_basic_error
+	;; Invalid line number
+	jmp do_ILLEGAL_QUANTITY_error
 *	
 	;; Line number are not allowed to have decimal points in them
 	lda tokenise_work4

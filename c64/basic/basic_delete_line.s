@@ -42,8 +42,7 @@ basic_delete_line:
 	beq +
 	;; Line length is <0 or >255 bytes.
 	;; Either way, things are bad, so abort.
-	ldx #35
-	jmp do_basic_error
+	jmp do_MEMORY_CORRUPT_error
 *
 	;; Length can now be safely assumed to be in the low
 	;; byte only, i.e., stored in tokenise_work3

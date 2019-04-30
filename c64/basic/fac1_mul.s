@@ -60,8 +60,7 @@ f1m10_l3:
 	bpl f1m10_l3
 	;; Exponent has bit 7 set, so has wrapped.
 	;; = OVERFLOW ERROR
-	lda #14
-	jmp do_basic_error
+	jmp do_OVERFLOW_error
 
 fac1_mantissa_mul2:	
 	ldy #3

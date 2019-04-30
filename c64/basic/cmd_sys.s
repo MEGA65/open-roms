@@ -4,8 +4,7 @@ cmd_sys:
 	bcc +
 
 	;; SYS requires an argument
-	ldx #10
-	jmp do_basic_error
+	jmp do_SYNTAX_ERROR
 	
 *
 	jsr basic_parse_line_number

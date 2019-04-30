@@ -86,8 +86,7 @@ not_a_token:
 	beq basic_skip_char
 	
 	;; If all else fails, it's a syntax error
-	ldx #10
-	jmp do_basic_error
+	jmp do_SYNTAX_error
 
 	jmp basic_main_loop
 

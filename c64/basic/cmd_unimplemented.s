@@ -82,5 +82,4 @@ cmd_go:
 	;; Undefined tokens
 cmd_unimplemented:
 
-	ldx #36
-	jmp do_basic_error
+	jmp do_NOT_IMPLEMENTED_error

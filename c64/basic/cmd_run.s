@@ -14,9 +14,8 @@ cmd_run:
 	jsr basic_parse_line_number
 	jsr basic_find_line
 	bcc +
-	;; Undefined Statement Error
-	ldx #16
-	jmp do_basic_error
+	;; Line doesn't exist, so report error
+	jmp do_UNDEFD_STATEMENT_error
 *
 	;; Run it!
 	jmp basic_execute_from_current_line

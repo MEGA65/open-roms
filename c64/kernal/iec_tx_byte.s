@@ -33,7 +33,7 @@ iec_tx_byte:
 	jsr iec_wait60us
 
 	;; Do the actual transmission of 8 bits of data
-	ldx #8
+	ldx #7
 
 	pla
 	
@@ -44,11 +44,11 @@ iec_tx_byte_nextbit:
 	bcs +
 	
 	;; Setup 0
-	jsr iec_assert_clk_release_data
+	jsr iec_assert_clk_and_data
 	jmp iec_tx_byte_l1
 *
 	;; Setup 1
-	jsr iec_assert_clk_and_data
+	jsr iec_assert_clk_release_data
 iec_tx_byte_l1:
 	;; Clock bit out
 	jsr iec_wait20us
@@ -60,13 +60,15 @@ iec_tx_byte_l1:
 	;; More bits to send?
 	pla
 	dex
-	bne iec_tx_byte_nextbit
+	bpl iec_tx_byte_nextbit
 
 	;; Done sending bits. Assert CLK and wait for acknowledgement
 	jsr iec_assert_clk_release_data
 
 	;; Acknowledgement must happen within 1ms, else it
 	;; is DEVICE NOT PRESENT
+	;; Acknowledgement consists of the DATA line being pulled
+	;; by the listener.
 	;; We can't easily count rasters here, so we just
 	;; try a set number of times
 	ldx #$ff

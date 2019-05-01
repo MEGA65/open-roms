@@ -62,7 +62,7 @@ iec_tx_byte_l1:
 	;; More bits to send?
 	pla
 	dex
-	bpl iec_tx_byte_nextbit
+	bne iec_tx_byte_nextbit
 
 	;; Done sending bits. Wait for acknowledgement
 	jsr iec_assert_clk_release_data

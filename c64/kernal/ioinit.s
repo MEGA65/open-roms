@@ -38,5 +38,9 @@ ioinit:
 	lda #$11
 	sta $dc0e
 	lda $dc0d
+
+	;; Set DDR on CIA2 for IEC bus, VIC-II banking
+	lda #$3b
+	sta $dd02
 	
 	rts

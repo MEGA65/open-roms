@@ -82,4 +82,13 @@ cmd_go:
 	;; Undefined tokens
 cmd_unimplemented:
 
+	;; Dummy action while testing IEC support
+
+	;; Try to open an IEC file
+	jsr $ffc0
+	sta $0427
+	lda #$00
+	ror
+	sta $0426
+	
 	jmp do_NOT_IMPLEMENTED_error

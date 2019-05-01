@@ -21,7 +21,7 @@ open:
 	lda #$00
 	clc	
 
-open_error:	
+open_error:
 	;; Re-enable interrupts and return
 	;; (iec_tx_byte will have set/cleared C flag and put result code
 	;; in A if it was an error).

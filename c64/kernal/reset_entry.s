@@ -30,7 +30,5 @@ reset_entry:
 	; What do we do when finished?  A C64 jumps into the BASIC ROM
 	cli 			; Allow interrupts to happen
 
-	jsr open
-	
 	; c64 prg p269
 	jmp ($a000)

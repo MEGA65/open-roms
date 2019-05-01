@@ -1,9 +1,9 @@
 iec_wait60us:	
 
 	;; Waste ~60 clock cycles (including JSR + RTS)
-	ldx #$06
+	ldy #$06
 *	lda $dd00
-	dex
+	dey
 	bpl -
 
 	rts

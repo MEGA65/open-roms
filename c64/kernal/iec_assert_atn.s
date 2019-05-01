@@ -1,5 +1,5 @@
 iec_assert_atn:
-	lda $dd0d
+	lda $dd00
 	ora #$08
-	sta $dd0d
+	sta $dd00
 	rts

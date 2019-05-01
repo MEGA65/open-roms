@@ -9,10 +9,12 @@ iec_tx_byte:
 
 	;; Did a device respond? (DATA will be pulled if so)
 	lda $DD00
-	bmi +
+	sta $0418
+	bpl +
 
 	;; No devices present, so we can immediately return with device not found
 	pla
+	inc $420
 	jmp kernalerror_DEVICE_NOT_FOUND
 *
 
@@ -71,11 +73,12 @@ iec_tx_byte_l1:
 	;; try a set number of times
 	ldx #$ff
 *	lda $DD00
-	bmi +
+	bpl +
 	dex
 	bne -
 
 	;; Timeout - DEVICE NOT PRESENT
+	inc $421
 	jmp kernalerror_DEVICE_NOT_FOUND
 *
 	;; All done.

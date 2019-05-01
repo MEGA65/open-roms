@@ -32,10 +32,6 @@ iec_tx_byte:
 	;; signal EOI), before asserting CLK again.
 	jsr iec_wait60us
 
-	;; Re-assert CLK line
-	jsr iec_assert_clk_release_data
-
-	
 	;; Do the actual transmission of 8 bits of data
 	ldx #8
 
@@ -56,7 +52,9 @@ iec_tx_byte_nextbit:
 iec_tx_byte_l1:
 	;; Clock bit out
 	jsr iec_wait20us
+
 	jsr iec_release_clk
+
 	jsr iec_wait20us
 
 	;; More bits to send?
@@ -64,7 +62,7 @@ iec_tx_byte_l1:
 	dex
 	bne iec_tx_byte_nextbit
 
-	;; Done sending bits. Wait for acknowledgement
+	;; Done sending bits. Assert CLK and wait for acknowledgement
 	jsr iec_assert_clk_release_data
 
 	;; Acknowledgement must happen within 1ms, else it
@@ -84,5 +82,6 @@ iec_tx_byte_l1:
 	;; All done.
 	;; End state is TALKER is asserting CLK, and listener is asserting DATA
 	;; until they are ready for the next byte.
+	inc $044f
 	clc
 	rts

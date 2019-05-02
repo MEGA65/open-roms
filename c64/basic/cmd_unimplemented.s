@@ -86,6 +86,16 @@ cmd_unimplemented:
 
 	;; Try to open an IEC file
 	jsr $ffc0
+	bcc +
+
+	;; A = KERNAL error code, which also almost match
+	;; basic ERROR codes, so we can just copy the
+	;; error code to X, decrement, and handle normally
+	tax
+	dex
+	jmp do_basic_error
+	
+*
 	sta $0427
 	lda #$00
 	ror

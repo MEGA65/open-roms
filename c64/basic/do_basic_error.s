@@ -125,7 +125,7 @@ do_TO_MANY_FILES_error:
 
 	;; Error # in X
 	
-;; do_basic_error:			
+do_basic_error:			
 	;; "?"
 	txa
 	pha

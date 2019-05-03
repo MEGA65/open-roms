@@ -84,8 +84,8 @@ cmd_unimplemented:
 
 	;; Dummy action while testing IEC support
 
-	;; Try to open an IEC file
-	jsr $ffc0
+	;; Try to load an IEC file
+	jsr $ffd5
 	bcc +
 
 	;; A = KERNAL error code, which also almost match

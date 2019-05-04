@@ -35,6 +35,7 @@ cmd_load:
 	;; Now relink the loaded program, as we cannot trust the line
 	;; links supplied. For example, the VICE virtual drive emulation
 	;; always supplies $0101 as the address of the next line.
+	jsr basic_relink_program
 	
 	;; After LOADing, we either start the program from the beginning,
 	;; or go back to the READY prompt if LOAD was called from direct mode.
@@ -47,3 +48,68 @@ cmd_load:
 
 	;; Try to keep executing
 	jmp basic_execute_statement
+
+
+basic_relink_program:
+	
+	;; Start by getting pointer to the first line
+	lda basic_start_of_text_ptr+0
+	sta basic_current_line_ptr+0
+	lda basic_start_of_text_ptr+1
+	sta basic_current_line_ptr+1
+
+basic_relink_loop:	
+	;; Is the pointer to the end of the program
+	ldy #1
+	ldx #<basic_current_line_ptr+0
+	jsr peek_under_roms
+	cmp #$00
+	bne +
+
+	;; End of program
+	rts
+*
+	;; Now search forward to find the end of the line
+	;; Skip forward pointer and line number
+	ldy #4
+end_of_line_search:
+	ldx #<basic_current_line_ptr+0
+	jsr peek_under_roms
+	cmp #$00
+	beq +
+
+	;; Not yet end of line
+	iny
+	bne end_of_line_search
+
+	;; line too long
+	jmp do_STRING_TOO_LONG_error
+
+	*
+	;; Found end of line, so update pointer
+
+	;; First, skip over the $00 char
+	iny
+	
+	;; Now overwrite the pointer (carefully)
+	;; 
+	tya
+	clc
+	adc basic_current_line_ptr+0
+	pha
+	php
+	ldy #0
+	ldx #<basic_current_line_ptr+0
+	jsr poke_under_roms
+	plp
+	lda basic_current_line_ptr+1
+	adc #0
+	ldy #1
+	jsr poke_under_roms
+	sta basic_current_line_ptr+1
+	pla
+	sta basic_current_line_ptr+0
+
+	
+
+	jmp basic_relink_loop

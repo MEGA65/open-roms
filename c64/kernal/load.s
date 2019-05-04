@@ -31,13 +31,15 @@ load:
 
 	;; Display SEARCHING FOR
 	jsr printf
-	.byte "SEARCHING FOR "
+	.byte "SEARCHING FOR ",0
 
-	ldy #0
+	ldy #$00
 print_filename_loop:	
 	cpy current_filename_length
 	beq +
-	lda (current_filename_ptr),y
+	ldx #<current_filename_ptr
+	jsr peek_under_roms
+	sta $0609,y
 	jsr $ffd2
 	iny
 	jmp print_filename_loop
@@ -128,6 +130,7 @@ sent_filename:
 	jsr printf
 	.byte "LOADING",$0d,0
 
+	
 	;; Get load address and store it if secondary address is zero
 	jsr iec_rx_byte
 	bcs load_error
@@ -142,7 +145,7 @@ sent_filename:
 	sta load_save_start_ptr+1
 *
 
-load_loop:	
+load_loop:
 	;; We are now ready to receive bytes
 	jsr iec_rx_byte
 	bcs load_error

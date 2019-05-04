@@ -11,13 +11,6 @@ cmd_load:
 	;; middle of a program. For safety, we do.
 	jsr basic_do_clr
 	
-	;; Try to load an IEC file
-	lda #0			; use supplied load address, not the one from the file
-	sta current_secondary_address
-	lda #$00 		; LOAD not verify
-	ldx #<$0801		; LOAD address = $0801
-	ldy #>$0801
-
 	;; Set filename and length
 	lda #$00
 	sta current_filename_length
@@ -56,8 +49,13 @@ getting_filename:
 	
 got_filename:	
 
-	lda current_filename_length
-	
+	;; Try to load an IEC file
+	lda #0			; use supplied load address, not the one from the file
+	sta current_secondary_address
+	lda #$00 		; LOAD not verify
+	ldx #<$0801		; LOAD address = $0801
+	ldy #>$0801
+
 	jsr $ffd5
 	bcc +
 

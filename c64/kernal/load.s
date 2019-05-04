@@ -39,7 +39,6 @@ print_filename_loop:
 	beq +
 	ldx #<current_filename_ptr
 	jsr peek_under_roms
-	sta $0609,y
 	jsr $ffd2
 	iny
 	jmp print_filename_loop

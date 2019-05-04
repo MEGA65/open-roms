@@ -4,14 +4,16 @@
 iec_turnaround_to_listen:
 	;; Assert data and release clock
 	lda $dd00
-	and #$ef
-	ora #$08
+	sta $0420
+	and #$ef		; release clock (bit 4)
+	ora #$20     		; assert data (bit 5)
 	sta $dd00
 
 	;; Wait for clock line to be asserted by the drive
 *	lda $dd00
-	and #$10
-	beq -
+	sta $0421
+	and #$80
+	bne -
 	
 	rts
 	

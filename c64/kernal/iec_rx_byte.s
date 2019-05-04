@@ -66,13 +66,12 @@ iec_rx_bit_loop:
 	inc $0635
 	
 	;; DATA now has the next bit, but inverted.
-	;; DATA is in bit6, which is a bit annoying.
-	;; But we can clock it out with two ROL instructions
+	;; DATA is in bit7, which is a bit annoying.
+	;; But we can clock it out with a ROL instruction
 	;; so that it is in C. We can then ROL it into the
 	;; partial data byte
 	;; Move data bit into C flag
 	LDA $DD00
-	ROL
 	ROL
 	;; Pull it into the data byte
 	pla

@@ -16,21 +16,25 @@ iec_turnaround_to_listen:
 	and #$40
 	bne -
 
-	ldx #$ff
-*	lda $dd00
-	and #$40
-	bne +
-	dex
-	bne -
-
-	jsr printf
-	.byte "TURNAROUND FAILED - FILE NOT FOUND?",$0d,$00
+	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
+	;; page 8 tells us we should not do anything here after waiting for
+	;; the clock line to assert.
 	
-	;; Timeout = file not found error
-	;; (https://www.pagetable.com/?p=1023)
-	lda #4
-	sec
-	rts
+;; 	ldx #$ff
+;; *	lda $dd00
+;; 	and #$40
+;; 	bne +
+;; 	dex
+;; 	bne -
+
+	;; jsr printf
+	;; .byte "TURNAROUND FAILED - FILE NOT FOUND?",$0d,$00
+	
+	;; ;; Timeout = file not found error
+	;; ;; (https://www.pagetable.com/?p=1023)
+	;; lda #4
+	;; sec
+	;; rts
 *
 	jsr printf
 	.byte "TURNAROUND SUCEEDED",$0d,$00

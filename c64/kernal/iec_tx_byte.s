@@ -1,7 +1,14 @@
 iec_tx_byte:	
 
 	pha
+
+	sta $0400
 	
+	jsr printf
+	.byte "IEC TX BYTE $"
+	.byte $f0, <$0400,>$0400
+	.byte $0d,0
+
 	jsr iec_assert_clk_release_data
 
 	;; Give devices time to respond
@@ -73,7 +80,7 @@ iec_tx_byte_l1:
 	;; try a set number of times
 	ldx #$ff
 *	lda $DD00
-	bpl +
+	bne +
 	dex
 	bne -
 

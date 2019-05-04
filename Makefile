@@ -41,7 +41,7 @@ testremote:	newkern newbasic
 	x64 -kernal newkern -basic newbasic -remotemonitor
 
 test:	newkern newbasic
-	x64 -kernal newkern -basic newbasic -attach8ro empty.d64
+	x64 -kernal newkern -basic newbasic -8 empty.d64
 
 testm65:	newc65
 	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R newc65 -4

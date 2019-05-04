@@ -18,7 +18,7 @@ iec_turnaround_to_listen:
 	sta $0421
 	and #$40
 	bne -
-
+	
 	;;  Wait for clk to be released by the drive to mark ready to talk
 	ldx #$ff
 *	lda $dd00
@@ -40,5 +40,5 @@ iec_turnaround_to_listen:
 	.byte "TURNAROUND SUCEEDED",$0d,$00
 
 	;; ATN turn around successful
-	cli
+	clc
 	rts

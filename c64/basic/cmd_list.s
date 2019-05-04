@@ -104,7 +104,10 @@ list_is_literal:
 	iny
 	bne list_print_loop
 	
-list_end_of_line:	
+list_end_of_line:
+	;; Clear reverse flag
+	lda #$92
+	jsr $ffd2
 	;; Print end of line
 	lda #$0d
 	jsr $ffd2

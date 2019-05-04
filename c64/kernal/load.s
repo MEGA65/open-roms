@@ -142,7 +142,7 @@ sent_filename:
 
 	jsr printf
 	.byte "LOADING",$0d,0
-		
+
 load_loop:
 	;; We are now ready to receive bytes
 	jsr iec_rx_byte
@@ -177,16 +177,15 @@ load_loop:
 load_done:
 	;; Close file on drive
 
-	;; Command drive to listen and to close the file
+	;; Command drive to stop talking and to close the file
 	jsr iec_assert_atn
+	lda #$5f
+	jsr iec_tx_byte
 	lda #$28
 	jsr iec_tx_byte
 	lda #$e0
 	jsr iec_tx_byte
-	jsr iec_release_atn
-
 	;; Tell drive to unlisten
-	jsr iec_assert_atn
 	lda #$3f
 	jsr iec_tx_byte
 	jsr iec_release_atn

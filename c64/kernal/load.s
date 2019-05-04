@@ -128,7 +128,7 @@ load_loop:
 	;; Advance pointer
 	inc load_save_start_ptr
 	bne +
-	inc load_save_start_ptr
+	inc load_save_start_ptr+1
 	;; If we wrap around to $0000, then this is bad.
 	beq load_error	
 *

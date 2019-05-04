@@ -44,7 +44,7 @@ poke_under_roms_routine:
 	stx poke_under_roms+pb-poke_under_roms_routine+1
 	jsr memmap_allram
 pb:	sta ($00),y
-	jsr memmap_normal_routine
+	jsr memmap_normal
 	plp
 	rts
 

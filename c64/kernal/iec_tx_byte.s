@@ -80,7 +80,9 @@ iec_tx_byte_l1:
 	;; try a set number of times
 	ldx #$ff
 *	lda $DD00
-	bne +
+	;; BPL here is checking that bit 7 of $DD00 clears,
+	;; i.e, that the DATA line is asserted.
+	bpl +
 	dex
 	bne -
 

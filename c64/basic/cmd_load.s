@@ -85,8 +85,8 @@ got_filename:
 	lda basic_start_of_text_ptr+1
 	sta basic_current_line_ptr+1
 
-	;; Try to keep executing
-	jmp basic_execute_from_current_line
+	;; XXX - should run program if LOAD was used in program mode
+	jmp basic_main_loop
 
 
 basic_relink_program:

@@ -101,9 +101,5 @@ cmd_unimplemented:
 	jmp do_basic_error
 	
 *
-	sta $0427
-	lda #$00
-	ror
-	sta $0426
 	
 	jmp do_NOT_IMPLEMENTED_error

@@ -5,6 +5,9 @@ load:
 	;; Disable IRQs, since timing matters!
 	SEI
 
+	;; Display SEARCHING FOR
+	jsr printf
+	.byte "SEARCHING FOR <INSERT FILENAME HERE>",$0d,$0
 
 	;; Begin sending under attention
 	jsr iec_assert_atn
@@ -84,9 +87,6 @@ load:
 	beq -
 
 load_done:
-	jsr printf
-	.byte "LOADED",$0d,0
-
 	;; Close file on drive
 
 	;; Command drive to listen and to close the file

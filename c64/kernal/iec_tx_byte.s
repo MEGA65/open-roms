@@ -2,13 +2,6 @@ iec_tx_byte:
 
 	pha
 
-	sta $0400
-	
-	jsr printf
-	.byte "IEC TX BYTE $"
-	.byte $f0, <$0400,>$0400
-	.byte $0d,0
-
 	jsr iec_assert_clk_release_data
 
 	;; Give devices time to respond
@@ -16,12 +9,10 @@ iec_tx_byte:
 
 	;; Did a device respond? (DATA will be pulled if so)
 	lda $DD00
-	sta $0418
 	bpl +
 
 	;; No devices present, so we can immediately return with device not found
 	pla
-	inc $420
 	jmp kernalerror_DEVICE_NOT_FOUND
 *
 
@@ -87,12 +78,10 @@ iec_tx_byte_l1:
 	bne -
 
 	;; Timeout - DEVICE NOT PRESENT
-	inc $421
 	jmp kernalerror_DEVICE_NOT_FOUND
 *
 	;; All done.
 	;; End state is TALKER is asserting CLK, and listener is asserting DATA
 	;; until they are ready for the next byte.
-	inc $044f
 	clc
 	rts

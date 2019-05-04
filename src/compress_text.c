@@ -159,7 +159,7 @@ char *error_list[]={
   "LOAD",                  // https://www.discogs.com/Gimmik-Load-Error/release/482462
   // Non-error messages
   "READY.\r", // #29       // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
-  "LOADING",               // https://community.tibco.com/wiki/how-show-loading-prompt-when-reloading-external-data
+  "LOADING", // #30              // https://community.tibco.com/wiki/how-show-loading-prompt-when-reloading-external-data
   "VERIFYING",             // https://discussions.apple.com/thread/8087203
   "SAVING",
   "ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html

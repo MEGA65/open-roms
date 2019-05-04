@@ -80,17 +80,21 @@ next_hi_bit:
 	cpy #$7f
 	bcc hi_loop	
 
+fix_carry:
+	
 	;; Deal with any carries
 	ldx #3
 carry_fix_loop:	
 	lda $0101,x
-	cmp #9
+	cmp #10
 	bcc +
 	inc $0100,x
 	sec
 	sbc #10
 	sta $0101,x
-	jmp carry_fix_loop
+
+	jmp carry_fix_loop	
+	
 *	dex	
 	bpl carry_fix_loop
 

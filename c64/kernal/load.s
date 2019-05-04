@@ -84,6 +84,7 @@ send_filename:
 
 	pla
 	tay
+	iny
 	jmp send_filename
 
 sent_filename:	

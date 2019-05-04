@@ -3,29 +3,25 @@
 	
 iec_turnaround_to_listen:
 
-	jsr printf
-	.byte "DOING TURNAROUND",$0d,0
-	
 	;; Assert data and release clock
 	lda $dd00
 	sta $0420
 	and #$ef		; release clock (bit 4)
 	ora #$20     		; assert data (bit 5)
 	sta $dd00
-
+	
 	;; Wait for clock line to be asserted by the drive
 *	lda $dd00
 	sta $0421
 	and #$40
 	bne -
-	
-	;;  Wait for clk to be released by the drive to mark ready to talk
+
 	ldx #$ff
 *	lda $dd00
 	and #$40
 	bne +
 	dex
-	beq -
+	bne -
 
 	jsr printf
 	.byte "TURNAROUND FAILED - FILE NOT FOUND?",$0d,$00

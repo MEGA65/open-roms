@@ -23,16 +23,16 @@ iec_turnaround_to_listen:
 	ldx #$ff
 *	lda $dd00
 	and #$40
-	beq +
+	bne +
 	dex
-	bne -
+	beq -
 
 	jsr printf
 	.byte "TURNAROUND FAILED - FILE NOT FOUND?",$0d,$00
 	
 	;; Timeout = file not found error
 	;; (https://www.pagetable.com/?p=1023)
-	lda #5
+	lda #4
 	sec
 	rts
 *

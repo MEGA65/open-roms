@@ -58,32 +58,34 @@ iec_rx_clk_wait:
 	
 iec_rx_bit_loop:
 
-	inc $0634
-	
 	;; Wait for CLK to release
 	jsr iec_wait_for_clock_release
 
-	inc $0635
-	
 	;; DATA now has the next bit, but inverted.
 	;; DATA is in bit7, which is a bit annoying.
 	;; But we can clock it out with a ROL instruction
-	;; so that it is in C. We can then ROL it into the
-	;; partial data byte
+	;; so that it is in C. We can then ROR it into the
+	;; partial data byte.
+	;; We use ROR so that we shift in from the top, so that
+	;; the first bit we shift in ends up in bit 0 after all
+	;; 8 bits have been read.
+	;; ODD: For some reason we don't need to invert the
+	;; received bits.  This is weird, because we invert them
+	;; on the way out, and everything in the protocol seems
+	;; to indicate that we sould do so.  But experimentation
+	;; has confirmed the bits don't need inversion on reception.
+	
 	;; Move data bit into C flag
 	LDA $DD00
 	ROL
 	;; Pull it into the data byte
 	pla
-	ROL
-	eor #$01  		; Invert the data bit
+	ROR
 	pha
 
 	;; Wait for CLK to re-assert
 	jsr iec_wait_for_clock_assert
 
-	inc $0636
-	
 	;; More bits?
 	dex
 	bpl iec_rx_bit_loop

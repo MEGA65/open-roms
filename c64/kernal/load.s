@@ -66,7 +66,7 @@ read_loop:
 	;;  Write read data to screen for now
 	inc $ff
 	ldx $ff
-	sta $0400,x
+	sta $1000,x
 	plp
 	bcs load_done	
 	bcc -

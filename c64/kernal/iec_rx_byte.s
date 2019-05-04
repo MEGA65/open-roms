@@ -31,8 +31,10 @@ iec_rx_clk_wait:
 	dex
 	bpl iec_rx_clk_wait
 
-	inc $0632
-	inc $d020
+	;; Remember EOI condition
+	lda IOSTATUS
+	ora #$40
+	sta IOSTATUS
 	
 	;; EOI timeout: So pulse DATA line for 60 usec
 	jsr iec_assert_data

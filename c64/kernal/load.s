@@ -28,7 +28,7 @@ load:
 	jsr iec_release_atn
 
 	;; Send filename (p16)
-	lda #$21 		; $ = directory
+	lda #$24 		; $ = directory
 	jsr iec_tx_byte
 
 	;; Command device to unlisten to indicate end of file name. (p16)

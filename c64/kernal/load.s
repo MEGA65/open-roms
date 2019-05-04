@@ -28,7 +28,7 @@ load:
 	jsr iec_release_atn
 
 	;; Send filename (p16)
-	lda #$24 		; $ = directory
+	lda #$21 		; $ = directory
 	jsr iec_tx_byte
 
 	;; Command device to unlisten to indicate end of file name. (p16)
@@ -61,6 +61,9 @@ load:
 	bcs load_error
 
 	inc $060b
+
+	jsr printf
+	.byte "READING DATA...",$0d,0
 	
 	;; We are now ready to receive bytes
 *	jsr iec_rx_byte

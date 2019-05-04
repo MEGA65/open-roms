@@ -29,8 +29,12 @@ no_space_to_skip:
 basic_execute_statement:
 
 	;; Skip over any white space and :
+	ldy #0
+	ldx #<basic_current_statement_ptr
+	jsr peek_under_roms
 	jsr basic_end_of_statement_check
-
+	bcs basic_end_of_line
+	
 	;; jsr printf
 	;; .byte "LINE PTR = $"
 	;; .byte $f1,<basic_current_line_ptr,>basic_current_line_ptr
@@ -94,12 +98,28 @@ basic_skip_char:
 	jsr basic_consume_character
 	jmp basic_execute_statement
 
+basic_fetch_and_consume_character:
+	ldy #0
+	ldx #<basic_current_statement_ptr
+	jsr peek_under_roms
+	;; FALL THROUGH
+	
 basic_consume_character:
 	;; Advance basic text pointer
 	inc basic_current_statement_ptr+0
 	bne +
 	inc basic_current_statement_ptr+1
 *
+	rts
+
+basic_unconsume_character:
+	lda basic_current_statement_ptr+0
+	sec
+	sbc #1
+	sta basic_current_statement_ptr+0
+	lda basic_current_statement_ptr+1
+	sbc #0
+	sta basic_current_statement_ptr+1
 	rts
 	
 basic_end_of_line:

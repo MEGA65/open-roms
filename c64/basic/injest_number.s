@@ -5,6 +5,9 @@
 	;; XXX - Remember decimal position and exponent, and apply them
 	;; after to produce normalised floating point number.
 
+	;; XXX - Doesn't use routines to access memory under ROMs etc.
+	;; This is important, because this routine operates on numbers in BASIC text.
+
 ij_not_a_digit:
 	;; XXX check for "." or "E"
 	;; Other chars terminate the accumulation.

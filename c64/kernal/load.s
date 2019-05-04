@@ -31,7 +31,20 @@ load:
 
 	;; Display SEARCHING FOR
 	jsr printf
-	.byte "SEARCHING FOR <INSERT FILENAME HERE>",$0d,$0
+	.byte "SEARCHING FOR "
+
+	ldy #0
+print_filename_loop:	
+	cpy current_filename_length
+	beq +
+	lda (current_filename_ptr),y
+	jsr $ffd2
+	iny
+	jmp print_filename_loop
+*
+	
+	lda #$0d
+	jsr $ffd2
 
 	;; Begin sending under attention
 	jsr iec_assert_atn
@@ -79,7 +92,7 @@ send_filename:
 	tya
 	pha
 	txa
-	
+
 	jsr iec_tx_byte
 
 	pla
@@ -191,6 +204,7 @@ load_error:
 
 	;; XXX - Indicate KERNAL (not BASIC) LOAD error condtion
 	sec
+	lda #$02
 	
 	;; Re-enable interrupts and return
 	cli

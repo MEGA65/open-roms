@@ -19,14 +19,44 @@ cmd_load:
 	ldy #>$0801
 
 	;; Set filename and length
-	lda #$24
-	sta $0400
-	lda #$01
+	lda #$00
 	sta current_filename_length
-	lda #<$0400
+
+	;; Without tape support, LOAD must have a filename
+	;; (This also skips any leading spaces)
+	jsr basic_end_of_statement_check
+	bcc +
+	jmp do_MISSING_FILENAME_error
+*
+	jsr basic_fetch_and_consume_character
+	cmp #$22
+	beq +
+	jmp do_SYNTAX_ERROR
+*
+	;; Filename starts here so set pointer
+	lda basic_current_statement_ptr+0
 	sta current_filename_ptr+0
-	lda #>$0401
+	lda basic_current_statement_ptr+1
 	sta current_filename_ptr+1
+	
+	;; Now search for end of line or closing quote
+	;; so that we know the length of the filename
+getting_filename:	
+	jsr basic_fetch_and_consume_character
+	cmp #$22
+	beq got_filename
+	cmp #$00
+	bne +
+	jsr basic_unconsume_character
+
+	jmp got_filename
+*
+	inc current_filename_length
+	jmp getting_filename
+	
+got_filename:	
+
+	lda current_filename_length
 	
 	jsr $ffd5
 	bcc +
@@ -36,7 +66,7 @@ cmd_load:
 	;; error code to X, decrement, and handle normally
 	tax
 	dex
-	jmp do_basic_error
+	jmp do_LOAD_error
 	
 *
 	;; $YYXX is the last loaded address, so store it
@@ -58,7 +88,7 @@ cmd_load:
 	sta basic_current_line_ptr+1
 
 	;; Try to keep executing
-	jmp basic_execute_statement
+	jmp basic_execute_from_current_line
 
 
 basic_relink_program:

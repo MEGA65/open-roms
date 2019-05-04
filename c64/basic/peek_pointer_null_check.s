@@ -4,9 +4,11 @@
 peek_pointer_null_check:
 	ldy #$00
 	jsr peek_under_roms
+	cmp #$00
 	bne ptr_not_null
 	iny
 	jsr peek_under_roms
+	cmp #$00
 	bne ptr_not_null
 
 	;; Pointer is NULL

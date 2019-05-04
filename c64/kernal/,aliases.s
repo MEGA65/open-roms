@@ -75,3 +75,14 @@
 	.alias enable_case_switch $0291
 	.alias screen_scroll_disable $0292
 	.alias pal_or_ntsc $02A6
+
+	;; Under-ROM routines
+	;; (BASIC also includes them. XXX - We should de-duplicate them in a safe manner)
+	.alias missed_nmi_flag         $2A7
+	.alias tiny_nmi_handler		$2A8	
+	.alias peek_under_roms tiny_nmi_handler+peek_under_roms_routine-tiny_nmi_handler_routine
+	.alias poke_under_roms tiny_nmi_handler+poke_under_roms_routine-tiny_nmi_handler_routine
+	.alias memmap_allram tiny_nmi_handler+memmap_allram_routine-tiny_nmi_handler_routine
+	.alias memmap_normal tiny_nmi_handler+memmap_normal_routine-tiny_nmi_handler_routine
+	
+	

@@ -17,6 +17,17 @@ cmd_load:
 	lda #$00 		; LOAD not verify
 	ldx #<$0801		; LOAD address = $0801
 	ldy #>$0801
+
+	;; Set filename and length
+	lda #$24
+	sta $0400
+	lda #$01
+	sta current_filename_length
+	lda #<$0400
+	sta current_filename_ptr+0
+	lda #>$0401
+	sta current_filename_ptr+1
+	
 	jsr $ffd5
 	bcc +
 

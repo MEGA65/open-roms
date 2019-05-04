@@ -22,6 +22,9 @@ load:
 	;; Store start address of LOAD
 	stx load_save_start_ptr+0
 	sty load_save_start_ptr+1
+
+	;; We need our helpers to get to filenames under ROMs or IO area
+	jsr install_ram_routines
 	
 	;; Disable IRQs, since timing matters!
 	SEI
@@ -62,9 +65,28 @@ load:
 	jsr iec_release_atn
 
 	;; Send filename (p16)
-	lda #$24 		; $ = directory
+	ldy #0
+
+send_filename:
+	cpy current_filename_length
+	beq sent_filename
+	
+	ldx #<current_filename_ptr
+	jsr peek_under_roms
+
+	;; Save Y because iec_tx_byte will corrupt it
+	tax
+	tya
+	pha
+	txa
+	
 	jsr iec_tx_byte
 
+	pla
+	tay
+	jmp send_filename
+
+sent_filename:	
 	;; Command device to unlisten to indicate end of file name. (p16)
 	jsr iec_assert_atn
 	lda #$3f

@@ -23,9 +23,45 @@ install_ram_routines:
 
 ram_routines_start:	
 
+	;; XXX - Routine order must match that of the KERNAL version of the file.
+	;; (since it has fewer routines)
 tiny_nmi_handler_routine:
 	inc missed_nmi_flag
 	rti
+peek_under_roms_routine:
+	php
+	; Offset of arg of lda ($00),y	
+	stx peek_under_roms+pa-peek_under_roms_routine+1
+	jsr memmap_allram
+pa:	lda ($00),y
+	jsr memmap_normal
+	plp
+	rts
+
+poke_under_roms_routine:
+	php
+	; Offset of arg of lda ($00),y	
+	stx poke_under_roms+pb-poke_under_roms_routine+1
+	jsr memmap_allram
+pb:	sta ($00),y
+	jsr memmap_normal_routine
+	plp
+	rts
+
+memmap_normal_routine:
+	pha
+	lda #$37
+	sta $01
+	pla
+	rts
+
+memmap_allram_routine:
+	sei
+	pha
+	lda #$04
+	sta $01
+	pla
+	rts
 
 shift_mem_up_routine:
 	;; Move memmove_size bytes from memmove_src to memmove_dst,
@@ -68,33 +104,6 @@ smd1:
 	jmp memmap_normal
 
 	
-peek_under_roms_routine:
-	stx peek_under_roms+7 	;Offset of arg of lda ($00),y
-	jsr memmap_allram
-	lda ($00),y
-	jmp memmap_normal
-
-poke_under_roms_routine:
-	stx poke_under_roms+7 	;Offset of arg of lda ($00),y
-	jsr memmap_allram
-	sta ($00),y
-	;; FALL THROUGH
-memmap_normal_routine:
-	pha
-	lda #$37
-	sta $01
-	pla
-	cli
-	rts
-
-memmap_allram_routine:
-	sei
-	pha
-	lda #$04
-	sta $01
-	pla
-	rts
-
 ram_routines_end:
 	.alias ram_routines_len ram_routines_end-ram_routines_start
 	

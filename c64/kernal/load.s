@@ -37,30 +37,47 @@ load:
 	jsr iec_tx_byte
 	bcs load_error
 	jsr iec_release_atn
+
+	inc $0608
 	
 	;; Now command device to talk (p16)
 	jsr iec_assert_atn
 	lda #$48
 	jsr iec_tx_byte
 	bcs load_error
+
+	inc $0609
+	
 	lda #$60 ; open channel / data (p3) , required according to p13
 	jsr iec_tx_byte
 	bcs load_error
 	jsr iec_release_atn
 
+	inc $060a
+	
 	;; We are currently talker, so do the IEC turn around so that we
 	;; are the listener (p16)
 	jsr iec_turnaround_to_listen
 	bcs load_error
+
+	inc $060b
 	
 	;; We are now ready to receive bytes
-	;; jsr iec_rx_byte
-	;; bcs load_done
-
+*	jsr iec_rx_byte
+	php
+	;;  Write read data to screen for now
+	inc $ff
+	ldx $ff
+	sta $0400,x
+	plp
+	bcs load_done	
+	bcc -
 
 load_done:
 	;; Close file on drive
 
+	inc $060c
+	
 
 	;; Command drive to listen and to close the file
 	jsr iec_assert_atn
@@ -70,15 +87,22 @@ load_done:
 	jsr iec_tx_byte
 	jsr iec_release_atn
 
+	inc $060d
+	
 	;; Tell drive to unlisten
 	jsr iec_assert_atn
 	lda #$3f
 	jsr iec_tx_byte
 	jsr iec_release_atn
+
+	inc $060e
 	
 	;;  FALL THROUGH
 	
 load_error:
+
+	inc $060f
+	
 	;; Re-enable interrupts and return
 	cli
 	;; (iec_tx_byte will have set/cleared C flag and put result code

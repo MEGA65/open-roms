@@ -1,7 +1,28 @@
 				; Function defined on pp272-273 of C64 Programmers Reference Guide
 	;; IEC reference at http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
+
+	;; Definition of function from Compute's Mapping the 64 p231
+	;; Expects that SETLFS and SETNAM are called before hand.
+	;; $YYXX = load address.
+	;; (ignored if SETLFS channel = 1, i.e., like ,8,1)
+	;; If A=1 then VERIFY instead of LOAD.
+	;; On exit, $YYXX is the highest address into which data
+	;; will have been placed.
+
+	;; Searching through Compute's Mapping the 64, we find the following
+	;; things are used:
+	;; $93 = kernal_load_or_verify_flag
+	;; $AC = current pointer for loading/verifying
+	;; $C1 = similar to the above.
 load:
 
+	;; Are we loading or verifying?
+	sta kernal_load_or_verify_flag
+
+	;; Store start address of LOAD
+	stx load_save_start_ptr+0
+	sty load_save_start_ptr+1
+	
 	;; Disable IRQs, since timing matters!
 	SEI
 
@@ -70,21 +91,51 @@ load:
 
 	jsr printf
 	.byte "LOADING",$0d,0
-	
+
+	;; Get load address and store it if secondary address is zero
+	jsr iec_rx_byte
+	bcs load_error
+	ldx current_secondary_address
+	beq +
+	sta load_save_start_ptr+0
+*
+	jsr iec_rx_byte
+	bcs load_error
+	ldx current_secondary_address
+	beq +
+	sta load_save_start_ptr+1
+*
+
+load_loop:	
 	;; We are now ready to receive bytes
-*	jsr iec_rx_byte
-	php
-	;;  Write read data to screen for now
-	inc $ff
-	ldx $ff
-	sta $0400,x
-	plp
+	jsr iec_rx_byte
 	bcs load_error
 
+	;; Save it and advance pointer.
+	;; As with our BASIC, we want to enable LOADing
+	;; anywhere in memory, including over the IO space.
+	;; Thus we have to use a helper routine in low memory
+	;; to do the memory access
+
+	;; Save byte under ROMs and IO if required
+	ldx #$33
+	stx $01
+	ldy #0
+	sta (load_save_start_ptr),y
+	ldx #$37
+	stx $01
+
+	;; Advance pointer
+	inc load_save_start_ptr
+	bne +
+	inc load_save_start_ptr
+	;; If we wrap around to $0000, then this is bad.
+	beq load_error	
+*
 	;; Check for EOI -- if so, read one last byte
 	lda IOSTATUS
 	and #$40
-	beq -
+	beq load_loop
 
 load_done:
 	;; Close file on drive

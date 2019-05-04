@@ -7,7 +7,7 @@
 	.alias IOSTATUS $90
 	; Keys down clears bits. STOP=bit 7, C= bit 6, SPACE bit 4, CTRL bit 2
 	.alias BUCKYSTATUS $91
-	.alias load_or_verify_flag $93
+	.alias kernal_load_or_verify_flag $93
 	.alias current_file_num $98
 	.alias input_device_number $99
 	; bit 6 = error messages, bit 7 = control messages

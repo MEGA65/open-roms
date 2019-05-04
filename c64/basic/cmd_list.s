@@ -11,9 +11,10 @@ cmd_list:
 
 list_loop:
 	ldx #<basic_current_line_ptr
-	ldy #0
-	jsr peek_pointer_null_check
-	bcs list_more_lines
+	ldy #1
+	jsr peek_under_roms
+	cmp #$00
+	bne list_more_lines
 
 	;; LIST terminates any running program,
 	;; because it has fiddled with the current line pointer.

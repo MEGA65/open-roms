@@ -238,7 +238,6 @@ word_boundary:
 	;; to work out what keyword number we are, so that we can return
 	;; the token number.
 
-	inc $d020
 	ldy #$80
 
 token_count_loop:

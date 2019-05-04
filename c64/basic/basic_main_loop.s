@@ -70,7 +70,6 @@ rsl_l1:	lda $0200,x
 
 	;; Yes, the line begins with a number.
 	;; Parse the line number and check validity
-	inc $d020
 
 	;; injest_number follows tokenise_work1 as the offset into the line,
 	;; so remember the line length somewhere else for now.

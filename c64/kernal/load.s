@@ -15,9 +15,9 @@ load:
 	;; also p16 tells us this routine doesn't mess with the file table in the C64,
 	;; only in the drive.
 	
-	;; Now command device to talk (p16)
+	;; Now command device to listen (p16)
 	jsr iec_assert_atn
-	lda #$48
+	lda #$28
 	jsr iec_tx_byte
 	bcs load_error
 
@@ -28,7 +28,27 @@ load:
 	bcs load_error
 	jsr iec_release_atn
 
+
+	;; Send "I" command to drive as test
+	lda #$49
+	jsr iec_tx_byte
+	bcs load_error
+	lda #$0d
+	jsr iec_tx_byte
+	bcs load_error
+	
 	inc $060a
+
+	;; Now command device to talk (p16)
+	jsr iec_assert_atn
+	lda #$48
+	jsr iec_tx_byte
+	bcs load_error
+
+	lda #$6f ; open channel / data (p3) , required according to p13
+	jsr iec_tx_byte
+	bcs load_error
+	jsr iec_release_atn
 	
 	;; We are currently talker, so do the IEC turn around so that we
 	;; are the listener (p16)

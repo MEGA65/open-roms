@@ -5,6 +5,56 @@ load:
 	;; Disable IRQs, since timing matters!
 	SEI
 
+
+	;; Begin sending under attention
+	jsr iec_assert_atn
+
+	;; XXX - Use default device number
+	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
+	;; p13, 16.
+	;; also p16 tells us this routine doesn't mess with the file table in the C64,
+	;; only in the drive.
+	
+	;; Now command device to talk (p16)
+	jsr iec_assert_atn
+	lda #$48
+	jsr iec_tx_byte
+	bcs load_error
+
+	inc $0609
+	
+	lda #$6f ; open channel / data (p3) , required according to p13
+	jsr iec_tx_byte
+	bcs load_error
+	jsr iec_release_atn
+
+	inc $060a
+	
+	;; We are currently talker, so do the IEC turn around so that we
+	;; are the listener (p16)
+	jsr iec_turnaround_to_listen
+	bcs load_error
+
+	inc $060b
+
+	jsr printf
+	.byte "READING DATA...",$0d,0
+
+read_loop:	
+*	jsr iec_rx_byte
+	php
+	;;  Write read data to screen for now
+	inc $ff
+	ldx $ff
+	sta $0400,x
+	plp
+	bcs load_done	
+	bcc -
+	jmp read_loop
+	
+
+
+	
 	;; Begin sending under attention
 	jsr iec_assert_atn
 

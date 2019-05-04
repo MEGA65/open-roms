@@ -126,24 +126,23 @@ sent_filename:
 	jsr iec_turnaround_to_listen
 	bcs load_error
 
-	jsr printf
-	.byte "LOADING",$0d,0
-
-	
 	;; Get load address and store it if secondary address is zero
 	jsr iec_rx_byte
-	bcs load_error
+	bcs file_not_found_error
 	ldx current_secondary_address
 	beq +
 	sta load_save_start_ptr+0
 *
 	jsr iec_rx_byte
-	bcs load_error
+	bcs file_not_found_error
 	ldx current_secondary_address
 	beq +
 	sta load_save_start_ptr+1
 *
 
+	jsr printf
+	.byte "LOADING",$0d,0
+		
 load_loop:
 	;; We are now ready to receive bytes
 	jsr iec_rx_byte
@@ -206,10 +205,17 @@ load_error:
 
 	;; XXX - Indicate KERNAL (not BASIC) LOAD error condtion
 	sec
-	lda #$02
+	lda #28
 	
 	;; Re-enable interrupts and return
 	cli
 	;; (iec_tx_byte will have set/cleared C flag and put result code
 	;; in A if it was an error).
+	rts
+
+file_not_found_error:
+	;; Indicate KERNAL error condition for file not found
+	sec
+	lda #$04
+	cli
 	rts

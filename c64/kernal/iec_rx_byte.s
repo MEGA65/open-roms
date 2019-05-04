@@ -23,27 +23,33 @@ iec_rx_clk_wait:
 	rol
 	bpl not_eoi
 	dex
+	cpx #$21
+	bne not_rx_timeout
+	;; Time out waiting for CLK to assert again.
+	;;  = error
+	sec
+	rts
+not_rx_timeout:
+	cpx #$00
 	bpl iec_rx_clk_wait
 
 	;; Remember EOI condition
 	lda IOSTATUS
 	ora #$40
 	sta IOSTATUS
-	
+
 	;; EOI timeout: So pulse DATA line for 60 usec
 	jsr iec_assert_data
 	jsr iec_wait60us
 	jsr iec_release_clk_and_data
 
-	;; Assert some kind of flag so that we know if it was EOI = the last byte on offer
-	
 	;; And still wait for CLK to be asserted
 	;; XXX - This will cause periodic EOI pulses if the sender takes too long.
 	;; That is probably ok.
 	ldx #$7f
 	jmp iec_rx_clk_wait
 
-not_eoi:	
+not_eoi:
 	;; CLK is now low.  Latch input bits in on rising edge
 	;; of CLK, eight times for eight bits.
 	ldx #7

@@ -18,23 +18,22 @@ iec_turnaround_to_listen:
 	;; page 8 tells us we should not do anything here after waiting for
 	;; the clock line to assert.
 	
-;; 	ldx #$ff
-;; *	lda $dd00
-;; 	and #$40
-;; 	bne +
-;; 	dex
-;; 	bne -
+ 	ldx #$ff
+ *	lda $dd00
+ 	and #$40
+ 	bne +
+ 	dex
+ 	bne -
 
-	;; jsr printf
-	;; .byte "TURNAROUND FAILED - FILE NOT FOUND?",$0d,$00
+	 jsr printf
+	 .byte "TURNAROUND FAILED - FILE NOT FOUND?",$0d,$00
 	
 	;; ;; Timeout = file not found error
 	;; ;; (https://www.pagetable.com/?p=1023)
-	;; lda #4
-	;; sec
-	;; rts
+	 lda #4
+	 sec
+	 rts
 *
-
 	;; ATN turn around successful
 	clc
 	rts

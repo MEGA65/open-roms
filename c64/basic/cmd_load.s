@@ -64,7 +64,7 @@ got_filename:
 	;; error code to X, decrement, and handle normally
 	tax
 	dex
-	jmp do_LOAD_error
+	jmp do_basic_error
 	
 *
 	;; $YYXX is the last loaded address, so store it

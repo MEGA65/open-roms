@@ -26,11 +26,13 @@ iec_rx_byte:
 iec_rx_clk_wait:
 	;; Loop takes 11 usec, so ~20 iterations for 200usec timeout
 	lda $dd00
-	bpl +
+	rol
+	bpl not_eoi
 	dex
 	bpl iec_rx_clk_wait
 
 	inc $0632
+	inc $d020
 	
 	;; EOI timeout: So pulse DATA line for 60 usec
 	jsr iec_assert_data
@@ -45,23 +47,25 @@ iec_rx_clk_wait:
 	ldx #$7f
 	jmp iec_rx_clk_wait
 
-*
-	inc $0633
-
-	
+not_eoi:	
 	;; CLK is now low.  Latch input bits in on rising edge
 	;; of CLK, eight times for eight bits.
 	ldx #7
 
+	;; Get empty byte to load into.
 	lda #$00
-	php
+	pha
 	
 iec_rx_bit_loop:
 
 	;; Wait for CLK to release
-	jsr iec_wait_for_clock_release
+	;; jsr iec_wait_for_clock_release
+	;; (we do this implicitly below, with a tighter routine,
+	;; so that we don't have timing problems, as the requirements
+	;; are quite tight. Basically we need to read the clock and data
+	;; bit from the same byte read.
 
-	;; DATA now has the next bit, but inverted.
+	;; DATA now has the next bit, but inverted (well, except that it turns out not to be).
 	;; DATA is in bit7, which is a bit annoying.
 	;; But we can clock it out with a ROL instruction
 	;; so that it is in C. We can then ROR it into the
@@ -75,9 +79,12 @@ iec_rx_bit_loop:
 	;; to indicate that we sould do so.  But experimentation
 	;; has confirmed the bits don't need inversion on reception.
 	
-	;; Move data bit into C flag
-	LDA $DD00
+	;; Move data bit into C flag, and loop until bit 6 clears
+	;; i.e., the clock has been released.
+*	LDA $DD00
 	ROL
+	bpl -
+	
 	;; Pull it into the data byte
 	pla
 	ROR

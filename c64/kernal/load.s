@@ -154,13 +154,21 @@ load_done:
 	jsr iec_tx_byte
 	jsr iec_release_atn
 
-	;;  FALL THROUGH
+	;; Return last address written to +1
+	;; (Even though Compute's Mapping the 64 says without the +1.
+	;; I'm suspicious. Will have to check behavour on an original C64)
+	ldx load_save_start_ptr+0
+	ldy load_save_start_ptr+1
+
 	clc
+	cli
+	rts
 	
 load_error:
 
 	;; XXX - Indicate KERNAL (not BASIC) LOAD error condtion
-
+	sec
+	
 	;; Re-enable interrupts and return
 	cli
 	;; (iec_tx_byte will have set/cleared C flag and put result code

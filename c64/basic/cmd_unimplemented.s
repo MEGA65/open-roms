@@ -20,7 +20,6 @@ cmd_rem:
 cmd_stop:
 cmd_on:
 cmd_wait:
-cmd_load:
 cmd_save:
 cmd_verify:
 cmd_def:
@@ -82,24 +81,6 @@ cmd_go:
 	;; Undefined tokens
 cmd_unimplemented:
 
-	;; Dummy action while testing IEC support
-
-	;; Try to load an IEC file
-	lda #0			; use supplied load address, not the one from the file
-	sta current_secondary_address
-	lda #$00 		; LOAD not verify
-	ldx #<$0801		; LOAD address = $0801
-	ldy #>$0801
-	jsr $ffd5
-	bcc +
-
-	;; A = KERNAL error code, which also almost match
-	;; basic ERROR codes, so we can just copy the
-	;; error code to X, decrement, and handle normally
-	tax
-	dex
-	jmp do_basic_error
 	
-*
 	
 	jmp do_NOT_IMPLEMENTED_error

@@ -29,8 +29,8 @@ load:
 	jsr iec_release_atn
 
 
-	;; Send "I" command to drive as test
-	lda #$49
+	;; Send invalid "Q" command to drive as test
+	lda #$51
 	jsr iec_tx_byte
 	bcs load_error
 	lda #$0d

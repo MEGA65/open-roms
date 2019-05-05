@@ -21,7 +21,15 @@ list_loop:
 	;; (Confirmed by testing on a C64)
 	jmp basic_main_loop
 
+list_break:
+	jsr printf
+	.byte "BREAK",$0d,0
+	jmp basic_main_loop
+	
 list_more_lines:
+	lda BUCKYSTATUS
+	bpl list_break
+	
 	;; Print line number
 	ldy #3
 	jsr peek_under_roms

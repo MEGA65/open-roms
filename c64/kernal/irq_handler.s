@@ -15,18 +15,9 @@ irq_handler:
 	tya
 	pha
 
-	;; Acknowledge CIA interrupt
-	lda $dc0d
-	
 	;; Call interrupt routine
 	;; (but only if initialised)
 	lda $0314
 	ora $0315
 	beq default_irq_handler
 	jmp ($0314)
-default_irq_handler:	
-
-	jsr blink_cursor
-	jsr scan_keyboard
-
-	jmp return_from_interrupt

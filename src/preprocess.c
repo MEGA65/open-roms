@@ -119,6 +119,7 @@ int main(int argc,char **argv)
       if (sscanf(source_files[i].file,"%x.%[^.]",&addr,funcname)==2) {
 	// Function must appear at specific address
 	source_files[i].address=addr;
+	printf("function '%s' should be placed at $%04X\n",funcname,addr);
       }
     }
 

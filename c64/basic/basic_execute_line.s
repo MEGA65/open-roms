@@ -28,6 +28,10 @@ no_space_to_skip:
 
 basic_execute_statement:
 
+	;; Check for RUN/STOP
+	lda BUCKYSTATUS
+	bpl basic_do_break
+	
 	;; Skip over any white space and :
 	ldy #0
 	ldx #<basic_current_statement_ptr

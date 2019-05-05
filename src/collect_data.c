@@ -74,7 +74,7 @@ int main (int argc, char *argv[]) {
   int collect_cycles=5000000;
   
   // KERNAL part is actually just under 7KB
-  int rom_bottom=0xe4b7;
+  int rom_bottom=0xa000;
   int rom_top=0xffff;
   char *filename=NULL;
 
@@ -198,13 +198,14 @@ int main (int argc, char *argv[]) {
 	int nf=sscanf((char *)buffer,".C:%x%*[^:]:%*x X:%*x Y:%*x SP:%x %*[^ ] %d",&pc,&sp,&cycles);
 	if (nf==3) {
 	  // fprintf(stdout,"%x %x %d\n",pc,sp,cycles);
-	  // Detect entry into ROM via code 
-	  if (pc>=rom_bottom&&pc<=rom_top) {
-	    if (last_pc<rom_bottom||last_pc>rom_top) {
-	      // PC has just entered the ROM
-	      fprintf(stdout,"$%04x called from $%04x @ cycle %d\n",pc,last_pc,cycles);
+	  // Detect entry into ROM via code
+	  if (pc<0xc000||pc>=0xe000)
+	    if (pc>=rom_bottom&&pc<=rom_top) {
+	      if (last_pc<rom_bottom||last_pc>rom_top) {
+		// PC has just entered the ROM
+		fprintf(stdout,"$%04x called from $%04x @ cycle %d\n",pc,last_pc,cycles);
+	      }
 	    }
-	  }
 	  // Detect entry into ROM via interrupt
 	  if (pc>=rom_bottom&&pc<=rom_top)
 	    if (sp==(last_sp-3)) {

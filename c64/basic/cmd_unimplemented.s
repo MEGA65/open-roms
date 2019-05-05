@@ -14,7 +14,6 @@ cmd_if:
 cmd_restore:
 cmd_gosub:
 cmd_return:
-cmd_rem:
 	
 	;; $90-$9F
 cmd_stop:

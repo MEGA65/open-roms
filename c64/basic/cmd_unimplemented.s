@@ -9,7 +9,6 @@ cmd_input:
 cmd_dim:
 cmd_read:
 cmd_let:
-cmd_goto:
 cmd_if:
 cmd_restore:
 cmd_gosub:

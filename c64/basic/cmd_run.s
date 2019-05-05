@@ -1,7 +1,7 @@
 cmd_run:
 	;; RUN clears all variables
 	jsr basic_do_clr
-	
+cmd_goto:	
 	;; Reset line pointer to first line of program.
 	lda basic_start_of_text_ptr+0
 	sta basic_current_line_ptr+0

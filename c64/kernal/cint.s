@@ -7,6 +7,17 @@ cint:
 	lda #$c8		; 40 column etc
 	sta $d016
 
+	;; Compute's Mapping the 64, p156
+	;; We use a different colour scheme of white text on all blue
+	lda #$06
+	sta $D020
+	sta $D021
+
+	;; Turn off sprites
+	;; (observed hanging around after running programs and resetting)
+	lda #$00
+	sta $D015	
+	
 	;; Initialise cursor blink flags  (Compute's Mapping the 64 p215)
 	lda #$00
 	sta cursor_blink_disable

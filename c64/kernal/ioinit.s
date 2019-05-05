@@ -9,17 +9,6 @@ ioinit:
 	LDA #$27
 	STA $01
 
-	;; Compute's Mapping the 64, p156
-	;; We use a different colour scheme of white text on all blue
-	lda #$06
-	sta $D020
-	sta $D021
-
-	;; Turn off sprites
-	;; (observed hanging around after running programs and resetting)
-	lda #$00
-	sta $D015
-	
 	;; Enable CIA1 IRQ and ~50Hz timer
 	;; (https://csdb.dk/forums/?roomid=11&topicid=69037)
 	lda #$7f

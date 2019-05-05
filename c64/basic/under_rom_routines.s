@@ -70,6 +70,7 @@ shift_mem_up_routine:
 	;; This routine assumes the pointers are already pointed
 	;; to the end of the areas, and that Y is correctly initialised
 	;; to allow the copy to begin.
+	php
 	jsr memmap_allram
 smu1:	
 	lda (memmove_src),y
@@ -80,7 +81,7 @@ smu1:
 	dec memmove_dst+1
 	dec memmove_size+1
 	bne smu1
-	
+	plp
 	jmp memmap_normal
 
 shift_mem_down_routine:
@@ -90,6 +91,7 @@ shift_mem_down_routine:
 	;; This routine assumes the pointers are already pointed
 	;; to the end of the areas, and that Y is correctly initialised
 	;; to allow the copy to begin.
+	php
 	jsr memmap_allram
 smd1:
 	lda (memmove_src),y
@@ -100,7 +102,7 @@ smd1:
 	inc memmove_dst+1
 	dec memmove_size+1
 	bne smd1
-	
+	plp
 	jmp memmap_normal
 
 	

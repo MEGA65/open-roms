@@ -18,7 +18,7 @@ printf:
 	php
 	pla
 	sta $7f3
-
+	
 	;; Set up read routine
 	lda #$ad 		; LDA $nnnn
 	sta $7f4
@@ -116,8 +116,8 @@ not_pointer:
 
 printf_nextchar:
 	jsr printf_advance
-
 	jmp printf_loop
+
 
 printf_advance:
 	;; Advance pointer to next character

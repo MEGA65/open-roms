@@ -633,7 +633,7 @@ line_not_linked_del:
 	
 screen_advance_to_next_line:
 
-	jsr hide_cursor_if_visible
+	;; jsr hide_cursor_if_visible
 	
 	;;  Go to start of line
 	lda #0

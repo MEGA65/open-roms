@@ -78,7 +78,7 @@ no_blink_cursor:
 	rts
 
 disable_cursor:
-	lda #$ff
+	lda #$80
 	sta cursor_blink_disable
 	;; FALL THROUGH
 hide_cursor_if_visible:

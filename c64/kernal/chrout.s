@@ -11,9 +11,11 @@ chrout:
 	pha
 	tya
 	pha
-
+	php
+	sei
+	
 	jsr hide_cursor_if_visible
-
+	
 	lda last_printed_character_ascii
 	tax
 	
@@ -371,6 +373,8 @@ no_screen_advance_to_next_line:
 
 chrout_done:
 	jsr show_cursor_if_enabled
+	
+	plp
 	
 	;; Restore X and Y, set carry to mark success on exit
 	pla

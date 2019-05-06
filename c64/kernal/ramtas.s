@@ -6,7 +6,7 @@ ramtas:
 	LDY #$02
 	LDA #$00
 ramtas_l1:
-	STA $02,Y
+	STA $00,Y
 	INY
 	BNE ramtas_l1
 ramtas_l2:

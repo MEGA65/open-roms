@@ -155,7 +155,7 @@ KeyFound:
 	;; was: ldy KeyTable,x
 	pha
 	txa
-	
+
 	ldx KeyQuantity
 	sta BufferNew,x
 	pla
@@ -223,16 +223,71 @@ Main:
 	sty $dc00       ;// Connect all Keyboard Rows
 	cpx $dc01
 	bne skip0
+
 	jmp NoActivityDetected
 
+JoystickActivity:
+
+	;; Clear bucky key status
+	lda #$00
+	sta key_bucky_state
+	
+	lda $dc01
+	and #$03
+	cmp #$01
+	bne +
+	;; down
+	ldx #$07       		; UP/DOWN
+	jsr KeyFound
+*
+	cmp #$02
+	bne +
+	;; Up
+	;; Mark shift as pressed
+	ldx #$01
+	stx key_bucky_state
+	ldx #$07		; UP/DOWN
+	jsr KeyFound
+*
+	;;  Only allow up/down OR left/right, since
+	;; else we have confusing situation with SHIFT required
+	;; for one, but not the other.
+	;; XXX - We could fix this by making the joystick activity
+	;; feed the key input at a higher level, rather than
+	;; simulating directly pressing the cursor keys.
+	cmp #$03
+	beq +
+	jmp skdone
+*	
+	lda $dc01
+	and #$0c
+	cmp #$04
+	bne +
+	ldx #$02
+	jsr KeyFound		; LEFT/RIGHT
+*
+	cmp #$08
+	bne +
+	ldx #$01
+	stx key_bucky_state
+	ldx #$02
+	jsr KeyFound		; LEFT/RIGHT
+*	
+	jmp skdone
+	
+	
 skip0:
 
+	;; // Set max keys allowed before ignoring result
+	lda #MaxKeyRollover
+	sta KeyQuantity
+		
 	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	;; // Check for Control Port #1 Activity
 
 	stx $dc00       ;// Disconnect all Keyboard Rows
 	cpx $dc01       ;// Only Control Port activity will be detected
-	bne ReturnNoKeys
+	bne JoystickActivity
 
 	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	;; // Scan Keyboard Matrix
@@ -262,10 +317,6 @@ next_row:
 	;; Make X = $00, assumed below
 	inx
 
-	;; // Set max keys allowed before ignoring result
-	lda #MaxKeyRollover
-	sta KeyQuantity
-	
 	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	;; // Check and flag Non Alphanumeric Keys
 

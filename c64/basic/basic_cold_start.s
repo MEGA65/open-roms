@@ -7,11 +7,30 @@ basic_cold_start:
 	;; Print start up message
 
 	;; Print coloured part of the message
-	ldy #>startup_message
-	lda #<startup_message
-	jsr print_string
+	;; ldy #>startup_message
+	;; lda #<startup_message
+	;; jsr print_string
 
-		
+	jsr printf
+; Used 217 bytes
+startup_banner:
+
+	.byte $9A,$12,$A3,$A3,$A3,$A3,$A3,$A3,$DF,$9B,$92,$20,$05,$12,$A0,$A0
+	.byte $DF,$9B,$92,$20,$05,$12,$A0,$A0,$DF,$9B,$92,$20,$05,$12,$A0,$A0
+	.byte $DF,$9B,$92,$20,$05,$12,$A0,$A0,$DF,$9A,$92,$20,$05,$20,$20,$20
+	.byte $4D,$20,$45,$20,$47,$20,$41,$0D,$99,$12,$A3,$A3,$A3,$A3,$A3,$A3
+	.byte $A3,$DF,$92,$7F,$12,$CD,$CD,$DF,$92,$7F,$12,$DF,$05,$92,$20,$20
+	.byte $99,$7F,$12,$DF,$05,$92,$20,$20,$99,$7F,$12,$DF,$92,$7F,$12,$DF
+	.byte $05,$92,$20,$20,$99,$42,$20,$41,$20,$53,$20,$49,$20,$43,$0D,$9E
+	.byte $12,$A3,$A3,$A3,$A3,$A3,$A3,$A3,$A3,$DF,$9B,$92,$7F,$12,$DF,$92
+	.byte $7F,$12,$DF,$92,$7F,$12,$CD,$05,$92,$20,$20,$9B,$7F,$12,$CD,$92
+	.byte $7F,$12,$DF,$92,$7F,$12,$CD,$92,$7F,$12,$DF,$9A,$92,$20,$05,$20
+	.byte $9A,$2D,$2D,$2D,$2D,$2D,$2D,$2D,$0D,$96,$12,$A3,$A3,$A3,$A3,$A3
+	.byte $A3,$A3,$A3,$A3,$DF,$9A,$92,$7F,$12,$DF,$92,$7F,$9B,$20,$9A,$7F
+	.byte $12,$A0,$A0,$9B,$92,$20,$9A,$7F,$12,$A0,$A0,$9B,$92,$20,$9A,$7F
+	.byte $12,$DF,$92,$7F,$9B,$20,$9A,$20,$05,$20,$20,$9B,$31,$2E,$30,$0D
+	.byte $0D,$05,$92,$00
+
 	;; Work out free bytes, and display
 	jsr basic_do_new
 	lda basic_top_of_memory_ptr+0

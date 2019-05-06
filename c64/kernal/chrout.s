@@ -538,7 +538,7 @@ is_last_line:
 scroll_screen_up:	
 	;; Now scroll the whole screen up either one or two lines
 	;; based on whether the first screen line is linked or not.
-
+	
 	;; Get pointers to start of screen + colour RAM
 	lda HIBASE
 	sta current_screen_line_ptr+1
@@ -637,7 +637,7 @@ line_not_linked_del:
 	
 screen_advance_to_next_line:
 
-	jsr hide_cursor_if_visible
+	;; jsr hide_cursor_if_visible
 	
 	;;  Go to start of line
 	lda #0
@@ -656,9 +656,12 @@ screen_advance_to_next_line:
 	sbc HIBASE
 	cmp #3
 	bcc +
+	lda current_screen_line_ptr+0
+	cmp #$c0
+	bcc +
 	
 	;; Off the bottom of the screen
-	jsr scroll_screen_up
+	jsr scroll_screen_up	
 
 *
 	jmp chrout_done
@@ -754,6 +757,7 @@ calculate_screen_line_pointer:
 
 	;; Add 40 for every line, or 80 if the lines are linked
 	ldx current_screen_y
+
 *
 	;; Stop if we have counted enough lines
 	beq +

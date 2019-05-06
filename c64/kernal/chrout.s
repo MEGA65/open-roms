@@ -644,10 +644,25 @@ screen_advance_to_next_line:
 	sta current_screen_x
 	;;  Advance line number
 	ldy current_screen_y
-	inc current_screen_y
 
-	jsr calculate_screen_line_pointer
+	;; Do quick fix to line pointer to work out if it is off
+	;; the bottom of the screen.
+	ldx #40
+	lda screen_line_link_table,y
+	bmi +
+	.byte $2c
+*	ldx #80
+	txa
+	clc
+	adc current_screen_line_ptr+0
+	sta current_screen_line_ptr+0
+	lda current_screen_line_ptr+1
+	adc #0
+	sta current_screen_line_ptr+1
 	
+	inc current_screen_y
+	
+	;; Check if it will trigger scrolling
 	;; Work out if we have gone off the bottom of the screen?
 	;; 1040 > 1024, so if high byte of screen pointer is >= (HIBASE+4),
 	;; then we are off the bottom of the screen
@@ -657,13 +672,15 @@ screen_advance_to_next_line:
 	cmp #3
 	bcc +
 	lda current_screen_line_ptr+0
-	cmp #$c0
+	cmp #$e7
 	bcc +
-	
+
 	;; Off the bottom of the screen
 	jsr scroll_screen_up	
-
 *
+	
+	jsr calculate_screen_line_pointer
+	
 	jmp chrout_done
 
 add_40_to_screen_x:

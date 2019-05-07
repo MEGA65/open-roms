@@ -1,0 +1,5 @@
+CLC / CLI / RTS
+
+Re-enable interrupts and clear C to indicate success before
+returning from a routine.  Common pattern.
+Not creative. Not copyrightable.

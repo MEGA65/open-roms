@@ -1,0 +1,9 @@
+Or A with $30 and print result
+
+Printing digits from hex nybls requires adding the base
+value for the digit 0 to the value.
+As an example, we can see this sequence for the BBC micro here:
+
+http://beebwiki.mdfs.net/Number_output_in_6502_machine_code
+
+Not creative. Not copyrightable.

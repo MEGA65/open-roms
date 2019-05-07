@@ -1,0 +1,6 @@
+set a bit in $DD00, Return from subroutine, read $DD00
+
+$DD00 is a key IO register for the IEC serial port.
+Thus it is no surprise to find routines that manipulate $DD00,
+and indeed for them to appear one after the other.
+Nothing creative. Not copyrightable.

@@ -1,0 +1,6 @@
+SEC / JSR $FF99 - Read top of memory using public KERNAL API
+
+Calling a public API function intended for use by user programs
+cannot possibly be copyright. Even if it were, the publication of
+the API would be strong evidence of an implied license to call the
+API.

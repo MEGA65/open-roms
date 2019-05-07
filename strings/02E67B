@@ -1,1 +1,3 @@
-Instruction fragment + store A in ZP. Single instruction. Not copyrightable.
+instruction fragment followed by increment of ZP location.
+
+Single instruction. Not copyrightable.

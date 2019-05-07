@@ -1,0 +1,5 @@
+Setup VIC-II registers and load A with 0
+
+$E5A0 is the location of the VIC-II register setup routine,
+and so a call to that routine is to be expected.
+Not creative. Not copyrightable.

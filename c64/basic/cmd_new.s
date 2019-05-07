@@ -24,10 +24,10 @@ basic_do_new:
 
 	;; Zero line pointer
 	;; XXX - We should also zero $0800, i.e., basic_start_of_text_ptr - 1
-	ldy #$01
+	ldy #$00
 	tya
 	sta (basic_start_of_text_ptr),y
-	dey
+	iny
 	sta (basic_start_of_text_ptr),y
 	
 	

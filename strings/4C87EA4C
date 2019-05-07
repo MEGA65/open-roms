@@ -1,0 +1,5 @@
+Jump to keyboard scan routine ($EA87) + instruction fragment.
+
+Keyboard scan routine is at $EA87 according to Compute's Mapping the 64
+p220.  Thus it is not at all surprising to find a JMP to that location.
+

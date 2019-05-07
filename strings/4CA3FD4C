@@ -1,0 +1,5 @@
+Jump to IOINIT routine. Not copyrightable.
+
+Compute's Mapping the 64 p220 indicates that the IOINIT routine
+should be at $FDA3, so it is not surprising to find a JMP there
+as part of the KERNAL jump table.

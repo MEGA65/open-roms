@@ -1,19 +1,38 @@
 # open-roms
 A project to create unencumbered open-source ROMs for use on selected retro computers
 
-# Problem Statement
+# Problem Statement and Motivation
 
 The copyrights of various old computer system ROMs are still alive, and together with trademarks, can present significant
 challenges for retro-computing projects to ensure their ability to freely distribute their systems in a functional state,
-which typically requires the inclusion of firmware, i.e, "ROMs".
+which typically requires the inclusion of firmware, i.e, "ROMs", while respecting the intellectual property rights of
+the owners of the copyrights in the ROMs.
 
 Therefore the goal of this project is to create a fully open-source and unencumbered set of ROMs for various systems.
 The initial focus is the C64 and C65 computers, because of the desire to be able to include open ROMs with the MEGA65
 retro computer.
 
+In short, this project exists precisely because we respect, and want to help others to respect the intellectual property
+rights of the copyright owners of the ROMs of various old computer systems.  Any argument that we have willfully infringed
+their copyrights must therefore fail, since if we didn't care about their intellectual property rights, we would simply
+download the ROMs from any of the many locations where they are freely available on the internet.
+
+# But isn't there already an implied license to distribute and even modify the ROMs of these old systems?
+
+On a related note, it is quite likely that the lack of defence of the copyrights of the ROMs of these old systems over
+many many years has created an implied license to use and distribute these ROMs.  This is because the copyright owners
+are surely aware, and have been for many years, of this common practice.  Thus, on a similar basis to the implied right
+of way on private land that is not defended against unrestricted public use, an implied right can develop for the use
+of copyright material.  While it would take the courts to assess this argument (I am no lawyer, and am merely expressing
+my personal opinions in this document), it would seem to me likely that such an implied license exists.  However, as our
+goals are to both respect intellectual property rights, and to avoid all possible sources of uncertainty for the retro-computing
+community, we have elected to proceed with this project to create compatible ROMs that are free from any and all copyright
+claims as possible.
+
+
 # Method and estimated legal situation of reverse engineering
 
-Reverse engineering is a well known science, and enjoys protection under copyright law in a number of jurisdictions,
+Reverse engineering is a well known art, and enjoys protection under copyright law in a number of jurisdictions,
 including the EU and Australia.  Large companies such as Microsoft have also used it in the past in major products
 such as Windows.
 
@@ -28,8 +47,12 @@ then it is questionable whether the result can be copyright, because it contains
 
 What we will need to do to minimise the risks, is to describe the creation of each routine and piece of code with
 extensive commentary in terms of the specifications, including to explore different potential implementations of
-the specification, with justification of which particular implementation is being used.  Where the result is considerably
-similar to the original, then further justification will be required to explain how this is inevitable.
+the specification, with justification of which particular implementation is being used.
+
+Where the result is considerably
+similar to the original through chance or necessity, then further justification will be required to explain how this is inevitable.
+This is achieved through a custom tool we have created that searches for similarities and reports them, unless they have had
+an explanation provided.
 
 In our favour, there is a long history of the publication of information that has been derived from disassembling the
 C64 and related Computer's ROMs, e.g., https://www.cubic.org/~doj/c64/mapping128.pdf

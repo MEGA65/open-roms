@@ -20,9 +20,9 @@ cmd_sys:
 	;; Setup the register values
 	lda sys_reg_p
 	pha
-	lda sys_reg_a
-	ldx sys_reg_x
 	ldy sys_reg_y
+	ldx sys_reg_x
+	lda sys_reg_a
 	plp
 
 	;; Call the routine.

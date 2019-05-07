@@ -7,9 +7,9 @@ ioinit:
 	;; XXX - Work around VICE bug: Writing $00 before $01 results in rubbish in $01
 	;; after. https://sourceforge.net/p/vice-emu/bugs/1057/
 	LDA #$27
+	LDX #$2F
 	STA $01
-	LDA #$2F
-	STA $00
+	STX $00
 
 	;; Enable CIA1 IRQ and ~50Hz timer
 	;; (https://csdb.dk/forums/?roomid=11&topicid=69037)

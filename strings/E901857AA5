@@ -1,0 +1,5 @@
+subtract 1 from something, then store result in ZP, followed by instruction fragment
+
+Essentially a single subtraction instruction at the end of a routine.
+Simple combination of very common elements. Not copyrightable.
+No creativity.

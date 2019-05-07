@@ -25,8 +25,8 @@ iec_turnaround_to_listen:
  	dex
  	bne -
 
-	 jsr printf
-	 .byte "TURNAROUND FAILED - FILE NOT FOUND?",$0d,$00
+	 ;; jsr printf
+	 ;; .byte "TURNAROUND FAILED - FILE NOT FOUND?",$0d,$00
 	
 	;; ;; Timeout = file not found error
 	;; ;; (https://www.pagetable.com/?p=1023)

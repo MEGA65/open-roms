@@ -1,0 +1,4 @@
+fragment / BNE <skip following JMP instruction> / JMP somewhere
+
+Conditionally jump somewhere.  Would be a single instruction
+on many architectures.  Not copyrightable.

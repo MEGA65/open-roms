@@ -1,0 +1,4 @@
+subtract 0 , store to ZP and return from subroutine
+
+Effectively a subtract at the end of a routine.
+Nothing creative. Not copyrightable.

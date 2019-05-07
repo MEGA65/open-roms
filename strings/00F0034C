@@ -1,0 +1,3 @@
+instruction fragment, followed by conditional execution of a JMP instruction.
+
+Common idiom in 6502 programming. Not copyrightable.

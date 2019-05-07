@@ -1,0 +1,5 @@
+RTS / JSR $xxEB. One and a half instructions. Not copyrightable.
+
+RTS marks the end of a routine, and JSR is common at the start of
+a routine. Thus 1 in 256 such routines would be expected to have an LSB
+of $EB

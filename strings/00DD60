@@ -1,0 +1,5 @@
+Do something with $DD00 and return from sub-routine.
+
+Only one whole instruction.  Also $DD00 is a CIA IO port, and
+so it gets used quite a lot, so is no surprise to see it appearing.
+Not copyrightable.

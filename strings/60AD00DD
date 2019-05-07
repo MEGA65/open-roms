@@ -1,0 +1,7 @@
+Return from subroutine, then read $DD00 , and do something with it.
+
+Again, $DD00 is a CIA IO register, and so there are a number 
+of routines that are required that simply check or modify the
+contents of this register in order to implement the IEC serial
+protocol.  Thus it is totally unsurprising to find routines that
+start by reading $DD00 and then processing it in some way.

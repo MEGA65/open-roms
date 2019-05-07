@@ -1,0 +1,6 @@
+Instruction fragment + CLC + RTS
+
+C flag is used to indicate success/failure of many KERNAL routines.
+Thus finding CLC before an RTS is not at all surprising, and the
+obvious way to indicate success in a routine.
+Not copyrightable.

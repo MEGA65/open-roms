@@ -1,0 +1,6 @@
+Set a bit in $DD00
+
+See other notes on bit manipulations of $DD00.
+Manipulating bits in a bit is not creative or copyrightable.
+Also, $DD00 is an IO register, which is expected to suffer
+such bit manipulations.

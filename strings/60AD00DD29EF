@@ -1,0 +1,5 @@
+Return from sub-routine, clear a bit in $DD00
+
+See other commentary on IO port $DD00 and the reasonableness
+of seeing routines that manipulate bits in it.
+Not creative. Not copyrightable.

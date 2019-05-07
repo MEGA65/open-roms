@@ -1,0 +1,6 @@
+Do something with $DD00, then read something from memory. Only instruction fragments.
+
+No whole instructions here.
+$DD00 is a CIA IO register on the C64, so doing things with it is rather necessary.
+Loading from memory is also intrinsic to operation of a processor.
+Nothing creative. Nothing copyrightable.

@@ -1,0 +1,4 @@
+Return from routine with success, Store $00 somewhere in ZP.
+
+End of routine fragment followed by the start of a routine that
+stores 0 somewhere.  Not creative. Not copyrightable.

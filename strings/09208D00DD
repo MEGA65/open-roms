@@ -1,0 +1,6 @@
+Set a bit in $DD00.
+
+Again, $DD00 is a register that is used for the IEC serial interface.
+Clearing and setting bits in it is required to implement the protocol.
+Also, clearing and setting bits in a memory location is not creative
+or copyrightable.

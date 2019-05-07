@@ -1,0 +1,5 @@
+Do something with $DD00, return from subroutine. Do something else with $DD00
+
+$DD00 is an IO register of a CIA in the C64 associated with the disk drive port.
+Thus having routines that do things with it is expected and necessary.
+The sequence here has nothing creative nor is it in our view copyrightable.

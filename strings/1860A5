@@ -1,0 +1,5 @@
+CLC RTS + instruction fragment.
+
+i.e., return success from a routine, and then whatever follows.
+Better than 1 in 256 routines can be expected to exhibit this
+sequence simply through chance.

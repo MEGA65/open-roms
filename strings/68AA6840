@@ -1,0 +1,6 @@
+PLA / TAX / PLA / RTI
+
+Pop A and X registers from the stack and return from interrupt.
+Standard end of interrupt sequence on 6502.
+See, for example, https://en.wikipedia.org/wiki/Interrupts_in_65xx_processors
+Not copyrightable.

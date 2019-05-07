@@ -1,0 +1,4 @@
+Clear C, jump into BASIC ROM to start BASIC.
+
+Simplest and most obvious way to achieve this action,
+as required for a C64 to boot.

@@ -1,0 +1,10 @@
+instruction fragment followed by JSR to VIC-II register setup.
+
+$E5A0 is documented in Compute's Mapping the 64 on p216 as
+the correct location for this routine, so it is no surprise to
+find a call there.
+Not creative. Not copyrightable.
+
+The leading $EA which is a NOP in the C64 KERNAL is a good example
+of purely cooincidental matches, as in our ROM it is the high-byte
+of an argument to the preceeding instruction.

@@ -1,0 +1,6 @@
+Do something with $DD00 and compare it with some value.
+
+$DD00 is one of the CIA ports, so checking the value of inputs
+on this port is something rather expected and common.
+Also, this sequence doesn't even contain a whole instruction.
+Not copyrightable.

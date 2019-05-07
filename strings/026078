@@ -1,0 +1,6 @@
+Fragment, RTS, Disable interrupts. Fragment of end and start of routines.
+
+Neither returning from a subroutine nor disabling interrupts is
+notable or copyrightable.  One in 256 routines would be expected
+to result in this sequence by pure chance.  
+Nothing creative or copyrightable.

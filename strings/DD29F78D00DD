@@ -1,0 +1,5 @@
+clear a bit in $DD00
+
+Yet another fragment of bit manipulation for the CIA register $DD00
+that is used to communicate with the disk drive port.
+Clearing specific bits in bytes is not creative nor copyrightable.

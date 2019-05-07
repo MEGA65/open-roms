@@ -1,0 +1,11 @@
+CLC / RTS / JSR $xxxx
+
+CLC / RTS the obvious and simplest way to clear the carry flag
+when returing from a routine.  Many of the routines in the C64 KERNAL
+public API indicate that they use the carry flag to indicate success
+or failure, hence how often it shows up in the C64 KERNAL itself.
+That a JSR instruction happens to be the first instruction in whatever
+follows actually highly likely through chance, since several percent
+of all instructions in a typical 6502 program are JSR instructions.
+
+Not copyrightable.

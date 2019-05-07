@@ -1,0 +1,4 @@
+JSR $FDA3 (SCAN KEYBOARD) , JSR somewhere else
+
+$FDA3 is listed on p238 of Compute's Mapping the 64
+and thus calling it is totally expected.

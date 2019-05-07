@@ -1,0 +1,4 @@
+Read from $DC0D to clear CIA interrupts, surrounded by instruction fragments.
+
+This is the method for clearing CIA interrupts.
+Not creative or copyrightable.

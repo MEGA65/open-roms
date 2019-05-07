@@ -1,0 +1,9 @@
+Tail end of standard CIA-triggered interrupt, followed by start of another routine
+
+LDA $DC0D is the standard way to clear interrupt status on the 6526 CIA.
+Then we have the standard return from interrupt sequence for a 6502
+(see the wikipedia page on 6502 interrupts, for example), followed by 
+loading A with $00 at the start of a following routine -- which is a not
+uncommon way for routines to start.
+
+In short, nothing creative nor copyrightable.

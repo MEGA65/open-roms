@@ -1,0 +1,4 @@
+take a branch based on comparison of Y register and memory.
+
+Changing program flow based on the result of a comparison is 
+a very common programming pattern

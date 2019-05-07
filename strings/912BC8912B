@@ -1,0 +1,4 @@
+Store A in two successive bytes in pointer.  
+
+Would be single 16-bit write operation in many architectures.
+Not copyrightable.

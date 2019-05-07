@@ -1,0 +1,4 @@
+multiply A by 2, and use it as an offset to a memory read.
+
+Basically a uint16_t aligned read.  Would be single instruction
+on many architectures. Not copyrightable.

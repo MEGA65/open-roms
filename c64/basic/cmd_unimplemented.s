@@ -1,6 +1,5 @@
 	;; Default handler for all not-yet-implemented commands
 
-cmd_end:
 cmd_for:
 cmd_next:
 cmd_data:
@@ -15,7 +14,6 @@ cmd_gosub:
 cmd_return:
 	
 	;; $90-$9F
-cmd_stop:
 cmd_on:
 cmd_wait:
 cmd_save:

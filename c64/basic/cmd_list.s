@@ -21,31 +21,11 @@ list_loop:
 	;; (Confirmed by testing on a C64)
 	jmp basic_main_loop
 
-basic_do_break:
-	jsr printf
-	.byte "BREAK",0
-
-	;; Check for direct mode
-	;; Are we in direct mode
-	lda basic_current_line_number+1
-	cmp #$ff
-	beq +
-	;; Not direct mode
-	jsr printf
-	.byte " IN ",0
-	lda basic_current_line_number+1
-	ldx basic_current_line_number+0
-	jsr print_integer
-	
-*
-	lda #$0d
-	jsr $ffd2
-	jmp basic_main_loop
-	
 list_more_lines:
 	lda BUCKYSTATUS
-	bpl basic_do_break
-	
+	bmi +
+	jmp basic_do_break
+*
 	;; Print line number
 	ldy #3
 	jsr peek_under_roms

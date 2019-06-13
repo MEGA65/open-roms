@@ -9,9 +9,9 @@ wedge_dos:
 	;; Take last device number, make sure it's a drive
 	;; If not, set to 8 (first drive number)
 	lda current_device_number
-	cmp #$07
+	cmp #$07 ;; XXX allow high device numbers, like 170
 	bpl +
-	lda #$08	
+	lda #$08
 *
 	;; Set remaining file parameters
 	ldx #$0F
@@ -26,12 +26,24 @@ wedge_dos:
 	beq wedge_dos_status
 	cmp #$20
 	beq wedge_dos_status
+	;; XXX consider SYNTAX ERROR if anything besides spaces is there
 	
 	;; Check if asked for a directory
 	cmp #$24
 	beq wedge_dos_directory
 *
-	;; XXX Check if asked to change drive number
+	;; Check if asked to change drive number, or if it is a regular command
+	cmp #$30
+	bmi wedge_dos_command ; char code before 0
+	cmp #$3A
+	bpl wedge_dos_command ; char code after 9
+	iny
+	lda (basic_current_statement_ptr), y
+	beq wedge_dos_change_drive ; end of buffer
+	cmp #$20
+	beq wedge_dos_change_drive
+	;; XXX consider SYNTAX ERROR if anything besides spaces is there
+	jmp -
 
 wedge_dos_command: ; default
 
@@ -42,10 +54,19 @@ wedge_dos_command: ; default
 
 wedge_dos_change_drive:
 
-	;; XXX - implement this
-	jsr printf
-	.byte "DBG: CHANGE DRIVE", 0
-	jmp do_NOT_IMPLEMENTED_error
+	;; Reuse the line number parser for device number retrieval
+	jsr basic_parse_line_number
+	lda basic_line_number+1
+	beq +
+	jmp do_ILLEGAL_QUANTITY_error
+*
+	lda basic_line_number+0
+	cmp #$08 ;; XXX allow high device numbers, like 170
+	bpl +
+	jmp do_ILLEGAL_DEVICE_NUMBER_error
+*
+	sta current_device_number
+	jmp basic_end_of_line
 
 wedge_dos_status:
 
@@ -62,4 +83,3 @@ wedge_dos_directory:
 	jmp do_NOT_IMPLEMENTED_error
 
 ;; END wedge support
-

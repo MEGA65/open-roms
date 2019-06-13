@@ -98,7 +98,8 @@ not_a_token:
 	;; Are we in direct mode?
 	;; DOS Wedge is a hacky solution (inelegant, but convenient),
 	;; BASIC programmers should implement communication with drives
-	;; the standard way, handling channels properly
+	;; the standard way, handling channels properly. Besides,
+	;; current implementation does not support characters under ROM
 	ldx basic_current_line_number+1
 	cpx #$ff
 	bne +

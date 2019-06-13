@@ -1,2 +1,14 @@
 c64/basic/combined.s
 c64/kernal/combined.s
+temp.s
+temp.map
+newbasic
+newkern
+newrom
+src/compress_text
+src/preprocess
+ophis.bin
+c64/basic/OUT.BIN
+c64/kernal/OUT.BIN
+*project
+

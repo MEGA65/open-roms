@@ -4,17 +4,18 @@
 wedge_dos:
 
 	;; Close all the channels, so that wedge has full control
-	jsr $FFE7 ; CLALL
+	jsr $FFE7 ; XXX jump via ICLALL
 	
 	;; Take last device number, make sure it's a drive
 	;; If not, set to 8 (first drive number)
-	lda current_device_number
-	cmp #$07 ;; XXX allow high device numbers, like 170
+	ldx current_device_number
+	cpx #$07
 	bpl +
-	lda #$08
+	bcs +
+	ldx #$08
 *
 	;; Set remaining file parameters
-	ldx #$0F
+	lda #$0F
 	ldy #$0F
 	jsr $FFBA ; SETLFS
 
@@ -61,8 +62,9 @@ wedge_dos_change_drive:
 	jmp do_ILLEGAL_QUANTITY_error
 *
 	lda basic_line_number+0
-	cmp #$08 ;; XXX allow high device numbers, like 170
+	cmp #$08
 	bpl +
+	bcs +
 	jmp do_ILLEGAL_DEVICE_NUMBER_error
 *
 	sta current_device_number

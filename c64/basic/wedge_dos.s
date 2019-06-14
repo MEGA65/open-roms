@@ -4,7 +4,7 @@
 wedge_dos:
 
 	;; Close all the channels, so that wedge has full control
-	jsr (ICLALL)
+	jsr wedge_dos_CLALL
 	
 	;; Take last device number, make sure it's a drive
 	;; If not, set to 8 (first drive number)
@@ -84,4 +84,7 @@ wedge_dos_directory:
 	.byte "DBG: DIR", 0
 	jmp do_NOT_IMPLEMENTED_error
 
+wedge_dos_CLALL:
+	jmp (ICLALL)
+	
 ;; END wedge support

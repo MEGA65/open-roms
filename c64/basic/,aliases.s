@@ -133,6 +133,26 @@
 	.alias sys_reg_p $30f
 	.alias sys_jmp   $310
 
+	;; Kernal vectors - interrupts
+	.alias CINV      $0314
+	.alias CBINV     $0316 
+	.alias NMINV     $0318
+	
+	;; Kernal vectors - routines
+	.alias IOPEN     $031A
+	.alias ICLOSE    $031C
+	.alias ICHKIN    $031E
+	.alias ICKOUT    $0320
+	.alias ICLRCH    $0322
+	.alias IBASIN    $0324
+	.alias IBASOUT   $0326
+	.alias ISTOP     $0328
+	.alias IGETIN    $032A
+	.alias ICLALL    $032C
+	.alias USRCMD    $032E
+	.alias ILOAD     $0330
+	.alias ISAVE     $0331
+
 	;; BASIC uses some extra bytes for memory access under ROMs located at $2A7 onwards
 	;; IRQs are disabled when doing such accesses, and a default NMI handler only increments
 	;; a counter, so that if an NMI occurs, it doesn't crash the machine, but can be captured.

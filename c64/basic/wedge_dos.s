@@ -4,7 +4,7 @@
 wedge_dos:
 
 	;; Close all the channels, so that wedge has full control
-	jsr $FFE7 ; XXX jump via ICLALL
+	jsr (ICLALL)
 	
 	;; Take last device number, make sure it's a drive
 	;; If not, set to 8 (first drive number)

@@ -1,0 +1,2 @@
+clall:
+	rts

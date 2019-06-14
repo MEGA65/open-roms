@@ -76,6 +76,26 @@
 	.alias screen_scroll_disable $0292
 	.alias pal_or_ntsc $02A6
 
+	;; Kernal vectors - interrupts
+	.alias CINV      $0314
+	.alias CBINV     $0316 
+	.alias NMINV     $0318
+	
+	;; Kernal vectors - routines
+	.alias IOPEN     $031A
+	.alias ICLOSE    $031C
+	.alias ICHKIN    $031E
+	.alias ICKOUT    $0320
+	.alias ICLRCH    $0322
+	.alias IBASIN    $0324
+	.alias IBASOUT   $0326
+	.alias ISTOP     $0328
+	.alias IGETIN    $032A
+	.alias ICLALL    $032C
+	.alias USRCMD    $032E
+	.alias ILOAD     $0330
+	.alias ISAVE     $0331
+
 	;; Under-ROM routines
 	;; (BASIC also includes them. XXX - We should de-duplicate them in a safe manner)
 	.alias missed_nmi_flag         $2A7
@@ -84,5 +104,3 @@
 	.alias poke_under_roms tiny_nmi_handler+poke_under_roms_routine-tiny_nmi_handler_routine
 	.alias memmap_allram tiny_nmi_handler+memmap_allram_routine-tiny_nmi_handler_routine
 	.alias memmap_normal tiny_nmi_handler+memmap_normal_routine-tiny_nmi_handler_routine
-	
-	

@@ -51,6 +51,11 @@
 	.alias rs232_rx_buffer_ptr $F7
 	.alias rs232_tx_buffer_ptr $F9
 
+	;; 2-byte location below seems to be a good place for temporary storage,
+	;; it seems used for timing during tape reads only - see:
+	;; - 'C64 Programmer's Reference Guide', page 314
+	;; - 'Compute's Mapping the Commodore 64', page 32
+	.alias CMP0 $B0 ;; $B0-$B1
 
 	; "Compute's Mapping the 64" book
 	.alias keyboard_buffer $0277

@@ -66,6 +66,13 @@
 	.alias load_or_scroll_temp_pointer $AC
 	;; We also use the following for temp colour pointer when scrolling
 	.alias load_save_verify_end_address $AE
+
+	;; 2-byte location below seems to be a good place for temporary storage,
+	;; it seems used for timing during tape reads only - see:
+	;; - 'C64 Programmer's Reference Guide', page 314
+	;; - 'Compute's Mapping the Commodore 64', page 32
+	.alias CMP0 $B0 ;; $B0-$B1
+
 	.alias cassette_buffer_ptr $B2
 	.alias current_filename_length $B7
 	.alias current_logical_filenum $B8

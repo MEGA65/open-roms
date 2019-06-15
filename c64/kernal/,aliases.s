@@ -9,7 +9,8 @@
 	.alias BUCKYSTATUS $91
 	.alias kernal_load_or_verify_flag $93
 	.alias current_file_num $98
-	.alias input_device_number $99
+	.alias DFLTN $99
+	.alias input_device_number DFLTN
 	; bit 6 = error messages, bit 7 = control messages
 	.alias kernal_message_control_flags $9d
 	.alias jiffy_clock_24bits $a0
@@ -79,6 +80,7 @@
 	.alias keyboard_decoding_ptr $028F
 	.alias enable_case_switch $0291
 	.alias screen_scroll_disable $0292
+	.alias RSSTAT $0297 ; RS-232 status
 	.alias pal_or_ntsc $02A6
 
 	;; Kernal vectors - interrupts

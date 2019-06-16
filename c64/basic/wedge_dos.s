@@ -8,13 +8,13 @@ wedge_dos:
 	
 	;; Take last device number, make sure it's a drive
 	;; If not, set to 8 (first drive number)
-	ldx current_device_number
+	ldx DFLTN
 	cpx #$07
 	bpl +
 	bcs +
 	ldx #$08
 *
-	;; Set remaining file parameters
+	;; Set remaining file parameters; channel 15 is a typical one for commands
 	lda #$0F
 	ldy #$0F
 	jsr $FFBA ; SETLFS
@@ -67,15 +67,35 @@ wedge_dos_change_drive:
 	bcs +
 	jmp do_ILLEGAL_DEVICE_NUMBER_error
 *
-	sta current_device_number
+	sta DFLTN
 	jmp basic_end_of_line
 
 wedge_dos_status:
 
-	;; XXX - implement this
-	jsr printf
-	.byte "DBG: STATUS", 0
-	jmp do_NOT_IMPLEMENTED_error
+	;; Here the flow is mostly the same as in the example from
+	;; https://codebase64.org/doku.php?id=base:reading_the_error_channel_of_a_disk_drive
+
+	;; Set remaining file parameters, open the channel
+	lda #$00  ; empty file name
+	jsr $FFBD ; SETNAM
+	jsr wedge_dos_OPEN
+	bcc +
+	jmp do_DEVICE_NOT_PRESENT_error
+*
+	;; Set channel for input
+	ldx #$0F
+	jsr wedge_dos_CHKIN	
+*
+	jsr $FFB7 ; READST - to retrieve errors
+*   
+	;; Print out everything retrieved from the drive
+	bne +
+	jsr $FFCF ; CHRIN
+	jsr $FFD2 ; CHROUT
+	jmp -
+*
+	;; Clean-up and exit
+	jmp wedge_dos_clean_exit
 
 wedge_dos_directory:
 
@@ -86,5 +106,19 @@ wedge_dos_directory:
 
 wedge_dos_CLALL:
 	jmp (ICLALL)
+
+wedge_dos_CHKIN:
+	jmp (ICHKIN)
 	
+wedge_dos_CLRCHR:
+	jmp (ICLRCH)
+	
+wedge_dos_OPEN:
+	jmp (IOPEN)
+	
+wedge_dos_clean_exit:
+	jsr wedge_dos_CLALL	
+	jsr wedge_dos_CLRCHR
+	jmp basic_end_of_line
+
 ;; END wedge support

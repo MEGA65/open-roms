@@ -4,6 +4,38 @@
 
 open:
 
+	;; LAT / FAT / SAT support implemented according to
+	;; 'Compute's Mapping the Commodore 64', page 52
+
+	;; Check if we have space in tables
+
+	ldy LDTND
+	cpy #$0A
+	bcs +
+	bmi open_has_space
+*
+	jsr printf
+	.byte "FULL", $0D, 0
+
+	;; Table is full - according to https://codebase64.org/doku.php?id=base:kernalreference
+	;; C flag set means error occured
+	sec
+	rts
+
+open_has_space:
+
+	;; Update the tables
+
+	lda current_logical_filenum
+	sta LAT, y
+	lda current_device_number
+	sta FAT, y
+	lda current_secondary_address
+	sta SAT, y
+
+	iny
+	sty LDTND
+
 	;; Kernal API is shared between several types of devices - we have
 	;; to dispatch the call to appropriate subroutine
 
@@ -54,17 +86,15 @@ open_iec:
 	jsr iec_assert_atn
 
 	;; CLK is now asserted, and we are ready to transmit a byte
-	lda #$20 ; listen
-	clc
-	adc current_device_number
-	jsr iec_tx_byte
-	bcs open_error
+	lda current_device_number
+	jsr listen
+	bcs open_iec_error
 
 	;; Indicate success
 	lda #$00
 	clc	
 
-open_error:
+open_iec_error:
 	;; Re-enable interrupts and return
 	;; (iec_tx_byte will have set/cleared C flag and put result code
 	;; in A if it was an error).

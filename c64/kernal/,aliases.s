@@ -9,6 +9,7 @@
 	.alias BUCKYSTATUS $91
 	.alias kernal_load_or_verify_flag $93
 	.alias current_file_num $98
+	.alias LDTND $98 ; number of entries in LAT / FAT / SAT tables
 	.alias DFLTN $99
 	.alias input_device_number DFLTN
 	; bit 6 = error messages, bit 7 = control messages
@@ -58,6 +59,11 @@
 	;; - 'Compute's Mapping the Commodore 64', page 32
 	.alias CMP0 $B0 ;; $B0-$B1
 
+	;; Kernal tables for opened files, 10 entries each
+	.alias LAT $0259 ; logical file numbers
+	.alias FAT $0263 ; device numbers
+	.alias SAT $026D ; secondary addresses
+	
 	; "Compute's Mapping the 64" book
 	.alias keyboard_buffer $0277
 	.alias MEMSTR $0281

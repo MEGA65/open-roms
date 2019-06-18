@@ -2,5 +2,5 @@
 second:
 
 	;; This trivial routine is documented in 'C64 Programmer's Reference Guide', page 296
-	ora $60
+	ora #$60
 	jmp iec_tx_byte

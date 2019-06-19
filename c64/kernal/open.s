@@ -83,7 +83,7 @@ open_iec:
 	sei
 
 	;; Begin sending under attention
-	jsr iec_assert_atn
+	;; XXX jsr iec_assert_atn
 
 	;; CLK is now asserted, and we are ready to transmit a byte
 	lda current_device_number

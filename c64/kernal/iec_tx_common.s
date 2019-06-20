@@ -40,9 +40,9 @@ iec_tx_common_bit_is_sent:
 	jsr iec_wait20us
 
 	;; More bits to send?
-	pla
 	dex
 	bpl iec_tx_common_nextbit
+	pla
 
 	;; Whole byte send, make sure ATN is released
 	jsr iec_release_atn_clk_data
@@ -77,4 +77,5 @@ iec_tx_common_nextbit:
 	jsr iec_pull_clk_release_data
 	jsr iec_wait20us
 	
+	pla
 	jmp iec_tx_common_sendbit

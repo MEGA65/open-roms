@@ -4,9 +4,9 @@ iec_wait100us:
 	;; Wait 100usec
 
 	;; PAL:
-	;; - CPU frequency 0.985248 MHz, we need to waste at least 102 cycles
+	;; - CPU frequency 0.985248 MHz, we need to waste at least  99 cycles
 	;; NTSC:
-	;; - CPU frequency 1.022727 MHZ, we need to waste at least 98 cycles
+	;; - CPU frequency 1.022727 MHZ, we need to waste at least 103 cycles
 
 	;; Waste cycles by reading some unimportant memory location
 	;; (in a loop) in order not to clutter VICE debug logs

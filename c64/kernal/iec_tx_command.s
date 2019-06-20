@@ -35,7 +35,7 @@ iec_tx_command:
 
 	;; Common part of iec_txbyte and iec_tx_common - waits for devices
 	;; and transmits a byte
-	
+
 	pla
 	jsr iec_tx_common
 

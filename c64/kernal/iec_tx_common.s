@@ -6,11 +6,12 @@ iec_tx_common:
 
 	;; Store the bye to send on a stack
 	pha
-
+	
 	;; Wait till all receivers are ready, they should all release DATA
 	jsr iec_wait_for_data_release
-	
+
 	;; Pull CLK back to indicate that DATA is not valid, keep it for 60us
+	;; We can use this routine as we don't hold DATA anyway (and its state doesn't even matter)
 	;; Don't wait too long, as 200us or more is considered EOI
 
 	jsr iec_pull_clk_release_data
@@ -42,11 +43,14 @@ iec_tx_common_bit_is_sent:
 	pla
 	dex
 	bpl iec_tx_common_nextbit
-	
+
+	;; Whole byte send, make sure ATN is released
+	jsr iec_release_atn_clk_data
+
 	;; XXX the flow below is REALLY dangerous, as if there are multiple devices,
 	;; one can signal that it's busy much earlier (more than 100ms) than the other.
 	;; Can we do something about it?
-
+	
 	;; All done - give devices time to tell if they are busy by pulling DATA
 	;; They should do it within 1ms
 	ldx #$FF
@@ -62,7 +66,9 @@ iec_tx_common_bit_is_sent:
 	jsr iec_wait100us
 	
 iec_tx_common_done:
+
 	;; Byte sent, return
+	clc
 	rts
 	
 iec_tx_common_nextbit:

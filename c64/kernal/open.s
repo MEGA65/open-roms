@@ -15,9 +15,6 @@ open:
 	bcs +
 	bmi open_has_space
 *
-	jsr printf
-	.byte "FULL", $0D, 0
-
 	;; Table is full - according to https://codebase64.org/doku.php?id=base:kernalreference
 	;; C flag set means error occured
 	sec
@@ -74,11 +71,9 @@ open_rs232:
 
 open_iec:
 
-	;; XXX add FILENAM support, test it
+	;; Part implemented according to https://www.pagetable.com/?p=1031, https://github.com/mist64/cbmbus_doc
 
-	;; Sequence is:
-	;; 1. Call current device to attention as LISTENER = $20 + device
-	;; 2. 
+	;; XXX for now for channel 15 only!
 
 	;; Disable IRQs, since timing matters!
 	sei
@@ -86,14 +81,25 @@ open_iec:
 	;; Begin sending under attention
 	;; XXX jsr iec_assert_atn
 
-	;; CLK is now asserted, and we are ready to transmit a byte
+	;; Request device to talk
 	lda current_device_number
-	jsr listen
-	bcs open_iec_error
+	jsr talk
+	bcs open_iec_error ; XXX what about the accumulator?
+
+	jsr printf
+	.byte "DBG: OPEN 1", $0D, 0
+	
+	;; Send secondary address
+	lda current_secondary_address
+	jsr tksa
+	bcs open_iec_error ; XXX what about the accumulator?
+
+	jsr printf
+	.byte "DBG: OPEN 2", $0D, 0
 
 	;; Indicate success
 	lda #$00
-	clc	
+	clc
 
 open_iec_error:
 	;; Re-enable interrupts and return

@@ -4,9 +4,9 @@ iec_wait60us:
 	;; Wait 60usec
 
 	;; PAL:
-	;; - CPU frequency 0.985248 MHz, we need to waste at least 61 cycles
+	;; - CPU frequency 0.985248 MHz, we need to waste at least 60 cycles
 	;; NTSC:
-	;; - CPU frequency 1.022727 MHZ, we need to waste at least 59 cycles
+	;; - CPU frequency 1.022727 MHZ, we need to waste at least 62 cycles
 
 	;; Waste cycles in a loop
 

@@ -1,4 +1,14 @@
-all:	src/collect_data src/preprocess
+all:	Ophis src/collect_data src/preprocess
+
+Ophis:
+	git submodule init
+	git submodule update
+
+src/pngprepare:	src/pngprepare.c Makefile
+	$(CC) $(COPT) -I/usr/local/include -L/usr/local/lib -o src/pngprepare src/pngprepare.c -lpng
+
+chargen:	src/pngprepare assets/8x8font.png
+	src/pngprepare charrom assets/8x8font.png chargen
 
 src/collect_data:	src/collect_data.c Makefile
 	gcc -Wall -o src/collect_data src/collect_data.c
@@ -21,7 +31,7 @@ newkern:	newrom Makefile
 newbasic:	newrom Makefile
 	dd if=newrom bs=8192 count=1 skip=0 of=newbasic
 
-newc65:		newkern newbasic Makefile
+newc65:		newkern newbasic chargen Makefile
 	dd if=/dev/zero bs=4096 count=10 of=newc65
 	cat newbasic chargen chargen newkern >>newc65
 	dd if=/dev/zero bs=65536 count=1 of=padding

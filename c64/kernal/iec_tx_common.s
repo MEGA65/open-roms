@@ -38,6 +38,11 @@ iec_tx_common_bit_is_sent:
 
 	;; Wait 20us, so that device(s) can pick DATA
 	jsr iec_wait20us
+	
+	;; Pull CLK for 20us again, before sending the next bit
+	;; or performing any other action
+	jsr iec_pull_clk_release_data
+	jsr iec_wait20us
 
 	;; More bits to send?
 	dex
@@ -73,9 +78,5 @@ iec_tx_common_done:
 	
 iec_tx_common_nextbit:
 
-	;; Pull CLK for 20us again, before
-	jsr iec_pull_clk_release_data
-	jsr iec_wait20us
-	
 	pla
 	jmp iec_tx_common_sendbit

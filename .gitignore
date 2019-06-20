@@ -1,14 +1,26 @@
+
+# Intermediate compilation files
+
 c64/basic/combined.s
 c64/kernal/combined.s
 temp.s
 temp.map
-newbasic
-newkern
-newrom
+
 src/compress_text
+src/pngprepare
 src/preprocess
 ophis.bin
 c64/basic/OUT.BIN
 c64/kernal/OUT.BIN
-*project
 
+# Compilation output
+
+chargen
+newbasic
+newkern
+newrom
+
+# Various IDE project files, temporary files, etc.
+
+*project
+.*swp

@@ -5,6 +5,17 @@ iec_tx_byte:
 
 	pha
 
-;; XXX to be filled-in
+	;; Notify all devices that we are going to send a byte
+	;; and it is going to be a data byte (released ATN)
+	jsr iec_release_atn_clk_data
+
+	;; Common part of iec_txbyte and iec_tx_common - waits for devices
+	;; and transmits a byte
+
+	pla
+	jsr iec_tx_common
+
+	;; All done
+	clc
 	rts
 

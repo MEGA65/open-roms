@@ -1,6 +1,7 @@
 	; Function defined on pp272-273 of C64 Programmers Reference Guide
 	;; See also http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
+;; XXX rework this, according to pagetable.com
 
 open:
 

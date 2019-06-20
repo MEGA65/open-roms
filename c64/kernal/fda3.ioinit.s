@@ -39,4 +39,7 @@ ioinit:
 	lda #$3b
 	sta $dd02
 	
+	;; Set IEC bus oto its initial idle state
+	jsr iec_set_idle
+	
 	rts

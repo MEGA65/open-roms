@@ -117,3 +117,13 @@
 	.alias poke_under_roms tiny_nmi_handler+poke_under_roms_routine-tiny_nmi_handler_routine
 	.alias memmap_allram tiny_nmi_handler+memmap_allram_routine-tiny_nmi_handler_routine
 	.alias memmap_normal tiny_nmi_handler+memmap_normal_routine-tiny_nmi_handler_routine
+
+	;; CIA#2 - https://www.c64-wiki.com/wiki/CIA#CIA_2
+
+	.alias CI2PRA $DD00 ; VIC bank switching and IEC port
+
+	.alias BIT_CI2PRA_ATN_OUT $08    ; 1 - low (pulled), 0 - high (released)
+	.alias BIT_CI2PRA_CLK_OUT $10    ; 1 - low (pulled), 0 - high (released)
+	.alias BIT_CI2PRA_DAT_OUT $20    ; 1 - low (pulled), 0 - high (released)
+	.alias BIT_CI2PRA_CLK_IN  $40    ; 0 - low (pulled), 1 - high (released)
+	.alias BIT_CI2PRA_DAT_IN  $80    ; 0 - low (pulled), 1 - high (released)

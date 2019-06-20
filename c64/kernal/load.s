@@ -14,6 +14,9 @@
 	;; $93 = kernal_load_or_verify_flag
 	;; $AC = current pointer for loading/verifying
 	;; $C1 = similar to the above.
+
+;; XXX rework this, according to pagetable.com
+
 load:
 
 	;; Are we loading or verifying?
@@ -47,17 +50,11 @@ print_filename_loop:
 	lda #$0d
 	jsr $ffd2
 
-	;; Begin sending under attention
-	jsr iec_assert_atn
-
 	;; XXX - Use default device number
 	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 	;; p13, 16.
 	;; also p16 tells us this routine doesn't mess with the file table in the C64,
 	;; only in the drive.
-	
-	;; Begin sending under attention
-	jsr iec_assert_atn
 
 	;; XXX - Use default device number
 	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
@@ -67,16 +64,15 @@ print_filename_loop:
 	
 	;; Call device to LISTEN (p16)
 	lda #$28
-	jsr iec_tx_byte
+	jsr iec_tx_command
 	bcs load_error
 
 	;; Open channel #0 (p16)
 	lda #$f0
-	jsr iec_tx_byte
+	jsr iec_tx_command
 	bcs load_error
 
-	;; (p16)
-	jsr iec_release_atn
+	jsr iec_set_idle
 
 	;; Send filename (p16)
 	ldy #0
@@ -103,27 +99,24 @@ send_filename:
 
 sent_filename:	
 	;; Command device to unlisten to indicate end of file name. (p16)
-	jsr iec_assert_atn
 	lda #$3f
-	jsr iec_tx_byte
+	jsr iec_tx_command
 	bcs load_error
-	jsr iec_release_atn
+	jsr iec_set_idle
 
 	;; Now command device to talk (p16)
-	jsr iec_assert_atn
 	lda #$48
-	jsr iec_tx_byte
+	jsr iec_tx_command
 	bcs load_error
 
 	lda #$60 ; open channel / data (p3) , required according to p13
-	jsr iec_tx_byte
+	jsr iec_tx_command
 	bcs load_error
-	jsr iec_release_atn
 
 	;; We are currently talker, so do the IEC turn around so that we
 	;; are the listener (p16)
 	;; An error here means FILE NOT FOUND ?
-	jsr iec_turnaround_to_listen
+	;; XXX jsr iec_turnaround_to_listen
 	bcs load_error
 
 	;; Get load address and store it if secondary address is zero
@@ -133,7 +126,7 @@ sent_filename:
 	beq +
 	sta load_save_start_ptr+0
 *
-	jsr iec_rx_byte
+	jsr iec_tx_command
 	bcs file_not_found_error
 	ldx current_secondary_address
 	beq +
@@ -178,17 +171,15 @@ load_done:
 	;; Close file on drive
 
 	;; Command drive to stop talking and to close the file
-	jsr iec_assert_atn
 	lda #$5f
-	jsr iec_tx_byte
+	jsr iec_tx_command
 	lda #$28
-	jsr iec_tx_byte
+	jsr iec_tx_command
 	lda #$e0
-	jsr iec_tx_byte
+	jsr iec_tx_command
 	;; Tell drive to unlisten
 	lda #$3f
-	jsr iec_tx_byte
-	jsr iec_release_atn
+	jsr iec_tx_command
 
 	;; Return last address written to +1
 	;; (Even though Compute's Mapping the 64 says without the +1.

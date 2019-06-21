@@ -14,8 +14,25 @@ iec_tx_byte:
 
 	pla
 	jsr iec_tx_common
-
+	
+	;; All done - give device time to tell if they are busy by pulling DATA
+	;; They should do it within 1ms
+	ldx #$FF
+*	lda CI2PRA
+	;; BPL here is checking that bit 7 of $DD00 clears,
+	;; i.e, that the DATA line is pulled by drive
+	bpl +
+	dex
+	bne -
+	bpl iec_tx_byte_error
+*
 	;; All done
 	clc
 	rts
+
+iec_tx_byte_error:
+
+	jsr iec_set_idle
+	jmp kernalerror_DEVICE_NOT_FOUND
+
 

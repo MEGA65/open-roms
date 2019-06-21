@@ -1,6 +1,7 @@
 
 ;; This is a common part of iec_tx_byte and iec_tx_command
 ;; Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
+;; and http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
 iec_tx_common:
 
@@ -48,33 +49,8 @@ iec_tx_common_bit_is_sent:
 	dex
 	bpl iec_tx_common_nextbit
 	pla
-
-	;; Whole byte send, make sure ATN is released
-	jsr iec_release_atn_clk_data
-
-	;; XXX the flow below is REALLY dangerous, as if there are multiple devices,
-	;; one can signal that it's busy much earlier (more than 100ms) than the other.
-	;; Can we do something about it?
 	
-	;; All done - give devices time to tell if they are busy by pulling DATA
-	;; They should do it within 1ms
-	ldx #$FF
-*	lda CI2PRA
-	;; BPL here is checking that bit 7 of $DD00 clears,
-	;; i.e, that the DATA line is pulled by drive
-	bpl +
-	dex
-	bne -
-	bpl iec_tx_common_done
-*
-	;; Wait 100us to give busy devices some time
-	jsr iec_wait100us
-	
-iec_tx_common_done:
-
-	;; Byte sent, return
-	clc
-	rts
+	rts ; Flow continues differently for data/command
 	
 iec_tx_common_nextbit:
 

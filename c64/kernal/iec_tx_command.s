@@ -14,7 +14,7 @@ iec_tx_command:
 
 	;; Did at least one device respond by pulling DATA?
 	lda CI2PRA
-	and #BIT_CI2PRA_DAT_IN
+	and #BIT_CI2PRA_DAT_IN ; XXX try to optimize this, move to separate routine
 	beq +
 
 	;; No devices present on the bus, so we can immediately return with device not found
@@ -39,7 +39,27 @@ iec_tx_command:
 	pla
 	jsr iec_tx_common
 
-	;; All done
+	;; According to https://www.pagetable.com/?p=1135 there is some complicated and dangerous
+	;; flow here, but http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf (page 6)
+	;; advices to just wait 1ms and check the DATA status
+	jsr wait1ms
+	lda CI2PRA
+	and #BIT_CI2PRA_DAT_IN ; XXX try to optimize this, move to separate routine
+	beq +
+	
+	;; XXX possible optimization of the flow above: for many commands it is enough
+	;; to wait for the DATA being pulled, as confirmation is expected from
+	;; a single device only - but not sure if it's worth the trouble
+
+	jsr printf
+	.byte "DBG: NO CONFIRMATION FROM DEVICE", $0D, 0
+
+	jsr iec_set_idle
+	jmp kernalerror_DEVICE_NOT_FOUND
+*
+	;; All done - before exiting wait a moment and restore bus to idle state
+	jsr iec_wait20us
+	jsr iec_set_idle
 
 	clc
 	rts

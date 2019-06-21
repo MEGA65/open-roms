@@ -84,25 +84,19 @@ open_iec:
 	;; Request device to talk
 	lda current_device_number
 	jsr talk
-	bcs open_iec_error ; XXX what about the accumulator?
+	bcs open_iec_error
 
-	jsr printf
-	.byte "DBG: OPEN 1", $0D, 0
-	
 	;; Send secondary address
 	lda current_secondary_address
 	jsr second
-	bcs open_iec_error ; XXX what about the accumulator?
-
-	jsr printf
-	.byte "DBG: OPEN 2", $0D, 0
+	bcs open_iec_error
 
 	;; Turnaround
 	jsr iec_turnaround_to_listen
-	bcs open_iec_error ; XXX what about the accumulator?
+	bcs open_iec_error
 
 	jsr printf
-	.byte "DBG: OPEN 3 - DEVICE EXISTS", $0D, 0
+	.byte "DBG: TURNAROUND SUCCEEDED", $0D, 0
 	
 	;; Indicate success
 	lda #$00

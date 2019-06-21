@@ -72,8 +72,8 @@ open_rs232:
 open_iec:
 
 	;; Part implemented according to https://www.pagetable.com/?p=1031, https://github.com/mist64/cbmbus_doc
-
-	;; XXX for now for channel 15 only!
+	;; XXX note: this is only a temporary test implementation, real 'open' does not send anything to IEC,
+	;; see http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
 	;; Disable IRQs, since timing matters!
 	sei
@@ -91,12 +91,19 @@ open_iec:
 	
 	;; Send secondary address
 	lda current_secondary_address
-	jsr tksa
+	jsr second
 	bcs open_iec_error ; XXX what about the accumulator?
 
 	jsr printf
 	.byte "DBG: OPEN 2", $0D, 0
 
+	;; Turnaround
+	jsr iec_turnaround_to_listen
+	bcs open_iec_error ; XXX what about the accumulator?
+
+	jsr printf
+	.byte "DBG: OPEN 3 - DEVICE EXISTS", $0D, 0
+	
 	;; Indicate success
 	lda #$00
 	clc

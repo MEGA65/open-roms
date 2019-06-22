@@ -57,9 +57,12 @@ iec_tx_command:
 	jsr iec_set_idle
 	jmp kernalerror_DEVICE_NOT_FOUND
 *
-	;; All done - before exiting wait a moment and restore bus to idle state
-	jsr iec_wait20us
-	jsr iec_set_idle
+	;; All done
+	
+	;; XXX All the documentation says we should release ATN at this point, but when I do so
+	;; the turnaround mechanism does not work. Why???
+	;; jsr iec_wait20us
+	;; jsr iec_set_idle
 
 	clc
 	rts

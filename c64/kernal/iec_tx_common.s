@@ -43,7 +43,7 @@ iec_tx_common_bit_is_sent:
 	;; Pull CLK for 20us again, before sending the next bit
 	;; or performing any other action
 	jsr iec_pull_clk_release_data
-	jsr iec_wait20us
+	jsr iec_wait20us ; XXX this might be an overkill, there is a lot of code besides this wait here - few NOPs might be enough
 
 	;; More bits to send?
 	dex

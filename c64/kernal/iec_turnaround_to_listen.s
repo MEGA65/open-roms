@@ -5,7 +5,7 @@
 iec_turnaround_to_listen:
 
 	;; Pull DATA, release CLK and ATN (we are not sending commands)
-	jsr iec_pull_data_release_atn_clock
+	jsr iec_pull_data_release_atn_clk
 
 	;; Wait for clock line to be pulled by the drive
 	ldx #$FF ; XXX should we really use that high number?

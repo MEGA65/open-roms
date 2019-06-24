@@ -11,6 +11,10 @@ cmd_load:
 	;; middle of a program. For safety, we do.
 	jsr basic_do_clr
 	
+	;; XXX temporary, to set valid device number
+	lda #$08
+	sta current_device_number
+	
 	;; Set filename and length
 	lda #$00
 	sta current_filename_length

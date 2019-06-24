@@ -37,7 +37,8 @@ load:
 	.byte "SEARCHING FOR ",0
 
 	ldy #$00
-print_filename_loop:	
+print_filename_loop:
+
 	cpy current_filename_length
 	beq +
 	ldx #<current_filename_ptr
@@ -46,7 +47,6 @@ print_filename_loop:
 	iny
 	jmp print_filename_loop
 *
-	
 	lda #$0d
 	jsr $ffd2
 
@@ -55,29 +55,22 @@ print_filename_loop:
 	;; p13, 16.
 	;; also p16 tells us this routine doesn't mess with the file table in the C64,
 	;; only in the drive.
-
-	;; XXX - Use default device number
-	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
-	;; p13, 16.
-	;; also p16 tells us this routine doesn't mess with the file table in the C64,
-	;; only in the drive.
 	
 	;; Call device to LISTEN (p16)
-	lda #$28
-	jsr iec_tx_command
+	lda current_device_number
+	jsr listen
 	bcs load_error
 
 	;; Open channel #0 (p16)
-	lda #$f0
-	jsr iec_tx_command
+	lda #$00
+	jsr tksa
 	bcs load_error
-
-	jsr iec_set_idle
-
+	
 	;; Send filename (p16)
 	ldy #0
 
 send_filename:
+
 	cpy current_filename_length
 	beq sent_filename
 	
@@ -97,16 +90,15 @@ send_filename:
 	iny
 	jmp send_filename
 
-sent_filename:	
+sent_filename:
 	;; Command device to unlisten to indicate end of file name. (p16)
-	lda #$3f
-	jsr iec_tx_command
+	jsr unlsn
 	bcs load_error
 	jsr iec_set_idle
 
 	;; Now command device to talk (p16)
-	lda #$48
-	jsr iec_tx_command
+	lda current_device_number
+	jsr talk
 	bcs load_error
 
 	lda #$60 ; open channel / data (p3) , required according to p13
@@ -116,8 +108,11 @@ sent_filename:
 	;; We are currently talker, so do the IEC turn around so that we
 	;; are the listener (p16)
 	;; An error here means FILE NOT FOUND ?
-	;; XXX jsr iec_turnaround_to_listen
+	jsr iec_turnaround_to_listen
 	bcs load_error
+
+	jsr printf
+	.byte "DBG: LOAD 1", $0D, 0
 
 	;; Get load address and store it if secondary address is zero
 	jsr iec_rx_byte
@@ -126,13 +121,12 @@ sent_filename:
 	beq +
 	sta load_save_start_ptr+0
 *
-	jsr iec_tx_command
+	jsr iec_rx_byte
 	bcs file_not_found_error
 	ldx current_secondary_address
 	beq +
 	sta load_save_start_ptr+1
 *
-
 	jsr printf
 	.byte "LOADING",$0d,0
 
@@ -171,15 +165,13 @@ load_done:
 	;; Close file on drive
 
 	;; Command drive to stop talking and to close the file
-	lda #$5f
-	jsr iec_tx_command
-	lda #$28
-	jsr iec_tx_command
+	jsr untlk
+	lda current_device_number
+	jsr listen
 	lda #$e0
 	jsr iec_tx_command
 	;; Tell drive to unlisten
-	lda #$3f
-	jsr iec_tx_command
+	jsr unlsn
 
 	;; Return last address written to +1
 	;; (Even though Compute's Mapping the 64 says without the +1.

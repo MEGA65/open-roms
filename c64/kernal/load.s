@@ -111,9 +111,6 @@ sent_filename:
 	jsr iec_turnaround_to_listen
 	bcs load_error
 
-	jsr printf
-	.byte "DBG: LOAD 1", $0D, 0
-
 	;; Get load address and store it if secondary address is zero
 	jsr iec_rx_byte
 	bcs file_not_found_error

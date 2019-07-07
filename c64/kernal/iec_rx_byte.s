@@ -11,6 +11,9 @@ iec_rx_byte:
 	;; We can use this routine, since we weren't pulling CLK anyway
 	jsr iec_release_clk_data
 
+	;; Wait till data line is released (someone else might be holding it)
+	jsr iec_wait_for_data_release
+
 	;; Wait for talker to pull CLK.
 	;; If over 200 usec (205 cycles on NTSC machine) , then it is EOI.
 	;; Loop iteraction takes 13 cycles, 17 full iterations are enough
@@ -21,14 +24,23 @@ iec_rx_clk_wait:
 	rol                       ; 2 cycles, to put BIT_CI2PRA_CLK_IN as the last bit
 	bpl iec_rx_not_eoi        ; 2 cycles if not jumped
 	dex                       ; 2 cycles
-    bne iec_rx_clk_wait       ; 3 cycles if jumped
+    bne iec_rx_clk_wait      ; 3 cycles if jumped
     
-	;; Timeout - wait for pulled CLK and pull data for 60 usec to confirm
-	jsr iec_wait_for_clk_pull
+    ;; Timeout - wait a little bit more to see if EOI confirmation is needed
+    ;; (if CLK not pulled within 256 usec - it's not needed, see
+    ;; https://www.pagetable.com/?p=1135, chapters End of Stream and Empty Stream)
+	jsr iec_wait60us
+	lda CI2PRA
+	rol
+	bmi iec_rx_no_eoi_confirmation
+    
+	;; Pull data for 60 usec to confirm
 	jsr iec_release_clk_pull_data
 	jsr iec_wait60us
 	jsr iec_release_clk_data
 
+iec_rx_no_eoi_confirmation:
+	
 	;; Store EOI information in IOSTATUS - XXX this should be done by the caller!
 	lda IOSTATUS
 	ora #$40

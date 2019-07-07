@@ -3,9 +3,11 @@
 
 c64/basic/combined.s
 c64/kernal/combined.s
+padding
 temp.s
 temp.map
 
+src/collect_data
 src/compress_text
 src/pngprepare
 src/preprocess
@@ -18,6 +20,7 @@ c64/kernal/OUT.BIN
 chargen
 newbasic
 newkern
+newc65
 newrom
 
 # Various IDE project files, temporary files, etc.

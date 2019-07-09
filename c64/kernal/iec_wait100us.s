@@ -8,9 +8,6 @@ iec_wait100us:
 	;; NTSC:
 	;; - CPU frequency 1.022727 MHZ, we need to waste at least 103 cycles
 
-	;; Waste cycles by reading some unimportant memory location
-	;; (in a loop) in order not to clutter VICE debug logs
-
 	;; Waste cycles in a loop
 
 	ldy #$12   ; 2 cycles

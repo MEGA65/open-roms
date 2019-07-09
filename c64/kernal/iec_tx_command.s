@@ -36,6 +36,7 @@ iec_tx_command:
 	;; Common part of iec_txbyte and iec_tx_common - waits for devices
 	;; and transmits a byte
 
+	clc ; Carry flag set is used for EOI mark
 	pla
 	jsr iec_tx_common
 

@@ -5,19 +5,38 @@
 
 iec_tx_common:
 
-	;; Store the bye to send on a stack
+	;; Store the byte to send on a stack
 	pha
+	
+	;; Store the status register - carry flag is used to determine whether
+	;; this is the last byte of the stream
+	php
 	
 	;; Wait till all receivers are ready, they should all release DATA
 	jsr iec_wait_for_data_release
 
+	;; At this point a delay 256 usec or more is considered EOI - add waits if necessary
+	plp
+	bcc +
+	jsr iec_wait100us
+	jsr iec_wait100us
+	jsr iec_wait60us
+
+	;; XXX waits above should be enough - why do we need more waits???
+	jsr iec_wait100us
+	jsr iec_wait100us
+	jsr iec_wait100us
+
+	;; Receiver should now acknowledge EOI by pulling data for at least 60 usec
+	jsr iec_wait60us
+	jsr iec_wait_for_data_release
+*
 	;; Pull CLK back to indicate that DATA is not valid, keep it for 60us
 	;; We can use this routine as we don't hold DATA anyway (and its state doesn't even matter)
-	;; Don't wait too long, as 200us or more is considered EOI
 
 	jsr iec_pull_clk_release_data
 	jsr iec_wait60us
-
+	
 	;; Now, we can start transmission of 8 bits of data
 	ldx #7
 	pla
@@ -39,7 +58,7 @@ iec_tx_common_bit_is_sent:
 
 	;; Wait 20us, so that device(s) can pick DATA
 	jsr iec_wait20us
-	
+		
 	;; Pull CLK for 20us again, before sending the next bit
 	;; or performing any other action
 	jsr iec_pull_clk_release_data

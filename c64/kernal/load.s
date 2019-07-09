@@ -76,21 +76,28 @@ send_filename:
 	
 	ldx #<current_filename_ptr
 	jsr peek_under_roms
+	iny
 
 	;; Save Y because iec_tx_byte will corrupt it
 	tax
 	tya
 	pha
-	txa
 
+	;; Set Carry flag on the last file name character, to mark EOI
+	cmp current_filename_length
+	clc
+	bne +
+	sec
+*
+	txa
 	jsr iec_tx_byte
 
 	pla
 	tay
-	iny
 	jmp send_filename
 
 sent_filename:
+
 	;; Command device to unlisten to indicate end of file name. (p16)
 	jsr unlsn
 	bcs load_error

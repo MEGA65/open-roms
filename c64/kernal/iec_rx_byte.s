@@ -32,22 +32,14 @@ iec_rx_clk_wait:
 	jsr iec_wait60us
 	lda CI2PRA
 	rol
-	bmi iec_rx_no_eoi_confirmation
+	bmi iec_rx_set_eoi
+    
+    jsr iec_rx_set_eoi
     
 	;; Pull data for 60 usec to confirm
 	jsr iec_release_clk_pull_data
 	jsr iec_wait60us
 	jsr iec_release_clk_data
-
-iec_rx_no_eoi_confirmation:
-	
-	;; Store EOI information in IOSTATUS - XXX this should be done by the caller!
-	lda IOSTATUS
-	ora #$40
-	sta IOSTATUS
-	
-	sec
-	rts
 
 iec_rx_not_eoi:
 
@@ -84,6 +76,7 @@ iec_rx_bit_loop:
 
 	;; Move data bit into C flag, and loop until bit 6 clears
 	;; i.e., the clock has been released.
+
 *	lda CI2PRA
 	rol
 	bpl -
@@ -113,3 +106,12 @@ iec_rx_bit_loop:
 	clc
 	rts
 
+iec_rx_set_eoi:
+
+	;; Store EOI information in IOSTATUS
+	lda IOSTATUS
+	ora #$40
+	sta IOSTATUS
+	
+	clc
+	rts

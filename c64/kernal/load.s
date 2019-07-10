@@ -158,7 +158,7 @@ load_loop:
 	bne +
 	inc load_save_start_ptr+1
 	;; If we wrap around to $0000, then this is bad.
-	beq load_error	
+	beq load_error
 *
 	;; Check for EOI -- if so, read one last byte
 	lda IOSTATUS
@@ -167,13 +167,21 @@ load_loop:
 
 load_done:
 	;; Close file on drive
-
+	
 	;; Command drive to stop talking and to close the file
 	jsr untlk
+	
+	;; XXX XXX code below runs into infinite loop - so for now just quit
+	clc
+	cli
+	rts
+	
 	lda current_device_number
 	jsr listen
+	
 	lda #$e0
 	jsr iec_tx_command
+
 	;; Tell drive to unlisten
 	jsr unlsn
 

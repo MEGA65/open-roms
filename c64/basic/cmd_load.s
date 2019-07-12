@@ -18,7 +18,7 @@ cmd_load:
 	beq +
 	lda #$00 ; direct mode - don't display anything
 *
-	jsr $FF90 ; SETMSG
+	jsr JSETMSG
 	
 	;; XXX temporary, to set valid device number
 	lda #$08
@@ -69,7 +69,7 @@ got_filename:
 	ldx #<$0801		; LOAD address = $0801
 	ldy #>$0801
 
-	jsr $ffd5
+	jsr JLOAD
 	bcc +
 
 	;; A = KERNAL error code, which also almost match

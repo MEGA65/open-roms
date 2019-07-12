@@ -17,7 +17,7 @@ wedge_dos:
 	;; Set remaining file parameters; channel 15 is a typical one for commands
 	lda #$0F
 	ldy #$0F
-	jsr $FFBA ; SETLFS
+	jsr JSETFLS
 
 	;; Now we have to check what the user wants us to do
 

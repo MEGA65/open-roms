@@ -44,12 +44,12 @@ print_filename_loop:
 	beq +
 	ldx #<current_filename_ptr
 	jsr peek_under_roms
-	jsr $ffd2
+	jsr JCHROUT
 	iny
 	jmp print_filename_loop
 *
 	lda #$0d
-	jsr $ffd2
+	jsr JCHROUT
 
 	;; XXX - Use default device number
 	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf

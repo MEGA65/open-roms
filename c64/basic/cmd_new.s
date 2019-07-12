@@ -41,7 +41,7 @@ basic_do_new:
 	;; (same story), expression value cache?
 	
 	sec			; Read, not write value
-	jsr $ff99 		; KERNAL MEMTOP routine
+	jsr JMEMTOP
 	cpx #$80
 	beq +
 	lda #>$f7ff

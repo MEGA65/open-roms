@@ -36,7 +36,7 @@ list_more_lines:
 	pla
 	jsr print_integer
 	lda #$20
-	jsr $ffd2
+	jsr JCHROUT
 
 	;; Iterate through printing out the line
 	;; contents
@@ -105,17 +105,17 @@ list_not_rem:
 	bne list_print_loop
 
 list_is_literal:
-	jsr $ffd2
+	jsr JCHROUT
 	iny
 	bne list_print_loop
 	
 list_end_of_line:
 	;; Clear reverse flag
 	lda #$92
-	jsr $ffd2
+	jsr JCHROUT
 	;; Print end of line
 	lda #$0d
-	jsr $ffd2
+	jsr JCHROUT
 
 	;; Now link to the next line
 	jsr basic_find_next_line

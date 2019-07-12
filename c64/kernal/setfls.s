@@ -1,6 +1,6 @@
 ; Function defined on pp272-273 of C64 Programmers Reference Guide
 
-setlfs:
+setfls:
 
 	;; There are 6 sane ways to implement this routine,
 	;; I hope this one won't cause similarity to CBM code

@@ -11,6 +11,15 @@ cmd_load:
 	;; middle of a program. For safety, we do.
 	jsr basic_do_clr
 	
+	;; Setup Kernal to print control messages or not
+	lda #$80 ; display control messages and omit error messages
+	ldx basic_current_line_number+1
+	cpx #$FF
+	beq +
+	lda #$00 ; direct mode - don't display anything
+*
+	jsr $FF90 ; SETMSG
+	
 	;; XXX temporary, to set valid device number
 	lda #$08
 	sta current_device_number

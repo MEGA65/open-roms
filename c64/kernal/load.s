@@ -15,7 +15,7 @@
 	;; $AC = current pointer for loading/verifying
 	;; $C1 = similar to the above.
 
-;; XXX rework this, according to pagetable.com
+;; XXX honor MSGFLG bit 6, add VERIFY support
 
 load:
 
@@ -30,12 +30,13 @@ load:
 	jsr install_ram_routines
 	
 	;; Disable IRQs, since timing matters!
-	SEI
+	sei
 
-	;; Display SEARCHING FOR
+	;; Display SEARCHING FOR + filename
+	lda MSGFLG
+	bpl +
 	jsr printf
-	.byte "SEARCHING FOR ",0
-
+	.byte $0D,"SEARCHING FOR ",0
 	ldy #$00
 print_filename_loop:
 
@@ -131,9 +132,12 @@ sent_filename:
 	beq +
 	sta load_save_start_ptr+1
 *
+	;; Display LOADING
+	lda MSGFLG
+	bpl +
 	jsr printf
-	.byte "LOADING",$0d,0
-
+	.byte "LOADING",$0D,0
+*
 load_loop:
 	;; We are now ready to receive bytes
 	jsr iec_rx_byte

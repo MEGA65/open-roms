@@ -61,8 +61,7 @@
 	.alias LDTND $98 ; number of entries in LAT / FAT / SAT tables
 	.alias DFLTN $99
 	.alias input_device_number DFLTN
-	; bit 6 = error messages, bit 7 = control messages
-	.alias kernal_message_control_flags $9d
+	.alias MSGFLG $9D ; bit 6 = error messages, bit 7 = control message
 	.alias jiffy_clock_24bits $a0
 	.alias cassette_buffer_bytes_used $A6
 	.alias load_or_scroll_temp_pointer $AC

@@ -15,7 +15,9 @@
 	;; $AC = current pointer for loading/verifying
 	;; $C1 = similar to the above.
 
-;; XXX honor MSGFLG bit 6, add VERIFY support
+	;; XXX honor MSGFLG bit 6, add VERIFY support
+	;; XXX rework the message print-out to be shared with SAVE
+	;; XXX add VERIFY support
 
 load:
 
@@ -120,6 +122,7 @@ sent_filename:
 	bcs load_error
 
 	;; Get load address and store it if secondary address is zero
+	;; XXX add secondary address check
 	jsr iec_rx_byte
 	bcs file_not_found_error
 	ldx current_secondary_address
@@ -132,12 +135,25 @@ sent_filename:
 	beq +
 	sta load_save_start_ptr+1
 *
-	;; Display LOADING
+	;; Display LOADING / VERIFYING and start address
 	lda MSGFLG
-	bpl +
+	bpl load_loop
+	lda kernal_load_or_verify_flag
+	beq +
 	jsr printf
-	.byte "LOADING",$0D,0
+	.byte "VERIFYING", 0
+	jmp load_print_start_addr
 *
+	jsr printf
+	.byte "LOADING", 0
+load_print_start_addr:
+	jsr printf
+	.byte " FROM $",0
+	lda load_save_start_ptr+1
+	jsr printf_printhexbyte
+	lda load_save_start_ptr+0
+	jsr printf_printhexbyte
+	
 load_loop:
 	;; We are now ready to receive bytes
 	jsr iec_rx_byte
@@ -170,6 +186,18 @@ load_loop:
 	beq load_loop
 
 load_done:
+	;; Display end address
+	lda MSGFLG
+	bpl +
+	jsr printf
+	.byte " TO $",0
+	lda load_save_start_ptr+1
+	jsr printf_printhexbyte
+	lda load_save_start_ptr+0
+	jsr printf_printhexbyte
+	lda #$0D
+	jsr JCHROUT
+*
 	;; Close file on drive
 	
 	;; Command drive to stop talking and to close the file
@@ -201,6 +229,12 @@ load_done:
 	
 load_error:
 
+	;; Advance cursor to next line, if needed
+	lda MSGFLG
+	bpl +
+	lda #$0D
+	jsr JCHROUT
+*
 	;; XXX - Indicate KERNAL (not BASIC) LOAD error condtion
 	sec
 	lda #28

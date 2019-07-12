@@ -57,6 +57,8 @@
 	; Keys down clears bits. STOP=bit 7, C= bit 6, SPACE bit 4, CTRL bit 2
 	.alias BUCKYSTATUS $91
 	.alias load_or_verify_flag $93
+	.alias C3PO  $94 ; flag - is BSOUR content valid
+	.alias BSOUR $95 ; serial bus buffered output byte
 	.alias current_file_num $98
 	.alias LDTND $98 ; number of entries in LAT / FAT / SAT tables
 	.alias DFLTN $99

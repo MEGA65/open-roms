@@ -6,11 +6,10 @@ ciout:
 	pha
 	lda C3PO
 	bne ciout_send_byte
-	
+
 	;; Nothing to send - set buffer as valid, store byte there
-	inc
-	sta C3PO
-	
+	inc C3PO
+
 	;; Clear carry flag to indicate success
 	clc
 	

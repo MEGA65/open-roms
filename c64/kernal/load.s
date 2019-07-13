@@ -198,7 +198,8 @@ load_done:
 	lda #$0D
 	jsr JCHROUT
 *
-	;; Close file on drive
+	;; Close file on drive - start by turnaround to talker
+	jsr iec_turnaround_to_talk
 	
 	;; Command drive to stop talking and to close the file
 	jsr untlk

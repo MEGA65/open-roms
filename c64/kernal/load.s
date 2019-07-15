@@ -198,20 +198,18 @@ load_done:
 	lda #$0D
 	jsr JCHROUT
 *
-	;; Close file on drive - start by turnaround to talker
-	jsr iec_turnaround_to_talk
-	
+	;; Close file on drive
+
 	;; Command drive to stop talking and to close the file
 	jsr untlk
-	
-	;; XXX XXX code below runs into infinite loop - so for now just quit
-	clc
-	cli
-	rts
-	
+
+	;; Turnaround to talker - according to https://www.pagetable.com/?p=1135
+	;; the turnaround only happens after a command
+	jsr iec_turnaround_to_talk
+
 	lda current_device_number
 	jsr listen
-	
+
 	lda #$e0
 	jsr iec_tx_command
 
@@ -227,7 +225,7 @@ load_done:
 	clc
 	cli
 	rts
-	
+
 load_error:
 
 	;; Advance cursor to next line, if needed
@@ -239,7 +237,7 @@ load_error:
 	;; XXX - Indicate KERNAL (not BASIC) LOAD error condtion
 	sec
 	lda #28
-	
+
 	;; Re-enable interrupts and return
 	cli
 	;; (iec_tx_byte will have set/cleared C flag and put result code

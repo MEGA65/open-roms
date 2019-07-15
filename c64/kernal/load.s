@@ -28,6 +28,10 @@ load:
 	stx load_save_start_ptr+0
 	sty load_save_start_ptr+1
 
+	;; Reset status
+	lda #$00
+	sta IOSTATUS
+
 	;; We need our helpers to get to filenames under ROMs or IO area
 	jsr install_ram_routines
 	
@@ -215,6 +219,9 @@ load_done:
 
 	;; Tell drive to unlisten
 	jsr unlsn
+	
+	;; Set IEC status back to idle
+	jsr iec_set_idle
 
 	;; Return last address written to +1
 	;; (Even though Compute's Mapping the 64 says without the +1.

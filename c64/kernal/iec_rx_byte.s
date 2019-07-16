@@ -18,25 +18,21 @@ iec_rx_byte:
 	;; If over 200 usec (205 cycles on NTSC machine) , then it is EOI.
 	;; Loop iteraction takes 13 cycles, 17 full iterations are enough
 
-	ldx #$11                  ; 2 cycles
-iec_rx_clk_wait:
-	lda CI2PRA                ; 4 cycles
-	rol                       ; 2 cycles, to put BIT_CI2PRA_CLK_IN as the last bit
-	bpl iec_rx_not_eoi        ; 2 cycles if not jumped
-	dex                       ; 2 cycles
-    bne iec_rx_clk_wait      ; 3 cycles if jumped
+	ldx #$11                ; 2 cycles
+iec_rx_clk_wait1:
+	lda CI2PRA              ; 4 cycles
+	rol                     ; 2 cycles, to put BIT_CI2PRA_CLK_IN as the last bit
+	bpl iec_rx_not_eoi      ; 2 cycles if not jumped
+	dex                     ; 2 cycles
+    bne iec_rx_clk_wait1    ; 3 cycles if jumped
     
-    ;; Timeout - wait a little bit more to see if EOI confirmation is needed
-    ;; (if CLK not pulled within 256 usec - it's not needed, see
-    ;; https://www.pagetable.com/?p=1135, chapters End of Stream and Empty Stream)
-	jsr iec_wait60us
-	lda CI2PRA
-	rol
-	bmi iec_rx_set_eoi
-    
+    ;; Timeout - either this is the last byte of stream, or the stream is empty at all.
+    ;; Mark end of stream in IOSTATUS
     jsr iec_rx_set_eoi
-    
-	;; Pull data for 60 usec to confirm
+
+iec_rx_not_empty:
+
+	;; Pull data for 60 usec to confirm it
 	jsr iec_release_clk_pull_data
 	jsr iec_wait60us
 	jsr iec_release_clk_data
@@ -86,9 +82,22 @@ iec_rx_bit_loop:
 	ror
 	pha
 
-	;; Wait for CLK to be pulled again
-	jsr iec_wait_for_clk_pull
-
+	;; Wait for CLK to be pulled again, over 300 usec (307 cycles on NTSC)
+	;; consider this a timeout
+	ldy #$19                ; 2 cycles
+iec_rx_clk_wait2:
+	lda CI2PRA              ; 4 cycles
+	rol                     ; 2 cycles, to put BIT_CI2PRA_CLK_IN as the last bit
+	bpl +                   ; 2 cycles if not jumped
+	dey                     ; 2 cycles
+    bne iec_rx_clk_wait2    ; 3 cycles if jumped
+    
+    ;; Timeout
+    jsr iec_rx_set_eoi
+    pla
+    sec ; XXX confirm that sec is really a way to report timeout here
+    rts
+*
 	;; More bits?
 	dex
 	bpl iec_rx_bit_loop
@@ -112,6 +121,5 @@ iec_rx_set_eoi:
 	lda IOSTATUS
 	ora #$40
 	sta IOSTATUS
-	
-	clc
+
 	rts

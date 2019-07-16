@@ -20,9 +20,8 @@ cmd_load:
 *
 	jsr JSETMSG
 	
-	;; XXX temporary, to set valid device number
-	lda #$08
-	sta current_device_number
+	;; XXX handle device number from arguments, if not present, use the call below
+	jsr set_sane_devnum
 	
 	;; Set filename and length
 	lda #$00

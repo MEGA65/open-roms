@@ -54,9 +54,6 @@ print_filename_loop:
 	iny
 	jmp print_filename_loop
 *
-	lda #$0d
-	jsr JCHROUT
-
 	;; XXX - Use default device number
 	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 	;; p13, 16.
@@ -145,11 +142,11 @@ sent_filename:
 	lda kernal_load_or_verify_flag
 	beq +
 	jsr printf
-	.byte "VERIFYING", 0
+	.byte $0D, "VERIFYING", 0
 	jmp load_print_start_addr
 *
 	jsr printf
-	.byte "LOADING", 0
+	.byte $0D, "LOADING", 0
 load_print_start_addr:
 	jsr printf
 	.byte " FROM $",0
@@ -223,9 +220,8 @@ load_done:
 	;; Set IEC status back to idle
 	jsr iec_set_idle
 
-	;; Return last address written to +1
-	;; (Even though Compute's Mapping the 64 says without the +1.
-	;; I'm suspicious. Will have to check behavour on an original C64)
+	;; Return last address - Compute's Mapping the 64 says without the '+1',
+	;; checked on original ROMs that this is really the case
 	ldx load_save_start_ptr+0
 	ldy load_save_start_ptr+1
 

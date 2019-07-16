@@ -5,16 +5,12 @@ wedge_dos:
 
 	;; Close all the channels, so that wedge has full control
 	jsr wedge_dos_CLALL
-	
-	;; Take last device number, make sure it's a drive
-	;; If not, set to 8 (first drive number)
-	ldx DFLTN
-	cpx #$07
-	bpl +
-	bcs +
-	ldx #$08
-*
-	;; Set remaining file parameters; channel 15 is a typical one for commands
+
+	;; Make sure current device number is sane
+	jsr set_sane_devnum
+
+	;; Set remaining file parameters (X already set by set_sane_devnum);
+	;; channel 15 is a typical one for commands
 	lda #$0F
 	ldy #$0F
 	jsr JSETFLS
@@ -67,7 +63,7 @@ wedge_dos_change_drive:
 	bcs +
 	jmp do_ILLEGAL_DEVICE_NUMBER_error
 *
-	sta DFLTN
+	sta current_device_number
 	jmp basic_end_of_line
 
 wedge_dos_status:
@@ -77,7 +73,7 @@ wedge_dos_status:
 
 	;; Set remaining file parameters, open the channel
 	lda #$00  ; empty file name
-	jsr $FFBD ; SETNAM
+	jsr JSETNAM
 	jsr wedge_dos_OPEN
 	bcc +
 	jmp do_DEVICE_NOT_PRESENT_error
@@ -90,8 +86,8 @@ wedge_dos_status:
 *   
 	;; Print out everything retrieved from the drive
 	bne +
-	jsr $FFCF ; CHRIN
-	jsr $FFD2 ; CHROUT
+	jsr JCHRIN
+	jsr JCHROUT
 	jmp -
 *
 	;; Clean-up and exit

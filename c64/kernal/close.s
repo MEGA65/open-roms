@@ -4,19 +4,14 @@ close:
 	;; Implemented accorging to 'C64 Programmers Reference Guide', page 281
 
 	;; XXX this needs more testing (opening 10 files at once, closing in various orders, etc) once the code is more mature
-	
+
 	;; Find the LAT / SAT / FAT entry which LAT corresponds to A
-	
-	ldy LDTND
-	beq close_error_not_found ; table empty
-*
-	dey
-	bmi close_error_not_found ; no more entries
-	cmp LAT, y
-	bne - ; does not match, try the next one
-	
+
+	jsr find_fls
+	bcs close_error_not_found ;; XXX can we report error in IOSTATUS here?
+
 	;; We have the entry index in Y
-	
+
 	;; XXX some devices (like IEC) needs special support here, to free their internal resources!
 	;; Just make sure the Y register value is kept, or redo ldy DFTLN
 *
@@ -33,9 +28,9 @@ close:
 *
 	;; Decrement the list size variable
 	dec LDTND
-	;; FALLTHROUGH (for now) - success
-	
+
+	;; FALLTHROUGH - success
+
 close_error_not_found:
-	
-	;; XXX it seems that this function can't report errors, am I right?
+
 	rts

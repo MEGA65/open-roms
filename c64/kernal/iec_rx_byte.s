@@ -113,6 +113,5 @@ iec_rx_set_eoi:
 	ora #$40
 	sta IOSTATUS
 	
-	sec ; XXX check if ACPTR also uses Carry flag to indicate problems,
-	    ; currently this is used by our LOAD routine to detect file not found
+	clc
 	rts

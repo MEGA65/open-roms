@@ -95,9 +95,6 @@ open_iec:
 	jsr iec_turnaround_to_listen
 	bcs open_iec_error
 
-	jsr printf
-	.byte "DBG: TURNAROUND SUCCEEDED", $0D, 0
-	
 	;; Indicate success
 	lda #$00
 	clc

@@ -5,8 +5,8 @@
 
 iec_tx_byte:
 
+	;; Store byte to send on the stack
 	pha
-	php
 
 	;; Notify all devices that we are going to send a byte
 	;; and it is going to be a data byte (released ATN)
@@ -15,7 +15,6 @@ iec_tx_byte:
 	;; Common part of iec_txbyte and iec_tx_common - waits for devices
 	;; and transmits a byte
 
-	plp
 	pla
 	jsr iec_tx_common
 	

@@ -17,8 +17,6 @@ iec_turnaround_to_listen:
 	bne -
 
 	;; Timeout
-	jsr printf
-	.byte "DBG: TURNAROUND FAILED",$0d,$00
 	sec
 	rts
 

@@ -3,6 +3,7 @@
 
 iec_tx_command:
 
+	;; Store command to send on the stack
 	pha
 
 	;; Notify all devices that we are going to send a byte
@@ -19,9 +20,6 @@ iec_tx_command:
 
 	;; No devices present on the bus, so we can immediately return with device not found
 	pla
-
-	jsr printf
-	.byte "DBG: NO DEVICES AT ALL", $0D, 0
 
 	jsr iec_set_idle
 	jmp kernalerror_DEVICE_NOT_FOUND
@@ -47,13 +45,10 @@ iec_tx_command:
 	lda CI2PRA
 	and #BIT_CI2PRA_DAT_IN ; XXX try to optimize this, move to separate routine
 	beq +
-	
+
 	;; XXX possible optimization of the flow above: for many commands it is enough
 	;; to wait for the DATA being pulled, as confirmation is expected from
 	;; a single device only - but not sure if it's worth the trouble
-
-	jsr printf
-	.byte "DBG: NO CONFIRMATION FROM DEVICE", $0D, 0
 
 	jsr iec_set_idle
 	jmp kernalerror_DEVICE_NOT_FOUND

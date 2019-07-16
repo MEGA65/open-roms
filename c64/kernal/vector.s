@@ -61,9 +61,9 @@ vector_restore:
 	;; XXX below we have quite a lot of data... should we decouple them?
 
 vector_defaults:
-	.word $0000    ;; CINV     XXX implement this
-	.word $0000    ;; CBINV    XXX implement this
-	.word $0000    ;; NMINV    XXX implement this
+	.word default_irq_handler    ;; CINV
+	.word $0000                  ;; CBINV    XXX implement this
+	.word $0000                  ;; NMINV    XXX implement this
 	
 	.word open     ;; IOPEN
 	.word close    ;; ICLOSE

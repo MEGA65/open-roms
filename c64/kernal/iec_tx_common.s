@@ -7,16 +7,11 @@ iec_tx_common:
 
 	;; Store the byte to send on a stack
 	pha
-	
-	;; Store the status register - carry flag is used to determine whether
-	;; this is the last byte of the stream
-	php
-	
+
 	;; Wait till all receivers are ready, they should all release DATA
 	jsr iec_wait_for_data_release
 
 	;; At this point a delay 256 usec or more is considered EOI - add waits if necessary
-	plp
 	bcc +
 	jsr iec_wait100us
 	jsr iec_wait100us

@@ -1,4 +1,12 @@
-; Function defined on pp272-273 of C64 Programmers Reference Guide
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 276
+;; - [CM64] Compute's Mapping the Commodore 64 - page 229
+;;
+;; CPU registers that has to be preserved (see [RG64]): .Y
+;;
 
 chkout:
 

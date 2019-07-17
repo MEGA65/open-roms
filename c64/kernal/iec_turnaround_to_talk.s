@@ -4,6 +4,10 @@
 
 iec_turnaround_to_talk:
 
+	;; Timing is critical here - execute on disabled IRQs
+	php
+	sei
+
 	;; First make sure both CLK, DATA and ATN are released at our side
 	jsr iec_release_atn
 	jsr iec_release_clk_data
@@ -14,5 +18,6 @@ iec_turnaround_to_talk:
 	;; Pull CLK line, it should be held by talker
 	jsr iec_pull_clk_release_data
 
+	plp
 	clc
 	rts

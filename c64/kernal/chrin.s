@@ -1,5 +1,14 @@
-				; Function defined on pp272-273 of C64 Programmers Reference Guide
-	;; Compute's Mapping the 64, p228
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 277/278
+;; - [CM64] Compute's Mapping the Commodore 64 - page 228
+;;
+;; CPU registers that has to be preserved (see [RG64]): .Y
+;;
+
+
 	;;  Reads a byte of input, unless from keyboard.
 	;; If from keyboard, then it gets a whole line of input, and returns the first char.
 	;; Repeated calls after that read out the successive bytes of the line of input.

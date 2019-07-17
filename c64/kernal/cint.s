@@ -1,5 +1,14 @@
-	;; Function defined on pp272-273 of C64 Programmers Reference Guide 
-	;; Compute's Mapping the 64 p215
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 280
+;; - [CM64] Compute's Mapping the Commodore 64 - page 242
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
+
 cint:
 	jsr setup_vicii
 	

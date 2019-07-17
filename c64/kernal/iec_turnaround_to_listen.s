@@ -4,6 +4,10 @@
 
 iec_turnaround_to_listen:
 
+	;; Timing is critical here - execute on disabled IRQs
+	php
+	sei
+
 	;; Pull DATA, release CLK and ATN (we are not sending commands)
 	jsr iec_pull_data_release_atn_clk
 
@@ -17,11 +21,13 @@ iec_turnaround_to_listen:
 	bne -
 
 	;; Timeout
+	plp
 	sec
 	rts
 
 	;; CLK is pulled by the device, OK
-*	
+*
+	plp
 	clc
 	rts
 

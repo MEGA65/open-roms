@@ -1,4 +1,13 @@
-; Function defined on pp272-273 of C64 Programmers Reference Guide
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 291
+;; - [CM64] Compute's Mapping the Commodore 64 - page 237
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
 ramtas:
 	; C64 Programmer's Reference guide p291:
 	; Clear $0000-$0101, $0200-$03ff

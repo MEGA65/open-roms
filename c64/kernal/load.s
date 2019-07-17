@@ -1,4 +1,4 @@
-				; Function defined on pp272-273 of C64 Programmers Reference Guide
+	; Function defined on pp272-273 of C64 Programmers Reference Guide
 	;; IEC reference at http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
 	;; Definition of function from Compute's Mapping the 64 p231
@@ -29,8 +29,7 @@ load:
 	sty load_save_start_ptr+1
 
 	;; Reset status
-	lda #$00
-	sta IOSTATUS
+	jsr kernalstatus_reset
 
 	;; We need our helpers to get to filenames under ROMs or IO area
 	jsr install_ram_routines
@@ -54,16 +53,14 @@ print_filename_loop:
 	iny
 	jmp print_filename_loop
 *
-	;; XXX - Use default device number
 	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
-	;; p13, 16.
-	;; also p16 tells us this routine doesn't mess with the file table in the C64,
-	;; only in the drive.
+	;; p13, 16; also p16 tells us this routine doesn't mess with the file table
+	;; in the C64, only in the drive.
 	
 	;; Call device to LISTEN (p16)
 	lda current_device_number
 	jsr listen
-	bcs load_error
+	bcs load_device_not_found_error
 
 	;; Open channel #0 (p16)
 	lda #$00
@@ -105,7 +102,7 @@ sent_filename:
 	;; Command device to unlisten to indicate end of file name. (p16)
 	jsr unlsn
 	bcs load_error
-	jsr iec_set_idle
+	jsr iec_set_idle ;; XXX is it needed?
 
 	;; Now command device to talk (p16)
 	lda current_device_number
@@ -118,20 +115,18 @@ sent_filename:
 
 	;; We are currently talker, so do the IEC turn around so that we
 	;; are the listener (p16)
-	;; An error here means FILE NOT FOUND ?
 	jsr iec_turnaround_to_listen
 	bcs load_error
 
 	;; Get load address and store it if secondary address is zero
-	;; XXX add secondary address check
 	jsr iec_rx_byte
-	bcs file_not_found_error
+	bcs load_file_not_found_error
 	ldx current_secondary_address
 	beq +
 	sta load_save_start_ptr+0
 *
 	jsr iec_rx_byte
-	bcs file_not_found_error
+	bcs load_file_not_found_error
 	ldx current_secondary_address
 	beq +
 	sta load_save_start_ptr+1
@@ -179,11 +174,11 @@ load_loop:
 	bne +
 	inc load_save_start_ptr+1
 	;; If we wrap around to $0000, then this is bad.
-	beq load_error
+	beq load_wrap_around_error
 *
-	;; Check for EOI -- if so, read one last byte
+	;; Check for EOI - if so, this was the last byte
 	lda IOSTATUS
-	and #$40
+	and #K_STS_EOI
 	beq load_loop
 
 load_done:
@@ -221,7 +216,7 @@ load_done:
 	jsr iec_set_idle
 
 	;; Return last address - Compute's Mapping the 64 says without the '+1',
-	;; checked on original ROMs that this is really the case
+	;; checked (short test program) on original ROMs that this is really the case
 	ldx load_save_start_ptr+0
 	ldy load_save_start_ptr+1
 
@@ -229,27 +224,38 @@ load_done:
 	cli
 	rts
 
+load_wrap_around_error:
+
+	;; This error is probably not even detected by C64 Kernal;
+	;; report BASIC error code that looks the most sane
+	cli
+	lda #B_ERR_OVERFLOW
+	sec
+	rts
+	rts
+
+load_device_not_found_error:
+
+	cli
+	jsr kernalstatus_DEVICE_NOT_FOUND
+	jmp kernalerror_DEVICE_NOT_FOUND
+
+load_file_not_found_error:
+
+	cli
+	jmp kernalerror_FILE_NOT_FOUND
+
 load_error:
 
-	;; Advance cursor to next line, if needed
-	lda MSGFLG
-	bpl +
-	lda #$0D
-	jsr JCHROUT
-*
-	;; XXX - Indicate KERNAL (not BASIC) LOAD error condtion
-	sec
-	lda #28
-
-	;; Re-enable interrupts and return
+	;; XXX should we really return BASIC error code here?
 	cli
-	;; (iec_tx_byte will have set/cleared C flag and put result code
-	;; in A if it was an error).
+	lda kernal_load_or_verify_flag
+	beq load_verify_error
+	lda #B_ERR_LOAD
+	bne +
+load_verify_error:
+	lda #B_ERR_VERIFY
+*	
+	sec
 	rts
 
-file_not_found_error:
-	;; Indicate KERNAL error condition for file not found
-	sec
-	lda #$04
-	cli
-	rts

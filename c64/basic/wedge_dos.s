@@ -6,11 +6,8 @@ wedge_dos:
 	;; Close all the channels, so that wedge has full control
 	jsr wedge_dos_CLALL
 
-	;; Make sure current device number is sane
-	jsr set_sane_devnum
-
-	;; Set remaining file parameters (X already set by set_sane_devnum);
-	;; channel 15 is a typical one for commands
+	;; Set file parameters,  channel 15 is a typical one for commands
+	jsr select_device ; sets X register
 	lda #$0F
 	ldy #$0F
 	jsr JSETFLS

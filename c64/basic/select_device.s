@@ -1,5 +1,5 @@
 
-set_sane_devnum:
+select_device:
 
 	;; Take last device number, make sure it's a drive
 	;; If not, set to 8 (first drive number)
@@ -12,6 +12,5 @@ set_sane_devnum:
 	bpl +
 	bcs +
 	ldx #$08
-	stx current_device_number
 *
 	rts

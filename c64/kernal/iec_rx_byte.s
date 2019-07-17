@@ -28,7 +28,7 @@ iec_rx_clk_wait1:
     
     ;; Timeout - either this is the last byte of stream, or the stream is empty at all.
     ;; Mark end of stream in IOSTATUS
-    jsr iec_rx_set_eoi
+    jsr kernalstatus_EOI
 
 iec_rx_not_empty:
 
@@ -93,7 +93,7 @@ iec_rx_clk_wait2:
     bne iec_rx_clk_wait2    ; 3 cycles if jumped
     
     ;; Timeout
-    jsr iec_rx_set_eoi
+    jsr kernalstatus_EOI
     pla
     sec ; XXX confirm that sec is really a way to report timeout here
     rts
@@ -115,11 +115,3 @@ iec_rx_clk_wait2:
 	clc
 	rts
 
-iec_rx_set_eoi:
-
-	;; Store EOI information in IOSTATUS
-	lda IOSTATUS
-	ora #$40
-	sta IOSTATUS
-
-	rts

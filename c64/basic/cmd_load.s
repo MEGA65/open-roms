@@ -21,8 +21,9 @@ cmd_load:
 	jsr JSETMSG
 	
 	;; XXX handle device number from arguments, if not present, use the call below
-	jsr set_sane_devnum
-	
+	jsr select_device
+	stx current_device_number
+
 	;; Set filename and length
 	lda #$00
 	sta current_filename_length

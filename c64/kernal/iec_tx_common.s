@@ -5,6 +5,10 @@
 
 iec_tx_common:
 
+	;; Timing is critical here - execute on disabled IRQs
+	php
+	sei
+
 	;; Store the byte to send on a stack
 	pha
 
@@ -64,6 +68,7 @@ iec_tx_common_bit_is_sent:
 	bpl iec_tx_common_nextbit
 	pla
 	
+	plp
 	rts ; Flow continues differently for data/command
 	
 iec_tx_common_nextbit:

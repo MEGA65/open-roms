@@ -33,9 +33,6 @@ load:
 
 	;; We need our helpers to get to filenames under ROMs or IO area
 	jsr install_ram_routines
-	
-	;; Disable IRQs, since timing matters!
-	sei
 
 	;; Display SEARCHING FOR + filename
 	lda MSGFLG
@@ -162,12 +159,15 @@ load_loop:
 	;; to do the memory access
 
 	;; Save byte under ROMs and IO if required
+	php
+	sei
 	ldx #$33
 	stx $01
 	ldy #0
 	sta (load_save_start_ptr),y
 	ldx #$37
 	stx $01
+	plp
 
 	;; Advance pointer
 	inc load_save_start_ptr
@@ -221,34 +221,28 @@ load_done:
 	ldy load_save_start_ptr+1
 
 	clc
-	cli
 	rts
 
 load_wrap_around_error:
 
 	;; This error is probably not even detected by C64 Kernal;
 	;; report BASIC error code that looks the most sane
-	cli
 	lda #B_ERR_OVERFLOW
 	sec
-	rts
 	rts
 
 load_device_not_found_error:
 
-	cli
 	jsr kernalstatus_DEVICE_NOT_FOUND
 	jmp kernalerror_DEVICE_NOT_FOUND
 
 load_file_not_found_error:
 
-	cli
 	jmp kernalerror_FILE_NOT_FOUND
 
 load_error:
 
 	;; XXX should we really return BASIC error code here?
-	cli
 	lda kernal_load_or_verify_flag
 	beq load_verify_error
 	lda #B_ERR_LOAD

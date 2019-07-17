@@ -4,6 +4,10 @@
 
 iec_rx_byte:
 
+	;; Timing is critical here - execute on disabled IRQs
+	php
+	sei
+
 	;; First, we wait for the talker to release the CLK line
 	jsr iec_wait_for_clk_release
 
@@ -95,6 +99,7 @@ iec_rx_clk_wait2:
     ;; Timeout
     jsr kernalstatus_EOI
     pla
+    plp
     sec ; XXX confirm that sec is really a way to report timeout here
     rts
 *
@@ -112,6 +117,7 @@ iec_rx_clk_wait2:
 	pla
 
 	;; Return no-error
+	plp
 	clc
 	rts
 

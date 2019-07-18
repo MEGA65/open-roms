@@ -1,27 +1,12 @@
 
-# Intermediate compilation files
+# Compilation related files
 
-c64/basic/combined.s
-c64/kernal/combined.s
-padding
 temp.s
 temp.map
+packed_messages.s
 
-src/collect_data
-src/compress_text
-src/pngprepare
-src/preprocess
 ophis.bin
-c64/basic/OUT.BIN
-c64/kernal/OUT.BIN
-
-# Compilation output
-
-chargen
-newbasic
-newkern
-newc65
-newrom
+build/*
 
 # Various IDE project files, temporary files, etc.
 

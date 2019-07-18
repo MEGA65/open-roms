@@ -15,7 +15,7 @@ SRC_KERNAL_ULTIMATE64 = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,platform_ult
 
 # Rules - maintainance
 
-all: build/chargen build/newkern_generic build/newbasic_generic build/newkern_mega65 build/newbasic_mega65 build/newkern_ultimate64 build/newbasic_ultimate64
+all: build/chargen build/newkern_generic build/newbasic_generic build/newc65 build/newkern_ultimate64 build/newbasic_ultimate64
 
 clean:
 	@rm -rf build

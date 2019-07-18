@@ -1,7 +1,7 @@
 
 iec_set_idle:
-	lda CI2PRA
-	ora #BIT_CI2PRA_CLK_OUT                               ; pull
-	and #$FF - BIT_CI2PRA_DAT_OUT - BIT_CI2PRA_ATN_OUT    ; release
-	sta CI2PRA
+	lda CIA2_PRA
+	ora #BIT_CIA2_PRA_CLK_OUT                                 ; pull
+	and #$FF - BIT_CIA2_PRA_DAT_OUT - BIT_CIA2_PRA_ATN_OUT    ; release
+	sta CIA2_PRA
 	rts

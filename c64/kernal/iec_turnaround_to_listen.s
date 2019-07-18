@@ -14,8 +14,8 @@ iec_turnaround_to_listen:
 	;; Wait for clock line to be pulled by the drive
 	ldx #$FF ; XXX should we really use that high number?
 *
-	lda CI2PRA
-	rol    ; to put BIT_CI2PRA_CLK_IN as the last (sign) bit 
+	lda CIA2_PRA
+	rol    ; to put BIT_CIA2_PRA_CLK_IN as the last (sign) bit 
 	bpl +
 	dex
 	bne -

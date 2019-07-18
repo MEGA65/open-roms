@@ -1,6 +1,7 @@
 
 iec_wait_for_clk_release:
-	lda CI2PRA
-	and #BIT_CI2PRA_CLK_IN
+
+	lda CIA2_PRA
+	and #BIT_CIA2_PRA_CLK_IN
 	beq iec_wait_for_clk_release
 	rts

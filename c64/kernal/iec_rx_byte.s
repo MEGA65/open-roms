@@ -24,8 +24,8 @@ iec_rx_byte:
 
 	ldx #$11                ; 2 cycles
 iec_rx_clk_wait1:
-	lda CI2PRA              ; 4 cycles
-	rol                     ; 2 cycles, to put BIT_CI2PRA_CLK_IN as the last bit
+	lda CIA2_PRA            ; 4 cycles
+	rol                     ; 2 cycles, to put CLK in as the last bit
 	bpl iec_rx_not_eoi      ; 2 cycles if not jumped
 	dex                     ; 2 cycles
     bne iec_rx_clk_wait1    ; 3 cycles if jumped
@@ -77,7 +77,7 @@ iec_rx_bit_loop:
 	;; Move data bit into C flag, and loop until bit 6 clears
 	;; i.e., the clock has been released.
 
-*	lda CI2PRA
+*	lda CIA2_PRA
 	rol
 	bpl -
 
@@ -90,8 +90,8 @@ iec_rx_bit_loop:
 	;; consider this a timeout
 	ldy #$19                ; 2 cycles
 iec_rx_clk_wait2:
-	lda CI2PRA              ; 4 cycles
-	rol                     ; 2 cycles, to put BIT_CI2PRA_CLK_IN as the last bit
+	lda CIA2_PRA            ; 4 cycles
+	rol                     ; 2 cycles, to put CLK in as the last bit
 	bpl +                   ; 2 cycles if not jumped
 	dey                     ; 2 cycles
     bne iec_rx_clk_wait2    ; 3 cycles if jumped

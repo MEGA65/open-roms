@@ -14,8 +14,8 @@ iec_tx_command:
 	jsr wait1ms
 
 	;; Did at least one device respond by pulling DATA?
-	lda CI2PRA
-	and #BIT_CI2PRA_DAT_IN ; XXX try to optimize this, move to separate routine
+	lda CIA2_PRA
+	and #BIT_CIA2_PRA_DAT_IN ; XXX try to optimize this, move to separate routine
 	beq +
 
 	;; No devices present on the bus, so we can immediately return with device not found
@@ -42,8 +42,8 @@ iec_tx_command:
 	;; flow here, but http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf (page 6)
 	;; advices to just wait 1ms and check the DATA status
 	jsr wait1ms
-	lda CI2PRA
-	and #BIT_CI2PRA_DAT_IN ; XXX try to optimize this, move to separate routine
+	lda CIA2_PRA
+	and #BIT_CIA2_PRA_DAT_IN ; XXX try to optimize this, move to separate routine
 	beq +
 
 	;; XXX possible optimization of the flow above: for many commands it is enough

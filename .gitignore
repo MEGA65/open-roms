@@ -3,7 +3,6 @@
 
 temp.s
 temp.map
-packed_messages.s
 
 ophis.bin
 build/*

@@ -1,8 +1,8 @@
 
 iec_release_atn:
 
-	lda CI2PRA
-	and #$FF - BIT_CI2PRA_ATN_OUT    ; release
-	sta CI2PRA
+	lda CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_ATN_OUT    ; release
+	sta CIA2_PRA
 	rts
 

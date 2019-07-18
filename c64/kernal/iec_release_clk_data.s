@@ -5,9 +5,9 @@ iec_release_clk_data:
 	;; hardware give some lines few more cycles to stabilize; see page 10 of
 	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
-	lda CI2PRA
-	and #$FF - BIT_CI2PRA_DAT_OUT    ; release
-	sta CI2PRA
-	and #$FF - BIT_CI2PRA_CLK_OUT    ; release
-	sta CI2PRA
+	lda CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_DAT_OUT    ; release
+	sta CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_CLK_OUT    ; release
+	sta CIA2_PRA
 	rts

@@ -5,11 +5,11 @@ iec_pull_atn_clk_release_data:
 	;; hardware give some lines few more cycles to stabilize; see page 10 of
 	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
-	lda CI2PRA
-	ora #BIT_CI2PRA_ATN_OUT          ; pull
-	sta CI2PRA
-	ora #BIT_CI2PRA_CLK_OUT          ; pull
-	sta CI2PRA
-	and #$FF - BIT_CI2PRA_DAT_OUT    ; release
-	sta CI2PRA
+	lda CIA2_PRA
+	ora #BIT_CIA2_PRA_ATN_OUT          ; pull
+	sta CIA2_PRA
+	ora #BIT_CIA2_PRA_CLK_OUT          ; pull
+	sta CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_DAT_OUT    ; release
+	sta CIA2_PRA
 	rts

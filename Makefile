@@ -13,6 +13,10 @@ SRC_KERNAL_GENERIC    = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,platform_gen
 SRC_KERNAL_MEGA65     = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,platform_mega65/*.s)
 SRC_KERNAL_ULTIMATE64 = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,platform_ultimate64/*.s)
 
+# List of tools
+
+TOOLS_LIST = build/collect_data build/compress_text build/preprocess build/similarity
+
 # Rules - maintainance
 
 all: build/chargen build/newkern_generic build/newbasic_generic build/newc65 build/newkern_ultimate64 build/newbasic_ultimate64
@@ -21,10 +25,7 @@ clean:
 	@rm -rf build
 	@rm -f temp.s
 	@rm -f temp.map
-	@rm -f c64/basic/packed_messages.s
-
-.PHONY: prep
-prep: Ophis build/collect_data build/compress_text build/preprocess build/similarity
+	@rm -f ophis.bin
 
 Ophis:
 	git submodule init
@@ -59,15 +60,22 @@ build/chargen: build/pngprepare assets/8x8font.png
 
 # Rules - platform 'generic'
 
-build/basic_generic/OUT.BIN: build/preprocess $(SRC_BASIC_GENERIC) c64/basic/packed_messages.s
+build/basic_generic/OUT.BIN: $(TOOLS_LIST) $(SRC_BASIC_GENERIC) build/basic/packed_messages.s
+	@echo
+	@echo ### Building BASIC for generic systems
+	@echo
 	@mkdir -p build/basic_generic
 	@rm -f build/basic_generic/*
 	@for SRC in $(SRC_BASIC_GENERIC); do \
 	    ln -s ../../$$SRC build/basic_generic/$$(basename $$SRC); \
 	done
+	@ln -s ../../build/basic/packed_messages.s build/basic_generic/packed_messages.s
 	build/preprocess -d build/basic_generic -l a000 -h e4d2
 
-build/kernal_generic/OUT.BIN: build/preprocess $(SRC_KERNAL_GENERIC)
+build/kernal_generic/OUT.BIN: $(TOOLS_LIST) $(SRC_KERNAL_GENERIC)
+	@echo
+	@echo ### Building KERNAL for generic systems
+	@echo
 	@mkdir -p build/kernal_generic
 	@rm -f build/kernal_generic/*
 	@for SRC in $(SRC_KERNAL_GENERIC); do \
@@ -86,15 +94,22 @@ build/newbasic_generic: build/newrom_generic Makefile
 
 # Rules - platform 'Mega 65'
 
-build/basic_mega65/OUT.BIN: build/preprocess $(SRC_BASIC_MEGA65) c64/basic/packed_messages.s
+build/basic_mega65/OUT.BIN: $(TOOLS_LIST) $(SRC_BASIC_MEGA65) build/basic/packed_messages.s
+	@echo
+	@echo ### Building BASIC for Mega65
+	@echo
 	@mkdir -p build/basic_mega65
 	@rm -f build/basic_mega65/*
 	@for SRC in $(SRC_BASIC_MEGA65); do \
 	    ln -s ../../$$SRC build/basic_mega65/$$(basename $$SRC); \
 	done
+	@ln -s ../../build/basic/packed_messages.s build/basic_mega65/packed_messages.s
 	build/preprocess -d build/basic_mega65 -l a000 -h e4d2
 
-build/kernal_mega65/OUT.BIN: build/preprocess $(SRC_KERNAL_MEGA65)
+build/kernal_mega65/OUT.BIN: $(TOOLS_LIST) $(SRC_KERNAL_MEGA65)
+	@echo
+	@echo ### Building KERNAL for Mega65
+	@echo
 	@mkdir -p build/kernal_mega65
 	@rm -f build/kernal_mega65/*
 	@for SRC in $(SRC_KERNAL_MEGA65); do \
@@ -119,15 +134,22 @@ build/newc65: build/newkern_mega65 build/newbasic_mega65 build/chargen Makefile
 
 # Rules - platform 'Ultimate 64'
 
-build/basic_ultimate64/OUT.BIN: build/preprocess $(SRC_BASIC_ULTIMATE64) c64/basic/packed_messages.s
+build/basic_ultimate64/OUT.BIN: $(TOOLS_LIST) $(SRC_BASIC_ULTIMATE64) build/basic/packed_messages.s
+	@echo
+	@echo ### Building BASIC for Ultimate 64
+	@echo
 	@mkdir -p build/basic_ultimate64
 	@rm -f build/basic_ultimate64/*
 	@for SRC in $(SRC_BASIC_ULTIMATE64); do \
 	    ln -s ../../$$SRC build/basic_ultimate64/$$(basename $$SRC); \
 	done
+	@ln -s ../../build/basic/packed_messages.s build/basic_ultimate64/packed_messages.s
 	build/preprocess -d build/basic_ultimate64 -l a000 -h e4d2
 
-build/kernal_ultimate64/OUT.BIN: build/preprocess $(SRC_KERNAL_ULTIMATE64)
+build/kernal_ultimate64/OUT.BIN: $(TOOLS_LIST) $(SRC_KERNAL_ULTIMATE64)
+	@echo
+	@echo ### Building KERNAL for Ultimate 64
+	@echo
 	@mkdir -p build/kernal_ultimate64
 	@rm -f build/kernal_ultimate64/*
 	@for SRC in $(SRC_KERNAL_ULTIMATE64); do \
@@ -146,8 +168,9 @@ build/newbasic_ultimate64: build/newrom_ultimate64 Makefile
 
 # Rules - misc
 
-c64/basic/packed_messages.s: Makefile build/compress_text
-	build/compress_text > c64/basic/packed_messages.s
+build/basic/packed_messages.s: Makefile build/compress_text
+	@mkdir -p build/basic
+	build/compress_text > build/basic/packed_messages.s
 
 # Rules - tests
 

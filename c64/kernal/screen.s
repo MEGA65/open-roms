@@ -1,4 +1,12 @@
-; Function defined on p295 of C64 Programmers Reference Guide
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 295
+;; - [CM64] Compute's Mapping the Commodore 64 - page 215
+;;
+;; CPU registers that has to be preserved (see [RG64]): .A
+;;
 
 screen:
 

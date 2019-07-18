@@ -1,7 +1,15 @@
-	; Function defined on pp272-273 of C64 Programmers Reference Guide
-	;; IEC reference at http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
-	;; Definition of function from Compute's Mapping the 64 p231
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 286
+;; - [CM64] Compute's Mapping the Commodore 64 - page 231
+;; - IEC reference at http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
+
 	;; Expects that SETLFS and SETNAM are called before hand.
 	;; $YYXX = load address.
 	;; (ignored if SETLFS channel = 1, i.e., like ,8,1)

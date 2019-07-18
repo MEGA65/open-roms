@@ -1,7 +1,14 @@
-	; Function defined on pp272-273 of C64 Programmers Reference Guide
-	;; See also http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
-;; XXX rework this, according to pagetable.com
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 289
+;; - [CM64] Compute's Mapping the Commodore 64 - page 230/231
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
+;; XXX this is only a test implementation, does not do what the Kernal does!
 
 open:
 

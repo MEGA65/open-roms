@@ -1,7 +1,16 @@
-; Function defined on pp272-273 of C64 Programmers Reference Guide
-ciout:
 
-	;; This routine is documented in 'Compute's Mapping the Commodore 64', page 224
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 279/280
+;; - [CM64] Compute's Mapping the Commodore 64 - page 224
+;;
+;; CPU registers that has to be preserved (see [RG64]): .X, .Y
+;;
+
+;; XXX currently does not preserve registers, to be fixed!
+
+ciout:
 
 	pha
 	lda C3PO

@@ -1,7 +1,14 @@
-; Function defined on pp272-273 of C64 Programmers Reference Guide
-close:
 
-	;; Implemented accorging to 'C64 Programmers Reference Guide', page 281
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 281/282
+;; - [CM64] Compute's Mapping the Commodore 64 - page 229/230
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
+close:
 
 	;; XXX this needs more testing (opening 10 files at once, closing in various orders, etc) once the code is more mature
 

@@ -8,6 +8,7 @@
 ;; CPU registers that has to be preserved (see [RG64]): .Y
 ;;
 
+;; XXX currently does not preserve register Y, to be fixed!
 
 	;;  Reads a byte of input, unless from keyboard.
 	;; If from keyboard, then it gets a whole line of input, and returns the first char.

@@ -1,13 +1,23 @@
-; Function defined on pp272-273 of C64 Programmers Reference Guide
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 287/288
+;; - [CM64] Compute's Mapping the Commodore 64 - page 240
+;;
+;; CPU registers that has to be preserved (see [RG64]): .A
+;;
+
 membot:
-	; p287 C64 Programmers reference guide
-	;;  http://unusedino.de/ec64/technical/project64/mapping_c64.html
+
 	bcc membot_set
 	
-	LDX MEMSTR+0
-	LDY MEMSTR+1
+	ldx MEMSTR+0
+	ldy MEMSTR+1
 	rts
+
 membot_set:
+
 	stx MEMSTR+0
 	stx MEMSTR+1
 	

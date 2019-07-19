@@ -6,27 +6,18 @@
 
 u64_load:
 
-	jsr printf
-	.byte "DGB: 0",$0D,0 
-
 	;; First check whether the command interface is enabled
-	;; XXX identification does not work, why?
-	;; lda U64_IDENTIFICATION
-	;; cmp U64_MAGIC_ID
-	;; beq +
+	lda U64_IDENTIFICATION
+	cmp #U64_MAGIC_ID
+	beq +
 
 u64_load_skip:
-	;; rts
+	rts
 *
-	jsr printf
-	.byte "DGB: 1",$0D,0 
-
 	;; XXX find out which device number softIEC is mapped to
 	lda current_device_number
 	cmp #$20 ; for now use device number 32
-	beq u64_load_skip
-
-	.byte "DGB: 2",$0D,0
+	bne u64_load_skip
 	
 	;; Takeover the flow completely
 	pla
@@ -35,12 +26,14 @@ u64_load_skip:
 	;; Display SEARCHING FOR + filename
 	jsr lvs_display_searching_for
 
-	.byte "DGB: 3",$0D,0
+	jsr printf
+	.byte $0D,"DBG: 1",$0D,0
 
 	;; Whatever the interface was doing - ask to abort it
 	jsr u64_load_abort
 
-	.byte "DGB: 4",$0D,0
+	jsr printf
+	.byte "DBG: 2",$0D,0
 	
 	;; Send a command to open the file
 	lda #U64_DOS_CMD_OPEN_FILE
@@ -50,7 +43,8 @@ u64_load_skip:
 	jsr u64_load_send_filename
 	jsr u64_load_finalize_cmd
 
-	.byte "DGB: 5",$0D,0
+	jsr printf
+	.byte "DBG: 3",$0D,0
 	
 	;; Check status
 	jsr u64_load_check_status
@@ -60,7 +54,8 @@ u64_load_skip:
 
 	;; XXX
 	
-	.byte "DGB: 6",$0D,0
+	jsr printf
+	.byte "DBG: 4",$0D,0
 
 	jmp lvs_wrap_around_error
 	rts
@@ -110,12 +105,15 @@ u64_load_check_status:
 	lda U64_STATUS
 	and #U64_STAT_BIT_STAT_AV
 	beq u64_load_check_status
-	
+
 	;; Status is ready - check the first character
 	lda U64_STATUS_DATA
 	cmp #$30 ; '0'
 	bne u64_load_check_status_wrong
-	
+
+	jsr printf
+	.byte "DBG: X1 OK",$0D,0
+
 	;; Check the second status character
 	lda U64_STATUS
 	and #U64_STAT_BIT_STAT_AV
@@ -123,6 +121,10 @@ u64_load_check_status:
 	lda U64_STATUS_DATA
 	cmp #$30 ; '0'
 	beq u64_load_check_status_ok
+
+	jsr printf
+	.byte "DBG: X2 NOK",$0D,0
+
 	;; FALLTROUGH
 u64_load_check_status_wrong:
 	sec

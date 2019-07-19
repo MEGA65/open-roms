@@ -66,6 +66,27 @@ $(TOOL_SIMILARITY): src/similarity.c Makefile
 build/chargen: $(TOOL_PNGPREPARE) assets/8x8font.png
 	$(TOOL_PNGPREPARE) charrom assets/8x8font.png build/chargen
 
+# Dependencies - XXX, why they need to be stated separately?
+
+build/basic_generic/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_generic) build/basic/packed_messages.s
+build/kernal_generic/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_generic)
+build/newrom_generic: build/basic_generic/OUT.BIN build/kernal_generic/OUT.BIN
+build/newkern_generic: build/newrom_generic Makefile
+build/newbasic_generic: build/newrom_generic Makefile
+
+build/basic_mega65/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_mega65) build/basic/packed_messages.s
+build/kernal_mega65/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_mega65)
+build/newrom_mega65: build/basic_mega65/OUT.BIN build/kernal_mega65/OUT.BIN
+build/newkern_mega65: build/newrom_mega65 Makefile
+build/newbasic_mega65: build/newrom_mega65 Makefile
+
+build/basic_ultimate64/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_ultimate64) build/basic/packed_messages.s
+build/kernal_ultimate64/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_ultimate64)
+build/newrom_ultimate64: build/basic_ultimate64/OUT.BIN build/kernal_ultimate64/OUT.BIN
+build/newkern_ultimate64: build/newrom_ultimate64 Makefile
+build/newbasic_ultimate64: build/newrom_ultimate64 Makefile
+
+
 # Rules - BASIC and KERNAL
 
 build/basic/packed_messages.s: $(TOOL_COMPRESS_TEXT)
@@ -73,7 +94,7 @@ build/basic/packed_messages.s: $(TOOL_COMPRESS_TEXT)
 	$(TOOL_COMPRESS_TEXT) > build/basic/packed_messages.s
 
 .PRECIOUS: build/basic_%/OUT.BIN
-build/basic_%/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_%) build/basic/packed_messages.s
+build/basic_%/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_$*) build/basic/packed_messages.s
 	@mkdir -p build/basic_$*
 	@rm -f build/basic_$*/*
 	@for SRC in $(SRC_BASIC_$*); do \
@@ -83,7 +104,7 @@ build/basic_%/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_%) build/basic/packed_mes
 	$(TOOL_PREPROCESS) -d build/basic_$* -l a000 -h e4d2
 
 .PRECIOUS: build/kernal_%/OUT.BIN
-build/kernal_%/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_%)
+build/kernal_%/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_$*)
 	@mkdir -p build/kernal_$*
 	@rm -f build/kernal_$*/*
 	@for SRC in $(SRC_KERNAL_$*); do \

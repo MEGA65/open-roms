@@ -26,7 +26,7 @@ cmd_load:
 
 	;; Set filename and length
 	lda #$00
-	sta current_filename_length
+	sta FNLEN
 
 	;; Without tape support, LOAD must have a filename
 	;; (This also skips any leading spaces)
@@ -57,7 +57,7 @@ getting_filename:
 
 	jmp got_filename
 *
-	inc current_filename_length
+	inc FNLEN
 	jmp getting_filename
 	
 got_filename:	

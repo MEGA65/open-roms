@@ -9,11 +9,11 @@
 ;;
 
 stop:
-	;; Bit 7 of BUCKYSTATUS contains the state of the STOP key
+	;; Bit 7 of STKEY contains the state of the STOP key
 	;; (Compute's Mapping the 64, p27)
 
 	;; BASIC checks carry flag to indicate STOP or not
-	lda BUCKYSTATUS
+	lda STKEY
 	and #$80
 	beq stop_pressed
 

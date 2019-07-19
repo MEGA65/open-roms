@@ -52,33 +52,13 @@
 	.alias memmove_dst $6b
 	.alias memmove_size $6d	
 	
-	.alias TXTTAB $2B
-	.alias IOSTATUS $90
-	; Keys down clears bits. STOP=bit 7, C= bit 6, SPACE bit 4, CTRL bit 2
-	.alias BUCKYSTATUS $91
-	.alias load_or_verify_flag $93
-	.alias C3PO  $94 ; flag - is BSOUR content valid
-	.alias BSOUR $95 ; serial bus buffered output byte
 	.alias current_file_num $98
-	.alias LDTND $98 ; number of entries in LAT / FAT / SAT tables
-	.alias DFLTN $99
-	.alias input_device_number DFLTN
-	.alias MSGFLG $9D ; bit 6 = error messages, bit 7 = control message
-	.alias jiffy_clock_24bits $a0
 	.alias cassette_buffer_bytes_used $A6
 	.alias load_or_scroll_temp_pointer $AC
 	;; We also use the following for temp colour pointer when scrolling
 	.alias load_save_verify_end_address $AE
 
-	;; 2-byte location below seems to be a good place for temporary storage,
-	;; it seems used for timing during tape reads only - see:
-	;; - 'C64 Programmer's Reference Guide', page 314
-	;; - 'Compute's Mapping the Commodore 64', page 32
-	.alias CMP0 $B0 ;; $B0-$B1
-
-
 	.alias cassette_buffer_ptr $B2
-	.alias current_filename_length $B7
 	.alias current_logical_filenum $B8
 	.alias current_secondary_address $B9
 	.alias current_device_number $BA
@@ -112,19 +92,11 @@
 	.alias rs232_tx_buffer_ptr $F9
 
 	.alias basic_input_buffer $0200
-	
-	;; Kernal tables for opened files, 10 entries each
-	.alias LAT $0259 ; logical file numbers
-	.alias FAT $0263 ; device numbers
-	.alias SAT $026D ; secondary addresses	
-	
+		
 	; "Compute's Mapping the 64" book
 	.alias keyboard_buffer $0277
-	.alias MEMSTR $0281
-	.alias MEMSIZ $0283 	; NOTE: Mapping the 64 erroniously has the hex as $282, while the DEC is correct
 	.alias text_colour $0286 ; p55
 	.alias colour_under_cursor $0287 ; p56
-	.alias HIBASE $0288     ; p56 (high byte of start of screen)
 	.alias key_buffer_size $0289 ; p57
 
 	;; 0 = cursor keys, insert, delete and space repeat, but nothing else
@@ -140,8 +112,6 @@
 	.alias keyboard_decoding_ptr $028F
 	.alias enable_case_switch $0291
 	.alias screen_scroll_disable $0292
-	.alias RSSTAT $0297 ; RS-232 status
-	.alias pal_or_ntsc $02A6
 
 	;; BASIC uses some extra bytes for memory access under ROMs located at $2A7 onwards
 	;; IRQs are disabled when doing such accesses, and a default NMI handler only increments

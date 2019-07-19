@@ -22,7 +22,7 @@ list_loop:
 	jmp basic_main_loop
 
 list_more_lines:
-	lda BUCKYSTATUS
+	lda STKEY
 	bmi +
 	jmp basic_do_break
 *

@@ -334,7 +334,7 @@ next_row:
 	;; so that RUN/STOP etc can be checked easily
 	;; (Compute's Mapping the 64, p27)
 	lda ScanResult+0
-	sta BUCKYSTATUS
+	sta STKEY
 
 	;; Store de-bounce data for bucky keys
 	;; (Compute's Mapping the 64, p58-59)

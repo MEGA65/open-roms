@@ -17,14 +17,7 @@
 	;; On exit, $YYXX is the highest address into which data
 	;; will have been placed.
 
-	;; Searching through Compute's Mapping the 64, we find the following
-	;; things are used:
-	;; $93 = VERCK
-	;; $AC = current pointer for loading/verifying
-	;; $C1 = similar to the above.
-
-	;; XXX honor MSGFLG bit 6, add VERIFY support
-	;; XXX rework the message print-out to be shared with SAVE
+	;; XXX honor MSGFLG bit 6
 	;; XXX add VERIFY support
 
 load:
@@ -41,6 +34,9 @@ load:
 
 	;; We need our helpers to get to filenames under ROMs or IO area
 	jsr install_ram_routines
+
+	;; Allow platform-specific routine to takeover the flow
+	`PLATFORM_HOOK_LOAD
 
 	;; Display SEARCHING FOR + filename
 	jsr lvs_display_searching_for

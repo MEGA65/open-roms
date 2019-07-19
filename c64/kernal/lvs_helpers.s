@@ -5,6 +5,8 @@
 
 lvs_handle_byte_load_verify:
 
+	;; XXX add VERIFY support
+
 	;; Save it and advance pointer.
 	;; As with our BASIC, we want to enable LOADing
 	;; anywhere in memory, including over the IO space.

@@ -26,14 +26,8 @@ u64_load_skip:
 	;; Display SEARCHING FOR + filename
 	jsr lvs_display_searching_for
 
-	jsr printf
-	.byte $0D,"DBG: 1",$0D,0
-
 	;; Whatever the interface was doing - ask to abort it
 	jsr u64_load_abort
-
-	jsr printf
-	.byte "DBG: 2",$0D,0
 	
 	;; Send a command to open the file
 	lda #U64_DOS_CMD_OPEN_FILE
@@ -42,9 +36,6 @@ u64_load_skip:
 	jsr u64_load_send_cmd
 	jsr u64_load_send_filename
 	jsr u64_load_finalize_cmd
-
-	jsr printf
-	.byte "DBG: 3",$0D,0
 	
 	;; Check status
 	jsr u64_load_check_status
@@ -55,7 +46,7 @@ u64_load_skip:
 	;; XXX
 	
 	jsr printf
-	.byte "DBG: 4",$0D,0
+	.byte "DBG: NOT IMPLEMENTED",$0D,0
 
 	jmp lvs_wrap_around_error
 	rts
@@ -108,22 +99,18 @@ u64_load_check_status:
 
 	;; Status is ready - check the first character
 	lda U64_STATUS_DATA
+	jsr JCHROUT ; XXX for test only
 	cmp #$30 ; '0'
 	bne u64_load_check_status_wrong
-
-	jsr printf
-	.byte "DBG: X1 OK",$0D,0
 
 	;; Check the second status character
 	lda U64_STATUS
 	and #U64_STAT_BIT_STAT_AV
 	beq u64_load_check_status_ok
 	lda U64_STATUS_DATA
+	jsr JCHROUT ; XXX for test only
 	cmp #$30 ; '0'
 	beq u64_load_check_status_ok
-
-	jsr printf
-	.byte "DBG: X2 NOK",$0D,0
 
 	;; FALLTROUGH
 u64_load_check_status_wrong:
@@ -137,6 +124,7 @@ u64_load_check_status_ok:
 	and #U64_STAT_BIT_STAT_AV
 	beq +
 	lda U64_STATUS_DATA
+	jsr JCHROUT ; XXX for test only
 	jmp -
 *
 	rts

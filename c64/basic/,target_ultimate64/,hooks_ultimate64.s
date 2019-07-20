@@ -1,8 +1,8 @@
 
-;; Platform-specific hooks
+;; Target-specific hooks
 
 
-.macro PLATFORM_HOOK_BANNER
+.macro TARGET_HOOK_BANNER
 
 	.byte $05, "  OPEN ROMS FOR ULTIMATE 64", $0D, $0D, "  ", $00
 

@@ -36,7 +36,7 @@ load:
 	jsr install_ram_routines
 
 	;; Allow platform-specific routine to takeover the flow
-	`PLATFORM_HOOK_LOAD
+	`TARGET_HOOK_LOAD
 
 	;; Check whether we support the requested device
 	lda current_device_number

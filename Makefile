@@ -3,15 +3,15 @@
 
 SRC_COMMON            = $(wildcard c64/aliases/*.s)
 SRC_BASIC_COMMON      = $(SRC_COMMON) $(wildcard c64/basic/*.s)
-SRC_KERNAL_COMMON     = $(SRC_COMMON) $(wildcard c64/kernal/*.s)
+SRC_KERNAL_COMMON     = $(SRC_COMMON) $(wildcard c64/kernal/*.s c64/kernal/jumptable/*.s c64/kernal/iec/*.s)
 
-SRC_BASIC_generic     = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,platform_generic/*.s)
-SRC_BASIC_mega65      = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,platform_mega65/*.s)
-SRC_BASIC_ultimate64  = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,platform_ultimate64/*.s)
+SRC_BASIC_generic     = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_generic/*.s)
+SRC_BASIC_mega65      = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_mega65/*.s)
+SRC_BASIC_ultimate64  = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_ultimate64/*.s)
 
-SRC_KERNAL_generic    = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,platform_generic/*.s)
-SRC_KERNAL_mega65     = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,platform_mega65/*.s)
-SRC_KERNAL_ultimate64 = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,platform_ultimate64/*.s)
+SRC_KERNAL_generic    = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,target_generic/*.s)
+SRC_KERNAL_mega65     = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,target_mega65/*.s)
+SRC_KERNAL_ultimate64 = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,target_ultimate64/*.s)
 
 # List of tools
 
@@ -68,22 +68,22 @@ build/chargen: $(TOOL_PNGPREPARE) assets/8x8font.png
 
 # Dependencies - XXX, why they need to be stated separately?
 
-build/basic_generic/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_generic) build/basic/packed_messages.s
+build/basic_generic/OUT.BIN:  Ophis $(TOOLS_LIST) $(SRC_BASIC_generic) build/basic/packed_messages.s
 build/kernal_generic/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_generic)
-build/newrom_generic: build/basic_generic/OUT.BIN build/kernal_generic/OUT.BIN
-build/newkern_generic: build/newrom_generic Makefile
+build/newrom_generic:   build/basic_generic/OUT.BIN build/kernal_generic/OUT.BIN
+build/newkern_generic:  build/newrom_generic Makefile
 build/newbasic_generic: build/newrom_generic Makefile
 
-build/basic_mega65/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_mega65) build/basic/packed_messages.s
+build/basic_mega65/OUT.BIN:  Ophis $(TOOLS_LIST) $(SRC_BASIC_mega65) build/basic/packed_messages.s
 build/kernal_mega65/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_mega65)
-build/newrom_mega65: build/basic_mega65/OUT.BIN build/kernal_mega65/OUT.BIN
-build/newkern_mega65: build/newrom_mega65 Makefile
+build/newrom_mega65:   build/basic_mega65/OUT.BIN build/kernal_mega65/OUT.BIN
+build/newkern_mega65:  build/newrom_mega65 Makefile
 build/newbasic_mega65: build/newrom_mega65 Makefile
 
-build/basic_ultimate64/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_ultimate64) build/basic/packed_messages.s
+build/basic_ultimate64/OUT.BIN:  Ophis $(TOOLS_LIST) $(SRC_BASIC_ultimate64) build/basic/packed_messages.s
 build/kernal_ultimate64/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_ultimate64)
-build/newrom_ultimate64: build/basic_ultimate64/OUT.BIN build/kernal_ultimate64/OUT.BIN
-build/newkern_ultimate64: build/newrom_ultimate64 Makefile
+build/newrom_ultimate64:   build/basic_ultimate64/OUT.BIN build/kernal_ultimate64/OUT.BIN
+build/newkern_ultimate64:  build/newrom_ultimate64 Makefile
 build/newbasic_ultimate64: build/newrom_ultimate64 Makefile
 
 

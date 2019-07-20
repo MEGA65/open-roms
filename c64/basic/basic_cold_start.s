@@ -15,7 +15,7 @@ basic_cold_start:
 ; Used 217 bytes
 startup_banner:
 
-	`PLATFORM_HOOK_BANNER
+	`TARGET_HOOK_BANNER
 
 	;; Work out free bytes, and display
 	jsr basic_do_new

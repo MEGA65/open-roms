@@ -1,8 +1,8 @@
 
-;; Platform-specific hooks
+;; Target-specific hooks
 
 
-.macro PLATFORM_HOOK_BANNER
+.macro TARGET_HOOK_BANNER
 
 	;; New banner from Retrofan
 	.byte $9a, $12, $20, $20, $7f, $a9, $20, $20, $1f, $20, $9a, $20, $20, $20

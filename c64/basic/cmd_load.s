@@ -19,10 +19,6 @@ cmd_load:
 	lda #$00 ; direct mode - don't display anything
 *
 	jsr JSETMSG
-	
-	;; XXX handle device number from arguments, if not present, use the call below
-	jsr select_device
-	stx current_device_number
 
 	;; Set filename and length
 	lda #$00
@@ -47,7 +43,7 @@ cmd_load:
 	
 	;; Now search for end of line or closing quote
 	;; so that we know the length of the filename
-getting_filename:	
+getting_filename:
 	jsr basic_fetch_and_consume_character
 	cmp #$22
 	beq got_filename
@@ -60,15 +56,48 @@ getting_filename:
 	inc FNLEN
 	jmp getting_filename
 	
-got_filename:	
+got_filename:
 
-	;; Try to load an IEC file
-	lda #0			; use supplied load address, not the one from the file
+	;; Now fetch the file number, start from the default one
+	jsr select_device
+	stx current_device_number
+	jsr injest_comma
+	bcs got_devicenumber
+
+	jsr basic_parse_line_number
+	lda basic_line_number+1
+	bne do_ILLEGAL_QUANTITY_error
+	lda basic_line_number+0
+	sta current_device_number
+
+got_devicenumber:
+
+	;; Now fetch the secondary address
+	lda #$00
 	sta current_secondary_address
-	lda #$00 		; LOAD not verify
-	ldx #<$0801		; LOAD address = $0801
+	jsr injest_comma
+	bcs got_secondaryaddress
+	jsr basic_parse_line_number
+	lda basic_line_number+1
+	bne +
+	lda basic_line_number+0
+	sta current_secondary_address
+	jmp got_secondaryaddress
+*
+	;; Second parameter is above 255, this can't be a secondary address
+	;; Use it as load address instead
+	;; XXX temporary syntax, it would be better to use something
+	;; XXX like 'LOAD"FILE",8 TO 49152'
+	ldx basic_line_number+0
+	ldy basic_line_number+1
+	bne got_loadaddress
+
+got_secondaryaddress:
+	ldx #<$0801
 	ldy #>$0801
 
+got_loadaddress:
+	lda #$00 		; LOAD not verify
 	jsr JLOAD
 	bcc +
 

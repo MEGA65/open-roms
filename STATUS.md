@@ -8,7 +8,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * banking in the BASIC interpreter: 61436 bytes free
 * LOAD start/end addresses are displayed, in the Final cartridge style
 * LOAD command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
-
+* LOAD secondary address over 255 is considered a start address; NOTE: syntax will most likely change here in the future!
 
 # Features missing
 

@@ -12,7 +12,10 @@
 
 listen:
 
-	and #$1F ; make sure bits encoding the command are cleared out
+	;; First check whether device number is correct
+	jsr iec_devnum_check
+	bcs kernalerror_DEVICE_NOT_FOUND
+	;; Encode and execute the command
 	ora #$20
 	sta BSOUR
 	jmp iec_tx_command

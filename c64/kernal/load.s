@@ -38,6 +38,18 @@ load:
 	;; Allow platform-specific routine to takeover the flow
 	`PLATFORM_HOOK_LOAD
 
+	;; Check whether we support the requested device
+	lda current_device_number
+	and #$FC
+	beq lvs_illegal_device_number ; device number below 4, not an IEC device
+	
+	;; Device numbers above 30 are also illegal (see https://www.pagetable.com/?p=1031),
+	;; as the protocol combines device number with command code int one byte,
+	;; above 30 it is no longer possible (UNLISTEN and UNTALK codes prevent using
+	;; number 31), yet original ROMs show ILLEGAL DEVICE NUMBER error only
+	;; for devices 0-3; in our implementation LISTEN / TALK will cause device
+	;; not present detected for numbers above 30
+
 	;; Display SEARCHING FOR + filename
 	jsr lvs_display_searching_for
 

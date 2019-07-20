@@ -1,11 +1,16 @@
 
 ;; Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
 
-;; Carry flag set = signal EOI
+;; Expects byte to send in BSOUR; Carry flag set = signal EOI
+;; Preserves .X and .Y registers
+
 
 iec_tx_byte:
 
-	;; Store byte to send on the stack
+	;; Store .X and .Y on the stack - preserve them
+	txa
+	pha
+	tya
 	pha
 
 	;; Notify all devices that we are going to send a byte
@@ -15,10 +20,9 @@ iec_tx_byte:
 	;; Common part of iec_txbyte and iec_tx_common - waits for devices
 	;; and transmits a byte
 
-	pla
 	jsr iec_tx_common
 	
-	;; All done - give device time to tell if they are busy by pulling DATA
+	;; Give device time to tell if they are busy by pulling DATA
 	;; They should do it within 1ms
 	ldx #$FF
 *	lda CIA2_PRA
@@ -27,15 +31,8 @@ iec_tx_byte:
 	bpl +
 	dex
 	bne -
-	bpl iec_tx_byte_error
+	bpl iec_return_DEVICE_NOT_FOUND
 *
-	;; All done
-	clc
-	rts
-
-iec_tx_byte_error:
-
-	jsr iec_set_idle
-	jmp kernalerror_DEVICE_NOT_FOUND
+	jmp iec_return_success
 
 

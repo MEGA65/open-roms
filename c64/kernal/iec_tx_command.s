@@ -1,9 +1,16 @@
 
 ;; Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
 
+;; Expects command to send in BSOUR; Carry flag set = signal EOI
+;; Preserves .X and .Y registers
+
+
 iec_tx_command:
 
-	;; Store command to send on the stack
+	;; Store .X and .Y on the stack - preserve them
+	txa
+	pha
+	tya
 	pha
 
 	;; Notify all devices that we are going to send a byte
@@ -18,11 +25,8 @@ iec_tx_command:
 	and #BIT_CIA2_PRA_DAT_IN ; XXX try to optimize this, move to separate routine
 	beq +
 
-	;; No devices present on the bus, so we can immediately return with device not found
-	pla
-
-	jsr iec_set_idle
-	jmp kernalerror_DEVICE_NOT_FOUND
+	;; No devices present on the bus, so we can immediately return with device not found	
+	jmp iec_return_DEVICE_NOT_FOUND
 *
 	;; At least one device responded, but they are still allowed to stall
 	;; (can be busy processing something), we have to wait till they are all
@@ -35,7 +39,6 @@ iec_tx_command:
 	;; and transmits a byte
 
 	clc ; Carry flag set is used for EOI mark
-	pla
 	jsr iec_tx_common
 
 	;; According to https://www.pagetable.com/?p=1135 there is some complicated and dangerous
@@ -50,8 +53,7 @@ iec_tx_command:
 	;; to wait for the DATA being pulled, as confirmation is expected from
 	;; a single device only - but not sure if it's worth the trouble
 
-	jsr iec_set_idle
-	jmp kernalerror_DEVICE_NOT_FOUND
+	jmp iec_return_DEVICE_NOT_FOUND
 *
 	;; All done
 	
@@ -60,5 +62,5 @@ iec_tx_command:
 	;; jsr iec_wait20us
 	;; jsr iec_set_idle
 
-	clc
-	rts
+	jmp iec_return_success
+

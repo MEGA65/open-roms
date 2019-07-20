@@ -82,12 +82,6 @@ open_iec:
 	;; XXX note: this is only a temporary test implementation, real 'open' does not send anything to IEC,
 	;; see http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
-	;; Disable IRQs, since timing matters!
-	sei
-
-	;; Begin sending under attention
-	;; XXX jsr iec_assert_atn
-
 	;; Request device to talk
 	lda current_device_number
 	jsr talk
@@ -107,8 +101,5 @@ open_iec:
 	clc
 
 open_iec_error:
-	;; Re-enable interrupts and return
-	;; (iec_tx_byte will have set/cleared C flag and put result code
-	;; in A if it was an error).
-	cli
+	;; Carry flag will be set by low-level routines
 	rts

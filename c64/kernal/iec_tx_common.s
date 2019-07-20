@@ -3,14 +3,14 @@
 ;; Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
 ;; and http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
+;; Expects byte to send in BSOUR; Carry flag set = signal EOI
+
+
 iec_tx_common:
 
 	;; Timing is critical here - execute on disabled IRQs
 	php
 	sei
-
-	;; Store the byte to send on a stack
-	pha
 
 	;; Wait till all receivers are ready, they should all release DATA
 	jsr iec_wait_for_data_release
@@ -38,13 +38,14 @@ iec_tx_common:
 	
 	;; Now, we can start transmission of 8 bits of data
 	ldx #7
-	pla
 
 iec_tx_common_sendbit:
 	;; Is next bit 0 or 1?
+	lda BSOUR
 	lsr
-	pha
+	sta BSOUR
 	bcs +
+	;; XXX we are actually destroying BSOUR here... is it allowed?
 
 	;; Bit is 0
 	jsr iec_release_clk_pull_data
@@ -65,13 +66,8 @@ iec_tx_common_bit_is_sent:
 
 	;; More bits to send?
 	dex
-	bpl iec_tx_common_nextbit
-	pla
-	
+	bpl iec_tx_common_sendbit
+
 	plp
 	rts ; Flow continues differently for data/command
-	
-iec_tx_common_nextbit:
 
-	pla
-	jmp iec_tx_common_sendbit

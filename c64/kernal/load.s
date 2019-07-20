@@ -67,22 +67,16 @@ load_send_filename:
 	jsr peek_under_roms
 	iny
 
-	;; Save Y because iec_tx_byte will corrupt it
-	tax
-	tya
-	pha
-
 	;; Set Carry flag on the last file name character, to mark EOI
-	cmp FNLEN
+	cpy FNLEN
 	clc
 	bne +
 	sec
 *
-	txa
+	;; Transmit one character
+	sta BSOUR
 	jsr iec_tx_byte
 
-	pla
-	tay
 	jmp load_send_filename
 
 load_filename_sent:
@@ -98,6 +92,7 @@ load_filename_sent:
 	bcs lvs_load_verify_error
 
 	lda #$60 ; open channel / data (p3) , required according to p13
+	sta BSOUR
 	jsr iec_tx_command
 	bcs lvs_load_verify_error
 
@@ -156,6 +151,7 @@ load_loop:
 	jsr listen
 
 	lda #$E0
+	sta BSOUR
 	jsr iec_tx_command
 
 	;; Tell drive to unlisten

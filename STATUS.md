@@ -73,18 +73,18 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | $FF8A   | RESTOR | PARTIAL  | CBINV, NMINV, and USRCMD missing        |
 | $FF8D   | VECTOR | DONE     |                                         |
 | $FF90   | SETMSG | DONE     |                                         |
-| $FF93   | SECOND | PARTIAL  | * work in progress                      |
-| $FF96   | TKSA   | PARTIAL  | should probably also do a turnaround    |
+| $FF93   | SECOND | DONE     |                                         |
+| $FF96   | TKSA   | PARTIAL  | should it do a turnaround?              |
 | $FF99   | MEMTOP | DONE     |                                         |
 | $FF9C   | MEMBOT | DONE     |                                         |
 | $FF9F   | SCNKEY | DONE     | could be better integrated with ROM     |
 | $FFA2   | SETTMO | NOT DONE |                                         |
 | $FFA5   | ACPTR  | NOT DONE | * work in progress                      |
-| $FFA8   | CIOUT  | PARITAL  | * work in progress                      |
+| $FFA8   | CIOUT  | DONE     |                                         |
 | $FFAB   | UNTLK  | PARITAL  | * work in progress                      |
-| $FFAE   | UNLSN  | PARITAL  | * work in progress                      |
-| $FFB1   | LISTEN | PARTIAL  | * work in progress                      |
-| $FFB4   | TALK   | PARTIAL  | * work in progress                      |
+| $FFAE   | UNLSN  | DONE     |                                         |
+| $FFB1   | LISTEN | DONE     |                                         |
+| $FFB4   | TALK   | PARTIAL  | should it do a turnaround?              |
 | $FFB7   | READST | DONE     |                                         |
 | $FFBA   | SETFLS | DONE     |                                         |
 | $FFBD   | SETNAM | DONE     |                                         |

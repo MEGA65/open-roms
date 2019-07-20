@@ -8,7 +8,6 @@
 ;; CPU registers that has to be preserved (see [RG64]): .X, .Y
 ;;
 
-;; XXX currently does not preserve registers, to be fixed!
 
 ciout:
 
@@ -31,9 +30,8 @@ ciout_store_in_buffer:
 	
 ciout_send_byte:
 
-	;; Send previous data
-	lda BSOUR
 	clc ; don't send with EOI
 	jsr iec_tx_byte
+	inc C3PO ; iec_tx_byte sets it to 0, but we still have something to send
 	jmp ciout_store_in_buffer
 

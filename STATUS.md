@@ -88,11 +88,11 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | $FFB7   | READST | DONE     |                                         |
 | $FFBA   | SETFLS | DONE     |                                         |
 | $FFBD   | SETNAM | DONE     |                                         |
-| $FFC0   | OPEN   | NOT DONE | * work in progress                      |
+| $FFC0   | OPEN   | DONE     |                                         |
 | $FFC3   | CLOSE  | PARTIAL  | * work in progress                      |
-| $FFC6   | CHKIN  | NOT DONE | * work in progress                      |
-| $FFC9   | CHKOUT | NOT DONE | * work in progress                      |
-| $FFCC   | CLRCHN | NOT DONE | * work in progress                      |
+| $FFC6   | CHKIN  | PARTIAL  | * work in progress                      |
+| $FFC9   | CHKOUT | PARTIAL  | * work in progress                      |
+| $FFCC   | CLRCHN | PARTIAL  | * work in progress                      |
 | $FFCF   | CHRIN  | NOT DONE | * work in progress                      |
 | $FFD2   | CHROUT | NOT DONE | * work in progress                      |
 | $FFD5   | LOAD   | PARTIAL  | no VERIFY support yet                   |

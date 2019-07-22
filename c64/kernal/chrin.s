@@ -10,15 +10,42 @@
 
 ;; XXX currently does not preserve register Y, to be fixed!
 
-	;;  Reads a byte of input, unless from keyboard.
+	;; Reads a byte of input, unless from keyboard.
 	;; If from keyboard, then it gets a whole line of input, and returns the first char.
 	;; Repeated calls after that read out the successive bytes of the line of input.
+
 chrin:
+	;; First determine the device number
+	lda DFLTN
+
+	beq chrin_keyboard ; #$00 - keyboard
+	;; XXX add screen support
+
+	jsr iec_devnum_check
+	bcs chrin_done_fail ; not a supported device
+
+chrin_iec:
+
+	jsr JACPTR
+	bcs chrin_done_fail
+	;; FALLTROUGH
+
+chrin_done:
+	clc ; indicate success
+	rts
+
+chrin_done_fail:
+	sec ; indicate failure
+	rts
+
+chrin_keyboard:
+
 	;; Save X
 	txa
 	pha
 
-chrin_repeat:	
+chrin_repeat:
+
 	;; Do we have a line of input we are currently returning?
 	;; If so, return the next byte, and clear the flag when we reach the end.
 

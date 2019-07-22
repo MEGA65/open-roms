@@ -10,7 +10,6 @@
 
 
 chrout:
-	;; Crude implementation of character output	
 
 	;; Save X and Y values
 	;; (Confirmed by writing a test program that X and Y
@@ -22,7 +21,27 @@ chrout:
 	tya
 	pha
 	php
-	sei
+
+	;; First determine the device number
+	lda DFLTO
+
+	cmp #$03 ; screen
+	beq chrout_screen
+	
+	jsr iec_devnum_check
+	bcs chrout_done_fail ; not a supported device
+
+chrout_iec:
+
+	lda last_printed_character_ascii
+	jsr JCIOUT
+	bcs chrout_done_fail
+	jmp chrout_done
+
+chrout_screen:
+
+	;; Crude implementation of character output	
+	sei ;; XXX why do we need to disable interrupts?
 	
 	jsr hide_cursor_if_visible
 	
@@ -392,7 +411,20 @@ chrout_done:
 	pla
 	tax
 	lda last_printed_character_ascii
-	clc 			; indicate success
+	clc ; indicate success
+	rts
+
+chrout_done_fail:
+	jsr show_cursor_if_enabled
+	
+	plp
+	
+	;; Restore X and Y, set carry to mark success on exit
+	pla
+	tay
+	pla
+	tax
+	sec ; indicate failure
 	rts
 
 screen_grow_logical_line:

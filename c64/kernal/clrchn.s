@@ -8,6 +8,7 @@
 ;; CPU registers that has to be preserved (see [RG64]): .Y
 ;;
 
+
 clrchn:
 
 	;; Handle IEC input device
@@ -24,7 +25,7 @@ clrchn:
 	;; Handle IEC output device
 	jsr unlsn
 *
-clrchn_reset:
+clrchn_reset: ;; entry needed by CHRIN
 	;; Set input device number to keyboard
 	lda #$00
 	sta DFLTN

@@ -24,7 +24,7 @@
 	.alias JOPEN     $FFC0
 	.alias JCLOSE    $FFC3
 	.alias JCHKIN    $FFC6
-	.alias JCHKOUT   $FFC9
+	.alias JCKOUT    $FFC9
 	.alias JCLRCHN   $FFCC
 	.alias JCHRIN    $FFCF
 	.alias JCHROUT   $FFD2

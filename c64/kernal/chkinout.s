@@ -2,7 +2,7 @@
 ;;
 ;; Official Kernal routines, described in:
 ;;
-;; - [RG64] C64 Programmer's Reference Guide   - page 275 (CHKIN) / 276 (CHKOUT)
+;; - [RG64] C64 Programmer's Reference Guide   - page 275 (CHKIN) / 276 (CKOUT)
 ;; - [CM64] Compute's Mapping the Commodore 64 - page 229
 ;;
 ;; CPU registers that has to be preserved (see [RG64]): .Y
@@ -40,7 +40,7 @@ chkin:
 	cmp #$01
 	beq chkinout_file_not_input
 
-	;; For IEC devices, send TALK first
+	;; For IEC devices, send TALK + TKSA first
 	lda FAT,Y
 	jsr iec_devnum_check
 	bcs chkin_set_device
@@ -48,13 +48,20 @@ chkin:
 	jsr talk
 	bcs chkinout_end ; don't set DFLTN in case of failure
 
+	lda LAT, Y
+	jsr tksa
+	bcs chkinout_end
+
+	jsr iec_turnaround_to_listen ;; XXX shouldn't this be sent by TALK/TKSA???
+	bcs chkinout_end
+
 chkin_set_device:
 	lda FAT,Y
 	sta DFLTN
 	clc ; for success
 	;; FALLTROUGH
 
-;; Common part for booth CHKIN and CHKOUT
+;; Common part for booth CHKIN and CKOUT
 
 chkinout_end:
 	pla
@@ -84,9 +91,9 @@ chkinout_file_not_output:
 
 chkinout_common:
 
-;; CHKOUT implementation
+;; CKOUT implementation
 
-chkout:
+ckout:
 
 	;; Store Y for preservation
 	tya
@@ -117,7 +124,7 @@ chkout:
 	lda LAT, Y
 	beq chkinout_file_not_output
 
-	;; For IEC devices, send LISTEN first
+	;; For IEC devices, send LISTEN + SECOND first
 	lda FAT,Y
 	jsr iec_devnum_check
 	bcs chkin_set_device
@@ -125,7 +132,11 @@ chkout:
 	jsr listen
 	bcs chkinout_end ; don't set DFLTO in case of failure
 
-chkout_set_device:
+	lda LAT, Y
+	jsr second
+	bcs chkinout_end
+
+hkout_set_device:
 	lda FAT,Y
 	sta DFLTO
 	clc ; for success

@@ -76,7 +76,7 @@ vector_defaults:
 	.word open     ;; IOPEN
 	.word close    ;; ICLOSE
 	.word chkin    ;; ICHKIN
-	.word chkout   ;; ICKOUT
+	.word ckout    ;; ICKOUT
 	.word clrchn   ;; ICLRCH
 	.word chrin    ;; IBASIN
 	.word chrout   ;; IBASOUT

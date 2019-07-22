@@ -1,3 +1,3 @@
 ; Open channel for output
 ; C64 Programmer's Reference Guide Page 272
-	jmp chkout
+	jmp ckout

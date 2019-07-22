@@ -4,7 +4,7 @@
 wedge_dos:
 
 	;; Close all the channels, so that wedge has full control
-	jsr wedge_dos_CLALL
+	jsr via_ICLALL
 
 	;; Set file parameters,  channel 15 is a typical one for commands
 	jsr select_device ; sets X register
@@ -39,12 +39,31 @@ wedge_dos:
 	;; XXX consider SYNTAX ERROR if anything besides spaces is there
 	jmp -
 
-wedge_dos_command: ; default
+wedge_dos_command:
 
-	;; XXX - implement this
-	jsr printf
-	.byte "DBG: CMD", 0
-	jmp do_NOT_IMPLEMENTED_error
+	;; Set remaining file parameters, open the channel
+	lda #$00  ; empty file name
+	jsr JSETNAM
+	jsr via_IOPEN
+	bcc +
+	jmp do_DEVICE_NOT_PRESENT_error
+*
+	;; Set channel for output
+	ldx #$0F
+	jsr via_ICKOUT
+*
+	jsr JREADST ; retrieve errors
+	;; XXX error in case of status != 0
+*   
+	jsr basic_fetch_and_consume_character
+	beq +
+	jsr JCHROUT
+	;; XXX check errors here
+	jmp -
+*
+	;; XXX check status - print it if not OK
+	;; Clean-up and exit
+	jmp wedge_dos_clean_exit
 
 wedge_dos_change_drive:
 
@@ -71,15 +90,16 @@ wedge_dos_status:
 	;; Set remaining file parameters, open the channel
 	lda #$00  ; empty file name
 	jsr JSETNAM
-	jsr wedge_dos_OPEN
+	jsr via_IOPEN
 	bcc +
 	jmp do_DEVICE_NOT_PRESENT_error
 *
 	;; Set channel for input
 	ldx #$0F
-	jsr wedge_dos_CHKIN	
+	jsr via_ICHKIN
 *
-	jsr $FFB7 ; READST - to retrieve errors
+	jsr JREADST ; retrieve errors
+	;; XXX error in case of status != 0
 *   
 	;; Print out everything retrieved from the drive
 	bne +
@@ -97,21 +117,9 @@ wedge_dos_directory:
 	.byte "DBG: DIR", 0
 	jmp do_NOT_IMPLEMENTED_error
 
-wedge_dos_CLALL:
-	jmp (ICLALL)
-
-wedge_dos_CHKIN:
-	jmp (ICHKIN)
-	
-wedge_dos_CLRCHR:
-	jmp (ICLRCH)
-	
-wedge_dos_OPEN:
-	jmp (IOPEN)
-	
 wedge_dos_clean_exit:
-	jsr wedge_dos_CLALL	
-	jsr wedge_dos_CLRCHR
+	jsr via_ICLALL
+	jsr via_ICLRCH
 	jmp basic_end_of_line
 
 ;; END wedge support

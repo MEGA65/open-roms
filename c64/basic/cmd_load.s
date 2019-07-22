@@ -98,7 +98,7 @@ got_secondaryaddress:
 
 got_loadaddress:
 	lda #$00 		; LOAD not verify
-	jsr JLOAD
+	jsr via_ILOAD
 	bcc +
 
 	;; A = KERNAL error code, which also almost match

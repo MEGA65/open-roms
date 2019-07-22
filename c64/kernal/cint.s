@@ -43,6 +43,9 @@ cint:
 	;; Put non-zero value in enable_case_switch
 	stx enable_case_switch
 	
+	;; Set default I/O devices (see SCINIT description at http://sta.c64.org/cbm64krnfunc.html)
+	jsr clrchn_reset
+	
 	;; Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
 	jmp clear_screen
 

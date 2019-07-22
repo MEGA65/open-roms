@@ -10,24 +10,24 @@
 
 clrchn:
 
-	;; Restore input device to default
+	;; Handle IEC input device
 	lda DFLTN
 	jsr iec_devnum_check
 	bcs +
 	;; Previous device was IEC one - send UNTALK first
 	jsr untlk
 *
-	;; Set input device number to keyboard
-	lda #$00
-	sta DFLTN
-
 	;; Restore output device to default
 	lda DFLTO
 	jsr iec_devnum_check
 	bcs +
-	;; Previous device was IEC one - send UNLISTEN first
+	;; Handle IEC output device
 	jsr unlsn
 *
+clrchn_reset:
+	;; Set input device number to keyboard
+	lda #$00
+	sta DFLTN
 	;; Set output device number to screen
 	lda #$03
 	sta DFLTO

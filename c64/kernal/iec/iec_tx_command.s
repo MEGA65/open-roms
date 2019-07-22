@@ -18,7 +18,7 @@ iec_tx_command:
 	jsr iec_pull_atn_clk_release_data
 
 	;; Give devices time to respond (response is mandatory!)
-	jsr wait1ms
+	jsr iec_wait1ms
 
 	;; Did at least one device respond by pulling DATA?
 	lda CIA2_PRA
@@ -44,7 +44,7 @@ iec_tx_command:
 	;; According to https://www.pagetable.com/?p=1135 there is some complicated and dangerous
 	;; flow here, but http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf (page 6)
 	;; advices to just wait 1ms and check the DATA status
-	jsr wait1ms
+	jsr iec_wait1ms
 	lda CIA2_PRA
 	and #BIT_CIA2_PRA_DAT_IN ; XXX try to optimize this, move to separate routine
 	beq +

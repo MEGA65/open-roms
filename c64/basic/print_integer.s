@@ -115,7 +115,7 @@ found_start_of_number:
 	;; Print digits
 *	lda $0100,y
 	ora #$30
-	jsr JCHROUT
+	jsr via_IBSOUT
 	iny
 	cpy #5
 	bne -

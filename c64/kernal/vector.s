@@ -79,7 +79,7 @@ vector_defaults:
 	.word ckout    ;; ICKOUT
 	.word clrchn   ;; ICLRCH
 	.word chrin    ;; IBASIN
-	.word chrout   ;; IBASOUT
+	.word chrout   ;; IBSOUT
 	.word stop     ;; ISTOP
 	.word getin    ;; IGETIN
 	.word clall    ;; ICLALL

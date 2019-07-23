@@ -55,9 +55,10 @@ wedge_dos_command:
 	jsr JREADST ; retrieve errors
 	;; XXX error in case of status != 0
 *   
+	;; XXX this loop does not seem to work, check it
 	jsr basic_fetch_and_consume_character
 	beq +
-	jsr JCHROUT
+	jsr via_IBSOUT
 	;; XXX check errors here
 	jmp -
 *
@@ -100,13 +101,16 @@ wedge_dos_status:
 *
 	jsr JREADST ; retrieve errors
 	;; XXX error in case of status != 0
-*   
 	;; Print out everything retrieved from the drive
 	bne +
-	jsr JCHRIN
-	jsr JCHROUT
+	jsr via_IBASIN
+	jsr via_IBSOUT
 	jmp -
 *
+	;; Print new line
+	lda #$0D
+	jsr via_IBSOUT
+
 	;; Clean-up and exit
 	jmp wedge_dos_clean_exit
 

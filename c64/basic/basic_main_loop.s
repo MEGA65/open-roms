@@ -52,7 +52,7 @@ rsl_l1:	lda $0200,x
 *	
 	;; Do printing of the new line
 	lda #$0d
-	jsr JCHROUT
+	jsr via_IBSOUT
 
 	;; Ignore empty lines
 	lda tokenise_work1

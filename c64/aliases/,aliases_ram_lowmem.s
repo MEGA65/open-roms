@@ -81,7 +81,7 @@
 	.alias ICKOUT     $320
 	.alias ICLRCH     $322
 	.alias IBASIN     $324
-	.alias IBASOUT    $326
+	.alias IBSOUT     $326
 	.alias ISTOP      $328
 	.alias IGETIN     $32A
 	.alias ICLALL     $32C

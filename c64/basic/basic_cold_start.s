@@ -29,7 +29,7 @@ startup_banner:
 	jsr print_integer	
 
 	lda #$20
-	jsr JCHROUT
+	jsr via_IBSOUT
 	
 	;; Print the rest of the start up message
 	ldx #34

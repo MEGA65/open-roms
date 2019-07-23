@@ -79,7 +79,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | $FF9C   | MEMBOT | DONE     |                                         |
 | $FF9F   | SCNKEY | DONE     | could be better integrated with ROM     |
 | $FFA2   | SETTMO | NOT DONE |                                         |
-| $FFA5   | ACPTR  | NOT DONE | * work in progress                      |
+| $FFA5   | ACPTR  | PARTIAL  | * work in progress                      |
 | $FFA8   | CIOUT  | DONE     |                                         |
 | $FFAB   | UNTLK  | PARITAL  | * work in progress                      |
 | $FFAE   | UNLSN  | DONE     |                                         |
@@ -93,8 +93,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | $FFC6   | CHKIN  | PARTIAL  | * work in progress                      |
 | $FFC9   | CHKOUT | PARTIAL  | * work in progress                      |
 | $FFCC   | CLRCHN | PARTIAL  | * work in progress                      |
-| $FFCF   | CHRIN  | NOT DONE | * work in progress                      |
-| $FFD2   | CHROUT | NOT DONE | * work in progress                      |
+| $FFCF   | CHRIN  | PARTIAL  |                                         |
+| $FFD2   | CHROUT | PARTIAL  |                                         |
 | $FFD5   | LOAD   | PARTIAL  | no VERIFY support yet                   |
 | $FFD8   | SAVE   | NOT DONE | * work in progress                      |
 | $FFDB   | SETTIM | NOT DONE |                                         |

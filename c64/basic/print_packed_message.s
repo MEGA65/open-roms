@@ -38,7 +38,7 @@ found_message_in_token_stream:
 	beq +
 	jsr print_packed_word
 	lda #$20
-	jsr JCHROUT
+	jsr via_IBSOUT
 	pla
 	tay
 	iny
@@ -47,7 +47,7 @@ found_message_in_token_stream:
 	pla
 	;; Rub out space at the end
 	lda #$14
-	jsr JCHROUT
+	jsr via_IBSOUT
 	rts
 
 print_packed_word:
@@ -144,7 +144,7 @@ next_packed_word_char:
 
 	;; X=1-14 = first 14 chars, so subtract one
 	lda packed_message_chars-1,x
-	jsr JCHROUT
+	jsr via_IBSOUT
 
 	;; See if there is a char in the low nybl to print
 	pla
@@ -171,7 +171,7 @@ has_nybl:
 	
 	;; X=1-14 = first 14 chars, so subtract one
 	lda packed_message_chars-1,x
-	jsr JCHROUT
+	jsr via_IBSOUT
 *
 	pla
 	tay
@@ -207,7 +207,7 @@ unpack_literal_char:
 	tya
 	pha
 	lda (temp_string_ptr),y
-	jsr JCHROUT
+	jsr via_IBSOUT
 	pla
 	tay
 	rts

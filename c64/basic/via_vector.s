@@ -21,8 +21,8 @@ via_ICLRCH:
 via_IBASIN:
 	jmp (IBASIN)
 
-via_IBASOUT:
-	jmp (IBASOUT)
+via_IBSOUT:
+	jmp (IBSOUT)
 	
 via_ISTOP:
 	jmp (ISTOP)

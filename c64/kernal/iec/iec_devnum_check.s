@@ -7,18 +7,16 @@
 
 iec_devnum_check:
 	;; 0, 1, 2, or 3 are illegal - reserved for non-IEC devices on Commodore
-	cmp #$03
-	bpl +
+	cmp #$04
 	bcs +
 	;; FALLTROUGH
 iec_devnum_check_failed:
-	sec
+	sec ; indicate non-IEC device
 	rts
 *
-	;; 30 and above are illegal too, due to IEC command encoding scheme,
+	;; 31 and above are illegal too, due to IEC command encoding scheme,
 	;; see https://www.pagetable.com/?p=1031
-	cmp #$1E
-	bpl iec_devnum_check_failed
+	cmp #$1F
 	bcs iec_devnum_check_failed
-	clc
+	;; Carry is clear here - indicates IEC device
 	rts

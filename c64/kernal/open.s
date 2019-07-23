@@ -8,6 +8,7 @@
 ;; CPU registers that has to be preserved (see [RG64]): none
 ;;
 
+;; XXX send the name to the drive (if it's length is non-zero)
 
 open:
 

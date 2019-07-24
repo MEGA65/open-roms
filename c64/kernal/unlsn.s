@@ -18,7 +18,7 @@ unlsn:
 	lda C3PO
 	beq +
 	sec ; send it with EOI
-	jsr iec_tx_byte		; XXX what about the status of this operation?
+	jsr iec_tx_byte ; send the command regardless of the status
 *
 	;; Buffer empty, send the command
 	lda #$3F

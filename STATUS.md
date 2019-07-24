@@ -65,47 +65,47 @@ Note: only the jump table addresses are currently supported, real routine addres
 NOTE: Even the 'DONE' routines won't support features described as missing in one of the previous chapters!
 
 
-| Address | Name   | Status   |  Remarks                                |
-| ------- | :----: | :------: | :-------------------------------------: |
-| $FF81   | CINT   | PARTIAL  | at least PAL/NTSC detection is missing  |
-| $FF84   | IOINIT | PARTIAL  | at least SID volume handling is missing |
-| $FF87   | RAMTAS | DONE     |                                         |
-| $FF8A   | RESTOR | PARTIAL  | CBINV, NMINV, and USRCMD missing        |
-| $FF8D   | VECTOR | DONE     |                                         |
-| $FF90   | SETMSG | DONE     |                                         |
-| $FF93   | SECOND | DONE     |                                         |
-| $FF96   | TKSA   | PARTIAL  | should it do a turnaround?              |
-| $FF99   | MEMTOP | DONE     |                                         |
-| $FF9C   | MEMBOT | DONE     |                                         |
-| $FF9F   | SCNKEY | DONE     | could be better integrated with ROM     |
-| $FFA2   | SETTMO | NOT DONE |                                         |
-| $FFA5   | ACPTR  | PARTIAL  | * work in progress                      |
-| $FFA8   | CIOUT  | DONE     |                                         |
-| $FFAB   | UNTLK  | PARITAL  | * work in progress                      |
-| $FFAE   | UNLSN  | DONE     |                                         |
-| $FFB1   | LISTEN | DONE     |                                         |
-| $FFB4   | TALK   | PARTIAL  | should it do a turnaround?              |
-| $FFB7   | READST | DONE     |                                         |
-| $FFBA   | SETFLS | DONE     |                                         |
-| $FFBD   | SETNAM | DONE     |                                         |
-| $FFC0   | OPEN   | PARTIAL  | * work in progress                      |
-| $FFC3   | CLOSE  | PARTIAL  | * work in progress                      |
-| $FFC6   | CHKIN  | PARTIAL  | * work in progress                      |
-| $FFC9   | CHKOUT | PARTIAL  | * work in progress                      |
-| $FFCC   | CLRCHN | PARTIAL  | * work in progress                      |
-| $FFCF   | CHRIN  | PARTIAL  |                                         |
-| $FFD2   | CHROUT | PARTIAL  |                                         |
-| $FFD5   | LOAD   | PARTIAL  | no VERIFY support yet                   |
-| $FFD8   | SAVE   | NOT DONE | * work in progress                      |
-| $FFDB   | SETTIM | NOT DONE |                                         |
-| $FFDE   | RDTIM  | NOT DONE |                                         |
-| $FFE1   | STOP   | PARTIAL  | no connection with UDTIM                |
-| $FFE4   | GETIN  | PARTIAL  | * work in progress                      |
-| $FFE7   | CLALL  | PARTIAL  | * work in progress                      |
-| $FFEA   | UDTIM  | NOT DONE |                                         |
-| $FFED   | SCREEN | DONE     |                                         |
-| $FFF0   | PLOT   | NOT DONE |                                         |
-| $FFF3   | IOBASE | DONE     |                                         |
+| Address | Name   | Status   |  Remarks                                      |
+| ------- | :----: | :------: | :-------------------------------------------: |
+| $FF81   | CINT   | PARTIAL  | at least PAL/NTSC detection is missing        |
+| $FF84   | IOINIT | PARTIAL  | at least SID volume handling is missing       |
+| $FF87   | RAMTAS | DONE     |                                               |
+| $FF8A   | RESTOR | PARTIAL  | CBINV, NMINV, and USRCMD missing              |
+| $FF8D   | VECTOR | DONE     |                                               |
+| $FF90   | SETMSG | DONE     |                                               |
+| $FF93   | SECOND | DONE     |                                               |
+| $FF96   | TKSA   | DONE     |                                               |
+| $FF99   | MEMTOP | DONE     |                                               |
+| $FF9C   | MEMBOT | DONE     |                                               |
+| $FF9F   | SCNKEY | DONE     | could be better integrated with ROM (aliases) |
+| $FFA2   | SETTMO | NOT DONE |                                               |
+| $FFA5   | ACPTR  | PARTIAL  | * work in progress                            |
+| $FFA8   | CIOUT  | DONE     |                                               |
+| $FFAB   | UNTLK  | DONE     |                                               |
+| $FFAE   | UNLSN  | DONE     |                                               |
+| $FFB1   | LISTEN | DONE     |                                               |
+| $FFB4   | TALK   | DONE     |                                               |
+| $FFB7   | READST | DONE     |                                               |
+| $FFBA   | SETFLS | DONE     |                                               |
+| $FFBD   | SETNAM | DONE     |                                               |
+| $FFC0   | OPEN   | PARTIAL  | * work in progress                            |
+| $FFC3   | CLOSE  | DONE     |                                               |
+| $FFC6   | CHKIN  | PARTIAL  | * work in progress                            |
+| $FFC9   | CHKOUT | PARTIAL  | * work in progress                            |
+| $FFCC   | CLRCHN | PARTIAL  | * work in progress                            |
+| $FFCF   | CHRIN  | PARTIAL  |                                               |
+| $FFD2   | CHROUT | PARTIAL  |                                               |
+| $FFD5   | LOAD   | PARTIAL  | no VERIFY support yet                         |
+| $FFD8   | SAVE   | NOT DONE | * work in progress                            |
+| $FFDB   | SETTIM | NOT DONE |                                               |
+| $FFDE   | RDTIM  | NOT DONE |                                               |
+| $FFE1   | STOP   | PARTIAL  | no connection with UDTIM                      |
+| $FFE4   | GETIN  | PARTIAL  | * work in progress                            |
+| $FFE7   | CLALL  | PARTIAL  | * work in progress                            |
+| $FFEA   | UDTIM  | NOT DONE |                                               |
+| $FFED   | SCREEN | DONE     |                                               |
+| $FFF0   | PLOT   | NOT DONE |                                               |
+| $FFF3   | IOBASE | DONE     |                                               |
 
 
 ### Unofficial Kernal locations

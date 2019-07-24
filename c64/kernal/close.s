@@ -4,6 +4,7 @@
 ;;
 ;; - [RG64] C64 Programmer's Reference Guide   - page 281/282
 ;; - [CM64] Compute's Mapping the Commodore 64 - page 229/230
+;; - https://www.pagetable.com/?p=1031, https://github.com/mist64/cbmbus_doc (IEC command)
 ;;
 ;; CPU registers that has to be preserved (see [RG64]): none
 ;;
@@ -17,11 +18,28 @@ close:
 	jsr find_fls
 	bcs close_error_not_found ;; XXX can we report error in IOSTATUS here?
 
-	;; We have the entry index in Y
+	;; We have the entry index in Y - check whether this is IEC device
+	lda FAT, y
+	jsr iec_devnum_check
+	bcs close_remove_from_table
 
-	;; XXX some devices (like IEC) needs special support here, to free their internal resources!
-	;; Just make sure the Y register value is kept, or redo ldy DFTLN
+	;; IEC device
+
+	;; First check whether we have something to be sent in the buffer
+	lda C3PO
+	beq +
+	sec ; send it with EOI
+	jsr iec_tx_byte ; send the command regardless of the status
 *
+	lda SAT, y ; get secondary address
+	ora $E0 ; CLOSE command
+	sta BSOUR
+	jsr iec_tx_command
+	bcs close_remove_from_table
+	jsr iec_tx_command_finalize
+	
+close_remove_from_table:
+	;; Remove channel from the table
 	iny
 	cpy #$0A
 	bpl +
@@ -36,8 +54,10 @@ close:
 	;; Decrement the list size variable
 	dec LDTND
 
-	;; FALLTHROUGH - success
+	clc ; report success - not sure if original CLOSE does this, but it's nevertheless a good practice
+	rts
 
 close_error_not_found:
 
+	sec ; report success - not sure if original CLOSE does this, but it's nevertheless a good practice
 	rts

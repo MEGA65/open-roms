@@ -12,7 +12,15 @@
 
 second:
 
-	and #$1F ; make sure bits encoding the command are cleared out
+	;; Due to TKSA/SECOND command encoding (see https://www.pagetable.com/?p=1031),
+	;; allowed channels are 0-15; report error if out of range
+	cmp #$10
+	bcs kernalerror_FILE_NOT_INPUT
+
 	ora #$60
 	sta BSOUR
-	jmp iec_tx_command
+	jsr iec_tx_command
+	bcs + ; branch if error
+	jmp iec_tx_command_finalize
+*
+	rts

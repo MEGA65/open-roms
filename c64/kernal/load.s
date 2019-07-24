@@ -63,8 +63,9 @@ load:
 	bcs lvs_device_not_found_error
 
 	;; Open channel #0 (p16)
-	lda #$00
-	jsr tksa
+	lda #$F0 ; $F0 for TKSA + 0 for channel number
+	sta BSOUR
+	jsr iec_tx_command
 	bcs lvs_load_verify_error
 
 	;; Send filename (p16)
@@ -154,10 +155,6 @@ load_loop:
 
 	;; Command drive to stop talking and to close the file
 	jsr untlk
-
-	;; Turnaround to talker - according to https://www.pagetable.com/?p=1135
-	;; the turnaround only happens after a command
-	jsr iec_turnaround_to_talk
 
 	lda current_device_number
 	jsr listen

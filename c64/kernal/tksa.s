@@ -10,12 +10,23 @@
 ;;
 
 
-;; XXX shouldn't this do a turnaround?
-
 tksa:
 
-	and #$1F ; make sure bits encoding the command are cleared out
+	;; Due to TKSA/SECOND command encoding (see https://www.pagetable.com/?p=1031),
+	;; allowed channels are 0-15; report error if out of range
+	cmp #$10
+	bcs kernalerror_FILE_NOT_INPUT
+
 	ora #$F0
 	sta BSOUR
-	jmp iec_tx_command
+	jsr iec_tx_command
+	bcs + ; branch if error
+	;; XXX - is it really the right place to do a turnaround? I've got some doubts
+	;; (it forces us to send the TKSA command 'manually' sometimes), but
+	;; Luigi Di Fraia (https://luigidifraia.wordpress.com/2017/06/27/codebase64-on-the-kernal-behaviour/)
+	;; claims TKSA Kernal routine actually does the turnaround
+	jmp iec_turnaround_to_listen
+*
+	rts
+
 

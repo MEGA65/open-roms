@@ -10,8 +10,6 @@
 ;;
 
 
-;; XXX shouldn't this do a turnaround?
-
 talk:
 
 	;; First check whether device number is correct

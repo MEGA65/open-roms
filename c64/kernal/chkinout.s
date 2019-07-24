@@ -52,9 +52,6 @@ chkin:
 	jsr tksa
 	bcs chkinout_end
 
-	jsr iec_turnaround_to_listen ;; XXX shouldn't this be sent by TALK/TKSA???
-	bcs chkinout_end
-
 chkin_set_device:
 	lda FAT,Y
 	sta DFLTN

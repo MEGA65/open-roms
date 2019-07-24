@@ -23,6 +23,8 @@ unlsn:
 	;; Buffer empty, send the command
 	lda #$3F
 	sta BSOUR
-	jmp iec_tx_command
-
-
+	jsr iec_tx_command
+	bcs + ; branch if error
+	jmp iec_tx_command_finalize
+*
+	rts

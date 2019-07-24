@@ -4,6 +4,12 @@
 
 iec_turnaround_to_listen:
 
+	;; Store .X and .Y on the stack - preserve them
+	txa
+	pha
+	tya
+	pha
+
 	;; Timing is critical here - execute on disabled IRQs
 	php
 	sei
@@ -20,14 +26,13 @@ iec_turnaround_to_listen:
 	dex
 	bne -
 
-	;; Timeout
+	;; Timeout - XXX what errors do original Kernal report?
 	plp
-	sec
-	rts
+	jmp iec_return_DEVICE_NOT_FOUND
 
 	;; CLK is pulled by the device, OK
 *
 	plp
-	clc
-	rts
+	jmp iec_return_success
+
 

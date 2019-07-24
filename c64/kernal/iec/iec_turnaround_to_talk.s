@@ -4,6 +4,12 @@
 
 iec_turnaround_to_talk:
 
+	;; Store .X and .Y on the stack - preserve them
+	txa
+	pha
+	tya
+	pha
+
 	;; Timing is critical here - execute on disabled IRQs
 	php
 	sei
@@ -19,5 +25,5 @@ iec_turnaround_to_talk:
 	jsr iec_pull_clk_release_data
 
 	plp
-	clc
-	rts
+	jmp iec_return_success
+

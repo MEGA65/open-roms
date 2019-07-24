@@ -55,12 +55,6 @@ iec_tx_command:
 
 	jmp iec_return_DEVICE_NOT_FOUND
 *
-	;; All done
-	
-	;; XXX All the documentation says we should release ATN at this point, but when I do so
-	;; the turnaround mechanism does not work. Why???
-	;; jsr iec_wait20us
-	;; jsr iec_set_idle
+	;; Done
 
 	jmp iec_return_success
-

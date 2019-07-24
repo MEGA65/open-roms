@@ -10,11 +10,12 @@
 ;;
 
 
-;; XXX shouldn't this do a turnaround?
-
 untlk:
 
 	lda #$5F
 	sta BSOUR
-	jmp iec_tx_command
-
+	jsr iec_tx_command
+	bcs + ; branch if error
+	jmp iec_turnaround_to_listen
+*
+	rts

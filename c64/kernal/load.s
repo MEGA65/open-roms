@@ -42,7 +42,7 @@ load:
 	lda current_device_number
 	and #$FC
 	beq lvs_illegal_device_number ; device number below 4, not an IEC device
-	
+
 	;; Device numbers above 30 are also illegal (see https://www.pagetable.com/?p=1031),
 	;; as the protocol combines device number with command code int one byte,
 	;; above 30 it is no longer possible (UNLISTEN and UNTALK codes prevent using
@@ -56,7 +56,7 @@ load:
 	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 	;; p13, 16; also p16 tells us this routine doesn't mess with the file table
 	;; in the C64, only in the drive.
-	
+
 	;; Call device to LISTEN (p16)
 	lda current_device_number
 	jsr listen
@@ -66,6 +66,8 @@ load:
 	lda #$F0 ; $F0 for TKSA + 0 for channel number
 	sta BSOUR
 	jsr iec_tx_command
+	bcs lvs_load_verify_error
+	jsr iec_tx_command_finalize
 	bcs lvs_load_verify_error
 
 	;; Send filename (p16)
@@ -97,7 +99,6 @@ load_filename_sent:
 	;; Command device to unlisten to indicate end of file name. (p16)
 	jsr unlsn
 	bcs lvs_load_verify_error
-	jsr iec_set_idle ;; XXX is it needed?
 
 	;; Now command device to talk (p16)
 	lda current_device_number
@@ -162,12 +163,10 @@ load_loop:
 	lda #$E0
 	sta BSOUR
 	jsr iec_tx_command
+	jsr iec_tx_command_finalize
 
 	;; Tell drive to unlisten
 	jsr unlsn
-	
-	;; Set IEC status back to idle
-	jsr iec_set_idle
 
 	;; Return last address
 	jmp lvs_return_last_address

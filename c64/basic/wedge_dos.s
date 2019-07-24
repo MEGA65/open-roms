@@ -18,9 +18,6 @@ wedge_dos:
 	ldy #$00
 	lda (basic_current_statement_ptr), y
 	beq wedge_dos_status
-	cmp #$20
-	beq wedge_dos_status
-	;; XXX consider SYNTAX ERROR if anything besides spaces is there
 	
 	;; Check if asked for a directory
 	cmp #$24
@@ -28,15 +25,14 @@ wedge_dos:
 *
 	;; Check if asked to change drive number, or if it is a regular command
 	cmp #$30
-	bmi wedge_dos_command ; char code before 0
+	bcc wedge_dos_command ; char code before 0
 	cmp #$3A
-	bpl wedge_dos_command ; char code after 9
+	bcs wedge_dos_command ; char code after 9
 	iny
 	lda (basic_current_statement_ptr), y
 	beq wedge_dos_change_drive ; end of buffer
 	cmp #$20
 	beq wedge_dos_change_drive
-	;; XXX consider SYNTAX ERROR if anything besides spaces is there
 	jmp -
 
 wedge_dos_command:
@@ -45,24 +41,27 @@ wedge_dos_command:
 	lda #$00  ; empty file name
 	jsr JSETNAM
 	jsr via_IOPEN
-	bcc +
-	jmp do_DEVICE_NOT_PRESENT_error
+	bcs wedge_dos_basic_error
 *
 	;; Set channel for output
 	ldx #$0F
 	jsr via_ICKOUT
-*
-	jsr JREADST ; retrieve errors
-	;; XXX error in case of status != 0
+	bcs wedge_dos_basic_error
 *   
-	;; XXX this loop does not seem to work, check it
 	jsr basic_fetch_and_consume_character
+	cmp #$00
 	beq +
+
 	jsr via_IBSOUT
-	;; XXX check errors here
+	bcs wedge_dos_basic_error
 	jmp -
 *
-	;; XXX check status - print it if not OK
+	;; Finalize command
+	lda #$0D
+	jsr via_IBSOUT
+	bcs wedge_dos_basic_error
+
+	;; XXX close here, check status - print it if not OK
 	;; Clean-up and exit
 	jmp wedge_dos_clean_exit
 
@@ -92,15 +91,15 @@ wedge_dos_status:
 	lda #$00  ; empty file name
 	jsr JSETNAM
 	jsr via_IOPEN
-	bcc +
-	jmp do_DEVICE_NOT_PRESENT_error
-*
+	bcs wedge_dos_basic_error
+
 	;; Set channel for input
 	ldx #$0F
 	jsr via_ICHKIN
+	bcs wedge_dos_basic_error
 *
 	jsr JREADST ; retrieve errors
-	;; XXX error in case of status != 0
+	;; XXX error in case of status != EOF
 	;; Print out everything retrieved from the drive
 	bne +
 	jsr via_IBASIN
@@ -117,11 +116,17 @@ wedge_dos_status:
 wedge_dos_directory:
 
 	;; XXX - implement this
-	jsr printf
-	.byte "DBG: DIR", 0
 	jmp do_NOT_IMPLEMENTED_error
 
 wedge_dos_clean_exit:
+	jsr via_ICLALL
+	jsr via_ICLRCH
+	jmp basic_end_of_line
+
+wedge_dos_basic_error:
+	tax
+	dex
+	jsr do_basic_error
 	jsr via_ICLALL
 	jsr via_ICLRCH
 	jmp basic_end_of_line

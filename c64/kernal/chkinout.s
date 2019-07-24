@@ -61,8 +61,10 @@ chkin_set_device:
 ;; Common part for booth CHKIN and CKOUT
 
 chkinout_end:
+	tax
 	pla
 	tay
+	txa
 	rts
 
 chkinout_file_not_open:

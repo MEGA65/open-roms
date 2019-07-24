@@ -30,8 +30,7 @@ open:
 
 	ldy LDTND
 	cpy #$0A
-	bcs +
-	bmi open_has_space
+	bcc open_has_space
 *
 	;; Table is full
 	jmp kernalerror_TOO_MANY_OPEN_FILES

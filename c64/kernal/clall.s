@@ -8,20 +8,27 @@
 ;; CPU registers that has to be preserved (see [RG64]): .Y
 ;;
 
-;; XXX currently does not preserve register Y, to be fixed!
 
 clall:
+
+	;; Store .Y register
+	tya
+	pha
 
 	;; Original routine probably just sets LDTND to 0, but this is not really safe,
 	;; so we actually close all the channels; at least IDE64 does the same for
 	;; it's channels, see CLALL description in the IDE64 User's Guide
-
+*
 	ldy LDTND
 	beq +
 	dey
 	lda LAT, y
 	jsr close ; XXX jump through ICLOSE?
-	jmp clall
+	jmp -
 *
+	;; Restore .Y register
+	pla
+	tay
+
 	;; 'C64 Programmers Reference Guide', page 281, claims it calls CLRCHN too
 	jmp clrchn

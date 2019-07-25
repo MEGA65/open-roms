@@ -90,18 +90,18 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | $FFBD   | SETNAM | DONE     |                                               |
 | $FFC0   | OPEN   | PARTIAL  | * work in progress                            |
 | $FFC3   | CLOSE  | DONE     |                                               |
-| $FFC6   | CHKIN  | PARTIAL  | * work in progress                            |
-| $FFC9   | CHKOUT | PARTIAL  | * work in progress                            |
-| $FFCC   | CLRCHN | PARTIAL  | * work in progress                            |
+| $FFC6   | CHKIN  | DONE     |                                               |
+| $FFC9   | CHKOUT | PARTIAL  |                                               |
+| $FFCC   | CLRCHN | DONE     |                                               |
 | $FFCF   | CHRIN  | PARTIAL  |                                               |
 | $FFD2   | CHROUT | PARTIAL  |                                               |
-| $FFD5   | LOAD   | PARTIAL  | no VERIFY support yet                         |
+| $FFD5   | LOAD   | PARTIAL  | * work in progress, no VERIFY support yet     |
 | $FFD8   | SAVE   | NOT DONE | * work in progress                            |
 | $FFDB   | SETTIM | NOT DONE |                                               |
 | $FFDE   | RDTIM  | NOT DONE |                                               |
 | $FFE1   | STOP   | PARTIAL  | no connection with UDTIM                      |
 | $FFE4   | GETIN  | PARTIAL  | * work in progress                            |
-| $FFE7   | CLALL  | PARTIAL  | * work in progress                            |
+| $FFE7   | CLALL  | DONE     |                                               |
 | $FFEA   | UDTIM  | NOT DONE |                                               |
 | $FFED   | SCREEN | DONE     |                                               |
 | $FFF0   | PLOT   | NOT DONE |                                               |

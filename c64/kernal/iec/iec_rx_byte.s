@@ -1,8 +1,16 @@
-	;; Receive a byte from the IEC bus.
-	;; Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc,
-	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf (page 11)
+;; Receive a byte from the IEC bus.
+;; Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc,
+;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf (page 11)
+;;
+;; Preserves .X and .Y registers
 
 iec_rx_byte:
+
+	;; Store .X and .Y on the stack - preserve them
+	txa
+	pha
+	tya
+	pha
 
 	;; Timing is critical here - execute on disabled IRQs
 	php
@@ -96,12 +104,19 @@ iec_rx_clk_wait2:
 	dey                     ; 2 cycles
     bne iec_rx_clk_wait2    ; 3 cycles if jumped
     
-    ;; Timeout
-    jsr kernalstatus_EOI
-    pla
-    plp
-    sec ; XXX confirm that sec is really a way to report timeout here
-    rts
+	;; Timeout
+	jsr kernalstatus_EOI
+	pla
+	plp
+    
+	;; Restore registers
+	pla
+	tay
+	pla
+	tax
+    
+	sec ; XXX confirm that sec is really a way to report timeout here
+	rts
 *
 	;; More bits?
 	dex
@@ -118,6 +133,15 @@ iec_rx_clk_wait2:
 
 	;; Return no-error
 	plp
+	
+	;; Restore registers
+	sta IEC_TMP2 ; $A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html
+	pla
+	tay
+	pla
+	tax
+	lda IEC_TMP2
+
 	clc
 	rts
 

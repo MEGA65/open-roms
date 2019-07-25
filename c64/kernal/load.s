@@ -64,7 +64,7 @@ load:
 
 	;; Open channel #0 (p16)
 	lda #$F0 ; $F0 for TKSA + 0 for channel number
-	sta BSOUR
+	sta IEC_TMP2
 	jsr iec_tx_command
 	bcs lvs_load_verify_error
 	jsr iec_tx_command_finalize
@@ -89,7 +89,7 @@ load_send_filename:
 	sec
 *
 	;; Transmit one character
-	sta BSOUR
+	sta IEC_TMP2
 	jsr iec_tx_byte
 
 	jmp load_send_filename
@@ -106,7 +106,7 @@ load_filename_sent:
 	bcs lvs_load_verify_error
 
 	lda #$60 ; open channel / data (p3) , required according to p13
-	sta BSOUR
+	sta IEC_TMP2
 	jsr iec_tx_command
 	bcs lvs_load_verify_error
 
@@ -161,7 +161,7 @@ load_loop:
 	jsr listen
 
 	lda #$E0
-	sta BSOUR
+	sta IEC_TMP2
 	jsr iec_tx_command
 	jsr iec_tx_command_finalize
 

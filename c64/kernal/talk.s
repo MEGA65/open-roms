@@ -25,7 +25,7 @@ talk:
 
 common_talk_listen: ; common part of TALK and LISTEN
 
-	sta BSOUR
+	sta IEC_TMP2
 	jmp iec_tx_command
 
 

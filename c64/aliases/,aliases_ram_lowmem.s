@@ -31,6 +31,9 @@
 
 	.alias TIME       $A0 ; $A0-$A2, jiffy clock
 
+	.alias IEC_TMP1   $A3 ; temporary variable for tape and IEC
+	.alias IEC_TMP2   $A4 ; temporary variable for tape and IEC
+
 	;; 2-byte location below seems to be a good place for temporary storage,
 	;; it seems used for timing during tape reads only - see:
 	;; - 'C64 Programmer's Reference Guide', page 314

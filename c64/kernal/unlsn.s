@@ -21,7 +21,7 @@ unlsn:
 
 common_unlsn_second: ; common part of UNSLS and SECOND
 
-	sta BSOUR
+	sta IEC_TMP2
 	jsr iec_tx_command
 	bcs + ; branch if error
 	jmp iec_tx_command_finalize

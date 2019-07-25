@@ -29,7 +29,7 @@ close:
 *
 	lda SAT, y ; get secondary address
 	ora $E0 ; CLOSE command
-	sta BSOUR
+	sta IEC_TMP2
 	jsr iec_tx_command
 	bcs close_remove_from_table
 	jsr iec_tx_command_finalize

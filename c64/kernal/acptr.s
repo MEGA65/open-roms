@@ -8,10 +8,8 @@
 ;; CPU registers that has to be preserved (see [RG64]): .Y
 ;;
 
-;; XXX preserve register Y!
 
 acptr:
-	;; XXX temporary implementation
 	jsr kernalstatus_reset
 	jmp iec_rx_byte
 

@@ -3,9 +3,8 @@
 ;; Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
 ;; and http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
-;; Expects byte to send in BSOUR; Carry flag set = signal EOI
-
-;; XXX is it OK to use BSOUR for data exchange? Maybe there is a better way?
+;; Expects byte to send in IEC_TMP2 ($A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html)
+;; Carry flag set = signal EOI
 
 iec_tx_common:
 
@@ -42,11 +41,10 @@ iec_tx_common:
 
 iec_tx_common_sendbit:
 	;; Is next bit 0 or 1?
-	lda BSOUR
+	lda IEC_TMP2
 	lsr
-	sta BSOUR
+	sta IEC_TMP2
 	bcs +
-	;; XXX we are actually destroying BSOUR here... is it allowed?
 
 	;; Bit is 0
 	jsr iec_release_clk_pull_data

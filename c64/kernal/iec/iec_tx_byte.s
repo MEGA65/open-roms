@@ -1,7 +1,9 @@
 
 ;; Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
 
-;; Expects byte to send in BSOUR; Carry flag set = signal EOI
+;; Expects byte to send in IEC_TMP2 ($A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html)
+;; Carry flag set = signal EOI
+;;
 ;; Preserves .X and .Y registers
 
 

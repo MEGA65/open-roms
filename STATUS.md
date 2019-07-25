@@ -79,7 +79,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | $FF9C   | MEMBOT | DONE     |                                               |
 | $FF9F   | SCNKEY | DONE     | could be better integrated with ROM (aliases) |
 | $FFA2   | SETTMO | NOT DONE |                                               |
-| $FFA5   | ACPTR  | PARTIAL  | * work in progress                            |
+| $FFA5   | ACPTR  | DONE     |                                               |
 | $FFA8   | CIOUT  | DONE     |                                               |
 | $FFAB   | UNTLK  | DONE     |                                               |
 | $FFAE   | UNLSN  | DONE     |                                               |

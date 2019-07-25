@@ -25,11 +25,7 @@ close:
 
 	;; IEC device
 
-	;; First check whether we have something to be sent in the buffer
-	lda C3PO
-	beq +
-	sec ; send it with EOI
-	jsr iec_tx_byte ; send the command regardless of the status
+	jsr iec_tx_flush ; make sure no byte is awaiting
 *
 	lda SAT, y ; get secondary address
 	ora $E0 ; CLOSE command

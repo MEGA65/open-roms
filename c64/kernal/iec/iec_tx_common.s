@@ -5,6 +5,7 @@
 
 ;; Expects byte to send in BSOUR; Carry flag set = signal EOI
 
+;; XXX is it OK to use BSOUR for data exchange? Maybe there is a better way?
 
 iec_tx_common:
 

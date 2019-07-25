@@ -18,9 +18,6 @@ second:
 	bcs kernalerror_FILE_NOT_INPUT
 
 	ora #$60
-	sta BSOUR
-	jsr iec_tx_command
-	bcs + ; branch if error
-	jmp iec_tx_command_finalize
-*
-	rts
+
+	jmp common_unlsn_second
+

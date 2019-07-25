@@ -18,15 +18,8 @@ tksa:
 	bcs kernalerror_FILE_NOT_INPUT
 
 	ora #$F0
-	sta BSOUR
-	jsr iec_tx_command
-	bcs + ; branch if error
-	;; XXX - is it really the right place to do a turnaround? I've got some doubts
-	;; (it forces us to send the TKSA command 'manually' sometimes), but
-	;; Luigi Di Fraia (https://luigidifraia.wordpress.com/2017/06/27/codebase64-on-the-kernal-behaviour/)
-	;; claims TKSA Kernal routine actually does the turnaround
-	jmp iec_turnaround_to_listen
-*
-	rts
+
+	jmp common_untlk_tksa
+
 
 

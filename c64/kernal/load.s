@@ -62,42 +62,13 @@ load:
 	jsr listen
 	bcs lvs_device_not_found_error
 
-	;; Open channel #0 (p16)
-	lda #$F0 ; $F0 for TKSA + 0 for channel number
-	sta IEC_TMP2
-	jsr iec_tx_command
-	bcs lvs_load_verify_error
-	jsr iec_tx_command_finalize
+	;; Open channel 0 (reserved for file reading)
+	lda #$00
+	jsr iec_cmd_open
 	bcs lvs_load_verify_error
 
-	;; Send filename (p16)
-	ldy #0
-
-load_send_filename:
-
-	cpy FNLEN
-	beq load_filename_sent
-
-	ldx #<current_filename_ptr
-	jsr peek_under_roms
-	iny
-
-	;; Set Carry flag on the last file name character, to mark EOI
-	cpy FNLEN
-	clc
-	bne +
-	sec
-*
-	;; Transmit one character
-	sta IEC_TMP2
-	jsr iec_tx_byte
-
-	jmp load_send_filename
-
-load_filename_sent:
-
-	;; Command device to unlisten to indicate end of file name. (p16)
-	jsr unlsn
+	;; Send file name
+	jsr lvs_send_file_name
 	bcs lvs_load_verify_error
 
 	;; Now command device to talk (p16)

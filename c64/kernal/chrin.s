@@ -21,7 +21,7 @@ chrin:
 	beq chrin_keyboard ; #$00 - keyboard
 	;; XXX add screen support
 
-	jsr iec_devnum_check
+	jsr iec_check_devnum
 	bcs chrin_done_fail ; not a supported device
 
 chrin_iec:

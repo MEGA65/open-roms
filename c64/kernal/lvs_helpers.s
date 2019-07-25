@@ -3,6 +3,28 @@
 ;; Helper functions for various LOAD/VERIVY/SAVE routine variants (IEC / U64 / etc.)
 ;;
 
+lvs_send_file_name:
+	ldy #0
+lvs_send_file_name_loop:
+	cpy FNLEN
+	beq lvs_send_file_name_done
+	ldx #<current_filename_ptr
+	jsr peek_under_roms
+	iny
+	;; Set Carry flag on the last file name character, to mark EOI
+	cpy FNLEN
+	clc
+	bne +
+	sec
+*
+	;; Transmit one character
+	sta IEC_TMP2
+	jsr iec_tx_byte
+	jmp lvs_send_file_name_loop
+lvs_send_file_name_done:
+	jsr unlsn
+	rts
+
 lvs_handle_byte_load_verify:
 
 	;; XXX add VERIFY support

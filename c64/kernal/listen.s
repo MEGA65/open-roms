@@ -17,9 +17,10 @@ listen:
 	jsr iec_tx_flush
 
 	;; Check whether device number is correct
-	jsr iec_devnum_check
-	bcs kernalerror_DEVICE_NOT_FOUND
-
+	jsr iec_check_devnum
+	bcc +
+	jmp kernalerror_DEVICE_NOT_FOUND
+*
 	;; Encode and execute the command
 	ora #$20
 

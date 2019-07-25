@@ -27,16 +27,44 @@ chrout:
 
 	cmp #$03 ; screen
 	beq chrout_screen
-	
-	jsr iec_devnum_check
+
+	jsr iec_check_devnum
 	bcs chrout_done_fail ; not a supported device
 
 chrout_iec:
 
 	lda last_printed_character_ascii
 	jsr JCIOUT
-	bcs chrout_done_fail
-	jmp chrout_done
+	bcc chrout_done
+	
+	;; FALLTROUGH
+
+chrout_done_fail:
+	jsr show_cursor_if_enabled
+	
+	plp
+	
+	;; Restore X and Y, set carry to mark success on exit
+	pla
+	tay
+	pla
+	tax
+	sec ; indicate failure
+	rts
+
+chrout_done:
+	jsr show_cursor_if_enabled
+	
+	plp
+	
+	;; Restore X and Y, set carry to mark success on exit
+	pla
+	tay
+	pla
+	tax
+	lda last_printed_character_ascii
+	clc ; indicate success
+	rts
 
 chrout_screen:
 
@@ -399,33 +427,7 @@ not_quote:
 	sta current_screen_x
 	jmp screen_advance_to_next_line
 no_screen_advance_to_next_line:
-
-chrout_done:
-	jsr show_cursor_if_enabled
-	
-	plp
-	
-	;; Restore X and Y, set carry to mark success on exit
-	pla
-	tay
-	pla
-	tax
-	lda last_printed_character_ascii
-	clc ; indicate success
-	rts
-
-chrout_done_fail:
-	jsr show_cursor_if_enabled
-	
-	plp
-	
-	;; Restore X and Y, set carry to mark success on exit
-	pla
-	tay
-	pla
-	tax
-	sec ; indicate failure
-	rts
+	jmp chrout_done
 
 screen_grow_logical_line:
 	ldy current_screen_y

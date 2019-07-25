@@ -19,13 +19,7 @@ unlsn:
 	;; Buffer empty, send the command
 	lda #$3F
 
-common_unlsn_second: ; common part of UNSLS and SECOND
+	jmp common_open_close_unlsn_second
 
-	sta IEC_TMP2
-	jsr iec_tx_command
-	bcs + ; branch if error
-	jmp iec_tx_command_finalize
-*
-	rts
 
 

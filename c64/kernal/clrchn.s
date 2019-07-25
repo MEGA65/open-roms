@@ -13,14 +13,14 @@ clrchn:
 
 	;; Handle IEC input device
 	lda DFLTN
-	jsr iec_devnum_check
+	jsr iec_check_devnum
 	bcs +
 	;; Previous device was IEC one - send UNTALK first
 	jsr untlk
 *
 	;; Restore output device to default
 	lda DFLTO
-	jsr iec_devnum_check
+	jsr iec_check_devnum
 	bcs +
 	;; Handle IEC output device
 	jsr unlsn

@@ -8,7 +8,6 @@
 ;; CPU registers that has to be preserved (see [RG64]): none
 ;;
 
-;; XXX send the name to the drive (if it's length is non-zero)
 
 open:
 
@@ -51,7 +50,37 @@ open_has_space:
 
 	iny
 	sty LDTND
+
+	;; Check for command to send
+	lda FNLEN
+	beq open_done_success
 	
+	;; Check for IEC device
+	lda current_device_number
+	jsr iec_check_devnum
+	bcc open_iec
+
+	;; FALLTROUGH
+open_done_success:
+
 	clc
 	rts
+
+open_iec:
+
+	;; We have a command to send to IEC device
+	jsr listen
+	bcc +
+	jmp kernalerror_DEVICE_NOT_FOUND
+*
+	lda current_secondary_address
+	jsr iec_cmd_open
+	bcc +
+	jmp kernalerror_DEVICE_NOT_FOUND ; XXX find a better error message for wrong channel (create new one?)
+*
+	;; Send command ('file name')
+	jsr lvs_send_file_name
+
+	jmp open_done_success
+
 

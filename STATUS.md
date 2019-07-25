@@ -88,7 +88,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | $FFB7   | READST | DONE     |                                               |
 | $FFBA   | SETFLS | DONE     |                                               |
 | $FFBD   | SETNAM | DONE     |                                               |
-| $FFC0   | OPEN   | PARTIAL  | * work in progress                            |
+| $FFC0   | OPEN   | DONE     |                                               |
 | $FFC3   | CLOSE  | DONE     |                                               |
 | $FFC6   | CHKIN  | DONE     |                                               |
 | $FFC9   | CHKOUT | PARTIAL  |                                               |

@@ -42,7 +42,7 @@ chkin:
 
 	;; For IEC devices, send TALK + TKSA first
 	lda FAT,Y
-	jsr iec_devnum_check
+	jsr iec_check_devnum
 	bcs chkin_set_device
 
 	jsr talk
@@ -125,7 +125,7 @@ ckout:
 
 	;; For IEC devices, send LISTEN + SECOND first
 	lda FAT,Y
-	jsr iec_devnum_check
+	jsr iec_check_devnum
 	bcs chkin_set_device
 
 	jsr listen

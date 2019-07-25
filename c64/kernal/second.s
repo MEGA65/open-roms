@@ -12,12 +12,14 @@
 
 second:
 
-	;; Due to TKSA/SECOND command encoding (see https://www.pagetable.com/?p=1031),
+	;; Due to OPEN/CLOSE/TKSA/SECOND command encoding (see https://www.pagetable.com/?p=1031),
 	;; allowed channels are 0-15; report error if out of range
 	cmp #$10
-	bcs kernalerror_FILE_NOT_INPUT
-
+	bcc + 
+	jmp kernalerror_DEVICE_NOT_FOUND ; XXX find a better error message for wrong channel (create new one?)
+*
 	ora #$60
 
-	jmp common_unlsn_second
+	jmp common_open_close_unlsn_second
+
 

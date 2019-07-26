@@ -15,14 +15,16 @@
 ;; Repeated calls after that read out the successive bytes of the line of input.
 
 chrin:
-	;; First determine the device number
+
+	;; Determine the device number
 	lda DFLTN
 
 	beq chrin_keyboard ; #$00 - keyboard
 	;; XXX add screen support
 
 	jsr iec_check_devnum
-	bcs chrin_done_fail ; not a supported device
+	bcc chrin_iec
+	jmp lvs_device_not_found_error ;  not a supported device
 
 chrin_iec:
 

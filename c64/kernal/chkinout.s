@@ -44,13 +44,13 @@ chkin:
 	lda FAT,Y
 	jsr iec_check_devnum
 	bcs chkin_set_device
-
+	
 	jsr talk
-	bcs chkinout_end ; don't set DFLTN in case of failure
+	bcs chkinout_device_not_present ; don't set DFLTN in case of failure
 
 	lda LAT, Y
 	jsr tksa
-	bcs chkinout_end
+	bcs chkinout_device_not_present
 
 chkin_set_device:
 	lda FAT,Y
@@ -126,16 +126,16 @@ ckout:
 	;; For IEC devices, send LISTEN + SECOND first
 	lda FAT,Y
 	jsr iec_check_devnum
-	bcs chkin_set_device
+	bcs chkout_set_device
 
 	jsr listen
-	bcs chkinout_end ; don't set DFLTO in case of failure
+	bcs chkinout_device_not_present ; don't set DFLTO in case of failure
 
 	lda LAT, Y
 	jsr second
-	bcs chkinout_end
+	bcs chkinout_device_not_present
 
-hkout_set_device:
+chkout_set_device:
 	lda FAT,Y
 	sta DFLTO
 	clc ; for success

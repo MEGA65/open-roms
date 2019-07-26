@@ -103,6 +103,7 @@ wedge_dos_status:
 	;; Print out everything retrieved from the drive
 	bne +
 	jsr via_IBASIN
+	bcs wedge_dos_basic_error
 	jsr via_IBSOUT
 	jmp -
 *

@@ -31,4 +31,8 @@ clall:
 	tay
 
 	;; 'C64 Programmers Reference Guide', page 281, claims it calls CLRCHN too
-	jmp clrchn
+	jsr clrchn
+	
+	;; Not sure whether original Kernal does so, but it seems sane to also clear possible errors
+	jmp kernalstatus_reset
+

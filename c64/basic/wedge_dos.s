@@ -61,7 +61,16 @@ wedge_dos_command:
 	jsr via_IBSOUT
 	bcs wedge_dos_basic_error
 
-	;; XXX check status - print it if not OK
+	;; Retrieve status, print it if not OK
+	jsr via_ICLALL
+	jsr wedge_dos_status_get
+	lda BUF+0
+	cmp #$30 ; '0'
+	bne wedge_dos_status_print
+	lda BUF+1
+	cmp #$30 ; '0'
+	bne wedge_dos_status_print
+
 	;; Clean-up and exit
 	jmp wedge_dos_clean_exit
 
@@ -82,7 +91,7 @@ wedge_dos_change_drive:
 	sta current_device_number
 	jmp basic_end_of_line
 
-wedge_dos_status:
+wedge_dos_status_get:
 
 	;; Here the flow is mostly the same as in the example from
 	;; https://codebase64.org/doku.php?id=base:reading_the_error_channel_of_a_disk_drive
@@ -97,20 +106,39 @@ wedge_dos_status:
 	ldx #$0F
 	jsr via_ICHKIN
 	bcs wedge_dos_basic_error
+	
+	ldy #$00
 *
+	cpy #$50 ; buffer overflow protection
+	beq +
 	jsr JREADST ; retrieve errors
 	;; XXX error in case of status != EOF
 	;; Print out everything retrieved from the drive
 	bne +
 	jsr via_IBASIN
 	bcs wedge_dos_basic_error
-	jsr via_IBSOUT
+	sta BUF, y
+	iny
 	jmp -
 *
-	;; Print new line
-	lda #$0D
-	jsr via_IBSOUT
+	rts
 
+wedge_dos_status:
+	jsr wedge_dos_status_get
+	;; FALLTROUGH
+
+wedge_dos_status_print:
+
+	;; Print buffered status
+	ldx #$00
+*
+	dey
+	bmi +
+	lda BUF, x
+	jsr via_IBSOUT
+	inx
+	bne -
+*
 	;; Clean-up and exit
 	jmp wedge_dos_clean_exit
 
@@ -173,7 +201,7 @@ wedge_dos_directory_line:
 
 wedge_dos_directory_display:
 
-	lda #$00 ; extra protection
+	lda #$00 ; extra protection agains buffer overflow
 	sta BUF, y
 
 	;; Display line
@@ -187,6 +215,9 @@ wedge_dos_directory_display:
 
 wedge_dos_clean_exit:
 	jsr via_ICLALL
+	;; Print new line
+	lda #$0D
+	jsr via_IBSOUT
 	jmp basic_end_of_line
 
 wedge_dos_basic_error:

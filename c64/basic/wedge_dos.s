@@ -190,10 +190,11 @@ wedge_dos_clean_exit:
 	jmp basic_end_of_line
 
 wedge_dos_basic_error:
+	pha
+	jsr via_ICLALL
+	pla
 	tax
 	dex
-	jsr do_basic_error
-	jsr via_ICLALL
-	jmp basic_end_of_line
+	jmp do_basic_error
 
 ;; END wedge support

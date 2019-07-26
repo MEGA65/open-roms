@@ -37,28 +37,11 @@ wedge_dos:
 
 wedge_dos_command:
 
-	;; Set remaining file parameters, open the channel
-	lda #$00  ; empty file name
+	;; Provide command name
+	jsr wedge_dos_setnam
+	
 	jsr JSETNAM
 	jsr via_IOPEN
-	bcs wedge_dos_basic_error
-*
-	;; Set channel for output
-	ldx #$0F
-	jsr via_ICKOUT
-	bcs wedge_dos_basic_error
-*   
-	jsr basic_fetch_and_consume_character
-	cmp #$00
-	beq +
-
-	jsr via_IBSOUT
-	bcs wedge_dos_basic_error
-	jmp -
-*
-	;; Finalize command
-	lda #$0D
-	jsr via_IBSOUT
 	bcs wedge_dos_basic_error
 
 	;; Retrieve status, print it if not OK
@@ -149,18 +132,8 @@ wedge_dos_directory:
 	lda #$00
 	sta current_secondary_address
 
-	;; Now determine the length of the 'file' name
-	ldy #$FF
-*
-	iny
-	lda (basic_current_statement_ptr), y
-	bne -
-	
-	;; Set the name to open
-	tya
-	ldx basic_current_statement_ptr+0
-	ldy basic_current_statement_ptr+1
-	jsr JSETNAM
+	;; Provide file name
+	jsr wedge_dos_setnam
 
 	;; Open the file
 	jsr via_IOPEN
@@ -227,5 +200,19 @@ wedge_dos_basic_error:
 	tax
 	dex
 	jmp do_basic_error
+
+wedge_dos_setnam:
+	;; Now determine the length of the 'file' name
+	ldy #$FF
+*
+	iny
+	lda (basic_current_statement_ptr), y
+	bne -
+	
+	;; Set the name to open
+	tya
+	ldx basic_current_statement_ptr+0
+	ldy basic_current_statement_ptr+1
+	jmp JSETNAM
 
 ;; END wedge support

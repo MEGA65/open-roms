@@ -44,10 +44,12 @@
 	
 	.alias STAL       $C1 ; $C1-$C2 LOAD/SAVE start address
 
-    ;;
+	;;
 	;; Other low memory addresses
-    ;;
-	
+	;;
+    
+	.alias BUF        $200 ; $200-$250 (81 bytes), BASIC line editor input buffer
+
 	;; Kernal tables for opened files, 10 entries each
 	.alias LAT        $259 ; logical file numbers
 	.alias FAT        $263 ; device numbers

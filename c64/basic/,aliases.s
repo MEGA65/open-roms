@@ -91,7 +91,7 @@
 	.alias rs232_rx_buffer_ptr $F7
 	.alias rs232_tx_buffer_ptr $F9
 
-	.alias basic_input_buffer $0200
+	.alias basic_input_buffer BUF
 		
 	; "Compute's Mapping the 64" book
 	.alias keyboard_buffer $0277

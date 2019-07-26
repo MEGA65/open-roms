@@ -61,7 +61,7 @@ wedge_dos_command:
 	jsr via_IBSOUT
 	bcs wedge_dos_basic_error
 
-	;; XXX close here, check status - print it if not OK
+	;; XXX check status - print it if not OK
 	;; Clean-up and exit
 	jmp wedge_dos_clean_exit
 
@@ -115,12 +115,77 @@ wedge_dos_status:
 
 wedge_dos_directory:
 
-	;; XXX - implement this
-	jmp do_NOT_IMPLEMENTED_error
+	;; First change the secondary address to the one suitable for
+	;; directory loading
+	lda #$00
+	sta current_secondary_address
+
+	;; Now determine the length of the 'file' name
+	ldy #$FF
+*
+	iny
+	lda (basic_current_statement_ptr), y
+	bne -
+	
+	;; Set the name to open
+	tya
+	ldx basic_current_statement_ptr+0
+	ldy basic_current_statement_ptr+1
+	jsr JSETNAM
+
+	;; Open the file
+	jsr via_IOPEN
+	bcs wedge_dos_basic_error
+
+	;; Set channel for input
+	ldx #$0F
+	jsr via_ICHKIN
+	bcs wedge_dos_basic_error
+
+	;; Ignore start address (2 first bytes) - XXX check for errors
+	jsr via_IBASIN
+	bcs wedge_dos_basic_error
+	jsr via_IBASIN
+	bcs wedge_dos_basic_error
+
+wedge_dos_directory_line:
+
+	;; Load a single line, reuse BASIC input buffer
+	ldy #$FF
+*
+	iny
+	jsr via_IBASIN
+	bcs wedge_dos_basic_error
+	sta BUF, y
+	cpy #$50
+	beq + ; line too long, terminate loading file
+	jsr JREADST
+	beq + ; end of file
+	lda BUF, y
+	bne -
+	;; End of line, but not end of file
+	beq wedge_dos_directory_display
+*
+	lda #K_STS_END_OF_FILE
+	sta IOSTATUS ; make sure end of file is marked
+	;; FALLTROUGH
+
+wedge_dos_directory_display:
+
+	lda #$00 ; extra protection
+	sta BUF, y
+
+	;; Display line
+	ldx #<BUF
+	jsr list_single_line
+
+	;; Read & display next line or quit
+	lda IOSTATUS
+	beq wedge_dos_directory_line
+	;; FALLTROUGH
 
 wedge_dos_clean_exit:
 	jsr via_ICLALL
-	jsr via_ICLRCH
 	jmp basic_end_of_line
 
 wedge_dos_basic_error:
@@ -128,7 +193,6 @@ wedge_dos_basic_error:
 	dex
 	jsr do_basic_error
 	jsr via_ICLALL
-	jsr via_ICLRCH
 	jmp basic_end_of_line
 
 ;; END wedge support

@@ -26,6 +26,12 @@ list_more_lines:
 	bmi +
 	jmp basic_do_break
 *
+	jsr list_single_line
+	;; Now link to the next line
+	jsr basic_find_next_line
+	jmp list_loop
+
+list_single_line: ; entry point needed by DOS wedge
 	;; Print line number
 	ldy #3
 	jsr peek_under_roms
@@ -116,8 +122,5 @@ list_end_of_line:
 	;; Print end of line
 	lda #$0d
 	jsr via_IBSOUT
+	rts
 
-	;; Now link to the next line
-	jsr basic_find_next_line
-	jmp list_loop
-	

@@ -14,7 +14,7 @@ setnam:
 	;; I hope this one won't cause similarity to CBM code
 
 	sta FNLEN
-	sty STAL + 1
-	stx STAL + 0
+	sty FNADDR + 1
+	stx FNADDR + 0
 
 	rts

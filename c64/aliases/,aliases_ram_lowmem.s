@@ -41,7 +41,9 @@
 	.alias CMP0       $B0 ; $B0-$B1
 	
 	.alias FNLEN      $B7 ; current file name length
-	
+
+	.alias FNADDR     $BB ; $BB-$BC, current file name pointer
+
 	.alias STAL       $C1 ; $C1-$C2 LOAD/SAVE start address
 
 	;;

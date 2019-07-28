@@ -45,7 +45,7 @@ close_remove_from_table:
 	sta FAT-1, y
 	lda SAT, y
 	sta SAT-1, y
-	jmp -
+	jmp close_remove_from_table
 *
 	;; Decrement the list size variable
 	dec LDTND

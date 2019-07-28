@@ -7,12 +7,8 @@
 
 iec_cmd_close:
 
-	jsr iec_tx_flush
-
-	;; Due to OPEN/CLOSE/TKSA/SECOND command encoding (see https://www.pagetable.com/?p=1031),
-	;; allowed channels are 0-15; report error if out of range
-	cmp #$10
-	bcc + 
+	jsr iec_check_channel_openclose
+	bcc +
 	jmp kernalerror_FILE_NOT_INPUT
 *
 	ora #$E0

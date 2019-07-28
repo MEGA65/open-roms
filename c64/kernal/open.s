@@ -78,9 +78,11 @@ open_iec:
 	bcc +
 	jmp kernalerror_DEVICE_NOT_FOUND ; XXX find a better error message for wrong channel (create new one?)
 *
+
+	;; We need our helpers to get to filenames under ROMs or IO area
+	jsr install_ram_routines
+
 	;; Send command ('file name')
 	jsr lvs_send_file_name
 
 	jmp open_done_success
-
-

@@ -129,8 +129,11 @@ wedge_dos_directory:
 
 	;; First change the secondary address to the one suitable for
 	;; directory loading
-	lda #$00
-	sta current_secondary_address
+	;; XXX
+	lda #$00 ; logical device number
+	ldx current_device_number
+	ldy #$60
+	jsr JSETFLS
 
 	;; Provide file name
 	jsr wedge_dos_setnam
@@ -139,8 +142,8 @@ wedge_dos_directory:
 	jsr via_IOPEN
 	bcs wedge_dos_basic_error
 
-	;; Set channel for input
-	ldx #$0F
+	;; Set channel for file reading
+	ldx #$00
 	jsr via_ICHKIN
 	bcs wedge_dos_basic_error
 
@@ -162,7 +165,9 @@ wedge_dos_directory_line:
 	cpy #$50
 	beq + ; line too long, terminate loading file
 	jsr JREADST
-	beq + ; end of file
+	bne + ; end of file
+	cpy #$04 ; 2 bytes (pointer to next line) + 2 bytes (line number) 
+	bcc -
 	lda BUF, y
 	bne -
 	;; End of line, but not end of file
@@ -174,11 +179,18 @@ wedge_dos_directory_line:
 
 wedge_dos_directory_display:
 
+	cpy #$05 ; protection against malformed directory
+	bcc wedge_dos_clean_exit
+
 	lda #$00 ; extra protection agains buffer overflow
 	sta BUF, y
 
 	;; Display line
 	ldx #<BUF
+	stx basic_current_line_ptr+0
+	ldx #>BUF
+	stx basic_current_line_ptr+1
+	ldx #basic_current_line_ptr
 	jsr list_single_line
 
 	;; Read & display next line or quit

@@ -5,10 +5,14 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 
 * improved keyboard scanning, supports multi-key roll-over and rejection of spurious joystick input
 * joystick (port 1) can be used to move text cursor
-* banking in the BASIC interpreter: 61436 bytes free
-* LOAD start/end addresses are displayed, in the Final cartridge style
-* LOAD command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
-* LOAD secondary address over 255 is considered a start address; NOTE: syntax will most likely change here in the future!
+* uses RAM under ROM and I/O: 61436 bytes free
+* extended `LOAD` command
+    * start/end addresses are displayed, in the Final cartridge style
+    * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
+    * secondary address over 255 is considered a start address
+* DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
+
+NOTE: extra features and their syntax can change in the future!
 
 # Features missing
 
@@ -27,7 +31,6 @@ The following ROM features are currently missing:
 Features currently being worked on:
 
 * IEC support
-* DOS wedge
 
 
 # API status

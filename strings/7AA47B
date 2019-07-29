@@ -1,0 +1,3 @@
+Access to $7A (but instruction opcode does not match) + LDY $7B ($7A-$7B is a documented vector)
+
+Instruction and a half, clearly a zeropage vector access - not copyrightable.

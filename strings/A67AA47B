@@ -1,0 +1,5 @@
+LDX $7A + LDY $7B
+
+Loading TXTPTR value to X/Y registers, would be 1 instruction on any 16-bit CPU. Not creative - not copyrightable.
+
+

@@ -1,0 +1,3 @@
+JMP $FFBD (SETNAM) + LDA #$ (value does not match)
+
+Instruction (jump to an official, documented location) + opcode of another one. Not copyrightable.

@@ -1,0 +1,3 @@
+RTS (belonging to previopus subroutine) + LDA $9D (MSGFLG) + BPL
+
+The only similarity here is, that the subroutine starts by checking a documented variable. Not copyrightable.

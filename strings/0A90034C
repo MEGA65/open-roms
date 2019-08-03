@@ -1,0 +1,4 @@
+$0A + BCC addr + JMP (address does not match)
+
+Some part + BCC / JMP combo (typical construction on a 6502, where there is no conditional far jump), even the address does not match. Not copyrightable.
+

@@ -1,0 +1,3 @@
+AND #$DF + STA $DD00
+
+$DD00 is a hardware register, where one typically set/unset/read individual bits. Here we just have a trivial bit manipulation - not creeative, not copyrightable.

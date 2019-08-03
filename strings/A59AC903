@@ -1,0 +1,3 @@
+LDA $9A (DFLTO) + CMP #$03
+
+Check whether the default output device is screen - not even fully matching the original ROM (different branch instruction used) - might be one onstruction on other architecture. Not copyrightable.

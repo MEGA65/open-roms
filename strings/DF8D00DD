@@ -1,0 +1,3 @@
+$EF + STA $DD00
+
+Instruction (storing acumulator in a documented I/O register) and some part. Not copyrightable.

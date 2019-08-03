@@ -1,0 +1,4 @@
+$02 + LDA $0263, X (FAT table access)
+
+Single instruction (indexed access to a documented table) + some part. Not copyrightable.
+

@@ -143,6 +143,6 @@ testremote: build/newkern_generic build/newbasic_generic
 testm65: build/newc65
 	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R build/newc65 -4
 
-testsimilarity: build/newrom_generic src/similarity
+testsimilarity: build/newrom_generic $(TOOL_SIMILARITY)
 	$(TOOL_SIMILARITY) kernal build/newrom_generic
 	$(TOOL_SIMILARITY) basic build/newrom_generic

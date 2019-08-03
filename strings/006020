@@ -1,0 +1,3 @@
+$00 + RTS (or instruction part) + JSR xxxx
+
+Single byte instruction with two halfs, or half of the instruction + half of other. Not copyrightable.

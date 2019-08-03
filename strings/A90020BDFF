@@ -1,0 +1,4 @@
+LDA #$00 + JSR $FFBD (SETNAM routine)
+
+Code to set the file name as empty ($FFBD is a standard, documented address). Trivial - not copyrightable.
+

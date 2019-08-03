@@ -1,0 +1,3 @@
+INY + LDA ($7A),Y + BEQ (offset does not match)
+
+Small part of a loop processing data pointed by TEXTPTR - not creative, not copyrightable.

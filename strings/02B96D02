@@ -1,0 +1,3 @@
+$02 + LDA $026D, X (SAT table access)
+
+Single instruction (indexed access to a documented table) + some part. Not copyrightable.

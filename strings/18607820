@@ -1,0 +1,3 @@
+CLC + RTS (end of subroutine, another one starts) + SEI + JSR (address does not match)
+
+Nothing creative here. First 2 instruction, which is are a common way to end a subroutine and indicate a success. Afterwards a start of new subroutine, which starts with disabling interrupts. Not copyrightable.

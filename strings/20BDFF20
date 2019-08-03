@@ -1,0 +1,3 @@
+JSR $FFBD (SETNAM) + JSR (address does not match)
+
+Instruction (jump to official, documented location) + one byte of another one. Not copyrightable.

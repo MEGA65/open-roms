@@ -25,7 +25,7 @@ TOOLS_LIST = $(TOOL_COLLECT_DATA) $(TOOL_COMPRESS_TEXT) $(TOOL_PNGPREPARE) $(TOO
 
 # Rules - main
 
-.PHONY: all clean
+.PHONY: all clean updatebin
 
 all: build/chargen build/newkern_generic build/newbasic_generic build/newc65 build/newkern_ultimate64 build/newbasic_ultimate64
 
@@ -38,6 +38,15 @@ clean:
 	@rm -f temp.s
 	@rm -f temp.map
 	@rm -f ophis.bin
+
+updatebin: build/chargen build/newbasic_generic build/newkern_generic build/newbasic_mega65 build/newkern_mega65 build/newbasic_ultimate64 build/newkern_ultimate64
+	cp build/chargen                  bin/chargen.rom
+	cp build/newbasic_generic         bin/basic_generic.rom
+	cp build/newkern_generic          bin/kernal_generic.rom
+	cp build/newbasic_mega65          bin/basic_mega65.rom
+	cp build/newkern_mega65           bin/kernal_mega65.rom
+	cp build/newbasic_ultimate64      bin/basic_ultimate64.rom
+	cp build/newkern_ultimate64       bin/kernal_ultimate64.rom
 
 # Rules - tools
 
@@ -66,7 +75,7 @@ $(TOOL_SIMILARITY): src/similarity.c Makefile
 build/chargen: $(TOOL_PNGPREPARE) assets/8x8font.png
 	$(TOOL_PNGPREPARE) charrom assets/8x8font.png build/chargen
 
-# Dependencies - XXX, why they need to be stated separately?
+# Dependencies
 
 build/basic_generic/OUT.BIN:  Ophis $(TOOLS_LIST) $(SRC_BASIC_generic) build/basic/packed_messages.s
 build/kernal_generic/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_generic)

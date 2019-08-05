@@ -125,19 +125,8 @@ load_loop:
 
 	;; Close file on drive
 
-	;; Command drive to stop talking and to close the file
-	jsr untlk
-
 	lda current_device_number
-	jsr listen
-
-	lda #$E0
-	sta IEC_TMP2
-	jsr iec_tx_command
-	jsr iec_tx_command_finalize
-
-	;; Tell drive to unlisten
-	jsr unlsn
+	jsr close_load
 
 	;; Return last address
 	jmp lvs_return_last_address

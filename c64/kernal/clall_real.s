@@ -9,7 +9,7 @@
 ;;
 
 
-clall:
+clall_real:
 
 	;; Store .Y register
 	tya
@@ -23,7 +23,7 @@ clall:
 	beq +
 	dey
 	lda LAT, y
-	jsr close ; XXX jump through ICLOSE?
+	jsr JCLOSE
 	jmp -
 *
 	;; Restore .Y register

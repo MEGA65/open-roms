@@ -38,7 +38,7 @@ close:
 	jsr iec_tx_command
 	bcs close_remove_from_table
 	jsr iec_tx_command_finalize
-	
+
 close_remove_from_table:
 	;; Remove channel from the table
 	iny
@@ -61,24 +61,4 @@ close_remove_from_table:
 close_error_not_found:
 
 	sec ; report success - not sure if original CLOSE does this, but it's nevertheless a good practice
-	rts
-
-close_load: ; entry also for LOAD routine
-
-	tax
-
-	;; Command drive to stop talking and to close the file
-	jsr untlk
-
-	txa
-	jsr listen
-
-	lda #$E0 ; CLOSE command
-	sta IEC_TMP2
-	jsr iec_tx_command
-	jsr iec_tx_command_finalize
-
-	;; Tell drive to unlisten
-	jsr unlsn
-
 	rts

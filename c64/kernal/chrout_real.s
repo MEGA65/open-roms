@@ -9,7 +9,7 @@
 ;;
 
 
-chrout:
+chrout_real:
 
 	sta last_printed_character_ascii
 

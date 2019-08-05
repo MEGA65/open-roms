@@ -20,7 +20,7 @@ print_string_loop:
 	lda (temp_string_ptr),y
 	beq print_string_end
 
-	jsr via_IBSOUT
+	jsr JCHROUT
 
 	txa
 	tay

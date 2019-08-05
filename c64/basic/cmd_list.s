@@ -42,7 +42,7 @@ list_single_line: ; entry point needed by DOS wedge
 	pla
 	jsr print_integer
 	lda #$20
-	jsr via_IBSOUT
+	jsr JCHROUT
 
 	;; Iterate through printing out the line
 	;; contents
@@ -111,16 +111,16 @@ list_not_rem:
 	bne list_print_loop
 
 list_is_literal:
-	jsr via_IBSOUT
+	jsr JCHROUT
 	iny
 	bne list_print_loop
 	
 list_end_of_line:
 	;; Clear reverse flag
 	lda #$92
-	jsr via_IBSOUT
+	jsr JCHROUT
 	;; Print end of line
 	lda #$0d
-	jsr via_IBSOUT
+	jsr JCHROUT
 	rts
 

@@ -7,9 +7,9 @@ basic_do_error:
 
 	;; Print ? at start
 	lda #$0d
-	jsr via_IBSOUT
+	jsr JCHROUT
 	lda #$3f
-	jsr via_IBSOUT
+	jsr JCHROUT
 
 	;; Print main part of error message
 	pla
@@ -18,7 +18,7 @@ basic_do_error:
 
 	;; Print ERROR at end
 	lda #$20
-	jsr via_IBSOUT
+	jsr JCHROUT
 	ldx #33
 	jsr print_packed_message
 
@@ -27,9 +27,9 @@ basic_do_error:
 	;; XXX print line number if not in direct mode
 
 	lda #$0d
-	jsr via_IBSOUT
+	jsr JCHROUT
 	lda #$0d
-	jsr via_IBSOUT
+	jsr JCHROUT
 
 	;; Reset stack, and go back to main loop
 	ldx #$fe

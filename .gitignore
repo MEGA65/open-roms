@@ -9,8 +9,8 @@ build/*
 
 # Input to the similarity tool - copyrighted material, we can't check it in!
 
-basic
-kernal
+/basic
+/kernal
 
 # Various IDE project files, temporary files, etc.
 

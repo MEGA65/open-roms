@@ -8,19 +8,19 @@
 
 vector_defaults:
 	.word default_irq_handler    ;; CINV
-	.word $0000                  ;; CBINV    XXX implement this
-	.word $0000                  ;; NMINV    XXX implement this
+	.word $0000                  ;; CBINV    XXX implement this, has to be $FE66 for autostart support
+	.word $0000                  ;; NMINV    XXX implement this, has to be $FE47 for autostart support
 	
 	.word open     ;; IOPEN
 	.word close    ;; ICLOSE
-	.word chkin    ;; ICHKIN
-	.word ckout    ;; ICKOUT
-	.word clrchn   ;; ICLRCH
+	.word chkin    ;; ICHKIN   XXX move routine to $F20E - for autostart support
+	.word ckout    ;; ICKOUT   XXX move routine to $F250 - for autostart support
+	.word clrchn   ;; ICLRCH   XXX move routine to $F333 - for autostart support
 	.word chrin    ;; IBASIN
-	.word chrout   ;; IBSOUT
+	.word chrout   ;; IBSOUT   XXX move routine to $F1CA - for autostart support
 	.word stop     ;; ISTOP
 	.word getin    ;; IGETIN
 	.word clall    ;; ICLALL
-	.word $0000    ;; USRCMD   XXX implement this
-	.word load     ;; ILOAD
+	.word $0000    ;; USRCMD   XXX implement this, has to be $FE66 for autostart support
+	.word load     ;; ILOAD 
 	.word save     ;; ISAVE

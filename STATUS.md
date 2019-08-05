@@ -30,7 +30,7 @@ The following ROM features are currently missing:
 
 Features currently being worked on:
 
-* IEC support needs more testing ang bugfixing; alternative drive ROMs (JiffyDOS, DolphinDOS, etc) usually don't work with current implementation, `@$` leaves the drive led on, most likely other problems can be found
+* IEC support needs more work; alternative drive ROMs (JiffyDOS, DolphinDOS, etc) usually don't work with current implementation, SAVE / VERIFY are not implemented, etc.
 
 # API status
 

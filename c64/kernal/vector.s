@@ -65,24 +65,3 @@ vector_restore:
 	rts
 
 .scend
-
-	;; XXX below we have quite a lot of data... should we decouple them?
-
-vector_defaults:
-	.word default_irq_handler    ;; CINV
-	.word $0000                  ;; CBINV    XXX implement this
-	.word $0000                  ;; NMINV    XXX implement this
-	
-	.word open     ;; IOPEN
-	.word close    ;; ICLOSE
-	.word chkin    ;; ICHKIN
-	.word ckout    ;; ICKOUT
-	.word clrchn   ;; ICLRCH
-	.word chrin    ;; IBASIN
-	.word chrout   ;; IBSOUT
-	.word stop     ;; ISTOP
-	.word getin    ;; IGETIN
-	.word clall    ;; ICLALL
-	.word $0000    ;; USRCMD   XXX implement this
-	.word load     ;; ILOAD
-	.word save     ;; ISAVE

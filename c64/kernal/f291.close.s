@@ -26,14 +26,19 @@ close:
 	;; IEC device
 
 	jsr iec_tx_flush ; make sure no byte is awaiting
-*
 	lda SAT, y ; get secondary address
+	cmp #$60
+	bne +
+	;; workaround for using CLOSE on reading executable - XXX is this a proper way?
+	jsr close_load 
+	jmp close_remove_from_table
+*
 	ora $E0 ; CLOSE command
 	sta IEC_TMP2
 	jsr iec_tx_command
 	bcs close_remove_from_table
 	jsr iec_tx_command_finalize
-	
+
 close_remove_from_table:
 	;; Remove channel from the table
 	iny

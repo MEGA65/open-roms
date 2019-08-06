@@ -9,7 +9,7 @@
 ;;
 
 
-clrchn:
+clrchn_real:
 
 	;; Handle IEC input device
 	lda DFLTN

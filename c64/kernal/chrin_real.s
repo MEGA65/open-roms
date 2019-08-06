@@ -14,7 +14,7 @@
 ;; If from keyboard, then it gets a whole line of input, and returns the first char.
 ;; Repeated calls after that read out the successive bytes of the line of input.
 
-chrin:
+chrin_real:
 
 	;; Determine the device number
 	lda DFLTN

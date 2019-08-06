@@ -81,7 +81,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FF99`   | `MEMTOP` | DONE     |                                                    |
 | `$FF9C`   | `MEMBOT` | DONE     |                                                    |
 | `$FF9F`   | `SCNKEY` | DONE     | could be better integrated with ROM (aliases)      |
-| `$FFA2`   | `SETTMO` | NOT DONE |                                                    |
+| `$FFA2`   | `SETTMO` | DONE     |                                                    |
 | `$FFA5`   | `ACPTR`  | DONE     |                                                    |
 | `$FFA8`   | `CIOUT`  | DONE     |                                                    |
 | `$FFAB`   | `UNTLK`  | DONE     |                                                    |
@@ -92,17 +92,17 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFBA`   | `SETFLS` | DONE     |                                                    |
 | `$FFBD`   | `SETNAM` | DONE     |                                                    |
 | `$FFC0`   | `OPEN`   | DONE     |                                                    |
-| `$FFC3`   | `CLOSE`  | PARTIAL  | most likely incompleete, @$ doesn't end properly   |
+| `$FFC3`   | `CLOSE`  | DONE     |                                                    |
 | `$FFC6`   | `CHKIN`  | DONE     |                                                    |
 | `$FFC9`   | `CHKOUT` | PARTIAL  |                                                    |
 | `$FFCC`   | `CLRCHN` | DONE     |                                                    |
 | `$FFCF`   | `CHRIN`  | PARTIAL  |                                                    |
 | `$FFD2`   | `CHROUT` | PARTIAL  |                                                    |
-| `$FFD5`   | `LOAD`   | PARTIAL  | no VERIFY support yet                              |
+| `$FFD5`   | `LOAD`   | PARTIAL  | no VERIFY support yet, no STOP key support         |
 | `$FFD8`   | `SAVE`   | NOT DONE |                                                    |
 | `$FFDB`   | `SETTIM` | NOT DONE |                                                    |
 | `$FFDE`   | `RDTIM`  | NOT DONE |                                                    |
-| `$FFE1`   | `STOP`   | PARTIAL  |                                                    |
+| `$FFE1`   | `STOP`   | DONE     |                                                    |
 | `$FFE4`   | `GETIN`  | PARTIAL  | only some devices supported                        |
 | `$FFE7`   | `CLALL`  | DONE     |                                                    |
 | `$FFEA`   | `UDTIM`  | NOT DONE | checking for STOP key present in SCNKEY instead    |

@@ -60,6 +60,8 @@
 	.alias MEMSTR     $281
 	.alias MEMSIZ     $283 ; NOTE: Mapping the 64 erroniously has the hex as $282, while the DEC is correct
 
+	.alias TIMOUT     $285 ; IEEE-488 timeout
+
 	.alias HIBASE     $288 ; high byte of start of screen
 
 	.alias RSSTAT     $297 ; RS-232 status

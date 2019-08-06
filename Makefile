@@ -3,7 +3,7 @@
 
 SRC_COMMON            = $(wildcard c64/aliases/*.s)
 SRC_BASIC_COMMON      = $(SRC_COMMON) $(wildcard c64/basic/*.s)
-SRC_KERNAL_COMMON     = $(SRC_COMMON) $(wildcard c64/kernal/*.s c64/kernal/jumptable/*.s c64/kernal/iec/*.s)
+SRC_KERNAL_COMMON     = $(SRC_COMMON) $(wildcard c64/kernal/*.s c64/kernal/jumptable/*.s c64/kernal/iec/*.s c64/kernal/interrupts/*.s)
 
 SRC_BASIC_generic     = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_generic/*.s)
 SRC_BASIC_mega65      = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_mega65/*.s)

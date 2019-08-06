@@ -25,7 +25,7 @@ The following ROM features are currently missing:
 * floating point routines
 * tape support
 * RS-232 support
-* warm start (RUN/STOP + RESTORE) - NMI is not implemented at all
+* warm start (RUN/STOP + RESTORE) - NMI/BRK handling is not implemented at all
 * breaking Kernal routines with RUN/STOP key
 
 Features currently being worked on:
@@ -73,7 +73,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FF81`   | `CINT`   | PARTIAL  | at least PAL/NTSC detection is missing             |
 | `$FF84`   | `IOINIT` | PARTIAL  | at least SID volume handling is missing            |
 | `$FF87`   | `RAMTAS` | DONE     |                                                    |
-| `$FF8A`   | `RESTOR` | PARTIAL  | CBINV, NMINV, and USRCMD missing                   |
+| `$FF8A`   | `RESTOR` | DONE     |                                                    |
 | `$FF8D`   | `VECTOR` | DONE     |                                                    |
 | `$FF90`   | `SETMSG` | DONE     |                                                    |
 | `$FF93`   | `SECOND` | DONE     |                                                    |

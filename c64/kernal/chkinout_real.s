@@ -11,7 +11,7 @@
 
 ;; CHKIN implementation
 
-chkin:
+chkin_real:
 
 	;; Store Y for preservation
 	tya
@@ -88,11 +88,9 @@ chkinout_file_not_output:
 	tay
 	jmp kernalerror_FILE_NOT_OUTPUT
 
-chkinout_common:
-
 ;; CKOUT implementation
 
-ckout:
+ckout_real:
 
 	;; Store Y for preservation
 	tya

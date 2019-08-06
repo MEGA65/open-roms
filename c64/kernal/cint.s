@@ -10,6 +10,9 @@
 
 
 cint:
+
+cint_brk: ; entry for BRK and STOP+RESTORE - XXX, where should it start?
+
 	jsr setup_vicii
 	
 	;; Initialise cursor blink flags  (Compute's Mapping the 64 p215)
@@ -34,8 +37,8 @@ cint:
 	stx key_first_repeat_delay
 
 	;; Set current colour for text (Compute's Mapping the 64 p215)
-	ldx #$0e  		; light blue by default
-	stx $0286
+	ldx #$01     ; default is light blue ($0E), but we use a different one
+	stx text_colour
 
 	;; Set maximum keyboard buffer size (Compute's Mapping the 64 p215)
 	ldx #10

@@ -1,6 +1,11 @@
+
 default_brk_handler:
 
-	;; XXX implement this!
+	;; Implemented according to Compute's Mapping the Commodore 64, pages 73-74
 
-	;; Acknowledge CIA interrupt and return
-	jmp clear_cia1_interrupt_flag_and_return_from_interrupt
+	jsr JRESTOR
+	jsr JIOINIT
+	jsr CINT_BRK
+
+	jmp (IBASIC_WARM_START)
+

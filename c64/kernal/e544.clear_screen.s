@@ -1,21 +1,20 @@
 	;; Clear screen and initialise line link table
 	;; (Compute's Mapping the 64 p215-216)
 
-clear_screen:	
-	
+clear_screen:
+
 	;; Clear line link table 
 	;; (Compute's Mapping the 64 p215)
 
 	lda #$00
 	ldy #24
-clearscreen_l1:	
+clearscreen_l1:
 	sta screen_line_link_table,y
 	dey
 	bpl clearscreen_l1
 
 	;; Y now = #$FF
 
-	
 	;; Clear screen RAM.
 	;; We should do this at HIBASE, which annoyingly
 	;; is no ZP, so we need to make a vector

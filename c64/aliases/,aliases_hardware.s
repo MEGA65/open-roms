@@ -28,7 +28,7 @@
 	.alias VIC_SP7Y       $D00F
 
 	.alias VIC_MSIGX      $D010
-	.alias VIC_SCROLLY    $D011
+	.alias VIC_SCROLY     $D011
 	.alias VIC_RASTER     $D012
 	.alias VIC_LPENX      $D013
 	.alias VIC_LPENY      $D014

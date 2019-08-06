@@ -1,0 +1,3 @@
+STA $0314, Y + DEY + BPL addr
+
+Part of memory copy routine to set/initialize vector table in RAM (a documented one). There is a limited amount of sane ways to implement this code - ours is clearly different from the original, or there would be more similarities. Such a small fragment of rather common routine is definitely not copyrightable.

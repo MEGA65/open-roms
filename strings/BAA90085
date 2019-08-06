@@ -1,0 +1,3 @@
+$BA + LDA #$00 + STA (address does not match)
+
+One full instruction (loading acumulator with 0) and some parts - not copyrightable.

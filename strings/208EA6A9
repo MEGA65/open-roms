@@ -1,0 +1,3 @@
+JSR $A68E + LDA # (value does not match)
+
+Instruction and a half. Not copyrightable.

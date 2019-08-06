@@ -1,29 +1,88 @@
-	; Function defined on pp272-273 of C64 Programmers Reference Guide
-	;; See also http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
-	;; Sequence is:
-	;; 1. Call current device to attention as LISTENER = $20 + device
-	;; 2. 
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 289
+;; - [CM64] Compute's Mapping the Commodore 64 - page 230/231
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
+
 open:
 
-	;; Disable IRQs, since timing matters!
-	SEI
+	;; Reset status
+	jsr kernalstatus_reset
 
-	;; Begin sending under attention
-	jsr iec_assert_atn
+	;; Check if the logical file number is unique
+	ldy LDTND
+*
+	beq +
+	dey
+	lda LAT, y
+	cmp current_logical_filenum
+	beq kernalerror_FILE_ALREADY_OPEN
+	cpy #$00
+	jmp -
+*
+	;; Check if we have space in tables
 
-	;; CLK is now asserted, and we are ready to transmit a byte
-	lda #$28
-	jsr iec_tx_byte
-	bcs open_error
+	ldy LDTND
+	cpy #$0A
+	bcc open_has_space
+*
+	;; Table is full
+	jmp kernalerror_TOO_MANY_OPEN_FILES
 
-	;; Indicate success
-	lda #$00
-	clc	
+open_has_space:
 
-open_error:
-	;; Re-enable interrupts and return
-	;; (iec_tx_byte will have set/cleared C flag and put result code
-	;; in A if it was an error).
-	cli
+	;; Update the tables
+
+	;; LAT / FAT / SAT support implemented according to
+	;; 'Compute's Mapping the Commodore 64', page 52
+
+	lda current_logical_filenum
+	sta LAT, y
+	lda current_device_number
+	sta FAT, y
+	lda current_secondary_address
+	sta SAT, y
+
+	iny
+	sty LDTND
+
+	;; Check for command to send
+	lda FNLEN
+	beq open_done_success
+	
+	;; Check for IEC device
+	lda current_device_number
+	jsr iec_check_devnum
+	bcc open_iec
+
+	;; FALLTROUGH
+open_done_success:
+
+	clc
 	rts
+
+open_iec:
+
+	;; We have a command to send to IEC device
+	jsr listen
+	bcc +
+	jmp kernalerror_DEVICE_NOT_FOUND
+*
+	lda current_secondary_address
+	jsr iec_cmd_open
+	bcc +
+	jmp kernalerror_DEVICE_NOT_FOUND ; XXX find a better error message for wrong channel (create new one?)
+*
+
+	;; We need our helpers to get to filenames under ROMs or IO area
+	jsr install_ram_routines
+
+	;; Send command ('file name')
+	jsr lvs_send_file_name
+
+	jmp open_done_success

@@ -1,0 +1,3 @@
+part of previous instruction + STA $DD00
+
+Instruction (storing register in a well-known I/O register) preceeded by a half of another one - not copyrightable.

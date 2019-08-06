@@ -17,7 +17,7 @@ basic_do_break:
 	
 *
 	lda #$0d
-	jsr $ffd2
+	jsr via_IBSOUT
 cmd_end:
 	jmp basic_main_loop
 	

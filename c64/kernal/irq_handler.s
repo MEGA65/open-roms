@@ -6,7 +6,7 @@ irq_handler:
 	;; $EA61 - Check keyboard, but don't update timer? https://github.com/cc65/cc65/issues/324
 	;; $EA81 - https://www.lemon64.com/forum/viewtopic.php?t=2112&sid=6ea01982b26da69783120a7923ca46fb
 	;; Also the $0314 vector is widely used (e.g., https://www.lemon64.com/forum/viewtopic.php?t=2112&sid=6ea01982b26da69783120a7923ca46fb)
-	
+
 	;; Save registers
 	;; Sequence according to Compute's Mapping the 64 p73
 	pha
@@ -17,7 +17,7 @@ irq_handler:
 
 	;; Call interrupt routine
 	;; (but only if initialised)
-	lda $0314
-	ora $0315
+	lda CINV
+	ora CINV+1
 	beq default_irq_handler
-	jmp ($0314)
+	jmp (CINV)

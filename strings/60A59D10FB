@@ -1,0 +1,3 @@
+RTS + LDA $9D (MSGFLG) + BPL $FB
+
+Check documented variable value, utilize nearest RTS (a very common optimization, mentionedd for example here just few days ago: https://gitlab.com/mkslack/Area6510/commit/9bdc624574c76661db302cdbf85559fb0e9e309a) to quit subroutine if the highest bit is not 1 (the easiest way to distinguish 2 documented values of the MSGFLG: $00 and $80). Nothing creative here - not copyrightable.

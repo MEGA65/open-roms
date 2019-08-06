@@ -1,5 +1,14 @@
-	;; Function defined on pp272-273 of C64 Programmers Reference Guide 
-	;; Compute's Mapping the 64 p215
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 280
+;; - [CM64] Compute's Mapping the Commodore 64 - page 242
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
+
 cint:
 	jsr setup_vicii
 	
@@ -33,6 +42,9 @@ cint:
 	stx key_buffer_size
 	;; Put non-zero value in enable_case_switch
 	stx enable_case_switch
+	
+	;; Set default I/O devices (see SCINIT description at http://sta.c64.org/cbm64krnfunc.html)
+	jsr clrchn_reset
 	
 	;; Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
 	jmp clear_screen

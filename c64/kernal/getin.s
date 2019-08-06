@@ -1,4 +1,15 @@
-; Function defined on pp272-273 of C64 Programmers Reference Guide
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 283
+;; - [CM64] Compute's Mapping the Commodore 64 - page 227/228
+;;
+;; CPU registers that has to be preserved (see [RG64]): .X, .Y
+;;
+
+;; XXX currently does not preserve registers, to be fixed!
+
 getin:
 
 	;; Wait for a key

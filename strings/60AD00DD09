@@ -1,0 +1,4 @@
+fragment (or, most likely, RTS belonging to previous routine) + LDA $DD00 + ORA without matching argument
+
+$DD00 is a register for VIC bank switching and IEC access, using it typically requires bit manipulation.
+Nothing creative here - not copyrightable.

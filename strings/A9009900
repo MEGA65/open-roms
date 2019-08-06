@@ -1,0 +1,3 @@
+LDA #$00 + STA xx00, Y
+
+Instruction and a half (probably a loop zeroing something - but something different in both cases). Not copyrightable.

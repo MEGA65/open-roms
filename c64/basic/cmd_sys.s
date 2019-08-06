@@ -10,22 +10,22 @@ cmd_sys:
 	jsr basic_parse_line_number
 
 	;; setup call
-	lda #$4c 		;JMP
-	sta sys_jmp
+	lda #$4C ;JMP
+	sta USRPOK
 	lda basic_line_number+0
-	sta sys_jmp+1
+	sta USRADD+0
 	lda basic_line_number+1
-	sta sys_jmp+2
+	sta USRADD+1
 	
 	;; Setup the register values
-	lda sys_reg_p
+	lda SPREG
 	pha
-	ldy sys_reg_y
-	ldx sys_reg_x
-	lda sys_reg_a
+	ldy SYREG
+	ldx SXREG
+	lda SAREG
 	plp
 
 	;; Call the routine.
-	jsr sys_jmp
+	jsr USRPOK
 	
 	jmp basic_execute_statement

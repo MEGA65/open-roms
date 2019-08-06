@@ -1,0 +1,4 @@
+ORA #$30 + JSR without address
+alternatively a value (part of the instruction) followed by a conditional jump
+
+Instruction and a half. Not copyrightable.

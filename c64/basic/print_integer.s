@@ -58,7 +58,7 @@ hi_loop:
 	pha
 	ldx #4
 	clc
-hi_add_loop:	
+hi_add_loop:
 	lda $0100,x
 	adc number_table_hi,y
 	sta $0100,x
@@ -115,7 +115,7 @@ found_start_of_number:
 	;; Print digits
 *	lda $0100,y
 	ora #$30
-	jsr $ffd2
+	jsr via_IBSOUT
 	iny
 	cpy #5
 	bne -

@@ -1,0 +1,3 @@
+$F6 + LDA #$00 + STA ...
+
+A part + instruction to clear the accumulator + opcode of another instruction. Not copyrightable.

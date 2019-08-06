@@ -1,0 +1,3 @@
+fragment + JMP + lower byte of jump address
+
+Not even a full instruction - not copyrightable.

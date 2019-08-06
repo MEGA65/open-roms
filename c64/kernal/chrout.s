@@ -1,24 +1,96 @@
-; Function defined on pp272-273 of C64 Programmers Reference Guide
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 278/279
+;; - [CM64] Compute's Mapping the Commodore 64 - page 228
+;;
+;; CPU registers that has to be preserved (see [RG64]): .Y
+;;
+
+
 chrout:
-	;; Crude implementation of character output	
+
+	sta last_printed_character_ascii
 
 	;; Save X and Y values
 	;; (Confirmed by writing a test program that X and Y
 	;; don't get modified, in agreement with C64 PRG's
 	;; description of CHROUT)
-	sta last_printed_character_ascii
 	txa
 	pha
 	tya
 	pha
 	php
-	sei
-	
+
+	;; Determine the device number
+	lda DFLTO
+
+	cmp #$03 ; screen
+	beq chrout_screen
+
+	jsr iec_check_devnum
+	bcs chrout_done_unknown_device ; not a supported device
+
+chrout_iec:
+
+	lda last_printed_character_ascii
+	jsr JCIOUT
+	bcc chrout_done
+
+	;; FALLTROUGH
+
+chrout_done_fail:
+	jsr show_cursor_if_enabled
+
+	plp
+
+	;; Restore X and Y
+	pla
+	tay
+	pla
+	tax
+	sec ; indicate failure
+	rts
+
+chrout_done_unknown_device:
+	jsr show_cursor_if_enabled
+
+	plp
+
+	;; Restore X and Y
+	pla
+	tay
+	pla
+	tax
+
+	;; End wioth error
+	jmp lvs_device_not_found_error
+
+chrout_done:
+	jsr show_cursor_if_enabled
+
+	plp
+
+	;; Restore X and Y
+	pla
+	tay
+	pla
+	tax
+	lda last_printed_character_ascii
+	clc ; indicate success
+	rts
+
+chrout_screen:
+
+	;; Crude implementation of character output	
+	sei ;; XXX why do we need to disable interrupts?
+
 	jsr hide_cursor_if_visible
-	
+
 	lda last_printed_character_ascii
 	tax
-	
+
 	;; Check for special characters
 
 	cmp #$00
@@ -32,7 +104,7 @@ not_00:
 	bne not_0a
 	jmp chrout_done
 not_0a:
-	
+
 	;; Carriage return
 	cmp #$0d
 	bne not_0d
@@ -370,20 +442,7 @@ not_quote:
 	sta current_screen_x
 	jmp screen_advance_to_next_line
 no_screen_advance_to_next_line:
-
-chrout_done:
-	jsr show_cursor_if_enabled
-	
-	plp
-	
-	;; Restore X and Y, set carry to mark success on exit
-	pla
-	tay
-	pla
-	tax
-	lda last_printed_character_ascii
-	clc 			; indicate success
-	rts
+	jmp chrout_done
 
 screen_grow_logical_line:
 	ldy current_screen_y

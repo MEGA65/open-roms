@@ -112,7 +112,7 @@ not_hexword:
 
 not_pointer:	
 	;; Print character
-	jsr $ffd2
+	jsr via_IBSOUT
 
 printf_nextchar:
 	jsr printf_advance
@@ -148,11 +148,11 @@ printf_printhexbyte:
 	cmp #$3A
 	bcc +
 	adc #6
-*	jsr $ffd2
+*	jsr via_IBSOUT
 	pla
 	and #$0f
 	ora #$30
 	cmp #$3A
 	bcc +
 	adc #6
-*	jmp $ffd2
+*	jmp via_IBSOUT

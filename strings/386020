@@ -1,0 +1,3 @@
+SEC + RTS (end of subroutine, new one starts from the next byte) + JSR (address not matching)
+
+One subroutine ends with carry clear, second starts with JSR, but to a different address - accidental similarity, code most likely performs something different in both cases.

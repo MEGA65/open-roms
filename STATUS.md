@@ -1,0 +1,117 @@
+# New features
+
+
+Here are the features of the Open ROMs not found in the original ROMs from the 80s:
+
+* improved keyboard scanning, supports multi-key roll-over and rejection of spurious joystick input
+* joystick (port 1) can be used to move text cursor
+* uses RAM under ROM and I/O: 61436 bytes free
+* extended `LOAD` command
+    * start/end addresses are displayed, in the Final cartridge style
+    * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
+    * secondary address over 255 is considered a start address
+* DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
+
+NOTE: extra features and their syntax can change in the future!
+
+# Features missing
+
+
+The following ROM features are currently missing:
+
+* most BASIC commands
+* BASIC variables
+* BASIC expression parsing
+* floating point routines
+* tape support
+* RS-232 support
+* warm start (RUN/STOP + RESTORE) - NMI is not implemented at all
+* breaking Kernal routines with RUN/STOP key
+
+Features currently being worked on:
+
+* IEC support needs more testing ang bugfixing; alternative drive ROMs (JiffyDOS, DolphinDOS, etc) usually don't work with current implementation, `@$` leaves the drive led on, most likely other problems can be found
+
+# API status
+
+
+Status of the various APIs and variables from the original ROMs
+
+
+## Page 0
+
+
+TODO
+
+
+## Pages 2 & 3
+
+
+TODO
+
+
+## BASIC
+
+
+TODO
+
+
+## Kernal
+
+
+Note: only the jump table addresses are currently supported, real routine addresses are different!
+
+
+### Official Kernal routines
+
+NOTE: Even the 'DONE' routines won't support features described as missing in one of the previous chapters!
+
+<br />
+
+| Address   | Name     | Status   |  Remarks                                           |
+| --------- | :------- | :------: | :------------------------------------------------: |
+| `$FF81`   | `CINT`   | PARTIAL  | at least PAL/NTSC detection is missing             |
+| `$FF84`   | `IOINIT` | PARTIAL  | at least SID volume handling is missing            |
+| `$FF87`   | `RAMTAS` | DONE     |                                                    |
+| `$FF8A`   | `RESTOR` | PARTIAL  | CBINV, NMINV, and USRCMD missing                   |
+| `$FF8D`   | `VECTOR` | DONE     |                                                    |
+| `$FF90`   | `SETMSG` | DONE     |                                                    |
+| `$FF93`   | `SECOND` | DONE     |                                                    |
+| `$FF96`   | `TKSA`   | DONE     |                                                    |
+| `$FF99`   | `MEMTOP` | DONE     |                                                    |
+| `$FF9C`   | `MEMBOT` | DONE     |                                                    |
+| `$FF9F`   | `SCNKEY` | DONE     | could be better integrated with ROM (aliases)      |
+| `$FFA2`   | `SETTMO` | NOT DONE |                                                    |
+| `$FFA5`   | `ACPTR`  | DONE     |                                                    |
+| `$FFA8`   | `CIOUT`  | DONE     |                                                    |
+| `$FFAB`   | `UNTLK`  | DONE     |                                                    |
+| `$FFAE`   | `UNLSN`  | DONE     |                                                    |
+| `$FFB1`   | `LISTEN` | DONE     |                                                    |
+| `$FFB4`   | `TALK`   | DONE     |                                                    |
+| `$FFB7`   | `READST` | DONE     |                                                    |
+| `$FFBA`   | `SETFLS` | DONE     |                                                    |
+| `$FFBD`   | `SETNAM` | DONE     |                                                    |
+| `$FFC0`   | `OPEN`   | DONE     |                                                    |
+| `$FFC3`   | `CLOSE`  | PARTIAL  | most likely incompleete, @$ doesn't end properly   |
+| `$FFC6`   | `CHKIN`  | DONE     |                                                    |
+| `$FFC9`   | `CHKOUT` | PARTIAL  |                                                    |
+| `$FFCC`   | `CLRCHN` | DONE     |                                                    |
+| `$FFCF`   | `CHRIN`  | PARTIAL  |                                                    |
+| `$FFD2`   | `CHROUT` | PARTIAL  |                                                    |
+| `$FFD5`   | `LOAD`   | PARTIAL  | no VERIFY support yet                              |
+| `$FFD8`   | `SAVE`   | NOT DONE |                                                    |
+| `$FFDB`   | `SETTIM` | NOT DONE |                                                    |
+| `$FFDE`   | `RDTIM`  | NOT DONE |                                                    |
+| `$FFE1`   | `STOP`   | PARTIAL  | no connection with UDTIM                           |
+| `$FFE4`   | `GETIN`  | PARTIAL  | only some devices supported                        |
+| `$FFE7`   | `CLALL`  | DONE     |                                                    |
+| `$FFEA`   | `UDTIM`  | NOT DONE |                                                    |
+| `$FFED`   | `SCREEN` | DONE     |                                                    |
+| `$FFF0`   | `PLOT`   | NOT DONE |                                                    |
+| `$FFF3`   | `IOBASE` | DONE     |                                                    |
+
+<br />
+
+### Unofficial Kernal locations
+
+TODO

@@ -1,7 +1,15 @@
-				; Function defined on pp272-273 of C64 Programmers Reference Guide
-	;; IEC reference at http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 
-	;; Definition of function from Compute's Mapping the 64 p231
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 286
+;; - [CM64] Compute's Mapping the Commodore 64 - page 231
+;; - IEC reference at http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
+
 	;; Expects that SETLFS and SETNAM are called before hand.
 	;; $YYXX = load address.
 	;; (ignored if SETLFS channel = 1, i.e., like ,8,1)
@@ -9,212 +17,127 @@
 	;; On exit, $YYXX is the highest address into which data
 	;; will have been placed.
 
-	;; Searching through Compute's Mapping the 64, we find the following
-	;; things are used:
-	;; $93 = kernal_load_or_verify_flag
-	;; $AC = current pointer for loading/verifying
-	;; $C1 = similar to the above.
+	;; XXX honor MSGFLG bit 6
+	;; XXX add VERIFY support
+
 load:
 
 	;; Are we loading or verifying?
-	sta kernal_load_or_verify_flag
+	sta VERCK
 
 	;; Store start address of LOAD
-	stx load_save_start_ptr+0
-	sty load_save_start_ptr+1
+	stx STAL+0
+	sty STAL+1
+
+	;; Reset status
+	jsr kernalstatus_reset
 
 	;; We need our helpers to get to filenames under ROMs or IO area
 	jsr install_ram_routines
-	
-	;; Disable IRQs, since timing matters!
-	SEI
 
-	;; Display SEARCHING FOR
-	jsr printf
-	.byte "SEARCHING FOR ",0
+	;; Allow platform-specific routine to takeover the flow
+	`TARGET_HOOK_LOAD
 
-	ldy #$00
-print_filename_loop:	
-	cpy current_filename_length
-	beq +
-	ldx #<current_filename_ptr
-	jsr peek_under_roms
-	jsr $ffd2
-	iny
-	jmp print_filename_loop
-*
-	
-	lda #$0d
-	jsr $ffd2
+	;; Check whether we support the requested device
+	lda current_device_number
+	and #$FC
+	beq lvs_illegal_device_number ; device number below 4, not an IEC device
 
-	;; Begin sending under attention
-	jsr iec_assert_atn
+	;; Device numbers above 30 are also illegal (see https://www.pagetable.com/?p=1031),
+	;; as the protocol combines device number with command code int one byte,
+	;; above 30 it is no longer possible (UNLISTEN and UNTALK codes prevent using
+	;; number 31), yet original ROMs show ILLEGAL DEVICE NUMBER error only
+	;; for devices 0-3; in our implementation LISTEN / TALK will cause device
+	;; not present detected for numbers above 30
 
-	;; XXX - Use default device number
+	;; Display SEARCHING FOR + filename
+	jsr lvs_display_searching_for
+
 	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
-	;; p13, 16.
-	;; also p16 tells us this routine doesn't mess with the file table in the C64,
-	;; only in the drive.
-	
-	;; Begin sending under attention
-	jsr iec_assert_atn
+	;; p13, 16; also p16 tells us this routine doesn't mess with the file table
+	;; in the C64, only in the drive.
 
-	;; XXX - Use default device number
-	;; http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
-	;; p13, 16.
-	;; also p16 tells us this routine doesn't mess with the file table in the C64,
-	;; only in the drive.
-	
 	;; Call device to LISTEN (p16)
-	lda #$28
-	jsr iec_tx_byte
-	bcs load_error
+	lda current_device_number
+	jsr listen
+	bcs lvs_device_not_found_error
 
-	;; Open channel #0 (p16)
-	lda #$f0
-	jsr iec_tx_byte
-	bcs load_error
+	;; Open channel 0 (reserved for file reading)
+	lda #$00
+	jsr iec_cmd_open
+	bcs lvs_load_verify_error
 
-	;; (p16)
-	jsr iec_release_atn
-
-	;; Send filename (p16)
-	ldy #0
-
-send_filename:
-	cpy current_filename_length
-	beq sent_filename
-	
-	ldx #<current_filename_ptr
-	jsr peek_under_roms
-
-	;; Save Y because iec_tx_byte will corrupt it
-	tax
-	tya
-	pha
-	txa
-
-	jsr iec_tx_byte
-
-	pla
-	tay
-	iny
-	jmp send_filename
-
-sent_filename:	
-	;; Command device to unlisten to indicate end of file name. (p16)
-	jsr iec_assert_atn
-	lda #$3f
-	jsr iec_tx_byte
-	bcs load_error
-	jsr iec_release_atn
+	;; Send file name
+	jsr lvs_send_file_name
+	bcs lvs_load_verify_error
 
 	;; Now command device to talk (p16)
-	jsr iec_assert_atn
-	lda #$48
-	jsr iec_tx_byte
-	bcs load_error
+	lda current_device_number
+	jsr talk
+	bcs lvs_load_verify_error
 
 	lda #$60 ; open channel / data (p3) , required according to p13
-	jsr iec_tx_byte
-	bcs load_error
-	jsr iec_release_atn
+	sta IEC_TMP2
+	jsr iec_tx_command
+	bcs lvs_load_verify_error
 
 	;; We are currently talker, so do the IEC turn around so that we
 	;; are the listener (p16)
-	;; An error here means FILE NOT FOUND ?
 	jsr iec_turnaround_to_listen
-	bcs load_error
+	bcs lvs_load_verify_error
 
 	;; Get load address and store it if secondary address is zero
 	jsr iec_rx_byte
-	bcs file_not_found_error
+	bcs lvs_file_not_found_error
 	ldx current_secondary_address
 	beq +
-	sta load_save_start_ptr+0
+	sta STAL+0
 *
 	jsr iec_rx_byte
-	bcs file_not_found_error
+	bcs lvs_file_not_found_error
 	ldx current_secondary_address
 	beq +
-	sta load_save_start_ptr+1
+	sta STAL+1
 *
-
-	jsr printf
-	.byte "LOADING",$0d,0
+	;; Display start address
+	jsr lvs_display_loading_verifying
 
 load_loop:
 	;; We are now ready to receive bytes
 	jsr iec_rx_byte
-	bcs load_error
+	bcs lvs_load_verify_error
 
-	;; Save it and advance pointer.
-	;; As with our BASIC, we want to enable LOADing
-	;; anywhere in memory, including over the IO space.
-	;; Thus we have to use a helper routine in low memory
-	;; to do the memory access
+	;; Handle the byte (store in memory / verify)
+	jsr lvs_handle_byte_load_verify
+	bcs lvs_load_verify_error
+	
+	;; Advance pointer to data
+	jsr lvs_advance_pointer
+	bcs lvs_wrap_around_error
 
-	;; Save byte under ROMs and IO if required
-	ldx #$33
-	stx $01
-	ldy #0
-	sta (load_save_start_ptr),y
-	ldx #$37
-	stx $01
-
-	;; Advance pointer
-	inc load_save_start_ptr
-	bne +
-	inc load_save_start_ptr+1
-	;; If we wrap around to $0000, then this is bad.
-	beq load_error	
-*
-	;; Check for EOI -- if so, read one last byte
+	;; Check for EOI - if so, this was the last byte
 	lda IOSTATUS
-	and #$40
+	and #K_STS_EOI
 	beq load_loop
 
-load_done:
+	;; Display end address
+	jsr lvs_display_done
+
 	;; Close file on drive
 
 	;; Command drive to stop talking and to close the file
-	jsr iec_assert_atn
-	lda #$5f
-	jsr iec_tx_byte
-	lda #$28
-	jsr iec_tx_byte
-	lda #$e0
-	jsr iec_tx_byte
+	jsr untlk
+
+	lda current_device_number
+	jsr listen
+
+	lda #$E0
+	sta IEC_TMP2
+	jsr iec_tx_command
+	jsr iec_tx_command_finalize
+
 	;; Tell drive to unlisten
-	lda #$3f
-	jsr iec_tx_byte
-	jsr iec_release_atn
+	jsr unlsn
 
-	;; Return last address written to +1
-	;; (Even though Compute's Mapping the 64 says without the +1.
-	;; I'm suspicious. Will have to check behavour on an original C64)
-	ldx load_save_start_ptr+0
-	ldy load_save_start_ptr+1
-
-	clc
-	cli
-	rts
-	
-load_error:
-
-	;; XXX - Indicate KERNAL (not BASIC) LOAD error condtion
-	sec
-	lda #28
-	
-	;; Re-enable interrupts and return
-	cli
-	;; (iec_tx_byte will have set/cleared C flag and put result code
-	;; in A if it was an error).
-	rts
-
-file_not_found_error:
-	;; Indicate KERNAL error condition for file not found
-	sec
-	lda #$04
-	cli
-	rts
+	;; Return last address
+	jmp lvs_return_last_address

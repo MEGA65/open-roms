@@ -1,0 +1,3 @@
+TAX (or instruction fragment) + JSR + lower byte of jump address
+
+At most instruction and a half - not copyrightable.

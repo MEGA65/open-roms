@@ -1,9 +1,19 @@
-	;; Scan the keyboard..
-	;; Here we don't use the horrible buggy original routine,
-	;; not just because of copyright. Instead, we use the
-	;; nice one with joystick interference removal and
-	;; key roll-over support from
-	;; http://codebase64.org/doku.php?id=base:scanning_the_keyboard_the_correct_and_non_kernal_way
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 295
+;; - [CM64] Compute's Mapping the Commodore 64 - page 220
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
+;; Scan the keyboard..
+;; Here we don't use the horrible buggy original routine,
+;; not just because of copyright. Instead, we use the
+;; nice one with joystick interference removal and
+;; key roll-over support from
+;; http://codebase64.org/doku.php?id=base:scanning_the_keyboard_the_correct_and_non_kernal_way
 
 ;; /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;;     Keyboard IO Routine
@@ -324,7 +334,7 @@ next_row:
 	;; so that RUN/STOP etc can be checked easily
 	;; (Compute's Mapping the 64, p27)
 	lda ScanResult+0
-	sta BUCKYSTATUS
+	sta STKEY
 
 	;; Store de-bounce data for bucky keys
 	;; (Compute's Mapping the 64, p58-59)

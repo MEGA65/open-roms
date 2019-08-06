@@ -22,10 +22,16 @@ list_loop:
 	jmp basic_main_loop
 
 list_more_lines:
-	lda BUCKYSTATUS
+	lda STKEY
 	bmi +
 	jmp basic_do_break
 *
+	jsr list_single_line
+	;; Now link to the next line
+	jsr basic_find_next_line
+	jmp list_loop
+
+list_single_line: ; entry point needed by DOS wedge
 	;; Print line number
 	ldy #3
 	jsr peek_under_roms
@@ -36,7 +42,7 @@ list_more_lines:
 	pla
 	jsr print_integer
 	lda #$20
-	jsr $ffd2
+	jsr via_IBSOUT
 
 	;; Iterate through printing out the line
 	;; contents
@@ -105,19 +111,16 @@ list_not_rem:
 	bne list_print_loop
 
 list_is_literal:
-	jsr $ffd2
+	jsr via_IBSOUT
 	iny
 	bne list_print_loop
 	
 list_end_of_line:
 	;; Clear reverse flag
 	lda #$92
-	jsr $ffd2
+	jsr via_IBSOUT
 	;; Print end of line
 	lda #$0d
-	jsr $ffd2
+	jsr via_IBSOUT
+	rts
 
-	;; Now link to the next line
-	jsr basic_find_next_line
-	jmp list_loop
-	

@@ -1,0 +1,3 @@
+address $0200 + LDX# (argument does not match)
+
+Not even a full instruction - not copyrightable.

@@ -1,0 +1,3 @@
+PLA + RTS (end of subroutine, another one starting) + JSR (address does not match)
+
+End of a routine preserving .A register + part of instruction belonging to another subroutine. Not copyrightable.

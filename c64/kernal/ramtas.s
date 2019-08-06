@@ -1,14 +1,23 @@
-; Function defined on pp272-273 of C64 Programmers Reference Guide
+
+;;
+;; Official Kernal routine, described in:
+;;
+;; - [RG64] C64 Programmer's Reference Guide   - page 291
+;; - [CM64] Compute's Mapping the Commodore 64 - page 237
+;;
+;; CPU registers that has to be preserved (see [RG64]): none
+;;
+
 ramtas:
 	; C64 Programmer's Reference guide p291:
 	; Clear $0000-$0101, $0200-$03ff
 	; PGS: $0000, $0001 are CPU IO ports, so shouldn't get written to
-	LDY #$02
-	LDA #$00
+	ldy #$02
+	lda #$00
 ramtas_l1:
-	STA $00,Y
-	INY
-	BNE ramtas_l1
+	sta $00,Y
+	iny
+	bne ramtas_l1
 ramtas_l2:
 	;; How many ways are there to efficiently erase these two pages
 	;; of RAM? We would like to avoid any unnecessary byte similarity
@@ -16,41 +25,41 @@ ramtas_l2:
 	;; with the longer sequence of identicale bytes we see no basis for
 	;; it being copyrightable.  Again, we just want to redue the attack
 	;; surface for any misguided suit.
-	STA $0300,Y
-	STA $0200,Y
-	INY
-	BNE ramtas_l2
+	sta $0300,Y
+	sta $0200,Y
+	iny
+	bne ramtas_l2
 
 	; allocate cassette buffer
 	;; "Mapping the C128", p61
 	lda #<$033C
-	STA cassette_buffer_ptr+0
+	sta cassette_buffer_ptr+0
 	lda #>$033C
-	STA cassette_buffer_ptr+1
+	sta cassette_buffer_ptr+1
 
 	; set screen address to $0400
 	; https://www.c64-wiki.com/wiki/Screen_RAM
 	; Since we are setting $D018, we also make sure we are using the 
 	; ROM character set (C64 Programmer's Reference Guide p322)
-	LDA #$14
-	STA $D018
+	lda #$14
+	sta VIC_YMCSB
 
 	; Make sure we have the correct VIC-II memory bank for the screen to really be at $0400
 	; and not $4400, $8400 or $C400
 	; https://www.c64-wiki.com/wiki/VIC_bank#Selecting_VIC_banks
-	LDA $DD02
-	ORA #$03
-	STA $DD02
-	LDA $DD00
-	ORA #$03
-	STA $DD00
+	lda CIA2_DDRA
+	ora #$03
+	sta CIA2_DDRA
+	lda CIA2_PRA
+	ora #$03
+	sta CIA2_PRA
 
 	;; Set screen address pointer ("Compute's Mapping the 64" p238)
 	;; This is obvious boiler plate containing no creative input, but to avoid
 	;; unnecessarily similarity to the C64 KERNAL, we use X instead of A to do this,
 	;; and several following
-	LDX #>$0400
-	STX HIBASE
+	ldx #>$0400
+	stx HIBASE
 	
 	;;  Work out RAM size and put in MEMSTR and MEMSIZ
 	;; "Compute's Mapping the 64", p54

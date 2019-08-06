@@ -1,0 +1,3 @@
+address $FFBA (jump table position of SETLFS) + JSR without address
+
+Not even a full instruction - not copyrightable.

@@ -1,0 +1,3 @@
+BNE $03 + JMP xx37
+
+Instruction and a half - part of a common workaround for conditional jumps not reaching far. Not copyrightable.

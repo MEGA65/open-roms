@@ -1,0 +1,3 @@
+$0259 (LAT table address) + BNE $F8 (few bytes back)
+
+Instruction + some parts (revealing that this is some manipulation on documented Kernal table). Not copyrightable.

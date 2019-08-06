@@ -69,7 +69,7 @@
 	;// Operational Variables
 	.alias MaxKeyRollover 3
 
-scan_keyboard:
+scnkey:
 
 	lda #$00
 	sta BufferQuantity
@@ -538,5 +538,3 @@ KeyCanRepeat:
 KeyRepeatWait:
 	pla
 	jmp ConsiderNextKey
-
-

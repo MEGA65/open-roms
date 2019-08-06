@@ -147,7 +147,7 @@ test: build/newkern_generic build/newbasic_generic
 	x64 -kernal build/newkern_generic -basic build/newbasic_generic -8 empty.d64
 
 testremote: build/newkern_generic build/newbasic_generic
-	x64 -kernal build/newkern-generic -basic build/newbasic-generic -remotemonitor
+	x64 -kernal build/newkern_generic -basic build/newbasic_generic -remotemonitor
 
 testm65: build/newc65
 	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R build/newc65 -4

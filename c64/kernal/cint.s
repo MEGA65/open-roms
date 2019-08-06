@@ -48,9 +48,7 @@ cint_brk: ; entry for BRK and STOP+RESTORE - XXX, where should it start?
 	
 	;; Set default I/O devices (see SCINIT description at http://sta.c64.org/cbm64krnfunc.html)
 	jsr clrchn_reset
-	
+
 	;; Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
 	jmp clear_screen
-
-	rts
 

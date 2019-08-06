@@ -8,5 +8,5 @@
 ;; CPU registers that has to be preserved (see [RG64]): .Y
 ;;
 
-update_jiffy_clock:
+udtim:
 	rts

@@ -102,10 +102,10 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFD8`   | `SAVE`   | NOT DONE |                                                    |
 | `$FFDB`   | `SETTIM` | NOT DONE |                                                    |
 | `$FFDE`   | `RDTIM`  | NOT DONE |                                                    |
-| `$FFE1`   | `STOP`   | PARTIAL  | no connection with UDTIM                           |
+| `$FFE1`   | `STOP`   | PARTIAL  |                                                    |
 | `$FFE4`   | `GETIN`  | PARTIAL  | only some devices supported                        |
 | `$FFE7`   | `CLALL`  | DONE     |                                                    |
-| `$FFEA`   | `UDTIM`  | NOT DONE |                                                    |
+| `$FFEA`   | `UDTIM`  | NOT DONE | checking for STOP key present in SCNKEY instead    |
 | `$FFED`   | `SCREEN` | DONE     |                                                    |
 | `$FFF0`   | `PLOT`   | NOT DONE |                                                    |
 | `$FFF3`   | `IOBASE` | DONE     |                                                    |

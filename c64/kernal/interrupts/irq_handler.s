@@ -15,6 +15,8 @@ irq_handler:
 	tya
 	pha
 
+	;; XXX check if caused by BRK, react accordingly
+
 	;; Call interrupt routine (only if initialised)
 	lda CINV
 	ora CINV+1

@@ -5,8 +5,8 @@
 
 	;; CPU memory registers
 
-	.alias CPU_D6510      $0000
-	.alias CPU_R6510      $0001
+	.alias CPU_D6510      $00
+	.alias CPU_R6510      $01
 
 	;; VIC-II registers
 
@@ -60,46 +60,40 @@
 	.alias VIC_SP6COL     $D02D
 	.alias VIC_SP7COL     $D02E
 	
-	;; SID #1 registers
+	;; SID registers
 
-	.alias SID1_FRELO1    $D400
-	.alias SID1_FREHI1    $D401
-	.alias SID1_PWLO1     $D402
-	.alias SID1_PWHI1     $D403
-	.alias SID1_VCREG1    $D404
-	.alias SID1_ATDCY1    $D405
-	.alias SID1_SUREL1    $D406
+	.alias SID_FRELO1    $D400
+	.alias SID_FREHI1    $D401
+	.alias SID_PWLO1     $D402
+	.alias SID_PWHI1     $D403
+	.alias SID_VCREG1    $D404
+	.alias SID_ATDCY1    $D405
+	.alias SID_SUREL1    $D406
 
-	.alias SID1_FRELO2    $D407
-	.alias SID1_FREHI2    $D408
-	.alias SID1_PWLO2     $D409
-	.alias SID1_PWHI2     $D40A
-	.alias SID1_VCREG2    $D40B
-	.alias SID1_ATDCY2    $D40C
-	.alias SID1_SUREL2    $D40D
+	.alias SID_FRELO2    $D407
+	.alias SID_FREHI2    $D408
+	.alias SID_PWLO2     $D409
+	.alias SID_PWHI2     $D40A
+	.alias SID_VCREG2    $D40B
+	.alias SID_ATDCY2    $D40C
+	.alias SID_SUREL2    $D40D
 
-	.alias SID1_FRELO3    $D40E
-	.alias SID1_FREHI3    $D40F
-	.alias SID1_PWLO3     $D410
-	.alias SID1_PWHI3     $D411
-	.alias SID1_VCREG3    $D412
-	.alias SID1_ATDCY3    $D413
-	.alias SID1_SUREL3    $D414
+	.alias SID_FRELO3    $D40E
+	.alias SID_FREHI3    $D40F
+	.alias SID_PWLO3     $D410
+	.alias SID_PWHI3     $D411
+	.alias SID_VCREG3    $D412
+	.alias SID_ATDCY3    $D413
+	.alias SID_SUREL3    $D414
 
-	.alias SID1_CUTLO     $D415
-	.alias SID1_CUTHI     $D416
-	.alias SID1_RESON     $D417
-	.alias SID1_SIGVOL    $D418
-	.alias SID1_POTX      $D419
-	.alias SID1_POTY      $D41A
-	.alias SID1_RANDOM    $D41B
-	.alias SID1_ENV3      $D41C
-
-	;; SID #2, #3, #4 registers
-
-	.alias SID2_SIGVOL    $D438
-	.alias SID3_SIGVOL    $D458
-	.alias SID4_SIGVOL    $D478
+	.alias SID_CUTLO     $D415
+	.alias SID_CUTHI     $D416
+	.alias SID_RESON     $D417
+	.alias SID_SIGVOL    $D418
+	.alias SID_POTX      $D419
+	.alias SID_POTY      $D41A
+	.alias SID_RANDOM    $D41B
+	.alias SID_ENV3      $D41C
 
 	;; CIA #1 registers
 

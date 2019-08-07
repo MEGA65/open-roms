@@ -23,6 +23,10 @@ TOOL_SIMILARITY    = build/tools/similarity
 
 TOOLS_LIST = $(TOOL_COLLECT_DATA) $(TOOL_COMPRESS_TEXT) $(TOOL_PNGPREPARE) $(TOOL_PREPROCESS) $(TOOL_SIMILARITY)
 
+# GIT commit
+
+GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
+
 # Rules - main
 
 .PHONY: all clean updatebin

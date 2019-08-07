@@ -6,6 +6,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * improved keyboard scanning, supports multi-key roll-over and rejection of spurious joystick input
 * joystick (port 1) can be used to move text cursor
 * uses RAM under ROM and I/O: 61436 bytes free
+* cold/warm start silences 4 SID chips - assumes addresses $D400, $D420, $D440, $D460
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
@@ -71,7 +72,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | Address   | Name     | Status   |  Remarks                                           |
 | --------- | :------- | :------: | :------------------------------------------------: |
 | `$FF81`   | `CINT`   | DONE     |                                                    |
-| `$FF84`   | `IOINIT` | PARTIAL  | at least SID volume handling is missing            |
+| `$FF84`   | `IOINIT` | DONE     |                                                    |
 | `$FF87`   | `RAMTAS` | DONE     |                                                    |
 | `$FF8A`   | `RESTOR` | DONE     |                                                    |
 | `$FF8D`   | `VECTOR` | DONE     |                                                    |

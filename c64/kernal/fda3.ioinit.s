@@ -15,10 +15,24 @@ ioinit:
 	; (https://www.c64-wiki.com/wiki/Zeropage)
 	;; XXX - Work around VICE bug: Writing $00 before $01 results in rubbish in $01
 	;; after. https://sourceforge.net/p/vice-emu/bugs/1057/
-	LDA #$27
-	LDX #$2F
-	STA $01
-	STX $00
+	lda #$27
+	ldx #$2F
+	sta CPU_R6510
+	stx CPU_D6510
+
+	;; Silence the SID chips
+
+	ldy #$00
+*
+	lda SID_SIGVOL, Y
+	and #$F0
+	sta SID_SIGVOL, Y
+	tya
+	clc
+	adc #$20
+	tay
+	cpy #$80 ; $20 * amount of chips to silence, $80 to silence 4 chips
+	bne -
 
 	;; Enable CIA1 IRQ and ~50Hz timer
 	;; (https://csdb.dk/forums/?roomid=11&topicid=69037)

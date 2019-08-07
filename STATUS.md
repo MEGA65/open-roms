@@ -70,7 +70,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 
 | Address   | Name     | Status   |  Remarks                                           |
 | --------- | :------- | :------: | :------------------------------------------------: |
-| `$FF81`   | `CINT`   | PARTIAL  | at least PAL/NTSC detection is missing             |
+| `$FF81`   | `CINT`   | DONE     |                                                    |
 | `$FF84`   | `IOINIT` | PARTIAL  | at least SID volume handling is missing            |
 | `$FF87`   | `RAMTAS` | DONE     |                                                    |
 | `$FF8A`   | `RESTOR` | DONE     |                                                    |

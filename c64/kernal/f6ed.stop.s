@@ -14,8 +14,7 @@ stop:
 
 	;; BASIC checks carry flag to indicate STOP or not
 	lda STKEY
-	and #$80
-	beq stop_pressed
+	bpl stop_pressed
 
 	;; By trial and error, we know that Z + C = BREAK
 	;; and that neither should be set otherwise

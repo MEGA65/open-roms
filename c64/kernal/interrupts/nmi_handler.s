@@ -7,7 +7,7 @@ nmi_handler:
 	pha
 	lda NMINV
 	ora NMINV+1
-	bne +
+	beq +
 	pla
 	jmp (NMINV)
 *

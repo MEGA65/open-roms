@@ -20,7 +20,7 @@ irq_handler:
 	;; Call interrupt routine (only if initialised)
 	lda CINV
 	ora CINV+1
-	bne +
+	beq +
 	jmp (CINV)
 *
 	;; Vector not initialized - call default interrupt routine

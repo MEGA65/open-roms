@@ -17,10 +17,11 @@ irq_handler:
 
 	;; Check if caused by BRK
 
-	tsx
-	lda $0104, x ; get the pre-interrupt processor state
-	and #$10
-	bne irq_handler_brk
+	;; XXX disabled for now - resets Duotris game, unknown why
+	; tsx
+	; lda $0104, x ; get the pre-interrupt processor state
+	; and #$10
+	; bne irq_handler_brk
 
 	;; Not caused by BRK - call interrupt routine (only if initialised)
 	lda CINV

@@ -45,6 +45,7 @@
 	.alias FNADDR     $BB ; $BB-$BC, current file name pointer
 
 	.alias STAL       $C1 ; $C1-$C2 LOAD/SAVE start address
+	.alias MEMUS      $C3 ; $C3-$C4 temporary address for tape LOAD/SAVE
 
 	;;
 	;; Other low memory addresses

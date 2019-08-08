@@ -26,7 +26,6 @@ The following ROM features are currently missing:
 * floating point routines
 * tape support
 * RS-232 support
-* NMI cartridge handling and BRK handling are not implemented yet
 * breaking Kernal routines with RUN/STOP key
 * PAL/NTSC is detected, but for now only startup banner uses the result
 

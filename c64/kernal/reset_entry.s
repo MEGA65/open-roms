@@ -13,7 +13,9 @@ reset_entry:
 
 	; C64 PRG p269
 	jsr cartridge_check
-
+	bcc +
+	jmp (ICART_COLD_START)
+*
 	; The following routine is based on reading the public KERNAL jumptable routine
 	; list, and making unimaginative assumptions about what should be done on reset.
 	; Initialising IO is obviously required.  also indicated by c64 prg p269.

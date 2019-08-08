@@ -15,9 +15,14 @@ irq_handler:
 	tya
 	pha
 
-	;; XXX check if caused by BRK, react accordingly
+	;; Check if caused by BRK
 
-	;; Call interrupt routine (only if initialised)
+	tsx
+	lda $0104, x ; get the pre-interrupt processor state
+	and #$10
+	bne irq_handler_brk
+
+	;; Not caused by BRK - call interrupt routine (only if initialised)
 	lda CINV
 	ora CINV+1
 	beq +
@@ -25,3 +30,9 @@ irq_handler:
 *
 	;; Vector not initialized - call default interrupt routine
 	jmp default_irq_handler
+
+irq_handler_brk:
+
+	;; Interrupt caused by BRK
+	jmp (CBINV)
+

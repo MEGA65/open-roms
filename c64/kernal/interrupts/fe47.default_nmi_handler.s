@@ -13,7 +13,10 @@ default_nmi_handler:
 
 	;; XXX: RS-232 support is not implemented
 
-	;; XXX if cartridge present, enter it through warm start vector
+	jsr cartridge_check
+	bcc +
+	jmp (ICART_WARM_START)
+*
 
 	;; According to C64 Wiki, if STOP key is pressed, the routine assumes warm start request
 

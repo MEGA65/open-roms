@@ -191,6 +191,7 @@ end_of_line_search:
 	pla
 	sta basic_current_line_ptr+0
 
-	
-
 	jmp basic_relink_loop
+
+via_ILOAD:
+	jmp (ILOAD)

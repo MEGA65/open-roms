@@ -1,0 +1,8 @@
+All the Kernal routines, for which there are vectors in $0314-$0333, have to be available at their original addresses.
+
+Reason: some autostart software (https://codebase64.org/doku.php?id=base:autostarting_disk_files) override these vectors, so that some point
+to new locations (custom IRQ routine, custom STOP routine, etc.), while others points the original Kernal routines. Different techniques modify
+different vectors (while resetting others to original C64 locations), some don't change the vectors at all, but might still put the original
+C64 Kernal addresses there (for example, if the file overrides keyboard input buffer and screeen memory).
+
+For various cartridges (like IDE64) this just means disabling their extensions; for us that would mean improperly functionning Kernal.

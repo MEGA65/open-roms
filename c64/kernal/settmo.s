@@ -9,4 +9,5 @@
 ;;
 
 settmo:
+	sta TIMOUT
 	rts

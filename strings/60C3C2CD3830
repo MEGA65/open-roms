@@ -1,0 +1,15 @@
+RTS + CBM80 PETSCII string
+
+CBM80 is the string used to compare with the signature block of
+a cartridge. It is required for interoperability with C64 cartridges,
+and the requirement for this string is explicit, and is well documented,
+including the string itself, in many places, such as:
+
+http://mirror.thelifeofkenneth.com/sites/remotecpu.com/Commodore/Reference%20Material/Manuals/Hardware%20Manuals/Datel%20Eprommer64%20Instruction%20Manual.pdf
+
+Indeed, the C64 Programmer's Reference Guide describes it on p263.
+
+Since Commodore instructed cartridge developers to include the string
+in cartridges, it cannot be held to be a violation of copyrights,
+even if it were able to be copyrighted, which we do not accept on grounds
+including that it is a list of facts (published by Commodore themselves)

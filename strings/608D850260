@@ -1,0 +1,5 @@
+RTS (from previous routine) + STA $0285 (TIMOUT variable) + RTS
+
+SETTMO routine (+ RTS from previous one). There really is just one sane way to
+implement a subroutine storing accumulator in a fixed memory location.
+Not creative - not copyrightable.

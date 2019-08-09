@@ -1,0 +1,4 @@
+RTS (from previous routine) + LDA $BA (current device number) + CMP $02 + BNE (offset does not match)
+
+Routine starts by checking whether the device is RS-232 - nothing creative, not copyrightable.
+

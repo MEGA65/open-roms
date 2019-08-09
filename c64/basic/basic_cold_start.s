@@ -17,6 +17,14 @@ startup_banner:
 
 	`TARGET_HOOK_BANNER
 
+	;; Print PAL/NTSC
+	ldx #30 ; NTSC
+	lda PALNTSC
+	beq +
+	ldx #31 ; PAL
+*
+	jsr print_packed_message
+
 	;; Work out free bytes, and display
 	jsr basic_do_new
 	lda basic_top_of_memory_ptr+0
@@ -26,10 +34,10 @@ startup_banner:
 	lda basic_top_of_memory_ptr+1
 	sbc basic_end_of_text_ptr+1
 
-	jsr print_integer	
+	jsr print_integer
 
 	lda #$20
-	jsr via_IBSOUT
+	jsr JCHROUT
 	
 	;; Print the rest of the start up message
 	ldx #34
@@ -37,8 +45,8 @@ startup_banner:
 
 	;; jump into warm start loop
 	jmp basic_warm_start
-	
-	
+
+
 startup_message:
 	;; Clear the screen
 	.byte $93

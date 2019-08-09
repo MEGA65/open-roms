@@ -1,0 +1,3 @@
+RTS (from previous routine) + TAX + JSR (address does not match)
+
+Routine starting from TAX + some subroutine jump. Not copyrightable.

@@ -45,6 +45,7 @@
 	.alias FNADDR     $BB ; $BB-$BC, current file name pointer
 
 	.alias STAL       $C1 ; $C1-$C2 LOAD/SAVE start address
+	.alias MEMUS      $C3 ; $C3-$C4 temporary address for tape LOAD/SAVE
 
 	;;
 	;; Other low memory addresses
@@ -59,6 +60,8 @@
 
 	.alias MEMSTR     $281
 	.alias MEMSIZ     $283 ; NOTE: Mapping the 64 erroniously has the hex as $282, while the DEC is correct
+
+	.alias TIMOUT     $285 ; IEEE-488 timeout
 
 	.alias HIBASE     $288 ; high byte of start of screen
 

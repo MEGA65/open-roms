@@ -20,8 +20,10 @@ vector:
 
 .scope
 
-	;; Temporary storage location
-	.alias _caller_arr_ptr CMP0
+	;; Temporary storage location - checked on real C64 that this is the
+	;; address originally used; after calling VECTOR and checking zero page
+	;; area afterwards, the address could be found there
+	.alias _caller_arr_ptr MEMUS
 
 	;; According to 'Compute's Mapping the Commodore 64' page 237,
 	;; the CBM implementation does not disable IRQs - yet, the
@@ -32,9 +34,10 @@ vector:
 	php
 	cli
 	
-	;; Prepare the user data pointer
-	stx _caller_arr_ptr + 0
+	;; Prepare the user data pointer - strange order to reduce risk
+	;; of potential similarity to the original routine
 	sty _caller_arr_ptr + 1
+	stx _caller_arr_ptr + 0
 	
 	;; Select routine variant - store or restore vectors
 	ldy #$1F
@@ -65,24 +68,3 @@ vector_restore:
 	rts
 
 .scend
-
-	;; XXX below we have quite a lot of data... should we decouple them?
-
-vector_defaults:
-	.word default_irq_handler    ;; CINV
-	.word $0000                  ;; CBINV    XXX implement this
-	.word $0000                  ;; NMINV    XXX implement this
-	
-	.word open     ;; IOPEN
-	.word close    ;; ICLOSE
-	.word chkin    ;; ICHKIN
-	.word ckout    ;; ICKOUT
-	.word clrchn   ;; ICLRCH
-	.word chrin    ;; IBASIN
-	.word chrout   ;; IBSOUT
-	.word stop     ;; ISTOP
-	.word getin    ;; IGETIN
-	.word clall    ;; ICLALL
-	.word $0000    ;; USRCMD   XXX implement this
-	.word load     ;; ILOAD
-	.word save     ;; ISAVE

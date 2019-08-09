@@ -4,7 +4,7 @@
 wedge_dos:
 
 	;; Close all the channels, so that wedge has full control
-	jsr via_ICLALL
+	jsr JCLALL
 
 	;; Set file parameters,  channel 15 is a typical one for commands
 	jsr select_device ; sets X register
@@ -41,11 +41,11 @@ wedge_dos_command:
 	jsr wedge_dos_setnam
 	
 	jsr JSETNAM
-	jsr via_IOPEN
+	jsr JOPEN
 	bcs wedge_dos_basic_error
 
 	;; Retrieve status, print it if not OK
-	jsr via_ICLALL
+	jsr JCLALL
 	jsr wedge_dos_status_get
 	lda BUF+0
 	cmp #$30 ; '0'
@@ -82,12 +82,12 @@ wedge_dos_status_get:
 	;; Set remaining file parameters, open the channel
 	lda #$00  ; empty file name
 	jsr JSETNAM
-	jsr via_IOPEN
+	jsr JOPEN
 	bcs wedge_dos_basic_error
 
 	;; Set channel for input
 	ldx #$0F
-	jsr via_ICHKIN
+	jsr JCHKIN
 	bcs wedge_dos_basic_error
 	
 	ldy #$00
@@ -98,7 +98,7 @@ wedge_dos_status_get:
 	;; XXX error in case of status != EOF
 	;; Print out everything retrieved from the drive
 	bne +
-	jsr via_IBASIN
+	jsr JCHRIN
 	bcs wedge_dos_basic_error
 	sta BUF, y
 	iny
@@ -118,7 +118,7 @@ wedge_dos_status_print:
 	dey
 	bmi +
 	lda BUF, x
-	jsr via_IBSOUT
+	jsr JCHROUT
 	inx
 	bne -
 *
@@ -139,18 +139,18 @@ wedge_dos_directory:
 	jsr wedge_dos_setnam
 
 	;; Open the file
-	jsr via_IOPEN
+	jsr JOPEN
 	bcs wedge_dos_basic_error
 
 	;; Set channel for file reading
 	ldx #$00
-	jsr via_ICHKIN
+	jsr JCHKIN
 	bcs wedge_dos_basic_error
 
 	;; Ignore start address (2 first bytes) - XXX check for errors
-	jsr via_IBASIN
+	jsr JCHRIN
 	bcs wedge_dos_basic_error
-	jsr via_IBASIN
+	jsr JCHRIN
 	bcs wedge_dos_basic_error
 
 wedge_dos_directory_line:
@@ -159,7 +159,7 @@ wedge_dos_directory_line:
 	ldy #$FF
 *
 	iny
-	jsr via_IBASIN
+	jsr JCHRIN
 	bcs wedge_dos_basic_error
 	sta BUF, y
 	cpy #$50
@@ -199,15 +199,15 @@ wedge_dos_directory_display:
 	;; FALLTROUGH
 
 wedge_dos_clean_exit:
-	jsr via_ICLALL
+	jsr JCLALL
 	;; Print new line
 	lda #$0D
-	jsr via_IBSOUT
+	jsr JCHROUT
 	jmp basic_end_of_line
 
 wedge_dos_basic_error:
 	pha
-	jsr via_ICLALL
+	jsr JCLALL
 	pla
 	tax
 	dex

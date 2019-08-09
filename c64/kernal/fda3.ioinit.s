@@ -15,40 +15,99 @@ ioinit:
 	; (https://www.c64-wiki.com/wiki/Zeropage)
 	;; XXX - Work around VICE bug: Writing $00 before $01 results in rubbish in $01
 	;; after. https://sourceforge.net/p/vice-emu/bugs/1057/
-	LDA #$27
-	LDX #$2F
-	STA $01
-	STX $00
+	lda #$27
+	ldx #$2F
+	sta CPU_R6510
+	stx CPU_D6510
 
-	;; Enable CIA1 IRQ and ~50Hz timer
-	;; (https://csdb.dk/forums/?roomid=11&topicid=69037)
-	lda #$7f
-	sta $DC0D 		; First disable all
+	;; Silence the SID chips
+
+	ldy #$00
+*
+	lda SID_SIGVOL, Y
+	and #$F0
+	sta SID_SIGVOL, Y
+	tya
+	clc
+	adc #$20
+	tay
+	cpy #$80 ; $20 * amount of chips to silence, $80 to silence 4 chips
+	bne -
+
+	;; Detect video system (PAL/NTSC), use Graham's method, as it's short and reliable
+	;; see here: https://codebase64.org/doku.php?id=base:detect_pal_ntsc
+
+ioinit_w0:
+	lda VIC_RASTER
+ioinit_w1:
+	cmp VIC_RASTER
+	beq ioinit_w1
+	bmi ioinit_w0
+
+	;; Result in A, if no interrupt happened during the test:
+	;; #$37 -> 312 rasterlines, PAL,  VIC 6569
+	;; #$06 -> 263 rasterlines, NTSC, VIC 6567R8
+	;; #$05 -> 262 rasterlines, NTSC, VIC 6567R56A
+
+	cmp #$07
+	bcs ioinit_pal
+
+ioinit_ntsc:
+	lda #$00
+	beq +
+
+ioinit_pal:
+	lda #$01
+*
+	sta PALNTSC
+
+	;; XXX: calibrate TOD for both CIA's, see here: https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
+
+	;; Enable CIA1 IRQ and ~50Hz timer (https://csdb.dk/forums/?roomid=11&topicid=69037)
+	lda #$7F
+	sta CIA1_ICR ; disable all
 
 	;; Set timer interval to ~1/60th of a second
-	;; (This value was calculated by running a custom IRQ haandler on a C64
+	
+	;; (This value was calculated by running a custom IRQ handler on a C64
 	;; with original KERNAL, and writing the values of $DC04/5 to the screen
 	;; in the IRQ handler to see roughly what value the timers must be set to)
-	lda #<16380
-	sta $dc04
-	lda #>16380
-	sta $dc05
+	;; ldy #<16380
+	;; ldx #>16380
+
+	;; PAL C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
+	;; is clocked at 0.985248 MHz, so that 1/60s is 16421 CPU cycles
+
+	ldy #<16421
+	ldx #>16421
+
+	lda PALNTSC
+	bne +
+
+	;; NTSC C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
+	;; is clocked at 1.022727 MHz, so that 1/60s is 17045 CPU cycles
+
+	ldy #<17045
+	ldx #>17045
+
+	;; Store the IRQ timing constant to CIA chip
+*
+	sty CIA1_TIMALO
+	stx CIA1_TIMAHI
 
 	;; Enable timer interrupt
 	lda #$81
-	sta $dc0d
+	sta CIA1_ICR
 
-	;; Enable timer A to run continuously
-	;; (http://codebase64.org/doku.php?id=base:timerinterrupts)
+	;; Enable timer A to run continuously (http://codebase64.org/doku.php?id=base:timerinterrupts)
 	lda #$11
-	sta $dc0e
-	lda $dc0d
+	sta CIA1_CRA
+	lda CIA1_ICR
 
 	;; Set DDR on CIA2 for IEC bus, VIC-II banking
-	lda #$3b
-	sta $dd02
-	
-	;; Set IEC bus oto its initial idle state
-	jsr iec_set_idle
-	
-	rts
+	lda #$3B
+	sta CIA2_DDRA
+
+	;; Set IEC bus to its initial idle state
+	jmp iec_set_idle
+

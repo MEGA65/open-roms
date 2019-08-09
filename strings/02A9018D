@@ -1,0 +1,3 @@
+$02 + LDA #$01 + STA (address does not match)
+
+Instruction + some parts. Not copyrightable.

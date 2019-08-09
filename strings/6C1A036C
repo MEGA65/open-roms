@@ -1,3 +1,0 @@
-JMP ($031A) (via public, documented vector) + JMP (address does not match)
-
-Code similarity due to Kernal API usage convention. Since 6510 CPU does not have indirect JSR, the only sane possibility to use Kernal API vectors in RAM ($0314-$0333) is to have JMP ($address) hardcoded somewhere. The jump table has intentionally strange order (to avoid code similarity as much as possible), but some small similarities can't be avoided in any reasonable way.

@@ -10,8 +10,15 @@
 
 
 cint:
+
+cint_brk: ; entry for BRK and STOP+RESTORE - XXX, where should it start?
+
 	jsr setup_vicii
-	
+
+	;; According to [CM64], this routine also checks for PAL/NTSC - this must be a mistake,
+	;; it's too late (IOINIT already needs this information), besides - POKE something
+	;; to address 678 on a real C64, press STOP+RESTORE - the value won't change
+
 	;; Initialise cursor blink flags  (Compute's Mapping the 64 p215)
 	lda #$00
 	sta cursor_blink_disable
@@ -34,8 +41,8 @@ cint:
 	stx key_first_repeat_delay
 
 	;; Set current colour for text (Compute's Mapping the 64 p215)
-	ldx #$0e  		; light blue by default
-	stx $0286
+	ldx #$01     ; default is light blue ($0E), but we use a different one
+	stx text_colour
 
 	;; Set maximum keyboard buffer size (Compute's Mapping the 64 p215)
 	ldx #10
@@ -45,9 +52,6 @@ cint:
 	
 	;; Set default I/O devices (see SCINIT description at http://sta.c64.org/cbm64krnfunc.html)
 	jsr clrchn_reset
-	
+
 	;; Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
 	jmp clear_screen
-
-	rts
-

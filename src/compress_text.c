@@ -159,14 +159,19 @@ char *error_list[]={
   "LOAD",                  // https://www.discogs.com/Gimmik-Load-Error/release/482462
   // Non-error messages
   "READY.\r", // #29       // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
-  "LOADING", // #30              // https://community.tibco.com/wiki/how-show-loading-prompt-when-reloading-external-data
-  "VERIFYING",             // https://discussions.apple.com/thread/8087203
-  "SAVING",
+  "NTSC, ", // #30
+  "PAL, ", // #31
+  "", // unused for now
   "ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
-  "BYTES FREE.\r\r", // #34 // https://github.com/stefanhaustein/expressionparser
+  "BYTES FREE\r\r", // #34 // https://github.com/stefanhaustein/expressionparser
   "MEMORY CORRUPT", // #35
   "NOT IMPLEMENTED", // #36
   NULL};
+
+// XXX: create separate list for Kernal  
+// "LOADING", // #30              // https://community.tibco.com/wiki/how-show-loading-prompt-when-reloading-external-data
+// "VERIFYING",             // https://discussions.apple.com/thread/8087203
+// "SAVING",
 
 // Token $FF is end of message, so we can have only 255 unique words
 #define MAX_WORDS 255

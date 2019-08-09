@@ -3,7 +3,7 @@
 
 SRC_COMMON            = $(wildcard c64/aliases/*.s)
 SRC_BASIC_COMMON      = $(SRC_COMMON) $(wildcard c64/basic/*.s)
-SRC_KERNAL_COMMON     = $(SRC_COMMON) $(wildcard c64/kernal/*.s c64/kernal/jumptable/*.s c64/kernal/iec/*.s)
+SRC_KERNAL_COMMON     = $(SRC_COMMON) $(wildcard c64/kernal/*.s c64/kernal/jumptable/*.s c64/kernal/iec/*.s c64/kernal/interrupts/*.s)
 
 SRC_BASIC_generic     = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_generic/*.s)
 SRC_BASIC_mega65      = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_mega65/*.s)
@@ -22,6 +22,10 @@ TOOL_PREPROCESS    = build/tools/preprocess
 TOOL_SIMILARITY    = build/tools/similarity
 
 TOOLS_LIST = $(TOOL_COLLECT_DATA) $(TOOL_COMPRESS_TEXT) $(TOOL_PNGPREPARE) $(TOOL_PREPROCESS) $(TOOL_SIMILARITY)
+
+# GIT commit
+
+GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 
 # Rules - main
 
@@ -147,7 +151,7 @@ test: build/newkern_generic build/newbasic_generic
 	x64 -kernal build/newkern_generic -basic build/newbasic_generic -8 empty.d64
 
 testremote: build/newkern_generic build/newbasic_generic
-	x64 -kernal build/newkern-generic -basic build/newbasic-generic -remotemonitor
+	x64 -kernal build/newkern_generic -basic build/newbasic_generic -remotemonitor
 
 testm65: build/newc65
 	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R build/newc65 -4

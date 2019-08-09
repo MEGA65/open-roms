@@ -34,6 +34,33 @@ ioinit:
 	cpy #$80 ; $20 * amount of chips to silence, $80 to silence 4 chips
 	bne -
 
+	;; Detect video system (PAL/NTSC), use Graham's method, as it's short and reliable
+	;; see here: https://codebase64.org/doku.php?id=base:detect_pal_ntsc
+
+ioinit_w0:
+	lda VIC_RASTER
+ioinit_w1:
+	cmp VIC_RASTER
+	beq ioinit_w1
+	bmi ioinit_w0
+
+	;; Result in A, if no interrupt happened during the test:
+	;; #$37 -> 312 rasterlines, PAL,  VIC 6569
+	;; #$06 -> 263 rasterlines, NTSC, VIC 6567R8
+	;; #$05 -> 262 rasterlines, NTSC, VIC 6567R56A
+
+	cmp #$07
+	bcs ioinit_pal
+
+ioinit_ntsc:
+	lda #$00
+	beq +
+
+ioinit_pal:
+	lda #$01
+*
+	sta PALNTSC
+
 	;; XXX: calibrate TOD for both CIA's, see here: https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
 
 	;; Enable CIA1 IRQ and ~50Hz timer (https://csdb.dk/forums/?roomid=11&topicid=69037)
@@ -41,7 +68,6 @@ ioinit:
 	sta CIA1_ICR ; disable all
 
 	;; Set timer interval to ~1/60th of a second
-	jsr setup_pal_ntsc
 	
 	;; (This value was calculated by running a custom IRQ handler on a C64
 	;; with original KERNAL, and writing the values of $DC04/5 to the screen

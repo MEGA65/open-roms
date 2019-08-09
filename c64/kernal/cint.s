@@ -14,7 +14,10 @@ cint:
 cint_brk: ; entry for BRK and STOP+RESTORE - XXX, where should it start?
 
 	jsr setup_vicii
-	jsr setup_pal_ntsc
+
+	;; According to [CM64], this routine also checks for PAL/NTSC - this must be a mistake,
+	;; it's too late (IOINIT already needs this information), besides - POKE something
+	;; to address 678 on a real C64, press STOP+RESTORE - the value won't change
 
 	;; Initialise cursor blink flags  (Compute's Mapping the 64 p215)
 	lda #$00

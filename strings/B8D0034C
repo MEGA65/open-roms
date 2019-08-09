@@ -1,0 +1,3 @@
+$B8 + BNE (offset match) + JMP (address does not match)
+
+Instruction + some parts. Not copyrightable.

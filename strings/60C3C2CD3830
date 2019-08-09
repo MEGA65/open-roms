@@ -1,6 +1,6 @@
-CBM80 cartridge signature
+RTS + CBM80 PETSCII string
 
-This is the string used to compare with the signature block of
+CBM80 is the string used to compare with the signature block of
 a cartridge. It is required for interoperability with C64 cartridges,
 and the requirement for this string is explicit, and is well documented,
 including the string itself, in many places, such as:

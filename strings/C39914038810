@@ -1,0 +1,3 @@
+$C3 + STA $0314, Y + DEY + BPL (offset does not match)
+
+Part of the loop processing a documented array, but only two instructions fully match. Nothing creative - not copyrightable.

@@ -1,0 +1,3 @@
+PHP + LDA #$00 + JSR (address does not match)
+
+Two very simple instructions (one without argument, second zeroing a register) + a part. Not creative - not copyrightable.

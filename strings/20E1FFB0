@@ -1,0 +1,3 @@
+JSR $FFE1 (STOP routine jumptable address) + BCS (offset does not match)
+
+Instruction (call of documented subroutine) and a half - not copyrightable.

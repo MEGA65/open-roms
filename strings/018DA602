@@ -1,0 +1,3 @@
+$01 + STA $02A6 (PAL/NTSC flag)
+
+Instruction and a part (storing data into a decumented variable). Not copyrightable.

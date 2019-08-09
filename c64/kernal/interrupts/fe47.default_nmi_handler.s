@@ -13,6 +13,8 @@ default_nmi_handler:
 
 	;; XXX: RS-232 support is not implemented
 
+	;; XXX confirm NMIs from CIA, or no other NMI will arrive!
+
 	jsr cartridge_check
 	bcc +
 	jmp (ICART_WARM_START)

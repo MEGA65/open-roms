@@ -27,8 +27,7 @@ The following ROM features are currently missing:
 * tape support
 * RS-232 support
 * breaking Kernal routines with RUN/STOP key
-* BRK handling
-* PAL/NTSC is detected, but for now only startup banner uses the result
+* BRK handling; NMI/IRQ handling is incomplete
 
 Features currently being worked on:
 
@@ -73,7 +72,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | Address   | Name     | Status   |  Remarks                                           |
 | --------- | :------- | :------: | :------------------------------------------------: |
 | `$FF81`   | `CINT`   | DONE     |                                                    |
-| `$FF84`   | `IOINIT` | DONE     |                                                    |
+| `$FF84`   | `IOINIT` | PARTIAL  | CIA initialization incomplete                      |
 | `$FF87`   | `RAMTAS` | DONE     |                                                    |
 | `$FF8A`   | `RESTOR` | DONE     |                                                    |
 | `$FF8D`   | `VECTOR` | DONE     |                                                    |

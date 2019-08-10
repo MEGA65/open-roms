@@ -106,7 +106,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFE1`   | `STOP`   | DONE     |                                                    |
 | `$FFE4`   | `GETIN`  | PARTIAL  | only some devices supported                        |
 | `$FFE7`   | `CLALL`  | DONE     |                                                    |
-| `$FFEA`   | `UDTIM`  | NOT DONE | checking for STOP key present in SCNKEY instead    |
+| `$FFEA`   | `UDTIM`  | DONE     |                                                    |
 | `$FFED`   | `SCREEN` | DONE     |                                                    |
 | `$FFF0`   | `PLOT`   | NOT DONE |                                                    |
 | `$FFF3`   | `IOBASE` | DONE     |                                                    |

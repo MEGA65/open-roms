@@ -11,13 +11,54 @@
 
 cint:
 
+	;; According to [CM64], this routine checks for PAL/NTSC. It's definitely not done
+	;; within the 'BRK' part, this can be easily checked - POKE something
+	;; to address 678 on a real C64, press STOP+RESTORE, the value won't change
+
+	;; Detect video system (PAL/NTSC), use Graham's method, as it's short and reliable
+	;; see here: https://codebase64.org/doku.php?id=base:detect_pal_ntsc
+
+	lda #$C8 ; preparation, as the VIC might be uninitialized
+	sta VIC_SCROLX
+
+cint_w0:
+	lda VIC_RASTER
+cint_w1:
+	cmp VIC_RASTER
+	beq cint_w1
+	bmi cint_w0
+
+	;; Result in A, if no interrupt happened during the test:
+	;; #$37 -> 312 rasterlines, PAL,  VIC 6569
+	;; #$06 -> 263 rasterlines, NTSC, VIC 6567R8
+	;; #$05 -> 262 rasterlines, NTSC, VIC 6567R56A
+
+	cmp #$07
+	bcs cint_pal
+
+cint_ntsc:
+
+	;; NTSC C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
+	;; is clocked at 1.022727 MHz, so that 1/60s is 17045 CPU cycles
+
+	ldy #<17045
+	ldx #>17045
+
+	sty CIA1_TIMALO
+	stx CIA1_TIMAHI
+
+	lda #$00
+	beq +
+
+cint_pal:
+
+	lda #$01
+*
+	sta PALNTSC
+
 cint_brk: ; entry for BRK and STOP+RESTORE - XXX, where should it start?
 
 	jsr setup_vicii
-
-	;; According to [CM64], this routine also checks for PAL/NTSC - this must be a mistake,
-	;; it's too late (IOINIT already needs this information), besides - POKE something
-	;; to address 678 on a real C64, press STOP+RESTORE - the value won't change
 
 	;; Initialise cursor blink flags  (Compute's Mapping the 64 p215)
 	lda #$00

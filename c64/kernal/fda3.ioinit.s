@@ -34,32 +34,7 @@ ioinit:
 	cpy #$80 ; $20 * amount of chips to silence, $80 to silence 4 chips
 	bne -
 
-	;; Detect video system (PAL/NTSC), use Graham's method, as it's short and reliable
-	;; see here: https://codebase64.org/doku.php?id=base:detect_pal_ntsc
 
-ioinit_w0:
-	lda VIC_RASTER
-ioinit_w1:
-	cmp VIC_RASTER
-	beq ioinit_w1
-	bmi ioinit_w0
-
-	;; Result in A, if no interrupt happened during the test:
-	;; #$37 -> 312 rasterlines, PAL,  VIC 6569
-	;; #$06 -> 263 rasterlines, NTSC, VIC 6567R8
-	;; #$05 -> 262 rasterlines, NTSC, VIC 6567R56A
-
-	cmp #$07
-	bcs ioinit_pal
-
-ioinit_ntsc:
-	lda #$00
-	beq +
-
-ioinit_pal:
-	lda #$01
-*
-	sta PALNTSC
 
 	;; XXX: calibrate TOD for both CIA's, see here: https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
 
@@ -81,17 +56,6 @@ ioinit_pal:
 	ldy #<16421
 	ldx #>16421
 
-	lda PALNTSC
-	bne +
-
-	;; NTSC C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
-	;; is clocked at 1.022727 MHz, so that 1/60s is 17045 CPU cycles
-
-	ldy #<17045
-	ldx #>17045
-
-	;; Store the IRQ timing constant to CIA chip
-*
 	sty CIA1_TIMALO
 	stx CIA1_TIMAHI
 

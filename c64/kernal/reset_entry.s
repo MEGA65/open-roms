@@ -13,14 +13,8 @@ reset_entry:
 
 	; The following routine is based on reading the public KERNAL jumptable routine
 	; list, and making unimaginative assumptions about what should be done on reset.
-
-	; According to example here: https://codebase64.org/doku.php?id=base:assembling_your_own_cart_rom_image
-	; the cartridge does not call RAMTAS - despite it's obviously required. So, call RAMTAS
-	; before the cartridge check/takeover
-
-	; Setting up the screen and testing ram is obviously required
-	; also affirmed by p269 of c64 prg
-	jsr RAMTAS
+	; Also, https://codebase64.org/doku.php?id=base:assembling_your_own_cart_rom_image was used
+	; as it shows example startup sequence, to be followe by cartridge creators
 
 	; C64 PRG p269
 	jsr cartridge_check
@@ -28,9 +22,11 @@ reset_entry:
 	jmp (ICART_COLD_START)
 *
 	; Initialising IO is obviously required. Also indicated by c64 prg p269.
-	; Has to be after ther RAMTAS, as it clears memory, including the PAL/NTSC flag,
-	; which is set by IOINIT
 	jsr IOINIT
+	
+	; Setting up the screen and testing ram is obviously required
+	; also affirmed by p269 of c64 prg
+	jsr RAMTAS ; called RANTAM on Codebase64 wiki
 	
 	; Resetting IO vectors is obviously required, if we want interrupts to run
 	; also affirmed by c64 prg p269

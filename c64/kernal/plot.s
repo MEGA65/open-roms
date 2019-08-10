@@ -9,4 +9,19 @@
 ;;
 
 plot:
+	bcs plot_get
+
+plot_set:
+	sty current_screen_y
+	stx current_screen_x
+
+	;; Our implementation has different screen editor, updating any
+	;; other variables (see [CM64]) seems to be unnecessary
+
+	;; FALLTROUGH to save one byte on RTS
+
+plot_get:
+	ldy current_screen_y
+	ldx current_screen_x
 	rts
+

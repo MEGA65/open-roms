@@ -108,7 +108,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFE7`   | `CLALL`  | DONE     |                                                    |
 | `$FFEA`   | `UDTIM`  | DONE     |                                                    |
 | `$FFED`   | `SCREEN` | DONE     |                                                    |
-| `$FFF0`   | `PLOT`   | NOT DONE |                                                    |
+| `$FFF0`   | `PLOT`   | DONE     |                                                    |
 | `$FFF3`   | `IOBASE` | DONE     |                                                    |
 
 <br />

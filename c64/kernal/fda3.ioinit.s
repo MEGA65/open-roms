@@ -20,7 +20,7 @@ ioinit:
 	sta CPU_R6510
 	stx CPU_D6510
 
-	;; Silence the SID chips
+	;; Silence the SID chips in the $D4xx range
 
 	ldy #$00
 *
@@ -31,10 +31,13 @@ ioinit:
 	clc
 	adc #$20
 	tay
-	cpy #$80 ; $20 * amount of chips to silence, $80 to silence 4 chips
 	bne -
 
+	;; Silence the SID chip on $D500
 
+	lda SID_SIGVOL+$100
+	and #$F0
+	sta SID_SIGVOL+$100
 
 	;; XXX: calibrate TOD for both CIA's, see here: https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
 

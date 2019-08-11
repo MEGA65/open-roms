@@ -6,7 +6,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * improved keyboard scanning, supports multi-key roll-over and rejection of spurious joystick input
 * joystick (port 1) can be used to move text cursor
 * uses RAM under ROM and I/O: 61436 bytes free
-* cold/warm start silences 4 SID chips - assumes addresses $D400, $D420, $D440, $D460
+* cold/warm start silences SID chips - $D400, $D420, ..., $D4E0, $D500 
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8

@@ -33,9 +33,9 @@ iec_tx_common:
 	;; Pull CLK back to indicate that DATA is not valid, keep it for 60us
 	;; We can use this routine as we don't hold DATA anyway (and its state doesn't even matter)
 
-	jsr iec_pull_clk_release_data
+	jsr iec_pull_clk_release_data_oneshot
 	jsr iec_wait60us
-	
+
 	;; Now, we can start transmission of 8 bits of data
 	ldx #7
 
@@ -57,11 +57,11 @@ iec_tx_common_bit_is_sent:
 
 	;; Wait 20us, so that device(s) can pick DATA
 	jsr iec_wait20us
-		
+
 	;; Pull CLK for 20us again, before sending the next bit
 	;; or performing any other action
-	jsr iec_pull_clk_release_data
-	jsr iec_wait20us ; XXX this might be an overkill, there is a lot of code besides this wait here - few NOPs might be enough
+	jsr iec_pull_clk_release_data_oneshot
+	jsr iec_wait20us
 
 	;; More bits to send?
 	dex

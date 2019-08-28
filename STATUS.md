@@ -101,8 +101,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFD2`   | `CHROUT` | PARTIAL  |                                                    |
 | `$FFD5`   | `LOAD`   | PARTIAL  | no VERIFY support yet, no STOP key support         |
 | `$FFD8`   | `SAVE`   | NOT DONE |                                                    |
-| `$FFDB`   | `SETTIM` | NOT DONE |                                                    |
-| `$FFDE`   | `RDTIM`  | NOT DONE |                                                    |
+| `$FFDB`   | `SETTIM` | DONE     |                                                    |
+| `$FFDE`   | `RDTIM`  | DONE     |                                                    |
 | `$FFE1`   | `STOP`   | DONE     |                                                    |
 | `$FFE4`   | `GETIN`  | PARTIAL  | only some devices supported                        |
 | `$FFE7`   | `CLALL`  | DONE     |                                                    |

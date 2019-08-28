@@ -9,4 +9,18 @@
 ;;
 
 rdtim:
+
+	;; Disable interrupts for the duration of the routine, to prevent
+	;; jiffy clock update while reeading it's values
+	php
+	sei
+
+	;; Store the jiffy clock state
+	ldy TIME + 0
+	ldx TIME + 1
+	lda TIME + 2
+
+	;; Restore processor state and return
+	plp
 	rts
+

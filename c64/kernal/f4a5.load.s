@@ -65,7 +65,7 @@ load:
 	;; Open channel 0 (reserved for file reading)
 	lda #$00
 	jsr iec_cmd_open
-	bcs lvs_load_verify_error
+	bcs lvs_device_not_found_error
 
 	;; Send file name
 	jsr lvs_send_file_name

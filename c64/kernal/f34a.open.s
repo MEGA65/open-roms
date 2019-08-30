@@ -76,7 +76,7 @@ open_iec:
 	lda current_secondary_address
 	jsr iec_cmd_open
 	bcc +
-	jmp kernalerror_DEVICE_NOT_FOUND ; XXX find a better error message for wrong channel (create new one?)
+	jmp kernalerror_DEVICE_NOT_FOUND
 *
 
 	;; We need our helpers to get to filenames under ROMs or IO area

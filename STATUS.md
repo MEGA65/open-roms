@@ -15,6 +15,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 
 NOTE: extra features and their syntax can change in the future!
 
+
 # Features missing
 
 
@@ -29,9 +30,6 @@ The following ROM features are currently missing:
 * breaking Kernal routines with RUN/STOP key
 * BRK handling; NMI/IRQ handling is incomplete
 
-Features currently being worked on:
-
-* IEC support needs more work; alternative drive ROMs (JiffyDOS, DolphinDOS, etc) usually don't work with current implementation, SAVE / VERIFY are not implemented, etc.
 
 # API status
 

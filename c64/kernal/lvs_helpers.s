@@ -146,7 +146,7 @@ lvs_illegal_device_number:
 lvs_load_verify_error:
 	;; XXX should we really return BASIC error code here?
 	lda VERCK
-	beq lvs_verify_error
+	bne lvs_verify_error
 	lda #B_ERR_LOAD
 	bne lvs_error_end
 	;; FALLTHROUGH

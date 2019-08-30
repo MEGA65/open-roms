@@ -32,19 +32,12 @@ iec_tx_common:
 	;; Wait till all receivers are ready, they should all release DATA
 	jsr iec_wait_for_data_release
 
-	;; At this point a delay 256 usec or more is considered EOI - add waits if necessary
-	bcc +
-	jsr iec_wait100us
-	jsr iec_wait100us
-	jsr iec_wait60us
-
-	;; XXX waits above should be enough - why do we need more waits???
-	jsr iec_wait100us
-	jsr iec_wait100us
-	jsr iec_wait100us
-
-	;; Receiver should now acknowledge EOI by pulling data for at least 60 usec
-	jsr iec_wait60us
+	;; At this point a delay 256 usec or more is considered EOI,
+	;; receiver should now acknowledge it by pulling data for at least 60 usec
+	;; Keep the implementation as simple as possible: data should be released now
+	;; so wait until it's pushed and released again
+	
+	jsr iec_wait_for_data_pull
 	jsr iec_wait_for_data_release
 *
 	;; Pull CLK back to indicate that DATA is not valid, keep it for 60us

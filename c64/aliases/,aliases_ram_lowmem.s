@@ -34,11 +34,7 @@
 	.alias IEC_TMP1   $A3 ; temporary variable for tape and IEC
 	.alias IEC_TMP2   $A4 ; temporary variable for tape and IEC
 
-	;; 2-byte location below seems to be a good place for temporary storage,
-	;; it seems used for timing during tape reads only - see:
-	;; - 'C64 Programmer's Reference Guide', page 314
-	;; - 'Compute's Mapping the Commodore 64', page 32
-	.alias CMP0       $B0 ; $B0-$B1
+	.alias CMP0       $B0 ; $B0-$B1, temporary tape storage, we use it too for BRK instruction address
 	
 	.alias FNLEN      $B7 ; current file name length
 

@@ -7,6 +7,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * joystick (port 1) can be used to move text cursor
 * uses RAM under ROM and I/O: 61436 bytes free
 * cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses
+* wark start due to BRK prints out the instruction address
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
@@ -28,7 +29,7 @@ The following ROM features are currently missing:
 * tape support
 * RS-232 support
 * breaking Kernal routines with RUN/STOP key
-* BRK handling; NMI/IRQ handling is incomplete
+* NMI andling is incomplete
 
 
 # API status

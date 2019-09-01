@@ -26,5 +26,9 @@ default_nmi_handler:
 	bcs +
 	jmp return_from_interrupt ; no STOP pressed
 *
-	jmp (CBINV) ; STOP + RESTORE
+	;; STOP + RESTORE - clean the address of the BRK instruction (it's not BRK) first
+	lda #$00
+	sta CMP0+0
+	sta CMP0+1
+	jmp (CBINV)
 

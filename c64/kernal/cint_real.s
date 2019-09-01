@@ -9,7 +9,7 @@
 ;;
 
 
-cint:
+cint_real:
 
 	;; According to [CM64], this routine checks for PAL/NTSC. It's definitely not done
 	;; within the 'BRK' part, this can be easily checked - POKE something

@@ -1,0 +1,3 @@
+$EE + LDA $DD00
+
+Instruction (access to a well known hardware register address) and a half - not copyrightable.

@@ -1,0 +1,3 @@
+TYA + PHA + TSX + LDA $0104,X + AND #$10
+
+Beginning of IRQ handler - checks whether it is caused by BRK instruction or some other reason. Since IRQ handling for BRK/non-BRK caused interrupts are totally different, there is no other way but to start with such a check. Not creative - not copyrightable.

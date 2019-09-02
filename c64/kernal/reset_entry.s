@@ -22,18 +22,18 @@ reset_entry:
 	jmp (ICART_COLD_START)
 *
 	; Initialising IO is obviously required. Also indicated by c64 prg p269.
-	jsr IOINIT
+	jsr JIOINIT
 	
 	; Setting up the screen and testing ram is obviously required
 	; also affirmed by p269 of c64 prg
-	jsr RAMTAS ; called RANTAM on Codebase64 wiki
+	jsr JRAMTAS ; called RANTAM on Codebase64 wiki
 	
 	; Resetting IO vectors is obviously required, if we want interrupts to run
 	; also affirmed by c64 prg p269
-	jsr RESTOR
+	jsr JRESTOR
 
 	;;  "Compute's Mapping the 64" p236
-	jsr CINT
+	jsr JCINT
 
 	; What do we do when finished?  A C64 jumps into the BASIC ROM
 	cli 			; Allow interrupts to happen

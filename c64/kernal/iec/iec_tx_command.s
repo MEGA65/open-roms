@@ -22,8 +22,9 @@ iec_tx_command:
 	;; Give devices time to respond (response is mandatory!) by pulling DATA
 	jsr iec_wait1ms
 	lda CIA2_PRA ; pulled DATA = highest bit 0 = 'plus'
-	bmi iec_return_DEVICE_NOT_FOUND
-
+	bpl +
+	jmp iec_return_DEVICE_NOT_FOUND
+*
 	;; At least one device responded, but they are still allowed to stall
 	;; (can be busy processing something), we have to wait till they are all
 	;; ready (or bored with DOS attack...)

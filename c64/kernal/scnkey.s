@@ -322,8 +322,9 @@ next_row:
 
 	stx $dc00       ;// Disconnect all Keyboard Rows
 	cpx $dc01       ;// Only Control Port activity will be detected
-	bne ReturnNoKeys
-
+	beq + 
+	jmp ReturnNoKeys
+*
 	;; Make X = $00, assumed below
 	inx
 
@@ -462,7 +463,9 @@ RecordKeypress:
         ;; // New Key Detected
 	ldy BufferQuantity
 	cpy #MaxKeyRollover
-	bcs TooManyNewKeys
+	bcc +
+	jmp TooManyNewKeys
+*
 AcceptKeyEvent:	
         sta Buffer,y
 	iny

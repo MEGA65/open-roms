@@ -30,8 +30,9 @@ basic_execute_statement:
 
 	;; Check for RUN/STOP
 	lda STKEY
-	bpl basic_do_break
-	
+	bmi +
+	jmp basic_do_break
+*
 	;; Skip over any white space and :
 	ldy #0
 	ldx #<basic_current_statement_ptr

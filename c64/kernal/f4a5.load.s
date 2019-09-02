@@ -41,8 +41,9 @@ load:
 	;; Check whether we support the requested device
 	lda current_device_number
 	and #$FC
-	beq lvs_illegal_device_number ; device number below 4, not an IEC device
-
+	bne +
+	jmp lvs_illegal_device_number ; device number below 4, not an IEC device
+*
 	;; Device numbers above 30 are also illegal (see https://www.pagetable.com/?p=1031),
 	;; as the protocol combines device number with command code int one byte,
 	;; above 30 it is no longer possible (UNLISTEN and UNTALK codes prevent using
@@ -60,41 +61,51 @@ load:
 	;; Call device to LISTEN (p16)
 	lda current_device_number
 	jsr listen
-	bcs lvs_device_not_found_error
-
+	bcc +
+	jmp lvs_device_not_found_error ; XXX deduplicate with other jumps in this routine
+*
 	;; Open channel 0 (reserved for file reading)
 	lda #$00
 	jsr iec_cmd_open
-	bcs lvs_load_verify_error
-
+	bcc +
+	jmp lvs_device_not_found_error ; XXX deduplicate with other jumps in this routine
+*
 	;; Send file name
 	jsr lvs_send_file_name
-	bcs lvs_load_verify_error
-
+	bcc +
+	jmp lvs_load_verify_error ; XXX deduplicate with other jumps in this routine 
+*
 	;; Now command device to talk (p16)
 	lda current_device_number
 	jsr talk
-	bcs lvs_load_verify_error
-
+	bcc +
+	jmp lvs_load_verify_error ; XXX deduplicate with other jumps in this routine 
+*
 	lda #$60 ; open channel / data (p3) , required according to p13
 	sta IEC_TMP2
 	jsr iec_tx_command
-	bcs lvs_load_verify_error
-
+	bcc +
+	jmp lvs_load_verify_error ; XXX deduplicate with other jumps in this routine 
+*
 	;; We are currently talker, so do the IEC turn around so that we
 	;; are the listener (p16)
 	jsr iec_turnaround_to_listen
-	bcs lvs_load_verify_error
-
+	bcc +
+	jmp lvs_load_verify_error ; XXX deduplicate with other jumps in this routine 
+*
 	;; Get load address and store it if secondary address is zero
 	jsr iec_rx_byte
-	bcs lvs_file_not_found_error
+	bcc +
+	jmp lvs_file_not_found_error ; XXX deduplicate with other jumps in this routine
+*
 	ldx current_secondary_address
 	beq +
 	sta STAL+0
 *
 	jsr iec_rx_byte
-	bcs lvs_file_not_found_error
+	bcc +
+	jmp lvs_file_not_found_error ; XXX deduplicate with other jumps in this routine
+*
 	ldx current_secondary_address
 	beq +
 	sta STAL+1
@@ -105,16 +116,19 @@ load:
 load_loop:
 	;; We are now ready to receive bytes
 	jsr iec_rx_byte
-	bcs lvs_load_verify_error
-
+	bcc +
+	jmp lvs_load_verify_error ; XXX deduplicate with other jumps in this routine 
+*
 	;; Handle the byte (store in memory / verify)
 	jsr lvs_handle_byte_load_verify
-	bcs lvs_load_verify_error
-	
+	bcc +
+	jmp lvs_load_verify_error ; XXX deduplicate with other jumps in this routine 
+*	
 	;; Advance pointer to data
 	jsr lvs_advance_pointer
-	bcs lvs_wrap_around_error
-
+	bcc +
+	jmp lvs_wrap_around_error
+*
 	;; Check for EOI - if so, this was the last byte
 	lda IOSTATUS
 	and #K_STS_EOI

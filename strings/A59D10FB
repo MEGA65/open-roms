@@ -1,0 +1,3 @@
+LDA $9D + BPL (address match)
+
+Checking a well-known zeropage flag - not creative, not copyrightable.

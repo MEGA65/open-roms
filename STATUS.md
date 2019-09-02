@@ -6,7 +6,8 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * improved keyboard scanning, supports multi-key roll-over and rejection of spurious joystick input
 * joystick (port 1) can be used to move text cursor
 * uses RAM under ROM and I/O: 61436 bytes free
-* cold/warm start silences 4 SID chips - assumes addresses $D400, $D420, $D440, $D460
+* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses
+* wark start due to BRK prints out the instruction address
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
@@ -14,6 +15,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 
 NOTE: extra features and their syntax can change in the future!
+
 
 # Features missing
 
@@ -27,11 +29,8 @@ The following ROM features are currently missing:
 * tape support
 * RS-232 support
 * breaking Kernal routines with RUN/STOP key
-* BRK handling; NMI/IRQ handling is incomplete
+* NMI andling is incomplete
 
-Features currently being worked on:
-
-* IEC support needs more work; alternative drive ROMs (JiffyDOS, DolphinDOS, etc) usually don't work with current implementation, SAVE / VERIFY are not implemented, etc.
 
 # API status
 
@@ -101,14 +100,14 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFD2`   | `CHROUT` | PARTIAL  |                                                    |
 | `$FFD5`   | `LOAD`   | PARTIAL  | no VERIFY support yet, no STOP key support         |
 | `$FFD8`   | `SAVE`   | NOT DONE |                                                    |
-| `$FFDB`   | `SETTIM` | NOT DONE |                                                    |
-| `$FFDE`   | `RDTIM`  | NOT DONE |                                                    |
+| `$FFDB`   | `SETTIM` | DONE     |                                                    |
+| `$FFDE`   | `RDTIM`  | DONE     |                                                    |
 | `$FFE1`   | `STOP`   | DONE     |                                                    |
 | `$FFE4`   | `GETIN`  | PARTIAL  | only some devices supported                        |
 | `$FFE7`   | `CLALL`  | DONE     |                                                    |
-| `$FFEA`   | `UDTIM`  | NOT DONE | checking for STOP key present in SCNKEY instead    |
+| `$FFEA`   | `UDTIM`  | DONE     |                                                    |
 | `$FFED`   | `SCREEN` | DONE     |                                                    |
-| `$FFF0`   | `PLOT`   | NOT DONE |                                                    |
+| `$FFF0`   | `PLOT`   | DONE     |                                                    |
 | `$FFF3`   | `IOBASE` | DONE     |                                                    |
 
 <br />

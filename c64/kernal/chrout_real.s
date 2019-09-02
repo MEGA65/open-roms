@@ -448,8 +448,9 @@ screen_grow_logical_line:
 	ldy current_screen_y
 	;; Don't grow line if it is already grown
 	lda screen_line_link_table,y
-	bmi done_grow_line
-	
+	bpl +
+	jmp done_grow_line
+*
 	lda #$80
 	sta screen_line_link_table,y
 

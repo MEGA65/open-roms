@@ -51,10 +51,13 @@ lvs_handle_byte_load_verify:
 lvs_advance_pointer:
 	;; Advance pointer
 	inc STAL
-	bne lvs_success_end
+	beq + 
+	jmp lvs_success_end
+*
 	inc STAL+1
 	;; If we wrap around to $0000, then this is bad.
-	beq lvs_error_end
+	bne +
+	jmp lvs_error_end
 *
 	clc
 	rts
@@ -146,7 +149,7 @@ lvs_illegal_device_number:
 lvs_load_verify_error:
 	;; XXX should we really return BASIC error code here?
 	lda VERCK
-	beq lvs_verify_error
+	bne lvs_verify_error
 	lda #B_ERR_LOAD
 	bne lvs_error_end
 	;; FALLTHROUGH

@@ -16,12 +16,10 @@ irq_handler:
 	pha
 
 	;; Check if caused by BRK
-
-	;; XXX disabled for now - resets Duotris game, unknown why
-	; tsx
-	; lda $0104, x ; get the pre-interrupt processor state
-	; and #$10
-	; bne irq_handler_brk
+	tsx
+	lda $0104, x ; get the pre-interrupt processor state
+	and #$10
+	bne irq_handler_brk
 
 	;; Not caused by BRK - call interrupt routine (only if initialised)
 	lda CINV
@@ -33,6 +31,15 @@ irq_handler:
 	jmp default_irq_handler
 
 irq_handler_brk:
+
+	;; Store BRK adddress, to be displayed
+	sec
+	lda $0105, x
+	sbc #$02
+	sta CMP0+0
+	lda $0106, x
+	sbc #$00
+	sta CMP0+1
 
 	;; Interrupt caused by BRK
 	jmp (CBINV)

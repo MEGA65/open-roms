@@ -204,10 +204,6 @@ ReturnNoKeys:
 
 NoActivityDetected:
 
-	;; Cancel STKEY status
-	lda #$FF
-	sta STKEY ; XXX this variable should be set by UDTIM
-
 	;; So cancel all bucky keys
 	lda key_bucky_state
 	sta key_last_bucky_state
@@ -326,19 +322,14 @@ next_row:
 
 	stx $dc00       ;// Disconnect all Keyboard Rows
 	cpx $dc01       ;// Only Control Port activity will be detected
-	bne ReturnNoKeys
-
+	beq + 
+	jmp ReturnNoKeys
+*
 	;; Make X = $00, assumed below
 	inx
 
 	;; //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	;; // Check and flag Non Alphanumeric Keys
-
-	;; Store last row of keyboard scan result,
-	;; so that RUN/STOP etc can be checked easily
-	;; (Compute's Mapping the 64, p27)
-	lda ScanResult+0
-	sta STKEY ; XXX this variable should be set by UDTIM
 
 	;; Store de-bounce data for bucky keys
 	;; (Compute's Mapping the 64, p58-59)
@@ -472,7 +463,9 @@ RecordKeypress:
         ;; // New Key Detected
 	ldy BufferQuantity
 	cpy #MaxKeyRollover
-	bcs TooManyNewKeys
+	bcc +
+	jmp TooManyNewKeys
+*
 AcceptKeyEvent:	
         sta Buffer,y
 	iny

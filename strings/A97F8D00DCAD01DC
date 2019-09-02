@@ -1,0 +1,3 @@
+LDA #$7F + STA $DC00 + LDA $DC01
+
+Part of keyboard scanning code in UDTIM routine - to get the last row (not even complete code, as there is also some code to set the port directions). This is probably the only sane way to read the rom. Not creative - not copyrightable.

@@ -1,0 +1,3 @@
+$FF + CLI + JMP ($A000)
+
+Part of the address, reenabling interrupts, jump through a documented vector - part of the initialization/reset sequence. Not creative - not copyrightable.

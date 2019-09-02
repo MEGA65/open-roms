@@ -161,7 +161,7 @@ char *error_list[]={
   "READY.\r", // #29       // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
   "NTSC, ", // #30
   "PAL, ", // #31
-  "", // unused for now
+  "BRK AT $", // #32
   "ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
   "BYTES FREE\r\r", // #34 // https://github.com/stefanhaustein/expressionparser
   "MEMORY CORRUPT", // #35

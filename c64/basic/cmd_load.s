@@ -66,7 +66,9 @@ got_filename:
 
 	jsr basic_parse_line_number
 	lda basic_line_number+1
-	bne do_ILLEGAL_QUANTITY_error
+	beq +
+	jmp do_ILLEGAL_QUANTITY_error
+*
 	lda basic_line_number+0
 	sta current_device_number
 

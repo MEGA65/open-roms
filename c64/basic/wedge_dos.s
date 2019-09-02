@@ -17,11 +17,13 @@ wedge_dos:
 	;; Check if user asked for a status
 	ldy #$00
 	lda (basic_current_statement_ptr), y
-	beq wedge_dos_status
-	
+	bne +
+	jmp wedge_dos_status ; XXX try to optimize this, perhaps move 'wedge_dos_status' above?
+*
 	;; Check if asked for a directory
 	cmp #$24
-	beq wedge_dos_directory
+	bne +
+	jmp wedge_dos_directory
 *
 	;; Check if asked to change drive number, or if it is a regular command
 	cmp #$30
@@ -42,8 +44,9 @@ wedge_dos_command:
 	
 	jsr JSETNAM
 	jsr JOPEN
-	bcs wedge_dos_basic_error
-
+	bcc +
+	jmp wedge_dos_basic_error ; XXX combine with other such jumps
+*
 	;; Retrieve status, print it if not OK
 	jsr JCLALL
 	jsr wedge_dos_status_get
@@ -83,12 +86,16 @@ wedge_dos_status_get:
 	lda #$00  ; empty file name
 	jsr JSETNAM
 	jsr JOPEN
-	bcs wedge_dos_basic_error
+	bcc +
+	jmp wedge_dos_basic_error ; XXX combine with other such jumps
+*
 
 	;; Set channel for input
 	ldx #$0F
 	jsr JCHKIN
-	bcs wedge_dos_basic_error
+	bcc +
+	jmp wedge_dos_basic_error ; XXX combine with other such jumps
+*
 	
 	ldy #$00
 *
@@ -99,7 +106,9 @@ wedge_dos_status_get:
 	;; Print out everything retrieved from the drive
 	bne +
 	jsr JCHRIN
-	bcs wedge_dos_basic_error
+	bcc wedge_dos_x1
+	jmp wedge_dos_basic_error ; XXX try to optimize this
+wedge_dos_x1:
 	sta BUF, y
 	iny
 	jmp -
@@ -129,7 +138,6 @@ wedge_dos_directory:
 
 	;; First change the secondary address to the one suitable for
 	;; directory loading
-	;; XXX
 	lda #$00 ; logical device number
 	ldx current_device_number
 	ldy #$60

@@ -1,0 +1,3 @@
+$DD00 + AND #$DF
+
+Instruction and a half (well known hardware register address) - not copyrightable.

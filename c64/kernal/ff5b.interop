@@ -1,0 +1,4 @@
+Original Kernal location of the CINT routine.
+
+Routine moved to original location due to game 'Duotris' calling it instead of using the Kernal jumptable.
+Starting the game without this patch caused warm reset with 'BRK AT $FF5B' message.

@@ -32,6 +32,8 @@ iec_tx_common:
 	;; Wait till all receivers are ready, they should all release DATA
 	jsr iec_wait_for_data_release
 
+	bcc +
+
 	;; At this point a delay 256 usec or more is considered EOI,
 	;; receiver should now acknowledge it by pulling data for at least 60 usec
 	;; Keep the implementation as simple as possible: data should be released now

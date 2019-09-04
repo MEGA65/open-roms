@@ -139,20 +139,19 @@ printf_retreat:
 	rts
 
 printf_printhexbyte:
+	;; Print the hex value in .A as two digits, idea by Haubitze
+	sed
 	pha
 	lsr
 	lsr
 	lsr
 	lsr
-	ora #$30
-	cmp #$3A
-	bcc +
-	adc #6
-*	jsr JCHROUT
+	cmp #$0A
+	adc #$30
+	jsr JCHROUT
 	pla
-	and #$0f
-	ora #$30
-	cmp #$3A
-	bcc +
-	adc #6
-*	jmp JCHROUT
+	and #$0F
+	cmp #$0A
+	adc #$30
+	cld
+	jmp JCHROUT

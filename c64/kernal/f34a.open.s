@@ -21,7 +21,9 @@ open:
 	dey
 	lda LAT, y
 	cmp current_logical_filenum
-	beq kernalerror_FILE_ALREADY_OPEN
+	bne open_not_yet_open
+	jmp kernalerror_FILE_ALREADY_OPEN
+open_not_yet_open:
 	cpy #$00
 	jmp -
 *

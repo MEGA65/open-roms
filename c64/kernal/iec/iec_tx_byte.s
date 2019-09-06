@@ -90,6 +90,7 @@ iec_tx_common_bit_is_sent:
 	bpl +
 	dex
 	bne -
-	bpl iec_return_DEVICE_NOT_FOUND
+	bmi +
+	jmp iec_return_DEVICE_NOT_FOUND
 *
 	jmp iec_return_success

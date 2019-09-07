@@ -60,4 +60,4 @@
 //
 
 kernal_revision:
-    .byte $FF // XXX possibly change this value (current candidate: $F0), $FF conflicts with other machines
+    .byte $F0 // chosen not to conflict with anything known so far

@@ -1,4 +1,4 @@
-; c64 prg p263
+// c64 prg p263
 
 cartridge_check:
 	ldx #$04

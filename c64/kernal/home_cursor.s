@@ -1,5 +1,5 @@
-	;; Home the cursor
-	;; (Compute's Mapping the 64 p216)
+// Home the cursor
+// (Compute's Mapping the 64 p216)
 
 home_cursor:
 

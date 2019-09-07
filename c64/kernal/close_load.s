@@ -1,23 +1,23 @@
 
 
-;; Common ppart of CLOSE and LOAD routines
+// Common ppart of CLOSE and LOAD routines
 
 close_load:
 
 	tax
 
-	;; Command drive to stop talking and to close the file
-	jsr untlk
+	// Command drive to stop talking and to close the file
+	jsr UNTLK
 
 	txa
-	jsr listen
+	jsr LISTEN
 
-	lda #$E0 ; CLOSE command
+	lda #$E0 // CLOSE command
 	sta IEC_TMP2
 	jsr iec_tx_command
 	jsr iec_tx_command_finalize
 
-	;; Tell drive to unlisten
-	jsr unlsn
+	// Tell drive to unlisten
+	jsr UNLSN
 
 	rts

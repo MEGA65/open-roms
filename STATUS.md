@@ -38,16 +38,10 @@ The following ROM features are currently missing:
 Status of the various APIs and variables from the original ROMs
 
 
-## Page 0
+## Low memory locations (pages 0 - 3)
 
 
-TODO
-
-
-## Pages 2 & 3
-
-
-TODO
+For the current status of the low memory location implementation andd usage check [this file](c64/aliases/,aliases_ram_lowmem.s). NOTE: available vector to certain routine does not mean that this routine is fully implemented!
 
 
 ## BASIC
@@ -107,7 +101,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFE7`   | `CLALL`  | DONE     |                                                    |
 | `$FFEA`   | `UDTIM`  | DONE     |                                                    |
 | `$FFED`   | `SCREEN` | DONE     |                                                    |
-| `$FFF0`   | `PLOT`   | DONE     |                                                    |
+| `$FFF0`   | `PLOT`   | PARTIAL  | cursor blink not handled                           |
 | `$FFF3`   | `IOBASE` | DONE     |                                                    |
 
 <br />

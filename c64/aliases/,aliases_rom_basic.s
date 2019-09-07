@@ -1,5 +1,4 @@
 
-	;; BASIC startup vector
-	
-	.alias IBASIC_COLD_START     $A000
-	.alias IBASIC_WARM_START     $A002
+	// BASIC startup vectors
+	.label IBASIC_COLD_START  = $A000
+	.label IBASIC_WARM_START  = $A002

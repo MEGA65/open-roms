@@ -1,37 +1,37 @@
-	;; Parse a number from the input buffer at (basic_current_statement_ptr)
-	;; Result is put into FAC1.
-	;; basic_current_statement_ptr is updated with first position after the number.
+// Parse a number from the input buffer at (basic_current_statement_ptr)
+// Result is put into FAC1.
+// basic_current_statement_ptr is updated with first position after the number.
 
-	;; XXX - Remember decimal position and exponent, and apply them
-	;; after to produce normalised floating point number.
+// XXX - Remember decimal position and exponent, and apply them
+// after to produce normalised floating point number.
 
-	;; XXX - Doesn't use routines to access memory under ROMs etc.
-	;; This is important, because this routine operates on numbers in BASIC text.
+// XXX - Doesn't use routines to access memory under ROMs etc.
+// This is important, because this routine operates on numbers in BASIC text.
 
 ij_not_a_digit:
-	;; XXX check for "." or "E"
-	;; Other chars terminate the accumulation.
+	// XXX check for "." or "E"
+	// Other chars terminate the accumulation.
 
-	;; Look for exponentiation marker
-	;; XXX - Implement me!
-	;; Probably should have a flag so that we know if we are accumulating
-	;; exponent or mantissa digits
+	// Look for exponentiation marker
+	// XXX - Implement me!
+	// Probably should have a flag so that we know if we are accumulating
+	// exponent or mantissa digits
 	
-	;; Look for decimal point
+	// Look for decimal point
 	cmp #$2e
 	bne ij_not_decimal
 	lda tokenise_work4
 	cmp #$ff
 	beq ij_found_decimal
-	;; More than one decimal point in a number means we have reached the end of the number
+	// More than one decimal point in a number means we have reached the end of the number
 	clc
 	rts
 	
 ij_found_decimal:
-	;; Found decimal.
-	;; Thus start counting digits after the decimal, so that we
-	;; can do the necessary number of divide by 10s on the final
-	;; number.
+	// Found decimal.
+	// Thus start counting digits after the decimal, so that we
+	// can do the necessary number of divide by 10s on the final
+	// number.
 	lda #$00
 	sta tokenise_work4
 
@@ -39,31 +39,30 @@ ij_found_decimal:
 	
 ij_not_decimal:
 
-	
-	CLC
-	RTS
+	clc
+	rts
 	
 injest_number:
-	;; Clear FAC1
+	// Clear FAC1
 	jsr erase_fac1
 
-	;; Clear decimal position flag
+	// Clear decimal position flag
 	lda #$ff
 	sta tokenise_work4
 
-	;; Check if leading char is a - sign
-	;; Note: the - will have been tokenised to $AB
-	;; XXX - implement
+	// Check if leading char is a - sign
+	// Note: the - will have been tokenised to $AB
+	// XXX - implement
 	ldy #$00
 	lda (basic_current_statement_ptr),y
 	cmp #$AB
 	bne ij_not_minus
 
-	;; Set sign to negative
+	// Set sign to negative
 	lda #$ff
 	sta basic_fac1_sign
 
-	;; Skip over the minus sign
+	// Skip over the minus sign
 	jsr basic_consume_character
 	
 ij_not_minus:	
@@ -77,43 +76,43 @@ ij_loop1:
 	cmp #$3a
 	bcs ij_not_a_digit
 
-	;; It is a digit
+	// It is a digit
 
-	;; Only add digit if we have not overflowed the accuracy of
-	;; the mantissa
+	// Only add digit if we have not overflowed the accuracy of
+	// the mantissa
 	lda basic_fac1_exponent
 	beq ij_accept_precision
 
-	;; We have an extra digit after saturating our precision.
-	;; Thus we should ignore the digit, and just multiply the FAC
-	;; by 10, but only if we have not seen a decimal point.
-	;; If we have seen a decimal point, then we can completely ignore
-	;; the digit, as it is contributing not recordable information
+	// We have an extra digit after saturating our precision.
+	// Thus we should ignore the digit, and just multiply the FAC
+	// by 10, but only if we have not seen a decimal point.
+	// If we have seen a decimal point, then we can completely ignore
+	// the digit, as it is contributing not recordable information
 
 	lda tokenise_work4
 	cmp #$ff
 	bne ij_seen_decimal_point
 	
 	jsr fac1_mul10
-	;; Fall through
+	// Fall through
 ij_seen_decimal_point:
 	jmp ij_consider_next_digit
 	
 ij_accept_precision:
-	;; We can accept more precision, so multiply the mantissa by 10, so that
-	;; we can add the new digit in
+	// We can accept more precision, so multiply the mantissa by 10, so that
+	// we can add the new digit in
 	jsr fac1_mul10
 
 	lda basic_fac1_exponent
 	bne ij_consider_next_digit
 	
-	;; Get digit
+	// Get digit
 	ldy #$00
 	lda (basic_current_statement_ptr),y
 	sec
 	sbc #$30
 
-	;; Add to FAC1 mantissa
+	// Add to FAC1 mantissa
 	clc
 	adc basic_fac1_mantissa+0
 	sta basic_fac1_mantissa+0
@@ -127,16 +126,16 @@ ij_loop2:
 	dey
 	bne ij_loop2
 
-	bcc +
-	;; Carry set, so we have overflowed.
-	;; We should shift everything right one digit, and increase
-	;; the exponent by one.  The non-zero exponent tells us that we
-	;; can't fit any more precision in.
+	bcc !+
+	// Carry set, so we have overflowed.
+	// We should shift everything right one digit, and increase
+	// the exponent by one.  The non-zero exponent tells us that we
+	// can't fit any more precision in.
 	jsr fac1_mantissa_div2
-*
+!:
 
 ij_consider_next_digit:	
-	;; Consider next digit
+	// Consider next digit
 	jsr basic_consume_character
 	jmp ij_loop1
 	
@@ -146,10 +145,10 @@ ij_consider_next_digit:
 erase_fac1:	
 	lda #$00
 	ldx #8
-*
+!:
 	sta basic_fac1_exponent,x
 	dex
-	bpl -
+	bpl !-
 	sta basic_fac1_mantissa_lob
 
 	rts

@@ -1,67 +1,67 @@
 
-;;
-;; Official Kernal routine, described in:
-;;
-;; - [RG64] C64 Programmer's Reference Guide   - page 277/278
-;; - [CM64] Compute's Mapping the Commodore 64 - page 228
-;;
-;; CPU registers that has to be preserved (see [RG64]): .Y
-;;
+//
+// Official Kernal routine, described in:
+//
+// - [RG64] C64 Programmer's Reference Guide   - page 277/278
+// - [CM64] Compute's Mapping the Commodore 64 - page 228
+//
+// CPU registers that has to be preserved (see [RG64]): .Y
+//
 
-;; XXX keyboard part currently does not preserve register Y, to be fixed!
+// XXX keyboard part currently does not preserve register Y, to be fixed!
 
-;; Reads a byte of input, unless from keyboard.
-;; If from keyboard, then it gets a whole line of input, and returns the first char.
-;; Repeated calls after that read out the successive bytes of the line of input.
+// Reads a byte of input, unless from keyboard.
+// If from keyboard, then it gets a whole line of input, and returns the first char.
+// Repeated calls after that read out the successive bytes of the line of input.
 
 chrin_real:
 
-	;; Determine the device number
+	// Determine the device number
 	lda DFLTN
 
-	beq chrin_keyboard ; #$00 - keyboard
-	;; XXX add screen support
+	beq chrin_keyboard // #$00 - keyboard
+	// XXX add screen support
 
 	jsr iec_check_devnum
 	bcc chrin_iec
-	jmp lvs_device_not_found_error ;  not a supported device
+	jmp lvs_device_not_found_error // not a supported device
 
 chrin_iec:
 
 	jsr JACPTR
 	bcs chrin_done_fail
-	;; FALLTROUGH
+	// FALLTROUGH
 
 chrin_done:
-	clc ; indicate success
+	clc // indicate success
 	rts
 
 chrin_done_fail:
-	sec ; indicate failure
+	sec // indicate failure
 	rts
 
 chrin_keyboard:
 
-	;; Save X
+	// Save X
 	txa
 	pha
 
 chrin_repeat:
 
-	;; Do we have a line of input we are currently returning?
-	;; If so, return the next byte, and clear the flag when we reach the end.
+	// Do we have a line of input we are currently returning?
+	// If so, return the next byte, and clear the flag when we reach the end.
 
-	;; Do we have a line of input waiting?
+	// Do we have a line of input waiting?
 	lda keyboard_input_ready
 	beq read_from_keyboard
 
-	;; Yes, we have input waiting at (start_of_keyboard_input)+keyboard_input_ready
-	;; When keyboard_input_ready = end_of_input_line, then we return a carriage return
-	;; and clear the flag
+	// Yes, we have input waiting at (start_of_keyboard_input)+keyboard_input_ready
+	// When keyboard_input_ready = end_of_input_line, then we return a carriage return
+	// and clear the flag
 	cmp end_of_input_line
 	bne not_end_of_input
 
-	;; Return carriage return and clear pending input flag
+	// Return carriage return and clear pending input flag
 	lda #$00
 	sta keyboard_input_ready
 	pla
@@ -71,7 +71,7 @@ chrin_repeat:
 	rts
 
 not_end_of_input:
-	;; Return next byte of waiting input and advance index
+	// Return next byte of waiting input and advance index
 	tay
 	pla
 	tax
@@ -80,13 +80,13 @@ not_end_of_input:
 	inc keyboard_input_ready
 	clc
 	rts
-	
 
-read_from_keyboard:	
+
+read_from_keyboard:
 
 	jsr enable_cursor
 	
-	;; Wait for a key
+	// Wait for a key
 	lda keys_in_key_buffer
 	beq chrin_repeat
 
@@ -100,31 +100,31 @@ read_from_keyboard:
 
 	jsr hide_cursor_if_visible
 	
-	;; It was enter.
-	;; Note that we have a line of input to return, and return the first byte thereof
-	;; after computing and storing its length.
-	;; (Compute's Mapping the 64, p96)
+	// It was enter.
+	// Note that we have a line of input to return, and return the first byte thereof
+	// after computing and storing its length.
+	// (Compute's Mapping the 64, p96)
 
-	;; Set pointer to line of input
+	// Set pointer to line of input
 	lda current_screen_line_ptr+0
 	sta start_of_keyboard_input+0
 	lda current_screen_line_ptr+1
 	sta start_of_keyboard_input+1
 
-	;; Calculate length
+	// Calculate length
 	jsr get_current_line_logical_length
 	tay
 	iny
-*	dey
+!:	dey
 	bmi empty_line
 	lda (current_screen_line_ptr),y
 	cmp #$20
-	beq -
+	beq !-
 	iny
 	sty end_of_input_line
 	lda #$01
 	sta keyboard_input_ready
-	;; Return first char of line
+	// Return first char of line
 	ldy #$00
 	pla
 	tax
@@ -134,43 +134,43 @@ read_from_keyboard:
 	rts
 
 empty_line:
-	;; For an empty line, just return the carriage return
-	;; (and don't forget to actually print the carriage return, so that
-	;; the cursor advances and screen scrolls as required)
+	// For an empty line, just return the carriage return
+	// (and don't forget to actually print the carriage return, so that
+	// the cursor advances and screen scrolls as required)
 	pla
 	tax
 	clc
 	lda #$0d
 	rts
-	
-not_enter:	
-	;; Print character
+
+not_enter:
+	// Print character
 	lda keyboard_buffer
-	jsr chrout
+	jsr CHROUT
 
 	jsr pop_keyboard_buffer
 
-	;; Keep looking for input from keyboard until carriage return
+	// Keep looking for input from keyboard until carriage return
 	jmp chrin_repeat
 
-pop_keyboard_buffer:	
-	;; Pop key out of keyboard buffer
-	;; Disable interrupts while reading from keyboard buffer
-	;; so that no race conditions can occur
+pop_keyboard_buffer:
+	// Pop key out of keyboard buffer
+	// Disable interrupts while reading from keyboard buffer
+	// so that no race conditions can occur
 	sei
 	ldx #$00
 	ldy #$01
-*	lda keyboard_buffer,y
+!:	lda keyboard_buffer,y
 	sta keyboard_buffer,x
 	inx
 	iny
 	cpy key_buffer_size
-	bne -
+	bne !-
 	dec keys_in_key_buffer
 	cli
 
 	rts
-	
+
 screen_code_to_petscii:
 	cmp #$1b
 	bcs not_alpha
@@ -185,7 +185,7 @@ not_alpha:
 
 	rts
 
-not_punctuation:	
+not_punctuation:
 	cmp #$5b
 	bcs not_shifted
 
@@ -193,18 +193,18 @@ not_punctuation:
 	adc #$80
 
 	rts
-	
-not_shifted:	
+
+not_shifted:
 
 	cmp #$80
 	bcs not_vendor
 
-	;; $60-$7F -> $A0-$BF
+	// $60-$7F -> $A0-$BF
 
 	clc
 	adc #$40
 	
-	;; FALLTROUGH
+	// FALLTROUGH
 not_vendor:
 	rts
 

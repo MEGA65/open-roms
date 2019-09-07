@@ -1,17 +1,17 @@
-	;; printf()-like routine for simplifying debugging
+// printf()-like routine for simplifying debugging
 
-	;; Prints the literal zero-terminated string that follows,
-	;; which may also include special tokens that allow
-	;; printing of hex byte and word values stored at the indicated
-	;; addresses.
+// Prints the literal zero-terminated string that follows,
+// which may also include special tokens that allow
+// printing of hex byte and word values stored at the indicated
+// addresses.
 
-	;; .byte 1,$byte = display byte as hex
-	;; .byte 2,$low,$hi = display word as hex
-	;; .byte $f0+n,$low,$hi = display byte at $hi$lo+n as hex
+// .byte 1,$byte = display byte as hex
+// .byte 2,$low,$hi = display word as hex
+// .byte $f0+n,$low,$hi = display byte at $hi$lo+n as hex
 
 printf:
-	;; Temporary storage is between end of screen at $0400
-	;; and the sprite pointers at $7f8
+	// Temporary storage is between end of screen at $0400
+	// and the sprite pointers at $7f8
 	sta $7f0
 	stx $7f1
 	sty $7f2
@@ -19,14 +19,14 @@ printf:
 	pla
 	sta $7f3
 	
-	;; Set up read routine
-	lda #$ad 		; LDA $nnnn
+	// Set up read routine
+	lda #$ad 		// LDA $nnnn
 	sta $7f4
 	lda #$60
-	sta $7f7		; RTS
+	sta $7f7		// RTS
 	
-	;; Get PC of caller from the stack, so that
-	;; we can parse through it
+	// Get PC of caller from the stack, so that
+	// we can parse through it
 	pla
 	clc
 	adc #$01
@@ -39,8 +39,8 @@ printf_loop:
 	jsr $7f4
 	cmp #$00
 	bne printf_continues
-	;; Put return address on stack and restore
-	;; registers
+	// Put return address on stack and restore
+	// registers
 	lda $7f6
 	pha
 	lda $7f5
@@ -56,33 +56,33 @@ printf_loop:
 printf_continues:
 	cmp #$01
 	bne not_hexbyte
-	;; Print a hex byte
+	// Print a hex byte
 
-	;; Skip the token
+	// Skip the token
 	jsr printf_advance
-	;; Read the low byte
+	// Read the low byte
 	jsr $7f4
-	;; Print as hex
+	// Print as hex
 	jsr printf_printhexbyte
 	jmp printf_nextchar
 	
 not_hexbyte:
 	cmp #$02
 	bne not_hexword
-	;; Print a hex word
+	// Print a hex word
 
-	;; Skip the token
+	// Skip the token
 	jsr printf_advance
 	jsr printf_advance
-	;; Read the high byte
+	// Read the high byte
 	jsr $7f4
-	;; Print as hex
+	// Print as hex
 	jsr printf_printhexbyte
-	;; Skip the token
+	// Skip the token
 	jsr printf_retreat
-	;; Read the low byte
+	// Read the low byte
 	jsr $7f4
-	;; Print as hex
+	// Print as hex
 	jsr printf_printhexbyte
 	jsr printf_advance
 	jmp printf_nextchar
@@ -91,11 +91,11 @@ not_hexword:
 	cmp #$f0
 	bcc not_pointer
 
-	;; Treat two-byte arg as base address
-	;; and lower 4 bits of token as offset from
-	;; that location.
+	// Treat two-byte arg as base address
+	// and lower 4 bits of token as offset from
+	// that location.
 
-	;; Get offset
+	// Get offset
 	and #$0f
 	tay
 
@@ -111,7 +111,7 @@ not_hexword:
 	jmp printf_nextchar
 
 not_pointer:	
-	;; Print character
+	// Print character
 	jsr JCHROUT
 
 printf_nextchar:
@@ -120,15 +120,15 @@ printf_nextchar:
 
 
 printf_advance:
-	;; Advance pointer to next character
+	// Advance pointer to next character
 	inc $7f5
-	bne +
+	bne !+
 	inc $7f6
-	*
+!:
 	rts
 
 printf_retreat:
-	;; Retreat pointer to previous char
+	// Retreat pointer to previous char
 	lda $7f5
 	sec
 	sbc #1
@@ -139,7 +139,7 @@ printf_retreat:
 	rts
 
 printf_printhexbyte:
-	;; Print the hex value in .A as two digits, idea by Haubitze
+	// Print the hex value in .A as two digits, idea by Haubitze
 	sed
 	pha
 	lsr

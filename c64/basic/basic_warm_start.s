@@ -1,12 +1,12 @@
-	;; Clear screen etc, show READY prompt.
+// Clear screen etc, show READY prompt.
 
 basic_warm_start:
 	jsr install_ram_routines
 
-	;; If warm start caused by BRK, print it address
+	// If warm start caused by BRK, print it address
 	lda CMP0
 	ora CMP0+1
-	beq +
+	beq !+
 
 	ldx #32
 	jsr print_packed_message
@@ -18,6 +18,6 @@ basic_warm_start:
 	lda #$0D
 	jsr JCHROUT
 
-*
+!:
 	jmp basic_main_loop
 

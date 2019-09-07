@@ -1,7 +1,7 @@
 
-;; Kernal error codes are described in 'Commodore 64 Programmer's Reference Guide', page 306
+// Kernal error codes are described in 'Commodore 64 Programmer's Reference Guide', page 306
 
-kernalerror_ROUTINE_TERMINATED: ; by a STOP key
+kernalerror_ROUTINE_TERMINATED: // by a STOP key
 	lda #K_ERR_ROUTINE_TERMINATED
 	sec
 	rts
@@ -56,20 +56,20 @@ kernalerror_TOP_MEM_RS232:
 	sec
 	rts
 
-;; Kernal status codes are described in 'Commodore 64 Programmer's Reference Guide', page 292
+// Kernal status codes are described in 'Commodore 64 Programmer's Reference Guide', page 292
 
 kernalstatus_reset:
 	lda #$00
 	sta IOSTATUS
 	rts
 
-kernalstatus_TIMEOUT_WRITE: ;; XXX detect this!
+kernalstatus_TIMEOUT_WRITE: // XXX detect this!
 	lda IOSTATUS
 	ora #K_STS_TIMEOUT_WRITE
 	sta IOSTATUS
 	rts
 
-kernalstatus_TIMEOUT_READ: ;; XXX detect this!
+kernalstatus_TIMEOUT_READ: // XXX detect this!
 	lda IOSTATUS
 	ora #K_STS_TIMEOUT_READ
 	sta IOSTATUS

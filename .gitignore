@@ -1,9 +1,6 @@
 
 # Compilation related files
 
-temp.s
-temp.sym
-
 assembler/KickAss*
 build/*
 

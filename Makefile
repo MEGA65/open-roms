@@ -84,9 +84,9 @@ build/chargen.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
 
 # Dependencies - BASIC and KERNAL
 
-build/target_generic/OUTB.BIN:    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_BASIC_generic)     $(foreach dir,$(SRCDIR_BASIC_generic),$(wildcard $(dir)/*.s)) build/,generated/gen_packed_messages.s
-build/target_mega65/OUTB.BIN:     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_BASIC_mega65)      $(foreach dir,$(SRCDIR_BASIC_mega65),$(wildcard $(dir)/*.s)) build/,generated/gen_packed_messages.s
-build/target_ultimate64/OUTB.BIN: $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_BASIC_ultimate64)  $(foreach dir,$(SRCDIR_BASIC_ultimate64),$(wildcard $(dir)/*.s)) build/,generated/gen_packed_messages.s
+build/target_generic/OUTB.BIN:    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_BASIC_generic)     $(foreach dir,$(SRCDIR_BASIC_generic),$(wildcard $(dir)/*.s)) build/,generated/packed_messages.s
+build/target_mega65/OUTB.BIN:     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_BASIC_mega65)      $(foreach dir,$(SRCDIR_BASIC_mega65),$(wildcard $(dir)/*.s)) build/,generated/packed_messages.s
+build/target_ultimate64/OUTB.BIN: $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_BASIC_ultimate64)  $(foreach dir,$(SRCDIR_BASIC_ultimate64),$(wildcard $(dir)/*.s)) build/,generated/packed_messages.s
 
 build/target_generic/OUTK.BIN:    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_KERNAL_generic)    $(foreach dir,$(SRCDIR_KERNAL_generic),$(wildcard $(dir)/*.s))
 build/target_mega65/OUTK.BIN:     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_KERNAL_mega65)     $(foreach dir,$(SRCDIR_KERNAL_mega65),$(wildcard $(dir)/*.s))
@@ -106,15 +106,15 @@ build/basic_ultimate64.rom:       build/target_ultimate64/newrom
 
 # Rules - BASIC and KERNAL
 
-build/,generated/gen_packed_messages.s: $(TOOL_COMPRESS_TEXT)
+build/,generated/packed_messages.s: $(TOOL_COMPRESS_TEXT)
 	@mkdir -p build/,generated
-	$(TOOL_COMPRESS_TEXT) > build/,generated/gen_packed_messages.s
+	$(TOOL_COMPRESS_TEXT) > build/,generated/packed_messages.s
 
 .PRECIOUS: build/target_%/OUTB.BIN
 build/target_%/OUTB.BIN:
 	@mkdir -p build/target_$*
 	@rm -f $@* build/target_$*/BASIC*
-	@$(TOOL_BUILD_SEGMENT) -s BASIC -i BASIC-$* -o OUTB.BIN -t build/target_$* -l a000 -h e4d2 $(SRCDIR_BASIC_$*) build/,generated
+	@$(TOOL_BUILD_SEGMENT) -s BASIC -i BASIC-$* -o OUTB.BIN -t build/target_$* -l a000 -h e4d2 $(SRCDIR_BASIC_$*) build/,generated/packed_messages.s
 
 .PRECIOUS: build/target_%/OUTK.BIN
 build/target_%/OUTK.BIN:

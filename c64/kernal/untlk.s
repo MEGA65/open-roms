@@ -21,7 +21,7 @@ UNTLK:
 
 common_untlk_tksa: // common part of UNTLK and TKSA
 
-	sta IEC_TMP2
+	sta TBTCNT
 	jsr iec_tx_command
 	bcs !+ // branch if error
 	// XXX - for TKSA, is it really the right place to do a turnaround? I've got some doubts

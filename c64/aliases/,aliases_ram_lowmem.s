@@ -39,7 +39,7 @@
 	.label STREND    = $31 // $31-$32  -- NOT IMPLEMENTED --
 	.label FRETOP    = $33 // $33-$34  -- NOT IMPLEMENTED --
 	.label FRESPC    = $35 // $35-$36  [!] our implementation might be different  XXX give more details
-	// .label MEMSIZ    = $37 // $37-$38  -- NOT IMPLEMENTED -- highest address of BASIC memory XXX remove name conflict
+	.label MEMSIZ    = $37 // $37-$38  -- NOT IMPLEMENTED -- highest address of BASIC memory
 	.label CURLIN    = $39 // $39-$3A  current BASIC line number
 	.label OLDLIN    = $3B // $3B-$3C  previous BASIC line number
 	.label OLDTXT    = $3D // $3D-$3E  current BASIC line pointer
@@ -75,7 +75,7 @@
 	.label IOSTATUS  = $90
 	.label STKEY     = $91  //          Keys down clears bits. STOP - bit 7, C= - bit 6, SPACE - bit 4, CTRL - bit 2
 	.label SVXT      = $92  //          -- NOT IMPLEMENTED --
-	.label VERCK     = $93  //          0 = LOAD, 1 = VERIFY    XXX rename to VERCKK
+	.label VERCKK    = $93  //          0 = LOAD, 1 = VERIFY
 	.label C3PO      = $94  //          flag - is BSOUR content valid
 	.label BSOUR     = $95  //          serial bus buffered output byte
 	.label SYNO      = $96  //          -- NOT IMPLEMENTED --
@@ -88,9 +88,9 @@
 	.label MSGFLG    = $9D  //          bit 6 = error messages, bit 7 = control message
 	.label PTR1      = $9E  //          -- NOT IMPLEMENTED --
 	.label PTR2      = $9F  //          -- NOT IMPLEMENTED --
-	.label TIME      = $A0  // $A0-$A2, jiffy clock
-	.label IEC_TMP1  = $A3  //          temporary variable for tape and IEC, [!] our usage probably differs in details   XXX rename to TSFCNT
-	.label IEC_TMP2  = $A4  //          temporary variable for tape and IEC, [!] our usage probably differs in details   XXX rename to TBTCNT
+	.label TIME      = $A0  // $A0-$A2  jiffy clock
+	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage probably differs in details
+	.label TBTCNT    = $A4  //          temporary variable for tape and IEC, [!] our usage probably differs in details
 	.label CNTDN     = $A5  //          -- NOT IMPLEMENTED --
 	.label BUFPNT    = $A6  //          -- NOT IMPLEMENTED --
 	.label INBIT     = $A7  //          -- NOT IMPLEMENTED --
@@ -100,7 +100,7 @@
 	.label RIPRTY    = $AB  //          -- NOT IMPLEMENTED --
 	.label SAL       = $AC  // $AC-$AD  -- NOT IMPLEMENTED -- (implemented screen part)
 	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also byy screen editor
-	.label CMP0      = $B0  // $B0-$B1, temporary tape storage, [!] here used for BRK instruction address
+	.label CMP0      = $B0  // $B0-$B1  temporary tape storage, [!] here used for BRK instruction address
 	.label TAPE1     = $B2  // $B2-$B3  tape buffer pointer
 	.label BITTS     = $B4  //          -- NOT IMPLEMENTED --
 	.label NXTBIT    = $B5  //          -- NOT IMPLEMENTED --
@@ -109,13 +109,13 @@
 	.label LA        = $B8  //          current logical_file number
 	.label SA        = $B9  //          current secondary address
 	.label FA        = $BA  //          current device number
-	.label FNADDR    = $BB  // $BB-$BC, current file name pointer
+	.label FNADDR    = $BB  // $BB-$BC  current file name pointer
 	.label ROPRTY    = $BD  //          -- NOT IMPLEMENTED --
 	.label FSBLK     = $BE  //          -- NOT IMPLEMENTED --
 	.label MYCH      = $BF  //          -- NOT IMPLEMENTED --
 	.label CAS1      = $C0  //          -- NOT IMPLEMENTED --
-	.label STAL      = $C1  // $C1-$C2, LOAD/SAVE start address
-	.label MEMUS     = $C3  // $C3-$C4, temporary address for tape LOAD/SAVE    XXX rename to MEMUSS
+	.label STAL      = $C1  // $C1-$C2  LOAD/SAVE start address
+	.label MEMUSS    = $C3  // $C3-$C4  temporary address for tape LOAD/SAVE
 	.label LSTX      = $C5  //          last keyy matrix position [!] our usage probably differs in details
 	.label NDX       = $C6  //          number of chars in keyboard buffer
 	.label RVS       = $C7  //          flag, whether to print reversed characters
@@ -157,9 +157,9 @@
 	.label LAT       = $259  // $259-$262, logical file numbers (table, 10 bytes)
 	.label FAT       = $263  // $263-$26C, device numbers       (table, 10 bytes)
 	.label SAT       = $26D  // $26D-$276, secondary addresses  (table, 10 bytes)
-	.label KEYD      = $277  // $277-$280  keyboard buffer
-	.label MEMSTR    = $281  // $281-$282  XXX rename to LORAM
-	.label MEMSIZ    = $283  // $283-$284, NOTE: Mapping the 64 erroneously has the hex as $282, while the DEC is correct XXX rename to HIRAM
+	.label KEYD      = $277  // $277-$280, keyboard buffer
+	.label MEMSTR    = $281  // $281-$282, start of BASIC memory
+	.label MEMEND    = $283  // $283-$284, NOTE: Mapping the 64 erroneously has the hex as $282 (DEC is correct), name seems to be mistaken too
 	.label TIMOUT    = $285  //            IEEE-488 timeout
 	.label COLOR     = $286  //            current text foreground color
 	.label GDCOL     = $287  //            color of character under cursor
@@ -189,7 +189,7 @@
 	.label TRDTMP    = $2A3  //            -- NOT IMPLEMENTED --
 	.label TD1IRQ    = $2A4  //            -- NOT IMPLEMENTED --
 	.label TLNIDX    = $2A5  //            -- NOT IMPLEMENTED --
-	.label PALNTSC   = $2A6  //            0 = NTSC, 1 = PAL   XXX rename to TVSFLG
+	.label TVSFLG    = $2A6  //            0 = NTSC, 1 = PAL
 	// [!] XXX document $2A7-$2FF usage
 
 	// BASIC vectors

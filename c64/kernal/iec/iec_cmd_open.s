@@ -18,7 +18,7 @@ iec_cmd_open: // similar to TKSA, but without turnaround
 
 common_open_close_unlsn_second: // common part of several commands
 
-	sta IEC_TMP2
+	sta TBTCNT
 	jsr iec_tx_command
 	bcs !+ // branch if error
 	jmp iec_tx_command_finalize

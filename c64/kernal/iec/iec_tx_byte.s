@@ -1,7 +1,7 @@
 
 // Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
 
-// Expects byte to send in IEC_TMP2 ($A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html)
+// Expects byte to send in TBTCNT ($A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html)
 // Carry flag set = signal EOI
 //
 // Preserves .X and .Y registers
@@ -53,9 +53,9 @@ iec_tx_common:
 
 iec_tx_common_sendbit:
 	// Is next bit 0 or 1?
-	lda IEC_TMP2
+	lda TBTCNT
 	lsr
-	sta IEC_TMP2
+	sta TBTCNT
 	bcs !+
 
 	// Bit is 0

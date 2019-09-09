@@ -135,12 +135,12 @@ iec_rx_clk_wait2:
 	plp
 	
 	// Restore registers
-	sta IEC_TMP2 // $A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html
+	sta TBTCNT // $A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html
 	pla
 	tay
 	pla
 	tax
-	lda IEC_TMP2
+	lda TBTCNT
 
 	clc
 	rts

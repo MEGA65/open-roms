@@ -61,14 +61,14 @@ ramtas_l2:
 	ldx #>$0400
 	stx HIBASE
 	
-	//  Work out RAM size and put in MEMSTR and MEMSIZ
+	//  Work out RAM size and put in MEMSTR and MEMEND
 	// "Compute's Mapping the 64", p54
 	//  http://unusedino.de/ec64/technical/project64/mapping_c64.html
 	ldx #>$0800
 	stx MEMSTR+1
 	ldx #$00
 	stx MEMSTR+0
-	stx MEMSIZ+0
+	stx MEMEND+0
 	// Try to modify $8000, if it fails then RAM ends at $7FFF, else $9FFF
 	lda $8000
 	eor #$FF
@@ -79,12 +79,12 @@ ramtas_l2:
 	beq ramtas_32K_RAM
 	sta $8000
 	ldx #$A0
-	stx MEMSIZ+1
+	stx MEMEND+1
 	jmp ramtas_RAM_sized
 ramtas_32K_RAM:	
 	sta $8000 		// in case RAM is hiding beneath a ROM
 	ldx #$80
-	stx MEMSIZ+1
+	stx MEMEND+1
 	// Fall through
 ramtas_RAM_sized:	
 	

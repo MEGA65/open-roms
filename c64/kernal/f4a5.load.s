@@ -1,4 +1,3 @@
-
 //
 // Official Kernal routine, described in:
 //
@@ -23,7 +22,7 @@
 LOAD:
 
 	// Are we loading or verifying?
-	sta VERCK
+	sta VERCKK
 
 	// Store start address of LOAD
 	stx STAL+0
@@ -82,7 +81,7 @@ LOAD:
 	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 
 !:
 	lda #$60 // open channel / data (p3) , required according to p13
-	sta IEC_TMP2
+	sta TBTCNT
 	jsr iec_tx_command
 	bcc !+
 	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 

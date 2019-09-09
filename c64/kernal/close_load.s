@@ -13,7 +13,7 @@ close_load:
 	jsr LISTEN
 
 	lda #$E0 // CLOSE command
-	sta IEC_TMP2
+	sta TBTCNT
 	jsr iec_tx_command
 	jsr iec_tx_command_finalize
 

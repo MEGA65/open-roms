@@ -54,7 +54,7 @@ cint_pal:
 
 	lda #$01
 !:
-	sta PALNTSC
+	sta TVSFLG
 
 cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 

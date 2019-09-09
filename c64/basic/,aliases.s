@@ -90,8 +90,6 @@
 	.label screen_line_link_table = $D9
 	.label current_screen_line_colour_ptr = $F3
 	.label keyboard_decoding_table_ptr = $F5
-	.label rs232_rx_buffer_ptr = $F7
-	.label rs232_tx_buffer_ptr = $F9
 
 	.label basic_input_buffer = BUF
 

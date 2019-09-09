@@ -19,7 +19,7 @@ startup_banner:
 
 	// Print PAL/NTSC
 	ldx #30 // NTSC
-	lda PALNTSC
+	lda TVSFLG
 	beq !+
 	ldx #31 // PAL
 !:

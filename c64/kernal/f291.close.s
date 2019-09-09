@@ -34,7 +34,7 @@ CLOSE:
 	jmp close_remove_from_table
 !:
 	ora $E0 // CLOSE command
-	sta IEC_TMP2
+	sta TBTCNT
 	jsr iec_tx_command
 	bcs close_remove_from_table
 	jsr iec_tx_command_finalize

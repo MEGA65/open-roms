@@ -18,7 +18,7 @@ lvs_send_file_name_loop:
 	sec
 !:
 	// Transmit one character
-	sta IEC_TMP2
+	sta TBTCNT
 	jsr iec_tx_byte
 	jmp lvs_send_file_name_loop
 lvs_send_file_name_done:
@@ -86,7 +86,7 @@ lvs_display_loading_verifying:
 	// Display LOADING / VERIFYING and start address
 	lda MSGFLG
 	bpl lvs_display_end
-	lda VERCK
+	lda VERCKK
 	beq !+
 	jsr printf // XXX don't use printf, use packed message
 	.byte $0D
@@ -156,7 +156,7 @@ lvs_illegal_device_number:
 
 lvs_load_verify_error:
 	// XXX should we really return BASIC error code here?
-	lda VERCK
+	lda VERCKK
 	bne lvs_verify_error
 	lda #B_ERR_LOAD
 	bne lvs_error_end

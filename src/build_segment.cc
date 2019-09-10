@@ -316,7 +316,7 @@ void calcRoutineSizes()
     // during this pass,  which would otherwise upset things later
 
     outFile << "\n" << ".segment " << CMD_segName << " [start=$100, min=$100, max=$FFFF]" << "\n";
-    outFile << "#define BUILD_" << CMD_segName << "\n";
+    outFile << "#define SEGMENT_" << CMD_segName << "\n";
 
     for (const auto &sourceFile : GLOBAL_sourceFiles)
     {
@@ -516,7 +516,7 @@ void compileSegment()
                ", max=$" << std::hex << CMD_hiAddress <<
                ", outBin=\"" << CMD_outFile << "\", fill]" <<
                "\n";
-    outFile << "#define BUILD_" << CMD_segName << "\n";
+    outFile << "#define SEGMENT_" << CMD_segName << "\n";
 
     // Write files which only contain definitions (no routines)
 
@@ -609,6 +609,7 @@ SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) 
     inFile.seekg(0);
     inFile.read(&content[0], fileLength);
     if (!inFile.good()) ERROR("error reading file content");
+    if (content.back() != '\n') content.push_back('\n');
 
     inFile.close();
 
@@ -915,7 +916,14 @@ int KS(const std::vector<SourceFile *> &routines,
     int n, int C,
     std::list<bool> &solution) // sequence of decisions for each routine, has to be empty when calling
 {
-    // This routine solves a knapsack problem using a dynamic programming
+    // This routine solves a knapsack problem using a dynamic programming.
+    //
+    // In short: 'routines' contains a list of routines that can potentially be placed in the gap of size C.
+    // We start from index n (the highest one), referencing the last routine from the list (the largest one,
+    // as the list is sorted). Our goal: by recursively searching the tree of all possible solutions
+    // (solution = a sequence of decisions, each telling whether to take the routine or not) find the one
+    // that fills the gap in the most complete way. Additional cache greatly speeds up the algorithm.
+    // See the comments below to fully understand how it works.
 
     // XXX Possible efficiency improvement for the future: try to consider more than one gap at once,
     //     this will need a serious rework of the dynamic cache handling and will probably hurt the performance

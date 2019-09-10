@@ -12,13 +12,13 @@ MEMTOP:
 
 	bcc memtop_set
 	
-	ldy MEMEND+1
-	ldx MEMEND+0
+	ldy MEMSIZK+1
+	ldx MEMSIZK+0
 	rts
 
 memtop_set:
 
-	sty MEMEND+1
-	stx MEMEND+0
+	sty MEMSIZK+1
+	stx MEMSIZK+0
 	
 	rts

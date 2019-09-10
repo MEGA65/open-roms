@@ -159,7 +159,7 @@
 	.label SAT       = $26D  // $26D-$276, secondary addresses  (table, 10 bytes)
 	.label KEYD      = $277  // $277-$280, keyboard buffer
 	.label MEMSTR    = $281  // $281-$282, start of BASIC memory
-	.label MEMEND    = $283  // $283-$284, NOTE: Mapping the 64 erroneously has the hex as $282 (DEC is correct), name seems to be mistaken too
+	.label MEMSIZK   = $283  // $283-$284, NOTE: Mapping the 64 erroneously has the hex as $282 (DEC is correct)
 	.label TIMOUT    = $285  //            IEEE-488 timeout
 	.label COLOR     = $286  //            current text foreground color
 	.label GDCOL     = $287  //            color of character under cursor

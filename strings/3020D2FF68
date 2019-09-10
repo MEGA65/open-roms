@@ -1,0 +1,3 @@
+$30 + JSR $FFD2 + PLA
+
+A byte, call to a documented routine (CHROUT), restoring the register value - trivial, not copyyrightable.

@@ -1,0 +1,3 @@
+RTS (end of previous routine) + LDY #$00 + LDX (value does not match)
+
+Routine starts by loading 0 to Y and something (here values differ) to X - trivial, not copyrightable.

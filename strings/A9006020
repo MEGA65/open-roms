@@ -1,0 +1,3 @@
+LDA #$00 + RTS + JSR (address does not match)
+
+End of a rutine which returns 0 in accumulator, another one starts with a jump (but to a different address) - trivial, not copyrightable.

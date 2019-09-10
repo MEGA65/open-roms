@@ -1,0 +1,3 @@
+$70 + RTS + LDA (zeropage address, but does not match)
+
+One instruction (and just a one-byte instruction) + some parts - not copyrightable.

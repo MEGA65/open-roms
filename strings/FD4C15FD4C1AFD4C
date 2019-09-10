@@ -1,0 +1,1 @@
+This is a part of Kernal jumptable - series of jumps, sometimes to the well known addreses (or through documented vectors). No business logic, part of the Kernal API itself (has to be as it is to maintain compatibility) - not copyrightable.

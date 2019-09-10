@@ -1,0 +1,3 @@
+$01 + STA $7A + LDA (address does not match)
+
+Instruction (storing value on zero page) + some parts - trivial, not copyrightable.

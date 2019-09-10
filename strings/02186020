@@ -1,0 +1,4 @@
+$02 + CLC + RTS + JSR (address does not match)
+
+Subroutine ending by setting 'carry' flag (standard way to indicate failure) placed
+just before another one, starting with a jump (to a different address) - not creative, not copyrightable.

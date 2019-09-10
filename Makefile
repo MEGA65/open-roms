@@ -1,27 +1,41 @@
 
 # Source files
 
-SRC_COMMON            = $(wildcard c64/aliases/*.s)
-SRC_BASIC_COMMON      = $(SRC_COMMON) $(wildcard c64/basic/*.s)
-SRC_KERNAL_COMMON     = $(SRC_COMMON) $(wildcard c64/kernal/*.s c64/kernal/jumptable/*.s c64/kernal/iec/*.s c64/kernal/interrupts/*.s)
+SRCDIR_COMMON            = c64/aliases
+SRCDIR_BASIC_COMMON      = $(SRCDIR_COMMON) c64/basic
+SRCDIR_KERNAL_COMMON     = $(SRCDIR_COMMON) c64/kernal c64/kernal/jumptable c64/kernal/iec c64/kernal/interrupts
 
-SRC_BASIC_generic     = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_generic/*.s)
-SRC_BASIC_mega65      = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_mega65/*.s)
-SRC_BASIC_ultimate64  = $(SRC_BASIC_COMMON) $(wildcard c64/basic/,target_ultimate64/*.s)
+SRCDIR_BASIC_generic     = $(SRCDIR_BASIC_COMMON) c64/basic/,target_generic
+SRCDIR_BASIC_mega65      = $(SRCDIR_BASIC_COMMON) c64/basic/,target_mega65
+SRCDIR_BASIC_ultimate64  = $(SRCDIR_BASIC_COMMON) c64/basic/,target_ultimate64
 
-SRC_KERNAL_generic    = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,target_generic/*.s)
-SRC_KERNAL_mega65     = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,target_mega65/*.s)
-SRC_KERNAL_ultimate64 = $(SRC_KERNAL_COMMON) $(wildcard c64/kernal/,target_ultimate64/*.s)
+SRCDIR_KERNAL_generic    = $(SRCDIR_KERNAL_COMMON) c64/kernal/,target_generic
+SRCDIR_KERNAL_mega65     = $(SRCDIR_KERNAL_COMMON) c64/kernal/,target_mega65
+SRCDIR_KERNAL_ultimate64 = $(SRCDIR_KERNAL_COMMON) c64/kernal/,target_ultimate64
+
+SRC_TOOLS  = $(wildcard src/tools/*.c,src/tools/*.cc)
 
 # List of tools
 
-TOOL_COLLECT_DATA  = build/tools/collect_data
-TOOL_COMPRESS_TEXT = build/tools/compress_text
-TOOL_PNGPREPARE    = build/tools/pngprepare
-TOOL_PREPROCESS    = build/tools/preprocess
-TOOL_SIMILARITY    = build/tools/similarity
+TOOL_COLLECT_DATA   = build/tools/collect_data
+TOOL_COMPRESS_TEXT  = build/tools/compress_text
+TOOL_PNGPREPARE     = build/tools/pngprepare
+TOOL_BUILD_SEGMENT  = build/tools/build_segment
+TOOL_SIMILARITY     = build/tools/similarity
+TOOL_ASSEMBLER      = assembler/KickAss.jar
 
-TOOLS_LIST = $(TOOL_COLLECT_DATA) $(TOOL_COMPRESS_TEXT) $(TOOL_PNGPREPARE) $(TOOL_PREPROCESS) $(TOOL_SIMILARITY)
+TOOLS_LIST = $(pathsubst src/tools/%,build/tools/%,$(basename $(SRC_TOOLS)))
+
+# List of targets
+
+STD_TARGET_LIST = build/kernal_generic.rom build/basic_generic.rom \
+                  build/kernal_mega65.rom build/basic_mega65.rom \
+                  build/kernal_ultimate64.rom build/basic_ultimate64.rom \
+                  build/chargen.rom
+
+EXT_TARGET_LIST = build/newc65.rom
+
+REL_TARGET_LIST = $(pathsubst build/%,bin/%, $(STD_TARGET_LIST))
 
 # GIT commit
 
@@ -31,131 +45,115 @@ GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 
 .PHONY: all clean updatebin
 
-all: build/chargen build/newkern_generic build/newbasic_generic build/newc65 build/newkern_ultimate64 build/newbasic_ultimate64
-
-Ophis:
-	git submodule init
-	git submodule update
+all: $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
 	@rm -rf build
-	@rm -f temp.s
-	@rm -f temp.map
-	@rm -f ophis.bin
 
-updatebin: build/chargen build/newbasic_generic build/newkern_generic build/newbasic_mega65 build/newkern_mega65 build/newbasic_ultimate64 build/newkern_ultimate64
-	cp build/chargen                  bin/chargen.rom
-	cp build/newbasic_generic         bin/basic_generic.rom
-	cp build/newkern_generic          bin/kernal_generic.rom
-	cp build/newbasic_mega65          bin/basic_mega65.rom
-	cp build/newkern_mega65           bin/kernal_mega65.rom
-	cp build/newbasic_ultimate64      bin/basic_ultimate64.rom
-	cp build/newkern_ultimate64       bin/kernal_ultimate64.rom
+updatebin: $(STD_TARGET_LIST)
+	cp build/chargen.rom              bin/chargen.rom
+	cp build/basic_generic.rom        bin/basic_generic.rom
+	cp build/kernal_generic.rom       bin/kernal_generic.rom
+	cp build/basic_mega65.rom         bin/basic_mega65.rom
+	cp build/kernal_mega65.rom        bin/kernal_mega65.rom
+	cp build/basic_ultimate64.rom     bin/basic_ultimate64.rom
+	cp build/kernal_ultimate64.rom    bin/kernal_ultimate64.rom
 
 # Rules - tools
 
-$(TOOL_COLLECT_DATA): src/collect_data.c Makefile
+$(TOOL_PNGPREPARE): src/pngprepare.c Makefile
 	@mkdir -p build/tools
-	gcc -Wall -o $(TOOL_COLLECT_DATA) src/collect_data.c
+	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
 
 $(TOOL_COMPRESS_TEXT): src/compress_text.c Makefile
 	@mkdir -p build/tools
-	gcc -g -Wall -o $(TOOL_COMPRESS_TEXT) src/compress_text.c -lm
+	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lm
 
-$(TOOL_PNGPREPARE): src/pngprepare.c Makefile
+build/tools/%: src/%.c Makefile
 	@mkdir -p build/tools
-	$(CC) $(COPT) -I/usr/local/include -L/usr/local/lib -o $(TOOL_PNGPREPARE) src/pngprepare.c -lpng
+	$(CC) -O2 -Wall -o $@ $<
 
-$(TOOL_PREPROCESS): src/preprocess.c Makefile
+build/tools/%: src/%.cc Makefile
 	@mkdir -p build/tools
-	gcc -g -Wall -o $(TOOL_PREPROCESS) src/preprocess.c
-
-$(TOOL_SIMILARITY): src/similarity.c Makefile
-	@mkdir -p build/tools
-	gcc -g -Wall -o $(TOOL_SIMILARITY) src/similarity.c
+	$(CXX) -O2 -Wall -o $@ $<
 
 # Rules - CHARGEN
 
-build/chargen: $(TOOL_PNGPREPARE) assets/8x8font.png
-	$(TOOL_PNGPREPARE) charrom assets/8x8font.png build/chargen
+build/chargen.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
+	$(TOOL_PNGPREPARE) charrom assets/8x8font.png build/chargen.rom
 
-# Dependencies
+# Dependencies - BASIC and KERNAL
 
-build/basic_generic/OUT.BIN:  Ophis $(TOOLS_LIST) $(SRC_BASIC_generic) build/basic/packed_messages.s
-build/kernal_generic/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_generic)
-build/newrom_generic:   build/basic_generic/OUT.BIN build/kernal_generic/OUT.BIN
-build/newkern_generic:  build/newrom_generic Makefile
-build/newbasic_generic: build/newrom_generic Makefile
+build/target_generic/OUTB.BIN:    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_BASIC_generic)     $(foreach dir,$(SRCDIR_BASIC_generic),$(wildcard $(dir)/*.s)) build/,generated/packed_messages.s
+build/target_mega65/OUTB.BIN:     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_BASIC_mega65)      $(foreach dir,$(SRCDIR_BASIC_mega65),$(wildcard $(dir)/*.s)) build/,generated/packed_messages.s
+build/target_ultimate64/OUTB.BIN: $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_BASIC_ultimate64)  $(foreach dir,$(SRCDIR_BASIC_ultimate64),$(wildcard $(dir)/*.s)) build/,generated/packed_messages.s
 
-build/basic_mega65/OUT.BIN:  Ophis $(TOOLS_LIST) $(SRC_BASIC_mega65) build/basic/packed_messages.s
-build/kernal_mega65/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_mega65)
-build/newrom_mega65:   build/basic_mega65/OUT.BIN build/kernal_mega65/OUT.BIN
-build/newkern_mega65:  build/newrom_mega65 Makefile
-build/newbasic_mega65: build/newrom_mega65 Makefile
+build/target_generic/OUTK.BIN:    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_KERNAL_generic)    $(foreach dir,$(SRCDIR_KERNAL_generic),$(wildcard $(dir)/*.s))
+build/target_mega65/OUTK.BIN:     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_KERNAL_mega65)     $(foreach dir,$(SRCDIR_KERNAL_mega65),$(wildcard $(dir)/*.s))
+build/target_ultimate64/OUTK.BIN: $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(SRCDIR_KERNAL_ultimate64) $(foreach dir,$(SRCDIR_KERNAL_ultimate64),$(wildcard $(dir)/*.s))
 
-build/basic_ultimate64/OUT.BIN:  Ophis $(TOOLS_LIST) $(SRC_BASIC_ultimate64) build/basic/packed_messages.s
-build/kernal_ultimate64/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_ultimate64)
-build/newrom_ultimate64:   build/basic_ultimate64/OUT.BIN build/kernal_ultimate64/OUT.BIN
-build/newkern_ultimate64:  build/newrom_ultimate64 Makefile
-build/newbasic_ultimate64: build/newrom_ultimate64 Makefile
+build/target_generic/newrom:      build/target_generic/OUTB.BIN     build/target_generic/OUTK.BIN
+build/target_mega65/newrom:       build/target_mega65/OUTB.BIN      build/target_mega65/OUTK.BIN
+build/target_ultimate64/newrom:   build/target_ultimate64/OUTB.BIN  build/target_ultimate64/OUTK.BIN
 
+build/kernal_generic.rom:         build/target_generic/newrom
+build/kernal_mega65.rom:          build/target_mega65/newrom
+build/kernal_ultimate64.rom:      build/target_ultimate64/newrom
+
+build/basic_generic.rom:          build/target_generic/newrom
+build/basic_mega65.rom:           build/target_mega65/newrom
+build/basic_ultimate64.rom:       build/target_ultimate64/newrom
 
 # Rules - BASIC and KERNAL
 
-build/basic/packed_messages.s: $(TOOL_COMPRESS_TEXT)
-	@mkdir -p build/basic
-	$(TOOL_COMPRESS_TEXT) > build/basic/packed_messages.s
+build/,generated/packed_messages.s: $(TOOL_COMPRESS_TEXT)
+	@mkdir -p build/,generated
+	$(TOOL_COMPRESS_TEXT) > build/,generated/packed_messages.s
 
-.PRECIOUS: build/basic_%/OUT.BIN
-build/basic_%/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_BASIC_$*) build/basic/packed_messages.s
-	@mkdir -p build/basic_$*
-	@rm -f build/basic_$*/*
-	@for SRC in $(SRC_BASIC_$*); do \
-	    ln -s ../../$$SRC build/basic_$*/$$(basename $$SRC); \
-	done
-	@ln -s ../../build/basic/packed_messages.s build/basic_$*/packed_messages.s
-	$(TOOL_PREPROCESS) -d build/basic_$* -l a000 -h e4d2
+.PRECIOUS: build/target_%/OUTB.BIN
+build/target_%/OUTB.BIN:
+	@mkdir -p build/target_$*
+	@rm -f $@* build/target_$*/BASIC*
+	@$(TOOL_BUILD_SEGMENT) -s BASIC -i BASIC-$* -o OUTB.BIN -t build/target_$* -l a000 -h e4d2 $(SRCDIR_BASIC_$*) build/,generated/packed_messages.s
 
-.PRECIOUS: build/kernal_%/OUT.BIN
-build/kernal_%/OUT.BIN: Ophis $(TOOLS_LIST) $(SRC_KERNAL_$*)
-	@mkdir -p build/kernal_$*
-	@rm -f build/kernal_$*/*
-	@for SRC in $(SRC_KERNAL_$*); do \
-	    ln -s ../../$$SRC build/kernal_$*/$$(basename $$SRC); \
-	done
-	$(TOOL_PREPROCESS) -d build/kernal_$* -l e4d3 -h ffff
+.PRECIOUS: build/target_%/OUTK.BIN
+build/target_%/OUTK.BIN:
+	@mkdir -p build/target_$*
+	@rm -f $@* build/target_$*/KERNAL*
+	@$(TOOL_BUILD_SEGMENT) -s KERNAL -i KERNAL-$* -o OUTK.BIN -t build/target_$* -l e4d3 -h ffff $(SRCDIR_KERNAL_$*)
 
-.PRECIOUS: build/newrom_%
-build/newrom_%: build/basic_%/OUT.BIN build/kernal_%/OUT.BIN
-	cat build/basic_$*/OUT.BIN build/kernal_$*/OUT.BIN  > build/newrom_$*
+.PRECIOUS: build/target_%/newrom
+build/target_%/newrom:
+	cat build/target_$*/OUTB.BIN build/target_$*/OUTK.BIN  > $@
 
-.PRECIOUS: build/newkern_%
-build/newkern_%: build/newrom_% Makefile
-	dd if=build/newrom_$* bs=8192 count=1 skip=2 of=build/newkern_$*
+.PRECIOUS: build/kernal_%.rom
+build/kernal_%.rom:
+	dd if=build/target_$*/newrom bs=8192 count=1 skip=2 of=$@
 
-.PRECIOUS: build/newbasic_%
-build/newbasic_%: build/newrom_% Makefile
-	dd if=build/newrom_$* bs=8192 count=1 skip=0 of=build/newbasic_$*
+.PRECIOUS: build/basic_%.rom
+build/basic_%.rom:
+	dd if=build/target_$*/newrom bs=8192 count=1 skip=0 of=$@
 
 # Rules - platform 'Mega 65' specific
 
-build/newc65: build/newkern_mega65 build/newbasic_mega65 build/chargen Makefile
-	dd if=/dev/zero bs=4096 count=10 of=build/newc65
-	cat build/newbasic_mega65 build/chargen build/chargen build/newkern_mega65 >> build/newc65
-	dd if=/dev/zero bs=65536 count=1 of=build/basic/padding
-	cat build/basic/padding >> build/newc65
+build/newc65.rom: build/kernal_mega65.rom build/basic_mega65.rom build/chargen.rom Makefile
+	dd if=/dev/zero bs=4096 count=10 of=build/newc65.rom
+	cat build/basic_mega65.rom build/chargen.rom build/chargen.rom build/kernal_mega65.rom >> build/newc65.rom
+	dd if=/dev/zero bs=65536 count=1 of=build/padding
+	cat build/padding >> build/newc65.rom
+	rm -f build/padding
 
 # Rules - tests
 
-test: build/newkern_generic build/newbasic_generic
-	x64 -kernal build/newkern_generic -basic build/newbasic_generic -8 empty.d64
+test: build/kernal_generic.rom build/basic_generic.rom
+	x64 -kernal build/kernal_generic.rom -basic build/basic_generic.rom -8 empty.d64
 
-testremote: build/newkern_generic build/newbasic_generic
-	x64 -kernal build/newkern_generic -basic build/newbasic_generic -remotemonitor
+testremote: build/kernal_generic.rom build/basic_generic.rom
+	x64 -kernal build/kernal_generic.rom -basic build/basic_generic.rom -remotemonitor
 
 testm65: build/newc65
-	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R build/newc65 -4
+	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R build/newc65.rom -4
 
-testsimilarity: build/newrom_generic $(TOOL_SIMILARITY)
-	$(TOOL_SIMILARITY) kernal build/newrom_generic
-	$(TOOL_SIMILARITY) basic build/newrom_generic
+testsimilarity: build/target_generic/newrom $(TOOL_SIMILARITY)
+	$(TOOL_SIMILARITY) kernal build/target_generic/newrom
+	$(TOOL_SIMILARITY) basic  build/target_generic/newrom

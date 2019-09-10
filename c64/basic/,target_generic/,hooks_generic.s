@@ -1,9 +1,10 @@
 
-;; Target-specific hooks
+// Target-specific hooks
 
 
-.macro TARGET_HOOK_BANNER
+.macro TARGET_HOOK_BANNER() {
 
-	.byte "  OPEN ROMS, ", $00
+	.text "  OPEN ROMS, "
+	.byte $00
 
-.macend
+}

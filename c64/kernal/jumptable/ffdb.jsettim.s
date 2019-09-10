@@ -1,3 +1,4 @@
-; Set realtime clock
-; C64 Programmer's Reference Guide Page 273
-	jmp settim
+// Set realtime clock
+// C64 Programmer's Reference Guide Page 273
+
+	jmp SETTIM

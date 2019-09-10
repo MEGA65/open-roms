@@ -251,7 +251,7 @@ int calc_stats(const char *s)
 	if (s[j]==char_freqs[char_num].c) break;
       if (s[j]&0x80) fprintf(stderr,"Word '%s' contains funny char 0x%02x\n",s,s[j]);
       if (char_num>MAX_CHARS) {
-	fprintf(stderr,"Too many unique characters in message list.  Max is %d\n",MAX_CHARS);
+	fprintf(stderr,"Too many unique characters in message list. Max is %d\n",MAX_CHARS);
 	exit(-1);
       }
       if (char_num>=char_max) char_max=char_num+1;
@@ -438,7 +438,7 @@ int main(void)
   
   printf("packed_message_chars:\n");
   for(int i=0;i<char_max;i++) {
-    printf("\t.byte $%02X ; '%c' ",char_freqs[i].c,char_freqs[i].c);
+    printf("\t.byte $%02X // '%c' ",char_freqs[i].c,char_freqs[i].c != 0xD ? char_freqs[i].c : 127);
     if (i<14) printf(" = $%x (nybl)\n",i+1);
     else if (i<(14+13)) printf(" = $F%x / $xF $%02X\n",i-14+1,char_freqs[i].c);
     else printf(" = $FE/F + $%02X\n",char_freqs[i].c);
@@ -479,7 +479,7 @@ int main(void)
       } else
 	printf("\t.byte $%02x\n",packed_keywords[i]);
     }
-  printf("\t.alias packed_keyword_table_len $%X\n",packedkey_len);
+  printf("\t.label packed_keyword_table_len = $%X\n",packedkey_len);
   
   fprintf(stderr,"Error list takes %d bytes raw.\n",raw_size);
   fprintf(stderr,"%d token bytes used to encode all messages.\n",token_count);

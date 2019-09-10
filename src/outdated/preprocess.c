@@ -16,9 +16,10 @@
 #define MAX_FILES (128*1024)
 typedef struct source_file {
   char *file;
+  char *label;
   int address;
 
-  // For getting routine sizes from first run of ophis
+  // For getting routine sizes from first run of KickAss
   int low_addr;
   int high_addr;
   int size;
@@ -96,15 +97,19 @@ int main(int argc,char **argv)
     if (!d) DO_ERROR("opendir() failed");
     while((de=readdir(d))!=NULL) {
       if (strlen(de->d_name)>2) {
-	if (de->d_name[0]!='.'&&de->d_name[0]!='#') // ignore temp files etc
-	  if (!strcmp(&de->d_name[strlen(de->d_name)-2],".s")) {
-	    if (strcmp(de->d_name,"combined.s")) {
-	      if (source_count>=MAX_FILES) DO_ERROR("Too many source files. Increase MAX_FILES?");
-	      source_files[source_count].file=strdup(de->d_name);
-	      source_files[source_count].address=-1;
-	      source_count++;
-	    }
-	  }
+	      if (de->d_name[0]!='.'&&de->d_name[0]!='#') // ignore temp files etc
+	        if (!strcmp(&de->d_name[strlen(de->d_name)-2],".s")) {
+	          if (strcmp(de->d_name,"combined.s")) {
+	            if (source_count>=MAX_FILES) DO_ERROR("Too many source files. Increase MAX_FILES?");
+	            source_files[source_count].file=strdup(de->d_name);
+              source_files[source_count].label=strdup(de->d_name);
+              for (char *charptr = source_files[source_count].label; *charptr != 0; charptr++) {
+                if (*charptr == '.') *charptr = '_'; // KickAss does not like full stops in labels
+              }
+	            source_files[source_count].address=-1;
+	            source_count++;
+	          }
+	        }
       }
     }
     if (retVal) break;
@@ -119,7 +124,7 @@ int main(int argc,char **argv)
       if (sscanf(source_files[i].file,"%x.%[^.]",&addr,funcname)==2) {
 	// Function must appear at specific address
 	source_files[i].address=addr;
-	printf("function '%s' should be placed at $%04X\n",funcname,addr);
+	// printf("function '%s' should be placed at $%04X\n",funcname,addr);
       }
     }
 
@@ -133,56 +138,54 @@ int main(int argc,char **argv)
 
     fprintf(stderr,"Sorted.\n");
     
-    for(int i=0;i<source_count;i++) {
-      fprintf(stderr,"$%04X : %s\n",
-	      source_files[i].address!=0x7ffffff?source_files[i].address:0,
-	      source_files[i].file);
-    }
+    // for(int i=0;i<source_count;i++) {
+    //   fprintf(stderr,"$%04X : %s\n",
+	  //     source_files[i].address!=0x7ffffff?source_files[i].address:0,
+	  //     source_files[i].file);
+    // }
 
     // First pass is to work out the size of each routine, so that we can pack them optimally
     // around the routines that are located at fixed addresses.
-    unlink("temp.map");
+    unlink("temp.sym");
     unlink("temp.s");
     FILE *out=fopen("temp.s","w");
     if (!out) DO_ERROR("Could not write to temp.s");
     // Start at $100, so that no local data gets accesses using ZP addressing modes during this pass,
     // which would otherwise upset things later
-    fprintf(out,"\t.org $100\n");
+    fprintf(out,"\t* = $100\n");
     for(int i=0;i<source_count;i++) {
-      fprintf(out,"; Source file '%s'\n",source_files[i].file);
-      if (source_files[i].file[0]!=',')
-	fprintf(out,"__routine_start_%s:\n",source_files[i].file);
+      fprintf(out,"// Source file '%s'\n",source_files[i].file);
+      if (source_files[i].file[0]!=',') fprintf(out,"__routine_start_%s:\n",source_files[i].label);
       char path[8192];
       snprintf(path,8192,"%s/%s",directory,source_files[i].file);
       if (dump_file(out,path)) DO_ERROR("Could not read source file");
-      if (source_files[i].file[0]!=',')
-	fprintf(out,"__routine_end_%s:\n",source_files[i].file);
+      if (source_files[i].file[0]!=',') fprintf(out,"__routine_end_%s:\n",source_files[i].label);
     }
     fclose(out);
     char cmd[8192];
-    snprintf(cmd,8192,"Ophis/bin/ophis temp.s -m temp.map");
+    snprintf(cmd,8192,"java -jar assembler/KickAss.jar temp.s -symbolfile -o /dev/null");
     fprintf(stderr,"Running first pass to get size of routines...\n");
     system(cmd);
 
-    // Parse temp.map contents to get size of every routine
+    // Parse temp.sym contents to get size of every routine
     fprintf(stderr,"Reading sizes of routines...\n");
-    out=fopen("temp.map","r");
-    if (!out) DO_ERROR("Could not open temp.map for reading. Did Ophis fail due to an error in one of the assembly files?");
+    out=fopen("temp.sym","r");
+    if (!out) DO_ERROR("Could not open temp.sym for reading. Did KickAss fail due to an error in one of the assembly files?");
     while(!feof(out)) {
       int addr;
-      char routine[8192];
+      char label[8192];
       char line[8192];
       line[0]=0; fgets(line,8192,out);
-      if (sscanf(line,"$%x __routine_start_%[^ \n]",&addr,routine)==2) {
+      if (sscanf(line,".label __routine_start_%[^=]=$%x",label,&addr)==2) {
 	for(int i=0;i<source_count;i++)
-	  if (!strcmp(routine,source_files[i].file))
+	  if (!strcmp(label,source_files[i].label))
 	    { source_files[i].low_addr=addr;
 	      source_files[i].size=source_files[i].high_addr-source_files[i].low_addr;
 	      break; }
       }
-      if (sscanf(line,"$%x __routine_end_%[^ \n]",&addr,routine)==2) {
+      if (sscanf(line,".label __routine_end_%[^=]=$%x",label,&addr)==2) {
 	for(int i=0;i<source_count;i++)
-	  if (!strcmp(routine,source_files[i].file))
+	  if (!strcmp(label,source_files[i].label))
 	    { source_files[i].high_addr=addr;
 	      source_files[i].size=source_files[i].high_addr-source_files[i].low_addr;
 	      break; }
@@ -205,14 +208,28 @@ int main(int argc,char **argv)
     unlink(filename);
     out=fopen(filename,"w");
     if (!out) DO_ERROR("Could not write to combined.s");
-    fprintf(out,"\t.org $%04x\n",address);
-    for(int i=0;i<source_count;i++) source_files[i].written=0;
-    int written_count;
 
+    fprintf(out,"\t.segment Main [start=$%04x, min=$%04x, max=$%04x, outBin=\"OUT.BIN\", fill]\n" ,
+            start_address, start_address, end_address - 1);
+    fprintf(out,"\t* = $%04x\n",address);
+
+    // First write files of length 0, so that all the zeropage location definitions are
+    // known to KickAss - otherwise it will assume 16-bit address is needed, which will backfire
+    int written_count = 0;
+    for(int i=0;i<source_count;i++) {
+      if (source_files[i].size == 0) {
+        fprintf(out,"\n// Source file %s\n",source_files[i].file);
+        char filename[8192];
+        snprintf(filename,8192,"%s/%s",directory,source_files[i].file);
+        if (dump_file(out,filename)) DO_ERROR("Could not dump 0-size routine");
+        source_files[i].written=1;
+      }
+      else source_files[i].written=0;
+    }
     // XXX - We should use dynamic programming optimisation to pack the routines
     // optimally in the space, so that when we get near to full, we don't run out
     // of space due to fragmentation.
-    for(written_count=0;written_count<source_count;written_count++) {
+    for(;written_count<source_count;written_count++) {
       // First, find the next allocated address
       int next_allocated_address=0xffff;
       int next_fixed_routine=-1;
@@ -250,19 +267,18 @@ int main(int argc,char **argv)
 		source_files[biggest].file,biggest_size);
       if (biggest==-1) {
 	// Nothing else fits here.  So write next_fixed_routine
-	fprintf(stderr,"Writing file %s\n",source_files[next_fixed_routine].file);
-	fprintf(out,"\n; Source file %s @ $%04X\n",source_files[next_fixed_routine].file,address);
-	fprintf(out,"\t.checkpc $%04x\n\t.advance $%04x,$00\n",
-		next_allocated_address,next_allocated_address);
+	// fprintf(stderr,"Writing file %s\n",source_files[next_fixed_routine].file);
+	fprintf(out,"\n// Source file %s @ $%04X\n",source_files[next_fixed_routine].file,address);
+  fprintf(out,"\t* = $%04x\n", next_allocated_address);
 	char filename[8192];
 	snprintf(filename,8192,"%s/%s",directory,source_files[next_fixed_routine].file);
 	if (dump_file(out,filename)) DO_ERROR("Could not dump fixed address routine");
 	source_files[next_fixed_routine].written=1;
 	address=next_allocated_address+source_files[next_fixed_routine].size;
       } else {
-	fprintf(out,"\n; Source file %s @ $%04x\n",source_files[biggest].file,address);
-	fprintf(stderr,"Writing file %s\n",source_files[biggest].file);
-	fprintf(out,"\t.checkpc $%04x\n\t.advance $%04x,$00\n",address,address);
+	fprintf(out,"\n// Source file %s @ $%04x\n",source_files[biggest].file,address);
+	// fprintf(stderr,"Writing file %s\n",source_files[biggest].file);
+  fprintf(out,"\t* = $%04x\n", address);
 		
 	char filename[8192];
 	snprintf(filename,8192,"%s/%s",directory,source_files[biggest].file);
@@ -271,9 +287,6 @@ int main(int argc,char **argv)
 	address+=source_files[biggest].size;
       }
     }
-
-    fprintf(out,"\t.checkpc $%04x\n\t.advance $%04x,$00\n",
-	    end_address,end_address);
     
     fclose(out);
     
@@ -287,7 +300,7 @@ int main(int argc,char **argv)
     if (retVal) break;
 
     fprintf(stderr,"Assembling combined source...\n");
-    snprintf(cmd,8192,"Ophis/bin/ophis %s/combined.s -o %s/OUT.BIN",directory,directory);
+    snprintf(cmd,8192,"java -jar assembler/KickAss.jar %s/combined.s -symbolfile -vicesymbols -binfile -o %s/OUT.BIN",directory,directory);
     system(cmd);
     
   } while(0);

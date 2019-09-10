@@ -1,6 +1,6 @@
 
-;; In our implementation CHKIN and CKOUT are closely tied,
-;; placing it here would cause a collision
+// In our implementation CHKIN and CKOUT are closely tied,
+// placing it here would cause a collision
 
-chkin:
+CHKIN:
     jmp chkin_real

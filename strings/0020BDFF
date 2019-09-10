@@ -1,0 +1,4 @@
+$00 + JSR $FFBD (SETNAM routine jumptable address)
+
+Value + a jump to a documented location - trivial, not copyrightable.
+

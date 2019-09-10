@@ -1,5 +1,6 @@
 # open-roms
-A project to create unencumbered open-source ROMs for use on selected retro computers
+
+A project to create unencumbered open-source ROMs for use on selected retro computers. For the current status check [this document](STATUS.md)
 
 # Problem Statement and Motivation
 

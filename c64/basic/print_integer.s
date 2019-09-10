@@ -1,26 +1,27 @@
-	;; Works similar to $BDCD in original C64 BASIC
-	;; XXX Should eventually get replaced by a more flexible and optimal routine.
-	;; Temp result gets written to $0100-$0104
+// Works similar to $BDCD in original C64 BASIC
+// XXX Should eventually get replaced by a more flexible and optimal routine.
+// Temp result gets written to $0100-$0104
+
 print_integer:
 
 	pha
 	txa
 	pha
 
-	;; Clear temporary output
+	// Clear temporary output
 	lda #$00
 	ldy #5
-*	sta $0100,y
+!:	sta $0100,y
 	dey
-	bpl -
+	bpl !-
 	
 	pla
-	ldy #23 		; 8 x 3 - 1 = offset of last digit of 128
+	ldy #23 		// 8 x 3 - 1 = offset of last digit of 128
 lo_loop:	
 	cmp #$7f
 	bcc bit_clear
 
-	;; Bit set, so add the digits
+	// Bit set, so add the digits
 	pha
 	ldx #2
 	clc
@@ -45,16 +46,16 @@ next_lo_bit:
 	bcc lo_loop	
 
 
-	;; Now do the same for upper byte
+	// Now do the same for upper byte
 	pla
 	
-	ldy #39 		; 8 x 5 - 1 = offset of last digit of 32768
+	ldy #39 		// 8 x 5 - 1 = offset of last digit of 32768
 hi_loop:	
 	cmp #$7f
 	bcc bit_clear_hi
 
 	
-	;; Bit set, so add the digits
+	// Bit set, so add the digits
 	pha
 	ldx #4
 	clc
@@ -67,8 +68,8 @@ hi_add_loop:
 	dex
 	bpl hi_add_loop
 	pla
-	jmp next_hi_bit	
-	
+	jmp next_hi_bit
+
 bit_clear_hi:
 	dey
 	dey
@@ -78,47 +79,47 @@ bit_clear_hi:
 next_hi_bit:
 	asl
 	cpy #$7f
-	bcc hi_loop	
+	bcc hi_loop
 
 fix_carry:
-	
-	;; Deal with any carries
+
+	// Deal with any carries
 	ldx #3
-carry_fix_loop:	
+carry_fix_loop:
 	lda $0101,x
 	cmp #10
-	bcc +
+	bcc !+
 	inc $0100,x
 	sec
 	sbc #10
 	sta $0101,x
 
 	jmp carry_fix_loop	
-	
-*	dex	
+
+!:	dex	
 	bpl carry_fix_loop
 
-post_carry:	
+post_carry:
 
-	;; Got digits.
-	;; Skip leading zeros, and print the resulting number
+	// Got digits.
+	// Skip leading zeros, and print the resulting number
 
-	;; Skip leading zeros
+	// Skip leading zeros
 	ldy #0
-*	lda $0100,y
+!:	lda $0100,y
 	bne found_start_of_number
 	iny
 	cpy #4
-	bne -
+	bne !-
 
-found_start_of_number:	
-	;; Print digits
-*	lda $0100,y
+found_start_of_number:
+	// Print digits
+!:	lda $0100,y
 	ora #$30
 	jsr JCHROUT
 	iny
 	cpy #5
-	bne -
+	bne !-
 	
 	
 	rts

@@ -1,0 +1,3 @@
+$00 + STA $7B + RTS
+
+Routine ending, storing a value in a documented zeropage location - trivial, not copyrightable.

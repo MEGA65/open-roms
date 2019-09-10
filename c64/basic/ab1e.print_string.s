@@ -1,19 +1,19 @@
-	;; Print string at $YYAA
-	;; Compute's Mapping the 64 p101
+// Print string at $YYAA
+// Compute's Mapping the 64 p101
 
 print_string:
-	;; Setup pointer	
+	// Setup pointer
 	sty temp_string_ptr+1
 	sta temp_string_ptr+0
 
-	txa			
+	txa	
 	pha
 
-	;; Get offset ready
+	// Get offset ready
 	ldy #$00
 
 print_string_loop:	
-	;; Save Y in X, since X is preserved by chrout, but Y is not
+	// Save Y in X, since X is preserved by chrout, but Y is not
 	tya
 	tax
 
@@ -27,7 +27,6 @@ print_string_loop:
 
 	iny
 	bne print_string_loop
-
 
 print_string_end:
 

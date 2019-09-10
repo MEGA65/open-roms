@@ -1,41 +1,41 @@
-	;; We have the following variables:
-	;; cursor_blink_disable
-	;; cursor_blink_countdown
-	;; cursor_saved_character
-	;; cursor_is_visible
-	;; colour_under_cursor
+// We have the following variables:
+// cursor_blink_disable
+// cursor_blink_countdown
+// cursor_saved_character
+// cursor_is_visible
+// colour_under_cursor
 
 show_cursor_if_enabled:
 	lda cursor_blink_disable
-	beq +
+	beq !+
 	rts
-*	lda cursor_is_visible
+!:	lda cursor_is_visible
 	beq show_cursor
 	rts
 	
 show_cursor:
-	;; Set cursor as though it had just finished the off phase,
-	;; so that the call to blink_cursor paints it
+	// Set cursor as though it had just finished the off phase,
+	// so that the call to blink_cursor paints it
 	lda #$00
 	sta cursor_blink_countdown
 	sta cursor_is_visible
 	jsr blink_cursor
-	;; Then set the timeout to 1 frame, so that the cursor
-	;; blinks under key repeat conditions, like on the original KERNAL
+	// Then set the timeout to 1 frame, so that the cursor
+	// blinks under key repeat conditions, like on the original KERNAL
 	lda #$01
 	sta cursor_blink_countdown
 	rts
 	
 blink_cursor:
-	;; Is the cursor enabled?
+	// Is the cursor enabled?
 	lda cursor_blink_disable
 	bne no_blink_cursor
 
-	;; Do we need to redraw things?
+	// Do we need to redraw things?
 	dec cursor_blink_countdown
 	bpl no_blink_cursor
 
-	;; Check if cursor was visible or not, and toggle
+	// Check if cursor was visible or not, and toggle
 	lda cursor_is_visible
 	bne undraw_cursor
 draw_cursor:
@@ -46,7 +46,7 @@ draw_cursor:
 	sta cursor_saved_character	
 	eor #$80
 	sta (current_screen_line_ptr),y
-	;; Also set cursor colour
+	// Also set cursor colour
 	lda (current_screen_line_colour_ptr),y
 	sta colour_under_cursor
 	lda text_colour
@@ -68,10 +68,10 @@ undraw_cursor:
 	
 	lda #0
 	sta cursor_is_visible
-	;; Fall through
+	// Fall through
 reset_blink_timer:	
-	;; Rest blink counter
-	;; (Compute's Mapping the 64, p39-40)
+	// Rest blink counter
+	// (Compute's Mapping the 64, p39-40)
 	lda #20
 	sta cursor_blink_countdown
 no_blink_cursor:
@@ -80,7 +80,7 @@ no_blink_cursor:
 disable_cursor:
 	lda #$80
 	sta cursor_blink_disable
-	;; FALL THROUGH
+	// FALL THROUGH
 hide_cursor_if_visible:
 	lda cursor_is_visible
 	bne undraw_cursor

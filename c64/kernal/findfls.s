@@ -1,18 +1,18 @@
 
-;; Just a helper routines
+// Just a helper routines
 
-;; Find the LAT / SAT / FAT entry index where LAT corresponds to A, returns index in Y
-;; Carry flag set means not found
+// Find the LAT / SAT / FAT entry index where LAT corresponds to A, returns index in Y
+// Carry flag set means not found
 
 find_fls:
 
 	ldy LDTND
-	beq find_fls_not_found ; table empty
-*
+	beq find_fls_not_found // table empty
+!:
 	dey
-	bmi find_fls_not_found ; no more entries
+	bmi find_fls_not_found // no more entries
 	cmp LAT, y
-	bne - ; does not match, try the next one
+	bne !- // does not match, try the next one
 
 	clc
 	rts

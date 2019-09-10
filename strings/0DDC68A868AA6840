@@ -1,0 +1,7 @@
+$DC0D + PLA + TAY + PLA + TAX + PLA + RTI
+
+Some access to a docummented hardware register (but details differ) + return from the interrupt in a standard 6502 way - see for example here:
+
+http://6502.org/tutorials/register_preservation.html
+
+Not copyrightable.

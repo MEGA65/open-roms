@@ -1,0 +1,3 @@
+CLC + RTS + LDA $DD00
+
+End of a routine setting carry flag as a result (probably to indicate error) followed by another, which starts by reading a documented hardware register. Not creative (especially that routine location is determineed by algorithm in our case) - not copyrightable.

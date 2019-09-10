@@ -1,45 +1,47 @@
 
-;;
-;; Official Kernal routine, described in:
-;;
-;; - [RG64] C64 Programmer's Reference Guide   - page 289
-;; - [CM64] Compute's Mapping the Commodore 64 - page 230/231
-;;
-;; CPU registers that has to be preserved (see [RG64]): none
-;;
+//
+// Official Kernal routine, described in:
+//
+// - [RG64] C64 Programmer's Reference Guide   - page 289
+// - [CM64] Compute's Mapping the Commodore 64 - page 230/231
+//
+// CPU registers that has to be preserved (see [RG64]): none
+//
 
 
-open:
+OPEN:
 
-	;; Reset status
+	// Reset status
 	jsr kernalstatus_reset
 
-	;; Check if the logical file number is unique
+	// Check if the logical file number is unique
 	ldy LDTND
-*
-	beq +
+!:
+	beq !+
 	dey
 	lda LAT, y
 	cmp current_logical_filenum
-	beq kernalerror_FILE_ALREADY_OPEN
+	bne open_not_yet_open
+	jmp kernalerror_FILE_ALREADY_OPEN
+open_not_yet_open:
 	cpy #$00
-	jmp -
-*
-	;; Check if we have space in tables
+	jmp !-
+!:
+	// Check if we have space in tables
 
 	ldy LDTND
 	cpy #$0A
 	bcc open_has_space
-*
-	;; Table is full
+!:
+	// Table is full
 	jmp kernalerror_TOO_MANY_OPEN_FILES
 
 open_has_space:
 
-	;; Update the tables
+	// Update the tables
 
-	;; LAT / FAT / SAT support implemented according to
-	;; 'Compute's Mapping the Commodore 64', page 52
+	// LAT / FAT / SAT support implemented according to
+	// 'Compute's Mapping the Commodore 64', page 52
 
 	lda current_logical_filenum
 	sta LAT, y
@@ -51,16 +53,16 @@ open_has_space:
 	iny
 	sty LDTND
 
-	;; Check for command to send
+	// Check for command to send
 	lda FNLEN
 	beq open_done_success
 	
-	;; Check for IEC device
+	// Check for IEC device
 	lda current_device_number
 	jsr iec_check_devnum
 	bcc open_iec
 
-	;; FALLTROUGH
+	// FALLTROUGH
 open_done_success:
 
 	clc
@@ -68,21 +70,21 @@ open_done_success:
 
 open_iec:
 
-	;; We have a command to send to IEC device
-	jsr listen
-	bcc +
+	// We have a command to send to IEC device
+	jsr LISTEN
+	bcc !+
 	jmp kernalerror_DEVICE_NOT_FOUND
-*
+!:
 	lda current_secondary_address
 	jsr iec_cmd_open
-	bcc +
+	bcc !+
 	jmp kernalerror_DEVICE_NOT_FOUND
-*
+!:
 
-	;; We need our helpers to get to filenames under ROMs or IO area
+	// We need our helpers to get to filenames under ROMs or IO area
 	jsr install_ram_routines
 
-	;; Send command ('file name')
+	// Send command ('file name')
 	jsr lvs_send_file_name
 
 	jmp open_done_success

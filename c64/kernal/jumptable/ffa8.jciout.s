@@ -1,3 +1,4 @@
-; Output byte to serial port
-; C64 Programmer's Reference Guide Page 272
-	jmp ciout
+// Output byte to serial port
+// C64 Programmer's Reference Guide Page 272
+
+	jmp CIOUT

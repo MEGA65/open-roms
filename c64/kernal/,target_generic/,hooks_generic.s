@@ -1,6 +1,6 @@
 
-;; Target-specific hooks
+// Target-specific hooks
 
 
-.macro TARGET_HOOK_LOAD
-.macend
+.macro TARGET_HOOK_LOAD() {
+}

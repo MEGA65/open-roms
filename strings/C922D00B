@@ -1,0 +1,3 @@
+CMP #$22 + BNE (offset matches)
+
+Comparing register to value, would be a single instruction on other architectures. Trivial - not copyrightable.

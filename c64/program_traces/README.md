@@ -7,6 +7,6 @@ C64 KERNAL.
 To collect a program trace:
 
 x64 -remotemonitor &
-src/collect_data localhost 6510 | tee logfile
+build/tools/collect_data localhost 6510 | tee logfile
 
 

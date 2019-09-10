@@ -1,0 +1,3 @@
+STA $D4 + LDA #$22
+
+Storing value to a well-known zeropage variable + loading another to the accumulator - not crative, not copyrightable.

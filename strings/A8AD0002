@@ -1,0 +1,3 @@
+$A8 + LDA $0200
+
+Instruction (accessing BASIC instruction buffer) + some part. Trivial, not copyrightable.

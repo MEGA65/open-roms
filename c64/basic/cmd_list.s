@@ -1,9 +1,9 @@
-	;; LIST basic text.
-	;; XXX - Doesn't currently support line number ranges
+// LIST basic text.
+// XXX - Doesn't currently support line number ranges
 
 cmd_list:
 
-	;; Set current line pointer to start of memory
+	// Set current line pointer to start of memory
 	lda basic_start_of_text_ptr+0
 	sta basic_current_line_ptr+0
 	lda basic_start_of_text_ptr+1
@@ -16,23 +16,23 @@ list_loop:
 	cmp #$00
 	bne list_more_lines
 
-	;; LIST terminates any running program,
-	;; because it has fiddled with the current line pointer.
-	;; (Confirmed by testing on a C64)
+	// LIST terminates any running program,
+	// because it has fiddled with the current line pointer.
+	// (Confirmed by testing on a C64)
 	jmp basic_main_loop
 
 list_more_lines:
 	lda STKEY
-	bmi +
+	bmi !+
 	jmp basic_do_break
-*
+!:
 	jsr list_single_line
-	;; Now link to the next line
+	// Now link to the next line
 	jsr basic_find_next_line
 	jmp list_loop
 
-list_single_line: ; entry point needed by DOS wedge
-	;; Print line number
+list_single_line: // entry point needed by DOS wedge
+	// Print line number
 	ldy #3
 	jsr peek_under_roms
 	pha
@@ -44,8 +44,8 @@ list_single_line: ; entry point needed by DOS wedge
 	lda #$20
 	jsr JCHROUT
 
-	;; Iterate through printing out the line
-	;; contents
+	// Iterate through printing out the line
+	// contents
 	lda #0
 	sta quote_mode_flag
 	
@@ -63,34 +63,34 @@ list_print_loop:
 	lda #$22
 	jmp list_is_literal
 list_not_quote:	
-	;; Check quote mode, and display as literal if required
+	// Check quote mode, and display as literal if required
 	ldx quote_mode_flag
 	bne list_is_literal
 	
 	cmp #$7f
 	bcc list_is_literal
 
-	;; Display a token
+	// Display a token
 
-	;; Save registers
+	// Save registers
 	tax
 	pha
 	tya
 	pha
 
-	;; Get pointer to compressed keyword list
+	// Get pointer to compressed keyword list
 	lda #<packed_keywords
 	sta temp_string_ptr+0
 	lda #>packed_keywords
 	sta temp_string_ptr+1
 	
-	;; Subtract $80 from token to get offset in word
-	;; list
+	// Subtract $80 from token to get offset in word
+	// list
 	txa
 	and #$7f
 	tax
 
-	;; Now ask for it to be printed
+	// Now ask for it to be printed
 	ldy #$ff
 	jsr packed_word_search
 
@@ -100,11 +100,11 @@ list_not_quote:
 
 	cmp #$8f
 	bne list_not_rem
-	;; REM command locks quote flag on until the end of the line, allowing
-	;; funny characters in REM statements without problem.
+	// REM command locks quote flag on until the end of the line, allowing
+	// funny characters in REM statements without problem.
 	inc $0427
-	sta quote_mode_flag 	; Any value other than $00 or $FF will lock quote mode on, so the token value of REM is fine here
-	;; FALL THROUGH
+	sta quote_mode_flag 	// Any value other than $00 or $FF will lock quote mode on, so the token value of REM is fine here
+	// FALL THROUGH
 list_not_rem:		
 	
 	iny
@@ -116,10 +116,10 @@ list_is_literal:
 	bne list_print_loop
 	
 list_end_of_line:
-	;; Clear reverse flag
+	// Clear reverse flag
 	lda #$92
 	jsr JCHROUT
-	;; Print end of line
+	// Print end of line
 	lda #$0d
 	jsr JCHROUT
 	rts

@@ -1,5 +1,5 @@
-	;; Advance basic_current_line_ptr by following the
-	;; link to the next line
+// Advance basic_current_line_ptr by following the
+// link to the next line
 
 basic_find_next_line:
 

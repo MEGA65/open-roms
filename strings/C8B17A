@@ -1,0 +1,4 @@
+INY + LDA ($7A),Y
+
+Part of the loop reading BASIC statement, loops reading data block pointed by vector
+always look like this on 6502, as LDA (...),X does not exists on this CPU. Trivial - not copyrightable.

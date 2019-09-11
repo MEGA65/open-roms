@@ -16,7 +16,7 @@ default_nmi_handler:
 	// XXX confirm NMIs from CIA, or no other NMI will arrive!
 
 	jsr cartridge_check
-	bcc !+
+	bne !+
 	jmp (ICART_WARM_START)
 !:
 

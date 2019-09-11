@@ -8,8 +8,14 @@ lvs_send_file_name:
 lvs_send_file_name_loop:
 	cpy FNLEN
 	beq lvs_send_file_name_done
-	ldx #<current_filename_ptr
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<current_filename_ptr+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (current_filename_ptr),y
+#endif
+
 	iny
 	// Set Carry flag on the last file name character, to mark EOI
 	cpy FNLEN
@@ -73,8 +79,14 @@ lvs_display_searching_for:
 !:
 	cpy FNLEN
 	beq lvs_display_end
-	ldx #<current_filename_ptr
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<current_filename_ptr+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (current_filename_ptr),y
+#endif
+
 	jsr JCHROUT
 	iny
 	jmp !-

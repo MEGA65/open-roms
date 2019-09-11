@@ -14,12 +14,24 @@ basic_delete_line:
 	// .byte $0d,0
 
 	// Get address of next line
-	ldx #<basic_current_line_ptr
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sta tokenise_work3
 	iny
+
+#if CONFIG_MEMORY_MODEL_60K	
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sta tokenise_work4
 
 	// Work out length of this line by looking at the pointer

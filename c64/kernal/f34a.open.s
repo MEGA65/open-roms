@@ -81,8 +81,10 @@ open_iec:
 	jmp kernalerror_DEVICE_NOT_FOUND
 !:
 
+#if CONFIG_MEMORY_MODEL_60K
 	// We need our helpers to get to filenames under ROMs or IO area
 	jsr install_ram_routines
+#endif
 
 	// Send command ('file name')
 	jsr lvs_send_file_name

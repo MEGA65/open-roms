@@ -1,5 +1,5 @@
 
-// START wedge support
+#if CONFIG_DOS_WEDGE
 
 wedge_dos:
 
@@ -235,4 +235,4 @@ wedge_dos_setnam:
 	ldy basic_current_statement_ptr+1
 	jmp JSETNAM
 
-// END wedge support
+#endif // CONFIG_DOS_WEDGE

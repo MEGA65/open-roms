@@ -1,23 +1,34 @@
-basic_follow_link_to_next_line:
-	ldy #0
+// Return C=1 if a pointer in BASIC memory space is NULL, else C=0
+// X = ZP pointer to check
+
+peek_line_pointer_null_check:
+
+	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_line_ptr+0
 	jsr peek_under_roms
+	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (basic_current_line_ptr),y
 #endif
 
-	pha
+	bne ptr_not_null
 	iny
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (basic_current_line_ptr),y
 #endif
 
-	sta basic_current_line_ptr+1
-	pla
-	sta basic_current_line_ptr+0
+	bne ptr_not_null
+
+	// Pointer is NULL
+	clc
+	rts
+
+ptr_not_null:
+	sec
 	rts

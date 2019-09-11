@@ -101,8 +101,7 @@ basic_shift_mem_down_and_relink:
 
 	// Check if we still have any lines left
 	ldy #0
-	ldx #<basic_current_line_ptr
-	jsr peek_pointer_null_check
+	jsr peek_line_pointer_null_check
 	bcs relink_down_next_line
 	// Nope, so just return
 	clc
@@ -115,23 +114,46 @@ relink_down_next_line:
 	
 	// Subtract tokenise_work3 from the pointer
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_line_ptr+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sec
 	sbc tokenise_work3
 	sta memmove_src+0
 	iny
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sbc #0
 	sta memmove_src+1
 
 	ldy #0
-	ldx #<basic_current_line_ptr
 	lda memmove_src+0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr+0
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
+
 	iny
 	lda memmove_src+1
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
 
 relink_down_loop:	
 	// Now advance pointer to the next line,
@@ -141,8 +163,7 @@ relink_down_loop:
 	sta basic_current_line_ptr+1
 
 	// Have we run out of lines to patch?
-	ldx #<basic_current_line_ptr
-	jsr peek_pointer_null_check
+	jsr peek_line_pointer_null_check
 	bcs relink_down_next_line
 
 	clc

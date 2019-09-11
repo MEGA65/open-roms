@@ -4,6 +4,8 @@
 // in ,aliases.s.
 // Thus those addresses are expressed using formulae.
 
+#if CONFIG_MEMORY_MODEL_60K
+
 install_ram_routines:
 	// Copy routines into place
 	ldx #ram_routines_end-ram_routines_start-1
@@ -106,3 +108,47 @@ smd1:
 	jmp memmap_normal
 
 ram_routines_end:
+
+#else // CONFIG_MEMORY_MODEL_60K
+
+shift_mem_up:
+	// Move memmove_size bytes from memmove_src to memmove_dst,
+	// where memmove_dst > memmove_src
+	// This means we have to copy from the back end down.
+	// This routine assumes the pointers are already pointed
+	// to the end of the areas, and that Y is correctly initialised
+	// to allow the copy to begin.
+	php
+smu1:	
+	lda (memmove_src),y
+	sta (memmove_dst),y
+	dey
+	bne smu1
+	dec memmove_src+1
+	dec memmove_dst+1
+	dec memmove_size+1
+	bne smu1
+	plp
+	rts
+
+shift_mem_down:
+	// Move memmove_size bytes from memmove_src to memmove_dst,
+	// where memmove_dst > memmove_src
+	// This means we have to copy from the back end down.
+	// This routine assumes the pointers are already pointed
+	// to the end of the areas, and that Y is correctly initialised
+	// to allow the copy to begin.
+	php
+smd1:
+	lda (memmove_src),y
+	sta (memmove_dst),y
+	iny
+	bne smd1
+	inc memmove_src+1
+	inc memmove_dst+1
+	dec memmove_size+1
+	bne smd1
+	plp
+	rts
+
+#endif

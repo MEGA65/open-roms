@@ -105,12 +105,24 @@ basic_shift_mem_up_and_relink:
 	// pointer to itself, so that we can add the shift
 	// to make it end up pointing to the next line
 	ldy #0
-	ldx #<basic_current_line_ptr+0
+
 	lda basic_current_line_ptr+0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr+0
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
+
 	iny
 	lda basic_current_line_ptr+1
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
 	
 relink_up_next_line:
 	// inc $d020
@@ -118,15 +130,28 @@ relink_up_next_line:
 	
 	// Advance pointer by tokenise_word3 bytes
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_line_ptr+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sta memmove_dst+0
 	clc
 	adc tokenise_work3
 	sta memmove_src+0
 	iny
 	php
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sta memmove_dst+1
 	plp
 	adc #0
@@ -147,13 +172,23 @@ relink_up_next_line:
 	
 	// Write memmove_src back to current line pointer
 	ldy #0
-	ldx #<basic_current_line_ptr
 	lda memmove_src+0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr+0
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
+
 	iny
 	lda memmove_src+1
-	jsr poke_under_roms
 
+#if CONFIG_MEMORY_MODEL_60K
+	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
 	
 relink_up_loop:	
 	// Now advance pointer to the next line,
@@ -163,8 +198,7 @@ relink_up_loop:
 	sta basic_current_line_ptr+1
 
 	// Have we run out of lines to patch?
-	ldx #<basic_current_line_ptr
-	jsr peek_pointer_null_check
+	jsr peek_line_pointer_null_check
 	bcs relink_up_next_line
 
 	rts

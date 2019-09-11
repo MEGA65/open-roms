@@ -58,12 +58,23 @@ basic_insert_line:
 
 	// Write the line number
 	ldy #2
-	ldx #<basic_current_line_ptr
 	lda basic_line_number+0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr+0
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
+
 	iny
 	lda basic_line_number+1
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
 
 	// Now store the line body itself
 	inc tokenise_work2
@@ -71,9 +82,15 @@ line_store_loop:
 	ldx tokenise_work1
 	lda $0200,x
 	inc tokenise_work1
-	ldx #<basic_current_line_ptr
 	iny
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr+0
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
+
 	lda tokenise_work1
 	cmp tokenise_work2
 	bne line_store_loop
@@ -81,4 +98,3 @@ line_store_loop:
 	
 	clc
 	rts
-	

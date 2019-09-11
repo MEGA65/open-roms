@@ -13,8 +13,14 @@ basic_find_line_loop:
 	// Line number
 	
 	ldy #3
-	ldx #<basic_current_line_ptr
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	cmp basic_line_number+1
 	beq !+
 	bcs line_num_too_high
@@ -22,7 +28,13 @@ basic_find_line_loop:
 !:
 	
 	dey
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	cmp basic_line_number+0
 	beq !+
 	bcs line_num_too_high
@@ -32,8 +44,7 @@ basic_find_line_loop:
 	rts
 not_this_line:
 	// Not this line, so advance to next line
-	ldx #<basic_current_line_ptr
-	jsr peek_pointer_null_check
+	jsr peek_line_pointer_null_check
 	bcs more_lines_exist
 
 	// no more lines exist, return failure
@@ -46,11 +57,23 @@ more_lines_exist:
 	// if the link goes backwards.
 	// Follow link to next line
 	ldy #0
-	ldx #<basic_current_line_ptr
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sta $0100
 	iny
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sta basic_current_line_ptr+1
 	lda $0100
 	sta basic_current_line_ptr+0

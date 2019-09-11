@@ -144,9 +144,15 @@ basic_relink_program:
 basic_relink_loop:	
 	// Is the pointer to the end of the program
 	ldy #1
+
+#if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_line_ptr+0
 	jsr peek_under_roms
 	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	bne !+
 
 	// End of program
@@ -156,8 +162,14 @@ basic_relink_loop:
 	// Skip forward pointer and line number
 	ldy #4
 end_of_line_search:
+
+#if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_line_ptr+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	cmp #$00
 	beq !+
 
@@ -182,13 +194,25 @@ end_of_line_search:
 	pha
 	php
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_line_ptr+0
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
+
 	plp
 	lda basic_current_line_ptr+1
 	adc #0
 	ldy #1
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (basic_current_line_ptr),y
+#endif
+
 	sta basic_current_line_ptr+1
 	pla
 	sta basic_current_line_ptr+0

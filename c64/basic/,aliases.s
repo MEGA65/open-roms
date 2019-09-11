@@ -113,6 +113,8 @@
 	.label enable_case_switch = $0291
 	.label screen_scroll_disable = $0292
 
+#if CONFIG_MEMORY_MODEL_60K
+
 	// BASIC uses some extra bytes for memory access under ROMs located at $2A7 onwards
 	// IRQs are disabled when doing such accesses, and a default NMI handler only increments
 	// a counter, so that if an NMI occurs, it doesn't crash the machine, but can be captured.
@@ -124,3 +126,5 @@
 	.label poke_under_roms = tiny_nmi_handler+poke_under_roms_routine-tiny_nmi_handler_routine
 	.label memmap_allram = tiny_nmi_handler+memmap_allram_routine-tiny_nmi_handler_routine
 	.label memmap_normal = tiny_nmi_handler+memmap_normal_routine-tiny_nmi_handler_routine
+
+#endif // CONFIG_MEMORY_MODEL_60K

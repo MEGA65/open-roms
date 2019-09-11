@@ -44,12 +44,25 @@ basic_do_new:
 	jsr JMEMTOP
 	cpx #$80
 	beq !+
-	lda #>$f7ff
+#if CONFIG_MEMORY_MODEL_60K
+	lda #>$F7FF
+#else // CONFIG_MEMORY_MODEL_38K
+	lda #>$9FFF
+#endif
 	.byte $2C
-!:	lda #>$7FFF
+!:	
+#if CONFIG_MEMORY_MODEL_60K
+	lda #>$F7FF
+#else // CONFIG_MEMORY_MODEL_38K
+	lda #>$9FFF
+#endif
 	sta basic_top_of_memory_ptr+1
 	sta basic_start_of_strings_ptr+1
-	lda #<$f7ff
+#if CONFIG_MEMORY_MODEL_60K
+	lda #<$F7FF
+#else // CONFIG_MEMORY_MODEL_38K
+	lda #<$9FFF
+#endif
 	sta basic_top_of_memory_ptr+0
 	sta basic_start_of_strings_ptr+0	
 	

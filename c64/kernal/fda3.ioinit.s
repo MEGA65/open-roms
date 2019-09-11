@@ -20,23 +20,51 @@ IOINIT:
 	sta CPU_R6510
 	stx CPU_D6510
 
-	// Silence the SID chips under common addresses
+	// Silence the SID chips, depending on the configuration
 
+#if !CONFIG_SID_D4XX
+	lda SID_SIGVOL
+	and #$F0
+	sta SID_SIGVOL
+#endif // !CONFIG_SID_D4XX
+
+#if CONFIG_SID_D4XX || CONFIG_SID_D5XX
 	ldy #$00
 !:
-	// SIDs under $D4xx
+
+#if CONFIG_SID_D4XX 
 	lda SID_SIGVOL, Y
 	and #$F0
 	sta SID_SIGVOL, Y
+#endif // CONFIG_SID_D4XX
+
+#if CONFIG_SID_D5XX 
 	// SIDs under $D5xx
 	lda SID_SIGVOL + $100, Y
 	and #$F0
 	sta SID_SIGVOL + $100, Y
+#endif // CONFIG_SID_D4XX
+
 	tya
 	clc
 	adc #$20
 	tay
 	bne !-
+#endif // CONFIG_SID_D4XX || CONFIG_SID_D5XX
+
+#if CONFIG_SID_2ND
+	lda SID_SIGVOL - SID_BASE + CONFIG_SID_2ND_ADDRESS
+	and #$F0
+	sta SID_SIGVOL - SID_BASE + CONFIG_SID_2ND_ADDRESS
+#endif // CONFIG_SID_2ND
+
+#if CONFIG_SID_3RD
+	lda SID_SIGVOL - SID_BASE + CONFIG_SID_3RD_ADDRESS
+	and #$F0
+	sta SID_SIGVOL - SID_BASE + CONFIG_SID_3RD_ADDRESS
+#endif // CONFIG_SID_3RD
+
+    // Initialize CIAs
 
 	// XXX: calibrate TOD for both CIA's, see here: https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
 

@@ -2,10 +2,15 @@
 // after first checking that we have a colon
 // or $00 char
 
-basic_end_of_statement_check:	
-	ldx #<basic_current_statement_ptr
+basic_end_of_statement_check:
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_statement_ptr
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_statement_ptr),y
+#endif
 
 	// Consume any spaces
 	cmp #$20
@@ -35,8 +40,14 @@ basic_execute_statement:
 !:
 	// Skip over any white space and :
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_statement_ptr
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_statement_ptr),y
+#endif
+
 	jsr basic_end_of_statement_check
 	bcs basic_end_of_line
 	
@@ -58,10 +69,17 @@ basic_execute_statement:
 	
 	// Get next char of program text, even if it is hiding under a ROM or the
 	// IO area.
-	ldx #<basic_current_statement_ptr
+
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_statement_ptr
 	jsr peek_under_roms
 	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_statement_ptr),y
+#endif
+
 	beq basic_end_of_line
 	
 	// The checks should be done in order of frequency, so that we are as
@@ -94,7 +112,7 @@ not_a_token:
 	cmp #$3a
 	beq basic_skip_char
 	
-// START wedge support
+#if CONFIG_DOS_WEDGE
 	
 	// Are we in direct mode?
 	// DOS Wedge is a hacky solution (inelegant, but convenient),
@@ -111,7 +129,8 @@ not_a_token:
 	jsr basic_consume_character
 	jmp wedge_dos
 !:
-// END wedge support
+
+#endif // CONFIG_DOS_WEDGE
 
 	// If all else fails, it's a syntax error
 	jmp do_SYNTAX_error
@@ -122,8 +141,14 @@ basic_skip_char:
 
 basic_fetch_and_consume_character:
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_statement_ptr
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_statement_ptr),y
+#endif
+
 	// FALL THROUGH
 	
 basic_consume_character:
@@ -179,8 +204,7 @@ basic_execute_from_current_line:
 	// Check if pointer is null, if so, we are at the end of
 	// the program.
 	ldy #0
-	ldx #<basic_current_line_ptr
-	jsr peek_pointer_null_check
+	jsr peek_line_pointer_null_check
 	bcs !+
 	// End of program reached
 	jmp basic_main_loop
@@ -194,13 +218,24 @@ basic_execute_from_current_line:
 	adc #0
 	sta basic_current_statement_ptr+1
 
-	// Store line number
-	ldx #<basic_current_line_ptr
 	ldy #2
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sta basic_current_line_number+0
 	iny
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	sta basic_current_line_number+1
 
 	jmp basic_execute_statement

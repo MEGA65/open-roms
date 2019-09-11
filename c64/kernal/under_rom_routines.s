@@ -4,6 +4,8 @@
 // in ,aliases.s.
 // Thus those addresses are expressed using formulae.
 
+#if CONFIG_MEMORY_MODEL_60K
+
 install_ram_routines:
 	// Copy routines into place
 	ldx #ram_routines_end-ram_routines_start-1
@@ -62,3 +64,5 @@ memmap_allram_routine:
 	rts
 
 ram_routines_end:
+
+#endif // CONFIG_MEMORY_MODEL_60K

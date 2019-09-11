@@ -1,7 +1,11 @@
 // Clear screen etc, show READY prompt.
 
 basic_warm_start:
+
+#if CONFIG_MEMORY_MODEL_60K
+	// We need our helpers to get to filenames under ROMs or IO area
 	jsr install_ram_routines
+#endif
 
 	// If warm start caused by BRK, print it address
 	lda CMP0

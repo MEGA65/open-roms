@@ -10,10 +10,17 @@ cmd_list:
 	sta basic_current_line_ptr+1
 
 list_loop:
-	ldx #<basic_current_line_ptr
+
 	ldy #1
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<basic_current_line_ptr+0
 	jsr peek_under_roms
 	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	bne list_more_lines
 
 	// LIST terminates any running program,
@@ -34,10 +41,22 @@ list_more_lines:
 list_single_line: // entry point needed by DOS wedge
 	// Print line number
 	ldy #3
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	pha
 	dey
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	tax
 	pla
 	jsr print_integer
@@ -51,9 +70,15 @@ list_single_line: // entry point needed by DOS wedge
 	
 	ldy #4
 list_print_loop:	
+
+#if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_line_ptr
-	jsr peek_under_roms	
+	jsr peek_under_roms
 	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (basic_current_line_ptr),y
+#endif
+
 	beq list_end_of_line
 	cmp #$22
 	bne list_not_quote

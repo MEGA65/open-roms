@@ -83,6 +83,8 @@ ramtas_real:
 	bne !+ // always non-zero, saves one byte
 
 ramtas_32K_RAM:	
+	dex
+	stx $8000 // case there is RAM under the ROM
 	ldx #$80
 	stx MEMSIZK+1
 !:

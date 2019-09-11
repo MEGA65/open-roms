@@ -37,7 +37,7 @@ reset_entry:
 	jsr JCINT
 
 	// What do we do when finished?  A C64 jumps into the BASIC ROM
-	cli 			// Allow interrupts to happen
+	cli // allow interrupts to happen
 
 	// c64 prg p269
 	jmp (IBASIC_COLD_START)

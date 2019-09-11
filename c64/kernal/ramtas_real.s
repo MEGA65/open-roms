@@ -8,17 +8,18 @@
 // CPU registers that has to be preserved (see [RG64]): none
 //
 
-RAMTAS:
+ramtas_real:
 	// C64 Programmer's Reference guide p291:
 	// Clear $0000-$0101, $0200-$03ff
 	// PGS: $0000, $0001 are CPU IO ports, so shouldn't get written to
 	ldy #$02
 	lda #$00
-ramtas_l1:
-	sta $00,Y
+!:
+	sta $00,y
 	iny
-	bne ramtas_l1
-ramtas_l2:
+	bne !-
+
+!:
 	// How many ways are there to efficiently erase these two pages
 	// of RAM? We would like to avoid any unnecessary byte similarity
 	// with the C64 KERNAL. Thus we do $0300 before $0200, even though
@@ -28,14 +29,14 @@ ramtas_l2:
 	sta $0300,Y
 	sta $0200,Y
 	iny
-	bne ramtas_l2
+	bne !-
 
-	// allocate cassette buffer
-	// "Mapping the C128", p61
+	// Allocate cassette buffer
+	// "Mapping the C64", p237
 	lda #<$033C
-	sta cassette_buffer_ptr+0
+	sta TAPE1+0
 	lda #>$033C
-	sta cassette_buffer_ptr+1
+	sta TAPE1+1
 
 	// set screen address to $0400
 	// https://www.c64-wiki.com/wiki/Screen_RAM
@@ -60,7 +61,7 @@ ramtas_l2:
 	// and several following
 	ldx #>$0400
 	stx HIBASE
-	
+
 	//  Work out RAM size and put in MEMSTR and MEMSIZK
 	// "Compute's Mapping the 64", p54
 	//  http://unusedino.de/ec64/technical/project64/mapping_c64.html
@@ -70,22 +71,19 @@ ramtas_l2:
 	stx MEMSTR+0
 	stx MEMSIZK+0
 	// Try to modify $8000, if it fails then RAM ends at $7FFF, else $9FFF
-	lda $8000
-	eor #$FF
-	tax
-	eor #$FF
+	ldx $8000
+	inx
 	stx $8000
-	cmp $8000
-	beq ramtas_32K_RAM
-	sta $8000
+	cpx $8000
+	bne ramtas_32K_RAM
+	dex
+	stx $8000
 	ldx #$A0
 	stx MEMSIZK+1
-	jmp ramtas_RAM_sized
+	bne !+ // always non-zero, saves one byte
+
 ramtas_32K_RAM:	
-	sta $8000 		// in case RAM is hiding beneath a ROM
 	ldx #$80
 	stx MEMSIZK+1
-	// Fall through
-ramtas_RAM_sized:	
-	
+!:
 	rts

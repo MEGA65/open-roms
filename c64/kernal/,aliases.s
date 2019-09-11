@@ -12,7 +12,6 @@
 	.label load_or_scroll_temp_pointer = $AC
 	// We also use the following for temp colour pointer when scrolling
 	.label load_save_verify_end_address = $AE
-	.label cassette_buffer_ptr = $B2
 	.label current_logical_filenum = $B8
 	.label current_secondary_address = $B9
 	.label current_device_number = $BA

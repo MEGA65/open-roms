@@ -8,6 +8,6 @@ cartridge_check_l1:
 	bne no_cartridge
 	dex
 	bne cartridge_check_l1
-	rts
+	// FALLTROUGH
 no_cartridge:
 	rts

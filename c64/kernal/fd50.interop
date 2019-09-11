@@ -1,0 +1,3 @@
+RRAMTAS is an important startup routine, frequentl called b cartridges - unfortunately, we can't count on them calling it
+via the jumptable, as even some tutorials on the web advise to call it directly - see for example here:
+https://codebase64.org/doku.php?id=base:assembling_your_own_cart_rom_image

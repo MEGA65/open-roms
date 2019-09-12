@@ -1,0 +1,9 @@
+All the BASIC routines, for which there are vectors in $0300-$030B, have to be available at their original addresses.
+
+Reason: some autostart software (https://codebase64.org/doku.php?id=base:autostarting_disk_files) override these vectors, so that some point
+to new locations (usually Kernal related), while others points the original BASIC routines. Different techniques modify different vectors
+(while resetting others to original C64 locations), some don't change the vectors at all, but might still put the original
+C64 BASIC addresses there.
+
+For various cartridges this just means disabling their extensions (like new commands); for us that would mean improperly functionning BASIC.
+

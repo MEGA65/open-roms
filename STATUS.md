@@ -46,14 +46,29 @@ For the current status of the low memory location implementation andd usage chec
 
 ## BASIC
 
+### Official BASIC routines
 
-TODO
+Note: vectors at `$0300` are not supported yet - for now only the locations below can be used!
 
+<br />
+
+| Address   | Name              | Status   |  Remarks                                           |
+| :-------: | :---------------- | :------: | :------------------------------------------------: |
+| `($A000)` | cold start vector | PARTIAL  |                                                    |
+| `($A002)` | warm start vector | PARTIAL  |                                                    |
+| `$A483`   | `MAIN`            | NOT DONE | some implementation exists, but not connected here |
+| `$A57C`   | `CHRNCH`          | NOT DONE |                                                    |
+| `$A71A`   | `QPLOP`           | NOT DONE | some implementation exists, but not connected here |
+| `$A7E4`   | `GONE`            | NOT DONE | some implementation exists, but not connected here |
+| `$AE86`   | `EVAL`            | NOT DONE | some implementation exists, but not connected here |
+| `$E38B`   | `ERROR`           | NOT DONE |                                                    |
+
+<br />
 
 ## Kernal
 
 
-Note: only the jump table addresses are currently supported, real routine addresses are different!
+Note: only the jump table addresses are fully supported, real routine addresses are sometimes different!
 
 
 ### Official Kernal routines
@@ -63,7 +78,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 <br />
 
 | Address   | Name     | Status   |  Remarks                                           |
-| --------- | :------- | :------: | :------------------------------------------------: |
+| :-------: | :------- | :------: | :------------------------------------------------: |
 | `$FF81`   | `CINT`   | DONE     |                                                    |
 | `$FF84`   | `IOINIT` | PARTIAL  | CIA initialization incomplete                      |
 | `$FF87`   | `RAMTAS` | DONE     |                                                    |
@@ -103,6 +118,10 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFED`   | `SCREEN` | DONE     |                                                    |
 | `$FFF0`   | `PLOT`   | PARTIAL  | cursor blink not handled                           |
 | `$FFF3`   | `IOBASE` | DONE     |                                                    |
+| `($FFFA)`   | NMI vector     | PARTIAL     |                                         |
+| `($FFFC)`   | RESET vector   | PARTIAL     |                                         |
+| `($FFFE)`   | IRQ/BRK vector | PARTIAL     |                                         |
+
 
 <br />
 

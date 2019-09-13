@@ -15,6 +15,8 @@ irq_handler:
 	tya
 	pha
 
+	cld // clear decimal flag, to prevent possible problems
+
 	// Check if caused by BRK
 	tsx
 	lda $0104, x // get the pre-interrupt processor state

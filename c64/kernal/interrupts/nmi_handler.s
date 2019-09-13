@@ -2,6 +2,7 @@
 nmi_handler:
 
 	sei // don't allow IRQ to interfere, see https://www.c64-wiki.com/wiki/Interrupt
+	cld // clear decimal flag, to prevent possible problems
 
 	// Call interrupt routine (only if initialised)
 	pha

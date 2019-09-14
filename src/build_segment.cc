@@ -337,7 +337,7 @@ void calcRoutineSizes()
     // All written - now launch the assembler
 
     const std::string cmd = ASM_CMD + outFileName + " -symbolfile -o /dev/null";
-    std::cout << std::flush;
+    std::cout << "command: " << cmd << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
         ERROR("assembler running failed");
@@ -547,7 +547,7 @@ void compileSegment()
     // All written - now launch the assembler
 
     const std::string cmd = ASM_CMD + outFileName + " -symbolfile -o " + CMD_outFile;
-    std::cout << std::flush;
+    std::cout << "command: " << cmd << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
         ERROR("assembler running failed");
@@ -852,7 +852,7 @@ void Solver::run()
 {
     // Prepare the log file
 
-    const std::string logFileName = CMD_tmpDir + DIR_SEPARATOR + CMD_segName + "_solver.log";
+    const std::string logFileName = CMD_tmpDir + DIR_SEPARATOR + CMD_segName + "_binsolution.log";
     unlink(logFileName.c_str());
     logFile.open(logFileName, std::fstream::out | std::fstream::trunc);
 

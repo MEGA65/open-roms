@@ -10,4 +10,4 @@
 
 
 EVAL:
-	rts // XXX implement this
+	STUB_IMPLEMENTATION()

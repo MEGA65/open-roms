@@ -2,4 +2,4 @@
 // XXX provide documentation and implementation
 
 RUNC:
-    rts
+    STUB_IMPLEMENTATION()

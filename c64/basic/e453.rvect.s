@@ -2,4 +2,4 @@
 // XXX provide documentation and implementation
 
 RVECT:
-    rts
+    STUB_IMPLEMENTATION()

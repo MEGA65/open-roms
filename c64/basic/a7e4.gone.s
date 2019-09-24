@@ -10,4 +10,4 @@
 
 
 GONE:
-	rts // XXX implement this
+	STUB_IMPLEMENTATION()

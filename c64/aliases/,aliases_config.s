@@ -59,3 +59,25 @@
 #if CONFIG_BCD_SAFE_INTERRUPTS
 #define HAS_BCD_SAFE_INTERRUPTS
 #endif
+
+	// Stub configuration
+
+.macro STUB_IMPLEMENTATION_RTS() {
+	rts
+}
+
+.macro STUB_IMPLEMENTATION_BRK() {
+	.break
+	brk
+	brk
+	jmp *-2
+}
+
+.macro STUB_IMPLEMENTATION()
+{
+#if CONFIG_STUBS_BRK
+	STUB_IMPLEMENTATION_BRK()
+#else
+	STUB_IMPLEMENTATION_RTS()
+#endif
+}

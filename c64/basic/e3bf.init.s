@@ -2,4 +2,4 @@
 // XXX provide documentation and implementation
 
 INIT:
-    rts
+    STUB_IMPLEMENTATION()

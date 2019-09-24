@@ -93,3 +93,9 @@ Feature needs about 330 bytes in BASIC segment.
 On the most widespread CPUs the D flag is not cleared upon entering interrupts. Since the original Kernal does not clear it either, it's not safe to use BCD processor mode without disabling the interrupts first. This option makes sure the D flag is disabled at the start of the interrupt - this allows some optimizations in the code.
 
 Feature needs 2 bytes in KERNAL segmment (for CPUs needing the patch), but at the same time allows optimizations allowing to gain some more bytes. If unsure - enable.
+
+### `CONFIG_STUBS_BRK`
+
+Option just for debugging purposes - replaces `RTS` stubbed routines implementation with one causing a break.
+
+If unsure - disable.

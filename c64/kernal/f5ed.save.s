@@ -10,4 +10,4 @@
 //
 
 SAVE:
-	rts
+	STUB_IMPLEMENTATION()

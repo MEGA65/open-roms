@@ -1,22 +1,5 @@
 
-//
-// Official Kernal routine, described in:
-//
-// - [RG64] C64 Programmer's Reference Guide   - page 293 (RESTOR), 304 (VECTOR)
-// - [CM64] Compute's Mapping the Commodore 64 - page 237
-//
-// CPU registers that has to be preserved (see [RG64]): none
-//
-
-RESTOR:
-
-	clc // clear carry - for writing to system table
-	ldx #<vector_defaults
-	ldy #>vector_defaults
-
-	// FALLTHROUGH
-
-VECTOR:
+vector_real:
 
 	// Temporary storage location - checked on real C64 that this is the
 	// address originally used; after calling VECTOR and checking zero page
@@ -41,17 +24,10 @@ VECTOR:
 	ldy #$1F
 	bcc vector_restore
 	
-	// FALLTHROUGH
-	
-vector_store:
 	lda CINV, y
 	sta (_caller_arr_ptr), y
-	dey
-	bpl vector_store
-	
-	// Restore status register (IRQ) before return
-	plp
-	rts
+
+	// FALLTHROUGH
 	
 vector_restore:
 	lda (_caller_arr_ptr), y

@@ -98,8 +98,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                    |
 | `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                      |
 | `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                    |
-| `$FF8A`   |            | `RESTOR`    | DONE     |                                                    |
-| `$FF8D`   | `$FD15`    | `VECTOR`    | PARTIAL  | wrong address, code starts from RESTOR             |
+| `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                    |
+| `$FF8D`   | `$FD1A`    | `VECTOR`    | DONE     |                                                    |
 | `$FF90`   |            | `SETMSG`    | DONE     |                                                    |
 | `$FF93`   |            | `SECOND`    | DONE     |                                                    |
 | `$FF96`   |            | `TKSA`      | DONE     |                                                    |
@@ -153,6 +153,7 @@ Not all of them - only these we want to have implemented.
 | `$EA31`   | default IRQ      | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI | DONE     |                                                    |
+| `$FD30`   | default vectors  | DONE     |                                                    |
 | `$FE47`   | default NMI      | PARTIAL  |                                                    |
 | `$FE66`   | default BRK      | DONE     |                                                    |
 | `$FF80`   | revision byte    | DONE     |                                                    |

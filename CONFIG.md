@@ -13,6 +13,37 @@ Note however, that features do not came for free - enabling them needs some addi
 
 Sane defaults are already present - different for each target.
 
+## Processor instruction set
+
+### `CONFIG_CPU_MOS_6502`
+
+Choose if your CPU only supports the original MOS Technology 6502 instruction set, like:
+
+* MOS 6510 - used in the Commodore 64
+* MOS 8500 - used in the Commodore 64C
+* MOS 8502 - used in the Commodore 128
+
+If unsure - select this one.
+
+### `CONFIG_CPU_WDC_65C02`
+
+Choose if your CPU supports the Western Design Center 65C02 instruction set, like:
+
+* WDC 65C02 - used in the Turbo Master accelerator
+* CSG 65CE02 
+* CSG 4510 - used in the Commodore 65 prototypes
+
+It enables some speed/size code optimizations. Warning - this is untested!
+
+### `#define CONFIG_CPU_WDC_65816`
+
+Choose if your CPU supports the 16-bit Western Design Center 65816 instruction set, like:
+
+* WDC 65C816 - used in the Flash 8 accelerator
+* WDC 65C816S - used in the SuperCPU accelerator
+
+It enables some speed/size code optimizations. Warning - this is untested!
+
 ## Memory models
 
 Different layouts of memory are possible - but they can be selected at compile time only.
@@ -56,3 +87,9 @@ Each of them needs a couple of bytes in KERNAL segment - but they can share some
 If enabled, a simple DOS wedge is available from the direct mode - supports `@<drive_number>`, `@<command>`, `@$`, `@$<params>` and `@` commands.
 
 Feature needs about 330 bytes in BASIC segment.
+
+### `CONFIG_BCD_SAFE_INTERRUPTS`
+
+On the most widespread CPUs the D flag is not cleared upon entering interrupts. Since the original Kernal does not clear it either, it's not safe to use BCD processor mode without disabling the interrupts first. This option makes sure the D flag is disabled at the start of the interrupt - this allows some optimizations in the code.
+
+Feature needs 2 bytes in KERNAL segmment (for CPUs needing the patch), but at the same time allows optimizations allowing to gain some more bytes. If unsure - enable.

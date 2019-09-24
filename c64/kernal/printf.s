@@ -139,7 +139,13 @@ printf_retreat:
 	rts
 
 printf_printhexbyte:
-	// Print the hex value in .A as two digits, idea by Haubitze
+
+	// Print the hex value in .A as two digits
+
+#if HAS_BCD_SAFE_INTERRUPTS
+
+	// Idea by Haubitze
+
 	sed
 	pha
 	lsr
@@ -155,3 +161,25 @@ printf_printhexbyte:
 	adc #$30
 	cld
 	jmp JCHROUT
+
+#else
+
+	pha
+	lsr
+	lsr
+	lsr
+	lsr
+	ora #$30
+	cmp #$3A
+	bcc !+
+	adc #6
+!:	jsr JCHROUT
+	pla
+	and #$0f
+	ora #$30
+	cmp #$3A
+	bcc !+
+	adc #6
+!:	jmp JCHROUT
+
+#endif

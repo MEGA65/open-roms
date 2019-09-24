@@ -4,6 +4,10 @@
 //
 
 
+#define CONFIG_CPU_MOS_6502
+// #define CONFIG_CPU_WDC_65C02
+// #define CONFIG_CPU_WDC_65816
+
 // #define CONFIG_MEMORY_MODEL_38K
 #define CONFIG_MEMORY_MODEL_60K
 
@@ -17,3 +21,4 @@
 // #define CONFIG_SID_D5XX
 
 #define CONFIG_DOS_WEDGE
+#define CONFIG_BCD_SAFE_INTERRUPTS

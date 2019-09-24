@@ -10,12 +10,19 @@ irq_handler:
 
 	// Save registers, sequence according to Compute's Mapping the Commodore 64, page 73
 	pha
+#if CONFIG_CPU_MOS_6502
 	txa
 	pha
 	tya
 	pha
+#else
+	phx
+	phy
+#endif
 
-	cld // clear decimal flag, to prevent possible problems
+#if CONFIG_CPU_MOS_6502 && CONFIG_BCD_SAFE_INTERRUPTS
+	cld // clear decimal flag to allow using it without disabling interrupts
+#endif
 
 	// Check if caused by BRK
 	tsx

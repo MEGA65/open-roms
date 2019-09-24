@@ -2,7 +2,10 @@
 nmi_handler:
 
 	sei // don't allow IRQ to interfere, see https://www.c64-wiki.com/wiki/Interrupt
-	cld // clear decimal flag, to prevent possible problems
+
+#if CONFIG_CPU_MOS_6502 && CONFIG_BCD_SAFE_INTERRUPTS
+	cld // clear decimal flag to allow using it without disabling interrupts
+#endif
 
 	// Call interrupt routine (only if initialised)
 	pha

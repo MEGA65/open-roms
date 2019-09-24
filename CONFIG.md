@@ -35,7 +35,7 @@ Choose if your CPU supports the Western Design Center 65C02 instruction set, lik
 
 It enables some speed/size code optimizations. Warning - this is untested!
 
-### `#define CONFIG_CPU_WDC_65816`
+### `CONFIG_CPU_WDC_65816`
 
 Choose if your CPU supports the 16-bit Western Design Center 65816 instruction set, like:
 

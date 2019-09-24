@@ -1,5 +1,6 @@
 
-irq_handler:
+hw_entry_irq:
+
 	// The IRQ is a commonly messed with thing on the C64,
 	// so we need to handle entry points that are commonly
 	// relied upon, including:
@@ -52,4 +53,3 @@ irq_handler_brk:
 
 	// Interrupt caused by BRK
 	jmp (CBINV)
-

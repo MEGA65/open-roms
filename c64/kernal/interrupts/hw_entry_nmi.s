@@ -1,5 +1,5 @@
 
-nmi_handler:
+hw_entry_nmi:
 
 	sei // don't allow IRQ to interfere, see https://www.c64-wiki.com/wiki/Interrupt
 
@@ -18,5 +18,3 @@ nmi_handler:
 	// Vector not initialized - call default interrupt routine
 	pla
 	jmp default_nmi_handler
-
-

@@ -2,7 +2,7 @@
 // https://www.c64-wiki.com/wiki/Reset_(Process)
 
 
-reset_entry:
+hw_entry_reset:
 
 	// The GPL program at https://github.com/Klaus2m5/6502_65C02_functional_tests/blob/master/6502_functional_test.a65
 	// uses the following initial reset sequence, affirmed by c64 PRG p269

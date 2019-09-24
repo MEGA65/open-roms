@@ -27,11 +27,15 @@ vector_real:
 	lda CINV, y
 	sta (_caller_arr_ptr), y
 
-	// FALLTHROUGH
+	bcs vector_end_loop // branch always
 	
 vector_restore:
 	lda (_caller_arr_ptr), y
 	sta CINV, y
+
+	// FALLTROUGH
+
+vector_end_loop:
 	dey
 	bpl vector_restore
 

@@ -26,7 +26,7 @@
     #define DIR_SEPARATOR "/"
 #endif
 
-const std::string ASM_CMD       = "java -jar assembler/KickAss.jar ";
+const std::string ASM_CMD       = "java -jar ";
 
 const std::string LAB_OUT_START = "__routine_START_";
 const std::string LAB_OUT_END   = "__routine_END_";
@@ -39,8 +39,9 @@ const std::string BANNER_LINE   = "//-------------------------------------------
 // Command line settings
 //
 
+std::string CMD_assFile   = "KickAss.jar";
 std::string CMD_outFile   = "OUT.BIN";
-std::string CMD_tmpDir    = "./out";
+std::string CMD_outDir    = "./out";
 std::string CMD_segName   = "MAIN";
 std::string CMD_segInfo   = "(unnamed)";
 int         CMD_loAddress = 0xC000;
@@ -66,10 +67,10 @@ void ERROR(const std::string &message)
 void printUsage()
 {
     std::cout << "\n" <<
-        "usage: build_segment [-o <out file>] [-d <out dir>] [-t <temp dir>]" << "\n" <<
+        "usage: build_segment [-a <assembler jar file>] [-o <out file>] [-d <out dir>]" << "\n" <<
         "                     [-l <start/low address>] [-h <end/high address>]" << "\n" <<
-        "                     [-s <segment name>] [-i <segment display info>] <input dir/file list>" <<
-        "\n\n";
+        "                     [-s <segment name>] [-i <segment display info>]" << "\n" <<
+        "                     <input dir/file list>" << "\n\n";
 }
 
 void printBannerLineTop()
@@ -195,16 +196,17 @@ void parseCommandLine(int argc, char **argv)
 
     // Retrieve command line options
 
-    while ((opt = getopt(argc, argv, "o:d:t:l:h:s:i:")) != -1)
+    while ((opt = getopt(argc, argv, "a:o:d:s:i:l:h:")) != -1)
     {
         switch(opt)
         {
-              case 'o': CMD_outFile   = optarg; break;
-              case 't': CMD_tmpDir    = optarg; break;
-              case 's': CMD_segName   = optarg; break;
-              case 'i': CMD_segInfo   = optarg; break;
-              case 'l': CMD_loAddress = strtol(optarg, nullptr ,16); break;
-              case 'h': CMD_hiAddress = strtol(optarg, nullptr ,16); break;
+            case 'a': CMD_assFile   = optarg; break;
+            case 'o': CMD_outFile   = optarg; break;
+            case 'd': CMD_outDir    = optarg; break;
+            case 's': CMD_segName   = optarg; break;
+            case 'i': CMD_segInfo   = optarg; break;
+            case 'l': CMD_loAddress = strtol(optarg, nullptr ,16); break;
+            case 'h': CMD_hiAddress = strtol(optarg, nullptr ,16); break;
             default: printUsage(); ERROR();
         }
     }
@@ -297,23 +299,25 @@ void checkInputFileLabels()
 
 void calcRoutineSizes()
 {
-    const std::string nameBase = CMD_tmpDir + DIR_SEPARATOR + CMD_segName + "_sizetest";
+    const std::string nameBase = CMD_segName + "_sizetest";
+    const std::string filePath = CMD_outDir + DIR_SEPARATOR;
 
-    const std::string outFileName = nameBase + ".s";
-    const std::string symFileName = nameBase + ".sym";
+    const std::string outFileNameBare = nameBase + ".s";
+    const std::string outFileNamePath = filePath + outFileNameBare;
+    const std::string symFileNamePath = filePath + nameBase + ".sym";
 
     // Remove old files
 
-    unlink(outFileName.c_str());
-    unlink(symFileName.c_str());
+    unlink(outFileNamePath.c_str());
+    unlink(symFileNamePath.c_str());
 
     // Write test file to determine routine sizes
 
-    std::ofstream outFile(outFileName, std::fstream::out | std::fstream::trunc);
-    if (!outFile.good()) ERROR(std::string("can't open temporary file '") + outFileName + "'");
+    std::ofstream outFile(outFileNamePath, std::fstream::out | std::fstream::trunc);
+    if (!outFile.good()) ERROR(std::string("can't open temporary file '") + outFileNamePath + "'");
 
     // Start at $100, so that no local data gets accesses using ZP addressing modes
-    // during this pass,  which would otherwise upset things later
+    // during this pass, which would otherwise upset things later
 
     outFile << "\n" << ".segment " << CMD_segName << " [start=$100, min=$100, max=$FFFF]" << "\n";
     outFile << "#define SEGMENT_" << CMD_segName << "\n";
@@ -331,12 +335,13 @@ void calcRoutineSizes()
         outFile << LAB_OUT_END << sourceFile.label << ":" << "\n";
     }
 
-    if (!outFile.good()) ERROR(std::string("error writing temporary file '") + outFileName + "'");
+    if (!outFile.good()) ERROR(std::string("error writing temporary file '") + outFileNamePath + "'");
     outFile.close();
 
     // All written - now launch the assembler
 
-    const std::string cmd = ASM_CMD + outFileName + " -symbolfile -o /dev/null";
+    const std::string cmd = "cd " + filePath + " && " + ASM_CMD + CMD_assFile + " " +
+                            outFileNameBare + " -symbolfile -o /dev/null";
     std::cout << "command: " << cmd << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
@@ -346,8 +351,8 @@ void calcRoutineSizes()
     // Read addresses
 
     std::ifstream symFile;
-    symFile.open(symFileName);
-    if (!symFile.good()) ERROR(std::string("unable to open results file '") + symFileName + "'");
+    symFile.open(symFileNamePath);
+    if (!symFile.good()) ERROR(std::string("unable to open results file '") + symFileNamePath + "'");
 
     std::string line;
     while (std::getline(symFile, line))
@@ -429,9 +434,9 @@ void prepareBinningProblem()
 {
     // Prepare the log file
 
-    const std::string logFileName = CMD_tmpDir + DIR_SEPARATOR + CMD_segName + "_binproblem.log";
-    unlink(logFileName.c_str());
-    std::ofstream logFile(logFileName, std::fstream::out | std::fstream::trunc);
+    const std::string logFileNamePath = CMD_outDir + DIR_SEPARATOR + CMD_segName + "_binproblem.log";
+    unlink(logFileNamePath.c_str());
+    std::ofstream logFile(logFileNamePath, std::fstream::out | std::fstream::trunc);
     DualStream logOutput(logFile, std::cout);
 
     // Print out code length information
@@ -477,7 +482,7 @@ void prepareBinningProblem()
 
     // Close the log file
 
-    if (!logFile.good()) ERROR(std::string("error writing log file '") + logFileName + "'");
+    if (!logFile.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
     logFile.close();
 }
 
@@ -502,10 +507,12 @@ void compileSegment()
 {
     // First combine everything into one assembler file
 
-    const std::string outFileName = CMD_tmpDir + DIR_SEPARATOR + CMD_segName + "_combined.s";
-    unlink(outFileName.c_str());
-    std::ofstream outFile(outFileName, std::fstream::out | std::fstream::trunc);
-    if (!outFile.good()) ERROR(std::string("can't open temporary file '") + outFileName + "'");
+    const std::string outFileNameBare = CMD_segName + "_combined.s";
+    const std::string filePath        = CMD_outDir + DIR_SEPARATOR;
+    const std::string outFileNamePath = filePath + outFileNameBare;
+    unlink(outFileNamePath.c_str());
+    std::ofstream outFile(outFileNamePath, std::fstream::out | std::fstream::trunc);
+    if (!outFile.good()) ERROR(std::string("can't open temporary file '") + outFileNamePath + "'");
 
     // Write the header
 
@@ -541,12 +548,13 @@ void compileSegment()
         outFile << "\n";
     }
 
-    if (!outFile.good()) ERROR(std::string("error writing temporary file '") + outFileName + "'");
+    if (!outFile.good()) ERROR(std::string("error writing temporary file '") + outFileNamePath + "'");
     outFile.close();
 
     // All written - now launch the assembler
 
-    const std::string cmd = ASM_CMD + outFileName + " -symbolfile -o " + CMD_outFile;
+    const std::string cmd = "cd " + filePath + " && " + ASM_CMD + CMD_assFile + " " +
+                            outFileNameBare + " -symbolfile -vicesymbols -o " + CMD_outFile;
     std::cout << "command: " << cmd << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
@@ -852,9 +860,9 @@ void Solver::run()
 {
     // Prepare the log file
 
-    const std::string logFileName = CMD_tmpDir + DIR_SEPARATOR + CMD_segName + "_binsolution.log";
-    unlink(logFileName.c_str());
-    logFile.open(logFileName, std::fstream::out | std::fstream::trunc);
+    const std::string logFileNamePath = CMD_outDir + DIR_SEPARATOR + CMD_segName + "_binsolution.log";
+    unlink(logFileNamePath.c_str());
+    logFile.open(logFileNamePath, std::fstream::out | std::fstream::trunc);
 
     // Sort the floating routines, just to be extra sure
 
@@ -887,7 +895,7 @@ void Solver::run()
 
     // Close the log file
 
-    if (!logFile.good()) ERROR(std::string("error writing log file '") + logFileName + "'");
+    if (!logFile.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
     logFile.close();
 }
 
@@ -945,7 +953,7 @@ int KS(const std::vector<SourceFile *> &routines,
     auto &cachedS = cacheS[n - 1][C - 1];
     if (cachedV >= 0)
     {
-        // We already hold the solution in out cache - return it
+        // We already hold the solution in our cache - return it
         solution = cachedS;
         return cachedV;
     }

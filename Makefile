@@ -89,25 +89,31 @@ build/chargen.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
 
 # Dependencies - BASIC and KERNAL
 
-build/target_generic/OUTB.BIN    build/target_generic/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC)  $(SRCDIR_BASIC_generic) \
-    c64/,,config_generic.s    $(foreach dir,$(SRCDIR_BASIC_generic),$(wildcard $(dir)/*.s))
-build/target_mega65/OUTB.BIN     build/target_mega65/BASIC_combined.vs: \
+build/target_generic/OUTB.BIN     build/target_generic/BASIC_combined.vs: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC) $(SRCDIR_BASIC_generic) \
+    c64/,,config_generic.s     build/target_generic/KERNAL_combined.sym \
+    $(foreach dir,$(SRCDIR_BASIC_generic),$(wildcard $(dir)/*.s))
+build/target_mega65/OUTB.BIN      build/target_mega65/BASIC_combined.vs: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC)  $(SRCDIR_BASIC_mega65) \
-    c64/,,config_mega65.s     $(foreach dir,$(SRCDIR_BASIC_mega65),$(wildcard $(dir)/*.s))
-build/target_ultimate64/OUTB.BIN build/target_ultimate64/BASIC_combined.vs: \
+    c64/,,config_mega65.s      build/target_mega65/KERNAL_combined.sym \
+    $(foreach dir,$(SRCDIR_BASIC_mega65),$(wildcard $(dir)/*.s))
+build/target_ultimate64/OUTB.BIN  build/target_ultimate64/BASIC_combined.vs: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC)  $(SRCDIR_BASIC_ultimate64) \
-    c64/,,config_ultimate64.s $(foreach dir,$(SRCDIR_BASIC_ultimate64),$(wildcard $(dir)/*.s))
+    c64/,,config_ultimate64.s  build/target_ultimate64/KERNAL_combined.sym \
+    $(foreach dir,$(SRCDIR_BASIC_ultimate64),$(wildcard $(dir)/*.s))
 
-build/target_generic/OUTK.BIN    build/target_generic/KERNAL_combined.vs: \
+build/target_generic/OUTK.BIN     build/target_generic/KERNAL_combined.vs     build/target_generic/KERNAL_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL_generic) \
-    c64/,,config_generic.s    $(foreach dir,$(SRCDIR_KERNAL_generic),$(wildcard $(dir)/*.s))
-build/target_mega65/OUTK.BIN     build/target_mega65/KERNAL_combined.vs: \
+    c64/,,config_generic.s \
+    $(foreach dir,$(SRCDIR_KERNAL_generic),$(wildcard $(dir)/*.s))
+build/target_mega65/OUTK.BIN      build/target_mega65/KERNAL_combined.vs      build/target_mega65/KERNAL_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL_mega65) \
-    c64/,,config_mega65.s     $(foreach dir,$(SRCDIR_KERNAL_mega65),$(wildcard $(dir)/*.s))
-build/target_ultimate64/OUTK.BIN build/target_ultimate64/KERNAL_combined.vs: \
+    c64/,,config_mega65.s \
+    $(foreach dir,$(SRCDIR_KERNAL_mega65),$(wildcard $(dir)/*.s))
+build/target_ultimate64/OUTK.BIN  build/target_ultimate64/KERNAL_combined.vs  build/target_ultimate64/KERNAL_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL_ultimate64) \
-    c64/,,config_ultimate64.s $(foreach dir,$(SRCDIR_KERNAL_ultimate64),$(wildcard $(dir)/*.s))
+    c64/,,config_ultimate64.s \
+    $(foreach dir,$(SRCDIR_KERNAL_ultimate64),$(wildcard $(dir)/*.s))
 
 build/target_generic/newrom:      build/target_generic/OUTB.BIN     build/target_generic/OUTK.BIN
 build/target_mega65/newrom:       build/target_mega65/OUTB.BIN      build/target_mega65/OUTK.BIN
@@ -137,8 +143,8 @@ build/target_%/OUTB.BIN build/target_%/BASIC_combined.vs:
 	@rm -f $@* build/target_$*/BASIC*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -s BASIC -i BASIC-$* -o OUTB.BIN -d build/target_$* -l a000 -h e4d2 c64/,,config_$*.s $(SRCDIR_BASIC_$*) $(GEN_BASIC)
 
-.PRECIOUS: build/target_%/OUTK.BIN build/target_%/KERNAL_combined.vs
-build/target_%/OUTK.BIN build/target_%/KERNAL_combined.vs:
+.PRECIOUS: build/target_%/OUTK.BIN build/target_%/KERNAL_combined.vs build/target_%/KERNAL_combined.sym
+build/target_%/OUTK.BIN build/target_%/KERNAL_combined.vs build/target_%/KERNAL_combined.sym:
 	@mkdir -p build/target_$*
 	@rm -f $@* build/target_$*/KERNAL*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -s KERNAL -i KERNAL-$* -o OUTK.BIN -d build/target_$* -l e4d3 -h ffff c64/,,config_$*.s $(SRCDIR_KERNAL_$*) $(GEN_KERNAL)
@@ -157,7 +163,7 @@ build/basic_%.rom:
 
 .PRECIOUS: build/symbols_%.vs
 build/symbols_%.vs:
-	sort build/target_$*/BASIC_combined.vs build/target_$*/KERNAL_combined.vs | uniq > $@
+	sort build/target_$*/BASIC_combined.vs build/target_$*/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
 # Rules - platform 'Mega 65' specific
 

@@ -524,6 +524,7 @@ void compileSegment()
                ", outBin=\"" << CMD_outFile << "\", fill]" <<
                "\n";
     outFile << "#define SEGMENT_" << CMD_segName << "\n";
+    outFile << ".namespace " << CMD_segName << " {" << "\n\n";
 
     // Write files which only contain definitions (no routines)
 
@@ -547,6 +548,8 @@ void compileSegment()
         outFile << std::string(routine.second->content.begin(), routine.second->content.end());
         outFile << "\n";
     }
+
+    outFile << "\n\n" << "} // namespace" << "\n";
 
     if (!outFile.good()) ERROR(std::string("error writing temporary file '") + outFileNamePath + "'");
     outFile.close();

@@ -146,16 +146,16 @@ Not all of them - only these we want to have implemented.
 
 <br />
 
-| Address   | Name             | Status   |  Remarks                                           |
-| :-------: | :--------------- | :------: | :------------------------------------------------: |
-| `$E544`   | clear screen     | DONE     |                                                    |
-| `$E5A0`   | setup VIC II     | DONE     |                                                    |
-| `$EA31`   | default IRQ      | PARTIAL  |                                                    |
-| `$EA7E`   | ack CIA1 + below | DONE     |                                                    |
-| `$EA81`   | ret from IRQ/NMI | DONE     |                                                    |
-| `$FD30`   | default vectors  | DONE     |                                                    |
-| `$FE47`   | default NMI      | PARTIAL  |                                                    |
-| `$FE66`   | default BRK      | DONE     |                                                    |
-| `$FF80`   | revision byte    | DONE     |                                                    |
+| Address   | Name              | Status   |  Remarks                                           |
+| :-------: | :---------------- | :------: | :------------------------------------------------: |
+| `$E544`   | clear screen      | DONE     |                                                    |
+| `$E5A0`   | setup VIC II & IO | PARTIAL  |                                                    |
+| `$EA31`   | default IRQ       | PARTIAL  |                                                    |
+| `$EA7E`   | ack CIA1 + below  | DONE     |                                                    |
+| `$EA81`   | ret from IRQ/NMI  | DONE     |                                                    |
+| `$FD30`   | default vectors   | DONE     |                                                    |
+| `$FE47`   | default NMI       | PARTIAL  |                                                    |
+| `$FE66`   | default BRK       | DONE     |                                                    |
+| `$FF80`   | revision byte     | DONE     |                                                    |
 
 <br />

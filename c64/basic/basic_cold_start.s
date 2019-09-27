@@ -1,7 +1,15 @@
 // BASIC Cold start entry point
 // Compute's Mapping the 64 p211
 
-basic_cold_start:	
+basic_cold_start:
+
+	// Setup vectors at $300
+	ldy #$0B
+!:
+	lda basic_vector_defaults, y
+	sta IERROR, y
+	dey
+	bpl !-
 
 	// Print startup banner
 	jsr printf // XXX don't use printf, keep it for debug purposes only

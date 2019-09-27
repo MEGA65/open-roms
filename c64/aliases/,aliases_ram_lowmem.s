@@ -193,12 +193,12 @@
 	// [!] XXX document $2A7-$2FF usage
 
 	// BASIC vectors
-	.label IERROR    = $300  // $300-$301  -- NOT IMPLEMENTED --
-	.label IMAIN     = $302  // $302-$303  -- NOT IMPLEMENTED --
-	.label ICRNCH    = $304  // $304-$305  -- NOT IMPLEMENTED --
-	.label IQPLOP    = $306  // $306-$307  -- NOT IMPLEMENTED --
-	.label IGONE     = $308  // $308-$309  -- NOT IMPLEMENTED --
-	.label IEVAL     = $30A  // $30A-$30B  -- NOT IMPLEMENTED --
+	.label IERROR    = $300  // $300-$301
+	.label IMAIN     = $302  // $302-$303
+	.label ICRNCH    = $304  // $304-$305
+	.label IQPLOP    = $306  // $306-$307
+	.label IGONE     = $308  // $308-$309
+	.label IEVAL     = $30A  // $30A-$30B
 	
 	.label SAREG     = $30C  //            .A storage, for SYS call
 	.label SXREG     = $30D  //            .X storage, for SYS call

@@ -99,7 +99,7 @@
 	.label RIDDATA   = $AA  //          -- NOT IMPLEMENTED --
 	.label RIPRTY    = $AB  //          -- NOT IMPLEMENTED --
 	.label SAL       = $AC  // $AC-$AD  -- NOT IMPLEMENTED -- (implemented screen part)
-	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also byy screen editor
+	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also by screen editor, for temporary color storage when scrolling
 	.label CMP0      = $B0  // $B0-$B1  temporary tape storage, [!] here used for BRK instruction address
 	.label TAPE1     = $B2  // $B2-$B3  tape buffer pointer
 	.label BITTS     = $B4  //          -- NOT IMPLEMENTED --
@@ -124,7 +124,7 @@
 	.label SFDX      = $CB  //          -- NOT IMPLEMENTED --
 	.label BLNSW     = $CC  //          cursor blink disable flag
 	.label BLNCT     = $CD  //          cursor blink countdown
-	.label GDBLN     = $CE  //          cursorb saved character
+	.label GDBLN     = $CE  //          cursor saved character
 	.label BLNON     = $CF  //          cursor visibilityy flag
 	.label CRSW      = $D0  //          whether to input from screen or keyboard
 	.label PNT       = $D1  // $D1-$D2  pointer to the current screen line
@@ -134,7 +134,7 @@
 	.label TBLX      = $D6  //          current screen Y position
 	.label SCHAR     = $D7  //          ASCII value of the last printed character
 	.label INSRT     = $D8  //          insert mode flag/counter
-	.label LDTB1     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
+	.label LDTBL     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
 	.label USER      = $F3  // $F3-$F4  pointer to current color RAM location
 	.label KEYTAB    = $F5  // $F5-$F6  -- NOT IMPLEMENTED --
 	.label RIBUF     = $F7  // $F7-$F8  -- NOT IMPLEMENTED --

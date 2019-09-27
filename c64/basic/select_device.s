@@ -11,7 +11,7 @@ select_device:
 
 	// Note: if tape support is introduced here, make sure DOS wedge won't get broken
 
-	ldx current_device_number
+	ldx FA
 	cpx #$08
 	bcs !+
 	ldx #$08

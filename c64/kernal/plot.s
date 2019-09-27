@@ -12,15 +12,15 @@ PLOT:
 	bcs plot_get
 
 plot_set:
-	sty current_screen_y
-	stx current_screen_x
+	sty TBLX
+	stx PNTR
 
 	// XXX handle cursor blink
 
 	// FALLTROUGH to save one byte on RTS
 
 plot_get:
-	ldy current_screen_y
-	ldx current_screen_x
+	ldy TBLX
+	ldx PNTR
 	rts
 

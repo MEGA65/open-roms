@@ -13,7 +13,7 @@
 GETIN:
 
 	// Wait for a key
-	lda keys_in_key_buffer
+	lda NDX
 	bne !+
 
 	// Nothing in keyboard buffer to read

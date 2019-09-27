@@ -4,7 +4,7 @@
 home_cursor:
 
 	lda #$00
-	sta current_screen_x
-	sta current_screen_y
+	sta PNTR // x position
+	sta TBLX // y position
 
 	jmp set_pointer_to_current_screen_line

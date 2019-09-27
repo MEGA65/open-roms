@@ -74,7 +74,7 @@ wedge_dos_change_drive:
 	bcs !+
 	jmp do_ILLEGAL_DEVICE_NUMBER_error
 !:
-	sta current_device_number
+	sta FA
 	jmp basic_end_of_line
 
 wedge_dos_status_get:
@@ -139,7 +139,7 @@ wedge_dos_directory:
 	// First change the secondary address to the one suitable for
 	// directory loading
 	lda #$00 // logical device number
-	ldx current_device_number
+	ldx FA
 	ldy #$60
 	jsr JSETFLS
 

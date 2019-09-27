@@ -9,7 +9,7 @@ clear_screen:
 	lda #$00
 	ldy #24
 clearscreen_l1:
-	sta screen_line_link_table,y
+	sta LDTBL,y
 	dey
 	bpl clearscreen_l1
 
@@ -19,28 +19,28 @@ clearscreen_l1:
 	// We should do this at HIBASE, which annoyingly
 	// is no ZP, so we need to make a vector
 	// (Compute's Mapping the 64 p216)
-	// Get pointer to the screen into current_screen_line_ptr
+	// Get pointer to the screen into PNT
 	// as it is the first appropriate place for it found when
 	// searching through the ZP allocations listed in
 	// Compute's Mapping the 64
-	sta current_screen_line_ptr+0
+	sta PNT+0
 	lda HIBASE
-	sta current_screen_line_ptr+1
+	sta PNT+1
 	ldx #$03		// countdown for pages to update
 	iny 			// Y now = #$00
 	lda #$20		// space character
 clearscreen_l2:
-	sta (current_screen_line_ptr),y
+	sta (PNT),y
 	iny
 	bne clearscreen_l2
 	// To draw only 1000 bytes, add 250 to address each time
-	lda current_screen_line_ptr
+	lda PNT
 	clc
 	adc #<250
-	sta current_screen_line_ptr
-	lda current_screen_line_ptr+1
+	sta PNT
+	lda PNT+1
 	adc #>250
-	sta current_screen_line_ptr+1
+	sta PNT+1
 	lda #$20		// get space character again
 	dex
 	bpl clearscreen_l2

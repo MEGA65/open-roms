@@ -10,10 +10,10 @@ lvs_send_file_name_loop:
 	beq lvs_send_file_name_done
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<current_filename_ptr+0
+	ldx #<FNADDR+0
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (current_filename_ptr),y
+	lda (FNADDR),y
 #endif
 
 	iny
@@ -81,10 +81,10 @@ lvs_display_searching_for:
 	beq lvs_display_end
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<current_filename_ptr+0
+	ldx #<FNADDR+0
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (current_filename_ptr),y
+	lda (FNADDR),y
 #endif
 
 	jsr JCHROUT

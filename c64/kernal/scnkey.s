@@ -122,16 +122,15 @@ accept_key:
 	beq sk_nokey
 
 	// Stash key into keyboard buffer
-	ldx keys_in_key_buffer
+	ldx NDX
 	cpx XMAX
 	beq sk_nokey
 	sta KEYD,x
-	inc keys_in_key_buffer
-	
-sk_nokey:	
+	inc NDX
+
+sk_nokey:
 
 	rts
-	
 
 	// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// // Routine for Scanning a Matrix Row
@@ -181,13 +180,12 @@ OverFlow:
 	pla
 	// Don't manipulate last legal buffer as the routine will fix itself once it gets valid input again.
 
-TooManyNewKeys:
 ReturnNoKeys:
 	sec
 	lda #$00
 	sta BufferQuantity
 	lda #$FF
-	sta last_key_matrix_position
+	sta LSTX
 	ldx #MaxKeyRollover-1
 !:
 	sta Buffer,x
@@ -463,7 +461,7 @@ RecordKeypress:
 	ldy BufferQuantity
 	cpy #MaxKeyRollover
 	bcc !+
-	jmp TooManyNewKeys
+	jmp ReturnNoKeys // too many new keys
 !:
 AcceptKeyEvent:	
     sta Buffer,y
@@ -488,7 +486,7 @@ ConsiderNextKey:
 
 KeyHeld:
 	// The key in A is still held down.
-	// compare with key in last_key_matrix_position
+	// compare with key in LSTX
 	// (Compute's Mapping the 64 p36-37)
 	// if different, reset repeat count down.
 
@@ -502,12 +500,12 @@ KeyHeld:
 	beq BuckyHeld
 	cmp #61
 	beq BuckyHeld
-	
-	cmp last_key_matrix_position
+
+	cmp LSTX
 	beq SameKeyHeld
 
 	// Different key held
-	sta last_key_matrix_position
+	sta LSTX
 	pha
 	lda DELAY
 	sta KOUNT

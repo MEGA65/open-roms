@@ -12,7 +12,7 @@ READST:
 
 	// Check the current device number
 
-	lda current_device_number
+	lda FA
 	cmp #$02
 	bne !+
 	

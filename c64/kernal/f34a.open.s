@@ -20,7 +20,7 @@ OPEN:
 	beq !+
 	dey
 	lda LAT, y
-	cmp current_logical_filenum
+	cmp LA
 	bne open_not_yet_open
 	jmp kernalerror_FILE_ALREADY_OPEN
 open_not_yet_open:
@@ -43,11 +43,11 @@ open_has_space:
 	// LAT / FAT / SAT support implemented according to
 	// 'Compute's Mapping the Commodore 64', page 52
 
-	lda current_logical_filenum
+	lda LA
 	sta LAT, y
-	lda current_device_number
+	lda FA
 	sta FAT, y
-	lda current_secondary_address
+	lda SA
 	sta SAT, y
 
 	iny
@@ -58,7 +58,7 @@ open_has_space:
 	beq open_done_success
 	
 	// Check for IEC device
-	lda current_device_number
+	lda FA
 	jsr iec_check_devnum
 	bcc open_iec
 
@@ -75,7 +75,7 @@ open_iec:
 	bcc !+
 	jmp kernalerror_DEVICE_NOT_FOUND
 !:
-	lda current_secondary_address
+	lda SA
 	jsr iec_cmd_open
 	bcc !+
 	jmp kernalerror_DEVICE_NOT_FOUND

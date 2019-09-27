@@ -37,10 +37,10 @@ cmd_load:
 !:
 	// Filename starts here so set pointer
 	lda basic_current_statement_ptr+0
-	sta current_filename_ptr+0
+	sta FNADDR+0
 	lda basic_current_statement_ptr+1
-	sta current_filename_ptr+1
-	
+	sta FNADDR+1
+
 	// Now search for end of line or closing quote
 	// so that we know the length of the filename
 getting_filename:
@@ -60,7 +60,7 @@ got_filename:
 
 	// Now fetch the file number, start from the default one
 	jsr select_device
-	stx current_device_number
+	stx FA
 	jsr injest_comma
 	bcs got_devicenumber
 
@@ -70,20 +70,20 @@ got_filename:
 	jmp do_ILLEGAL_QUANTITY_error
 !:
 	lda basic_line_number+0
-	sta current_device_number
+	sta FA
 
 got_devicenumber:
 
 	// Now fetch the secondary address
 	lda #$00
-	sta current_secondary_address
+	sta SA
 	jsr injest_comma
 	bcs got_secondaryaddress
 	jsr basic_parse_line_number
 	lda basic_line_number+1
 	bne !+
 	lda basic_line_number+0
-	sta current_secondary_address
+	sta SA
 	jmp got_secondaryaddress
 !:
 	// Second parameter is above 255, this can't be a secondary address

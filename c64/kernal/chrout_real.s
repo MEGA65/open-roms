@@ -110,7 +110,7 @@ not_0a:
 	bne not_0d
 	// RETURN clears quote and insert modes
 	lda #$00
-	sta quote_mode_flag
+	sta QTSW
 	sta insert_mode
 	jmp screen_advance_to_next_line
 not_0d:
@@ -235,7 +235,7 @@ done_delete:
 not_14:
 
 	// Check for quote mode
-	ldx quote_mode_flag
+	ldx QTSW
 	bne is_quote_mode
 	ldx insert_mode
 	bne is_quote_mode
@@ -274,7 +274,7 @@ not_quote_mode:
 colour_check_loop:	
 	cmp colour_codes,x
 	bne !+
-	stx text_colour
+	stx COLOR
 	jmp chrout_done
 !:	dex
 	bpl colour_check_loop
@@ -415,14 +415,14 @@ output_literal_char:
 	bne not_quote
 
 	//  Toggle quote flag if required
-	lda quote_mode_flag
+	lda QTSW
 	eor #$80
-	sta quote_mode_flag
+	sta QTSW
 
 not_quote:
 
 	// Set colour
-	lda text_colour
+	lda COLOR
 	sta (current_screen_line_colour_ptr),y
 
 	// Advance the column, and scroll screen down if we need
@@ -556,7 +556,7 @@ no_copy_down:
 	// Erase newly inserted line
 	ldy #79
 !:
-	lda text_colour
+	lda COLOR
 	sta (current_screen_line_colour_ptr),y
 	lda #$20
 	sta (current_screen_line_ptr),y
@@ -659,7 +659,7 @@ scroll_copy_loop2:
 	// Fill in scrolled up area
 	ldx load_or_scroll_temp_pointer+0
 scroll_copy_loop3:
-	lda text_colour
+	lda COLOR
 	sta (current_screen_line_colour_ptr),y
 	lda #$20
 	sta (current_screen_line_ptr),y

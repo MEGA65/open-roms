@@ -90,7 +90,7 @@ read_from_keyboard:
 	lda keys_in_key_buffer
 	beq chrin_repeat
 
-	lda keyboard_buffer
+	lda KEYD
 	cmp #$0d
 	bne not_enter
 
@@ -145,7 +145,7 @@ empty_line:
 
 not_enter:
 	// Print character
-	lda keyboard_buffer
+	lda KEYD
 	jsr CHROUT
 
 	jsr pop_keyboard_buffer
@@ -160,11 +160,11 @@ pop_keyboard_buffer:
 	sei
 	ldx #$00
 	ldy #$01
-!:	lda keyboard_buffer,y
-	sta keyboard_buffer,x
+!:	lda KEYD,y
+	sta KEYD,x
 	inx
 	iny
-	cpy key_buffer_size
+	cpy XMAX
 	bne !-
 	dec keys_in_key_buffer
 	cli

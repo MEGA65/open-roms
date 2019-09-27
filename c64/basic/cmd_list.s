@@ -66,7 +66,7 @@ list_single_line: // entry point needed by DOS wedge
 	// Iterate through printing out the line
 	// contents
 	lda #0
-	sta quote_mode_flag
+	sta QTSW
 	
 	ldy #4
 list_print_loop:	
@@ -82,14 +82,14 @@ list_print_loop:
 	beq list_end_of_line
 	cmp #$22
 	bne list_not_quote
-	lda quote_mode_flag
+	lda QTSW
 	eor #$ff
-	sta quote_mode_flag
+	sta QTSW
 	lda #$22
 	jmp list_is_literal
 list_not_quote:	
 	// Check quote mode, and display as literal if required
-	ldx quote_mode_flag
+	ldx QTSW
 	bne list_is_literal
 	
 	cmp #$7f
@@ -128,7 +128,7 @@ list_not_quote:
 	// REM command locks quote flag on until the end of the line, allowing
 	// funny characters in REM statements without problem.
 	inc $0427
-	sta quote_mode_flag 	// Any value other than $00 or $FF will lock quote mode on, so the token value of REM is fine here
+	sta QTSW    // Any value other than $00 or $FF will lock quote mode on, so the token value of REM is fine here
 	// FALL THROUGH
 list_not_rem:		
 	

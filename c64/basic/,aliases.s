@@ -60,7 +60,6 @@
 	// We also use the following for temp colour pointer when scrolling
 	.label load_save_verify_end_address = $AE
 
-	.label cassette_buffer_ptr = $B2
 	.label current_logical_filenum = $B8
 	.label current_secondary_address = $B9
 	.label current_device_number = $BA
@@ -80,7 +79,6 @@
 	.label keyboard_input_ready = $D0
 	.label current_screen_line_ptr = $D1
 	.label current_screen_x = $D3
-	.label quote_mode_flag = $D4
 	.label logical_line_length = $D5
 	.label current_screen_y = $D6
 	.label last_printed_character_ascii = $D7
@@ -90,28 +88,6 @@
 	.label screen_line_link_table = $D9
 	.label current_screen_line_colour_ptr = $F3
 	.label keyboard_decoding_table_ptr = $F5
-
-	.label basic_input_buffer = BUF
-
-	// "Compute's Mapping the 64" book
-	.label keyboard_buffer = $0277
-	.label text_colour = $0286 // p55
-	.label colour_under_cursor = $0287 // p56
-	.label key_buffer_size = $0289 // p57
-
-	// 0 = cursor keys, insert, delete and space repeat, but nothing else
-	// 128 = all keys repeat
-	// 64 = no keys repeat
-	.label key_repeat_flags = $028A // p58
-	// https://www.c64-wiki.com/wiki/Page_2
-	.label key_repeat_counter = $028B
-	.label key_first_repeat_delay = $028C
-	// bit 0 = shift, 1 = Vendor Key, 2 = Control
-	.label key_bucky_state = $028D
-	.label key_last_bucky_state = $028E
-	.label keyboard_decoding_ptr = $028F
-	.label enable_case_switch = $0291
-	.label screen_scroll_disable = $0292
 
 #if CONFIG_MEMORY_MODEL_60K
 

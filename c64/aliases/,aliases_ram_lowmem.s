@@ -166,13 +166,13 @@
 	.label HIBASE    = $288  //            high byte of start of screen
 	.label XMAX      = $289  //            max keyboard buffer size
 	.label RPTFLG    = $28A  //            -- NOT IMPLEMENTED --
-	.label KOUNT     = $28B  //            -- NOT IMPLEMENTED --
+	.label KOUNT     = $28B  //            key repeat counter
 	.label DELAY     = $28C  //            -- NOT IMPLEMENTED --
 	.label SHFLAG    = $28D  //            bucky keys (SHIFT/CTRL/C=) flags
 	.label LSTSHF    = $28E  //            last bucky key flags
-	.label KEYLOG    = $28F  // $28F-$290  -- NOT IMPLEMENTED --
+	.label KEYLOG    = $28F  // $28F-$290  -- NOT IMPLEMENTED -- keyboard decoding pointer
 	.label MODE      = $291  //            flag, is case switch allowed
-	.label AUTODN    = $292  //            -- NOT IMPLEMENTED --
+	.label AUTODN    = $292  //            -- NOT IMPLEMENTED -- screen scroll disable
 	.label M51CRT    = $293  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51CDR    = $294  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51AJB    = $295  // $295-$296  -- NOT IMPLEMENTED -- mock 6551

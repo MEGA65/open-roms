@@ -10,7 +10,7 @@
 
 	// VIC-II registers
 
-	.label VIC_BASE     = $D000  // base address of the chip
+	.label __VIC_BASE   = $D000  // base address of the chip
 
 	.label VIC_SP0X     = $D000
 	.label VIC_SP0Y     = $D001
@@ -64,7 +64,7 @@
 	
 	// SID registers
 
-	.label SID_BASE     = $D400  // base address of the chip
+	.label __SID_BASE   = $D400  // base address of the chip
 
 	.label SID_FRELO1   = $D400
 	.label SID_FREHI1   = $D401
@@ -101,7 +101,7 @@
 
 	// CIA #1 registers
 
-	.label CIA1_BASE    = $DC00  // base address of the chip
+	.label __CIA1_BASE  = $DC00  // base address of the chip
 
 	.label CIA1_PRA     = $DC00
 	.label CIA1_PRB     = $DC01
@@ -125,7 +125,7 @@
 
 	// CIA #2 registers
 
-	.label CIA2_BASE    = $DD00  // base address of the chip
+	.label __CIA2_BASE  = $DD00  // base address of the chip
 
 	.label CIA2_PRA     = $DD00  // VIC bank switching and IEC port
 	.label CIA2_PRB     = $DD01

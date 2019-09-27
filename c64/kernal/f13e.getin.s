@@ -22,7 +22,7 @@ GETIN:
 	rts
 	
 !:
-	lda keyboard_buffer
+	lda KEYD
 	pha
 
 	jsr pop_keyboard_buffer

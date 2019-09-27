@@ -17,7 +17,7 @@ tokenise_line:
 	lda #$00
 	sta $0110
 	sta $0112
-	sta quote_mode_flag
+	sta QTSW
 	
 	lda tokenise_work1
 	sta $0113
@@ -40,7 +40,7 @@ tokenise_char:
 
 	// Clear quote mode flag that is also used by KERNAL for screen display
 	lda #$00
-	sta quote_mode_flag
+	sta QTSW
 	rts
 !:
 	// More to do
@@ -60,9 +60,9 @@ tokenise_char_loop:
 	bne tk_not_quote
 
 	// Quote
-	lda quote_mode_flag
+	lda QTSW
 	eor #$ff
-	sta quote_mode_flag
+	sta QTSW
 	jmp tk_literal_char
 	
 tk_not_quote:
@@ -82,7 +82,7 @@ tk_not_quote:
 
 tk_might_be_keyword:	
 	// Don't tokenise in quote mode
-	lda quote_mode_flag
+	lda QTSW
 	bne tk_literal_char
 	
 	// Pack string
@@ -137,9 +137,9 @@ found_token_in_line:
 	// If it is REM, then lock us in quote mode to the end of the line
 	cmp #$8f
 	bne not_rem
-	sta quote_mode_flag
-not_rem:	
-	
+	sta QTSW
+not_rem:
+
 	// Now skip over the length of the token
 	lda $0110
 	clc

@@ -79,17 +79,17 @@ cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 	// But require key to be held for ~1/3sec before
 	// repeating (Compute's Mapping the 64 p58)
 	ldx #22-2 		// Fudge factor to match speed
-	stx key_first_repeat_delay
+	stx DELAY
 
 	// Set current colour for text (Compute's Mapping the 64 p215)
 	ldx #$01     // default is light blue ($0E), but we use a different one
-	stx text_colour
+	stx COLOR
 
 	// Set maximum keyboard buffer size (Compute's Mapping the 64 p215)
 	ldx #10
-	stx key_buffer_size
-	// Put non-zero value in enable_case_switch
-	stx enable_case_switch
+	stx XMAX
+	// Put non-zero value in MODE to enable case switch
+	stx MODE
 	
 	// Set default I/O devices (see SCINIT description at http://sta.c64.org/cbm64krnfunc.html)
 	jsr clrchn_reset

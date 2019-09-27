@@ -3,7 +3,7 @@
 // cursor_blink_countdown
 // cursor_saved_character
 // cursor_is_visible
-// colour_under_cursor
+// GDCOL (colour under cursor)
 
 show_cursor_if_enabled:
 	lda cursor_blink_disable
@@ -48,8 +48,8 @@ draw_cursor:
 	sta (current_screen_line_ptr),y
 	// Also set cursor colour
 	lda (current_screen_line_colour_ptr),y
-	sta colour_under_cursor
-	lda text_colour
+	sta GDCOL
+	lda COLOR
 	sta (current_screen_line_colour_ptr),y
 	
 	lda #1
@@ -63,7 +63,7 @@ undraw_cursor:
 	lda cursor_saved_character
 	ldy current_screen_x
 	sta (current_screen_line_ptr),y
-	lda colour_under_cursor
+	lda GDCOL
 	sta (current_screen_line_colour_ptr),y
 	
 	lda #0

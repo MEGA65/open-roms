@@ -47,7 +47,7 @@ clearscreen_l2:
 
 	// Clear colour RAM
 	// (Compute's Mapping the 64 p216)
-	lda text_colour
+	lda COLOR
 clearscreen_l3:	
 	sta $d800,y
 	sta $d900,y

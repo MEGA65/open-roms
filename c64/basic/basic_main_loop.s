@@ -24,7 +24,7 @@ read_line_loop:
 	ldx #22
 	jmp basic_do_error
 !:
-	sta basic_input_buffer,x
+	sta BUF,x
 	inx
 	jmp read_line_loop
 

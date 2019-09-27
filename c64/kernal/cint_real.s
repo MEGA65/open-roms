@@ -56,6 +56,13 @@ cint_pal:
 !:
 	sta TVSFLG
 
+	// Setup KEYLOG vector - XXX is it proper place?
+
+	lda #<setup_keydecode
+	sta KEYLOG+0
+	lda #>setup_keydecode
+	sta KEYLOG+1
+
 cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 
 	jsr setup_vicii

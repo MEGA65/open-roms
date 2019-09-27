@@ -12,8 +12,8 @@
 	//
 
 	//                 $02             -- UNUSED --          free for user software
-	.label ADRAY1    = $03 // $03-$04  -- NOT IMPLEMENTED --
-	.label ADRAY2    = $05 // $05-$06  -- NOT IMPLEMENTED --
+	.label ADRAY1    = $03 // $03-$04
+	.label ADRAY2    = $05 // $05-$06
 	.label CHARAC    = $07 //          [!] our implementation might be different  XXX give more details
 	.label ENDCHR    = $08 //          [!] our implementation might be different  XXX give more details
 	.label TRMPOS    = $09 //          -- NOT IMPLEMENTED --
@@ -170,7 +170,7 @@
 	.label DELAY     = $28C  //            -- NOT IMPLEMENTED --
 	.label SHFLAG    = $28D  //            bucky keys (SHIFT/CTRL/C=) flags
 	.label LSTSHF    = $28E  //            last bucky key flags
-	.label KEYLOG    = $28F  // $28F-$290  -- NOT IMPLEMENTED -- keyboard decoding pointer
+	.label KEYLOG    = $28F  // $28F-$290  routine to setup keyboard decoding
 	.label MODE      = $291  //            flag, is case switch allowed
 	.label AUTODN    = $292  //            -- NOT IMPLEMENTED -- screen scroll disable
 	.label M51CRT    = $293  //            -- NOT IMPLEMENTED -- mock 6551

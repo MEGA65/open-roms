@@ -54,12 +54,14 @@ Note: vectors at `$0300` are not supported yet - for now only the locations belo
 
 | Entry     | Unofficial | Name       | Status   |  Remarks                                           |
 | :-------: | :--------: | :--------- | :------: | :------------------------------------------------: |
-|           | `$E38B`    | `ERROR`    | NOT DONE |                                                    |
-|           | `$A483`    | `MAIN`     | NOT DONE | some implementation exists, but not connected here |
-|           | `$A57C`    | `CHRNCH`   | NOT DONE |                                                    |
-|           | `$A71A`    | `QPLOP`    | NOT DONE | some implementation exists, but not connected here |
-|           | `$A7E4`    | `GONE`     | NOT DONE | some implementation exists, but not connected here |
-|           | `$AE86`    | `EVAL`     | NOT DONE | some implementation exists, but not connected here |
+| `($0003)` |            | `ADRAY1`   | NOT DONE |                                                    |
+| `($0005)` |            | `ADRAY2`   | NOT DONE |                                                    |
+| `(00300)` | `$E38B`    | `ERROR`    | NOT DONE |                                                    |
+| `(00302)` | `$A483`    | `MAIN`     | NOT DONE | some implementation exists, but not connected here |
+| `(00304)` | `$A57C`    | `CHRNCH`   | NOT DONE |                                                    |
+| `(00306)` | `$A71A`    | `QPLOP`    | NOT DONE | some implementation exists, but not connected here |
+| `(00308)` | `$A7E4`    | `GONE`     | NOT DONE | some implementation exists, but not connected here |
+| `(0030A)` | `$AE86`    | `EVAL`     | NOT DONE | some implementation exists, but not connected here |
 | `($A000)` |            | cold start | PARTIAL  |                                                    |
 | `($A002)` |            | warm start | PARTIAL  |                                                    |
 
@@ -95,6 +97,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 
 | Address   | Unofficial | Name        | Status   |  Remarks                                           |
 | :-------: | :--------: | :---------- | :------: | :------------------------------------------------: |
+| `($028F)` |            | `KEYLOG`    | NOT DONE |                                                    |
 | `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                    |
 | `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                      |
 | `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                    |

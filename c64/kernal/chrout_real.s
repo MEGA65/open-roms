@@ -876,7 +876,6 @@ update_colour_line_pointer:
 
 	rts
 
-
 advance_screen_pointer_40_bytes:
 	lda PNT+0
 	clc
@@ -893,8 +892,3 @@ advance_screen_pointer_40_bytes:
 	sta USER+1
 
 	jmp update_colour_line_pointer
-
-colour_codes: // consider moving them to separate location
-	// CHR$ codes for the 16 colours
-	.byte 144,5,28,159,156,30,31,158
-	.byte 129,149,150,151,152,153,154,155

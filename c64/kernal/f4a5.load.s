@@ -97,7 +97,7 @@ LOAD:
 	// Get load address and store it if secondary address is zero
 	jsr iec_rx_byte
 	bcc !+
-	jmp lvs_file_not_found_error // XXX deduplicate with other jumps in this routine
+	jmp kernalerror_FILE_NOT_FOUND // XXX deduplicate with other jumps in this routine
 !:
 	ldx SA
 	beq !+
@@ -105,7 +105,7 @@ LOAD:
 !:
 	jsr iec_rx_byte
 	bcc !+
-	jmp lvs_file_not_found_error // XXX deduplicate with other jumps in this routine
+	jmp kernalerror_FILE_NOT_FOUND // XXX deduplicate with other jumps in this routine
 !:
 	ldx SA
 	beq !+

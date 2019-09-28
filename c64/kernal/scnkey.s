@@ -46,25 +46,6 @@
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-	// // ZERO PAGE Varibles
-	// $250-$258 is the 81st - 88th characters in BASIC input, a carry over from VIC-20
-	// and not used on C64, so safe for us to use, probably.
-	// (Compute's Mapping the 64 p51)
-	.label ScanResult        = $250 // 8 bytes
-	// Other variables are in RS232 ZP locations for now
-	// (Carefully avoiding $A7 which is used by 64NET)
-	.label BufferNew         = $A9  // 3 bytes
-	.label KeyQuantity       = $A8  // 1 byte
-	.label TempZP            = $B6  // 1 byte
-
-	// Reuse RS232 variables, since they should not be used
-	// by other things
-	// These are initialised in cinit all to $FF
-	.label BufferOld         = $293 // 3 bytes
-	.label Buffer 	         = $297 // 4 bytes
-	.label BufferQuantity    = $B4  // 1 byte
-
-
 	// Operational Variables
 	.const MaxKeyRollover = 3
 

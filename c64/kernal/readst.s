@@ -18,7 +18,8 @@ READST:
 	
 	// This is RS-232 device - according to 'Compute's Mapping the Commodore 64' page 239
 	// it reads status from RSSTAT
-	lda RSSTAT
+	// XXX 'lda RSSTAT' not possible due to extended scnkey, fix it!
+	lda #$FF
 	rts
 !:
 	// According to 'Compute's Mapping the Commodore 64' page 239, it usually retrieves

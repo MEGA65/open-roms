@@ -164,8 +164,6 @@ lvs_illegal_device_number:
 	jsr kernalstatus_DEVICE_NOT_FOUND
 	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
 
-.label lvs_file_not_found_error = kernalerror_FILE_NOT_FOUND
-
 lvs_load_verify_error:
 	// XXX should we really return BASIC error code here?
 	lda VERCKK

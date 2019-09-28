@@ -23,7 +23,7 @@ basic_delete_line:
 	lda (basic_current_line_ptr),y
 #endif
 
-	sta tokenise_work3
+	sta __tokenise_work3
 	iny
 
 #if CONFIG_MEMORY_MODEL_60K	
@@ -32,24 +32,24 @@ basic_delete_line:
 	lda (basic_current_line_ptr),y
 #endif
 
-	sta tokenise_work4
+	sta __tokenise_work4
 
 	// Work out length of this line by looking at the pointer
-	lda tokenise_work3
+	lda __tokenise_work3
 	sec
 	sbc basic_current_line_ptr+0
-	sta tokenise_work3
-	lda tokenise_work4
+	sta __tokenise_work3
+	lda __tokenise_work4
 	sbc basic_current_line_ptr+1
-	sta tokenise_work4
+	sta __tokenise_work4
 
 	// jsr printf
 	// .text "LINE LENGTH IS $"
-	// .byte $f0,<tokenise_work4,>tokenise_work4
-	// .byte $f0,<tokenise_work3,>tokenise_work3
+	// .byte $f0,<__tokenise_work4,>__tokenise_work4
+	// .byte $f0,<__tokenise_work3,>__tokenise_work3
 	// .byte $0d,0
 	
-	lda tokenise_work4
+	lda __tokenise_work4
 	sbc #0
 	cmp #$00
 	beq !+
@@ -58,9 +58,9 @@ basic_delete_line:
 	jmp do_MEMORY_CORRUPT_error
 !:
 	// Length can now be safely assumed to be in the low
-	// byte only, i.e., stored in tokenise_work3
+	// byte only, i.e., stored in __tokenise_work3
 
-	lda tokenise_work3
+	lda __tokenise_work3
 	pha
 	tax
 
@@ -69,10 +69,10 @@ basic_delete_line:
 
 	// Now decrease top of BASIC mem
 	pla
-	sta tokenise_work3
+	sta __tokenise_work3
 	lda basic_end_of_text_ptr+0
 	sec
-	sbc tokenise_work3
+	sbc __tokenise_work3
 	sta basic_end_of_text_ptr+0
 	lda basic_end_of_text_ptr+1
 	sbc #0

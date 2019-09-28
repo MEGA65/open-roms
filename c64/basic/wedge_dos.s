@@ -16,7 +16,7 @@ wedge_dos:
 
 	// Check if user asked for a status
 	ldy #$00
-	lda (basic_current_statement_ptr), y
+	lda (TXTPTR), y
 	bne !+
 	jmp wedge_dos_status // XXX try to optimize this, perhaps move 'wedge_dos_status' above?
 !:
@@ -31,7 +31,7 @@ wedge_dos:
 	cmp #$3A
 	bcs wedge_dos_command // char code after 9
 	iny
-	lda (basic_current_statement_ptr), y
+	lda (TXTPTR), y
 	beq wedge_dos_change_drive // end of buffer
 	cmp #$20
 	beq wedge_dos_change_drive
@@ -64,11 +64,11 @@ wedge_dos_change_drive:
 
 	// Reuse the line number parser for device number retrieval
 	jsr basic_parse_line_number
-	lda basic_line_number+1
+	lda LINNUM+1
 	beq !+
 	jmp do_ILLEGAL_QUANTITY_error
 !:
-	lda basic_line_number+0
+	lda LINNUM+0
 	cmp #$08
 	bpl !+
 	bcs !+
@@ -226,13 +226,13 @@ wedge_dos_setnam:
 	ldy #$FF
 !:
 	iny
-	lda (basic_current_statement_ptr), y
+	lda (TXTPTR), y
 	bne !-
 	
 	// Set the name to open
 	tya
-	ldx basic_current_statement_ptr+0
-	ldy basic_current_statement_ptr+1
+	ldx TXTPTR+0
+	ldy TXTPTR+1
 	jmp JSETNAM
 
 #endif // CONFIG_DOS_WEDGE

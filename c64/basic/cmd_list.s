@@ -105,9 +105,9 @@ list_not_quote:
 
 	// Get pointer to compressed keyword list
 	lda #<packed_keywords
-	sta temp_string_ptr+0
+	sta FRESPC+0
 	lda #>packed_keywords
-	sta temp_string_ptr+1
+	sta FRESPC+1
 	
 	// Subtract $80 from token to get offset in word
 	// list

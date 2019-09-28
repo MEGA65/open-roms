@@ -38,7 +38,7 @@
 	.label ARYTAB    = $2F // $2F-$30  -- NOT IMPLEMENTED --
 	.label STREND    = $31 // $31-$32  -- NOT IMPLEMENTED --
 	.label FRETOP    = $33 // $33-$34  -- NOT IMPLEMENTED --
-	.label FRESPC    = $35 // $35-$36  [!] our implementation might be different  XXX give more details
+	.label FRESPC    = $35 // $35-$36  [!] our implementation uses this as temporary string pointer
 	.label MEMSIZ    = $37 // $37-$38  highest address of BASIC memory + 1
 	.label CURLIN    = $39 // $39-$3A  current BASIC line number
 	.label OLDLIN    = $3B // $3B-$3C  previous BASIC line number

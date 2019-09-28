@@ -29,9 +29,9 @@ basic_insert_line:
 	pha
 	
 	// Get number of bytes in tokenised line after line number
-	lda tokenise_work2
+	lda __tokenise_work2
 	sec
-	sbc tokenise_work1
+	sbc __tokenise_work1
 	// Add on the four bytes space we need
 	clc
 	adc #5
@@ -58,7 +58,7 @@ basic_insert_line:
 
 	// Write the line number
 	ldy #2
-	lda basic_line_number+0
+	lda LINNUM+0
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_line_ptr+0
@@ -68,7 +68,7 @@ basic_insert_line:
 #endif
 
 	iny
-	lda basic_line_number+1
+	lda LINNUM+1
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
@@ -77,11 +77,11 @@ basic_insert_line:
 #endif
 
 	// Now store the line body itself
-	inc tokenise_work2
+	inc __tokenise_work2
 line_store_loop:
-	ldx tokenise_work1
+	ldx __tokenise_work1
 	lda $0200,x
-	inc tokenise_work1
+	inc __tokenise_work1
 	iny
 
 #if CONFIG_MEMORY_MODEL_60K
@@ -91,10 +91,10 @@ line_store_loop:
 	sta (basic_current_line_ptr),y
 #endif
 
-	lda tokenise_work1
-	cmp tokenise_work2
+	lda __tokenise_work1
+	cmp __tokenise_work2
 	bne line_store_loop
-	dec tokenise_work2
+	dec __tokenise_work2
 	
 	clc
 	rts

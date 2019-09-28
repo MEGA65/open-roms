@@ -10,35 +10,35 @@ basic_shift_mem_up_and_relink:
 	txa
 	clc
 	adc basic_end_of_text_ptr+0
-	sta memmove_dst+0
+	sta __memmove_dst+0
 	lda basic_end_of_text_ptr+1
 	adc #0
-	sta memmove_dst+1
-	lda memmove_dst+0
+	sta __memmove_dst+1
+	lda __memmove_dst+0
 	sec
 	sbc #1
-	sta memmove_dst+0
-	lda memmove_dst+1
+	sta __memmove_dst+0
+	lda __memmove_dst+1
 	sbc #0
-	sta memmove_dst+1
+	sta __memmove_dst+1
 
 	// End point of source is just current end of BASIC text
 	lda basic_end_of_text_ptr+0
 	sec
 	sbc #1
-	sta memmove_src+0
+	sta __memmove_src+0
 	lda basic_end_of_text_ptr+1
 	sbc #0
-	sta memmove_src+1
+	sta __memmove_src+1
 
 	// Work out size of region to copy
 	lda basic_end_of_text_ptr+0
 	sec
 	sbc basic_current_line_ptr+0
-	sta memmove_size+0	
+	sta __memmove_size+0	
 	lda basic_end_of_text_ptr+1
 	sbc basic_current_line_ptr+1
-	sta memmove_size+1
+	sta __memmove_size+1
 	
 	// jsr printf
 	// .text "TOP OF BASIC = $"
@@ -46,54 +46,54 @@ basic_shift_mem_up_and_relink:
 	// .byte $f0,<basic_end_of_text_ptr,>basic_end_of_text_ptr
 	// .byte $0d
 	// .text "SHIFTING UP $"
-	// .byte $f1,<memmove_size,>memmove_size
-	// .byte $f0,<memmove_size,>memmove_size
+	// .byte $f1,<__memmove_size,>__memmove_size
+	// .byte $f0,<__memmove_size,>__memmove_size
 	// .text " BYTES FROM $"
-	// .byte $f1,<memmove_src,>memmove_src
-	// .byte $f0,<memmove_src,>memmove_src
+	// .byte $f1,<__memmove_src,>__memmove_src
+	// .byte $f0,<__memmove_src,>__memmove_src
 	// .text " TO $"
-	// .byte $f1,<memmove_dst,>memmove_dst
-	// .byte $f0,<memmove_dst,>memmove_dst
+	// .byte $f1,<__memmove_dst,>__memmove_dst
+	// .byte $f0,<__memmove_dst,>__memmove_dst
 	// .byte $0d,0
 	
 	// To make life simple for the copy routine that lives in RAM,
 	// we have to adjust the end pointers down one page and set Y to the low
 	// byte of the copy size.
-	lda memmove_src+0
+	lda __memmove_src+0
 	sec
-	sbc memmove_size+0
-	sta memmove_src+0
-	lda memmove_src+1
+	sbc __memmove_size+0
+	sta __memmove_src+0
+	lda __memmove_src+1
 	sbc #0
-	sta memmove_src+1
+	sta __memmove_src+1
 
-	lda memmove_dst+0
+	lda __memmove_dst+0
 	sec
-	sbc memmove_size+0
-	sta memmove_dst+0
-	lda memmove_dst+1
+	sbc __memmove_size+0
+	sta __memmove_dst+0
+	lda __memmove_dst+1
 	sbc #0
-	sta memmove_dst+1
+	sta __memmove_dst+1
 
 	// Now make exit easy, by being able to check for zero on size high byte when done
-	inc memmove_size+1	
+	inc __memmove_size+1	
 	
 	// Then set Y to the number offset required
-	ldy memmove_size+0
+	ldy __memmove_size+0
 	iny
 
-	stx tokenise_work3
+	stx __tokenise_work3
 	
 	// jsr printf
 	// .text "REVISED BOUNDS $"
-	// .byte $f1,<memmove_size,>memmove_size
-	// .byte $f0,<memmove_size,>memmove_size
+	// .byte $f1,<__memmove_size,>__memmove_size
+	// .byte $f0,<__memmove_size,>__memmove_size
 	// .text " BYTES FROM $"
-	// .byte $f1,<memmove_src,>memmove_src
-	// .byte $f0,<memmove_src,>memmove_src
+	// .byte $f1,<__memmove_src,>__memmove_src
+	// .byte $f0,<__memmove_src,>__memmove_src
 	// .text " TO $"
-	// .byte $f1,<memmove_dst,>memmove_dst
-	// .byte $f0,<memmove_dst,>memmove_dst
+	// .byte $f1,<__memmove_dst,>__memmove_dst
+	// .byte $f0,<__memmove_dst,>__memmove_dst
 	// .byte $0d,0
 	
 	// Do the copy
@@ -138,10 +138,10 @@ relink_up_next_line:
 	lda (basic_current_line_ptr),y
 #endif
 
-	sta memmove_dst+0
+	sta __memmove_dst+0
 	clc
-	adc tokenise_work3
-	sta memmove_src+0
+	adc __tokenise_work3
+	sta __memmove_src+0
 	iny
 	php
 
@@ -152,27 +152,27 @@ relink_up_next_line:
 	lda (basic_current_line_ptr),y
 #endif
 
-	sta memmove_dst+1
+	sta __memmove_dst+1
 	plp
 	adc #0
-	sta memmove_src+1
+	sta __memmove_src+1
 
 	// jsr printf
 	// .text "LINE ADDR = $"
 	// .byte $f1,<basic_current_line_ptr,>basic_end_of_text_ptr
 	// .byte $f0,<basic_current_line_ptr,>basic_end_of_text_ptr
 	// .text $d,"  BEFORE = $"
-	// .byte $f1,<memmove_dst,>memmove_dst
-	// .byte $f0,<memmove_dst,>memmove_dst	
+	// .byte $f1,<__memmove_dst,>__memmove_dst
+	// .byte $f0,<__memmove_dst,>__memmove_dst
 	// .text ",  AFTER = $"
-	// .byte $f1,<memmove_src,>memmove_src
-	// .byte $f0,<memmove_src,>memmove_src
+	// .byte $f1,<__memmove_src,>__memmove_src
+	// .byte $f0,<__memmove_src,>__memmove_src
 	// .byte $d
 	// .byte 0
 	
-	// Write memmove_src back to current line pointer
+	// Write __memmove_src back to current line pointer
 	ldy #0
-	lda memmove_src+0
+	lda __memmove_src+0
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<basic_current_line_ptr+0
@@ -182,7 +182,7 @@ relink_up_next_line:
 #endif
 
 	iny
-	lda memmove_src+1
+	lda __memmove_src+1
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
@@ -192,9 +192,9 @@ relink_up_next_line:
 	
 relink_up_loop:	
 	// Now advance pointer to the next line,
-	lda memmove_src+0
+	lda __memmove_src+0
 	sta basic_current_line_ptr+0
-	lda memmove_src+1
+	lda __memmove_src+1
 	sta basic_current_line_ptr+1
 
 	// Have we run out of lines to patch?

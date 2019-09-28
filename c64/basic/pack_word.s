@@ -13,30 +13,30 @@
 pack_word:
 	// Inputs:
 	// X = offset of string to pack. Address is $0200 + X
-	// tokenise_work1 = number of bytes to pack
-	// tokenise_work2 = packed length of string
+	// __tokenise_work1 = number of bytes to pack
+	// __tokenise_work2 = packed length of string
 
 	// Outputs:
 	// Output is written to $0100 (bottom of stack).
 
 	// Memory modified:
-	// tokenise_work4 = temporary storage
-	// tokenise_work3 = flag for whether we have a nybl prepared or not.
+	// __tokenise_work4 = temporary storage
+	// __tokenise_work3 = flag for whether we have a nybl prepared or not.
 	// (This can also be checked on exit, to know whether the last byte
 	// is incomplete, which is important for searching for abbreviated
 	// key words.)
 
 	
 	// Make sure we have a sane request
-	lda tokenise_work1
+	lda __tokenise_work1
 	bne !+
 	sec
 	rts
 !:
 	// Initialise internal variables
 	lda #$00
-	sta tokenise_work2
-	sta tokenise_work3
+	sta __tokenise_work2
+	sta __tokenise_work3
 
 pack_char_loop:
 
@@ -56,13 +56,13 @@ pack_char_loop:
 	// either $FE or $FF, depending on whether this is the last
 	// byte or not
 
-	lda tokenise_work3
+	lda __tokenise_work3
 	bne have_nybl_before_exception_char
 
 	// No nybl exists before the exception char, so prefix with $FE or $FF
 	// based on whether we are at the end of the input string or not
 	inx
-	lda tokenise_work1
+	lda __tokenise_work1
 	cmp #$01
 	beq at_end
 	lda #$FF
@@ -80,11 +80,11 @@ output_exception_byte:
 
 have_nybl_before_exception_char:
 	// Or existing byte with #$0F, and clear nybl flag
-	ldy tokenise_work2
+	ldy __tokenise_work2
 	lda $0100,y
 	ora #$0f
 	sta $0100,y
-	inc tokenise_work2
+	inc __tokenise_work2
 
 	// FALL THROUGH
 	
@@ -92,7 +92,7 @@ write_literal_and_terminate_if_required:
 
 	// Clear have nybl flag
 	lda #$00
-	sta tokenise_work3
+	sta __tokenise_work3
 
 	lda $0200,x
 	jsr write_unpacked_char
@@ -102,7 +102,7 @@ write_literal_and_terminate_if_required:
 end_string_if_required:
 	// Check if X points to last char of string to be packed
 	inx
-	lda tokenise_work1
+	lda __tokenise_work1
 	cmp #$01
 	beq !+
 	dex
@@ -118,10 +118,10 @@ end_string:
 	rts
 	
 write_unpacked_char:	
-	ldy tokenise_work2
+	ldy __tokenise_work2
 	sta $0100,y
 	iny
-	sty tokenise_work2
+	sty __tokenise_work2
 	rts
 	
 not_exception_char:
@@ -130,7 +130,7 @@ not_exception_char:
 	bcs whole_byte_symbol
 
 	// Nybl encoded value: Put in upper half or lower half of a byte?
-	ldy tokenise_work3
+	ldy __tokenise_work3
 	bne store_low_nybl
 
 	// Store in high nybl -- so shift it into the hi nybl
@@ -138,26 +138,26 @@ not_exception_char:
 	asl
 	asl
 	asl
-	ldy tokenise_work2
+	ldy __tokenise_work2
 	sta $0100,y
 	bne stored_nybl 	// Must be taken, as A cannot be $00
 	
 store_low_nybl:
 	// Low nybl gets added to high nybl already stored in the byte
-	ldy tokenise_work2
+	ldy __tokenise_work2
 	ora $0100,y
 	sta $0100,y
 
 stored_nybl:	
 	// Now toggle the nybl flag
-	lda tokenise_work3
+	lda __tokenise_work3
 	eor #$ff
-	sta tokenise_work3
+	sta __tokenise_work3
 	// And advance the offset if we filled this byte up
 	bne consider_next_char 	// Taken if byte has a nybl free, i.e., don't advance pointer while half byte remains free
 
 	// Count the filled up byte
-	inc tokenise_work2
+	inc __tokenise_work2
 
 	// Add termination byte if required
 	// (This re-writes the same byte again, which we don't care about)
@@ -168,15 +168,15 @@ whole_byte_symbol:
 	// But if we have a nybl to flush, then we handle it like
 	// a full exception character
 
-	ldy tokenise_work3
+	ldy __tokenise_work3
 	beq nothing_to_flush
 	
 	// Set low nybl to $F to mark next byte as literal
-	ldy tokenise_work2
+	ldy __tokenise_work2
 	lda $0100,y
 	ora #$0f
 	sta $0100,y
-	inc tokenise_work2
+	inc __tokenise_work2
 
 	jmp write_literal_and_terminate_if_required
 	
@@ -190,7 +190,7 @@ nothing_to_flush:
 consider_next_char:	
 	// Pack next char
 	inx 
-	dec tokenise_work1
+	dec __tokenise_work1
 	beq !+
 	jmp pack_char_loop
 !:
@@ -198,18 +198,18 @@ consider_next_char:
 	// (but leave flag set so the caller knows if the
 	// bottom nybl might be different if the string were
 	// longer).
-	lda tokenise_work3
+	lda __tokenise_work3
 	beq !+
-	inc tokenise_work2
+	inc __tokenise_work2
 	rts
 !:
 	// Last byte was full, so we need at $00 on the end
 	// (unless a $FE token was written 2 bytes ago)
-	ldy tokenise_work2
+	ldy __tokenise_work2
 	iny
 	lda #$00
 	sta $0100,y
-	inc tokenise_work2	
+	inc __tokenise_work2
 	
 	rts
 

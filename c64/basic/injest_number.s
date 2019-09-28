@@ -1,6 +1,6 @@
-// Parse a number from the input buffer at (basic_current_statement_ptr)
+// Parse a number from the input buffer at (TXTPTR)
 // Result is put into FAC1.
-// basic_current_statement_ptr is updated with first position after the number.
+// TXTPTR is updated with first position after the number.
 
 // XXX - Remember decimal position and exponent, and apply them
 // after to produce normalised floating point number.
@@ -20,7 +20,7 @@ ij_not_a_digit:
 	// Look for decimal point
 	cmp #$2e
 	bne ij_not_decimal
-	lda tokenise_work4
+	lda __tokenise_work4
 	cmp #$ff
 	beq ij_found_decimal
 	// More than one decimal point in a number means we have reached the end of the number
@@ -33,7 +33,7 @@ ij_found_decimal:
 	// can do the necessary number of divide by 10s on the final
 	// number.
 	lda #$00
-	sta tokenise_work4
+	sta __tokenise_work4
 
 	jmp ij_consider_next_digit
 	
@@ -48,13 +48,13 @@ injest_number:
 
 	// Clear decimal position flag
 	lda #$ff
-	sta tokenise_work4
+	sta __tokenise_work4
 
 	// Check if leading char is a - sign
 	// Note: the - will have been tokenised to $AB
 	// XXX - implement
 	ldy #$00
-	lda (basic_current_statement_ptr),y
+	lda (TXTPTR),y
 	cmp #$AB
 	bne ij_not_minus
 
@@ -67,10 +67,10 @@ injest_number:
 	
 ij_not_minus:	
 
-	
+
 ij_loop1:
 	ldy #$00
-	lda (basic_current_statement_ptr),y
+	lda (TXTPTR),y
 	cmp #$30
 	bcc ij_not_a_digit
 	cmp #$3a
@@ -89,7 +89,7 @@ ij_loop1:
 	// If we have seen a decimal point, then we can completely ignore
 	// the digit, as it is contributing not recordable information
 
-	lda tokenise_work4
+	lda __tokenise_work4
 	cmp #$ff
 	bne ij_seen_decimal_point
 	
@@ -108,7 +108,7 @@ ij_accept_precision:
 	
 	// Get digit
 	ldy #$00
-	lda (basic_current_statement_ptr),y
+	lda (TXTPTR),y
 	sec
 	sbc #$30
 

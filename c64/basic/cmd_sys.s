@@ -12,9 +12,9 @@ cmd_sys:
 	// setup call
 	lda #$4C // JMP opcode
 	sta USRPOK
-	lda basic_line_number+0
+	lda LINNUM+0
 	sta USRADD+0
-	lda basic_line_number+1
+	lda LINNUM+1
 	sta USRADD+1
 	
 	// Setup the register values

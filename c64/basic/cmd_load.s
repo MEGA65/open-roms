@@ -36,9 +36,9 @@ cmd_load:
 	jmp do_SYNTAX_error
 !:
 	// Filename starts here so set pointer
-	lda basic_current_statement_ptr+0
+	lda TXTPTR+0
 	sta FNADDR+0
-	lda basic_current_statement_ptr+1
+	lda TXTPTR+1
 	sta FNADDR+1
 
 	// Now search for end of line or closing quote
@@ -65,11 +65,11 @@ got_filename:
 	bcs got_devicenumber
 
 	jsr basic_parse_line_number
-	lda basic_line_number+1
+	lda LINNUM+1
 	beq !+
 	jmp do_ILLEGAL_QUANTITY_error
 !:
-	lda basic_line_number+0
+	lda LINNUM+0
 	sta FA
 
 got_devicenumber:
@@ -80,9 +80,9 @@ got_devicenumber:
 	jsr injest_comma
 	bcs got_secondaryaddress
 	jsr basic_parse_line_number
-	lda basic_line_number+1
+	lda LINNUM+1
 	bne !+
-	lda basic_line_number+0
+	lda LINNUM+0
 	sta SA
 	jmp got_secondaryaddress
 !:
@@ -90,8 +90,8 @@ got_devicenumber:
 	// Use it as load address instead
 	// XXX temporary syntax, it would be better to use something
 	// XXX like 'LOAD"FILE",8 TO 49152'
-	ldx basic_line_number+0
-	ldy basic_line_number+1
+	ldx LINNUM+0
+	ldy LINNUM+1
 	bne got_loadaddress
 
 got_secondaryaddress:

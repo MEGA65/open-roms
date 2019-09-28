@@ -31,7 +31,7 @@ read_line_loop:
 got_line_of_input:
 
 	// Store length of input buffer ready for tokenising
-	stx tokenise_work1
+	stx __tokenise_work1
 
 	// Strip leading spaces from the line
 remove_leading_spaces:	
@@ -42,11 +42,11 @@ remove_leading_spaces:
 rsl_l1:	lda $0200,x
 	sta $01ff,x
 	inx
-	cpx tokenise_work1
+	cpx __tokenise_work1
 	bne rsl_l1
 
 	// Reduce length of input by one
-	dec tokenise_work1
+	dec __tokenise_work1
 	// Stop trying to rim if we run out of input
 	bne remove_leading_spaces
 !:
@@ -55,7 +55,7 @@ rsl_l1:	lda $0200,x
 	jsr JCHROUT
 
 	// Ignore empty lines
-	lda tokenise_work1
+	lda __tokenise_work1
 	beq basic_read_next_line
 
 	// Else, tokenise the line
@@ -71,36 +71,36 @@ rsl_l1:	lda $0200,x
 	// Yes, the line begins with a number.
 	// Parse the line number and check validity
 
-	// injest_number follows tokenise_work1 as the offset into the line,
+	// injest_number follows __tokenise_work1 as the offset into the line,
 	// so remember the line length somewhere else for now.
-	lda tokenise_work1
-	sta tokenise_work2
+	lda __tokenise_work1
+	sta __tokenise_work2
 	lda #$00
-	sta tokenise_work1
+	sta __tokenise_work1
 
 	// Try to read line number
 	lda #<$0200
-	sta basic_current_statement_ptr+0
+	sta TXTPTR+0
 	lda #>$0200
-	sta basic_current_statement_ptr+1
+	sta TXTPTR+1
 
 	jsr basic_parse_line_number
 
 	// Get pointer to next char
-	lda basic_current_statement_ptr+0
-	sta tokenise_work1
+	lda TXTPTR+0
+	sta __tokenise_work1
 	
 	// Got a valid line number -- so do add/del line
 
 	// Skip any spaces after the line number
-	ldx tokenise_work1
+	ldx __tokenise_work1
 skip_spaces:	
 	lda $0200,x
 	cmp #$20
 	bne !+
 	inx
 	bne skip_spaces
-!:	stx tokenise_work1
+!:	stx __tokenise_work1
 	
 	// First, clear all variables, so that we only have to shove BASIC text around.
 	// (We could later remove this requirement, and the only effect should be
@@ -119,8 +119,8 @@ skip_spaces:
 !:
 	// Insert new line if non-zero length, i.e., that
 	// we are not just deleting the line.
-	lda tokenise_work1
-	cmp tokenise_work2
+	lda __tokenise_work1
+	cmp __tokenise_work2
 	beq !+
 	jsr basic_insert_line
 !:
@@ -133,9 +133,9 @@ not_a_line:
 
 	// Setup pointer to the statement
 	lda #<$0200
-	sta basic_current_statement_ptr+0
+	sta TXTPTR+0
 	lda #>$0200
-	sta basic_current_statement_ptr+1
+	sta TXTPTR+1
 
 	// There is no stored line, so zero that pointer out
 	lda #$00

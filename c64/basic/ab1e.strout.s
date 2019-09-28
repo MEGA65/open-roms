@@ -5,8 +5,8 @@
 
 STROUT:
 	// Setup pointer
-	sty temp_string_ptr+1
-	sta temp_string_ptr+0
+	sty FRESPC+1
+	sta FRESPC+0
 
 	txa	
 	pha
@@ -18,7 +18,7 @@ STROUT:
 	tya
 	tax
 
-	lda (temp_string_ptr),y
+	lda (FRESPC),y
 	beq !+
 
 	jsr JCHROUT

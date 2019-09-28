@@ -15,13 +15,13 @@ fac1_mul10:
 	jsr fac1_mantissa_mul2
 
 	// copy down to BASIC numeric work area at $57
-	// (basic_numeric_work_area)
+	// (TEMPF1)
 	// (We copy all 7 bytes off the FAC1, so that we have
 	// the overflow bits, and the copy is as small as possible)
 	ldx #7
 f1m10_l1:	
 	lda FAC1_mantissa,x
-	sta basic_numeric_work_area,x
+	sta TEMPF1,x
 	dex
 	bpl f1m10_l1
 
@@ -35,13 +35,13 @@ f1m10_l1:
 	clc
 f1m10_l2:
 	lda FAC1_mantissa,x
-	adc basic_numeric_work_area,x
+	adc TEMPF1,x
 	sta FAC1_mantissa,x
 	inx
 	dey
 	bpl f1m10_l2
 	lda BITS
-	adc basic_numeric_work_area+7
+	adc TEMPF1+7
 	sta BITS
 
 	// Now shift right and increase exponent until overflow

@@ -6,10 +6,10 @@ basic_end_of_statement_check:
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_statement_ptr
+	ldx #<TXTPTR
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_statement_ptr),y
+	lda (TXTPTR),y
 #endif
 
 	// Consume any spaces
@@ -42,10 +42,10 @@ basic_execute_statement:
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_statement_ptr
+	ldx #<TXTPTR
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_statement_ptr),y
+	lda (TXTPTR),y
 #endif
 
 	jsr basic_end_of_statement_check
@@ -56,8 +56,8 @@ basic_execute_statement:
 	// .byte $f1,<basic_current_line_ptr,>basic_current_line_ptr
 	// .byte $f0,<basic_current_line_ptr,>basic_current_line_ptr
 	// .text ", STATEMENT PTR = $"
-	// .byte $f1,<basic_current_statement_ptr,>basic_current_statement_ptr
-	// .byte $f0,<basic_current_statement_ptr,>basic_current_statement_ptr
+	// .byte $f1,<TXTPTR,>TXTPTR
+	// .byte $f0,<TXTPTR,>TXTPTR
 	// .byte $d,0
 		
 	// Go through the line until its end is reached.
@@ -73,11 +73,11 @@ basic_execute_statement:
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_statement_ptr
+	ldx #<TXTPTR
 	jsr peek_under_roms
 	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_statement_ptr),y
+	lda (TXTPTR),y
 #endif
 
 	beq basic_end_of_line
@@ -143,30 +143,30 @@ basic_fetch_and_consume_character:
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_statement_ptr
+	ldx #<TXTPTR
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_statement_ptr),y
+	lda (TXTPTR),y
 #endif
 
 	// FALL THROUGH
 	
 basic_consume_character:
 	// Advance basic text pointer
-	inc basic_current_statement_ptr+0
+	inc TXTPTR+0
 	bne !+
-	inc basic_current_statement_ptr+1
+	inc TXTPTR+1
 !:
 	rts
 
 basic_unconsume_character:
-	lda basic_current_statement_ptr+0
+	lda TXTPTR+0
 	sec
 	sbc #1
-	sta basic_current_statement_ptr+0
-	lda basic_current_statement_ptr+1
+	sta TXTPTR+0
+	lda TXTPTR+1
 	sbc #0
-	sta basic_current_statement_ptr+1
+	sta TXTPTR+1
 	rts
 	
 basic_end_of_line:
@@ -213,10 +213,10 @@ basic_execute_from_current_line:
 	lda basic_current_line_ptr+0
 	clc
 	adc #4
-	sta basic_current_statement_ptr+0
+	sta TXTPTR+0
 	lda basic_current_line_ptr+1
 	adc #0
-	sta basic_current_statement_ptr+1
+	sta TXTPTR+1
 
 	ldy #2
 

@@ -1,4 +1,4 @@
-// Find the BASIC line with number basic_line_number
+// Find the BASIC line with number LINNUM
 
 
 basic_find_line:
@@ -21,7 +21,7 @@ basic_find_line_loop:
 	lda (basic_current_line_ptr),y
 #endif
 
-	cmp basic_line_number+1
+	cmp LINNUM+1
 	beq !+
 	bcs line_num_too_high
 	bne not_this_line
@@ -35,7 +35,7 @@ basic_find_line_loop:
 	lda (basic_current_line_ptr),y
 #endif
 
-	cmp basic_line_number+0
+	cmp LINNUM+0
 	beq !+
 	bcs line_num_too_high
 	bne not_this_line

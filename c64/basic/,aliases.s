@@ -37,35 +37,8 @@
 	
 	.label basic_numeric_work_area = $57 // $57 - $60 inclusive = 10 bytes
 
-	// Floating point accumulator 1 $61 - $68
-	.label basic_fac1_exponent = $61
-	.label basic_fac1_mantissa = $62 // $62 - $65
-	.label basic_fac1_sign = $66
-	.label basic_fac1_overflow = $68
-	.label basic_fac1_mantissa_lob = $70
-
-	.label basic_fac2_exponent = $69
-	.label basic_fac2_mantissa = $6A // $6A - $6D
-	.label basic_fac2_sign = $6E
-
 	// We also re-use FAC2 for memory move pointers, since
 	// we can't be doing calculations while moving memory
 	.label memmove_src = $69
 	.label memmove_dst = $6b
 	.label memmove_size = $6d
-
-#if CONFIG_MEMORY_MODEL_60K
-
-	// BASIC uses some extra bytes for memory access under ROMs located at $2A7 onwards
-	// IRQs are disabled when doing such accesses, and a default NMI handler only increments
-	// a counter, so that if an NMI occurs, it doesn't crash the machine, but can be captured.
-	.label missed_nmi_flag = $2A7
-	.label tiny_nmi_handler = $2A8
-	.label shift_mem_up = tiny_nmi_handler+shift_mem_up_routine-tiny_nmi_handler_routine
-	.label shift_mem_down = tiny_nmi_handler+shift_mem_down_routine-tiny_nmi_handler_routine
-	.label peek_under_roms = tiny_nmi_handler+peek_under_roms_routine-tiny_nmi_handler_routine
-	.label poke_under_roms = tiny_nmi_handler+poke_under_roms_routine-tiny_nmi_handler_routine
-	.label memmap_allram = tiny_nmi_handler+memmap_allram_routine-tiny_nmi_handler_routine
-	.label memmap_normal = tiny_nmi_handler+memmap_normal_routine-tiny_nmi_handler_routine
-
-#endif // CONFIG_MEMORY_MODEL_60K

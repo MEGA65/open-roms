@@ -57,12 +57,22 @@
 	.label JMPER     = $54 // $54-$56  -- NOT IMPLEMENTED --
 	.label TEMPF1    = $57 // $57-$5B  BASIC numeric work area
 	.label TEMPF2    = $5C // $5C-$60  BASIC numeric work area
-	.label FAC1      = $61 // $61-$66  -- NOT IMPLEMENTED --
+
+	.label __FAC1    = $61 // $61-$66  floating point accumulator 1
+	.label FAC1_exponent   = $61
+	.label FAC1_mantissa   = $62 // $62 - $65
+	.label FAC1_sign       = $66
+
 	.label SGNFLG    = $67 //          -- NOT IMPLEMENTED --
-	.label BITS      = $68 //          -- NOT IMPLEMENTED --
-	.label FAC2      = $69 // $69-$6E  -- NOT IMPLEMENTED -- [!] also used for memory move pointers
+	.label BITS      = $68 //          FAC1 overflow
+
+	.label __FAC2    = $69 // $69-$6E  floating point accumulator 2 [!] also used for memory move pointers
+	.label FAC2_exponent   = $69
+	.label FAC2_mantissa   = $6A // $6A - $6D
+	.label FAC2_sign       = $6E
+
 	.label ARISGN    = $6F //          -- NOT IMPLEMENTED --
-	.label FACOV     = $70 //          -- NOT IMPLEMENTED --
+	.label FACOV     = $70 //          FAC1 low order mantissa
 	.label FBUFPT    = $67 // $71-$72  -- NOT IMPLEMENTED --
 	.label CHRGET    = $73 // $73-$8A  -- NOT IMPLEMENTED --
 	.label TXTPTR    = $7A // $7A-$7B  current BASIC statement pointer
@@ -190,7 +200,26 @@
 	.label TD1IRQ    = $2A4  //            -- NOT IMPLEMENTED --
 	.label TLNIDX    = $2A5  //            -- NOT IMPLEMENTED --
 	.label TVSFLG    = $2A6  //            0 = NTSC, 1 = PAL
-	// [!] XXX document $2A7-$2FF usage
+	
+	// [!] $2A7-$2FF is normally free, but in our case some extra functionality uses it
+
+#if CONFIG_MEMORY_MODEL_60K
+
+	// IRQs are disabled when doing such accesses, and a default NMI handler only increments
+	// a counter, so that if an NMI occurs, it doesn't crash the machine, but can be captured.
+
+	.label missed_nmi_flag  = $2A7
+	.label tiny_nmi_handler = $2A8
+	.label peek_under_roms  = tiny_nmi_handler + peek_under_roms_routine - tiny_nmi_handler_routine
+	.label poke_under_roms  = tiny_nmi_handler + poke_under_roms_routine - tiny_nmi_handler_routine
+	.label memmap_allram    = tiny_nmi_handler + memmap_allram_routine   - tiny_nmi_handler_routine
+	.label memmap_normal    = tiny_nmi_handler + memmap_normal_routine   - tiny_nmi_handler_routine
+#if SEGMENT_BASIC
+	.label shift_mem_up     = tiny_nmi_handler + shift_mem_up_routine    - tiny_nmi_handler_routine
+	.label shift_mem_down   = tiny_nmi_handler + shift_mem_down_routine  - tiny_nmi_handler_routine
+#endif // SEGMENT_BASIC
+
+#endif // CONFIG_MEMORY_MODEL_60K
 
 	// BASIC vectors
 	.label IERROR    = $300  // $300-$301

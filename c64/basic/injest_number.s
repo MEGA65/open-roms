@@ -60,7 +60,7 @@ injest_number:
 
 	// Set sign to negative
 	lda #$ff
-	sta basic_fac1_sign
+	sta FAC1_sign
 
 	// Skip over the minus sign
 	jsr basic_consume_character
@@ -80,7 +80,7 @@ ij_loop1:
 
 	// Only add digit if we have not overflowed the accuracy of
 	// the mantissa
-	lda basic_fac1_exponent
+	lda FAC1_exponent
 	beq ij_accept_precision
 
 	// We have an extra digit after saturating our precision.
@@ -103,7 +103,7 @@ ij_accept_precision:
 	// we can add the new digit in
 	jsr fac1_mul10
 
-	lda basic_fac1_exponent
+	lda FAC1_exponent
 	bne ij_consider_next_digit
 	
 	// Get digit
@@ -114,14 +114,14 @@ ij_accept_precision:
 
 	// Add to FAC1 mantissa
 	clc
-	adc basic_fac1_mantissa+0
-	sta basic_fac1_mantissa+0
+	adc FAC1_mantissa+0
+	sta FAC1_mantissa+0
 	ldx #1
 	ldy #3
 ij_loop2:	
-	lda basic_fac1_mantissa,x
+	lda FAC1_mantissa,x
 	adc #$00
-	sta basic_fac1_mantissa,x
+	sta FAC1_mantissa,x
 	inx
 	dey
 	bne ij_loop2
@@ -146,10 +146,10 @@ erase_fac1:
 	lda #$00
 	ldx #8
 !:
-	sta basic_fac1_exponent,x
+	sta FAC1_exponent,x
 	dex
 	bpl !-
-	sta basic_fac1_mantissa_lob
+	sta FACOV
 
 	rts
 	

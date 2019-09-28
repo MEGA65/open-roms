@@ -3,7 +3,7 @@
 
 SRCDIR_COMMON            = c64/aliases
 SRCDIR_BASIC_COMMON      = $(SRCDIR_COMMON) c64/basic
-SRCDIR_KERNAL_COMMON     = $(SRCDIR_COMMON) c64/kernal c64/kernal/jumptable c64/kernal/iec c64/kernal/interrupts
+SRCDIR_KERNAL_COMMON     = $(SRCDIR_COMMON) c64/kernal c64/kernal/assets c64/kernal/jumptable c64/kernal/iec c64/kernal/interrupts
 
 SRCDIR_BASIC_generic     = $(SRCDIR_BASIC_COMMON) c64/basic/,target_generic
 SRCDIR_BASIC_mega65      = $(SRCDIR_BASIC_COMMON) c64/basic/,target_mega65
@@ -127,9 +127,9 @@ build/basic_generic.rom:          build/target_generic/newrom
 build/basic_mega65.rom:           build/target_mega65/newrom
 build/basic_ultimate64.rom:       build/target_ultimate64/newrom
 
-build/symbols_generic.vs:         build/target_generic/BASIC_combined.vs    build/target_generic/KERNAL_combined.vs
-build/symbols_mega65.vs:          build/target_generic/BASIC_mega65.vs      build/target_generic/KERNAL_mega65.vs
-build/symbols_ultimate64.vs:      build/target_ultimate64/BASIC_combined.vs build/target_ultimate64/KERNAL_combined.vs
+build/symbols_generic.vs:         build/target_generic/BASIC_combined.vs     build/target_generic/KERNAL_combined.vs
+build/symbols_mega65.vs:          build/target_mega65/BASIC_combined.vs      build/target_mega65/KERNAL_combined.vs
+build/symbols_ultimate64.vs:      build/target_ultimate64/BASIC_combined.vs  build/target_ultimate64/KERNAL_combined.vs
 
 # Rules - BASIC and KERNAL
 

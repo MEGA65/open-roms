@@ -47,21 +47,21 @@ basic_do_new:
 #if CONFIG_MEMORY_MODEL_60K
 	lda #>$F7FF
 #else // CONFIG_MEMORY_MODEL_38K
-	lda #>$9FFF
+	lda #>$A000
 #endif
 	.byte $2C
 !:	
 #if CONFIG_MEMORY_MODEL_60K
 	lda #>$F7FF
 #else // CONFIG_MEMORY_MODEL_38K
-	lda #>$9FFF
+	lda #>$A000
 #endif
 	sta basic_top_of_memory_ptr+1
 	sta basic_start_of_strings_ptr+1
 #if CONFIG_MEMORY_MODEL_60K
 	lda #<$F7FF
 #else // CONFIG_MEMORY_MODEL_38K
-	lda #<$9FFF
+	lda #<$A000
 #endif
 	sta basic_top_of_memory_ptr+0
 	sta basic_start_of_strings_ptr+0	

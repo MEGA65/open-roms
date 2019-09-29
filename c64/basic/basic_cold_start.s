@@ -43,10 +43,10 @@ basic_cold_start:
 	jsr basic_do_new
 	lda basic_top_of_memory_ptr+0
 	sec
-	sbc basic_end_of_text_ptr+0
+	sbc basic_start_of_text_ptr+0
 	tax
 	lda basic_top_of_memory_ptr+1
-	sbc basic_end_of_text_ptr+1
+	sbc basic_start_of_text_ptr+1
 
 	jsr print_integer
 

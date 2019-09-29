@@ -126,8 +126,10 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFCC`   | `$F333`    | `CLRCHN`    | DONE     |                                                    |
 | `$FFCF`   | `$F157`    | `CHRIN`     | PARTIAL  |                                                    |
 | `$FFD2`   | `$F1CA`    | `CHROUT`    | PARTIAL  |                                                    |
-| `$FFD5`   | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support, no STOP key, check $F49E addr   |
-| `$FFD8`   | `$F5ED`    | `SAVE`      | NOT DONE | check $F5DD location                               |
+| `$FFD5`   | `$F49E`    | `LOAD`      | PARTIAL  | not yet clear what's this entry doing              |
+| `($0330)` | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support, no STOP key, check $F49E addr   |
+| `$FFD8`   | `$F5DD`    | `SAVE`      | NOT DONE |                                                    |
+| `($0332)` | `$F5ED`    | `SAVE`      | NOT DONE |                                                    |
 | `$FFDB`   |            | `SETTIM`    | DONE     |                                                    |
 | `$FFDE`   |            | `RDTIM`     | DONE     |                                                    |
 | `$FFE1`   | `$F6ED`    | `STOP`      | DONE     |                                                    |

@@ -189,7 +189,7 @@ test_mega65: build/kernal_mega65.rom build/basic_mega65.rom build/symbols_mega65
 test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/symbols_ultimate64.vs
 	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -8 empty.d64
 
-test_m65: build/newc65
+test_m65: build/newc65.rom
 	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R build/newc65.rom -4
 
 testremote: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs

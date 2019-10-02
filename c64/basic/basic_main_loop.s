@@ -139,13 +139,13 @@ not_a_line:
 
 	// There is no stored line, so zero that pointer out
 	lda #$00
-	sta basic_current_line_ptr+0
-	sta basic_current_line_ptr+1
+	sta OLDTXT+0
+	sta OLDTXT+1
 
 	// Put invalid line number in current line number value,
 	// so that we know we are in direct mode
 	// (Compute's Mapping the 64 p19)
 	lda #$ff
-	sta basic_current_line_number+1
+	sta CURLIN+1
 
 	jmp basic_execute_statement

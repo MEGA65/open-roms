@@ -4,21 +4,21 @@
 cmd_list:
 
 	// Set current line pointer to start of memory
-	lda basic_start_of_text_ptr+0
-	sta basic_current_line_ptr+0
-	lda basic_start_of_text_ptr+1
-	sta basic_current_line_ptr+1
+	lda TXTTAB+0
+	sta OLDTXT+0
+	lda TXTTAB+1
+	sta OLDTXT+1
 
 list_loop:
 
 	ldy #1
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	bne list_more_lines
@@ -31,7 +31,7 @@ list_loop:
 list_more_lines:
 	lda STKEY
 	bmi !+
-	jmp basic_do_break
+	jmp cmd_stop
 !:
 	jsr list_single_line
 	// Now link to the next line
@@ -45,7 +45,7 @@ list_single_line: // entry point needed by DOS wedge
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	pha
@@ -54,7 +54,7 @@ list_single_line: // entry point needed by DOS wedge
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	tax
@@ -72,11 +72,11 @@ list_single_line: // entry point needed by DOS wedge
 list_print_loop:	
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr
+	ldx #<OLDTXT
 	jsr peek_under_roms
 	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	beq list_end_of_line

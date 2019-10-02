@@ -41,12 +41,12 @@ basic_cold_start:
 
 	// Work out free bytes, display them
 	jsr basic_do_new
-	lda basic_top_of_memory_ptr+0
+	lda MEMSIZ+0
 	sec
-	sbc basic_start_of_text_ptr+0
+	sbc TXTTAB+0
 	tax
-	lda basic_top_of_memory_ptr+1
-	sbc basic_start_of_text_ptr+1
+	lda MEMSIZ+1
+	sbc TXTTAB+1
 
 	jsr print_integer
 

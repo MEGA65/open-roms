@@ -9,18 +9,18 @@ basic_delete_line:
 
 	// jsr printf
 	// .text "DELETING LINE AT $"
-	// .byte $f1,<basic_current_line_ptr,>basic_current_line_ptr
-	// .byte $f0,<basic_current_line_ptr,>basic_current_line_ptr
+	// .byte $f1,<OLDTXT,>OLDTXT
+	// .byte $f0,<OLDTXT,>OLDTXT
 	// .byte $0d,0
 
 	// Get address of next line
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr
+	ldx #<OLDTXT
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	sta __tokenise_work3
@@ -29,7 +29,7 @@ basic_delete_line:
 #if CONFIG_MEMORY_MODEL_60K	
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	sta __tokenise_work4
@@ -37,10 +37,10 @@ basic_delete_line:
 	// Work out length of this line by looking at the pointer
 	lda __tokenise_work3
 	sec
-	sbc basic_current_line_ptr+0
+	sbc OLDTXT+0
 	sta __tokenise_work3
 	lda __tokenise_work4
-	sbc basic_current_line_ptr+1
+	sbc OLDTXT+1
 	sta __tokenise_work4
 
 	// jsr printf
@@ -70,13 +70,13 @@ basic_delete_line:
 	// Now decrease top of BASIC mem
 	pla
 	sta __tokenise_work3
-	lda basic_end_of_text_ptr+0
+	lda VARTAB+0
 	sec
 	sbc __tokenise_work3
-	sta basic_end_of_text_ptr+0
-	lda basic_end_of_text_ptr+1
+	sta VARTAB+0
+	lda VARTAB+1
 	sbc #0
-	sta basic_end_of_text_ptr+1
+	sta VARTAB+1
 
 	clc
 	rts

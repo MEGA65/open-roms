@@ -1,7 +1,7 @@
 
 
 basic_shift_mem_up_and_relink:
-	// Shift memory up from basic_current_line_ptr
+	// Shift memory up from OLDTXT
 	// X bytes.
 
 	// NOTE: Pointers need to be reduced by one, due to the way
@@ -9,9 +9,9 @@ basic_shift_mem_up_and_relink:
 	// Work out end point of destination
 	txa
 	clc
-	adc basic_end_of_text_ptr+0
+	adc VARTAB+0
 	sta __memmove_dst+0
-	lda basic_end_of_text_ptr+1
+	lda VARTAB+1
 	adc #0
 	sta __memmove_dst+1
 	lda __memmove_dst+0
@@ -23,27 +23,27 @@ basic_shift_mem_up_and_relink:
 	sta __memmove_dst+1
 
 	// End point of source is just current end of BASIC text
-	lda basic_end_of_text_ptr+0
+	lda VARTAB+0
 	sec
 	sbc #1
 	sta __memmove_src+0
-	lda basic_end_of_text_ptr+1
+	lda VARTAB+1
 	sbc #0
 	sta __memmove_src+1
 
 	// Work out size of region to copy
-	lda basic_end_of_text_ptr+0
+	lda VARTAB+0
 	sec
-	sbc basic_current_line_ptr+0
+	sbc OLDTXT+0
 	sta __memmove_size+0	
-	lda basic_end_of_text_ptr+1
-	sbc basic_current_line_ptr+1
+	lda VARTAB+1
+	sbc OLDTXT+1
 	sta __memmove_size+1
 	
 	// jsr printf
 	// .text "TOP OF BASIC = $"
-	// .byte $f1,<basic_end_of_text_ptr,>basic_end_of_text_ptr
-	// .byte $f0,<basic_end_of_text_ptr,>basic_end_of_text_ptr
+	// .byte $f1,<VARTAB,>VARTAB
+	// .byte $f0,<VARTAB,>VARTAB
 	// .byte $0d
 	// .text "SHIFTING UP $"
 	// .byte $f1,<__memmove_size,>__memmove_size
@@ -106,22 +106,22 @@ basic_shift_mem_up_and_relink:
 	// to make it end up pointing to the next line
 	ldy #0
 
-	lda basic_current_line_ptr+0
+	lda OLDTXT+0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 
 	iny
-	lda basic_current_line_ptr+1
+	lda OLDTXT+1
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 	
 relink_up_next_line:
@@ -132,10 +132,10 @@ relink_up_next_line:
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	sta __memmove_dst+0
@@ -149,7 +149,7 @@ relink_up_next_line:
 	jsr peek_under_roms
 	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	sta __memmove_dst+1
@@ -159,8 +159,8 @@ relink_up_next_line:
 
 	// jsr printf
 	// .text "LINE ADDR = $"
-	// .byte $f1,<basic_current_line_ptr,>basic_end_of_text_ptr
-	// .byte $f0,<basic_current_line_ptr,>basic_end_of_text_ptr
+	// .byte $f1,<OLDTXT,>VARTAB
+	// .byte $f0,<OLDTXT,>VARTAB
 	// .text $d,"  BEFORE = $"
 	// .byte $f1,<__memmove_dst,>__memmove_dst
 	// .byte $f0,<__memmove_dst,>__memmove_dst
@@ -175,10 +175,10 @@ relink_up_next_line:
 	lda __memmove_src+0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 
 	iny
@@ -187,15 +187,15 @@ relink_up_next_line:
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 	
 relink_up_loop:	
 	// Now advance pointer to the next line,
 	lda __memmove_src+0
-	sta basic_current_line_ptr+0
+	sta OLDTXT+0
 	lda __memmove_src+1
-	sta basic_current_line_ptr+1
+	sta OLDTXT+1
 
 	// Have we run out of lines to patch?
 	jsr peek_line_pointer_null_check

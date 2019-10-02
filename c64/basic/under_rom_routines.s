@@ -8,9 +8,9 @@
 
 install_ram_routines:
 	// Copy routines into place
-	ldx #ram_routines_end-ram_routines_start-1
+	ldx #__ram_routines_end-__ram_routines_start-1
 !:
-	lda ram_routines_start,x
+	lda __ram_routines_start,x
 	sta tiny_nmi_handler,x
 	dex
 	bpl !-
@@ -23,7 +23,7 @@ install_ram_routines:
 
 	rts
 
-ram_routines_start:	
+__ram_routines_start:
 
 	// XXX - Routine order must match that of the KERNAL version of the file.
 	// (since it has fewer routines)
@@ -107,7 +107,7 @@ smd1:
 	plp
 	jmp memmap_normal
 
-ram_routines_end:
+__ram_routines_end:
 
 #else // CONFIG_MEMORY_MODEL_60K
 

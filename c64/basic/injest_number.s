@@ -56,7 +56,7 @@ injest_number:
 	ldy #$00
 	lda (TXTPTR),y
 	cmp #$AB
-	bne ij_not_minus
+	bne ij_loop1 // not minus
 
 	// Set sign to negative
 	lda #$ff
@@ -64,9 +64,6 @@ injest_number:
 
 	// Skip over the minus sign
 	jsr basic_consume_character
-	
-ij_not_minus:	
-
 
 ij_loop1:
 	ldy #$00

@@ -195,10 +195,10 @@ wedge_dos_directory_display:
 
 	// Display line
 	ldx #<BUF
-	stx basic_current_line_ptr+0
+	stx OLDTXT+0
 	ldx #>BUF
-	stx basic_current_line_ptr+1
-	ldx #basic_current_line_ptr
+	stx OLDTXT+1
+	ldx #OLDTXT
 	jsr list_single_line
 
 	// Read & display next line or quit

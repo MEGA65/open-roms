@@ -120,12 +120,12 @@ do_TO_MANY_FILES_error:
 	lda $EA
 	and #$80
 	sta $EA
-	
+
 	// FALL THROUGH
 
 	// Error # in X
-	
-do_basic_error:			
+
+do_basic_error:	
 	// "?"
 	txa
 	pha
@@ -142,12 +142,12 @@ do_basic_error:
 	// A space between error name and word error
 	lda #$20
 	jsr $ffd2
-	
+
 	// "ERROR"
 	ldx #33
 	jsr print_packed_message
 
-	lda basic_current_line_number+1
+	lda CURLIN+1
 	cmp #$ff
 	beq !+
 
@@ -156,8 +156,8 @@ do_basic_error:
 	.text " IN "
 	.byte 0
 
-	lda basic_current_line_number+1
-	ldx basic_current_line_number+0
+	lda CURLIN+1
+	ldx CURLIN+0
 	jsr print_integer
 !:
 	// New lines

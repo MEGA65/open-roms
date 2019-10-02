@@ -73,7 +73,7 @@
 
 	.label ARISGN    = $6F //          -- NOT IMPLEMENTED --
 	.label FACOV     = $70 //          FAC1 low order mantissa
-	.label FBUFPT    = $67 // $71-$72  -- NOT IMPLEMENTED --
+	.label FBUFPT    = $71 // $71-$72  -- NOT IMPLEMENTED --
 	.label CHRGET    = $73 // $73-$8A  -- NOT IMPLEMENTED --
 	.label TXTPTR    = $7A // $7A-$7B  current BASIC statement pointer
 	.label RNDX      = $8B // $8B-$8F  -- NOT IMPLEMENTED --

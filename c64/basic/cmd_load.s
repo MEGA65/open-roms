@@ -13,7 +13,7 @@ cmd_load:
 	
 	// Setup Kernal to print control messages or not
 	lda #$80 // display control messages and omit error messages
-	ldx basic_current_line_number+1
+	ldx CURLIN+1
 	cpx #$FF
 	beq !+
 	lda #$00 // direct mode - don't display anything
@@ -112,8 +112,8 @@ got_loadaddress:
 	
 !:
 	// $YYXX is the last loaded address, so store it
-	stx basic_end_of_text_ptr+0
-	sty basic_end_of_text_ptr+1
+	stx VARTAB+0
+	sty VARTAB+1
 
 	// Now relink the loaded program, as we cannot trust the line
 	// links supplied. For example, the VICE virtual drive emulation
@@ -124,33 +124,33 @@ got_loadaddress:
 	// or go back to the READY prompt if LOAD was called from direct mode.
 
 	// Reset to start of program
-	lda basic_start_of_text_ptr+0
-	sta basic_current_line_ptr+0
-	lda basic_start_of_text_ptr+1
-	sta basic_current_line_ptr+1
+	lda TXTTAB+0
+	sta OLDTXT+0
+	lda TXTTAB+1
+	sta OLDTXT+1
 
 	// XXX - should run program if LOAD was used in program mode
 	jmp basic_main_loop
 
 
 basic_relink_program:
-	
-	// Start by getting pointer to the first line
-	lda basic_start_of_text_ptr+0
-	sta basic_current_line_ptr+0
-	lda basic_start_of_text_ptr+1
-	sta basic_current_line_ptr+1
 
-basic_relink_loop:	
+	// Start by getting pointer to the first line
+	lda TXTTAB+0
+	sta OLDTXT+0
+	lda TXTTAB+1
+	sta OLDTXT+1
+
+basic_relink_loop:
 	// Is the pointer to the end of the program
 	ldy #1
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	bne !+
@@ -164,10 +164,10 @@ basic_relink_loop:
 end_of_line_search:
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	cmp #$00
@@ -185,37 +185,37 @@ end_of_line_search:
 
 	// First, skip over the $00 char
 	iny
-	
+
 	// Now overwrite the pointer (carefully)
-	// 
+	//
 	tya
 	clc
-	adc basic_current_line_ptr+0
+	adc OLDTXT+0
 	pha
 	php
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 
 	plp
-	lda basic_current_line_ptr+1
+	lda OLDTXT+1
 	adc #0
 	ldy #1
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 
-	sta basic_current_line_ptr+1
+	sta OLDTXT+1
 	pla
-	sta basic_current_line_ptr+0
+	sta OLDTXT+0
 
 	jmp basic_relink_loop
 

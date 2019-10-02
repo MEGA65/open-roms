@@ -18,13 +18,13 @@ basic_insert_line:
 
 	// jsr printf
 	// .text "INSERTING LINE AT $"
-	// .byte $f1,<basic_current_line_ptr,>basic_current_line_ptr
-	// .byte $f0,<basic_current_line_ptr,>basic_current_line_ptr
+	// .byte $f1,<OLDTXT,>OLDTXT
+	// .byte $f0,<OLDTXT,>OLDTXT
 	// .byte $0d,0
 	
-	lda basic_current_line_ptr+0
+	lda OLDTXT+0
 	pha
-	lda basic_current_line_ptr+1
+	lda OLDTXT+1
 
 	pha
 	
@@ -44,27 +44,27 @@ basic_insert_line:
 	// Now increase top of BASIC mem
 	pla
 	clc
-	adc basic_end_of_text_ptr+0
-	sta basic_end_of_text_ptr+0
-	lda basic_end_of_text_ptr+1
+	adc VARTAB+0
+	sta VARTAB+0
+	lda VARTAB+1
 	adc #0
-	sta basic_end_of_text_ptr+1
+	sta VARTAB+1
 	
 	// Get pointer back
 	pla
-	sta basic_current_line_ptr+1
+	sta OLDTXT+1
 	pla
-	sta basic_current_line_ptr+0
+	sta OLDTXT+0
 
 	// Write the line number
 	ldy #2
 	lda LINNUM+0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 
 	iny
@@ -73,7 +73,7 @@ basic_insert_line:
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 
 	// Now store the line body itself
@@ -85,10 +85,10 @@ line_store_loop:
 	iny
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 
 	lda __tokenise_work1

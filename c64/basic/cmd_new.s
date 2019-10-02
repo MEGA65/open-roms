@@ -15,20 +15,20 @@ cmd_clr:
 basic_do_new:	
 	// Setup pointers to memory storage  XXX should depend on text start vector
 	lda #<$0801
-	sta basic_start_of_text_ptr+0
+	sta TXTTAB+0
 	lda #>$0801
-	sta basic_start_of_text_ptr+1
-	sta basic_start_of_vars_ptr+1
+	sta TXTTAB+1
+	sta VARTAB+1
 	lda #<$0803
-	sta basic_start_of_vars_ptr+0
+	sta VARTAB+0
 
 	// Zero line pointer
-	// XXX - We should also zero $0800, i.e., basic_start_of_text_ptr - 1
+	// XXX - We should also zero $0800, i.e., TXTTAB - 1
 	ldy #$00
 	tya
-	sta (basic_start_of_text_ptr),y
+	sta (TXTTAB),y
 	iny
-	sta (basic_start_of_text_ptr),y
+	sta (TXTTAB),y
 	
 	
 	// Get top of memory.
@@ -39,7 +39,7 @@ basic_do_new:
 	// free for some optimisation structures, e.g., FOR/NEXT loop
 	// records (without them going on the stack), GOSUB stack
 	// (same story), expression value cache?
-	
+
 	sec			// Read, not write value
 	jsr JMEMTOP
 	cpx #$80
@@ -56,25 +56,25 @@ basic_do_new:
 #else // CONFIG_MEMORY_MODEL_38K
 	lda #>$A000
 #endif
-	sta basic_top_of_memory_ptr+1
-	sta basic_start_of_strings_ptr+1
+	sta MEMSIZ+1
+	sta FRETOP+1
 #if CONFIG_MEMORY_MODEL_60K
 	lda #<$F7FF
 #else // CONFIG_MEMORY_MODEL_38K
 	lda #<$A000
 #endif
-	sta basic_top_of_memory_ptr+0
-	sta basic_start_of_strings_ptr+0	
-	
+	sta MEMSIZ+0
+	sta FRETOP+0
+
 	// FALL THROUGH
-	
+
 basic_do_clr:
 	// Clear variables, arrays and strings
-	lda basic_start_of_vars_ptr+0
-	sta basic_start_of_arrays_ptr+0
-	sta basic_start_of_free_space_ptr+0
-	lda basic_start_of_vars_ptr+1
-	sta basic_start_of_arrays_ptr+1
-	sta basic_start_of_free_space_ptr+1
+	lda VARTAB+0
+	sta ARYTAB+0
+	sta STREND+0
+	lda VARTAB+1
+	sta ARYTAB+1
+	sta STREND+1
 
 	rts

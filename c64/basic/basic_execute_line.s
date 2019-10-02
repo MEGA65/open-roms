@@ -36,7 +36,7 @@ basic_execute_statement:
 	// Check for RUN/STOP
 	lda STKEY
 	bmi !+
-	jmp basic_do_break
+	jmp cmd_stop
 !:
 	// Skip over any white space and :
 	ldy #0
@@ -53,8 +53,8 @@ basic_execute_statement:
 	
 	// jsr printf
 	// .text "LINE PTR = $"
-	// .byte $f1,<basic_current_line_ptr,>basic_current_line_ptr
-	// .byte $f0,<basic_current_line_ptr,>basic_current_line_ptr
+	// .byte $f1,<OLDTXT,>OLDTXT
+	// .byte $f0,<OLDTXT,>OLDTXT
 	// .text ", STATEMENT PTR = $"
 	// .byte $f1,<TXTPTR,>TXTPTR
 	// .byte $f0,<TXTPTR,>TXTPTR
@@ -119,7 +119,7 @@ not_a_token:
 	// BASIC programmers should implement communication with drives
 	// the standard way, handling channels properly. Besides,
 	// current implementation does not support characters under ROM
-	ldx basic_current_line_number+1
+	ldx CURLIN+1
 	cpx #$ff
 	bne !+
 	// We are in direct mode, allow wedge to handle '@' sign
@@ -175,7 +175,7 @@ basic_end_of_line:
 	// one.
 
 	// Are we in direct mode
-	lda basic_current_line_number+1
+	lda CURLIN+1
 	cmp #$ff
 	bne basic_not_direct_mode
 
@@ -184,17 +184,17 @@ basic_end_of_line:
 
 basic_not_direct_mode:
 	// Copy line number to previous line number
-	lda basic_current_line_number+0
-	sta basic_previous_line_number+0
-	lda basic_current_line_number+1
-	sta basic_previous_line_number+1
+	lda CURLIN+0
+	sta OLDLIN+0
+	lda CURLIN+1
+	sta OLDLIN+1
 	
 	// Advance the basic line pointer to the next line
 	jsr basic_follow_link_to_next_line
 
 	// Are we at the end of the program?
-	lda basic_current_line_ptr+0
-	ora basic_current_line_ptr+1
+	lda OLDTXT+0
+	ora OLDTXT+1
 	bne basic_execute_from_current_line
 
 	// End of program found
@@ -210,33 +210,33 @@ basic_execute_from_current_line:
 	jmp basic_main_loop
 !:
 	// Skip pointer and line number to get address of first statement
-	lda basic_current_line_ptr+0
+	lda OLDTXT+0
 	clc
 	adc #4
 	sta TXTPTR+0
-	lda basic_current_line_ptr+1
+	lda OLDTXT+1
 	adc #0
 	sta TXTPTR+1
 
 	ldy #2
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr
+	ldx #<OLDTXT
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
-	sta basic_current_line_number+0
+	sta CURLIN+0
 	iny
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
-	sta basic_current_line_number+1
+	sta CURLIN+1
 
 	jmp basic_execute_statement
 	

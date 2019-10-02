@@ -6,11 +6,11 @@ peek_line_pointer_null_check:
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	bne ptr_not_null
@@ -20,7 +20,7 @@ peek_line_pointer_null_check:
 	jsr peek_under_roms
 	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	bne ptr_not_null

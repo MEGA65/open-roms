@@ -12,7 +12,7 @@
 
 // As there is nothing between here and $FFFA, we can just hard code this in place.
 
-iobase:
+// iobase: - commented out to prevent label naming conflict
     ldy #$DC
     ldx #$00
     rts

@@ -2,35 +2,35 @@ basic_shift_mem_down_and_relink:
 	// Shift memory down to basic_current_line_pointer
 	// from X bytes further along.
 
-	// Destination is basic_current_line_ptr
-	lda basic_current_line_ptr+0
+	// Destination is OLDTXT
+	lda OLDTXT+0
 	sta __memmove_dst+0
-	lda basic_current_line_ptr+1
+	lda OLDTXT+1
 	sta __memmove_dst+1	
 	
 	// Source is that plus X
 	txa
 	pha 			// also keep for later
 	clc
-	adc basic_current_line_ptr+0
+	adc OLDTXT+0
 	sta __memmove_src+0
-	lda basic_current_line_ptr+1
+	lda OLDTXT+1
 	adc #0
 	sta __memmove_src+1
 
 	// Size is distance from source to end of BASIC text.
-	lda basic_end_of_text_ptr+0
+	lda VARTAB+0
 	sec
 	sbc __memmove_src+0
 	sta __memmove_size+0
-	lda basic_end_of_text_ptr+1
+	lda VARTAB+1
 	sbc __memmove_src+1
 	sta __memmove_size+1
 
 	// jsr printf
 	// .text "TOP OF BASIC = $"
-	// .byte $f1,<basic_end_of_text_ptr,>basic_end_of_text_ptr
-	// .byte $f0,<basic_end_of_text_ptr,>basic_end_of_text_ptr
+	// .byte $f1,<VARTAB,>VARTAB
+	// .byte $f0,<VARTAB,>VARTAB
 	// .byte $0d
 	// .text "SHIFTING DOWN $"
 	// .byte $f1,<__memmove_size,>__memmove_size
@@ -116,10 +116,10 @@ relink_down_next_line:
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	sec
@@ -130,7 +130,7 @@ relink_down_next_line:
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	sbc #0
@@ -140,10 +140,10 @@ relink_down_next_line:
 	lda __memmove_src+0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 
 	iny
@@ -152,15 +152,15 @@ relink_down_next_line:
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	sta (basic_current_line_ptr),y
+	sta (OLDTXT),y
 #endif
 
 relink_down_loop:	
 	// Now advance pointer to the next line,
 	lda __memmove_src+0
-	sta basic_current_line_ptr+0
+	sta OLDTXT+0
 	lda __memmove_src+1
-	sta basic_current_line_ptr+1
+	sta OLDTXT+1
 
 	// Have we run out of lines to patch?
 	jsr peek_line_pointer_null_check

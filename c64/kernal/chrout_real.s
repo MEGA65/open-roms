@@ -365,12 +365,12 @@ not_clearscreen:
 	bcc !+
 	
 	and #$7f
-	jmp not_high_char
+	jmp output_literal_char // not high char
 
 !:
 	// Range $20-$3F is unchanged
 	cmp #$40
-	bcc not_high_char
+	bcc output_literal_char // not high char
 
 	// Unshifted letters and symbols from $40-$5F
 	// all end up being -$40
@@ -385,15 +385,11 @@ not_clearscreen:
 
 	// Fix shifted chars by adding $20 again
 	cmp #$20
-	bcc not_high_char
+	bcc output_literal_char // not high char
 	cmp #$40
-	bcs not_high_char
+	bcs output_literal_char // not high char
 	clc
 	adc #$20
-
-not_high_char:
-
-chrout_l1:
 
 output_literal_char:
 	
@@ -449,7 +445,7 @@ screen_grow_logical_line:
 	// Don't grow line if it is already grown
 	lda LDTBL,y
 	bpl !+
-	jmp done_grow_line
+	jmp not_last_line // doneb grow line
 !:
 	lda #$80
 	sta LDTBL,y
@@ -563,10 +559,9 @@ no_copy_down:
 	dey
 	cpy #40
 	bne !-
-	
+
 	rts
 
-done_grow_line:
 not_last_line:
 	rts
 

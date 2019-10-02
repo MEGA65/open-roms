@@ -8,9 +8,9 @@
 
 install_ram_routines:
 	// Copy routines into place
-	ldx #ram_routines_end-ram_routines_start-1
+	ldx #__ram_routines_end-__ram_routines_start-1
 !:
-	lda ram_routines_start,x
+	lda __ram_routines_start,x
 	sta tiny_nmi_handler,x
 	dex
 	bpl !-
@@ -23,7 +23,7 @@ install_ram_routines:
 
 	rts
 
-ram_routines_start:	
+__ram_routines_start:
 
 tiny_nmi_handler_routine:
 	inc missed_nmi_flag
@@ -63,6 +63,6 @@ memmap_allram_routine:
 	pla
 	rts
 
-ram_routines_end:
+__ram_routines_end:
 
 #endif // CONFIG_MEMORY_MODEL_60K

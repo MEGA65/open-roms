@@ -3,10 +3,10 @@
 
 basic_find_line:
 	// Get pointer to start of BASIC text
-	lda basic_start_of_text_ptr+0
-	sta basic_current_line_ptr+0
-	lda basic_start_of_text_ptr+1
-	sta basic_current_line_ptr+1
+	lda TXTTAB+0
+	sta OLDTXT+0
+	lda TXTTAB+1
+	sta OLDTXT+1
 
 basic_find_line_loop:	
 	// Then search for line number
@@ -15,10 +15,10 @@ basic_find_line_loop:
 	ldy #3
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	cmp LINNUM+1
@@ -32,7 +32,7 @@ basic_find_line_loop:
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	cmp LINNUM+0
@@ -59,10 +59,10 @@ more_lines_exist:
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	sta $0100
@@ -71,11 +71,11 @@ more_lines_exist:
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
-	sta basic_current_line_ptr+1
+	sta OLDTXT+1
 	lda $0100
-	sta basic_current_line_ptr+0
+	sta OLDTXT+0
 
 	jmp basic_find_line_loop

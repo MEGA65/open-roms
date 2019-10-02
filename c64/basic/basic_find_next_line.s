@@ -1,4 +1,4 @@
-// Advance basic_current_line_ptr by following the
+// Advance OLDTXT by following the
 // link to the next line
 
 basic_find_next_line:
@@ -6,10 +6,10 @@ basic_find_next_line:
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<basic_current_line_ptr+0
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
 	pha
@@ -18,10 +18,10 @@ basic_find_next_line:
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (basic_current_line_ptr),y
+	lda (OLDTXT),y
 #endif
 
-	sta basic_current_line_ptr+1
+	sta OLDTXT+1
 	pla
-	sta basic_current_line_ptr+0
+	sta OLDTXT+0
 	rts

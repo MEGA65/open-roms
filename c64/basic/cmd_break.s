@@ -1,17 +1,16 @@
 cmd_stop:
-	jsr printf // XXX don't use printf, use packed messages!
-	.text "BREAK"
-	.byte 0
+	ldx #38 // "BREAK"
+	jsr print_packed_message
 
-	// Check for direct mode
 	// Are we in direct mode
 	lda CURLIN+1
 	cmp #$FF
 	beq !+
+
 	// Not direct mode
-	jsr printf // XXX don't use printf, use packed messages!
-	.text " IN "
-	.byte 0
+	ldx #37
+	jsr print_packed_message
+
 	lda CURLIN+1
 	ldx CURLIN+0
 	jsr print_integer

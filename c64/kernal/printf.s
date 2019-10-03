@@ -9,6 +9,8 @@
 // .byte 2,$low,$hi = display word as hex
 // .byte $f0+n,$low,$hi = display byte at $hi$lo+n as hex
 
+#if CONFIG_DBG_PRINTF
+
 printf:
 	// Temporary storage is between end of screen at $0400
 	// and the sprite pointers at $7f8
@@ -63,7 +65,7 @@ printf_continues:
 	// Read the low byte
 	jsr $7f4
 	// Print as hex
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	jmp printf_nextchar
 	
 not_hexbyte:
@@ -77,13 +79,13 @@ not_hexbyte:
 	// Read the high byte
 	jsr $7f4
 	// Print as hex
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	// Skip the token
 	jsr printf_retreat
 	// Read the low byte
 	jsr $7f4
 	// Print as hex
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	jsr printf_advance
 	jmp printf_nextchar
 	
@@ -107,7 +109,7 @@ not_hexword:
 	sta $fe
 
 	lda ($fd),y
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	jmp printf_nextchar
 
 not_pointer:	
@@ -117,7 +119,6 @@ not_pointer:
 printf_nextchar:
 	jsr printf_advance
 	jmp printf_loop
-
 
 printf_advance:
 	// Advance pointer to next character
@@ -138,48 +139,5 @@ printf_retreat:
 	sta $7f6
 	rts
 
-printf_printhexbyte:
+#endif // CONFIG_DBG_PRINTF
 
-	// Print the hex value in .A as two digits
-
-#if HAS_BCD_SAFE_INTERRUPTS
-
-	// Idea by Haubitze
-
-	sed
-	pha
-	lsr
-	lsr
-	lsr
-	lsr
-	cmp #$0A
-	adc #$30
-	jsr JCHROUT
-	pla
-	and #$0F
-	cmp #$0A
-	adc #$30
-	cld
-	jmp JCHROUT
-
-#else
-
-	pha
-	lsr
-	lsr
-	lsr
-	lsr
-	ora #$30
-	cmp #$3A
-	bcc !+
-	adc #6
-!:	jsr JCHROUT
-	pla
-	and #$0f
-	ora #$30
-	cmp #$3A
-	bcc !+
-	adc #6
-!:	jmp JCHROUT
-
-#endif

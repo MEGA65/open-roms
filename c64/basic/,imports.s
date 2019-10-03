@@ -3,5 +3,9 @@
 
 #import "KERNAL_combined.sym"
 
+
+#if CONFIG_DBG_PRINTF
 .label printf              = KERNAL.printf
-.label printf_printhexbyte = KERNAL.printf_printhexbyte
+#endif
+
+.label print_hex_byte      = KERNAL.print_hex_byte

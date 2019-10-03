@@ -117,9 +117,9 @@ lvs_display_start_addr:
 	.text " FROM $"
 	.byte 0
 	lda STAL+1
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	lda STAL+0
-	jmp printf_printhexbyte
+	jmp print_hex_byte
 
 lvs_display_done:
 	// Display end address
@@ -129,9 +129,9 @@ lvs_display_done:
 	.text " TO $"
 	.byte 0
 	lda STAL+1
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	lda STAL+0
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	lda #$0D
 	jmp JCHROUT
 

@@ -16,12 +16,11 @@ basic_warm_start:
 	jsr print_packed_message
 
 	lda CMP0+1
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	lda CMP0+0
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	lda #$0D
 	jsr JCHROUT
 
 !:
 	jmp basic_main_loop
-

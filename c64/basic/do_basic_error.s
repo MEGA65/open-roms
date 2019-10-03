@@ -152,9 +152,8 @@ do_basic_error:
 	beq !+
 
 	// We were in a program, so show IN <line>
-	jsr printf // XXX don't use printf, use packed messages
-	.text " IN "
-	.byte 0
+	ldx #37
+	jsr print_packed_message
 
 	lda CURLIN+1
 	ldx CURLIN+0

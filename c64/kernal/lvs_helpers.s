@@ -71,10 +71,10 @@ lvs_advance_pointer:
 lvs_display_searching_for:
 	lda MSGFLG
 	bpl lvs_display_end
-	jsr printf // XXX don't use printf, use packed message
-	.byte $0D
-	.text "SEARCHING FOR "
-	.byte 0
+
+	ldx #__MSG_KERNAL_SEARCHING_FOR
+	jsr print_kernal_message
+
 	ldy #$00
 !:
 	cpy FNLEN
@@ -98,24 +98,21 @@ lvs_display_loading_verifying:
 	// Display LOADING / VERIFYING and start address
 	lda MSGFLG
 	bpl lvs_display_end
+
+	ldx #__MSG_KERNAL_LOADING
 	lda VERCKK
 	beq !+
-	jsr printf // XXX don't use printf, use packed message
-	.byte $0D
-	.text "VERIFYING"
-	.byte 0
-	jmp lvs_display_start_addr
+	ldx #__MSG_KERNAL_VERIFYING
 !:
-	jsr printf // XXX don't use printf, use packed message
-	.byte $0D
-	.text "LOADING"
-	.byte 0
+	jsr print_kernal_message
+
 	// FALLTHROUGH
 
 lvs_display_start_addr:
-	jsr printf // XXX don't use printf, use packed message
-	.text " FROM $"
-	.byte 0
+	ldx #__MSG_KERNAL_FROM_HEX
+!:
+	jsr print_kernal_message
+
 	lda STAL+1
 	jsr print_hex_byte
 	lda STAL+0
@@ -125,13 +122,9 @@ lvs_display_done:
 	// Display end address
 	lda MSGFLG
 	bpl lvs_display_end
-	jsr printf // XXX don't use printf, use packed message
-	.text " TO $"
-	.byte 0
-	lda STAL+1
-	jsr print_hex_byte
-	lda STAL+0
-	jsr print_hex_byte
+
+	ldx #__MSG_KERNAL_TO_HEX
+	jsr !-
 	jmp print_return
 
 lvs_wrap_around_error:

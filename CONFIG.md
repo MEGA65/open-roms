@@ -94,8 +94,14 @@ On the most widespread CPUs the D flag is not cleared upon entering interrupts. 
 
 Feature needs 2 bytes in KERNAL segmment (for CPUs needing the patch), but at the same time allows optimizations allowing to gain some more bytes. If unsure - enable.
 
+## Debug options
+
+Options in this section are for debug purposes only. If unsure - disable.
+
 ### `CONFIG_DBG_STUBS_BRK`
 
-Option just for debugging purposes - replaces `RTS` stubbed routines implementation with one causing a break.
+Replaces `RTS` stubbed routines implementation with one causing a break.
 
-If unsure - disable.
+### `CONFIG_DBG_PRINTF`
+
+Makes 'printf' routine available.

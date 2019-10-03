@@ -1,8 +1,24 @@
 
-// XXX provide documentation and finish the implementation
+//
+// Well-known BASIC routine, described in:
+//
+// - [CM64] Compute's Mapping the Commodore 64 - page 212
+//
+// Prints the start-up messages
+//
 
 INITMSG:
 
+	// Print startup banner, up to 255 characters
+	ldx #$00
+!:
+	lda startup_banner, x
+	beq !+ // 0 means end of banner
+	jsr JCHROUT
+	inx
+	bne !-
+
+!:
 	// Print PAL/NTSC
 	ldx #30 // NTSC
 	lda TVSFLG
@@ -23,6 +39,6 @@ INITMSG:
 	jsr print_integer
 	jsr print_space
 
-	// Print the rest of the start up message
+	// Print rest of the start up message
 	ldx #34
 	jmp print_packed_message

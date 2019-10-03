@@ -81,7 +81,7 @@ Not all of them - only these we want to have implemented.
 | `$AB1E`   | STROUT       | DONE     |                                                    |
 | `$BDCD`   | LINPRT       | NOT DONE |                                                    |
 | `$E3BF`   | INIT         | NOT DONE |                                                    |
-| `$E422`   | INITMSG      | PARTIAL  | banner printed outside                             |
+| `$E422`   | INITMSG      | DONE     |                                                    |
 | `$E453`   | RVECT        | NOT DONE |                                                    |
 
 <br />

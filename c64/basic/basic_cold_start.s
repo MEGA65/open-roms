@@ -27,33 +27,8 @@ basic_cold_start:
 	lda #>do_ILLEGAL_QUANTITY_error
 	sta USRADD+1
 
-	// Print startup banner
-	jsr printf // XXX don't use printf, keep it for debug purposes only
-	TARGET_HOOK_BANNER()
-
-	// Print PAL/NTSC
-	ldx #30 // NTSC
-	lda TVSFLG
-	beq !+
-	ldx #31 // PAL
-!:
-	jsr print_packed_message
-
-	// Work out free bytes, display them
-	jsr basic_do_new
-	lda MEMSIZ+0
-	sec
-	sbc TXTTAB+0
-	tax
-	lda MEMSIZ+1
-	sbc TXTTAB+1
-
-	jsr print_integer
-	jsr print_space
-
-	// Print the rest of the start up message
-	ldx #34
-	jsr print_packed_message
+	// Print startup messages
+	jsr INITMSG
 
 	// jump into warm start loop
 	jmp basic_warm_start

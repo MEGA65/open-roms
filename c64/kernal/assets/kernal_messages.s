@@ -17,28 +17,28 @@ __kernal_messages_start:
 
 __kernal_message_searching_for:
 	.byte $0D
-	.text "SEARCHING FOR "
-	.byte 0
+	.text "SEARCHING FOR"
+	.byte $80 + $20 // end of string mark + space
 
 __kernal_message_loading:
 	.byte $0D
-	.text "LOADING"
-	.byte 0
+	.text "LOADIN"
+	.byte $80 + $47 // end of string mark + 'G'
 
 __kernal_message_verifying:
 	.byte $0D
-	.text "VERIFYING"
-	.byte 0
+	.text "VERIFYIN"
+	.byte $80 + $47 // end of string mark + 'G'
 
 __kernal_message_saving:
 	.byte $0D
-	.text "SAVING"
-	.byte 0
+	.text "SAVIN"
+	.byte $80 + $47 // end of string mark + 'G'
 
 __kernal_message_from_hex:
-	.text " FROM $"
-	.byte 0
+	.text " FROM "
+	.byte $80 + $24 // end of string mark + '$'
 
 __kernal_message_to_hex:
-	.text " TO $"
-	.byte 0
+	.text " TO "
+	.byte $80 + $24 // end of string mark + '$'

@@ -10,5 +10,6 @@
 print_kernal_message:
 
 	lda __kernal_messages_start, x
-	bne !- // 0 marks end of string
-	rts
+	bpl !- // 0 marks end of string
+	and #$7F
+	jmp JCHROUT

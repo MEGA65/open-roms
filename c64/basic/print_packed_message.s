@@ -38,8 +38,7 @@ found_message_in_token_stream:
 	cmp #$ff
 	beq !+
 	jsr print_packed_word
-	lda #$20
-	jsr JCHROUT
+	jsr print_space
 	pla
 	tay
 	iny

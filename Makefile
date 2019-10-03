@@ -3,7 +3,7 @@
 
 SRCDIR_COMMON            = c64/aliases
 SRCDIR_BASIC_COMMON      = $(SRCDIR_COMMON) c64/basic
-SRCDIR_KERNAL_COMMON     = $(SRCDIR_COMMON) c64/kernal c64/kernal/assets c64/kernal/jumptable c64/kernal/iec c64/kernal/interrupts
+SRCDIR_KERNAL_COMMON     = $(SRCDIR_COMMON) c64/kernal c64/kernal/assets c64/kernal/jumptable c64/kernal/iec c64/kernal/interrupts c64/kernal/print
 
 SRCDIR_BASIC_generic     = $(SRCDIR_BASIC_COMMON) c64/basic/,target_generic
 SRCDIR_BASIC_mega65      = $(SRCDIR_BASIC_COMMON) c64/basic/,target_mega65

@@ -125,12 +125,11 @@ do_TO_MANY_FILES_error:
 
 	// Error # in X
 
-do_basic_error:	
+do_basic_error:
 	// "?"
 	txa
 	pha
-	lda #$0d
-	jsr JCHROUT
+	jsr print_return
 	lda #$3f
 	jsr JCHROUT
 	pla
@@ -140,8 +139,7 @@ do_basic_error:
 	jsr print_packed_message
 
 	// A space between error name and word error
-	lda #$20
-	jsr $ffd2
+	jsr print_space
 
 	// "ERROR"
 	ldx #33
@@ -160,12 +158,10 @@ do_basic_error:
 	jsr print_integer
 !:
 	// New lines
-	lda #$0d
-	jsr $ffd2
+	jsr print_return
 	lda #$00
-	jsr $ffd2
+	jsr JCHROUT
 
 	// XXX - Restore stack depth first?
 
 	jmp basic_main_loop
-	

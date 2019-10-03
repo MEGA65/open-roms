@@ -16,7 +16,7 @@ cmd_stop:
 	jsr print_integer
 
 !:
-	lda #$0D
-	jsr JCHROUT
+	jsr print_return
+
 cmd_end:
 	jmp basic_main_loop

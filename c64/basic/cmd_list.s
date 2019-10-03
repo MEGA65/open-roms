@@ -60,8 +60,7 @@ list_single_line: // entry point needed by DOS wedge
 	tax
 	pla
 	jsr print_integer
-	lda #$20
-	jsr JCHROUT
+	jsr print_space
 
 	// Iterate through printing out the line
 	// contents
@@ -69,7 +68,7 @@ list_single_line: // entry point needed by DOS wedge
 	sta QTSW
 	
 	ldy #4
-list_print_loop:	
+list_print_loop:
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT
@@ -145,7 +144,6 @@ list_end_of_line:
 	lda #$92
 	jsr JCHROUT
 	// Print end of line
-	lda #$0d
-	jsr JCHROUT
-	rts
+	jmp print_return
+
 

@@ -49,10 +49,8 @@ basic_cold_start:
 	sbc TXTTAB+1
 
 	jsr print_integer
+	jsr print_space
 
-	lda #$20
-	jsr JCHROUT
-	
 	// Print the rest of the start up message
 	ldx #34
 	jsr print_packed_message

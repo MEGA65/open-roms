@@ -34,7 +34,7 @@ got_line_of_input:
 	stx __tokenise_work1
 
 	// Strip leading spaces from the line
-remove_leading_spaces:	
+remove_leading_spaces:
 	lda $0200
 	cmp #$20
 	bne !+
@@ -51,15 +51,14 @@ rsl_l1:	lda $0200,x
 	bne remove_leading_spaces
 !:
 	// Do printing of the new line
-	lda #$0d
-	jsr JCHROUT
+	jsr print_return
 
 	// Ignore empty lines
 	lda __tokenise_work1
 	beq basic_read_next_line
 
 	// Else, tokenise the line
-	jsr tokenise_line	
+	jsr tokenise_line
 
 	// Has the user entered a line of BASIC beginning with a number?
 	lda $0200

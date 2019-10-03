@@ -65,7 +65,6 @@ Note: vectors at `$0300` are not supported yet - for now only the locations belo
 | `($A000)` |            | cold start | PARTIAL  |                                                    |
 | `($A002)` |            | warm start | PARTIAL  |                                                    |
 
-
 <br />
 
 ### Unofficial BASIC routines/locations
@@ -82,7 +81,7 @@ Not all of them - only these we want to have implemented.
 | `$AB1E`   | STROUT       | DONE     |                                                    |
 | `$BDCD`   | LINPRT       | NOT DONE |                                                    |
 | `$E3BF`   | INIT         | NOT DONE |                                                    |
-| `$E422`   | INITMSG      | NOT DONE |                                                    |
+| `$E422`   | INITMSG      | PARTIAL  | banner printed outside                             |
 | `$E453`   | RVECT        | NOT DONE |                                                    |
 
 <br />

@@ -132,8 +132,7 @@ lvs_display_done:
 	jsr print_hex_byte
 	lda STAL+0
 	jsr print_hex_byte
-	lda #$0D
-	jmp JCHROUT
+	jmp print_return
 
 lvs_wrap_around_error:
 	// This error is probably not even detected by C64 Kernal;

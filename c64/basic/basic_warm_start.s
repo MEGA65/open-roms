@@ -19,8 +19,7 @@ basic_warm_start:
 	jsr print_hex_byte
 	lda CMP0+0
 	jsr print_hex_byte
-	lda #$0D
-	jsr JCHROUT
+	jsr print_return
 
 !:
 	jmp basic_main_loop

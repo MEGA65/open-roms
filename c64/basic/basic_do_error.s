@@ -6,8 +6,7 @@ basic_do_error:
 	pha
 
 	// Print ? at start
-	lda #$0D
-	jsr JCHROUT
+	jsr print_return
 	lda #$3F
 	jsr JCHROUT
 
@@ -17,8 +16,7 @@ basic_do_error:
 	jsr print_packed_message
 
 	// Print ERROR at end
-	lda #$20
-	jsr JCHROUT
+	jsr print_space
 	ldx #33
 	jsr print_packed_message
 
@@ -26,10 +24,8 @@ basic_do_error:
 
 	// XXX print line number if not in direct mode
 
-	lda #$0D
-	jsr JCHROUT
-	lda #$0D // XXX do we need this?
-	jsr JCHROUT
+	jsr print_return
+	jsr print_return
 
 	// Reset stack, and go back to main loop
 	ldx #$FE

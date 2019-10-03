@@ -209,8 +209,7 @@ wedge_dos_directory_display:
 wedge_dos_clean_exit:
 	jsr JCLALL
 	// Print new line
-	lda #$0D
-	jsr JCHROUT
+	jsr print_return
 	jmp basic_end_of_line
 
 wedge_dos_basic_error:

@@ -11,6 +11,10 @@
 PLOT:
 	bcs plot_get
 
+	// Note: the 'set' part has to start from $E50C, as this is a known address
+	// - https://www.lemon64.com/forum/viewtopic.php?t=3296&amp%3Bstart=15
+	// - 'Duotris' game calls $E50C during startup screen initialization
+
 plot_set:
 	sty TBLX
 	stx PNTR
@@ -23,4 +27,3 @@ plot_get:
 	ldy TBLX
 	ldx PNTR
 	rts
-

@@ -1,0 +1,4 @@
+The original reason to move PLOT routine into its original position was to provide support for unofficial $E50C address:
+
+- it is well known: https://www.lemon64.com/forum/viewtopic.php?t=3296&amp%3Bstart=15
+- 'Duotris' game calls $E50C during startup screen initialization

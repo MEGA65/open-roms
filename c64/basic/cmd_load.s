@@ -95,12 +95,15 @@ got_devicenumber:
 	bne got_loadaddress
 
 got_secondaryaddress:
-	ldx #<$0801 // XXX use start text vector
-	ldy #>$0801
+	ldx TXTTAB+0
+	ldy TXTTAB+1
 
 got_loadaddress:
 	lda #$00 		// LOAD not verify
-	jsr via_ILOAD
+	jsr JLOAD
+	php
+	jsr print_return
+	plp
 	bcc !+
 
 	// A = KERNAL error code, which also almost match
@@ -218,6 +221,3 @@ end_of_line_search:
 	sta OLDTXT+0
 
 	jmp basic_relink_loop
-
-via_ILOAD:
-	jmp (ILOAD)

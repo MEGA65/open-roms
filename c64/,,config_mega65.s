@@ -22,6 +22,7 @@
 
 #define CONFIG_DOS_WEDGE
 #define CONFIG_BCD_SAFE_INTERRUPTS
+#define CONFIG_EXTENDED_SCNKEY // for now has to be enabled
 
 // #define CONFIG_DBG_STUBS_BRK
 // #define CONFIG_DBG_PRINTF

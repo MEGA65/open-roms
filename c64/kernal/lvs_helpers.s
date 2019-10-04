@@ -124,8 +124,7 @@ lvs_display_done:
 	bpl lvs_display_end
 
 	ldx #__MSG_KERNAL_TO_HEX
-	jsr !-
-	jmp print_return
+	jmp !-
 
 lvs_wrap_around_error:
 	// This error is probably not even detected by C64 Kernal;

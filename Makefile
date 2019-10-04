@@ -42,6 +42,10 @@ EXT_TARGET_LIST = build/newc65.rom
 
 REL_TARGET_LIST = $(pathsubst build/%,bin/%, $(STD_TARGET_LIST))
 
+# Misc strings
+
+HYBRID_WARNING = "*** WARNING *** Distributing kernal_hybrid.rom violates both original ROM copyright and Open ROMs license!"
+
 # GIT commit
 
 GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
@@ -165,6 +169,18 @@ build/basic_%.rom:
 build/symbols_%.vs:
 	sort build/target_$*/BASIC_combined.vs build/target_$*/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
+build/kernal_hybrid.rom: kernal build/target_generic/OUTK.BIN
+	@echo
+	@echo $(HYBRID_WARNING)
+	@echo
+	(dd if=kernal bs=1140 count=1 skip=0        ; \
+	echo "    > HYBRID ROM, DON'T DISTRIBUTE <" ; \
+	dd if=kernal bs=1 count=58 skip=1176        ; \
+	cat build/target_generic/OUTK.BIN) > $@
+
+build/symbols_hybrid.vs: build/target_generic/KERNAL_combined.vs
+	sort build/target_generic/KERNAL_combined.vs | uniq | grep -v "__" > $@
+
 # Rules - platform 'Mega 65' specific
 
 build/newc65.rom: build/kernal_mega65.rom build/basic_mega65.rom build/chargen.rom Makefile
@@ -189,12 +205,21 @@ test_mega65: build/kernal_mega65.rom build/basic_mega65.rom build/symbols_mega65
 test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/symbols_ultimate64.vs
 	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -8 empty.d64
 
+test_hybrid: build/kernal_hybrid.rom build/symbols_hybrid.vs
+	@echo
+	@echo $(HYBRID_WARNING)
+	@echo
+	x64 -kernal build/kernal_hybrid.rom -moncommands build/symbols_hybrid.vs -8 empty.d64
+	@echo
+	@echo $(HYBRID_WARNING)
+	@echo
+
 test_m65: build/newc65.rom
 	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R build/newc65.rom -4
 
 testremote: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
 	x64 -kernal build/kernal_generic.rom -basic build/basic_generic.rom -moncommands build/symbols_generic.vs -remotemonitor
 
-testsimilarity: build/target_generic/newrom $(TOOL_SIMILARITY)
+testsimilarity: build/target_generic/newrom $(TOOL_SIMILARITY) kernal basic
 	$(TOOL_SIMILARITY) kernal build/target_generic/newrom
 	$(TOOL_SIMILARITY) basic  build/target_generic/newrom

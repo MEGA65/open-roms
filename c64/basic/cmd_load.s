@@ -127,10 +127,7 @@ got_loadaddress:
 	// or go back to the READY prompt if LOAD was called from direct mode.
 
 	// Reset to start of program
-	lda TXTTAB+0
-	sta OLDTXT+0
-	lda TXTTAB+1
-	sta OLDTXT+1
+	jsr init_oldtxt
 
 	// XXX - should run program if LOAD was used in program mode
 	jmp basic_main_loop
@@ -139,10 +136,7 @@ got_loadaddress:
 basic_relink_program:
 
 	// Start by getting pointer to the first line
-	lda TXTTAB+0
-	sta OLDTXT+0
-	lda TXTTAB+1
-	sta OLDTXT+1
+	jsr init_oldtxt
 
 basic_relink_loop:
 	// Is the pointer to the end of the program

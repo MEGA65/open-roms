@@ -69,11 +69,11 @@ IOINIT:
 	// XXX: calibrate TOD for both CIA's, see here: https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
 
 	// Enable CIA1 IRQ and ~50Hz timer (https://csdb.dk/forums/?roomid=11&topicid=69037)
+	
+	// First disable IRQ generation for both CIA's
 	lda #$7F
-	sta CIA1_ICR // disable all
-    
-    // Same for CIA2 - it can generate IRQs too, we definitely don't want this
 	sta CIA2_ICR
+	sta CIA1_ICR
 
 	// Set timer interval to ~1/60th of a second
 	

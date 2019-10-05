@@ -11,8 +11,8 @@
 RESTOR:
 
 	clc // clear carry - for writing to system table
-	ldx #<vector_defaults
 	ldy #>vector_defaults
+	ldx #<vector_defaults
 
 	// FALLTHROUGH
 

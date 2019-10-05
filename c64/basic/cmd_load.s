@@ -95,8 +95,8 @@ got_devicenumber:
 	bne got_loadaddress
 
 got_secondaryaddress:
-	ldx TXTTAB+0
 	ldy TXTTAB+1
+	ldx TXTTAB+0
 
 got_loadaddress:
 	lda #$00 		// LOAD not verify

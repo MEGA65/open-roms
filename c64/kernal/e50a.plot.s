@@ -13,6 +13,7 @@ PLOT:
 
 	// Note: the 'set' part has to start from $E50C, as this is a known address
 	// - https://www.lemon64.com/forum/viewtopic.php?t=3296&amp%3Bstart=15
+	// - https://sys64738.org/2019/05/c64-bedtime-coding-eng-printing-08/
 	// - 'Duotris' game calls $E50C during startup screen initialization
 
 plot_set:
@@ -20,6 +21,7 @@ plot_set:
 	stx PNTR
 
 	// XXX handle cursor blink
+	// XXX should we update some more variables?
 
 	// FALLTROUGH to save one byte on RTS
 

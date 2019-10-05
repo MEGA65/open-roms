@@ -136,7 +136,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFE7`   | `$F32F`    | `CLALL`     | DONE     |                                                    |
 | `$FFEA`   |            | `UDTIM`     | DONE     |                                                    |
 | `$FFED`   |            | `SCREEN`    | DONE     |                                                    |
-| `$FFF0`   | `$E50A`    | `PLOT`      | PARTIAL  | cursor blink not handled                           |
+| `$FFF0`   | `$E50A`    | `PLOT`      | PARTIAL  |                                                    |
 | `$FFF3`   |            | `IOBASE`    | DONE     |                                                    |
 | `($FFFA)` |            | NMI vec     | PARTIAL  |                                                    |
 | `($FFFC)` |            | RESET vec   | PARTIAL  |                                                    |
@@ -153,7 +153,7 @@ Not all of them - only these we want to have implemented.
 | Address   | Name                | Status   |  Remarks                                           |
 | :-------: | :------------------ | :------: | :------------------------------------------------: |
 | `$E544`   | clear screen        | DONE     |                                                    |
-| `$E50C`   | set cursor position | PARTIAL  | cursor blink not handled                           |
+| `$E50C`   | set cursor position | PARTIAL  |                                                    |
 | `$E5A0`   | setup VIC II & IO   | PARTIAL  |                                                    |
 | `$EA31`   | default IRQ         | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below    | DONE     |                                                    |

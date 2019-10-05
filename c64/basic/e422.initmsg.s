@@ -29,8 +29,8 @@ INITMSG:
 
 	// Work out free bytes, display them
 	jsr basic_do_new
+    sec
 	lda MEMSIZ+0
-	sec
 	sbc TXTTAB+0
 	tax
 	lda MEMSIZ+1

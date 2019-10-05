@@ -1,0 +1,6 @@
+$A4 + LDA $DD00
+
+$DD00 is one of the CIA ports, so checking the value of inputs
+on this port is something rather expected and common.
+
+Besides - this is just one instruction and some part - not copyrightable.

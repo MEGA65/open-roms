@@ -1,0 +1,7 @@
+a list of vectors to be copied starting from $0300
+
+Values of the vectors are already present in many autostart software - as it often overrides them,
+sometimes changing one to trigger autostart (one of the possible techniques). We have to use the same
+vector values to be compatible (in fact, it even complicates our implementation) - see *.interop files
+for more details.
+

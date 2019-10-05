@@ -1,0 +1,3 @@
+TAY + PLA + STA (zero page address does not match)
+
+Simple stack/register manipulation, not even matching memory address (which is a documented/well-known variable) - not copyrightable.

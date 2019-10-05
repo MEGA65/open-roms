@@ -1,0 +1,3 @@
+STA $028F + LDA #$xx (value does not match)
+
+Instruction + a half. Not copyrightable.

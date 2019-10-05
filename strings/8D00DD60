@@ -1,0 +1,6 @@
+STA $DD00 + RTS
+
+$DD00 is one of the CIA ports, so storing value
+into this port is something rather expected and common.
+
+Besides, these are just two instructions, second one being end of subroutine - not copyrightable.

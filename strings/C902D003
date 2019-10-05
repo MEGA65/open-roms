@@ -1,0 +1,3 @@
+CMP #$02 + BNE (offset matches, skip 3 bytes)
+
+Becision based on accumulator being equal to 2 (which is a number of a specific unique device) - trivial, not copyrightable.

@@ -1,0 +1,4 @@
+PETSCII string: IN(G + end of string mark)
+
+Encoding strings by adding $80 to it's last character (to mark end of stream) is a common byte-saving technique - for example, Turbo Basic XL (for Atari, now open-source) does the same.
+And a single syllable is not copyrightable.

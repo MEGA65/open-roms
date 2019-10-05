@@ -1,0 +1,3 @@
+SBC $2B + TAX + LDA $38 + SBC $2C + JSR (address does not match)
+
+Part of the code printing available BASIC memory size (it has to substract two 16 bit values). Not many ways to do this, some similarity is inevitable. Not creative - not copyrightable.

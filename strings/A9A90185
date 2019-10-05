@@ -1,0 +1,3 @@
+$A9 + LDA #$01 + STA (zeropage location does not match)
+
+Instruction and some parts - not copyrightable.

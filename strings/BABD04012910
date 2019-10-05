@@ -1,0 +1,3 @@
+TSX + LDA $0104,X + AND #$10
+
+Simple check what caused an interrupt - not copyrightable.

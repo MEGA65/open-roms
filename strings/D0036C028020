@@ -1,0 +1,3 @@
+BNE (offset match, skip 3 bytes) + JMP ($8002) + JSR (address does not match)
+
+If cartridge present, jump into it using official API, else - do some subroutine. Not creative - not copyrightable.

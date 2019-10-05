@@ -1,0 +1,3 @@
+PLP + RTS + (new subroutine) LDA #$xx (value does not match)
+
+End of routine made to preserve processor status + one byte of the next subroutine. Trivial - not copyrightable.

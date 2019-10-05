@@ -1,0 +1,3 @@
+JSR $FFD2 (official CHROUT jumptable entry) + INY
+
+Very small part of a loop displaying something - not copyrightable.

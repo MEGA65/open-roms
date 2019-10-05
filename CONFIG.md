@@ -82,6 +82,12 @@ Each of them needs a couple of bytes in KERNAL segment - but they can share some
 
 ## Miscelaneous features
 
+### `CONFIG_FANCY_BANNER`
+
+If enabled, prints more colorful startup banner. Eye candy only.
+
+Needs some space in BASIC segment, varies between targets.
+
 ### `CONFIG_DOS_WEDGE`
 
 If enabled, a simple DOS wedge is available from the direct mode - supports `@<drive_number>`, `@<command>`, `@$`, `@$<params>` and `@` commands.

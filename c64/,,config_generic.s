@@ -20,6 +20,7 @@
 // #define CONFIG_SID_D4XX
 // #define CONFIG_SID_D5XX
 
+#define CONFIG_FANCY_BANNER
 #define CONFIG_DOS_WEDGE
 #define CONFIG_BCD_SAFE_INTERRUPTS
 #define CONFIG_EXTENDED_SCNKEY // for now has to be enabled

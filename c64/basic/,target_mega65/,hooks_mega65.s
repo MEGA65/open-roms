@@ -4,6 +4,8 @@
 
 .macro TARGET_HOOK_BANNER() {
 
+#if CONFIG_FANCY_BANNER
+
 	// New banner from Retrofan
 	.byte $9a, $12, $20, $20, $7f, $a9, $20, $20, $1f, $20, $9a, $20, $20, $20
 	.byte $20, $1f, $20, $9a, $a9, $20, $20, $20, $92, $a1, $1f, $12, $20, $9a, $a9, $20
@@ -19,7 +21,7 @@
 	.byte $12, $20, $20, $1f, $20, $20, $9a, $20, $20, $1f, $20, $9a, $20, $20, $20, $20
 	.byte $1f, $20, $9a, $20, $20, $20, $20, $20, $1f, $20, $9a, $20, $20, $1f, $20, $9a
 	.byte $20, $20, $1f, $20, $20, $96, $a3, $a3, $a3, $a3, $1f
-	.byte $92, $0D, $0D, $05, $00
+	.byte $92, $0D, $0D, $05
 
 	// Original Deft-supplied banner
 	// .byte $9A,$12,$A3,$A3,$A3,$A3,$A3,$A3,$DF,$9B,$92,$20,$05,$12,$A0,$A0
@@ -36,6 +38,15 @@
 	// .byte $A3,$A3,$A3,$A3,$DF,$9A,$92,$7F,$12,$DF,$92,$7F,$9B,$20,$9A,$7F
 	// .byte $12,$A0,$A0,$9B,$92,$20,$9A,$7F,$12,$A0,$A0,$9B,$92,$20,$9A,$7F
 	// .byte $12,$DF,$92,$7F,$9B,$20,$9A,$20,$9B,"0.2.0.0",$0D
-	// .byte $0D,$05,$92,$00
+	// .byte $0D,$05,$92
 
+#else
+
+	.text "  OPEN ROMS FOR MEGA65"
+	.byte $0D, $0D
+	.text "  "
+
+#endif
+
+	.byte $00 // end of banner
 }

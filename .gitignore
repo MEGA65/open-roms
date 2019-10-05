@@ -1,4 +1,8 @@
 
+# Image which is illegal to distribute - just for extra safety
+
+kernal_hybrid.rom
+
 # Compilation related files
 
 assembler/KickAss*

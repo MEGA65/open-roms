@@ -1,0 +1,3 @@
+LDA $93 + BEQ (offset match, skip 2 bytes)
+
+Decision based on a content of a documented memory location - trivial, not copyrightable.

@@ -1,6 +1,6 @@
 // Tokenise a line of BASIC
 // Stored at $0200
-// Length in tokenise_work1
+// Length in __tokenise_work1
 
 tokenise_line:
 
@@ -17,9 +17,9 @@ tokenise_line:
 	lda #$00
 	sta $0110
 	sta $0112
-	sta quote_mode_flag
+	sta QTSW
 	
-	lda tokenise_work1
+	lda __tokenise_work1
 	sta $0113
 
 tokenise_char:
@@ -32,15 +32,15 @@ tokenise_char:
 	// End of line reached
 	
 	// Finished tokenising line
-	// Update tokenise_work1 and terminate with null
+	// Update __tokenise_work1 and terminate with null
 	ldx $0112
 	lda #$00
 	sta $0200,x
-	stx tokenise_work1
+	stx __tokenise_work1
 
 	// Clear quote mode flag that is also used by KERNAL for screen display
 	lda #$00
-	sta quote_mode_flag
+	sta QTSW
 	rts
 !:
 	// More to do
@@ -50,8 +50,8 @@ tokenise_char:
 	sta $0111
 
 tokenise_char_loop:	
-	// Pack the word from the start (start = X, raw len = tokenise_work1)
-	// Returns packed length in tokenise_work2 and writes the packed
+	// Pack the word from the start (start = X, raw len = __tokenise_work1)
+	// Returns packed length in __tokenise_work2 and writes the packed
 	// word at $0100+
 
 	ldx $0110
@@ -60,9 +60,9 @@ tokenise_char_loop:
 	bne tk_not_quote
 
 	// Quote
-	lda quote_mode_flag
+	lda QTSW
 	eor #$ff
-	sta quote_mode_flag
+	sta QTSW
 	jmp tk_literal_char
 	
 tk_not_quote:
@@ -82,13 +82,13 @@ tk_not_quote:
 
 tk_might_be_keyword:	
 	// Don't tokenise in quote mode
-	lda quote_mode_flag
+	lda QTSW
 	bne tk_literal_char
 	
 	// Pack string
 	ldx $0110
 	lda $0111
-	sta tokenise_work1
+	sta __tokenise_work1
 
 	// XXX - We should implement an optimisation where we
 	// trim the last symbol of successively, instead of re-packing the word
@@ -97,7 +97,7 @@ tk_might_be_keyword:
 	// that are available.
 	
 	jsr pack_word
-	lda tokenise_work2
+	lda __tokenise_work2
 	cmp #$10
 	bcc !+
 	// Packed string too long
@@ -137,9 +137,9 @@ found_token_in_line:
 	// If it is REM, then lock us in quote mode to the end of the line
 	cmp #$8f
 	bne not_rem
-	sta quote_mode_flag
-not_rem:	
-	
+	sta QTSW
+not_rem:
+
 	// Now skip over the length of the token
 	lda $0110
 	clc
@@ -162,31 +162,31 @@ keyword_search:
 	// Search for the compressed keyword stored at $0100 in the list
 	// of compressed keywords
 	
-	// tokenise_work1 = offset in line of input
-	// tokenise_work2 = length of token we are matching
-	// tokenise_work3 = offset in token list
-	// load_or_verify_or_tokenise_work5 = temporary work space
+	// __tokenise_work1 = offset in line of input
+	// __tokenise_work2 = length of token we are matching
+	// __tokenise_work3 = offset in token list
+	// __tokenise_work5 = temporary work space
 	// X and Y registers used as temporary space.
 	// returns C=1 if no matching token, else C=0 and A=token
 
 	lda #$00
-	sta tokenise_work1
-	sta tokenise_work3
+	sta __tokenise_work1
+	sta __tokenise_work3
 next_kw_offset:	
 	// Advance offset in compressed keyword list, to see if a match
 	// BEGINS here
 
 	//  Get count of bytes to compare
-	lda tokenise_work2
-	sta load_or_verify_or_tokenise_work5
+	lda __tokenise_work2
+	sta __tokenise_work5
 
 	// Load current position
-	ldy tokenise_work3
-	ldx tokenise_work1
+	ldy __tokenise_work3
+	ldx __tokenise_work1
 
 	// Advance offset in compressed token list, and stop at the end
-	inc tokenise_work3
-	lda tokenise_work3
+	inc __tokenise_work3
+	lda __tokenise_work3
 	cmp #packed_keyword_table_len
 	bne next_in_match
 	jmp done_searching_for_token
@@ -198,8 +198,8 @@ next_in_match:
 	inx
 	iny
 
-	dec load_or_verify_or_tokenise_work5 	// Have we compared all bytes yet?
-	
+	dec __tokenise_work5 	// Have we compared all bytes yet?
+
 	bne next_in_match
 
 	// Keyword matches!
@@ -212,7 +212,7 @@ next_in_match:
 	// two byte prior is $FE
 
 	// Get offset of first byte of this token
-	ldx tokenise_work3
+	ldx __tokenise_work3
 	dex 			// pointer points one late, so rewind it
 
 	// At start of list?
@@ -233,7 +233,7 @@ next_in_match:
 	jmp next_kw_offset
 
 word_boundary:	
-	// Found a token whose offset is in tokenise_work3
+	// Found a token whose offset is in __tokenise_work3
 	// Now trace back to the start of the compressed keyword list
 	// to work out what keyword number we are, so that we can return
 	// the token number.

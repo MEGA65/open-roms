@@ -1,0 +1,3 @@
+Location of the default Kernal vector values, described in Compute's Mapping the Commodore 64, page 237
+
+It is referenced by GEOS - see https://github.com/mist64/geos/blob/master/inc/c64.inc

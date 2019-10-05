@@ -1,6 +1,8 @@
 
 setup_vicii:
 
+	// XXX there is more to setup within this routine
+
 	// Set up default IO values (Compute's Mapping the 64 p215)
 	lda #$1B    // Enable text mode
 	sta VIC_SCROLY
@@ -17,4 +19,4 @@ setup_vicii:
 	lda #$00
 	sta VIC_SPENA
 
-	// FALLTROUGH
+	rts

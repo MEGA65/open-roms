@@ -4,16 +4,23 @@
 cmd_list:
 
 	// Set current line pointer to start of memory
-	lda basic_start_of_text_ptr+0
-	sta basic_current_line_ptr+0
-	lda basic_start_of_text_ptr+1
-	sta basic_current_line_ptr+1
+	lda TXTTAB+0
+	sta OLDTXT+0
+	lda TXTTAB+1
+	sta OLDTXT+1
 
 list_loop:
-	ldx #<basic_current_line_ptr
+
 	ldy #1
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
 	bne list_more_lines
 
 	// LIST terminates any running program,
@@ -24,7 +31,7 @@ list_loop:
 list_more_lines:
 	lda STKEY
 	bmi !+
-	jmp basic_do_break
+	jmp cmd_stop
 !:
 	jsr list_single_line
 	// Now link to the next line
@@ -34,37 +41,54 @@ list_more_lines:
 list_single_line: // entry point needed by DOS wedge
 	// Print line number
 	ldy #3
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
 	pha
 	dey
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
 	tax
 	pla
 	jsr print_integer
-	lda #$20
-	jsr JCHROUT
+	jsr print_space
 
 	// Iterate through printing out the line
 	// contents
 	lda #0
-	sta quote_mode_flag
+	sta QTSW
 	
 	ldy #4
-list_print_loop:	
-	ldx #<basic_current_line_ptr
-	jsr peek_under_roms	
+list_print_loop:
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT
+	jsr peek_under_roms
 	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
 	beq list_end_of_line
 	cmp #$22
 	bne list_not_quote
-	lda quote_mode_flag
+	lda QTSW
 	eor #$ff
-	sta quote_mode_flag
+	sta QTSW
 	lda #$22
 	jmp list_is_literal
 list_not_quote:	
 	// Check quote mode, and display as literal if required
-	ldx quote_mode_flag
+	ldx QTSW
 	bne list_is_literal
 	
 	cmp #$7f
@@ -80,9 +104,9 @@ list_not_quote:
 
 	// Get pointer to compressed keyword list
 	lda #<packed_keywords
-	sta temp_string_ptr+0
+	sta FRESPC+0
 	lda #>packed_keywords
-	sta temp_string_ptr+1
+	sta FRESPC+1
 	
 	// Subtract $80 from token to get offset in word
 	// list
@@ -103,7 +127,7 @@ list_not_quote:
 	// REM command locks quote flag on until the end of the line, allowing
 	// funny characters in REM statements without problem.
 	inc $0427
-	sta quote_mode_flag 	// Any value other than $00 or $FF will lock quote mode on, so the token value of REM is fine here
+	sta QTSW    // Any value other than $00 or $FF will lock quote mode on, so the token value of REM is fine here
 	// FALL THROUGH
 list_not_rem:		
 	
@@ -120,7 +144,6 @@ list_end_of_line:
 	lda #$92
 	jsr JCHROUT
 	// Print end of line
-	lda #$0d
-	jsr JCHROUT
-	rts
+	jmp print_return
+
 

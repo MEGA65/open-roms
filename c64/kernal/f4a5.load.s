@@ -31,14 +31,16 @@ LOAD:
 	// Reset status
 	jsr kernalstatus_reset
 
+#if CONFIG_MEMORY_MODEL_60K
 	// We need our helpers to get to filenames under ROMs or IO area
 	jsr install_ram_routines
+#endif
 
 	// Allow platform-specific routine to takeover the flow
 	TARGET_HOOK_LOAD()
 
 	// Check whether we support the requested device
-	lda current_device_number
+	lda FA
 	and #$FC
 	bne !+
 	jmp lvs_illegal_device_number // device number below 4, not an IEC device
@@ -58,7 +60,7 @@ LOAD:
 	// in the C64, only in the drive.
 
 	// Call device to LISTEN (p16)
-	lda current_device_number
+	lda FA
 	jsr LISTEN
 	bcc !+
 	jmp lvs_device_not_found_error // XXX deduplicate with other jumps in this routine
@@ -75,7 +77,7 @@ LOAD:
 	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 
 !:
 	// Now command device to talk (p16)
-	lda current_device_number
+	lda FA
 	jsr TALK
 	bcc !+
 	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 
@@ -95,17 +97,17 @@ LOAD:
 	// Get load address and store it if secondary address is zero
 	jsr iec_rx_byte
 	bcc !+
-	jmp lvs_file_not_found_error // XXX deduplicate with other jumps in this routine
+	jmp kernalerror_FILE_NOT_FOUND // XXX deduplicate with other jumps in this routine
 !:
-	ldx current_secondary_address
+	ldx SA
 	beq !+
 	sta STAL+0
 !:
 	jsr iec_rx_byte
 	bcc !+
-	jmp lvs_file_not_found_error // XXX deduplicate with other jumps in this routine
+	jmp kernalerror_FILE_NOT_FOUND // XXX deduplicate with other jumps in this routine
 !:
-	ldx current_secondary_address
+	ldx SA
 	beq !+
 	sta STAL+1
 !:
@@ -138,7 +140,7 @@ load_loop:
 
 	// Close file on drive
 
-	lda current_device_number
+	lda FA
 	jsr close_load
 
 	// Return last address

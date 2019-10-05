@@ -12,8 +12,8 @@
 	//
 
 	//                 $02             -- UNUSED --          free for user software
-	.label ADRAY1    = $03 // $03-$04  -- NOT IMPLEMENTED --
-	.label ADRAY2    = $05 // $05-$06  -- NOT IMPLEMENTED --
+	.label ADRAY1    = $03 // $03-$04
+	.label ADRAY2    = $05 // $05-$06
 	.label CHARAC    = $07 //          [!] our implementation might be different  XXX give more details
 	.label ENDCHR    = $08 //          [!] our implementation might be different  XXX give more details
 	.label TRMPOS    = $09 //          -- NOT IMPLEMENTED --
@@ -38,8 +38,8 @@
 	.label ARYTAB    = $2F // $2F-$30  -- NOT IMPLEMENTED --
 	.label STREND    = $31 // $31-$32  -- NOT IMPLEMENTED --
 	.label FRETOP    = $33 // $33-$34  -- NOT IMPLEMENTED --
-	.label FRESPC    = $35 // $35-$36  [!] our implementation might be different  XXX give more details
-	.label MEMSIZ    = $37 // $37-$38  -- NOT IMPLEMENTED -- highest address of BASIC memory
+	.label FRESPC    = $35 // $35-$36  [!] our implementation uses this as temporary string pointer
+	.label MEMSIZ    = $37 // $37-$38  highest address of BASIC memory + 1
 	.label CURLIN    = $39 // $39-$3A  current BASIC line number
 	.label OLDLIN    = $3B // $3B-$3C  previous BASIC line number
 	.label OLDTXT    = $3D // $3D-$3E  current BASIC line pointer
@@ -57,13 +57,23 @@
 	.label JMPER     = $54 // $54-$56  -- NOT IMPLEMENTED --
 	.label TEMPF1    = $57 // $57-$5B  BASIC numeric work area
 	.label TEMPF2    = $5C // $5C-$60  BASIC numeric work area
-	.label FAC1      = $61 // $61-$66  -- NOT IMPLEMENTED --
+
+	.label __FAC1    = $61 // $61-$66  floating point accumulator 1
+	.label FAC1_exponent   = $61
+	.label FAC1_mantissa   = $62 // $62 - $65
+	.label FAC1_sign       = $66
+
 	.label SGNFLG    = $67 //          -- NOT IMPLEMENTED --
-	.label BITS      = $68 //          -- NOT IMPLEMENTED --
-	.label FAC2      = $69 // $69-$6E  -- NOT IMPLEMENTED -- [!] also used for memory move pointers
+	.label BITS      = $68 //          FAC1 overflow
+
+	.label __FAC2    = $69 // $69-$6E  floating point accumulator 2 [!] also used for memory move pointers
+	.label FAC2_exponent   = $69
+	.label FAC2_mantissa   = $6A // $6A - $6D
+	.label FAC2_sign       = $6E
+
 	.label ARISGN    = $6F //          -- NOT IMPLEMENTED --
-	.label FACOV     = $70 //          -- NOT IMPLEMENTED --
-	.label FBUFPT    = $67 // $71-$72  -- NOT IMPLEMENTED --
+	.label FACOV     = $70 //          FAC1 low order mantissa
+	.label FBUFPT    = $71 // $71-$72  -- NOT IMPLEMENTED --
 	.label CHRGET    = $73 // $73-$8A  -- NOT IMPLEMENTED --
 	.label TXTPTR    = $7A // $7A-$7B  current BASIC statement pointer
 	.label RNDX      = $8B // $8B-$8F  -- NOT IMPLEMENTED --
@@ -94,17 +104,53 @@
 	.label CNTDN     = $A5  //          -- NOT IMPLEMENTED --
 	.label BUFPNT    = $A6  //          -- NOT IMPLEMENTED --
 	.label INBIT     = $A7  //          -- NOT IMPLEMENTED --
+
+#if CONFIG_EXTENDED_SCNKEY
+
+	// Reuse RS232 variables, since they should not be used by other things.
+	// Carefully avoid $A7 which is used by 64NET
+	.label KeyQuantity       = $A8  // 1 byte	
+	.label BufferNew         = $A9  // 3 bytes
+
+#else
 	.label BITCI     = $A8  //          -- NOT IMPLEMENTED --
 	.label RINONE    = $A9  //          -- NOT IMPLEMENTED --
 	.label RIDDATA   = $AA  //          -- NOT IMPLEMENTED --
 	.label RIPRTY    = $AB  //          -- NOT IMPLEMENTED --
+
+#endif
+
 	.label SAL       = $AC  // $AC-$AD  -- NOT IMPLEMENTED -- (implemented screen part)
-	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also byy screen editor
+	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also by screen editor, for temporary color storage when scrolling
 	.label CMP0      = $B0  // $B0-$B1  temporary tape storage, [!] here used for BRK instruction address
 	.label TAPE1     = $B2  // $B2-$B3  tape buffer pointer
+
+#if CONFIG_EXTENDED_SCNKEY
+
+	// Reuse RS232 variables, since they should not be used by other things.
+	// This one should be initialized in cinit to $FF
+	.label BufferQuantity    = $B4  // 1 byte
+
+#else
+
 	.label BITTS     = $B4  //          -- NOT IMPLEMENTED --
+
+#endif
+
 	.label NXTBIT    = $B5  //          -- NOT IMPLEMENTED --
+
+#if CONFIG_EXTENDED_SCNKEY
+
+	// Reuse RS232 variables, since they should not be used by other things.
+	// Carefully avoiding $A7 which is used by 64NET
+	.label TempZP            = $B6  // 1 byte
+
+#else
+
 	.label RODATA    = $B6  //          -- NOT IMPLEMENTED --
+
+#endif
+
 	.label FNLEN     = $B7  //          current file name length
 	.label LA        = $B8  //          current logical_file number
 	.label SA        = $B9  //          current secondary address
@@ -124,7 +170,7 @@
 	.label SFDX      = $CB  //          -- NOT IMPLEMENTED --
 	.label BLNSW     = $CC  //          cursor blink disable flag
 	.label BLNCT     = $CD  //          cursor blink countdown
-	.label GDBLN     = $CE  //          cursorb saved character
+	.label GDBLN     = $CE  //          cursor saved character
 	.label BLNON     = $CF  //          cursor visibilityy flag
 	.label CRSW      = $D0  //          whether to input from screen or keyboard
 	.label PNT       = $D1  // $D1-$D2  pointer to the current screen line
@@ -134,7 +180,7 @@
 	.label TBLX      = $D6  //          current screen Y position
 	.label SCHAR     = $D7  //          ASCII value of the last printed character
 	.label INSRT     = $D8  //          insert mode flag/counter
-	.label LDTB1     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
+	.label LDTBL     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
 	.label USER      = $F3  // $F3-$F4  pointer to current color RAM location
 	.label KEYTAB    = $F5  // $F5-$F6  -- NOT IMPLEMENTED --
 	.label RIBUF     = $F7  // $F7-$F8  -- NOT IMPLEMENTED --
@@ -153,6 +199,15 @@
 	//
     
 	.label BUF       = $200  // $200-$250, BASIC line editor input buffer (81 bytes)
+
+#if CONFIG_EXTENDED_SCNKEY
+
+	// $250-$258 is the 81st - 88th characters in BASIC input, a carry over from VIC-20
+	// and not used on C64, so safe for us to use, probably.
+	.label ScanResult = $250 // 8 bytes
+
+#endif
+
 	// [!] XXX document $251-$258 usage
 	.label LAT       = $259  // $259-$262, logical file numbers (table, 10 bytes)
 	.label FAT       = $263  // $263-$26C, device numbers       (table, 10 bytes)
@@ -166,19 +221,32 @@
 	.label HIBASE    = $288  //            high byte of start of screen
 	.label XMAX      = $289  //            max keyboard buffer size
 	.label RPTFLG    = $28A  //            -- NOT IMPLEMENTED --
-	.label KOUNT     = $28B  //            -- NOT IMPLEMENTED --
+	.label KOUNT     = $28B  //            key repeat counter
 	.label DELAY     = $28C  //            -- NOT IMPLEMENTED --
 	.label SHFLAG    = $28D  //            bucky keys (SHIFT/CTRL/C=) flags
 	.label LSTSHF    = $28E  //            last bucky key flags
-	.label KEYLOG    = $28F  // $28F-$290  -- NOT IMPLEMENTED --
+	.label KEYLOG    = $28F  // $28F-$290  routine to setup keyboard decoding
 	.label MODE      = $291  //            flag, is case switch allowed
-	.label AUTODN    = $292  //            -- NOT IMPLEMENTED --
+	.label AUTODN    = $292  //            -- NOT IMPLEMENTED -- screen scroll disable
+
+#if CONFIG_EXTENDED_SCNKEY
+
+	// Reuse RS232 variables, since they should not be used by other things.
+	// This one should be initialized in cinit to $FF
+	.label BufferOld         = $293 // 3 bytes
+	.label Buffer 	         = $297 // 4 bytes
+
+#else
+
 	.label M51CRT    = $293  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51CDR    = $294  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51AJB    = $295  // $295-$296  -- NOT IMPLEMENTED -- mock 6551
 	.label RSSTAT    = $297  //            -- NOT IMPLEMENTED -- mock 6551, RS-232 status
 	.label BITNUM    = $298  //            -- NOT IMPLEMENTED --
 	.label BAUDOF    = $299  // $299-$29A  -- NOT IMPLEMENTED --
+
+#endif
+
 	.label RIDBE     = $29B  //            -- NOT IMPLEMENTED --
 	.label RIDBS     = $29C  //            -- NOT IMPLEMENTED --
 	.label RODBS     = $29D  //            -- NOT IMPLEMENTED --
@@ -190,15 +258,34 @@
 	.label TD1IRQ    = $2A4  //            -- NOT IMPLEMENTED --
 	.label TLNIDX    = $2A5  //            -- NOT IMPLEMENTED --
 	.label TVSFLG    = $2A6  //            0 = NTSC, 1 = PAL
-	// [!] XXX document $2A7-$2FF usage
+	
+	// [!] $2A7-$2FF is normally free, but in our case some extra functionality uses it
+
+#if CONFIG_MEMORY_MODEL_60K
+
+	// IRQs are disabled when doing such accesses, and a default NMI handler only increments
+	// a counter, so that if an NMI occurs, it doesn't crash the machine, but can be captured.
+
+	.label missed_nmi_flag  = $2A7
+	.label tiny_nmi_handler = $2A8
+	.label peek_under_roms  = tiny_nmi_handler + peek_under_roms_routine - tiny_nmi_handler_routine
+	.label poke_under_roms  = tiny_nmi_handler + poke_under_roms_routine - tiny_nmi_handler_routine
+	.label memmap_allram    = tiny_nmi_handler + memmap_allram_routine   - tiny_nmi_handler_routine
+	.label memmap_normal    = tiny_nmi_handler + memmap_normal_routine   - tiny_nmi_handler_routine
+#if SEGMENT_BASIC
+	.label shift_mem_up     = tiny_nmi_handler + shift_mem_up_routine    - tiny_nmi_handler_routine
+	.label shift_mem_down   = tiny_nmi_handler + shift_mem_down_routine  - tiny_nmi_handler_routine
+#endif // SEGMENT_BASIC
+
+#endif // CONFIG_MEMORY_MODEL_60K
 
 	// BASIC vectors
-	.label IERROR    = $300  // $300-$301  -- NOT IMPLEMENTED --
-	.label IMAIN     = $302  // $302-$303  -- NOT IMPLEMENTED --
-	.label ICRNCH    = $304  // $304-$305  -- NOT IMPLEMENTED --
-	.label IQPLOP    = $306  // $306-$307  -- NOT IMPLEMENTED --
-	.label IGONE     = $308  // $308-$309  -- NOT IMPLEMENTED --
-	.label IEVAL     = $30A  // $30A-$30B  -- NOT IMPLEMENTED --
+	.label IERROR    = $300  // $300-$301
+	.label IMAIN     = $302  // $302-$303
+	.label ICRNCH    = $304  // $304-$305
+	.label IQPLOP    = $306  // $306-$307
+	.label IGONE     = $308  // $308-$309
+	.label IEVAL     = $30A  // $30A-$30B
 	
 	.label SAREG     = $30C  //            .A storage, for SYS call
 	.label SXREG     = $30D  //            .X storage, for SYS call

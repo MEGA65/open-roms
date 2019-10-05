@@ -6,17 +6,22 @@ default_nmi_handler:
 
 	// Save registers, sequence according to Compute's Mapping the Commodore 64, page 73
 	pha
+#if CONFIG_CPU_MOS_6502
 	txa
 	pha
 	tya
 	pha
+#else
+	phx
+	phy
+#endif
 
 	// XXX: RS-232 support is not implemented
 
 	// XXX confirm NMIs from CIA, or no other NMI will arrive!
 
 	jsr cartridge_check
-	bcc !+
+	bne !+
 	jmp (ICART_WARM_START)
 !:
 

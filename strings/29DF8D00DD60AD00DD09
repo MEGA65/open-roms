@@ -1,0 +1,5 @@
+AND #$DF + STA $DD00 + RTS + (start of the next routine) LDA $DD00 + ORA #$xx (value does not match)
+
+$DD00 is a hardware register, where one typically set/unset/read individual bits.
+Having a set of trivial helper subroutines to set/clear individual bits (or groups of bits) is an obvious solution (thus not copyrightable), some similarities are unevitable.
+Besides, in this case (since the similarity does not even cover a single subroutine from start to end) it is clear that the similar code actually performs slightly different actions.

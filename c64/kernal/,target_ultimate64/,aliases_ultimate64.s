@@ -4,10 +4,8 @@
 // and ultimate_dos_v1.0.pdf and command_interface_v1.0.pdf by Gideon Zweijtzer
 
 	// Command interface registers
-	.label U64_CONTROL                 = $DF1C // write
-	.label U64_STATUS                  = $DF1C // read
-	.label U64_COMMAND_DATA            = $DF1D // write
-	.label U64_IDENTIFICATION          = $DF1D // read
+	.label U64_CONTROL_STATUS          = $DF1C // write = CONTROL, read = STATUS
+	.label U64_COMMAND_DATA_IDENTIFY   = $DF1D // write = COMMAND_DATA, read = IDENTIFICATION
 	.label U64_RESPONSE_DATA           = $DF1E // read only
 	.label U64_STATUS_DATA             = $DF1F // read only
 

@@ -1,5 +1,5 @@
 
-// START wedge support
+#if CONFIG_DOS_WEDGE
 
 wedge_dos:
 
@@ -16,7 +16,7 @@ wedge_dos:
 
 	// Check if user asked for a status
 	ldy #$00
-	lda (basic_current_statement_ptr), y
+	lda (TXTPTR), y
 	bne !+
 	jmp wedge_dos_status // XXX try to optimize this, perhaps move 'wedge_dos_status' above?
 !:
@@ -31,7 +31,7 @@ wedge_dos:
 	cmp #$3A
 	bcs wedge_dos_command // char code after 9
 	iny
-	lda (basic_current_statement_ptr), y
+	lda (TXTPTR), y
 	beq wedge_dos_change_drive // end of buffer
 	cmp #$20
 	beq wedge_dos_change_drive
@@ -64,17 +64,17 @@ wedge_dos_change_drive:
 
 	// Reuse the line number parser for device number retrieval
 	jsr basic_parse_line_number
-	lda basic_line_number+1
+	lda LINNUM+1
 	beq !+
 	jmp do_ILLEGAL_QUANTITY_error
 !:
-	lda basic_line_number+0
+	lda LINNUM+0
 	cmp #$08
 	bpl !+
 	bcs !+
 	jmp do_ILLEGAL_DEVICE_NUMBER_error
 !:
-	sta current_device_number
+	sta FA
 	jmp basic_end_of_line
 
 wedge_dos_status_get:
@@ -139,7 +139,7 @@ wedge_dos_directory:
 	// First change the secondary address to the one suitable for
 	// directory loading
 	lda #$00 // logical device number
-	ldx current_device_number
+	ldx FA
 	ldy #$60
 	jsr JSETFLS
 
@@ -195,10 +195,10 @@ wedge_dos_directory_display:
 
 	// Display line
 	ldx #<BUF
-	stx basic_current_line_ptr+0
+	stx OLDTXT+0
 	ldx #>BUF
-	stx basic_current_line_ptr+1
-	ldx #basic_current_line_ptr
+	stx OLDTXT+1
+	ldx #OLDTXT
 	jsr list_single_line
 
 	// Read & display next line or quit
@@ -209,8 +209,7 @@ wedge_dos_directory_display:
 wedge_dos_clean_exit:
 	jsr JCLALL
 	// Print new line
-	lda #$0D
-	jsr JCHROUT
+	jsr print_return
 	jmp basic_end_of_line
 
 wedge_dos_basic_error:
@@ -226,13 +225,13 @@ wedge_dos_setnam:
 	ldy #$FF
 !:
 	iny
-	lda (basic_current_statement_ptr), y
+	lda (TXTPTR), y
 	bne !-
 	
 	// Set the name to open
 	tya
-	ldx basic_current_statement_ptr+0
-	ldy basic_current_statement_ptr+1
+	ldx TXTPTR+0
+	ldy TXTPTR+1
 	jmp JSETNAM
 
-// END wedge support
+#endif // CONFIG_DOS_WEDGE

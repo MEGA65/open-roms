@@ -1,0 +1,4 @@
+PETSCII string: <CR> LOADIN(G + end of string mark) + <CR>
+
+Encoding strings by adding $80 to it's last character (to mark end of stream) is a common byte-saving technique - for example, Turbo Basic XL (for Atari, now open-source) does the same.
+And a single word following the <CR> is not copyrightable.

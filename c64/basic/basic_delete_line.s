@@ -9,35 +9,47 @@ basic_delete_line:
 
 	// jsr printf
 	// .text "DELETING LINE AT $"
-	// .byte $f1,<basic_current_line_ptr,>basic_current_line_ptr
-	// .byte $f0,<basic_current_line_ptr,>basic_current_line_ptr
+	// .byte $f1,<OLDTXT,>OLDTXT
+	// .byte $f0,<OLDTXT,>OLDTXT
 	// .byte $0d,0
 
 	// Get address of next line
-	ldx #<basic_current_line_ptr
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT
 	jsr peek_under_roms
-	sta tokenise_work3
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
+	sta __tokenise_work3
 	iny
+
+#if CONFIG_MEMORY_MODEL_60K	
 	jsr peek_under_roms
-	sta tokenise_work4
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
+	sta __tokenise_work4
 
 	// Work out length of this line by looking at the pointer
-	lda tokenise_work3
+	lda __tokenise_work3
 	sec
-	sbc basic_current_line_ptr+0
-	sta tokenise_work3
-	lda tokenise_work4
-	sbc basic_current_line_ptr+1
-	sta tokenise_work4
+	sbc OLDTXT+0
+	sta __tokenise_work3
+	lda __tokenise_work4
+	sbc OLDTXT+1
+	sta __tokenise_work4
 
 	// jsr printf
 	// .text "LINE LENGTH IS $"
-	// .byte $f0,<tokenise_work4,>tokenise_work4
-	// .byte $f0,<tokenise_work3,>tokenise_work3
+	// .byte $f0,<__tokenise_work4,>__tokenise_work4
+	// .byte $f0,<__tokenise_work3,>__tokenise_work3
 	// .byte $0d,0
 	
-	lda tokenise_work4
+	lda __tokenise_work4
 	sbc #0
 	cmp #$00
 	beq !+
@@ -46,9 +58,9 @@ basic_delete_line:
 	jmp do_MEMORY_CORRUPT_error
 !:
 	// Length can now be safely assumed to be in the low
-	// byte only, i.e., stored in tokenise_work3
+	// byte only, i.e., stored in __tokenise_work3
 
-	lda tokenise_work3
+	lda __tokenise_work3
 	pha
 	tax
 
@@ -57,14 +69,14 @@ basic_delete_line:
 
 	// Now decrease top of BASIC mem
 	pla
-	sta tokenise_work3
-	lda basic_end_of_text_ptr+0
+	sta __tokenise_work3
+	lda VARTAB+0
 	sec
-	sbc tokenise_work3
-	sta basic_end_of_text_ptr+0
-	lda basic_end_of_text_ptr+1
+	sbc __tokenise_work3
+	sta VARTAB+0
+	lda VARTAB+1
 	sbc #0
-	sta basic_end_of_text_ptr+1
+	sta VARTAB+1
 
 	clc
 	rts

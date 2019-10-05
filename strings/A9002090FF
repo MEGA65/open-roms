@@ -1,0 +1,3 @@
+LDA #$00 + JSR $FF90 (official docummented SETMSG jumptable address)
+
+Two instructions to enabla Kernal string messages - trivial, not copyrightable.

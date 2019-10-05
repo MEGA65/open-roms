@@ -1,0 +1,3 @@
+LDA ($BB),Y + JSR $FFD2 (CHROUT official jumptable entry) + INY
+
+Part of a loop displaying a string - trivial, not copyrightable.

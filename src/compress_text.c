@@ -24,7 +24,7 @@
   LOAD and SAVE. Indeed, that this is so is highlighted by the fact that it was used in the
   C64 ROM.  Therefore there is no exercise of creativity here, and a reasonable person would
   likely select this name independently. Also, single words cannot be copyright.
-  
+
   Further, the list is a list of facts, and thus not copyrightable.
 
   We sourced the list from a public source, https://www.c64-wiki.com/wiki/BASIC, which has
@@ -161,11 +161,13 @@ char *error_list[]={
   "READY.\r", // #29       // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
   "NTSC, ", // #30
   "PAL, ", // #31
-  "BRK AT $", // #32
+  "BREAK AT $", // #32
   "ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
   "BYTES FREE\r\r", // #34 // https://github.com/stefanhaustein/expressionparser
   "MEMORY CORRUPT", // #35
   "NOT IMPLEMENTED", // #36
+  " IN ", // #37
+  "BREAK", // #38
   NULL};
 
 // XXX: create separate list for Kernal  

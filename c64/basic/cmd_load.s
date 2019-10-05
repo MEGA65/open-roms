@@ -13,7 +13,7 @@ cmd_load:
 	
 	// Setup Kernal to print control messages or not
 	lda #$80 // display control messages and omit error messages
-	ldx basic_current_line_number+1
+	ldx CURLIN+1
 	cpx #$FF
 	beq !+
 	lda #$00 // direct mode - don't display anything
@@ -36,11 +36,11 @@ cmd_load:
 	jmp do_SYNTAX_error
 !:
 	// Filename starts here so set pointer
-	lda basic_current_statement_ptr+0
-	sta current_filename_ptr+0
-	lda basic_current_statement_ptr+1
-	sta current_filename_ptr+1
-	
+	lda TXTPTR+0
+	sta FNADDR+0
+	lda TXTPTR+1
+	sta FNADDR+1
+
 	// Now search for end of line or closing quote
 	// so that we know the length of the filename
 getting_filename:
@@ -60,47 +60,50 @@ got_filename:
 
 	// Now fetch the file number, start from the default one
 	jsr select_device
-	stx current_device_number
+	stx FA
 	jsr injest_comma
 	bcs got_devicenumber
 
 	jsr basic_parse_line_number
-	lda basic_line_number+1
+	lda LINNUM+1
 	beq !+
 	jmp do_ILLEGAL_QUANTITY_error
 !:
-	lda basic_line_number+0
-	sta current_device_number
+	lda LINNUM+0
+	sta FA
 
 got_devicenumber:
 
 	// Now fetch the secondary address
 	lda #$00
-	sta current_secondary_address
+	sta SA
 	jsr injest_comma
 	bcs got_secondaryaddress
 	jsr basic_parse_line_number
-	lda basic_line_number+1
+	lda LINNUM+1
 	bne !+
-	lda basic_line_number+0
-	sta current_secondary_address
+	lda LINNUM+0
+	sta SA
 	jmp got_secondaryaddress
 !:
 	// Second parameter is above 255, this can't be a secondary address
 	// Use it as load address instead
 	// XXX temporary syntax, it would be better to use something
 	// XXX like 'LOAD"FILE",8 TO 49152'
-	ldx basic_line_number+0
-	ldy basic_line_number+1
+	ldx LINNUM+0
+	ldy LINNUM+1
 	bne got_loadaddress
 
 got_secondaryaddress:
-	ldx #<$0801 // XXX use start text vector
-	ldy #>$0801
+	ldy TXTTAB+1
+	ldx TXTTAB+0
 
 got_loadaddress:
 	lda #$00 		// LOAD not verify
-	jsr via_ILOAD
+	jsr JLOAD
+	php
+	jsr print_return
+	plp
 	bcc !+
 
 	// A = KERNAL error code, which also almost match
@@ -112,8 +115,8 @@ got_loadaddress:
 	
 !:
 	// $YYXX is the last loaded address, so store it
-	stx basic_end_of_text_ptr+0
-	sty basic_end_of_text_ptr+1
+	stx VARTAB+0
+	sty VARTAB+1
 
 	// Now relink the loaded program, as we cannot trust the line
 	// links supplied. For example, the VICE virtual drive emulation
@@ -124,29 +127,29 @@ got_loadaddress:
 	// or go back to the READY prompt if LOAD was called from direct mode.
 
 	// Reset to start of program
-	lda basic_start_of_text_ptr+0
-	sta basic_current_line_ptr+0
-	lda basic_start_of_text_ptr+1
-	sta basic_current_line_ptr+1
+	jsr init_oldtxt
 
 	// XXX - should run program if LOAD was used in program mode
 	jmp basic_main_loop
 
 
 basic_relink_program:
-	
-	// Start by getting pointer to the first line
-	lda basic_start_of_text_ptr+0
-	sta basic_current_line_ptr+0
-	lda basic_start_of_text_ptr+1
-	sta basic_current_line_ptr+1
 
-basic_relink_loop:	
+	// Start by getting pointer to the first line
+	jsr init_oldtxt
+
+basic_relink_loop:
 	// Is the pointer to the end of the program
 	ldy #1
-	ldx #<basic_current_line_ptr+0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
 	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
 	bne !+
 
 	// End of program
@@ -156,8 +159,14 @@ basic_relink_loop:
 	// Skip forward pointer and line number
 	ldy #4
 end_of_line_search:
-	ldx #<basic_current_line_ptr+0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
 	cmp #$00
 	beq !+
 
@@ -173,27 +182,36 @@ end_of_line_search:
 
 	// First, skip over the $00 char
 	iny
-	
+
 	// Now overwrite the pointer (carefully)
-	// 
+	//
 	tya
 	clc
-	adc basic_current_line_ptr+0
+	adc OLDTXT+0
 	pha
 	php
 	ldy #0
-	ldx #<basic_current_line_ptr+0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT+0
 	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (OLDTXT),y
+#endif
+
 	plp
-	lda basic_current_line_ptr+1
+	lda OLDTXT+1
 	adc #0
 	ldy #1
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
-	sta basic_current_line_ptr+1
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (OLDTXT),y
+#endif
+
+	sta OLDTXT+1
 	pla
-	sta basic_current_line_ptr+0
+	sta OLDTXT+0
 
 	jmp basic_relink_loop
-
-via_ILOAD:
-	jmp (ILOAD)

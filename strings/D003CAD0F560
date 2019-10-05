@@ -1,0 +1,3 @@
+BNE (offset match, skip 3 bytes) + DEX + BNE (backwards, offset match) + RTS 
+
+Part of a routine scanning for a valid cartridge - there aren't many sane ways to do this (compare strings), some similarity is unevitable. Not creative - not copyrightable.

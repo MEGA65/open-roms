@@ -2,10 +2,15 @@
 // after first checking that we have a colon
 // or $00 char
 
-basic_end_of_statement_check:	
-	ldx #<basic_current_statement_ptr
+basic_end_of_statement_check:
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<TXTPTR
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (TXTPTR),y
+#endif
 
 	// Consume any spaces
 	cmp #$20
@@ -31,22 +36,28 @@ basic_execute_statement:
 	// Check for RUN/STOP
 	lda STKEY
 	bmi !+
-	jmp basic_do_break
+	jmp cmd_stop
 !:
 	// Skip over any white space and :
 	ldy #0
-	ldx #<basic_current_statement_ptr
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<TXTPTR
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (TXTPTR),y
+#endif
+
 	jsr basic_end_of_statement_check
 	bcs basic_end_of_line
 	
 	// jsr printf
 	// .text "LINE PTR = $"
-	// .byte $f1,<basic_current_line_ptr,>basic_current_line_ptr
-	// .byte $f0,<basic_current_line_ptr,>basic_current_line_ptr
+	// .byte $f1,<OLDTXT,>OLDTXT
+	// .byte $f0,<OLDTXT,>OLDTXT
 	// .text ", STATEMENT PTR = $"
-	// .byte $f1,<basic_current_statement_ptr,>basic_current_statement_ptr
-	// .byte $f0,<basic_current_statement_ptr,>basic_current_statement_ptr
+	// .byte $f1,<TXTPTR,>TXTPTR
+	// .byte $f0,<TXTPTR,>TXTPTR
 	// .byte $d,0
 		
 	// Go through the line until its end is reached.
@@ -58,10 +69,17 @@ basic_execute_statement:
 	
 	// Get next char of program text, even if it is hiding under a ROM or the
 	// IO area.
-	ldx #<basic_current_statement_ptr
+
 	ldy #0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<TXTPTR
 	jsr peek_under_roms
 	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (TXTPTR),y
+#endif
+
 	beq basic_end_of_line
 	
 	// The checks should be done in order of frequency, so that we are as
@@ -94,14 +112,14 @@ not_a_token:
 	cmp #$3a
 	beq basic_skip_char
 	
-// START wedge support
+#if CONFIG_DOS_WEDGE
 	
 	// Are we in direct mode?
 	// DOS Wedge is a hacky solution (inelegant, but convenient),
 	// BASIC programmers should implement communication with drives
 	// the standard way, handling channels properly. Besides,
 	// current implementation does not support characters under ROM
-	ldx basic_current_line_number+1
+	ldx CURLIN+1
 	cpx #$ff
 	bne !+
 	// We are in direct mode, allow wedge to handle '@' sign
@@ -111,7 +129,8 @@ not_a_token:
 	jsr basic_consume_character
 	jmp wedge_dos
 !:
-// END wedge support
+
+#endif // CONFIG_DOS_WEDGE
 
 	// If all else fails, it's a syntax error
 	jmp do_SYNTAX_error
@@ -122,26 +141,32 @@ basic_skip_char:
 
 basic_fetch_and_consume_character:
 	ldy #0
-	ldx #<basic_current_statement_ptr
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<TXTPTR
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (TXTPTR),y
+#endif
+
 	// FALL THROUGH
 	
 basic_consume_character:
 	// Advance basic text pointer
-	inc basic_current_statement_ptr+0
+	inc TXTPTR+0
 	bne !+
-	inc basic_current_statement_ptr+1
+	inc TXTPTR+1
 !:
 	rts
 
 basic_unconsume_character:
-	lda basic_current_statement_ptr+0
+	lda TXTPTR+0
 	sec
 	sbc #1
-	sta basic_current_statement_ptr+0
-	lda basic_current_statement_ptr+1
+	sta TXTPTR+0
+	lda TXTPTR+1
 	sbc #0
-	sta basic_current_statement_ptr+1
+	sta TXTPTR+1
 	rts
 	
 basic_end_of_line:
@@ -150,7 +175,7 @@ basic_end_of_line:
 	// one.
 
 	// Are we in direct mode
-	lda basic_current_line_number+1
+	lda CURLIN+1
 	cmp #$ff
 	bne basic_not_direct_mode
 
@@ -159,17 +184,17 @@ basic_end_of_line:
 
 basic_not_direct_mode:
 	// Copy line number to previous line number
-	lda basic_current_line_number+0
-	sta basic_previous_line_number+0
-	lda basic_current_line_number+1
-	sta basic_previous_line_number+1
+	lda CURLIN+0
+	sta OLDLIN+0
+	lda CURLIN+1
+	sta OLDLIN+1
 	
 	// Advance the basic line pointer to the next line
 	jsr basic_follow_link_to_next_line
 
 	// Are we at the end of the program?
-	lda basic_current_line_ptr+0
-	ora basic_current_line_ptr+1
+	lda OLDTXT+0
+	ora OLDTXT+1
 	bne basic_execute_from_current_line
 
 	// End of program found
@@ -179,29 +204,39 @@ basic_execute_from_current_line:
 	// Check if pointer is null, if so, we are at the end of
 	// the program.
 	ldy #0
-	ldx #<basic_current_line_ptr
-	jsr peek_pointer_null_check
+	jsr peek_line_pointer_null_check
 	bcs !+
 	// End of program reached
 	jmp basic_main_loop
 !:
 	// Skip pointer and line number to get address of first statement
-	lda basic_current_line_ptr+0
+	lda OLDTXT+0
 	clc
 	adc #4
-	sta basic_current_statement_ptr+0
-	lda basic_current_line_ptr+1
+	sta TXTPTR+0
+	lda OLDTXT+1
 	adc #0
-	sta basic_current_statement_ptr+1
+	sta TXTPTR+1
 
-	// Store line number
-	ldx #<basic_current_line_ptr
 	ldy #2
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT
 	jsr peek_under_roms
-	sta basic_current_line_number+0
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
+	sta CURLIN+0
 	iny
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
-	sta basic_current_line_number+1
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
+	sta CURLIN+1
 
 	jmp basic_execute_statement
 	

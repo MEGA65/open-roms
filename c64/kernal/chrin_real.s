@@ -52,18 +52,18 @@ chrin_repeat:
 	// If so, return the next byte, and clear the flag when we reach the end.
 
 	// Do we have a line of input waiting?
-	lda keyboard_input_ready
+	lda CRSW
 	beq read_from_keyboard
 
-	// Yes, we have input waiting at (start_of_keyboard_input)+keyboard_input_ready
-	// When keyboard_input_ready = end_of_input_line, then we return a carriage return
+	// Yes, we have input waiting at (LXSP)+CRSW
+	// When CRSW = INDX, then we return a carriage return
 	// and clear the flag
-	cmp end_of_input_line
+	cmp INDX
 	bne not_end_of_input
 
 	// Return carriage return and clear pending input flag
 	lda #$00
-	sta keyboard_input_ready
+	sta CRSW
 	pla
 	tax
 	clc
@@ -75,9 +75,9 @@ not_end_of_input:
 	tay
 	pla
 	tax
-	lda (start_of_keyboard_input),y
+	lda (LXSP),y
 	jsr screen_code_to_petscii
-	inc keyboard_input_ready
+	inc CRSW
 	clc
 	rts
 
@@ -87,10 +87,10 @@ read_from_keyboard:
 	jsr enable_cursor
 	
 	// Wait for a key
-	lda keys_in_key_buffer
+	lda NDX
 	beq chrin_repeat
 
-	lda keyboard_buffer
+	lda KEYD
 	cmp #$0d
 	bne not_enter
 
@@ -106,10 +106,10 @@ read_from_keyboard:
 	// (Compute's Mapping the 64, p96)
 
 	// Set pointer to line of input
-	lda current_screen_line_ptr+0
-	sta start_of_keyboard_input+0
-	lda current_screen_line_ptr+1
-	sta start_of_keyboard_input+1
+	lda PNT+0
+	sta LXSP+0
+	lda PNT+1
+	sta LXSP+1
 
 	// Calculate length
 	jsr get_current_line_logical_length
@@ -117,18 +117,18 @@ read_from_keyboard:
 	iny
 !:	dey
 	bmi empty_line
-	lda (current_screen_line_ptr),y
+	lda (PNT),y
 	cmp #$20
 	beq !-
 	iny
-	sty end_of_input_line
+	sty INDX
 	lda #$01
-	sta keyboard_input_ready
+	sta CRSW
 	// Return first char of line
 	ldy #$00
 	pla
 	tax
-	lda (start_of_keyboard_input),y
+	lda (LXSP),y
 	jsr screen_code_to_petscii
 	clc
 	rts
@@ -145,7 +145,7 @@ empty_line:
 
 not_enter:
 	// Print character
-	lda keyboard_buffer
+	lda KEYD
 	jsr CHROUT
 
 	jsr pop_keyboard_buffer
@@ -160,13 +160,13 @@ pop_keyboard_buffer:
 	sei
 	ldx #$00
 	ldy #$01
-!:	lda keyboard_buffer,y
-	sta keyboard_buffer,x
+!:	lda KEYD,y
+	sta KEYD,x
 	inx
 	iny
-	cpy key_buffer_size
+	cpy XMAX
 	bne !-
-	dec keys_in_key_buffer
+	dec NDX
 	cli
 
 	rts

@@ -1,0 +1,3 @@
+STA $DD0D + STA (address does not match)
+
+Instruction and some part - not copyrightable.

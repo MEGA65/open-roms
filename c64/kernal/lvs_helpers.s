@@ -8,8 +8,14 @@ lvs_send_file_name:
 lvs_send_file_name_loop:
 	cpy FNLEN
 	beq lvs_send_file_name_done
-	ldx #<current_filename_ptr
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<FNADDR+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (FNADDR),y
+#endif
+
 	iny
 	// Set Carry flag on the last file name character, to mark EOI
 	cpy FNLEN
@@ -65,16 +71,22 @@ lvs_advance_pointer:
 lvs_display_searching_for:
 	lda MSGFLG
 	bpl lvs_display_end
-	jsr printf // XXX don't use printf, use packed message
-	.byte $0D
-	.text "SEARCHING FOR "
-	.byte 0
+
+	ldx #__MSG_KERNAL_SEARCHING_FOR
+	jsr print_kernal_message
+
 	ldy #$00
 !:
 	cpy FNLEN
 	beq lvs_display_end
-	ldx #<current_filename_ptr
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<FNADDR+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (FNADDR),y
+#endif
+
 	jsr JCHROUT
 	iny
 	jmp !-
@@ -86,42 +98,33 @@ lvs_display_loading_verifying:
 	// Display LOADING / VERIFYING and start address
 	lda MSGFLG
 	bpl lvs_display_end
+
+	ldx #__MSG_KERNAL_LOADING
 	lda VERCKK
 	beq !+
-	jsr printf // XXX don't use printf, use packed message
-	.byte $0D
-	.text "VERIFYING"
-	.byte 0
-	jmp lvs_display_start_addr
+	ldx #__MSG_KERNAL_VERIFYING
 !:
-	jsr printf // XXX don't use printf, use packed message
-	.byte $0D
-	.text "LOADING"
-	.byte 0
+	jsr print_kernal_message
+
 	// FALLTHROUGH
 
 lvs_display_start_addr:
-	jsr printf // XXX don't use printf, use packed message
-	.text " FROM $"
-	.byte 0
+	ldx #__MSG_KERNAL_FROM_HEX
+!:
+	jsr print_kernal_message
+
 	lda STAL+1
-	jsr printf_printhexbyte
+	jsr print_hex_byte
 	lda STAL+0
-	jmp printf_printhexbyte
+	jmp print_hex_byte
 
 lvs_display_done:
 	// Display end address
 	lda MSGFLG
 	bpl lvs_display_end
-	jsr printf // XXX don't use printf, use packed message
-	.text " TO $"
-	.byte 0
-	lda STAL+1
-	jsr printf_printhexbyte
-	lda STAL+0
-	jsr printf_printhexbyte
-	lda #$0D
-	jmp JCHROUT
+
+	ldx #__MSG_KERNAL_TO_HEX
+	jmp !-
 
 lvs_wrap_around_error:
 	// This error is probably not even detected by C64 Kernal;
@@ -151,8 +154,6 @@ lvs_illegal_device_number:
 
 	jsr kernalstatus_DEVICE_NOT_FOUND
 	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
-
-.label lvs_file_not_found_error = kernalerror_FILE_NOT_FOUND
 
 lvs_load_verify_error:
 	// XXX should we really return BASIC error code here?

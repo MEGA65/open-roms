@@ -1,11 +1,23 @@
 basic_follow_link_to_next_line:
 	ldy #0
-	ldx #<basic_current_line_ptr
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT+0
 	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
 	pha
 	iny
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
-	sta basic_current_line_ptr+1
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
+	sta OLDTXT+1
 	pla
-	sta basic_current_line_ptr+0
+	sta OLDTXT+0
 	rts

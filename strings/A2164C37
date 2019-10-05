@@ -1,0 +1,3 @@
+LDX #$16 + JMP $xx37 (address does not fully match)
+
+Instruction + a part of another one. Not copyrightable.

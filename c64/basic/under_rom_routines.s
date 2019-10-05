@@ -4,11 +4,13 @@
 // in ,aliases.s.
 // Thus those addresses are expressed using formulae.
 
+#if CONFIG_MEMORY_MODEL_60K
+
 install_ram_routines:
 	// Copy routines into place
-	ldx #ram_routines_end-ram_routines_start-1
+	ldx #__ram_routines_end-__ram_routines_start-1
 !:
-	lda ram_routines_start,x
+	lda __ram_routines_start,x
 	sta tiny_nmi_handler,x
 	dex
 	bpl !-
@@ -21,7 +23,7 @@ install_ram_routines:
 
 	rts
 
-ram_routines_start:	
+__ram_routines_start:
 
 	// XXX - Routine order must match that of the KERNAL version of the file.
 	// (since it has fewer routines)
@@ -64,8 +66,8 @@ memmap_allram_routine:
 	rts
 
 shift_mem_up_routine:
-	// Move memmove_size bytes from memmove_src to memmove_dst,
-	// where memmove_dst > memmove_src
+	// Move __memmove_size bytes from __memmove_src to __memmove_dst,
+	// where __memmove_dst > __memmove_src
 	// This means we have to copy from the back end down.
 	// This routine assumes the pointers are already pointed
 	// to the end of the areas, and that Y is correctly initialised
@@ -73,20 +75,20 @@ shift_mem_up_routine:
 	php
 	jsr memmap_allram
 smu1:	
-	lda (memmove_src),y
-	sta (memmove_dst),y
+	lda (__memmove_src),y
+	sta (__memmove_dst),y
 	dey
 	bne smu1
-	dec memmove_src+1
-	dec memmove_dst+1
-	dec memmove_size+1
+	dec __memmove_src+1
+	dec __memmove_dst+1
+	dec __memmove_size+1
 	bne smu1
 	plp
 	jmp memmap_normal
 
 shift_mem_down_routine:
-	// Move memmove_size bytes from memmove_src to memmove_dst,
-	// where memmove_dst > memmove_src
+	// Move __memmove_size bytes from __memmove_src to __memmove_dst,
+	// where __memmove_dst > __memmove_src
 	// This means we have to copy from the back end down.
 	// This routine assumes the pointers are already pointed
 	// to the end of the areas, and that Y is correctly initialised
@@ -94,15 +96,59 @@ shift_mem_down_routine:
 	php
 	jsr memmap_allram
 smd1:
-	lda (memmove_src),y
-	sta (memmove_dst),y
+	lda (__memmove_src),y
+	sta (__memmove_dst),y
 	iny
 	bne smd1
-	inc memmove_src+1
-	inc memmove_dst+1
-	dec memmove_size+1
+	inc __memmove_src+1
+	inc __memmove_dst+1
+	dec __memmove_size+1
 	bne smd1
 	plp
 	jmp memmap_normal
 
-ram_routines_end:
+__ram_routines_end:
+
+#else // CONFIG_MEMORY_MODEL_60K
+
+shift_mem_up:
+	// Move __memmove_size bytes from __memmove_src to __memmove_dst,
+	// where __memmove_dst > __memmove_src
+	// This means we have to copy from the back end down.
+	// This routine assumes the pointers are already pointed
+	// to the end of the areas, and that Y is correctly initialised
+	// to allow the copy to begin.
+	php
+smu1:	
+	lda (__memmove_src),y
+	sta (__memmove_dst),y
+	dey
+	bne smu1
+	dec __memmove_src+1
+	dec __memmove_dst+1
+	dec __memmove_size+1
+	bne smu1
+	plp
+	rts
+
+shift_mem_down:
+	// Move __memmove_size bytes from __memmove_src to __memmove_dst,
+	// where __memmove_dst > __memmove_src
+	// This means we have to copy from the back end down.
+	// This routine assumes the pointers are already pointed
+	// to the end of the areas, and that Y is correctly initialised
+	// to allow the copy to begin.
+	php
+smd1:
+	lda (__memmove_src),y
+	sta (__memmove_dst),y
+	iny
+	bne smd1
+	inc __memmove_src+1
+	inc __memmove_dst+1
+	dec __memmove_size+1
+	bne smd1
+	plp
+	rts
+
+#endif

@@ -46,25 +46,6 @@
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
-	// // ZERO PAGE Varibles
-	// $250-$258 is the 81st - 88th characters in BASIC input, a carry over from VIC-20
-	// and not used on C64, so safe for us to use, probably.
-	// (Compute's Mapping the 64 p51)
-	.label ScanResult        = $250 // 8 bytes
-	// Other variables are in RS232 ZP locations for now
-	// (Carefully avoiding $A7 which is used by 64NET)
-	.label BufferNew         = $A9  // 3 bytes
-	.label KeyQuantity       = $A8  // 1 byte
-	.label TempZP            = $B6  // 1 byte
-
-	// Reuse RS232 variables, since they should not be used
-	// by other things
-	// These are initialised in cinit all to $FF
-	.label BufferOld         = $293 // 3 bytes
-	.label Buffer 	         = $297 // 4 bytes
-	.label BufferQuantity    = $B4  // 1 byte
-
-
 	// Operational Variables
 	.const MaxKeyRollover = 3
 
@@ -74,9 +55,9 @@ SCNKEY:
 	sta BufferQuantity
 
 	// Decrement key repeat timeout if non-zero
-	ldx key_repeat_counter
+	ldx KOUNT
 	beq sk_start
-	dec key_repeat_counter
+	dec KOUNT
 	
 sk_start:	
 	// Call main keyboard scanning routine
@@ -110,7 +91,7 @@ accept_key:
 	// Convert matrix position to key code
 	// XXX - Add offset of $40, $80 or $C0 if shift, CONTROL or C= are held down
 	pha
-	lda key_bucky_state
+	lda SHFLAG
 	and #$7
 	tax
 	pla
@@ -122,16 +103,15 @@ accept_key:
 	beq sk_nokey
 
 	// Stash key into keyboard buffer
-	ldx keys_in_key_buffer
-	cpx key_buffer_size
+	ldx NDX
+	cpx XMAX
 	beq sk_nokey
-	sta keyboard_buffer,x
-	inc keys_in_key_buffer
-	
-sk_nokey:	
+	sta KEYD,x
+	inc NDX
+
+sk_nokey:
 
 	rts
-	
 
 	// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// // Routine for Scanning a Matrix Row
@@ -181,13 +161,12 @@ OverFlow:
 	pla
 	// Don't manipulate last legal buffer as the routine will fix itself once it gets valid input again.
 
-TooManyNewKeys:
 ReturnNoKeys:
 	sec
 	lda #$00
 	sta BufferQuantity
 	lda #$FF
-	sta last_key_matrix_position
+	sta LSTX
 	ldx #MaxKeyRollover-1
 !:
 	sta Buffer,x
@@ -204,10 +183,10 @@ ReturnNoKeys:
 NoActivityDetected:
 
 	// So cancel all bucky keys
-	lda key_bucky_state
-	sta key_last_bucky_state
+	lda SHFLAG
+	sta LSTSHF
 	lda #$00
-	sta key_bucky_state
+	sta SHFLAG
 	
 	jmp ReturnNoKeys
 
@@ -239,7 +218,7 @@ JoystickActivity:
 
 	// Clear bucky key status
 	lda #$00
-	sta key_bucky_state
+	sta SHFLAG
 	
 	lda $dc01
 	and #$03
@@ -254,7 +233,7 @@ JoystickActivity:
 	// Up
 	// Mark shift as pressed
 	ldx #$01
-	stx key_bucky_state
+	stx SHFLAG
 	ldx #$07		// UP/DOWN
 	jsr KeyFound
 !:
@@ -278,7 +257,7 @@ JoystickActivity:
 	cmp #$08
 	bne !+
 	ldx #$01
-	stx key_bucky_state
+	stx SHFLAG
 	ldx #$02
 	jsr KeyFound		// LEFT/RIGHT
 !:
@@ -332,20 +311,20 @@ next_row:
 
 	// Store de-bounce data for bucky keys
 	// (Compute's Mapping the 64, p58-59)
-	lda key_bucky_state
-	sta key_last_bucky_state
+	lda SHFLAG
+	sta LSTSHF
 
 	// Build bucky state
 	lda #$00
-	sta key_bucky_state
+	sta SHFLAG
 	lda ScanResult+6
 	eor #%10000000
 	and #%10000000     // Left shift
 	rol
 	rol
 	and #$01
-	ora key_bucky_state
-	sta key_bucky_state
+	ora SHFLAG
+	sta SHFLAG
 
 	// Right shift
 	lda ScanResult+1
@@ -355,15 +334,15 @@ next_row:
 	lsr
 	lsr
 	and #$01
-	ora key_bucky_state
-	sta key_bucky_state
+	ora SHFLAG
+	sta SHFLAG
 	
 	// Control
 	lda ScanResult+0
 	eor #$04
 	and #$04
-	ora key_bucky_state
-	sta key_bucky_state
+	ora SHFLAG
+	sta SHFLAG
 
 	// Vendor key
 	lda ScanResult+0
@@ -373,17 +352,17 @@ next_row:
 	lsr
 	lsr
 	and #$02
-	ora key_bucky_state
-	sta key_bucky_state
+	ora SHFLAG
+	sta SHFLAG
 
 	// Chick for shift + Vendor
 	cmp #$03
 	bne no_case_toggle
-	lda key_last_bucky_state
+	lda LSTSHF
 	cmp #$03
 	beq no_case_toggle
 
-	lda enable_case_switch
+	lda MODE
 	beq no_case_toggle
 	
 	lda $D018
@@ -463,7 +442,7 @@ RecordKeypress:
 	ldy BufferQuantity
 	cpy #MaxKeyRollover
 	bcc !+
-	jmp TooManyNewKeys
+	jmp ReturnNoKeys // too many new keys
 !:
 AcceptKeyEvent:	
     sta Buffer,y
@@ -488,7 +467,7 @@ ConsiderNextKey:
 
 KeyHeld:
 	// The key in A is still held down.
-	// compare with key in last_key_matrix_position
+	// compare with key in LSTX
 	// (Compute's Mapping the 64 p36-37)
 	// if different, reset repeat count down.
 
@@ -502,22 +481,22 @@ KeyHeld:
 	beq BuckyHeld
 	cmp #61
 	beq BuckyHeld
-	
-	cmp last_key_matrix_position
+
+	cmp LSTX
 	beq SameKeyHeld
 
 	// Different key held
-	sta last_key_matrix_position
+	sta LSTX
 	pha
-	lda key_first_repeat_delay
-	sta key_repeat_counter
+	lda DELAY
+	sta KOUNT
 	pla
 BuckyHeld:
 	jmp ConsiderNextKey
 	
 SameKeyHeld:
 	pha
-	lda key_repeat_counter
+	lda KOUNT
 	bmi KeyCanRepeat
 	bne KeyRepeatWait
 	// Count down ended, so repeat key now
@@ -526,7 +505,7 @@ KeyCanRepeat:
 	// (Compute's Mapping the 64 p58)
 	pha
 	lda #6-2  		// Fudge factor to match speed
-	sta key_repeat_counter
+	sta KOUNT
 	pla
 	pla
 	

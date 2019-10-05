@@ -120,17 +120,16 @@ do_TO_MANY_FILES_error:
 	lda $EA
 	and #$80
 	sta $EA
-	
+
 	// FALL THROUGH
 
 	// Error # in X
-	
-do_basic_error:			
+
+do_basic_error:
 	// "?"
 	txa
 	pha
-	lda #$0d
-	jsr JCHROUT
+	jsr print_return
 	lda #$3f
 	jsr JCHROUT
 	pla
@@ -140,33 +139,29 @@ do_basic_error:
 	jsr print_packed_message
 
 	// A space between error name and word error
-	lda #$20
-	jsr $ffd2
-	
+	jsr print_space
+
 	// "ERROR"
 	ldx #33
 	jsr print_packed_message
 
-	lda basic_current_line_number+1
+	lda CURLIN+1
 	cmp #$ff
 	beq !+
 
 	// We were in a program, so show IN <line>
-	jsr printf // XXX don't use printf, use packed messages
-	.text " IN "
-	.byte 0
+	ldx #37
+	jsr print_packed_message
 
-	lda basic_current_line_number+1
-	ldx basic_current_line_number+0
+	lda CURLIN+1
+	ldx CURLIN+0
 	jsr print_integer
 !:
 	// New lines
-	lda #$0d
-	jsr $ffd2
+	jsr print_return
 	lda #$00
-	jsr $ffd2
+	jsr JCHROUT
 
 	// XXX - Restore stack depth first?
 
 	jmp basic_main_loop
-	

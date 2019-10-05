@@ -1,0 +1,3 @@
+This routine is mentionned in the cartridge writing tutorial here: https://codebase64.org/doku.php?id=base:assembling_your_own_cart_rom_image
+
+We have to implement (or at least provide stub), otherwise cartridges will crash.

@@ -1,93 +1,96 @@
 // We have the following variables:
-// cursor_blink_disable
-// cursor_blink_countdown
-// cursor_saved_character
-// cursor_is_visible
-// colour_under_cursor
+// BLNSW (cursor blink switch)
+// BLNCT (cursor blink countdown)
+// GDBLN (cursor saved character)
+// BLNON (if cursor is visible)
+// GDCOL (colour under cursor)
+// USER  (current screen line colour pointer)
+// PNT   (current screen line pointer)
+// PNTR  (current screen x position)
 
 show_cursor_if_enabled:
-	lda cursor_blink_disable
+	lda BLNSW
 	beq !+
 	rts
-!:	lda cursor_is_visible
+!:	lda BLNON
 	beq show_cursor
 	rts
-	
+
 show_cursor:
 	// Set cursor as though it had just finished the off phase,
 	// so that the call to blink_cursor paints it
 	lda #$00
-	sta cursor_blink_countdown
-	sta cursor_is_visible
+	sta BLNCT
+	sta BLNON
 	jsr blink_cursor
 	// Then set the timeout to 1 frame, so that the cursor
 	// blinks under key repeat conditions, like on the original KERNAL
 	lda #$01
-	sta cursor_blink_countdown
+	sta BLNCT
 	rts
-	
+
 blink_cursor:
 	// Is the cursor enabled?
-	lda cursor_blink_disable
+	lda BLNSW
 	bne no_blink_cursor
 
 	// Do we need to redraw things?
-	dec cursor_blink_countdown
+	dec BLNCT
 	bpl no_blink_cursor
 
 	// Check if cursor was visible or not, and toggle
-	lda cursor_is_visible
+	lda BLNON
 	bne undraw_cursor
 draw_cursor:
 	jsr calculate_screen_line_pointer
 
-	ldy current_screen_x
-	lda (current_screen_line_ptr),y
-	sta cursor_saved_character	
+	ldy PNTR
+	lda (PNT),y
+	sta GDBLN
 	eor #$80
-	sta (current_screen_line_ptr),y
+	sta (PNT),y
 	// Also set cursor colour
-	lda (current_screen_line_colour_ptr),y
-	sta colour_under_cursor
-	lda text_colour
-	sta (current_screen_line_colour_ptr),y
-	
+	lda (USER),y
+	sta GDCOL
+	lda COLOR
+	sta (USER),y
+
 	lda #1
-	sta cursor_is_visible
-	
+	sta BLNON
+
 	jmp reset_blink_timer
 
 undraw_cursor:
 	jsr calculate_screen_line_pointer
 
-	lda cursor_saved_character
-	ldy current_screen_x
-	sta (current_screen_line_ptr),y
-	lda colour_under_cursor
-	sta (current_screen_line_colour_ptr),y
+	lda GDBLN
+	ldy PNTR
+	sta (PNT),y
+	lda GDCOL
+	sta (USER),y
 	
 	lda #0
-	sta cursor_is_visible
+	sta BLNON
 	// Fall through
 reset_blink_timer:	
 	// Rest blink counter
 	// (Compute's Mapping the 64, p39-40)
 	lda #20
-	sta cursor_blink_countdown
+	sta BLNCT
 no_blink_cursor:
 	rts
 
 disable_cursor:
 	lda #$80
-	sta cursor_blink_disable
+	sta BLNSW
 	// FALL THROUGH
 hide_cursor_if_visible:
-	lda cursor_is_visible
+	lda BLNON
 	bne undraw_cursor
 	rts
 
 enable_cursor:
 	lda #$00
-	sta cursor_blink_disable
+	sta BLNSW
 	rts
 

@@ -78,7 +78,7 @@ Not all of them - only these we want to have implemented.
 | `$A004`   | revision str | DONE     |                                                    |
 | `$A533`   | LINKPRG      | DONE     |                                                    |
 | `$A659`   | set txt ptr  | NOT DONE |                                                    |
-| `$A68E`   | RUNC         | NOT DONE |                                                    |
+| `$A68E`   | RUNC         | DONE     |                                                    |
 | `$A7AE`   | NEWSTT       | NOT DONE |                                                    |
 | `$AB1E`   | STROUT       | DONE     |                                                    |
 | `$BDCD`   | LINPRT       | DONE     | temporary implementation                           |

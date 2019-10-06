@@ -250,8 +250,12 @@ not_1d:
 not_91:
 	cmp #$9d
 	bne not_9d
+	lda TBLX
+	ora PNTR
+	beq !+ // branch if top-left screen character
 	dec PNTR
 	jsr calculate_screen_line_pointer
+!:
 	jmp chrout_done
 not_9d:
 

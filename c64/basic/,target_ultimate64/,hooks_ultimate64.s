@@ -6,12 +6,12 @@
 
 #if CONFIG_BANNER_FANCY
 
-	.byte $1C, $12, $A3, $A3, $A3, $A3, $A3, $A3, $A3, $92, $0D
-    .byte $9E, $12, $A3, $A3, $A3, $A3, $A3, $A3, $92, $05, $20
+    .byte $1C, $12, $A4, $A4, $A4, $A4, $A4, $A4, $A4, $92, $0D
+    .byte $9E, $12, $A4, $A4, $A4, $A4, $A4, $A4, $92, $05, $20
     .text "   OPEN ROMS FOR ULTIMATE 64"
     .byte $0D
-    .byte $1E, $12, $A3, $A3, $A3, $A3, $A3, $92, $0D
-    .byte $9F, $12, $A3, $A3, $A3, $A3, $92, $20, $05, $20, $20
+    .byte $1E, $12, $A4, $A4, $A4, $A4, $A4, $92, $0D
+    .byte $9F, $12, $A4, $A4, $A4, $A4, $92, $20, $05, $20, $20
     .text "   "
 
 #else

@@ -79,7 +79,7 @@ Not all of them - only these we want to have implemented.
 | `$A533`   | LINKPRG      | DONE     |                                                    |
 | `$A659`   | set txt ptr  | NOT DONE |                                                    |
 | `$A68E`   | RUNC         | DONE     |                                                    |
-| `$A7AE`   | NEWSTT       | NOT DONE |                                                    |
+| `$A7AE`   | NEWSTT       | PARTIAL  | redirected to RUN command                          |
 | `$AB1E`   | STROUT       | DONE     |                                                    |
 | `$BDCD`   | LINPRT       | DONE     | temporary implementation                           |
 | `$E3BF`   | INIT         | NOT DONE |                                                    |

@@ -7,6 +7,10 @@ basic_main_loop:
 	// Tell user we are ready
 	jsr ready_message
 
+	// Enable Kernal messages
+	lda #$80
+	jsr JSETMSG
+
 basic_read_next_line:	
 	// Read a line of input
 	ldx #$00

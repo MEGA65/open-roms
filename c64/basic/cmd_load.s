@@ -11,15 +11,6 @@ cmd_load:
 	// middle of a program. For safety, we do.
 	jsr basic_do_clr
 	
-	// Setup Kernal to print control messages or not
-	lda #$80 // display control messages and omit error messages
-	ldx CURLIN+1
-	cpx #$FF
-	beq !+
-	lda #$00 // direct mode - don't display anything
-!:
-	jsr JSETMSG
-
 	// Set filename and length
 	lda #$00
 	sta FNLEN

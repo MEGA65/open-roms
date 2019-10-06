@@ -108,10 +108,11 @@ not_0a:
 	// Carriage return
 	cmp #$0d
 	bne not_0d
-	// RETURN clears quote and insert modes
+	// RETURN clears quote and insert modes, it also clears reverse flag
 	lda #$00
 	sta QTSW
 	sta INSRT
+	sta RVS
 	jmp screen_advance_to_next_line
 not_0d:
 

@@ -140,9 +140,6 @@ list_is_literal:
 	bne list_print_loop
 	
 list_end_of_line:
-	// Clear reverse flag
-	lda #$92
-	jsr JCHROUT
 	// Print end of line
 	jmp print_return
 

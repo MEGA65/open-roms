@@ -3,7 +3,4 @@ This routine is used to launch other software. It is used by:
 - Exomizer (see https://github.com/bitshifters/exomizer/blob/master/exomizer/exomizer115.txt)
 - FileBrowser64 (FB64) - found by debugging
 
-and probably others. It is also mentionned in the cartridge writing tutorial here:
-
-- https://codebase64.org/doku.php?id=base:assembling_your_own_cart_rom_image
-
+and probably others.

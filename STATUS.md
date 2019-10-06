@@ -76,6 +76,8 @@ Not all of them - only these we want to have implemented.
 | Address   | Name         | Status   |  Remarks                                           |
 | :-------: | :----------- | :------: | :------------------------------------------------: |
 | `$A004`   | revision str | DONE     |                                                    |
+| `$A533`   | LINKPRG      | NOT DONE |                                                    |
+| `$A659`   | set txt ptr  | NOT DONE |                                                    |
 | `$A68E`   | RUNC         | NOT DONE |                                                    |
 | `$A7AE`   | NEWSTT       | NOT DONE |                                                    |
 | `$AB1E`   | STROUT       | DONE     |                                                    |

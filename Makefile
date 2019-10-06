@@ -192,7 +192,7 @@ build/newc65.rom: build/kernal_mega65.rom build/basic_mega65.rom build/chargen.r
 
 # Rules - tests
 
-.PHONY: test test_generic test_mega65 test_ultimate64 test_m65 testremote testsimilarity
+.PHONY: test test_generic test_mega65 test_ultimate64 test_hybrid test_m65 testremote testsimilarity
 
 test: test_generic
 

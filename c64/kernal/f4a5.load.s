@@ -142,6 +142,6 @@ load_loop:
 
 	lda FA
 	jsr close_load
-.break
+
 	// Return last address
 	jmp lvs_return_last_address

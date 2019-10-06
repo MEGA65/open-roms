@@ -112,7 +112,7 @@ got_loadaddress:
 	// Now relink the loaded program, as we cannot trust the line
 	// links supplied. For example, the VICE virtual drive emulation
 	// always supplies $0101 as the address of the next line.
-	jsr basic_relink_program
+	jsr LINKPRG
 	
 	// After LOADing, we either start the program from the beginning,
 	// or go back to the READY prompt if LOAD was called from direct mode.
@@ -122,87 +122,3 @@ got_loadaddress:
 
 	// XXX - should run program if LOAD was used in program mode
 	jmp basic_main_loop
-
-
-basic_relink_program:
-
-	// Start by getting pointer to the first line
-	jsr init_oldtxt
-
-basic_relink_loop:
-	// Is the pointer to the end of the program
-	ldy #1
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<OLDTXT+0
-	jsr peek_under_roms
-	cmp #$00
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (OLDTXT),y
-#endif
-
-	bne !+
-
-	// End of program
-	rts
-!:
-	// Now search forward to find the end of the line
-	// Skip forward pointer and line number
-	ldy #4
-end_of_line_search:
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<OLDTXT+0
-	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (OLDTXT),y
-#endif
-
-	cmp #$00
-	beq !+
-
-	// Not yet end of line
-	iny
-	bne end_of_line_search
-
-	// line too long
-	jmp do_STRING_TOO_LONG_error
-
-!:
-	// Found end of line, so update pointer
-
-	// First, skip over the $00 char
-	iny
-
-	// Now overwrite the pointer (carefully)
-	//
-	tya
-	clc
-	adc OLDTXT+0
-	pha
-	php
-	ldy #0
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<OLDTXT+0
-	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
-	sta (OLDTXT),y
-#endif
-
-	plp
-	lda OLDTXT+1
-	adc #0
-	ldy #1
-
-#if CONFIG_MEMORY_MODEL_60K
-	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
-	sta (OLDTXT),y
-#endif
-
-	sta OLDTXT+1
-	pla
-	sta OLDTXT+0
-
-	jmp basic_relink_loop

@@ -41,6 +41,7 @@ lvs_handle_byte_load_verify:
 	// Thus we have to use a helper routine in low memory
 	// to do the memory access
 
+#if CONFIG_MEMORY_MODEL_60K
 	// Save byte under ROMs and IO if required
 	php
 	sei
@@ -52,6 +53,11 @@ lvs_handle_byte_load_verify:
 	ldx #$37
 	stx $01
 	plp
+#else
+	ldy #0
+	sta (STAL),y
+#endif
+
 	rts
 
 lvs_advance_pointer:

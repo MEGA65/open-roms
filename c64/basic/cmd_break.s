@@ -1,5 +1,5 @@
 cmd_stop:
-	ldx #38 // "BREAK"
+	ldx #30 // "BREAK"
 	jsr print_packed_message
 
 	// Are we in direct mode
@@ -8,7 +8,7 @@ cmd_stop:
 	beq !+
 
 	// Not direct mode
-	ldx #37
+	ldx #31
 	jsr print_packed_message
 
 	lda CURLIN+1

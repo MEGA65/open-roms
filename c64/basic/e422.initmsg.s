@@ -19,13 +19,12 @@ INITMSG:
 	bne !-
 
 !:
-	// Print PAL/NTSC
-	ldx #30 // NTSC
-	lda TVSFLG
-	beq !+
-	ldx #31 // PAL
-!:
-	jsr print_packed_message
+
+	// Print PAL/NTSC, if configured
+
+#if CONFIG_BANNER_PAL_NTSC
+	jsr print_pal_ntsc
+#endif
 
 	// Work out free bytes, display them
 	jsr basic_do_new
@@ -37,8 +36,11 @@ INITMSG:
 	sbc TXTTAB+1
 
 	jsr print_integer
-	jsr print_space
 
 	// Print rest of the start up message
 	ldx #34
-	jmp print_packed_message
+	jsr print_packed_message
+
+	// XXX put them into packed message
+	jsr print_return
+	jmp print_return

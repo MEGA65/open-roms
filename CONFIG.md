@@ -82,11 +82,17 @@ Each of them needs a couple of bytes in KERNAL segment - but they can share some
 
 ## Miscelaneous features
 
-### `CONFIG_FANCY_BANNER`
+### `CONFIG_BANNER_FANCY`
 
 If enabled, prints more colorful startup banner. Eye candy only.
 
 Needs some space in BASIC segment, varies between targets.
+
+### `CONFIG_BANNER_PAL_NTSC`
+
+If enabled, prints video system on startup banner. Eye candy only.
+
+Feature needs 3 bytes in BASIC and 23 bytes in KERNAL segment.
 
 ### `CONFIG_DOS_WEDGE`
 

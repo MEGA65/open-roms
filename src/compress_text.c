@@ -159,15 +159,13 @@ char *error_list[]={
   "LOAD",                  // https://www.discogs.com/Gimmik-Load-Error/release/482462
   // Non-error messages
   "READY.\r", // #29       // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
-  "NTSC, ", // #30
-  "PAL, ", // #31
-  "BREAK AT $", // #32
+  "BREAK", // #30
+  " IN ", // #31
+  "BRK AT $", // #32
   "ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
-  "BYTES FREE\r\r", // #34 // https://github.com/stefanhaustein/expressionparser
+  " BASIC BYTES FREE", // #34 // https://github.com/stefanhaustein/expressionparser
   "MEMORY CORRUPT", // #35
   "NOT IMPLEMENTED", // #36
-  " IN ", // #37
-  "BREAK", // #38
   NULL};
 
 // XXX: create separate list for Kernal  

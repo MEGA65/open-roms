@@ -150,7 +150,7 @@ do_basic_error:
 	beq !+
 
 	// We were in a program, so show IN <line>
-	ldx #37
+	ldx #31
 	jsr print_packed_message
 
 	lda CURLIN+1

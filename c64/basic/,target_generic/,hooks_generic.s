@@ -4,7 +4,7 @@
 
 .macro TARGET_HOOK_BANNER() {
 
-#if CONFIG_FANCY_BANNER
+#if CONFIG_BANNER_FANCY
 
 	.byte $1C, $12, $A3, $A3, $A3, $A3, $A3, $A3, $A3, $92, $0D
     .byte $9E, $12, $A3, $A3, $A3, $A3, $A3, $A3, $92, $05, $20

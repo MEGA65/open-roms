@@ -4,7 +4,7 @@
 
 .macro TARGET_HOOK_BANNER() {
 
-#if CONFIG_FANCY_BANNER
+#if CONFIG_BANNER_FANCY
 
 	// New banner from Retrofan
 	.byte $9a, $12, $20, $20, $7f, $a9, $20, $20, $1f, $20, $9a, $20, $20, $20

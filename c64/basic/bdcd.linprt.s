@@ -7,4 +7,6 @@
 
 
 LINPRT:
-	STUB_IMPLEMENTATION()
+	// XXX This is temporary, to allow some software to work!
+	//     To be replaced by real impleementation.
+	jmp print_integer 

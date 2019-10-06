@@ -79,7 +79,7 @@ Not all of them - only these we want to have implemented.
 | `$A68E`   | RUNC         | NOT DONE |                                                    |
 | `$A7AE`   | NEWSTT       | NOT DONE |                                                    |
 | `$AB1E`   | STROUT       | DONE     |                                                    |
-| `$BDCD`   | LINPRT       | NOT DONE |                                                    |
+| `$BDCD`   | LINPRT       | DONE     | temporary implementation                           |
 | `$E3BF`   | INIT         | NOT DONE |                                                    |
 | `$E422`   | INITMSG      | DONE     |                                                    |
 | `$E453`   | RVECT        | NOT DONE |                                                    |

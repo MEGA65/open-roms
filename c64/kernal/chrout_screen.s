@@ -798,20 +798,3 @@ update_colour_line_pointer:
 	sta USER+1
 
 	rts
-
-advance_screen_pointer_40_bytes:
-	lda PNT+0
-	clc
-	adc #<40
-	sta PNT+0
-	sta USER+0
-	lda PNT+1
-	adc #>40
-	sta PNT+1
-	sec
-	sbc HIBASE
-	clc
-	adc #>$D800
-	sta USER+1
-
-	jmp update_colour_line_pointer

@@ -93,7 +93,9 @@ got_loadaddress:
 	lda #$00 		// LOAD not verify
 	jsr JLOAD
 	php
+	pha
 	jsr print_return
+	pla
 	plp
 	bcc !+
 

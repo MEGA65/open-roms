@@ -4,10 +4,7 @@
 cmd_list:
 
 	// Set current line pointer to start of memory
-	lda TXTTAB+0
-	sta OLDTXT+0
-	lda TXTTAB+1
-	sta OLDTXT+1
+	jsr init_oldtxt
 
 list_loop:
 
@@ -82,25 +79,34 @@ list_print_loop:
 	cmp #$22
 	bne list_not_quote
 	lda QTSW
-	eor #$ff
+	eor #$FF
 	sta QTSW
 	lda #$22
 	jmp list_is_literal
+
 list_not_quote:	
 	// Check quote mode, and display as literal if required
 	ldx QTSW
 	bne list_is_literal
 	
-	cmp #$7f
+	cmp #$FF
+	beq list_is_pi
+
+	cmp #$7F
 	bcc list_is_literal
 
 	// Display a token
 
 	// Save registers
+#if CONFIG_CPU_MOS_6502
 	tax
 	pha
 	tya
 	pha
+#else
+	phx
+	phy
+#endif
 
 	// Get pointer to compressed keyword list
 	lda #<packed_keywords
@@ -118,8 +124,13 @@ list_not_quote:
 	ldy #$ff
 	jsr packed_word_search
 
+#if CONFIG_CPU_MOS_6502
 	pla
 	tay
+#else
+	ply
+#endif
+
 	pla
 
 	cmp #$8f
@@ -132,7 +143,12 @@ list_not_quote:
 list_not_rem:		
 	
 	iny
-	bne list_print_loop
+	bne list_print_loop // branch always
+
+list_is_pi:
+	lda #$7E
+
+	// FALLTROUGH
 
 list_is_literal:
 	jsr JCHROUT

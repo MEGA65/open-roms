@@ -39,12 +39,13 @@ got_line_of_input:
 
 	// Strip leading spaces from the line
 remove_leading_spaces:
-	lda $0200
+	lda BUF
 	cmp #$20
 	bne !+
 	ldx #1
-rsl_l1:	lda $0200,x
-	sta $01ff,x
+rsl_l1:
+	lda BUF,x
+	sta BUF-1,x
 	inx
 	cpx __tokenise_work1
 	bne rsl_l1
@@ -61,11 +62,23 @@ rsl_l1:	lda $0200,x
 	lda __tokenise_work1
 	beq basic_read_next_line
 
+#if CONFIG_DOS_WEDGE
+	
+	// Check if DOS wedge should take over
+	lda BUF
+	cmp #$40 // '@'
+	bne !+
+	ldx __tokenise_work1 // here is the size of input
+	jmp wedge_dos
+!:
+
+#endif // CONFIG_DOS_WEDGE
+
 	// Else, tokenise the line
 	jsr tokenise_line
 
 	// Has the user entered a line of BASIC beginning with a number?
-	lda $0200
+	lda BUF
 	cmp #$30
 	bcc not_a_line
 	cmp #$39
@@ -82,9 +95,9 @@ rsl_l1:	lda $0200,x
 	sta __tokenise_work1
 
 	// Try to read line number
-	lda #<$0200
+	lda #<BUF
 	sta TXTPTR+0
-	lda #>$0200
+	lda #>BUF
 	sta TXTPTR+1
 
 	jsr basic_parse_line_number
@@ -98,13 +111,13 @@ rsl_l1:	lda $0200,x
 	// Skip any spaces after the line number
 	ldx __tokenise_work1
 skip_spaces:	
-	lda $0200,x
+	lda BUF,x
 	cmp #$20
 	bne !+
 	inx
 	bne skip_spaces
 !:	stx __tokenise_work1
-	
+
 	// First, clear all variables, so that we only have to shove BASIC text around.
 	// (We could later remove this requirement, and the only effect should be
 	// to slow things down, and that you might have to either CLR if there is no
@@ -135,9 +148,9 @@ not_a_line:
 	//  Actually interpret the line
 
 	// Setup pointer to the statement
-	lda #<$0200
+	lda #<BUF
 	sta TXTPTR+0
-	lda #>$0200
+	lda #>BUF
 	sta TXTPTR+1
 
 	// There is no stored line, so zero that pointer out
@@ -148,7 +161,7 @@ not_a_line:
 	// Put invalid line number in current line number value,
 	// so that we know we are in direct mode
 	// (Compute's Mapping the 64 p19)
-	lda #$ff
+	lda #$FF
 	sta CURLIN+1
 
 	jmp basic_execute_statement

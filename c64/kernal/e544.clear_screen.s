@@ -3,6 +3,8 @@
 
 clear_screen:
 
+	// XXX it is probably a good idea to hide cursor first
+
 	// Clear line link table 
 	// (Compute's Mapping the 64 p215)
 
@@ -57,4 +59,4 @@ clearscreen_l3:
 	bne clearscreen_l3
 
 	// (Compute's Mapping the 64 p216)
-	jmp home_cursor
+	jmp cursor_home

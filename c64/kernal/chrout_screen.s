@@ -9,7 +9,7 @@ chrout_screen:
 	// Crude implementation of character output	
 	sei // XXX why do we need to disable interrupts?
 
-	jsr hide_cursor_if_visible
+	jsr cursor_hide_if_visible
 
 	lda SCHAR
 	tax
@@ -620,7 +620,7 @@ line_not_linked_del:
 
 screen_advance_to_next_line:
 
-	// jsr hide_cursor_if_visible
+	// jsr cursor_hide_if_visible
 	
 	//  Go to start of line
 	lda #0

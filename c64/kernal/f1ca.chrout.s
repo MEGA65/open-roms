@@ -41,7 +41,7 @@ chrout_iec:
 	// FALLTROUGH
 
 chrout_done_fail:
-	jsr show_cursor_if_enabled
+	jsr cursor_show_if_enabled
 
 	plp
 
@@ -54,7 +54,7 @@ chrout_done_fail:
 	rts
 
 chrout_done_unknown_device:
-	jsr show_cursor_if_enabled
+	jsr cursor_show_if_enabled
 
 	plp
 
@@ -68,7 +68,7 @@ chrout_done_unknown_device:
 	jmp lvs_device_not_found_error
 
 chrout_done:
-	jsr show_cursor_if_enabled
+	jsr cursor_show_if_enabled
 
 	plp
 

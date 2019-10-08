@@ -9,6 +9,7 @@
 //
 
 // XXX keyboard part currently does not preserve register Y, to be fixed!
+// XXX try to make chrin_real unnecessary (try to fit this into original location)
 
 // Reads a byte of input, unless from keyboard.
 // If from keyboard, then it gets a whole line of input, and returns the first char.
@@ -84,8 +85,8 @@ not_end_of_input:
 
 read_from_keyboard:
 
-	jsr enable_cursor
-	
+	jsr cursor_enable
+
 	// Wait for a key
 	lda NDX
 	beq chrin_repeat
@@ -94,12 +95,12 @@ read_from_keyboard:
 	cmp #$0d
 	bne not_enter
 
-	jsr disable_cursor
-	
+	jsr cursor_disable
+
 	jsr pop_keyboard_buffer
 
-	jsr hide_cursor_if_visible
-	
+	jsr cursor_hide_if_visible
+
 	// It was enter.
 	// Note that we have a line of input to return, and return the first byte thereof
 	// after computing and storing its length.
@@ -170,41 +171,3 @@ pop_keyboard_buffer:
 	cli
 
 	rts
-
-screen_code_to_petscii:
-	cmp #$1b
-	bcs not_alpha
-
-	clc
-	adc #$40
-	rts
-	
-not_alpha:
-	cmp #$40
-	bcs not_punctuation
-
-	rts
-
-not_punctuation:
-	cmp #$5b
-	bcs not_shifted
-
-	clc
-	adc #$80
-
-	rts
-
-not_shifted:
-
-	cmp #$80
-	bcs not_vendor
-
-	// $60-$7F -> $A0-$BF
-
-	clc
-	adc #$40
-	
-	// FALLTROUGH
-not_vendor:
-	rts
-

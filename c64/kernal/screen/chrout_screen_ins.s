@@ -17,7 +17,7 @@ chrout_screen_ins:
 	beq !+
 
 	// Line is too long to extend
-	jmp chrout_done
+	jmp chrout_screen_done
 
 !:
 	// Work out if line needs to be expanded, and if so expand it
@@ -61,4 +61,4 @@ chrout_screen_ins:
 	lda #$20
 	sta (PNT),y
 
-	jmp chrout_done
+	jmp chrout_screen_done

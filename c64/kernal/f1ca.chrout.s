@@ -43,12 +43,11 @@ chrout_iec:
 
 	lda SCHAR
 	jsr JCIOUT
-	bcc chrout_done
+	bcc chrout_done_success
 
 	// FALLTROUGH
 
 chrout_done_fail:
-	jsr cursor_show_if_enabled
 
 	plp
 
@@ -68,7 +67,6 @@ chrout_done_fail:
 	rts
 
 chrout_done_unknown_device:
-	jsr cursor_show_if_enabled
 
 	plp
 
@@ -87,9 +85,8 @@ chrout_done_unknown_device:
 	// End wioth error
 	jmp lvs_device_not_found_error
 
-chrout_done:
-	jsr cursor_show_if_enabled
-
+chrout_done_success:
+	
 	plp
 
 	// Restore X and Y

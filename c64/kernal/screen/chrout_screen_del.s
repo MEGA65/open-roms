@@ -28,7 +28,7 @@ chrout_screen_del_column_0:
 	lda LNMX
 	sta PNTR
 
-	jmp chrout_screen_control_calcptr_done
+	jmp chrout_screen_calc_lptr_done
 
 chrout_screen_del_column_non_0:
 
@@ -59,5 +59,7 @@ chrout_screen_del_column_non_0:
 !:
 	dec PNTR
 
+	// FALLTROUGH
+
 chrout_screen_del_done:
-	jmp chrout_done
+	jmp chrout_screen_done

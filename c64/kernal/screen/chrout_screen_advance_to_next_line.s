@@ -1,5 +1,5 @@
 
-screen_advance_to_next_line:
+chrout_screen_advance_to_next_line:
 
 	// jsr cursor_hide_if_visible
 	
@@ -42,6 +42,5 @@ screen_advance_to_next_line:
 	// Off the bottom of the screen
 	jsr scroll_screen_up	
 !:
-	
-	jsr screen_calculate_line_pointer
-	jmp chrout_done
+
+	jmp chrout_screen_calc_lptr_done

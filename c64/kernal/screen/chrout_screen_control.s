@@ -23,7 +23,7 @@ chrout_try_RETURN:
 	sta QTSW
 	sta INSRT
 	sta RVS
-	jmp screen_advance_to_next_line
+	jmp chrout_screen_advance_to_next_line
 !:
 chrout_try_DEL:
 
@@ -49,8 +49,7 @@ chrout_try_CRSR_UP:
 	sec
 	sbc #40
 	sta PNTR
-	jsr screen_calculate_line_pointer
-	jmp chrout_done
+	jmp chrout_screen_calc_lptr_done
 !:
 chrout_try_CRSR_DOWN:
 
@@ -66,8 +65,7 @@ chrout_try_CRSR_DOWN:
 	// so that we can tell if we really are on the bottom phys
 	// screen line or not
 	jsr screen_scroll_up_if_on_last_line
-	jsr screen_calculate_line_pointer
-	jmp chrout_done
+	jmp chrout_screen_calc_lptr_done
 !:
 chrout_try_CRSR_LEFT:
 
@@ -76,9 +74,11 @@ chrout_try_CRSR_LEFT:
 
 	lda TBLX
 	ora PNTR
-	beq chrout_screen_control_done // if top-left screen character
+	bne position_not_top_left
+	jmp chrout_screen_done
+position_not_top_left:
 	dec PNTR
-	jmp chrout_screen_control_calcptr_done
+	jmp chrout_screen_calc_lptr_done
 !:
 chrout_try_CRSR_RIGHT:
 
@@ -86,17 +86,16 @@ chrout_try_CRSR_RIGHT:
 	bne !+
 
 	inc PNTR
-	jsr screen_calculate_line_pointer
-	jmp chrout_done
+	jmp chrout_screen_calc_lptr_done
 !:
-chrout_try_RVS_ON:
+chrout_try_RVS_ON: // XXX deduplicate with RVS_OFF
 
 	cmp #$12
 	bne !+
 
 	lda #$80
 	sta RVS
-	bne chrout_screen_control_done // branch always
+	jmp chrout_screen_done
 !:
 chrout_try_RVS_OFF:
 
@@ -105,7 +104,7 @@ chrout_try_RVS_OFF:
 
 	lda #$00
 	sta RVS
-	beq chrout_screen_control_done // branch always
+	jmp chrout_screen_done
 !:
 chrout_try_MODE_TXT:
 
@@ -114,7 +113,7 @@ chrout_try_MODE_TXT:
 
 	// XXX
 
-	jmp chrout_done
+	jmp chrout_screen_done
 !:
 chrout_try_MODE_GFX:
 
@@ -123,7 +122,7 @@ chrout_try_MODE_GFX:
 
 	// XXX
 
-	jmp chrout_done
+	jmp chrout_screen_done
 !:
 chrout_try_COLOR:
 
@@ -132,7 +131,7 @@ colour_check_loop:
 	cmp colour_codes,x
 	bne !+
 	stx COLOR
-	jmp chrout_done
+	jmp chrout_screen_done
 !:	
 	dex
 	bpl colour_check_loop
@@ -144,7 +143,7 @@ chrout_try_SHIFT_ENABLE:
 
 	// XXX
 
-	jmp chrout_done
+	jmp chrout_screen_done
 !:
 chrout_try_SHIFT_DISABLE:
 
@@ -153,7 +152,7 @@ chrout_try_SHIFT_DISABLE:
 
 	// XXX
 
-	jmp chrout_done
+	jmp chrout_screen_done
 !:
 chrout_try_HOME:
 
@@ -164,7 +163,7 @@ chrout_try_HOME:
 	lda #$00
 	sta PNTR
 	sta TBLX
-	beq chrout_screen_control_calcptr_done // branch always
+	jmp chrout_screen_calc_lptr_done
 !:
 chrout_try_CLR:
 
@@ -172,7 +171,7 @@ chrout_try_CLR:
 	bne !+
 
 	jsr clear_screen
-	jmp chrout_done
+	jmp chrout_screen_done
 !:
 chrout_try_INS:
 
@@ -188,7 +187,7 @@ chrout_try_RUN_STOP:
 
 	// XXX
 
-	jmp chrout_done
+	jmp chrout_screen_done
 !:
 chrout_try_FKEY:
 
@@ -196,11 +195,6 @@ chrout_try_FKEY:
 
 	// FALLTROUGH
 
-chrout_screen_control_done:  // unknown, LF, or no more actions required // XXX to !csc_done
+!:  // unknown, LF, or no more actions required // XXX to !csc_done
 
-	jmp chrout_done
-
-chrout_screen_control_calcptr_done: // XXX to !csc_calcptr_done
-
-	jsr screen_calculate_line_pointer
-	jmp chrout_done
+	jmp chrout_screen_done

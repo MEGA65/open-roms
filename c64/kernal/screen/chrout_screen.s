@@ -99,10 +99,19 @@ not_quote:
 	ldy PNTR
 !:
 	cpy #80
-	bcc no_screen_advance_to_next_line
+	bcc chrout_screen_done
 	lda #0
 	sta PNTR
-	jmp screen_advance_to_next_line
+	jmp chrout_screen_advance_to_next_line
 
-no_screen_advance_to_next_line:
-	jmp chrout_done
+
+chrout_screen_calc_lptr_done:
+
+	jsr screen_calculate_line_pointer
+
+	// FALLTROUGH
+
+chrout_screen_done:
+
+	jsr cursor_show_if_enabled
+	jmp chrout_done_success

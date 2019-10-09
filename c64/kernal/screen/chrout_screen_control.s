@@ -74,10 +74,9 @@ chrout_try_CRSR_LEFT:
 
 	lda TBLX
 	ora PNTR
-	bne position_not_top_left
-	jmp chrout_screen_done
-position_not_top_left:
+	beq crsr_l1 // recalculating pointer is not really necessary, but this is a very rare case nevertheless
 	dec PNTR
+crsr_l1:
 	jmp chrout_screen_calc_lptr_done
 !:
 chrout_try_CRSR_RIGHT:
@@ -88,14 +87,13 @@ chrout_try_CRSR_RIGHT:
 	inc PNTR
 	jmp chrout_screen_calc_lptr_done
 !:
-chrout_try_RVS_ON: // XXX deduplicate with RVS_OFF
+chrout_try_RVS_ON:
 
 	cmp #$12
 	bne !+
 
 	lda #$80
-	sta RVS
-	jmp chrout_screen_done
+	bne rvs_l1
 !:
 chrout_try_RVS_OFF:
 
@@ -103,6 +101,7 @@ chrout_try_RVS_OFF:
 	bne !+
 
 	lda #$00
+rvs_l1:
 	sta RVS
 	jmp chrout_screen_done
 !:
@@ -195,6 +194,6 @@ chrout_try_FKEY:
 
 	// FALLTROUGH
 
-!:  // unknown, LF, or no more actions required // XXX to !csc_done
+!:  // unknown, LF, or no more actions required
 
 	jmp chrout_screen_done

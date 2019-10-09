@@ -8,6 +8,10 @@
 // CPU registers that has to be preserved (see [RG64]): none
 //
 
+
+#if CONFIG_SCNKEY_TWW_CTR
+
+
 // Scan the keyboard..
 // Here we don't use the horrible buggy original routine,
 // not just because of copyright. Instead, we use the
@@ -513,3 +517,6 @@ KeyCanRepeat:
 KeyRepeatWait:
 	pla
 	jmp ConsiderNextKey
+
+
+#endif // #if CONFIG_SCNKEY_TWW_CTR

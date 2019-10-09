@@ -13,6 +13,26 @@ Note however, that features do not came for free - enabling them needs some addi
 
 Sane defaults are already present - different for each target.
 
+## Hardware platform and variant
+
+### `CONFIG_PLATFORM_COMMODORE_64`
+
+Commodore 64 is the only hardware platform available now - and the main one, as the Open ROMs API is meant to be compatible with the Commodore 64.
+
+Since Open ROMs is highly modular, it should be possible to add other platforms in the future (like 8-bit Atari computers or Commander X16), if they share the following common characteristics:
+
+* MOS 6502 CPU or compatible
+* 8KB ROM area `$A000`-`$BFFF`
+* 8KB ROM area `$E000`-`$FFFF`
+
+### `CONFIG_VARIANT_GENERIC`
+
+If you don't know which variant to choose - select this one.
+
+### `CONFIG_VARIANT_MEGA_65`, `CONFIG_VARIANT_ULTIMATE_64`
+
+Select if you are using appropriate motherboard.
+
 ## Processor instruction set
 
 ### `CONFIG_CPU_MOS_6502`
@@ -44,7 +64,7 @@ Choose if your CPU supports the 16-bit Western Design Center 65816 instruction s
 
 It enables some speed/size code optimizations. Warning - this is untested!
 
-## Memory models
+## Memory model
 
 Different layouts of memory are possible - but they can be selected at compile time only.
 
@@ -80,7 +100,7 @@ Cause the system to support SIDs in `$D4xx` and `$D5xx` ranges, respectively.
 
 Each of them needs a couple of bytes in KERNAL segment - but they can share some code, and `$D4xx` range support replaces the standard `$D400` address handling, so exact amount depends on the exact configuration.
 
-## Miscelaneous features
+## Software features
 
 ### `CONFIG_BANNER_FANCY`
 

@@ -105,7 +105,7 @@
 	.label BUFPNT    = $A6  //          -- NOT IMPLEMENTED --
 	.label INBIT     = $A7  //          -- NOT IMPLEMENTED --
 
-#if CONFIG_EXTENDED_SCNKEY
+#if CONFIG_SCNKEY_TWW_CTR
 
 	// Reuse RS232 variables, since they should not be used by other things.
 	// Carefully avoid $A7 which is used by 64NET
@@ -125,7 +125,7 @@
 	.label CMP0      = $B0  // $B0-$B1  temporary tape storage, [!] here used for BRK instruction address
 	.label TAPE1     = $B2  // $B2-$B3  tape buffer pointer
 
-#if CONFIG_EXTENDED_SCNKEY
+#if CONFIG_SCNKEY_TWW_CTR
 
 	// Reuse RS232 variables, since they should not be used by other things.
 	// This one should be initialized in cinit to $FF
@@ -139,7 +139,7 @@
 
 	.label NXTBIT    = $B5  //          -- NOT IMPLEMENTED --
 
-#if CONFIG_EXTENDED_SCNKEY
+#if CONFIG_SCNKEY_TWW_CTR
 
 	// Reuse RS232 variables, since they should not be used by other things.
 	// Carefully avoiding $A7 which is used by 64NET
@@ -200,7 +200,7 @@
     
 	.label BUF       = $200  // $200-$250, BASIC line editor input buffer (81 bytes)
 
-#if CONFIG_EXTENDED_SCNKEY
+#if CONFIG_SCNKEY_TWW_CTR
 
 	// $250-$258 is the 81st - 88th characters in BASIC input, a carry over from VIC-20
 	// and not used on C64, so safe for us to use, probably.
@@ -229,7 +229,7 @@
 	.label MODE      = $291  //            flag, is case switch allowed
 	.label AUTODN    = $292  //            -- NOT IMPLEMENTED -- screen scroll disable
 
-#if CONFIG_EXTENDED_SCNKEY
+#if CONFIG_SCNKEY_TWW_CTR
 
 	// Reuse RS232 variables, since they should not be used by other things.
 	// This one should be initialized in cinit to $FF

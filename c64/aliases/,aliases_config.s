@@ -1,26 +1,52 @@
 
-	// Various configuration dependent aliases/macros/checks
+//
+// Various configuration dependent aliases/macros/checks
+//
 
 
 
-	// Check that memory model configuration is correct
+// Check that platform configuration is correct
 
 {
 	.var selected = 0;
 
-#if CONFIG_MEMORY_MODEL_38K
-	.eval selected++
-#endif
-#if CONFIG_MEMORY_MODEL_60K
+#if CONFIG_PLATFORM_COMMODORE_64
 	.eval selected++
 #endif
 
-	.if (selected != 1) .error "Please select exactly one CONFIG_MEMORY_MODEL_* option" 
+	.if (selected != 1) .error "Please select exactly one CONFIG_PLATFORM_* option" 
 }
 
 
 
-	// Check that processor configuration is correct
+// Check that platform variant configuration is correct
+
+{
+	.var selected = 0;
+
+#if CONFIG_VARIANT_GENERIC
+	.eval selected++
+#endif
+#if CONFIG_VARIANT_MEGA_65
+	.eval selected++
+#endif
+#if CONFIG_VARIANT_ULTIMATE_64
+	.eval selected++
+#endif
+
+	.if (selected != 1) .error "Please select exactly one CONFIG_VARIANT_* option"
+
+#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_VARIANT_MEGA_65 &&
+	.error "CONFIG_VARIANT_MEGA_65 can only be used with CONFIG_PLATFORM_COMMODORE_64"
+#endif
+#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_VARIANT_ULTIMATE_64 &&
+	.error "CONFIG_VARIANT_ULTIMATE_64 can only be used with CONFIG_PLATFORM_COMMODORE_64"
+#endif
+}
+
+
+
+// Check that processor configuration is correct
 
 {
 	.var selected = 0;
@@ -40,7 +66,24 @@
 
 
 
-	// Handle processor configuration
+// Check that memory model configuration is correct
+
+{
+	.var selected = 0;
+
+#if CONFIG_MEMORY_MODEL_38K
+	.eval selected++
+#endif
+#if CONFIG_MEMORY_MODEL_60K
+	.eval selected++
+#endif
+
+	.if (selected != 1) .error "Please select exactly one CONFIG_MEMORY_MODEL_* option" 
+}
+
+
+
+// Handle processor configuration
 
 #if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_WDC_65816
 
@@ -54,13 +97,17 @@
 
 #endif
 
-	// Handle misc configuration entrues
+
+
+// Handle configuration of various features
 
 #if CONFIG_BCD_SAFE_INTERRUPTS
 #define HAS_BCD_SAFE_INTERRUPTS
 #endif
 
-	// Stub configuration
+
+
+// Handle configuration of debug infrastructure
 
 .macro STUB_IMPLEMENTATION_RTS() {
 	rts

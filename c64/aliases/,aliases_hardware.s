@@ -1,7 +1,10 @@
 
 //
-// Names of hardware registers - slightly modified names from C64 Programmer's Reference Guide
+// Names of hardware registers - names from C64 Programmer's Reference Guide, sometimes slightly modified
 //
+
+
+#if CONFIG_PLATFORM_COMMODORE_64
 
 	// CPU memory registers
 
@@ -154,3 +157,5 @@
 	.const BIT_CIA2_PRA_DAT_OUT  = $20  // 1 - low (pulled), 0 - high (released)
 	.const BIT_CIA2_PRA_CLK_IN   = $40  // 0 - low (pulled), 1 - high (released)
 	.const BIT_CIA2_PRA_DAT_IN   = $80  // 0 - low (pulled), 1 - high (released)
+
+#endif

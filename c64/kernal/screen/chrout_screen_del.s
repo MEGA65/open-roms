@@ -24,7 +24,7 @@ chrout_screen_del_column_0:
 	// previous line, without actually deleting anything
 
 	dec TBLX
-	jsr get_current_line_logical_length
+	jsr screen_get_current_line_logical_length
 	lda LNMX
 	sta PNTR
 
@@ -33,7 +33,7 @@ chrout_screen_del_column_0:
 chrout_screen_del_column_non_0:
 
 	// Copy rest of line down
-	jsr get_current_line_logical_length
+	jsr screen_get_current_line_logical_length
 	ldy PNTR
 	cpy LNMX
 	beq !++
@@ -52,7 +52,7 @@ chrout_screen_del_column_non_0:
 	bne !-
 
 	// Clear char at end of line
-	jsr get_current_line_logical_length
+	jsr screen_get_current_line_logical_length
 	tay
 	lda #$20
 	sta (PNT),y

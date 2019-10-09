@@ -20,7 +20,7 @@ plot_set:
 	sty PNTR
 	stx TBLX
 
-	jsr calculate_screen_line_pointer
+	jsr screen_calculate_line_pointer
 
 	// XXX cursor blink might need to be handled too
 

@@ -28,7 +28,7 @@ cursor_blink:
 	// FALLTROUGH
 
 cursor_draw:
-	jsr calculate_screen_line_pointer // XXX make sure this is not needed and remove the call
+	jsr screen_calculate_line_pointer // XXX make sure this is not needed and remove the call
 
 	ldy PNTR
 	lda (PNT),y

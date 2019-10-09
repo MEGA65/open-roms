@@ -8,7 +8,7 @@ chrout_screen_ins:
 	// Insert (shift-DELETE)
 	
 	// Abort if line already max length, ie 79th char is not a space
-	jsr get_current_line_logical_length
+	jsr screen_get_current_line_logical_length
 	cmp #79
 	bne !+
 	tay
@@ -30,7 +30,7 @@ chrout_screen_ins:
 	
 !:	
 	// Shuffle chars towards end of line
-	jsr get_current_line_logical_length
+	jsr screen_get_current_line_logical_length
 	tay
 !:
 	// Note: While the following routine is obvious to any skilled

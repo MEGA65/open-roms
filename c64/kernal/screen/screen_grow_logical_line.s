@@ -12,7 +12,7 @@ screen_grow_logical_line:
 	// Now make space for the extra line added.
 	// If we are on the last physical line of the screen,
 	// Then we need to scroll the screen up
-	jsr scroll_up_if_on_last_line
+	jsr screen_scroll_up_if_on_last_line
 	
 	// Scroll screen down to make space
 	// As we are scrolling down, we start from the end,
@@ -106,7 +106,7 @@ cl_inner:
 	bne copy_line_down_loop
 
 no_copy_down:
-	jsr calculate_screen_line_pointer
+	jsr screen_calculate_line_pointer
 
 	// Erase newly inserted line
 	ldy #79

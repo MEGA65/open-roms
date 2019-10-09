@@ -1,5 +1,5 @@
 
-calculate_screen_line_pointer: // XXX rename to screen_calculate_line_pointer
+screen_calculate_line_pointer:
 	jsr screen_normalize_xy
 	
 	//  Reset pointer to start of screen
@@ -21,9 +21,9 @@ calculate_screen_line_pointer: // XXX rename to screen_calculate_line_pointer
 	// -1 offset is because we count down from N to 1, not
 	// N-1 to 0.
 	lda LDTBL-1,x
-	bpl cslp_l1
+	bpl sclp_l1
 	ldy #80
-cslp_l1:
+sclp_l1:
 	// Add computed line length to pointer value
 	tya
 	clc

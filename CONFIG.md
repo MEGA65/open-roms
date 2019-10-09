@@ -1,7 +1,7 @@
 
 # Configuring the build
 
-It's not possible to provide ROM builds that suit everyone needs - therefore configuration files were introduced, separately for each of the hardware targets:
+It's not possible to provide ROM builds that suit everyone needs - therefore configuration files were introduced, few predefined configurations are provided with sane defaults:
 
 * [`c64/,,config_generic.s`](c64/,,config_generic.s)
 * [`c64/,,config_mega65.s`](c64/,,config_mega65.s)
@@ -10,8 +10,6 @@ It's not possible to provide ROM builds that suit everyone needs - therefore con
 Just edit them and recompile the project. To enable particular option - uncomment it by removing leading `//` from before `#define` directive (as you probably guessed, commenting out disables it). Some options are followed by constants - you can change them too to further fine-tune the build.
 
 Note however, that features do not came for free - enabling them needs some additional ROM space (in BASIC segment, in KERNAL segment, or in both), which is VERY limited on the target machines. Some options might be unavailable for speecific targets - read the comments in the configuration files. Some options might also carry compatibility and/or performance hit - so choose wisely.
-
-Sane defaults are already present - different for each target.
 
 ## Hardware platform and variant
 
@@ -136,4 +134,4 @@ Replaces `RTS` stubbed routines implementation with one causing a break.
 
 ### `CONFIG_DBG_PRINTF`
 
-Makes 'printf' routine available.
+Makes `printf` routine available.

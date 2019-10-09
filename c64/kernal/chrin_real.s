@@ -113,7 +113,7 @@ read_from_keyboard:
 	sta LXSP+1
 
 	// Calculate length
-	jsr get_current_line_logical_length
+	jsr screen_get_current_line_logical_length
 	tay
 	iny
 !:	dey

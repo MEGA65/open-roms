@@ -49,7 +49,7 @@ chrout_try_CRSR_UP:
 	sec
 	sbc #40
 	sta PNTR
-	jsr calculate_screen_line_pointer
+	jsr screen_calculate_line_pointer
 	jmp chrout_done
 !:
 chrout_try_CRSR_DOWN:
@@ -65,8 +65,8 @@ chrout_try_CRSR_DOWN:
 	// now will break things. The pointer update is required
 	// so that we can tell if we really are on the bottom phys
 	// screen line or not
-	jsr scroll_up_if_on_last_line
-	jsr calculate_screen_line_pointer
+	jsr screen_scroll_up_if_on_last_line
+	jsr screen_calculate_line_pointer
 	jmp chrout_done
 !:
 chrout_try_CRSR_LEFT:
@@ -86,7 +86,7 @@ chrout_try_CRSR_RIGHT:
 	bne !+
 
 	inc PNTR
-	jsr calculate_screen_line_pointer
+	jsr screen_calculate_line_pointer
 	jmp chrout_done
 !:
 chrout_try_RVS_ON:
@@ -202,5 +202,5 @@ chrout_screen_control_done:  // unknown, LF, or no more actions required // XXX 
 
 chrout_screen_control_calcptr_done: // XXX to !csc_calcptr_done
 
-	jsr calculate_screen_line_pointer
+	jsr screen_calculate_line_pointer
 	jmp chrout_done

@@ -9,4 +9,4 @@ cursor_home:
 	sta PNTR // x position
 	sta TBLX // y position
 
-	jmp set_pointer_to_current_screen_line
+	jmp screen_set_pointer_to_current_line

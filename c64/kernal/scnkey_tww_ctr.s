@@ -367,11 +367,11 @@ next_row:
 	beq no_case_toggle
 
 	lda MODE
-	beq no_case_toggle
+	bne no_case_toggle
 	
-	lda $D018
+	lda VIC_YMCSB
 	eor #$02
-	sta $d018
+	sta VIC_YMCSB
 
 no_case_toggle:	
 	

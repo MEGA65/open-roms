@@ -110,17 +110,19 @@ chrout_try_MODE_TXT:
 	cmp #$0E
 	bne !+
 
-	// XXX
-
-	jmp chrout_screen_done
+	lda VIC_YMCSB
+	ora #$02    // to lower case
+	bne mode_l1 // branch always
 !:
 chrout_try_MODE_GFX:
 
 	cmp #$8E
 	bne !+
 
-	// XXX
-
+	lda VIC_YMCSB
+	and #$02 // to upper case
+mode_l1:
+	sta VIC_YMCSB
 	jmp chrout_screen_done
 !:
 chrout_try_COLOR:
@@ -140,7 +142,8 @@ chrout_try_SHIFT_ENABLE:
 	cmp #$09
 	bne !+
 
-	// XXX
+	lda #$00 // enable SHIFT+VENDOR combination
+	sta MODE
 
 	jmp chrout_screen_done
 !:
@@ -149,7 +152,8 @@ chrout_try_SHIFT_DISABLE:
 	cmp #$08
 	bne !+
 
-	// XXX
+	lda #$80 // disable SHIFT+VENDOR combination
+	sta MODE
 
 	jmp chrout_screen_done
 !:
@@ -167,16 +171,12 @@ chrout_try_CLR:
 	bne !+
 
 	jsr clear_screen
+clr_l1:
 	jmp chrout_screen_done
 !:
 chrout_try_INS:
 
 	cmp #$94
-	bne !+
+	bne clr_l1 // unknown code or key does not need handling
 
 	jmp chrout_screen_ins
-!:
-chrout_screen_control_done:
-
-    // unknown code or key does not needs 
-	jmp chrout_screen_done

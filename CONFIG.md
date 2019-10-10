@@ -51,7 +51,7 @@ Choose if your CPU supports the Western Design Center 65C02 instruction set, lik
 * CSG 65CE02 
 * CSG 4510 - used in the Commodore 65 prototypes
 
-It enables some speed/size code optimizations. Warning - this is untested!
+It enables some speed/size code optimizations.
 
 ### `CONFIG_CPU_WDC_65816`
 
@@ -60,7 +60,7 @@ Choose if your CPU supports the 16-bit Western Design Center 65816 instruction s
 * WDC 65C816 - used in the Flash 8 accelerator
 * WDC 65C816S - used in the SuperCPU accelerator
 
-It enables some speed/size code optimizations. Warning - this is untested!
+It enables some speed/size code optimizations.
 
 ## Memory model
 

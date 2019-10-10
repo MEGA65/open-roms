@@ -7,10 +7,8 @@
 iec_rx_byte:
 
 	// Store .X and .Y on the stack - preserve them
-	txa
-	pha
-	tya
-	pha
+	_phx
+	_phy
 
 	// Timing is critical here - execute on disabled IRQs
 	// The best practice would be to do PHP first, but it seems this is not

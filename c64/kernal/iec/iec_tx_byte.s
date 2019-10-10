@@ -10,10 +10,8 @@
 iec_tx_byte:
 
 	// Store .X and .Y on the stack - preserve them
-	txa
-	pha
-	tya
-	pha
+	_phx
+	_phy
 
 	// Notify all devices that we are going to send a byte
 	// and it is going to be a data byte (released ATN)

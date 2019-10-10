@@ -14,8 +14,7 @@
 chkin_real:
 
 	// Store Y for preservation
-	tya
-	pha
+	_phy
 
 	// Reset status
 	jsr kernalstatus_reset
@@ -59,6 +58,7 @@ chkin_set_device:
 	// FALLTROUGH
 
 // Common part for booth CHKIN and CKOUT
+// XXX add CPU-dependent optimizations here
 
 chkinout_end:
 	tax

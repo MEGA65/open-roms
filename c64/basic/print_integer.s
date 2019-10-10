@@ -5,8 +5,7 @@
 print_integer:
 
 	pha
-	txa
-	pha
+	_phx
 
 	// Clear temporary output
 	lda #$00

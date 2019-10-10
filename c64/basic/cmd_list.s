@@ -98,15 +98,9 @@ list_not_quote:
 	// Display a token
 
 	// Save registers
-#if CONFIG_CPU_MOS_6502
 	tax
 	pha
-	tya
-	pha
-#else
-	phx
-	phy
-#endif
+	_phy
 
 	// Get pointer to compressed keyword list
 	lda #<packed_keywords
@@ -124,13 +118,7 @@ list_not_quote:
 	ldy #$ff
 	jsr packed_word_search
 
-#if CONFIG_CPU_MOS_6502
-	pla
-	tay
-#else
-	ply
-#endif
-
+	_ply
 	pla
 
 	cmp #$8f

@@ -17,15 +17,8 @@ CHROUT:
 	// don't get modified, in agreement with C64 PRG's
 	// description of CHROUT)
 
-#if CONFIG_CPU_MOS_6502
-	txa
-	pha
-	tya
-	pha
-#else
-	phx
-	phy
-#endif
+	_phx
+	_phy
 
 	php
 
@@ -52,16 +45,8 @@ chrout_done_fail:
 	plp
 
 	// Restore X and Y
-
-#if CONFIG_CPU_MOS_6502
-	pla
-	tay
-	pla
-	tax
-#else
-	ply
-	plx
-#endif
+	_ply
+	_plx
 
 	sec // indicate failure
 	rts
@@ -71,16 +56,8 @@ chrout_done_unknown_device:
 	plp
 
 	// Restore X and Y
-
-#if CONFIG_CPU_MOS_6502
-	pla
-	tay
-	pla
-	tax
-#else
-	ply
-	plx
-#endif
+	_ply
+	_plx
 
 	// End wioth error
 	jmp lvs_device_not_found_error
@@ -90,16 +67,8 @@ chrout_done_success:
 	plp
 
 	// Restore X and Y
-
-#if CONFIG_CPU_MOS_6502
-	pla
-	tay
-	pla
-	tax
-#else
-	ply
-	plx
-#endif
+	_ply
+	_plx
 
 	lda SCHAR
 	clc // indicate success

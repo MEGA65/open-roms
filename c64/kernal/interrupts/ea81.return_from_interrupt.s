@@ -12,15 +12,7 @@ return_from_interrupt:
 	// Restore registers and return
 	// Sequence according to Compute's Mapping the 64 p73
 
-#if CONFIG_CPU_MOS_6502
-	pla
-	tay
-	pla
-	tax
-#else
-	ply
-	plx
-#endif
+	_ply
+	_plx
 	pla
 	rti
-

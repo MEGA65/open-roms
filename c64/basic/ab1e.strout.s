@@ -7,9 +7,8 @@ STROUT:
 	// Setup pointer
 	sty FRESPC+1
 	sta FRESPC+0
-
-	txa	
-	pha
+	
+	_phx
 
 	// Get offset ready
 	ldy #$00
@@ -29,6 +28,6 @@ STROUT:
 	iny
 	bne !-
 !:
-	pla
+	pla // XXX can we use _plx here?
 	tax
 	rts

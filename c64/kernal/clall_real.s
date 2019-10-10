@@ -12,8 +12,7 @@
 clall_real:
 
 	// Store .Y register
-	tya
-	pha
+	_phy
 
 	// Original routine probably just sets LDTND to 0, but this is not really safe,
 	// so we actually close all the channels; at least IDE64 does the same for
@@ -27,8 +26,7 @@ clall_real:
 	jmp !-
 !:
 	// Restore .Y register
-	pla
-	tay
+	_ply
 
 	// 'C64 Programmers Reference Guide', page 281, claims it calls CLRCHN too
 	jsr CLRCHN

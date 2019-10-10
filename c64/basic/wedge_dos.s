@@ -232,8 +232,7 @@ wedge_dos_clean_exit:
 wedge_dos_basic_error:
 	pha
 	jsr JCLALL
-	pla
-	tax
+	_plx
 	dex
 	jmp do_basic_error
 

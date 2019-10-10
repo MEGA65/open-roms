@@ -6,8 +6,6 @@
 
 chrout_screen:
 
-	sei // XXX why do we need to disable interrupts?
-
 	jsr cursor_hide_if_visible
 
 	lda SCHAR

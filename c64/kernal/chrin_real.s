@@ -82,7 +82,6 @@ not_end_of_input:
 	clc
 	rts
 
-
 read_from_keyboard:
 
 	jsr cursor_enable
@@ -92,7 +91,7 @@ read_from_keyboard:
 	beq chrin_repeat
 
 	lda KEYD
-	cmp #$0d
+	cmp #$0D
 	bne not_enter
 
 	jsr cursor_disable
@@ -145,8 +144,10 @@ empty_line:
 	rts
 
 not_enter:
+
 	// Print character
 	lda KEYD
+	// XXX add support for SHIFT + RUN/STOP ($84) and function keys (should be configurable)
 	jsr CHROUT
 
 	jsr pop_keyboard_buffer

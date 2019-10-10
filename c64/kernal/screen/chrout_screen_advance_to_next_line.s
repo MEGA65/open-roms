@@ -1,8 +1,6 @@
 
 chrout_screen_advance_to_next_line:
 
-	// jsr cursor_hide_if_visible
-	
 	//  Go to start of line
 	lda #0
 	sta PNTR

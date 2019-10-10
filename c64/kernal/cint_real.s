@@ -68,7 +68,8 @@ cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 	jsr setup_vicii
 
 	// Initialise cursor blink flags  (Compute's Mapping the 64 p215)
-	lda #$00
+	lda #$01
+	sta BLNCT
 	sta BLNSW
 
 	// Set keyboard decode vector  (Compute's Mapping the 64 p215)

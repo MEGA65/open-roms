@@ -158,11 +158,8 @@ chrout_try_HOME:
 	cmp #$13
 	bne !+
 
-	// XXX try cursor_home instead
-	lda #$00
-	sta PNTR
-	sta TBLX
-	jmp chrout_screen_calc_lptr_done
+	jsr cursor_home
+	jmp chrout_screen_done
 !:
 chrout_try_CLR:
 
@@ -179,21 +176,7 @@ chrout_try_INS:
 
 	jmp chrout_screen_ins
 !:
-chrout_try_RUN_STOP:
+chrout_screen_control_done:
 
-	cmp #$03
-	bne !+
-
-	// XXX
-
-	jmp chrout_screen_done
-!:
-chrout_try_FKEY:
-
-	// XXX
-
-	// FALLTROUGH
-
-!:  // unknown, LF, or no more actions required
-
+    // unknown code or key does not needs 
 	jmp chrout_screen_done

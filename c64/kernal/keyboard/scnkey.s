@@ -34,7 +34,7 @@ SCNKEY:
 	beq sk_start
 	dec KOUNT
 
-	// Setup the CIA registers
+	// Setup the CIA registers XXX check whether the C64 does it every time
 
 	ldx #$FF
 	stx CIA1_DDRA  // output
@@ -45,6 +45,7 @@ SCNKEY:
 
 	lda SHFLAG
 	sta LSTSHF
+	ldy #$00
 	sty SHFLAG
 
 	// XXX retrieve ALT and NO_SCRL status for C128/C65 keyboards
@@ -52,6 +53,7 @@ SCNKEY:
 	// Check for any activity
 
 	sty CIA1_PRA  // connect all the lines
+	ldx #$FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
 
@@ -60,7 +62,9 @@ SCNKEY:
 	// Set pointer in KEYTAB
 	jsr scnkey_via_keytab
 
-	// XXX scan the keyboard matrix
+	// XXX check for joystick activity
+
+	// Scan the keyboard matrix
 
 
 

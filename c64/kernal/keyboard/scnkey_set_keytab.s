@@ -31,6 +31,8 @@ scnkey_set_keytab:
 	adc KEYTAB+1
 	sta KEYTAB+1
 
+scnkey_toggle_if_needed: // entry for SCNKEY (TWW/CTR version)
+
 	// Check if we should toggle the character set
 
 	lda MODE

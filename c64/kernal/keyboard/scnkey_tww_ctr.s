@@ -218,18 +218,15 @@ Main:
 	sta BufferNew+0
 	sta BufferNew+1
 	sta BufferNew+2
-	
-	ldx #$ff
-	stx $dc02       // Port A - Output
-	ldy #$00
-	sty $dc03       // Port B - Input
-
 
 	// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// // Check for Port Activity
 
-	sty $dc00       // Connect all Keyboard Rows
-	cpx $dc01
+	ldx #$FF
+	ldy #$00
+
+	sty CIA1_PRA       // Connect all Keyboard Rows
+	cpx CIA1_PRB
 	bne skip0
 
 	jmp NoActivityDetected
@@ -240,7 +237,7 @@ JoystickActivity:
 	lda #$00
 	sta SHFLAG
 	
-	lda $dc01
+	lda CIA1_PRB
 	and #$03
 	cmp #$01
 	bne !+
@@ -267,7 +264,7 @@ JoystickActivity:
 	beq !+
 	jmp skdone
 !:
-	lda $dc01
+	lda CIA1_PRB
 	and #$0c
 	cmp #$04
 	bne !+
@@ -293,8 +290,8 @@ skip0:
 	// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// // Check for Control Port #1 Activity
 
-	stx $dc00       // Disconnect all Keyboard Rows
-	cpx $dc01       // Only Control Port activity will be detected
+	stx CIA1_PRA    // Disconnect all Keyboard Rows
+	cpx CIA1_PRB    // Only Control Port activity will be detected
 	bne JoystickActivity
 
 	// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -303,9 +300,9 @@ skip0:
 	ldx #7
 	lda #%11111110
 next_row:	
-	sta $dc00
+	sta CIA1_PRA
 	pha
-	lda $dc01
+	lda CIA1_PRB
 	sta ScanResult,x
 	pla
 	sec
@@ -318,8 +315,8 @@ next_row:
 	// //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 	// // Check for Control Port #1 Activity (again)
 
-	stx $dc00       // Disconnect all Keyboard Rows
-	cpx $dc01       // Only Control Port activity will be detected
+	stx CIA1_PRA    // Disconnect all Keyboard Rows
+	cpx CIA1_PRB    // Only Control Port activity will be detected
 	beq !+
 	jmp ReturnNoKeys
 !:
@@ -375,19 +372,8 @@ next_row:
 	ora SHFLAG
 	sta SHFLAG
 
-	// Chick for shift + Vendor
-	cmp #$03
-	bne no_case_toggle
-	lda LSTSHF
-	cmp #$03
-	beq no_case_toggle
-
-	lda MODE
-	bne no_case_toggle
-	
-	lda VIC_YMCSB
-	eor #$02
-	sta VIC_YMCSB
+	// Handle SHIFT + VENDOR
+	jsr scnkey_toggle_if_needed
 
 no_case_toggle:	
 	

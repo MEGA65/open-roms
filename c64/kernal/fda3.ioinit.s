@@ -101,6 +101,14 @@ IOINIT:
 	sta CIA1_CRA
 	lda CIA1_ICR
 
+	// Setup the CIA1 for reading the keyboard - 'POKE 56322, 0' on original ROMs proves this
+	// is done during initialization, not during the interrupt
+
+	ldx #$FF
+	stx CIA1_DDRA  // output
+	ldy #$00
+	sty CIA1_DDRB  // input
+
 	// Set DDR on CIA2 for IEC bus, VIC-II banking
 	lda #$3B
 	sta CIA2_DDRA

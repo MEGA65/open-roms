@@ -105,15 +105,6 @@ rvs_l1:
 	sta RVS
 	jmp chrout_screen_done
 !:
-chrout_try_MODE_TXT:
-
-	cmp #$0E
-	bne !+
-
-	lda VIC_YMCSB
-	ora #$02    // to lower case
-	bne mode_l1 // branch always
-!:
 chrout_try_MODE_GFX:
 
 	cmp #$8E
@@ -124,6 +115,15 @@ chrout_try_MODE_GFX:
 mode_l1:
 	sta VIC_YMCSB
 	jmp chrout_screen_done
+!:
+chrout_try_MODE_TXT:
+
+	cmp #$0E
+	bne !+
+
+	lda VIC_YMCSB
+	ora #$02    // to lower case
+	bne mode_l1 // branch always
 !:
 chrout_try_COLOR:
 

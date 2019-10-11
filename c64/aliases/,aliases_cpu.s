@@ -1,6 +1,10 @@
-
 //
 // Provide pseudocommands to make CPU optimizations easier
+//
+
+
+//
+// Stack manipulation - some CPUs will leave .A unchanged, some will use it as temporary storage, so consider .A trashed
 //
 
 

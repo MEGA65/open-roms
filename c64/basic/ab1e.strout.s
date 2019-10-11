@@ -8,7 +8,7 @@ STROUT:
 	sty FRESPC+1
 	sta FRESPC+0
 	
-	_phx
+	phx_trash_a
 
 	// Get offset ready
 	ldy #$00
@@ -28,6 +28,6 @@ STROUT:
 	iny
 	bne !-
 !:
-	pla // XXX can we use _plx here?
+	pla // XXX can we use plx_trash_a here?
 	tax
 	rts

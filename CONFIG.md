@@ -48,8 +48,15 @@ If unsure - select this one.
 Choose if your CPU supports the Western Design Center 65C02 instruction set, like:
 
 * WDC 65C02 - used in the Turbo Master accelerator
+
+It enables some speed/size code optimizations.
+
+### `CONFIG_CPU_CSG_65CE02`
+
+Choose if your CPU supports the Commodore Semiconductor Group 65CE02 instruction set, like:
+
 * CSG 65CE02 
-* CSG 4510 - used in the Commodore 65 prototypes
+* CSG 4510 - microcontroller used in the Commodore 65 prototypes
 
 It enables some speed/size code optimizations.
 

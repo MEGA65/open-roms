@@ -57,6 +57,9 @@
 #if CONFIG_CPU_WDC_65C02
 	.eval selected++
 #endif
+#if CONFIG_CPU_CSG_65CE02
+	.eval selected++
+#endif
 #if CONFIG_CPU_WDC_65816
 	.eval selected++
 #endif
@@ -85,7 +88,7 @@
 
 // Handle processor configuration
 
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_WDC_65816
+#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
 
 #define HAS_BCD_SAFE_INTERRUPTS
 #define HAS_BCD_SAFE_RESET

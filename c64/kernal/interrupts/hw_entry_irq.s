@@ -11,8 +11,8 @@ hw_entry_irq:
 
 	// Save registers, sequence according to Compute's Mapping the Commodore 64, page 73
 	pha
-	_phx
-	_phy
+	phx_trash_a
+	phy_trash_a
 
 #if CONFIG_CPU_MOS_6502 && CONFIG_BCD_SAFE_INTERRUPTS
 	cld // clear decimal flag to allow using it without disabling interrupts

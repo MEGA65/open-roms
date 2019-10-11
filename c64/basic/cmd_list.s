@@ -100,7 +100,7 @@ list_not_quote:
 	// Save registers
 	tax
 	pha
-	_phy
+	phy_trash_a
 
 	// Get pointer to compressed keyword list
 	lda #<packed_keywords
@@ -118,7 +118,7 @@ list_not_quote:
 	ldy #$ff
 	jsr packed_word_search
 
-	_ply
+	ply_trash_a
 	pla
 
 	cmp #$8f

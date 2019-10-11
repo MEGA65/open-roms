@@ -192,15 +192,21 @@ build/newc65.rom: build/kernal_mega65.rom build/basic_mega65.rom build/chargen.r
 
 # Rules - tests
 
-.PHONY: test test_generic test_mega65 test_ultimate64 test_hybrid test_m65 test_xemu testremote testsimilarity
+.PHONY: test test_generic test_generic_x128 test_mega65 test_mega65_xemu test_ultimate64 test_hybrid test_m65 testremote testsimilarity
 
 test: test_generic
 
 test_generic: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
 	x64 -kernal build/kernal_generic.rom -basic build/basic_generic.rom -moncommands build/symbols_generic.vs -8 empty.d64
 
+test_generic_x128: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
+	x128 -go64 -kernal64 build/kernal_generic.rom -basic64 build/basic_generic.rom -moncommands build/symbols_generic.vs -8 empty.d64
+
 test_mega65: build/kernal_mega65.rom build/basic_mega65.rom build/symbols_mega65.vs
 	x64 -kernal build/kernal_mega65.rom -basic build/basic_mega65.rom -moncommands build/symbols_mega65.vs -8 empty.d64
+
+test_mega65_xemu: build/newc65.rom
+	../xemu/build/bin/xc65.native -dmarev 2 -rom build/newc65.rom
 
 test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/symbols_ultimate64.vs
 	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -8 empty.d64
@@ -216,9 +222,6 @@ test_hybrid: build/kernal_hybrid.rom build/symbols_hybrid.vs
 
 test_m65: build/newc65.rom
 	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R build/newc65.rom -4
-
-test_xemu: build/newc65.rom
-	../xemu/build/bin/xc65.native -dmarev 2 -rom build/newc65.rom
 
 testremote: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
 	x64 -kernal build/kernal_generic.rom -basic build/basic_generic.rom -moncommands build/symbols_generic.vs -remotemonitor

@@ -2,7 +2,7 @@
 
 basic_do_error:
 	// Save error number
-	_phx
+	phx_trash_a
 
 	// Print ? at start
 	jsr print_return
@@ -10,7 +10,7 @@ basic_do_error:
 	jsr JCHROUT
 
 	// Print main part of error message
-	_plx
+	plx_trash_a
 	jsr print_packed_message
 
 	// Print ERROR at end

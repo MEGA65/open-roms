@@ -7,8 +7,8 @@
 iec_rx_byte:
 
 	// Store .X and .Y on the stack - preserve them
-	_phx
-	_phy
+	phx_trash_a
+	phy_trash_a
 
 	// Timing is critical here - execute on disabled IRQs
 	// The best practice would be to do PHP first, but it seems this is not

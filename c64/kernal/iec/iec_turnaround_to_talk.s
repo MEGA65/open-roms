@@ -5,8 +5,8 @@
 iec_turnaround_to_talk:
 
 	// Store .X and .Y on the stack - preserve them
-	_phx
-	_phy
+	phx_trash_a
+	phy_trash_a
 
 	// Timing is critical here - execute on disabled IRQs
 	php

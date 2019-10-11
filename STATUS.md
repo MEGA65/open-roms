@@ -29,7 +29,7 @@ The following ROM features are currently missing:
 * tape support
 * RS-232 support
 * breaking Kernal routines with RUN/STOP key
-* NMI andling is incomplete
+* NMI handling is incomplete
 
 
 # API status

@@ -14,7 +14,7 @@
 chkin_real:
 
 	// Store Y for preservation
-	_phy
+	phy_trash_a
 
 	// Reset status
 	jsr kernalstatus_reset

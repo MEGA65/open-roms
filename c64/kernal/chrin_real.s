@@ -44,7 +44,7 @@ chrin_done_fail:
 chrin_keyboard:
 
 	// Save X
-	_phx
+	phx_trash_a
 
 chrin_repeat:
 
@@ -64,7 +64,7 @@ chrin_repeat:
 	// Return carriage return and clear pending input flag
 	lda #$00
 	sta CRSW
-	_plx
+	plx_trash_a
 	clc
 	lda #$0d
 	rts
@@ -72,7 +72,7 @@ chrin_repeat:
 not_end_of_input:
 	// Return next byte of waiting input and advance index
 	tay
-	_plx
+	plx_trash_a
 	lda (LXSP),y
 	jsr screen_code_to_petscii
 	inc CRSW
@@ -123,7 +123,7 @@ read_from_keyboard:
 	sta CRSW
 	// Return first char of line
 	ldy #$00
-	_plx
+	plx_trash_a
 	lda (LXSP),y
 	jsr screen_code_to_petscii
 	clc
@@ -133,7 +133,7 @@ empty_line:
 	// For an empty line, just return the carriage return
 	// (and don't forget to actually print the carriage return, so that
 	// the cursor advances and screen scrolls as required)
-	_plx
+	plx_trash_a
 	clc
 	lda #$0d
 	rts

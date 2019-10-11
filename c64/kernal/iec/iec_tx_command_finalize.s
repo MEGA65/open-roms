@@ -6,8 +6,8 @@
 iec_tx_command_finalize:
 
 	// Store .X and .Y on the stack - preserve them
-	_phx
-	_phy
+	phx_trash_a
+	phy_trash_a
 
 	// Give device some time to complete command reception, release ATN,
 	// give it some time again before (possible) next command

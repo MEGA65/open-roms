@@ -17,8 +17,8 @@ CHROUT:
 	// don't get modified, in agreement with C64 PRG's
 	// description of CHROUT)
 
-	_phx
-	_phy
+	phx_trash_a
+	phy_trash_a
 
 	php
 
@@ -45,8 +45,8 @@ chrout_done_fail:
 	plp
 
 	// Restore X and Y
-	_ply
-	_plx
+	ply_trash_a
+	plx_trash_a
 
 	sec // indicate failure
 	rts
@@ -56,8 +56,8 @@ chrout_done_unknown_device:
 	plp
 
 	// Restore X and Y
-	_ply
-	_plx
+	ply_trash_a
+	plx_trash_a
 
 	// End wioth error
 	jmp lvs_device_not_found_error
@@ -67,8 +67,8 @@ chrout_done_success:
 	plp
 
 	// Restore X and Y
-	_ply
-	_plx
+	ply_trash_a
+	plx_trash_a
 
 	lda SCHAR
 	clc // indicate success

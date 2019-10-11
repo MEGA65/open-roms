@@ -4,9 +4,9 @@
 //
 
 
-.pseudocommand _phx
+.pseudocommand phx_trash_a
 {
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_WDC_65816
+#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
 	phx
 #else
 	txa
@@ -14,9 +14,9 @@
 #endif	
 }
 
-.pseudocommand _phy
+.pseudocommand phy_trash_a
 {
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_WDC_65816
+#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
 	phy
 #else
 	tya
@@ -24,9 +24,9 @@
 #endif	
 }
 
-.pseudocommand _plx
+.pseudocommand plx_trash_a
 {
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_WDC_65816
+#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
 	plx
 #else
 	pla
@@ -34,9 +34,9 @@
 #endif	
 }
 
-.pseudocommand _ply
+.pseudocommand ply_trash_a
 {
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_WDC_65816
+#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
 	ply
 #else
 	pla

@@ -5,7 +5,7 @@
 print_integer:
 
 	pha
-	_phx
+	phx_trash_a
 
 	// Clear temporary output
 	lda #$00

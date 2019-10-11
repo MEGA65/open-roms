@@ -50,6 +50,22 @@
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
 
+	// Low memory variables
+
+	// Reuse RS232 variables, since they should not be used by other things.
+	// Carefully avoid $A7 which is used by 64NET
+	.label KeyQuantity       = $A8  // 1 byte
+	.label BufferNew         = $A9  // 3 bytes
+	.label TempZP            = $B6  // 1 byte
+	// These should be initialized in CINIT to $FF
+	.label BufferQuantity    = $B4  // 1 byte
+	.label BufferOld         = $293 // 3 bytes
+	.label Buffer 	         = $297 // 4 bytes
+
+	// $250-$258 is the 81st - 88th characters in BASIC input, a carry over from VIC-20
+	// and not used on C64, so safe for us to use, probably.
+	.label ScanResult = $250 // 8 bytes
+
 	// Operational Variables
 	.const MaxKeyRollover = 3
 
@@ -102,7 +118,7 @@ accept_key:
 	and #$3f
 	ora keyboard_matrix_lookup,x
 	tax
-	lda keyboard_matrixes,x
+	lda keyboard_matrix,x
 	// But don't insert $00 characters
 	beq sk_nokey
 
@@ -519,4 +535,4 @@ KeyRepeatWait:
 	jmp ConsiderNextKey
 
 
-#endif // #if CONFIG_SCNKEY_TWW_CTR
+#endif // CONFIG_SCNKEY_TWW_CTR

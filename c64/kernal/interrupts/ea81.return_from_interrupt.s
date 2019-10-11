@@ -12,7 +12,7 @@ return_from_interrupt:
 	// Restore registers and return
 	// Sequence according to Compute's Mapping the 64 p73
 
-	_ply
-	_plx
+	ply_trash_a
+	plx_trash_a
 	pla
 	rti

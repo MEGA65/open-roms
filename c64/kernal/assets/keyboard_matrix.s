@@ -1,8 +1,9 @@
+
 // Key board matrixes: unshifted, shifted, control and C= modified
 // 64 bytes for each
 
 
-keyboard_matrixes:
+keyboard_matrix:
 	// Unshifted matrix built by refering to
 	// Compute's Mapping the 64 p38-39
 	// and C64 PRG pages 379-381
@@ -69,4 +70,3 @@ keyboard_matrix_lookup:
 	.byte $C0 		// Vendor + SHIFT
 	.byte $80		// Vendor+ CTRL
 	.byte $80		// Vendor + CTRL + SHIFT
-

@@ -64,6 +64,9 @@
 	.label VIC_SP5COL   = $D02C
 	.label VIC_SP6COL   = $D02D
 	.label VIC_SP7COL   = $D02E
+
+	.label VIC_XSCAN    = $D02F // C128 only
+	.label VIC_CLKRATE  = $D030 // C128 only
 	
 	// SID registers
 

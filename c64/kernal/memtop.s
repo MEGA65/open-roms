@@ -14,7 +14,8 @@ MEMTOP:
 	
 	ldy MEMSIZK+1
 	ldx MEMSIZK+0
-	rts
+
+	// FALLTROUGH
 
 memtop_set:
 

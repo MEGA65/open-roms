@@ -153,7 +153,7 @@
 	.label INSRT     = $D8  //          insert mode flag/counter
 	.label LDTBL     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
 	.label USER      = $F3  // $F3-$F4  pointer to current color RAM location
-	.label KEYTAB    = $F5  // $F5-$F6  -- NOT IMPLEMENTED --
+	.label KEYTAB    = $F5  // $F5-$F6  pointer to keyboard lookup table
 	.label RIBUF     = $F7  // $F7-$F8  -- NOT IMPLEMENTED --
 	.label ROBUF     = $F9  // $F9-$FA  -- NOT IMPLEMENTED --
 	//                 $FB     $FB-$FE  -- UNUSED --          free for user software

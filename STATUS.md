@@ -98,7 +98,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 
 | Address   | Unofficial | Name        | Status   |  Remarks                                           |
 | :-------: | :--------: | :---------- | :------: | :------------------------------------------------: |
-| `($028F)` |            | `KEYLOG`    | NOT DONE |                                                    |
+| `($028F)` |            | `KEYLOG`    | DONE     |                                                    |
 | `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                    |
 | `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                      |
 | `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                    |

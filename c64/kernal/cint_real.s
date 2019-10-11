@@ -58,9 +58,9 @@ cint_pal:
 
 	// Setup KEYLOG vector - XXX is it proper place?
 
-	lda #<setup_keydecode
+	lda #<scnkey_set_keytab
 	sta KEYLOG+0
-	lda #>setup_keydecode
+	lda #>scnkey_set_keytab
 	sta KEYLOG+1
 
 cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?

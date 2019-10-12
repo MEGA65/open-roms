@@ -74,6 +74,8 @@ cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 
 	// Set keyboard decode vector  (Compute's Mapping the 64 p215)
 
+#if CONFIG_SCNKEY_TWW_CTR
+
 	// Set initial variables for our improved keyboard scan routine
 	lda #$FF
 	ldx #6
@@ -82,6 +84,8 @@ cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 	bpl !-
 	sta BufferQuantity
 	
+#endif
+
 	// Set key repeat delay (Compute's Mapping the 64 p215)
 	// Making some numbers up here: Repeat every ~1/10th sec
 	// But require key to be held for ~1/3sec before

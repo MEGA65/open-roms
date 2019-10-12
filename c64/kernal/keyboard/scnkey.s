@@ -30,43 +30,60 @@ SCNKEY:
 
 	// Handle repeat timer
 
-	ldx KOUNT
-	beq sk_start
+	lda KOUNT
+	beq !+
 	dec KOUNT
-
-	// Setup the CIA registers XXX check whether the C64 does it every time
-
-	ldx #$FF
-	stx CIA1_DDRA  // output
-	ldy #$00
-	sty CIA1_DDRB  // input
-
+!:
 	// Prepare for SHFLAG update
 
 	lda SHFLAG
 	sta LSTSHF
-	ldy #$00
-	sty SHFLAG
+	lda #$00
+	sta SHFLAG
 
 	// XXX retrieve ALT and NO_SCRL status for C128/C65 keyboards
 
 	// Check for any activity
 
-	sty CIA1_PRA  // connect all the lines
-	ldx #$FF
-	cpx CIA1_PRB
+	lda #$00
+	sta CIA1_PRA  // connect all the rows
+	lda #$FF
+	cmp CIA1_PRB
 	beq scnkey_no_keys
 
-	// XXX retrieve SHIFT / CTRL / VENDOR status
+	// Retrieve SHIFT / VENDOR / CTRL status
+	ldy #$03
+scnkey_bucky_loop:
+	lda kb_matrix_bucky_confmask, y
+	sta CIA1_PRA
+	lda kb_matrix_bucky_testmask, y
+	and CIA1_PRB
+	bne !+ // not pressed
+	lda SHFLAG
+	ora kb_matrix_bucky_shflag, y
+	sta SHFLAG
+!:
+	dey
+	bpl scnkey_bucky_loop
 
-	// Set pointer in KEYTAB
-	jsr scnkey_via_keytab
+	// Set KEYTAB vector
+
+	jsr scnkey_via_keylog // XXX for some CPUs we have indirect jsr
 
 	// XXX check for joystick activity
 
 	// Scan the keyboard matrix
 
+	ldy #$07
+scnkey_matrix_loop:
+	lda kb_matrix_row_keys, y
+	sta CIA1_PRA
+	lda kb_matrix_bucky_filter, y
+	ora CIA1_PRB
 
+	// XXX
+	dey
+	bpl scnkey_matrix_loop
 
 
 
@@ -76,12 +93,12 @@ SCNKEY:
 
 scnkey_no_keys:
 
-	// ldx #$FF
-	stx LSTX
+	lda #$FF
+	sta LSTX
 
 	rts
 
-scnkey_via_keytab:
-	jmp (KEYTAB)
+scnkey_via_keylog:
+	jmp (KEYLOG)
 
-#endif // No CONFIG_SCNKEY_TWW_CTR
+#endif // no CONFIG_SCNKEY_TWW_CTR

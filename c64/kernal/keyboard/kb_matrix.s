@@ -14,9 +14,9 @@
 
 
 
-keyboard_matrix:
+kb_matrix:
 
-	// Normal
+__kb_matrix_normal:
 	.byte $14,$0D,$1D,$88,$85,$86,$87,$11
 	.byte $33,$57,$41,$34,$5A,$53,$45,$00
 	.byte $35,$52,$44,$36,$43,$46,$54,$58
@@ -26,7 +26,7 @@ keyboard_matrix:
 	.byte $5C,$2A,$3B,$13,$00,$3D,$5E,$2F
 	.byte $31,$5F,$00,$32,$20,$00,$51,$03
 
-	// With SHIFT
+__kb_matrix_shift:
 	.byte $94,$8D,$9D,$8C,$89,$8A,$8B,$91
 	.byte $23,$77,$61,$24,$7A,$73,$65,$00
 	.byte $25,$72,$64,$26,$63,$66,$74,$78
@@ -36,7 +36,7 @@ keyboard_matrix:
 	.byte $A9,$C0,$5D,$93,$00,$3D,$DE,$3F
 	.byte $21,$5F,$00,$22,$A0,$00,$71,$83
 
-	// With VENDOR key
+__kb_matrix_vendor:
 	.byte $94,$8D,$9D,$8C,$89,$8A,$8B,$91
 	.byte $96,$B3,$B0,$97,$AD,$AE,$B1,$00
 	.byte $98,$B2,$AC,$99,$BC,$BB,$A3,$BD
@@ -46,7 +46,7 @@ keyboard_matrix:
 	.byte $A8,$DF,$5D,$93,$00,$3D,$DE,$3F
 	.byte $81,$5F,$00,$95,$a0,$00,$AB,$83
 
-	// With CTRL
+__kb_matrix_ctrl:
 	.byte $00,$00,$00,$00,$00,$00,$00,$00
 	.byte $1C,$17,$01,$9F,$1A,$13,$05,$00
 	.byte $9C,$12,$04,$1E,$03,$06,$14,$18
@@ -56,41 +56,19 @@ keyboard_matrix:
 	.byte $1C,$00,$1D,$00,$00,$1F,$1E,$00
 	.byte $90,$06,$00,$05,$00,$00,$11,$00
 
-keyboard_matrix_lookup:
-	// Work out if normal, shifted, control or Vendor modified keyboard. 
-	// Table contains the offsets into keyboard_matrixes that should be used
-	// for different values of the bottom 3 bits of key_bucky_state XXX
-	// Interaction is simple to work out when playing with a C64:
-	// CTRL trumps SHIFT or VENDOR
-	// VENDOR + SHIFT = DOES NOTHING
-	// All 3 does CONTROL
-	.byte $00 		// Normal
-	.byte $40		// SHIFT
-	.byte $80		// CTRL
-	.byte $80		// CTRL + SHIFT
-	.byte $C0		// VENDOR
-	.byte $C0 		// VENDOR + SHIFT
-	.byte $80		// VENDOR + CTRL
-	.byte $80		// VENDOR + CTRL + SHIFT
 
 
-// keyboard_matrix_ext128:   $D02F
+
+// kb_matrix_ext128:   $D02F
 
 	// .byte (HELP),$38,$35,(TAB),$32,$34,$37,$31  // $FE
 	// .byte $1B, $2B, $2D,$0A,$0D,$36,$39,$33     // $FD
 	// .byte $00,$30,$2E,$91,$11,$9D,$1D,(NO_SCRL) // $FB
 	
-// keyboard_matrix_ext65:
+// kb_matrix_ext65:
 
 	// Last column - normal
 	// .byte (NO_SCRL),(TAB),$00,(HELP),(F9),(F11),(F13),$1B
 	
 	// Last column - shifted
 	// .byte (NO_SCRL),(TAB),$00,(HELP),(F10),(F12),(F14),$1B
-
-
-	// XXX ESC     : $1B (alias: CTRL [ )
-	// XXX HELP    : (to be determined, ?)
-	// XXX TAB     : (to be determined, $18 ?)
-	// XXX NO_SCRL : (to be determined, ?)
-	// XXX ALT     : bucky, 128: row 3, 1st, 65: 3rd

@@ -9,9 +9,9 @@ scnkey_set_keytab:
 
 	// Set initial KEYTAB value
 
-	lda #<keyboard_matrix
+	lda #<kb_matrix
 	sta KEYTAB+0
-	lda #>keyboard_matrix
+	lda #>kb_matrix
 	sta KEYTAB+1
 
 	// Calculate table index
@@ -21,7 +21,7 @@ scnkey_set_keytab:
 	tax
 
 	// Retrieve table offset
-	lda keyboard_matrix_lookup, x
+	lda kb_matrix_lookup, x
 
 	// Add offset to the vector
 	sec

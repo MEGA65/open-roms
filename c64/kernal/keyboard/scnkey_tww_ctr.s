@@ -57,7 +57,7 @@
 	.label KeyQuantity       = $A8  // 1 byte
 	.label BufferNew         = $A9  // 3 bytes
 	.label TempZP            = $B6  // 1 byte
-	// These should be initialized in CINIT to $FF
+	// These should be initialized in CINT to $FF
 	.label BufferQuantity    = $B4  // 1 byte
 	.label BufferOld         = $293 // 3 bytes
 	.label Buffer 	         = $297 // 4 bytes
@@ -116,9 +116,9 @@ accept_key:
 	tax
 	pla
 	and #$3f
-	ora keyboard_matrix_lookup,x
+	ora kb_matrix_lookup,x
 	tax
-	lda keyboard_matrix,x
+	lda kb_matrix,x
 	// But don't insert $00 characters
 	beq sk_nokey
 

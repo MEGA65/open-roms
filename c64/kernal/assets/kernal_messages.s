@@ -17,6 +17,9 @@
 .label __MSG_KERNAL_NTSC          = __kernal_message_ntsc          - __kernal_messages_start
 #endif
 
+.label __MSG_KERNAL_PANIC         = __kernal_message_panic         - __kernal_messages_start
+.label __MSG_KERNAL_PANIC_VERSION = __kernal_message_panic_version - __kernal_messages_start
+
 
 __kernal_messages_start:
 
@@ -51,11 +54,19 @@ __kernal_message_to_hex:
 #if CONFIG_BANNER_PAL_NTSC
 
 __kernal_message_pal:
-	.text "PAL,"
+	.text ", PAL"
 	.byte $80 + $20 // end of string mark + space
 
 __kernal_message_ntsc:
-	.text "NTSC,"
+	.text ", NTSC"
 	.byte $80 + $20 // end of string mark + space
 
 #endif // CONFIG_BANNER_PAL_NTSC
+
+__kernal_message_panic:
+	.text "KERNAL PANI"
+	.byte $80 + $43 // end of string mark + 'C'
+
+__kernal_message_panic_version:
+	.text " - ROM MISMATC"
+	.byte $80 + $48 // end of string mark + 'H'

@@ -3,6 +3,16 @@
 
 basic_cold_start:
 
+	// Before doing anything, check if we have a compatible Kernal
+
+	ldy #(__rom_revision_basic_end - rom_revision_basic - 1)
+!:
+	lda rom_revision_basic, y
+	cmp rom_revision_kernal, y
+	bne basic_cold_start_rom_mismatch
+	dey
+	bpl !-
+
 	// Setup vectors at $300
 	ldy #$0B
 !:
@@ -32,3 +42,7 @@ basic_cold_start:
 
 	// jump into warm start loop
 	jmp basic_warm_start
+
+basic_cold_start_rom_mismatch:
+
+	panic #$01

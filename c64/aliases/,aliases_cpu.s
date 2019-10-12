@@ -4,6 +4,17 @@
 
 
 //
+// This one is not for optimization - but to encourage proper usage of panic screen
+//
+
+.pseudocommand panic code
+{
+	lda code
+	jmp (panic_vector)
+}
+
+
+//
 // Stack manipulation - some CPUs will leave .A unchanged, some will use it as temporary storage, so consider .A trashed
 //
 

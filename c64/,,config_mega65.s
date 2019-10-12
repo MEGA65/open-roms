@@ -1,4 +1,6 @@
 
+.const CONFIG_ID = $01 // should be 1 byte, different for each config file!
+
 //
 // Please read CONFIG.md before modifying this file!
 //

@@ -1,13 +1,8 @@
 
-//
-// Well-known BASIC routine, described in:
-//
-// - [CM64] Compute's Mapping the Commodore 64 - page 212
-//
-// Prints the start-up messages
-//
+// Routine is too long to fit in the original location
 
-INITMSG:
+
+initmsg_real:
 
 	// Print startup banner, up to 255 characters
 	ldx #$00
@@ -19,12 +14,19 @@ INITMSG:
 	bne !-
 
 !:
+	// Print ROM revision
+	lda #<rom_revision_basic_string
+	ldy #>rom_revision_basic_string
+	jsr STROUT
 
 	// Print PAL/NTSC, if configured
 
 #if CONFIG_BANNER_PAL_NTSC
 	jsr print_pal_ntsc
 #endif
+
+	jsr initmsg_double_return
+	jsr print_return
 
 	// Work out free bytes, display them
 	jsr basic_do_new
@@ -41,6 +43,6 @@ INITMSG:
 	ldx #34
 	jsr print_packed_message
 
-	// XXX put them into packed message
+initmsg_double_return:
 	jsr print_return
 	jmp print_return

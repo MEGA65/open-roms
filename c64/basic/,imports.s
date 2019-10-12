@@ -4,6 +4,9 @@
 #import "KERNAL_combined.sym"
 
 
+.label panic_vector        = KERNAL.panic_vector
+.label rom_revision_kernal = KERNAL.rom_revision_kernal
+
 #if CONFIG_DBG_PRINTF
 .label printf              = KERNAL.printf
 #endif

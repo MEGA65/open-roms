@@ -81,37 +81,34 @@ scnkey_bucky_loop:
 
 	// Scan the keyboard matrix
 
-	ldy #$07 // XXX adapt for C128 and C65 keyboards
-	ldx #$FF                       // offset in key matrix table, $FF for not found yet
+	ldx #$07 // XXX adapt for C128 and C65 keyboards
+	ldy #$FF                       // offset in key matrix table, $FF for not found yet
 scnkey_matrix_loop:
-	lda kb_matrix_row_keys, y
+	lda kb_matrix_row_keys, x
 	sta CIA1_PRA
-	lda kb_matrix_bucky_filter, y  // filter out bucky keys
+	lda kb_matrix_bucky_filter, x  // filter out bucky keys
 	ora CIA1_PRB
 	cmp #$FF
 	beq scnkey_matrix_loop_next    // skip if no key pressed from this row
-	cpx #$FF
+	cpy #$FF
 	bne scnkey_no_keys             // clash, more than one key pressed
 	// We have at least one key pressed in this row, we need to find which one exactly
-	ldx #$07
+	ldy #$07
 scnkey_matrix_loop_inner:
-	cmp kb_matrix_row_keys, x
+	cmp kb_matrix_row_keys, y
 	bne !+                         // not this particular key
-	txa                            // now .A contains key offset within a row
+	tya                            // now .A contains key offset within a row
 	sec
-	adc kb_matrix_row_offsets, y   // now .A contains key offset from the matrix start
-	tax
+	adc kb_matrix_row_offsets, x   // now .A contains key offset from the matrix start
+	tay
 	jmp scnkey_matrix_loop_next
 !:
-	dex
+	dey
 	bpl scnkey_matrix_loop_inner
 	bmi scnkey_no_keys            // branch always, multiple keys must have been pressed
 scnkey_matrix_loop_next:
-	dey
+	dex
 	bpl scnkey_matrix_loop
-
-	txa // XXX switch registers upwards!!!
-	tay
 
 	// Scanning complete
 

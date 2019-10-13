@@ -24,7 +24,7 @@
 // XXX add Commodore 128 keyboard support
 // XXX add Commodore 65 keybopard support
 // XXX add support for using joystick to move sursor keys
-// XXX prevent joystick port 1 interference
+// XXX explicitly prevent joystick port 1 interference
 
 #if !CONFIG_SCNKEY_TWW_CTR
 
@@ -98,7 +98,7 @@ scnkey_matrix_loop_inner:
 	cmp kb_matrix_row_keys, y
 	bne !+                         // not this particular key
 	tya                            // now .A contains key offset within a row
-	sec
+	clc
 	adc kb_matrix_row_offsets, x   // now .A contains key offset from the matrix start
 	tay
 	jmp scnkey_matrix_loop_next
@@ -111,7 +111,6 @@ scnkey_matrix_loop_next:
 	bpl scnkey_matrix_loop
 
 	// Scanning complete
-
 	cpy #$FF
 	bne scnkey_got_key
 
@@ -134,20 +133,27 @@ scnkey_got_key: // .Y should now contain the key offset in matrix pointed by KEY
 
 	// Reset key repeat counters - see [CM64] page 58
 
-	lda #$10
+	// Note: according to [CM64] it should be $10 for initializing DELAY, $06 for
+	// initializing KOUNT for the first time and $04 for subsequent ones - but replicating
+	// this would make our implementation longer, probably without improving the compatibility.
+	//
+	// Besides - since I am the one who writes the code, I will make the values exactly how I like them :D
+
+	// XXX consider making it configurable, also make configurable RPTFLG
+
+	lda #$16
 	sta DELAY
 
 	// FALLTROUGH
 
 scnkey_output_key:
 
-	// Reinitialize secondary couter
+	// Reinitialize secondary counter
 
-	lda #$06
+	lda #$03
 	sta KOUNT
 
 	// Output PETSCII code to the keyboard buffer
-
 	lda (KEYTAB), y
 	beq scnkey_no_keys             // branch if we have no PETSCII code for this key
 	ldy NDX
@@ -163,6 +169,8 @@ scnkey_done:
 scnkey_handle_repeat:
 
 	// Check whether we should repeat keys
+
+	// XXX some keys should be repeat always!
 
 	lda RPTFLG
 	bpl scnkey_done                // branch if we should do no repeat

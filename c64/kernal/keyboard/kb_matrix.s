@@ -13,10 +13,6 @@
 // and converting the values 
 
 
-// XXX to be extra compatible (someone could change the KEYLOG), we should make sure
-//     we are using the same matrix format as the original ROM does
-
-
 kb_matrix:
 
 __kb_matrix_normal:
@@ -61,6 +57,7 @@ __kb_matrix_ctrl:
 
 
 
+// XXX extended matrices for C128/C65
 
 // kb_matrix_ext128:   $D02F
 

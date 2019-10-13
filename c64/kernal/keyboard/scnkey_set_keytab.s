@@ -24,7 +24,7 @@ scnkey_set_keytab:
 	lda kb_matrix_lookup, x
 
 	// Add offset to the vector
-	sec
+	clc
 	adc KEYTAB+0
 	sta KEYTAB+0
 	lda #$00

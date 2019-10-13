@@ -15,14 +15,14 @@ kb_matrix_row_keys:
 	// - values for CIA1_PRA to connect only the given row
 	// - also used to scan a single row
 
-	.byte %01111111
-	.byte %10111111
-	.byte %11011111
-	.byte %11101111
-	.byte %11110111
-	.byte %11111011
-	.byte %11111101
 	.byte %11111110
+	.byte %11111101
+	.byte %11111011
+	.byte %11110111
+	.byte %11101111
+	.byte %11011111
+	.byte %10111111
+	.byte %01111111
 
 
 #endif // no CONFIG_SCNKEY_TWW_CTR

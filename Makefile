@@ -2,8 +2,13 @@
 # Source files
 
 SRCDIR_COMMON  = c64/aliases
+
 SRCDIR_BASIC   = $(SRCDIR_COMMON) \
-                c64/basic
+                c64/basic \
+                c64/basic/commands \
+                c64/basic/init \
+                c64/basic/rom_revision
+
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                 c64/kernal \
                 c64/kernal/assets \

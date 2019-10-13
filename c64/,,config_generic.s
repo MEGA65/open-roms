@@ -41,10 +41,17 @@
 // #define CONFIG_SID_D5XX
 
 
+// Eye candy
+
+// #define CONFIG_BANNER_SIMPLE
+#define CONFIG_BANNER_FANCY
+// #define CONFIG_BANNER_VARIANT
+#define CONFIG_SHOW_PAL_NTSC
+
+
 // Software features
 
-#define CONFIG_BANNER_FANCY
-#define CONFIG_BANNER_PAL_NTSC
+#define CONFIG_PANIC_SCREEN
 #define CONFIG_DOS_WEDGE
 #define CONFIG_BCD_SAFE_INTERRUPTS
 #define CONFIG_SCNKEY_TWW_CTR // for now has to be enabled

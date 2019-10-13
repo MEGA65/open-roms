@@ -4,13 +4,16 @@
 
 
 //
-// This one is not for optimization - but to encourage proper usage of panic screen
+// These are not exactly for optimization - but to encourage proper usage of panic screen
 //
 
 .pseudocommand panic code
 {
+	// If case no panic screen is used, we can skip providing error codes within Kernal
+#if CONFIG_PANIC_SCREEN || !SEGMENT_KERNAL
 	lda code
-	jmp (panic_vector)
+#endif
+	jmp ($E4B7)
 }
 
 

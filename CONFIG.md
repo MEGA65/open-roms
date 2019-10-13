@@ -105,25 +105,33 @@ Cause the system to support SIDs in `$D4xx` and `$D5xx` ranges, respectively.
 
 Each of them needs a couple of bytes in KERNAL segment - but they can share some code, and `$D4xx` range support replaces the standard `$D400` address handling, so exact amount depends on the exact configuration.
 
-## Software features
+## Eye candy
 
-### `CONFIG_BANNER_FANCY`
+### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_VARIANT`
 
-If enabled, prints more colorful startup banner. Eye candy only.
+Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_VARIANT` heavily depends on the selected hardware target, not all targets support it.
 
-Needs some space in BASIC segment, varies between targets.
+Richer banners need more BASIC segment, varies between hardware variants.
 
 ### `CONFIG_BANNER_PAL_NTSC`
 
 If enabled, prints video system on startup banner. Eye candy only.
 
-Feature needs 3 bytes in BASIC and 23 bytes in KERNAL segment.
+Feature needs some bytes in BASIC (depending on banner type) and about 25 bytes in KERNAL segment.
+
+## Software features
+
+### `CONFIG_PANIC_SCREEN`
+
+If enabled, certain fatal errors will produce a nice bluescreen instead of just resetting the machine.
+
+Feature needs over 100 bytes in KERNAL segment. If unsure - enable.
 
 ### `CONFIG_DOS_WEDGE`
 
 If enabled, a simple DOS wedge is available from the direct mode - supports `@<drive_number>`, `@<command>`, `@$`, `@$<params>` and `@` commands.
 
-Feature needs about 330 bytes in BASIC segment.
+Feature needs about 330 bytes in BASIC segment. If unsure - enable.
 
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 

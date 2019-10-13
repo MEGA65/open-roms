@@ -16,39 +16,33 @@
 
 }
 
-
 startup_banner:
 
-
-#if !CONFIG_BANNER_FANCY
-
-	// Simple banner
+#if CONFIG_BANNER_SIMPLE
 
 	.text "  " 
 	BANNER_TEXT()
-	.byte $0D, $0D
-	.text "  "
+	.byte $00
 
-#endif
+#elif CONFIG_BANNER_FANCY
 
+	BANNER_TEXT()
+	.byte $00
 
-#if CONFIG_BANNER_FANCY && !CONFIG_VARIANT_MEGA_65
+rainbow_logo:
 
-	// Fancy banner
+	.byte $1C, $12, $A4, $A4, $A4, $A4, $A4, $A4, $A4, $0D
+    .byte $9E, $12, $A4, $A4, $A4, $A4, $A4, $A4, $0D
+    .byte $1E, $12, $A4, $A4, $A4, $A4, $A4, $0D
+    .byte $9F, $12, $A4, $A4, $A4, $A4, $92
+    .byte $05, $00
 
-	.byte $1C, $12, $A4, $A4, $A4, $A4, $A4, $A4, $A4, $92, $0D
-    .byte $9E, $12, $A4, $A4, $A4, $A4, $A4, $A4, $92, $05, $20
-    .text "   "
-    BANNER_TEXT()
-    .byte $0D
-    .byte $1E, $12, $A4, $A4, $A4, $A4, $A4, $92, $0D
-    .byte $9F, $12, $A4, $A4, $A4, $A4, $92, $20, $05, $20, $20
-    .text "   "
+pre_revision_string:
 
-#endif
+	.text "RELEASE "
+	.byte $00
 
-
-#if CONFIG_BANNER_FANCY && CONFIG_VARIANT_MEGA_65
+#elif CONFIG_BANNER_VARIANT && CONFIG_VARIANT_MEGA_65
 
 	// Fancy Mega65 banner - from Retrofan
 	.byte $9a, $12, $20, $20, $7f, $a9, $20, $20, $1f, $20, $9a, $20, $20, $20
@@ -65,7 +59,7 @@ startup_banner:
 	.byte $12, $20, $20, $1f, $20, $20, $9a, $20, $20, $1f, $20, $9a, $20, $20, $20, $20
 	.byte $1f, $20, $9a, $20, $20, $20, $20, $20, $1f, $20, $9a, $20, $20, $1f, $20, $9a
 	.byte $20, $20, $1f, $20, $20, $96, $a3, $a3, $a3, $a3, $1f
-	.byte $92, $0D, $0D, $05
+	.byte $92, $0D, $0D, $05, $00
 
 	// Original Mega65 banner - supplied by Deft
 	// .byte $9A,$12,$A3,$A3,$A3,$A3,$A3,$A3,$DF,$9B,$92,$20,$05,$12,$A0,$A0
@@ -82,10 +76,6 @@ startup_banner:
 	// .byte $A3,$A3,$A3,$A3,$DF,$9A,$92,$7F,$12,$DF,$92,$7F,$9B,$20,$9A,$7F
 	// .byte $12,$A0,$A0,$9B,$92,$20,$9A,$7F,$12,$A0,$A0,$9B,$92,$20,$9A,$7F
 	// .byte $12,$DF,$92,$7F,$9B,$20,$9A,$20,$9B,"0.2.0.0",$0D
-	// .byte $0D,$05,$92
+	// .byte $0D,$05,$92,$00
 
 #endif
-
-
-
-	.byte $00 // end of banner

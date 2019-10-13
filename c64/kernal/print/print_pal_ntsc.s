@@ -3,7 +3,7 @@
 // Print video system on startup banner
 //
 
-#if CONFIG_BANNER_PAL_NTSC
+#if CONFIG_SHOW_PAL_NTSC
 
 print_pal_ntsc:
 
@@ -14,4 +14,4 @@ print_pal_ntsc:
 !:
 	jmp print_kernal_message
 
-#endif // CONFIG_BANNER_PAL_NTSC
+#endif // CONFIG_SHOW_PAL_NTSC

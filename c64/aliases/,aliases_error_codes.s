@@ -1,4 +1,10 @@
 
+	// Error codes for 'panic' pseudocommand
+
+	.const P_ERR_NONE                  = $00
+	.const P_ERR_ROM_MISMATCH          = $01 // this value has to be stable as long as possible
+
+
 	// Kernal error codes - returned in the A register
 	// Described in 'Commodore 64 Programmer's Reference Guide', page 306
 

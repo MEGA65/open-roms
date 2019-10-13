@@ -5,68 +5,74 @@
 
 // Double underscore prevents labels from being passed to VICE (would confuse monitor)
 
-.label __MSG_KERNAL_SEARCHING_FOR = __kernal_message_searching_for - __kernal_messages_start
-.label __MSG_KERNAL_LOADING       = __kernal_message_loading       - __kernal_messages_start
-.label __MSG_KERNAL_VERIFYING     = __kernal_message_verifying     - __kernal_messages_start
-.label __MSG_KERNAL_SAVING        = __kernal_message_saving        - __kernal_messages_start
-.label __MSG_KERNAL_FROM_HEX      = __kernal_message_from_hex      - __kernal_messages_start
-.label __MSG_KERNAL_TO_HEX        = __kernal_message_to_hex        - __kernal_messages_start
+.label __MSG_KERNAL_SEARCHING_FOR      = __msg_kernalsearching_for      - __msg_kernal_first
+.label __MSG_KERNAL_LOADING            = __msg_kernalloading            - __msg_kernal_first
+.label __MSG_KERNAL_VERIFYING          = __msg_kernalverifying          - __msg_kernal_first
+.label __MSG_KERNAL_SAVING             = __msg_kernalsaving             - __msg_kernal_first
+.label __MSG_KERNAL_FROM_HEX           = __msg_kernalfrom_hex           - __msg_kernal_first
+.label __MSG_KERNAL_TO_HEX             = __msg_kernalto_hex             - __msg_kernal_first
 
-#if CONFIG_BANNER_PAL_NTSC
-.label __MSG_KERNAL_PAL           = __kernal_message_pal           - __kernal_messages_start
-.label __MSG_KERNAL_NTSC          = __kernal_message_ntsc          - __kernal_messages_start
+#if CONFIG_SHOW_PAL_NTSC
+.label __MSG_KERNAL_PAL                = __msg_kernalpal                - __msg_kernal_first
+.label __MSG_KERNAL_NTSC               = __msg_kernalntsc               - __msg_kernal_first
 #endif
 
-.label __MSG_KERNAL_PANIC         = __kernal_message_panic         - __kernal_messages_start
-.label __MSG_KERNAL_PANIC_VERSION = __kernal_message_panic_version - __kernal_messages_start
+#if CONFIG_PANIC_SCREEN
+.label __MSG_KERNAL_PANIC              = __msg_kernalpanic              - __msg_kernal_first
+.label __MSG_KERNAL_PANIC_ROM_MISMATCH = __msg_kernalpanic_rom_mismatch - __msg_kernal_first
+#endif
 
 
-__kernal_messages_start:
+__msg_kernal_first:
 
-__kernal_message_searching_for:
+__msg_kernalsearching_for:
 	.byte $0D
 	.text "SEARCHING FOR"
 	.byte $80 + $20 // end of string mark + space
 
-__kernal_message_loading:
+__msg_kernalloading:
 	.byte $0D
 	.text "LOADIN"
 	.byte $80 + $47 // end of string mark + 'G'
 
-__kernal_message_verifying:
+__msg_kernalverifying:
 	.byte $0D
 	.text "VERIFYIN"
 	.byte $80 + $47 // end of string mark + 'G'
 
-__kernal_message_saving:
+__msg_kernalsaving:
 	.byte $0D
 	.text "SAVIN"
 	.byte $80 + $47 // end of string mark + 'G'
 
-__kernal_message_from_hex:
+__msg_kernalfrom_hex:
 	.text " FROM "
 	.byte $80 + $24 // end of string mark + '$'
 
-__kernal_message_to_hex:
+__msg_kernalto_hex:
 	.text " TO "
 	.byte $80 + $24 // end of string mark + '$'
 
-#if CONFIG_BANNER_PAL_NTSC
+#if CONFIG_SHOW_PAL_NTSC
 
-__kernal_message_pal:
-	.text ", PAL"
+__msg_kernalpal:
+	.text "PAL,"
 	.byte $80 + $20 // end of string mark + space
 
-__kernal_message_ntsc:
-	.text ", NTSC"
+__msg_kernalntsc:
+	.text "NTSC,"
 	.byte $80 + $20 // end of string mark + space
 
-#endif // CONFIG_BANNER_PAL_NTSC
+#endif // CONFIG_SHOW_PAL_NTSC
 
-__kernal_message_panic:
+#if CONFIG_PANIC_SCREEN
+
+__msg_kernalpanic:
 	.text "KERNAL PANI"
 	.byte $80 + $43 // end of string mark + 'C'
 
-__kernal_message_panic_version:
+__msg_kernalpanic_rom_mismatch:
 	.text " - ROM MISMATC"
 	.byte $80 + $48 // end of string mark + 'H'
+
+#endif // CONFIG_PANIC_SCREEN

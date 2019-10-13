@@ -1,0 +1,2 @@
+
+Special case - we need a constant memory location where we can put an ID and a revision string. According to Compute's Mapping the Commodore 64 (page 213) this area is unused - so a perfect place.

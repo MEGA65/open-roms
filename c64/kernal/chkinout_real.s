@@ -5,7 +5,7 @@
 // - [RG64] C64 Programmer's Reference Guide   - page 275 (CHKIN) / 276 (CKOUT)
 // - [CM64] Compute's Mapping the Commodore 64 - page 229
 //
-// CPU registers that has to be preserved (see [RG64]): .Y
+// CPU registers that has to be preserved (see [RG64]): .Y, possibly .A (XXX - see [CM64], page 213)
 //
 
 

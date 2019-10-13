@@ -1,0 +1,8 @@
+
+The address of the BASIC cold start routine (see Compute's Mapping the Commodore 64, page 211) is well known, see for example here:
+
+- https://www.lemon64.com/forum/viewtopic.php?t=70680&sid=3ff66caf7f5fdf2a3c2ff2ee31fc3fd8
+
+Fixing this routine also has a great advantage for us - since it's address lies in the uppeer ROM region, it's easier to bailout
+when someone tries to use our 'kernal.rom' with the original 'basic.rom'.
+

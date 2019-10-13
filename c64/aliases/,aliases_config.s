@@ -86,6 +86,35 @@
 
 
 
+// Check that startup banner configuration is correct
+
+{
+	.var selected = 0;
+
+#if CONFIG_BANNER_SIMPLE
+	.eval selected++
+#endif
+#if CONFIG_BANNER_FANCY
+	.eval selected++
+#endif
+#if CONFIG_BANNER_VARIANT
+	.eval selected++
+#endif
+
+	.if (selected != 1) .error "Please select exactly one CONFIG_MEMORY_MODEL_* option" 
+
+#if CONFIG_BANNER_VARIANT && !CONFIG_VARIANT_MEGA_65
+	.error "CONFIG_BANNER_VARIANT is not supported for your CONFIG_VARIANT_*" 
+#endif
+
+#if CONFIG_BANNER_VARIANT && CONFIG_VARIANT_MEGA_65 && CONFIG_SHOW_PAL_NTSC
+	.error "MEGA65 variant banner does not support showing PAL/NTSC" 
+#endif
+
+}
+
+
+
 // Handle processor configuration
 
 #if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816

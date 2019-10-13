@@ -62,7 +62,7 @@ Note: vectors at `$0300` are not supported yet - for now only the locations belo
 | `(00306)` | `$A71A`    | `QPLOP`    | NOT DONE | some implementation exists, but not connected here |
 | `(00308)` | `$A7E4`    | `GONE`     | NOT DONE | some implementation exists, but not connected here |
 | `(0030A)` | `$AE86`    | `EVAL`     | NOT DONE | some implementation exists, but not connected here |
-| `($A000)` |            | cold start | PARTIAL  |                                                    |
+| `($A000)` | `$E394`    | cold start | PARTIAL  |                                                    |
 | `($A002)` |            | warm start | PARTIAL  |                                                    |
 
 <br />
@@ -109,7 +109,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FF96`   |            | `TKSA`      | DONE     |                                                    |
 | `$FF99`   |            | `MEMTOP`    | DONE     |                                                    |
 | `$FF9C`   |            | `MEMBOT`    | DONE     |                                                    |
-| `$FF9F`   |            | `SCNKEY`    | DONE     | could be better integrated with ROM (aliases)      |
+| `$FF9F`   |            | `SCNKEY`    | PARTIAL  | future complete version has compatibility problems |
 | `$FFA2`   |            | `SETTMO`    | DONE     |                                                    |
 | `$FFA5`   |            | `ACPTR`     | DONE     |                                                    |
 | `$FFA8`   |            | `CIOUT`     | DONE     |                                                    |
@@ -138,7 +138,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFE7`   | `$F32F`    | `CLALL`     | DONE     |                                                    |
 | `$FFEA`   |            | `UDTIM`     | DONE     |                                                    |
 | `$FFED`   |            | `SCREEN`    | DONE     |                                                    |
-| `$FFF0`   | `$E50A`    | `PLOT`      | PARTIAL  |                                                    |
+| `$FFF0`   | `$E50A`    | `PLOT`      | DONE     |                                                    |
 | `$FFF3`   |            | `IOBASE`    | DONE     |                                                    |
 | `($FFFA)` |            | NMI vec     | PARTIAL  |                                                    |
 | `($FFFC)` |            | RESET vec   | PARTIAL  |                                                    |

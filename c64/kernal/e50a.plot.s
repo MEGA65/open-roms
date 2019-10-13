@@ -17,16 +17,16 @@ PLOT:
 	// - 'Duotris' game calls $E50C during startup screen initialization
 
 plot_set:
+
 	sty PNTR
 	stx TBLX
 
 	jsr screen_calculate_line_pointer
 
-	// XXX cursor blink might need to be handled too
-
 	// FALLTROUGH to save one byte on RTS
 
 plot_get:
+
 	ldy PNTR
 	ldx TBLX
 	rts

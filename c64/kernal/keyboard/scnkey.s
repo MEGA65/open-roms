@@ -20,6 +20,7 @@
 // - MODE    - flag, whether charset toggle (SHIFT+VENDOR) is allowed
 
 
+// XXX add RPTFLG support
 // XXX add Commodore 128 keyboard support
 // XXX add Commodore 65 keybopard support
 // XXX add support for using joystick to move sursor keys
@@ -58,7 +59,7 @@ scnkey_bucky_loop:
 	sta CIA1_PRA
 	lda kb_matrix_bucky_testmask, y
 	and CIA1_PRB
-	bne !+ // not pressed
+	bne !+                          // not pressed
 	lda SHFLAG
 	ora kb_matrix_bucky_shflag, y
 	sta SHFLAG
@@ -68,9 +69,14 @@ scnkey_bucky_loop:
 
 	// Set KEYTAB vector
 
-	jsr scnkey_via_keylog // XXX for some CPUs we have indirect jsr
+	jsr via_keylog // XXX for some CPUs we have indirect jsr
 
-	// XXX check if there is space in keyboard buffer
+	// Check if we have free space in the keyboard buffer
+
+	lda NDX
+	cmp XMAX
+	bcs scnkey_no_keys             // no space in keyboard buffer - do not waste time
+
 	// XXX check for joystick activity
 
 	// Scan the keyboard matrix
@@ -113,7 +119,7 @@ scnkey_matrix_loop_next:
 
 scnkey_no_keys:
 
-	// XXX
+	// Mark no key press
 
 	lda #$40 // XXX adapt value for C128 and C65 keyboards
 	sta LSTX
@@ -122,18 +128,49 @@ scnkey_no_keys:
 
 scnkey_got_key: // .X should now contain the key offset in matrix pointed by KEYTAB
 
+	cpx LSTX
+	beq scnkey_handle_repeat       // branch if the same key as previously
+	stx LSTX
+
+	// Reset key repeat counters - see [CM64] page 58
+
+	lda #$04
+	sta KOUNT
+	lda #$10
+	sta DELAY
+
+	// FALLTROUGH
+
+scnkey_output_key:
+
+	// Output PETSCII code to the keyboard buffer
+
+	txa // XXX switch registers!!!
+	tay
+
+	lda (KEYTAB), y
+	beq scnkey_no_keys             // branch if we have no PETSCII code for this key
+	ldy NDX
+	sta KEYD, y
+	inc NDX
+
+	rts
+
+scnkey_handle_repeat:
+
 	// Handle repeat timer
 
-	.break
 	lda KOUNT
 	beq !+
 	dec KOUNT
 !:
 
 	// XXX
+
 	rts
 
-scnkey_via_keylog:
+via_keylog:
 	jmp (KEYLOG)
+
 
 #endif // no CONFIG_SCNKEY_TWW_CTR

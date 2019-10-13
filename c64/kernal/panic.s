@@ -60,18 +60,15 @@ panic:
 kernal_panic_infinite_loop:
 	ldx #$00
 	stx VIC_EXTCOL
-
-	ldx #$80
 !:
-	dex
-	bne !-
+	inx
+	bpl !-
 
 	ldx #$06
 	stx VIC_EXTCOL
-!:
-	dex
-	bne !-
 
-	beq kernal_panic_infinite_loop // branch always
+	nop
+
+	bne kernal_panic_infinite_loop // branch always
 
 #endif // CONFIG_PANIC_SCREEN

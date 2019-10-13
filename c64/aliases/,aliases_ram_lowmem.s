@@ -186,7 +186,7 @@
 	.label GDCOL     = $287  //            color of character under cursor
 	.label HIBASE    = $288  //            high byte of start of screen
 	.label XMAX      = $289  //            max keyboard buffer size
-	.label RPTFLG    = $28A  //            -- NOT IMPLEMENTED --
+	.label RPTFLG    = $28A  //            whether to repeat keys (highest bit set = repeat)
 	.label KOUNT     = $28B  //            key repeat counter
 	.label DELAY     = $28C  //            -- NOT IMPLEMENTED --
 	.label SHFLAG    = $28D  //            bucky keys (SHIFT/CTRL/C=) flags

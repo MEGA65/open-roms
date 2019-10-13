@@ -18,9 +18,9 @@
 // - LSTX    - matrix coordinate of last pressed key
 // - LSTSHF  - previous status of SHFLAG
 // - MODE    - flag, whether charset toggle (SHIFT+VENDOR) is allowed
+// - RPTFLG  - whether key repeat is allowed
 
 
-// XXX add RPTFLG support
 // XXX add Commodore 128 keyboard support
 // XXX add Commodore 65 keybopard support
 // XXX add support for using joystick to move sursor keys
@@ -110,9 +110,12 @@ scnkey_matrix_loop_next:
 	dey
 	bpl scnkey_matrix_loop
 
+	txa // XXX switch registers upwards!!!
+	tay
+
 	// Scanning complete
 
-	cpx #$FF
+	cpy #$FF
 	bne scnkey_got_key
 
 	// FALLTROUGH
@@ -126,16 +129,14 @@ scnkey_no_keys:
 
 	rts
 
-scnkey_got_key: // .X should now contain the key offset in matrix pointed by KEYTAB
+scnkey_got_key: // .Y should now contain the key offset in matrix pointed by KEYTAB
 
-	cpx LSTX
+	cpy LSTX
 	beq scnkey_handle_repeat       // branch if the same key as previously
-	stx LSTX
+	sty LSTX
 
 	// Reset key repeat counters - see [CM64] page 58
 
-	lda #$04
-	sta KOUNT
 	lda #$10
 	sta DELAY
 
@@ -143,10 +144,12 @@ scnkey_got_key: // .X should now contain the key offset in matrix pointed by KEY
 
 scnkey_output_key:
 
-	// Output PETSCII code to the keyboard buffer
+	// Reinitialize secondary couter
 
-	txa // XXX switch registers!!!
-	tay
+	lda #$06
+	sta KOUNT
+
+	// Output PETSCII code to the keyboard buffer
 
 	lda (KEYTAB), y
 	beq scnkey_no_keys             // branch if we have no PETSCII code for this key
@@ -154,18 +157,32 @@ scnkey_output_key:
 	sta KEYD, y
 	inc NDX
 
+	// FALLTROUGH
+
+scnkey_done:
+
 	rts
 
 scnkey_handle_repeat:
 
-	// Handle repeat timer
+	// Check whether we should repeat keys
+
+	lda RPTFLG
+	bpl scnkey_done                // branch if we should do no repeat
+
+	// First countdown (for the first repeat)
+
+	lda DELAY
+	beq !+
+	dec DELAY
+
+	rts
+!:
+	// Second countdown (for both first and subsequential repeats)
 
 	lda KOUNT
-	beq !+
+	beq scnkey_output_key          // if second counter is also 0, we can repeat the key
 	dec KOUNT
-!:
-
-	// XXX
 
 	rts
 

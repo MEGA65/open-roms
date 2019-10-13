@@ -5,6 +5,12 @@
 // Please read CONFIG.md before modifying this file!
 //
 
+// Idea:
+// - sane defaults for the Mega 65 FPGA computer
+// - enable compatibility-risky features too
+// - unless VICE gains Commodore 65 (or at least Flash8 cartridge) emulation support,
+//   do not enable CPU-specific optimizations; ROMs would be hard to test
+
 
 // Hardware platform and variant
 

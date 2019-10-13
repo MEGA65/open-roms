@@ -13,6 +13,9 @@
 // and converting the values 
 
 
+// XXX to be extra compatible (someone could change the KEYLOG), we should make sure
+//     we are using the same matrix format as the original ROM does
+
 
 kb_matrix:
 

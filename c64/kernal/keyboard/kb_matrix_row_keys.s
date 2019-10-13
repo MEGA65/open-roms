@@ -12,7 +12,8 @@
 
 kb_matrix_row_keys:
 
-	// values for CIA1_PRA to connect only the given row
+	// - values for CIA1_PRA to connect only the given row
+	// - also used to scan a single row
 
 	.byte %01111111
 	.byte %10111111

@@ -5,6 +5,10 @@
 // Please read CONFIG.md before modifying this file!
 //
 
+// Idea:
+// - sane defaults for the Ultimate 64 FPGA computer
+// - do not enable features which are a significant compatibility risk
+
 
 // Hardware platform and variant
 

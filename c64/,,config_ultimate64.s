@@ -49,7 +49,7 @@
 
 
 // #define CONFIG_SCNKEY_TWW_CTR // XXX document this
-#define CONFIG_KEY_REPEAT // XXX document this
+// #define CONFIG_KEY_REPEAT // XXX document this
 #define CONFIG_JOY1_CURSOR // XXX document this
 #define CONFIG_JOY2_CURSOR // XXX document this
 

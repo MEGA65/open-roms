@@ -24,7 +24,6 @@
 // XXX add Commodore 128 keyboard support
 // XXX add Commodore 65 keybopard support
 // XXX fix support for joystick port 2 to move cursor keys
-// XXX add support for keys which are repeated always
 
 
 #if !CONFIG_SCNKEY_TWW_CTR
@@ -78,17 +77,18 @@ scnkey_bucky_loop:
 
 	// Check for control port 2 activity
 
-	// ldx #$00
-	// stx CIA1_DDRA                  // set port to input to read joystick
+	ldx #$00
+	stx CIA1_DDRA                  // set port to input to read joystick
 
-	// lda CIA1_PRA                   // read the joystick 2 status
+	lda CIA1_PRA                   // read the joystick 2 status
 
-	// dex
-	// stx CIA1_DDRA                  // set port back to output
+	ldx #$FF
+	stx CIA1_DDRA                  // set port back to output
 
-	// and #%00001111                 // filter out anything but joystick movement
-	// cmp #%00001111
-	// bne scnkey_joystick_filtered
+	and #%00001111                 // filter out anything but joystick movement
+	cmp #%00001111
+
+	bne scnkey_joystick_filtered
 
 #endif
 
@@ -207,7 +207,7 @@ scnkey_joystick_filtered:
 scnkey_got_key: // .Y should now contain the key offset in matrix pointed by KEYTAB
 
 	cpy LSTX
-	beq scnkey_handle_repeat       // branch if the same key as previously
+	beq scnkey_try_repeat          // branch if the same key as previously
 	sty LSTX
 
 	// Reset key repeat counters - see [CM64] page 58
@@ -251,13 +251,23 @@ scnkey_done:
 
 	rts
 
-scnkey_handle_repeat:
+scnkey_try_repeat:
 
-	// Check whether we should repeat keys
-	// XXX always repeat SPACE, cvursors, ins/del
+	// Check whether we should repeat keys - first the flag, afterwards hardcoded list
 
 	lda RPTFLG
-	bpl scnkey_done                // branch if we should do no repeat
+	bmi scnkey_handle_repeat       // branch if we should repeat always
+
+	tya
+	ldx #(__kb_matrix_alwaysrepeat_end - kb_matrix_alwaysrepeat - 1)
+!:
+	cmp kb_matrix_alwaysrepeat, x
+	beq scnkey_handle_repeat
+	dex
+	bpl !-
+	bmi scnkey_done
+
+scnkey_handle_repeat:
 
 	// Countdown before first repeat
 

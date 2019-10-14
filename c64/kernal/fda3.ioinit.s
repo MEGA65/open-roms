@@ -106,11 +106,14 @@ IOINIT:
 
 	ldx #$FF
 	stx CIA1_DDRA  // output
-	ldy #$00
-	sty CIA1_DDRB  // input
+	inx            // $00
+	stx CIA1_DDRB  // input
+
+	// Value checked on original ROM
+	stx CIA2_DDRA
 
 	// Set DDR on CIA2 for IEC bus, VIC-II banking
-	lda #$3B
+	lda #$3F
 	sta CIA2_DDRA
 
 	// Set IEC bus to its initial idle state

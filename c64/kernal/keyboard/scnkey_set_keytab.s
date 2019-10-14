@@ -9,7 +9,7 @@
 scnkey_set_keytab:
 
 
-#if CONFIG_SCNKEY_TWW_CTR // routine not compatible with legacy SCNKEY
+#if CONFIG_LEGACY_SCNKEY // routine not compatible with legacy SCNKEY
 
 	rts
 
@@ -54,7 +54,7 @@ scnkey_valid_offset:
 	// FALLTROUGH
 
 
-#endif // no CONFIG_SCNKEY_TWW_CTR
+#endif // no CONFIG_LEGACY_SCNKEY
 
 
 scnkey_toggle_if_needed: // entry for SCNKEY (TWW/CTR version)

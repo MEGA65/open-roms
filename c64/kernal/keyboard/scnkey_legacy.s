@@ -9,7 +9,7 @@
 //
 
 
-#if CONFIG_SCNKEY_TWW_CTR
+#if CONFIG_LEGACY_SCNKEY
 
 
 // Scan the keyboard..
@@ -116,7 +116,7 @@ accept_key:
 	tax
 	pla
 	and #$3f
-	ora kb_matrix_lookup_tww_ctr,x
+	ora kb_matrix_lookup,x
 	tax
 	lda kb_matrix,x
 	// But don't insert $00 characters
@@ -521,4 +521,4 @@ KeyRepeatWait:
 	jmp ConsiderNextKey
 
 
-#endif // CONFIG_SCNKEY_TWW_CTR
+#endif // CONFIG_LEGACY_SCNKEY

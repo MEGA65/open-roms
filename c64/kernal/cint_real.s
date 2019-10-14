@@ -75,7 +75,7 @@ cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 
 	// Enable cursor repeat - XXX make it configurable
 
-#if CONFIG_KEY_REPEAT
+#if CONFIG_KEY_REPEAT_DEFAULT && !CONFIG_KEY_REPEAT_ALWAYS
 
 	lda #$80
 	sta RPTFLG
@@ -84,7 +84,7 @@ cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 
 	// Set keyboard decode vector  (Compute's Mapping the 64 p215)
 
-#if CONFIG_SCNKEY_TWW_CTR
+#if CONFIG_LEGACY_SCNKEY
 
 	// Set initial variables for our improved keyboard scan routine
 	lda #$FF

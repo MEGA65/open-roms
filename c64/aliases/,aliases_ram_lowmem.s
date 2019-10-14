@@ -104,7 +104,7 @@
 	.label CNTDN     = $A5  //          -- NOT IMPLEMENTED --
 	.label BUFPNT    = $A6  //          -- NOT IMPLEMENTED --
 	.label INBIT     = $A7  //          -- NOT IMPLEMENTED --
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY
 	.label BITCI     = $A8  //          -- NOT IMPLEMENTED --
 	.label RINONE    = $A9  //          -- NOT IMPLEMENTED --
 	.label RIDDATA   = $AA  //          -- NOT IMPLEMENTED --
@@ -114,11 +114,11 @@
 	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also by screen editor, for temporary color storage when scrolling
 	.label CMP0      = $B0  // $B0-$B1  temporary tape storage, [!] here used for BRK instruction address
 	.label TAPE1     = $B2  // $B2-$B3  tape buffer pointer
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY
 	.label BITTS     = $B4  //          -- NOT IMPLEMENTED --
 #endif
 	.label NXTBIT    = $B5  //          -- NOT IMPLEMENTED --
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY
 	.label RODATA    = $B6  //          -- NOT IMPLEMENTED --
 #endif
 
@@ -172,7 +172,7 @@
 	.label BUF       = $200  // $200-$250, BASIC line editor input buffer (81 bytes)
 
 	// $250-$258 is the 81st - 88th characters in BASIC input, a carry over from VIC-20
-	// and not used on C64 - they are used if CONFIG_SCNKEY_TWW_CTR is enabled.
+	// and not used on C64 - they are used if CONFIG_LEGACY_SCNKEY is enabled.
 
 	// [!] XXX document $251-$258 usage
 	.label LAT       = $259  // $259-$262, logical file numbers (table, 10 bytes)
@@ -194,7 +194,7 @@
 	.label KEYLOG    = $28F  // $28F-$290  routine to setup keyboard decoding
 	.label MODE      = $291  //            flag, is case switch allowed
 	.label AUTODN    = $292  //            -- NOT IMPLEMENTED -- screen scroll disable
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY
 	.label M51CRT    = $293  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51CDR    = $294  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51AJB    = $295  // $295-$296  -- NOT IMPLEMENTED -- mock 6551

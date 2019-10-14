@@ -7,7 +7,7 @@
 //
 
 
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY
 
 
 kb_matrix_row_keys:
@@ -25,4 +25,4 @@ kb_matrix_row_keys:
 	.byte %01111111
 
 
-#endif // no CONFIG_SCNKEY_TWW_CTR
+#endif // no CONFIG_LEGACY_SCNKEY

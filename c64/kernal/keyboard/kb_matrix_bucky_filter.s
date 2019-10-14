@@ -7,7 +7,7 @@
 //
 
 
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY
 
 
 kb_matrix_bucky_filter:
@@ -24,4 +24,4 @@ kb_matrix_bucky_filter:
 	.byte %00100100 // VENDOR + CONTROL
 
 
-#endif // no CONFIG_SCNKEY_TWW_CTR
+#endif // no CONFIG_LEGACY_SCNKEY

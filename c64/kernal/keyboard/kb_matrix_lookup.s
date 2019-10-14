@@ -7,7 +7,7 @@
 //
 
 
-#if !CONFIG_SCNKEY_TWW_CTR 
+#if !CONFIG_LEGACY_SCNKEY 
 
 kb_matrix_lookup:
 

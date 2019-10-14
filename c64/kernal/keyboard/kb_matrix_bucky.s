@@ -7,7 +7,7 @@
 //
 
 
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY
 
 
 kb_matrix_bucky_confmask: // values to be written to CIA1_PRA
@@ -33,4 +33,4 @@ kb_matrix_bucky_shflag: // mask to be ORed to SHFLAG to mark key status
 	.byte KEY_FLAG_CTRL
 
 
-#endif // no CONFIG_SCNKEY_TWW_CTR
+#endif // no CONFIG_LEGACY_SCNKEY

@@ -25,7 +25,7 @@
 // XXX add Commodore 65 keyboard support
 
 
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY
 
 // Routine takes some ideas from TWW/CTR proposal, see here:
 // - http://codebase64.org/doku.php?id=base:scanning_the_keyboard_the_correct_and_non_kernal_way
@@ -44,7 +44,7 @@ SCNKEY:
 
 	// Check for any activity
 
-#if !CONFIG_JOY2_CURSOR
+#if !CONFIG_JOY2_CURSOR && CONFIG_KEY_FAST_SCAN
 
 	ldx #$00
 	stx CIA1_PRA                   // connect all the rows
@@ -93,13 +93,17 @@ scnkey_bucky_loop:
 
 	bne scnkey_joystick_filtered
 
+#if CONFIG_KEY_FAST_SCAN
+
 	inx                            // puts $00
 	stx CIA1_PRA                   // connect all the rows
 	dex                            // puts $FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
 
-#endif
+#endif // CONFIG_KEY_FAST_SCAN
+
+#endif // CONFIG_JOY2_CURSOR
 
 	// Check for control port 1 activity (can interfere with keyboard)
 
@@ -262,6 +266,8 @@ scnkey_done:
 
 scnkey_try_repeat:
 
+#if !CONFIG_KEY_REPEAT_ALWAYS
+
 	// Check whether we should repeat keys - first the flag, afterwards hardcoded list
 
 	lda RPTFLG
@@ -277,6 +283,8 @@ scnkey_try_repeat:
 	bmi scnkey_done
 
 scnkey_handle_repeat:
+
+#endif // no CONFIG_KEY_REPEAT_ALWAYS
 
 	// Countdown before first repeat
 
@@ -309,4 +317,4 @@ via_keylog:
 	jmp (KEYLOG)
 
 
-#endif // no CONFIG_SCNKEY_TWW_CTR
+#endif // no CONFIG_LEGACY_SCNKEY

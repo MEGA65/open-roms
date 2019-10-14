@@ -7,7 +7,7 @@
 //
 
 
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY && !CONFIG_KEY_REPEAT_ALWAYS
 
 
 kb_matrix_alwaysrepeat:
@@ -20,4 +20,4 @@ kb_matrix_alwaysrepeat:
 __kb_matrix_alwaysrepeat_end:
 
 
-#endif // no CONFIG_SCNKEY_TWW_CTR
+#endif // no CONFIG_LEGACY_SCNKEY and no CONFIG_KEY_REPEAT_ALWAYS

@@ -12,9 +12,9 @@
 // This lookup table is used by TWW/CTR keyboard routine only!
 
 
-#if CONFIG_SCNKEY_TWW_CTR
+#if CONFIG_LEGACY_SCNKEY
 
-kb_matrix_lookup_tww_ctr:
+kb_matrix_lookup:
 
 	.byte $00 		// Normal
 	.byte $40		// Shifted
@@ -25,4 +25,4 @@ kb_matrix_lookup_tww_ctr:
 	.byte $80		// Vendor + CTRL
 	.byte $80		// Vendor + CTRL + SHIFT
 
-#endif // CONFIG_SCNKEY_TWW_CTR
+#endif // CONFIG_LEGACY_SCNKEY

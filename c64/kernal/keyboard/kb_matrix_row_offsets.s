@@ -4,7 +4,7 @@
 //
 
 
-#if !CONFIG_SCNKEY_TWW_CTR
+#if !CONFIG_LEGACY_SCNKEY
 
 
 kb_matrix_row_offsets:
@@ -20,4 +20,4 @@ kb_matrix_row_offsets:
 	.byte 6*8
 	.byte 7*8
 
-#endif // no CONFIG_SCNKEY_TWW_CTR
+#endif // no CONFIG_LEGACY_SCNKEY

@@ -75,8 +75,12 @@ cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 
 	// Enable cursor repeat - XXX make it configurable
 
+#if CONFIG_KEY_REPEAT
+
 	lda #$80
 	sta RPTFLG
+
+#endif
 
 	// Set keyboard decode vector  (Compute's Mapping the 64 p215)
 

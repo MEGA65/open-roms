@@ -45,6 +45,15 @@
 // #define CONFIG_SID_D5XX
 
 
+// Keyboard settings
+
+
+// #define CONFIG_SCNKEY_TWW_CTR // XXX document this
+// #define CONFIG_KEY_REPEAT // XXX document this
+#define CONFIG_JOY1_CURSOR // XXX document this
+#define CONFIG_JOY2_CURSOR // XXX document this
+
+
 // Eye candy
 
 // #define CONFIG_BANNER_SIMPLE
@@ -58,9 +67,6 @@
 #define CONFIG_PANIC_SCREEN
 #define CONFIG_DOS_WEDGE
 #define CONFIG_BCD_SAFE_INTERRUPTS
-// #define CONFIG_SCNKEY_TWW_CTR // XXX document this
-#define CONFIG_JOY1_CURSOR // XXX document this
-#define CONFIG_JOY2_CURSOR // XXX document this
 
 
 // Debug options

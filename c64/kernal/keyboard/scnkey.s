@@ -23,7 +23,7 @@
 
 // XXX add Commodore 128 keyboard support
 // XXX add Commodore 65 keybopard support
-// XXX add support for using joysticks to move cursor keys
+// XXX fix support for joystick port 2 to move cursor keys
 // XXX add support for keys which are repeated always
 
 
@@ -72,14 +72,9 @@ scnkey_bucky_loop:
 
 	jsr via_keylog // XXX for some CPUs we have indirect jsr
 
-	// Check if KEYTAB is not 0 (happens if more than one bucky key is pressed)
-	// High byte equal to 0 = table considered invalid
-	lda KEYTAB+1
-	beq scnkey_no_keys
-
 #if CONFIG_JOY2_CURSOR
 
-	// XXX why this does not work???
+	// XXX why this does not work
 
 	// Check for control port 2 activity
 
@@ -92,7 +87,8 @@ scnkey_bucky_loop:
 	// stx CIA1_DDRA                  // set port back to output
 
 	// and #%00001111                 // filter out anything but joystick movement
-	// bne scnkey_joystick_a_filtered
+	// cmp #%00001111
+	// bne scnkey_joystick_filtered
 
 #endif
 
@@ -101,10 +97,16 @@ scnkey_bucky_loop:
 	jsr keyboard_disconnect        // disconnect all the rows, .X will be $FF
 	cpx CIA1_PRB                   // only control port activity will be reported
 #if CONFIG_JOY1_CURSOR
-	bne scnkey_joystick_x          // use joystick for cursor keys
+	bne scnkey_joystick_1          // use joystick for cursor keys
 #else
 	bne scnkey_no_keys             // if activity detected do not scan the keyboard
 #endif
+
+	// Check if KEYTAB is not 0 (happens if more than one bucky key is pressed)
+	// High byte equal to 0 = table considered invalid
+	
+	lda KEYTAB+1
+	beq scnkey_no_keys
 
 	// Scan the keyboard matrix
 
@@ -159,22 +161,46 @@ scnkey_no_keys:
 
 	rts
 
-#if CONFIG_JOY1_CURSOR || CONFIG_JOY2_CURSOR
+#if CONFIG_JOY1_CURSOR
 
-scnkey_joystick_x:
+scnkey_joystick_1:
 
-	// Handle joystick activity (in .X) as cursor keys
+	// Prepare joystick 1 status
 
-	txa
+	lda CIA1_PRB
 	and #%00001111                 // filter out anything but movement
 
 	// FALLTROUGH
 
-scnkey_joystick_a_filtered:
+#endif
 
-	// XXX finish the implementation
+#if CONFIG_JOY1_CURSOR || CONFIG_JOY2_CURSOR
+
+scnkey_joystick_filtered:
+
+	// Set appropriate keyboard matrix and key code for joystick event
+
+	ldy #$03
+!:
+	cmp kb_matrix_joy_status, y
+	beq !+ 
+	dey
+	bpl !-
+
+	// Not found
 
 	rts
+!:
+	// Found
+
+	lda kb_matrix_joy_keytab_lo, y
+	sta KEYTAB+0
+	lda kb_matrix_joy_keytab_hi, y
+	sta KEYTAB+1
+	lda kb_matrix_joy_keytab_idx, y
+	tay
+	
+	// FALLTROUGH
 
 #endif
 
@@ -228,6 +254,7 @@ scnkey_done:
 scnkey_handle_repeat:
 
 	// Check whether we should repeat keys
+	// XXX always repeat SPACE, cvursors, ins/del
 
 	lda RPTFLG
 	bpl scnkey_done                // branch if we should do no repeat

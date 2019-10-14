@@ -22,8 +22,7 @@
 
 
 // XXX add Commodore 128 keyboard support
-// XXX add Commodore 65 keybopard support
-// XXX fix support for joystick port 2 to move cursor keys
+// XXX add Commodore 65 keyboard support
 
 
 #if !CONFIG_SCNKEY_TWW_CTR
@@ -45,11 +44,15 @@ SCNKEY:
 
 	// Check for any activity
 
-	lda #$00
-	sta CIA1_PRA                   // connect all the rows
-	ldx #$FF
+#if !CONFIG_JOY2_CURSOR
+
+	ldx #$00
+	stx CIA1_PRA                   // connect all the rows
+	dex                            // puts $FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
+
+#endif
 
 	// Retrieve SHIFT / VENDOR / CTRL status
 	// Use .X to detect 2 or more keys pressed (should be $FF now)
@@ -73,7 +76,7 @@ scnkey_bucky_loop:
 
 #if CONFIG_JOY2_CURSOR
 
-	// XXX why this does not work
+	// XXX why this does not work ???
 
 	// Check for control port 2 activity
 
@@ -82,13 +85,19 @@ scnkey_bucky_loop:
 
 	lda CIA1_PRA                   // read the joystick 2 status
 
-	ldx #$FF
+	dex                            // puts $FF
 	stx CIA1_DDRA                  // set port back to output
 
 	and #%00001111                 // filter out anything but joystick movement
 	cmp #%00001111
 
 	bne scnkey_joystick_filtered
+
+	inx                            // puts $00
+	stx CIA1_PRA                   // connect all the rows
+	dex                            // puts $FF
+	cpx CIA1_PRB
+	beq scnkey_no_keys
 
 #endif
 

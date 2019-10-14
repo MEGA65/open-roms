@@ -5,7 +5,16 @@
 // - [CM64] Compute's Mapping the Commodore 64 - pages 220, 221
 //
 
+
 scnkey_set_keytab:
+
+
+#if CONFIG_SCNKEY_TWW_CTR // routine not compatible with legacy SCNKEY
+
+	rts
+
+#else
+
 
 	// Set initial KEYTAB value
 
@@ -22,6 +31,16 @@ scnkey_set_keytab:
 
 	// Retrieve table offset
 	lda kb_matrix_lookup, x
+	cmp #$FF
+	bne scnkey_valid_offset
+
+	// $FF means we shouldn't decode anything, mark this by setting high byte
+	// of KEYTAB to 0 (I don't think anyone would put keyboard decoding table
+    // at zeropage)
+	lda #$00
+	beq !+ // branch always
+
+scnkey_valid_offset:
 
 	// Add offset to the vector
 	clc
@@ -29,7 +48,14 @@ scnkey_set_keytab:
 	sta KEYTAB+0
 	lda #$00
 	adc KEYTAB+1
+!:
 	sta KEYTAB+1
+
+	// FALLTROUGH
+
+
+#endif // no CONFIG_SCNKEY_TWW_CTR
+
 
 scnkey_toggle_if_needed: // entry for SCNKEY (TWW/CTR version)
 

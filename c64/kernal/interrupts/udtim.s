@@ -25,18 +25,17 @@ udtim_update_stkey: // entry to be used when interrupts are disabled
 
 	// Another action we have to perform is to copy the last row of keyboard to RAM,
 	// so that various routines can detect the STOP key press
-	// XXX scnkey contains similar sequence - deduplicate this!
-	lda #$FF
-	sta CIA1_DDRA // output
-	lda #$00
-	sta CIA1_DDRB // input
 
 	lda #$7F
 	sta CIA1_PRA  // select the last row (bit to 0)
 
 	lda CIA1_PRB  // read the row
 	sta STKEY
-	rts
+
+	// Finish by disconnecting the keyboard, this will prevent
+	// interference when scanning joystick in port 1
+
+	jmp keyboard_disconnect
 
 udtim_clock_rollover:
 

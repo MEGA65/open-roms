@@ -96,53 +96,53 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 
 <br />
 
-| Address   | Unofficial | Name        | Status   |  Remarks                                           |
-| :-------: | :--------: | :---------- | :------: | :------------------------------------------------: |
-| `($028F)` |            | `KEYLOG`    | DONE     |                                                    |
-| `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                    |
-| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                      |
-| `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                    |
-| `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                    |
-| `$FF8D`   | `$FD1A`    | `VECTOR`    | DONE     |                                                    |
-| `$FF90`   |            | `SETMSG`    | DONE     |                                                    |
-| `$FF93`   |            | `SECOND`    | DONE     |                                                    |
-| `$FF96`   |            | `TKSA`      | DONE     |                                                    |
-| `$FF99`   |            | `MEMTOP`    | DONE     |                                                    |
-| `$FF9C`   |            | `MEMBOT`    | DONE     |                                                    |
-| `$FF9F`   |            | `SCNKEY`    | PARTIAL  | future complete version has compatibility problems |
-| `$FFA2`   |            | `SETTMO`    | DONE     |                                                    |
-| `$FFA5`   |            | `ACPTR`     | DONE     |                                                    |
-| `$FFA8`   |            | `CIOUT`     | DONE     |                                                    |
-| `$FFAB`   |            | `UNTLK`     | DONE     |                                                    |
-| `$FFAE`   |            | `UNLSN`     | DONE     |                                                    |
-| `$FFB1`   |            | `LISTEN`    | DONE     |                                                    |
-| `$FFB4`   |            | `TALK`      | DONE     |                                                    |
-| `$FFB7`   |            | `READST`    | DONE     |                                                    |
-| `$FFBA`   |            | `SETFLS`    | DONE     |                                                    |
-| `$FFBD`   |            | `SETNAM`    | DONE     |                                                    |
-| `$FFC0`   | `$F34A`    | `OPEN`      | DONE     |                                                    |
-| `$FFC3`   | `$F291`    | `CLOSE`     | DONE     |                                                    |
-| `$FFC6`   | `$F20E`    | `CHKIN`     | DONE     |                                                    |
-| `$FFC9`   | `$F250`    | `CKOUT`     | PARTIAL  |                                                    |
-| `$FFCC`   | `$F333`    | `CLRCHN`    | DONE     |                                                    |
-| `$FFCF`   | `$F157`    | `CHRIN`     | PARTIAL  |                                                    |
-| `$FFD2`   | `$F1CA`    | `CHROUT`    | PARTIAL  |                                                    |
-| `$FFD5`   | `$F49E`    | `LOAD`      | PARTIAL  | not yet clear what's this entry doing              |
-| `($0330)` | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support, no STOP key, check $F49E addr   |
-| `$FFD8`   | `$F5DD`    | `SAVE`      | NOT DONE |                                                    |
-| `($0332)` | `$F5ED`    | `SAVE`      | NOT DONE |                                                    |
-| `$FFDB`   |            | `SETTIM`    | DONE     |                                                    |
-| `$FFDE`   |            | `RDTIM`     | DONE     |                                                    |
-| `$FFE1`   | `$F6ED`    | `STOP`      | DONE     |                                                    |
-| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | only some devices supported                        |
-| `$FFE7`   | `$F32F`    | `CLALL`     | DONE     |                                                    |
-| `$FFEA`   |            | `UDTIM`     | DONE     |                                                    |
-| `$FFED`   |            | `SCREEN`    | DONE     |                                                    |
-| `$FFF0`   | `$E50A`    | `PLOT`      | DONE     |                                                    |
-| `$FFF3`   |            | `IOBASE`    | DONE     |                                                    |
-| `($FFFA)` |            | NMI vec     | PARTIAL  |                                                    |
-| `($FFFC)` |            | RESET vec   | PARTIAL  |                                                    |
-| `($FFFE)` |            | IRQ/BRK vec | PARTIAL  |                                                    |
+| Address   | Unofficial | Name        | Status   |  Remarks                                             |
+| :-------: | :--------: | :---------- | :------: | :--------------------------------------------------: |
+| `($028F)` |            | `KEYLOG`    | DONE     | works differently on purpose, to improve kb scanning |
+| `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                      |
+| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                        |
+| `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                      |
+| `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                      |
+| `$FF8D`   | `$FD1A`    | `VECTOR`    | DONE     |                                                      |
+| `$FF90`   |            | `SETMSG`    | DONE     |                                                      |
+| `$FF93`   |            | `SECOND`    | DONE     |                                                      |
+| `$FF96`   |            | `TKSA`      | DONE     |                                                      |
+| `$FF99`   |            | `MEMTOP`    | DONE     |                                                      |
+| `$FF9C`   |            | `MEMBOT`    | DONE     |                                                      |
+| `$FF9F`   |            | `SCNKEY`    | PARTIAL  | future complete version has compatibility problems   |
+| `$FFA2`   |            | `SETTMO`    | DONE     |                                                      |
+| `$FFA5`   |            | `ACPTR`     | DONE     |                                                      |
+| `$FFA8`   |            | `CIOUT`     | DONE     |                                                      |
+| `$FFAB`   |            | `UNTLK`     | DONE     |                                                      |
+| `$FFAE`   |            | `UNLSN`     | DONE     |                                                      |
+| `$FFB1`   |            | `LISTEN`    | DONE     |                                                      |
+| `$FFB4`   |            | `TALK`      | DONE     |                                                      |
+| `$FFB7`   |            | `READST`    | DONE     |                                                      |
+| `$FFBA`   |            | `SETFLS`    | DONE     |                                                      |
+| `$FFBD`   |            | `SETNAM`    | DONE     |                                                      |
+| `$FFC0`   | `$F34A`    | `OPEN`      | DONE     |                                                      |
+| `$FFC3`   | `$F291`    | `CLOSE`     | DONE     |                                                      |
+| `$FFC6`   | `$F20E`    | `CHKIN`     | DONE     |                                                      |
+| `$FFC9`   | `$F250`    | `CKOUT`     | PARTIAL  |                                                      |
+| `$FFCC`   | `$F333`    | `CLRCHN`    | DONE     |                                                      |
+| `$FFCF`   | `$F157`    | `CHRIN`     | PARTIAL  |                                                      |
+| `$FFD2`   | `$F1CA`    | `CHROUT`    | PARTIAL  |                                                      |
+| `$FFD5`   | `$F49E`    | `LOAD`      | PARTIAL  | not yet clear what's this entry doing                |
+| `($0330)` | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support, no STOP key, check $F49E addr     |
+| `$FFD8`   | `$F5DD`    | `SAVE`      | NOT DONE |                                                      |
+| `($0332)` | `$F5ED`    | `SAVE`      | NOT DONE |                                                      |
+| `$FFDB`   |            | `SETTIM`    | DONE     |                                                      |
+| `$FFDE`   |            | `RDTIM`     | DONE     |                                                      |
+| `$FFE1`   | `$F6ED`    | `STOP`      | DONE     |                                                      |
+| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | only some devices supported                          |
+| `$FFE7`   | `$F32F`    | `CLALL`     | DONE     |                                                      |
+| `$FFEA`   |            | `UDTIM`     | DONE     |                                                      |
+| `$FFED`   |            | `SCREEN`    | DONE     |                                                      |
+| `$FFF0`   | `$E50A`    | `PLOT`      | DONE     |                                                      |
+| `$FFF3`   |            | `IOBASE`    | DONE     |                                                      |
+| `($FFFA)` |            | NMI vec     | PARTIAL  |                                                      |
+| `($FFFC)` |            | RESET vec   | PARTIAL  |                                                      |
+| `($FFFE)` |            | IRQ/BRK vec | PARTIAL  |                                                      |
 
 <br />
 

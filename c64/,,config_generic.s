@@ -58,7 +58,9 @@
 #define CONFIG_PANIC_SCREEN
 #define CONFIG_DOS_WEDGE
 #define CONFIG_BCD_SAFE_INTERRUPTS
-#define CONFIG_SCNKEY_TWW_CTR // for now has to be enabled
+// #define CONFIG_SCNKEY_TWW_CTR // XXX document this
+#define CONFIG_JOY1_CURSOR // XXX document this
+#define CONFIG_JOY2_CURSOR // XXX document this
 
 
 // Debug options

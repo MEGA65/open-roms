@@ -116,7 +116,7 @@ accept_key:
 	tax
 	pla
 	and #$3f
-	ora kb_matrix_lookup,x
+	ora kb_matrix_lookup_tww_ctr,x
 	tax
 	lda kb_matrix,x
 	// But don't insert $00 characters

@@ -23,8 +23,9 @@
 
 // XXX add Commodore 128 keyboard support
 // XXX add Commodore 65 keybopard support
-// XXX add support for using joystick to move sursor keys
-// XXX explicitly prevent joystick port 1 interference
+// XXX add support for using joysticks to move cursor keys
+// XXX add support for keys which are repeated always
+
 
 #if !CONFIG_SCNKEY_TWW_CTR
 
@@ -46,7 +47,7 @@ SCNKEY:
 	// Check for any activity
 
 	lda #$00
-	sta CIA1_PRA  // connect all the rows
+	sta CIA1_PRA                   // connect all the rows
 	ldx #$FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
@@ -71,18 +72,44 @@ scnkey_bucky_loop:
 
 	jsr via_keylog // XXX for some CPUs we have indirect jsr
 
-	// Check if we have free space in the keyboard buffer
+	// Check if KEYTAB is not 0 (happens if more than one bucky key is pressed)
+	// High byte equal to 0 = table considered invalid
+	lda KEYTAB+1
+	beq scnkey_no_keys
 
-	lda NDX
-	cmp XMAX
-	bcs scnkey_no_keys             // no space in keyboard buffer - do not waste time
+#if CONFIG_JOY2_CURSOR
 
-	// XXX check for joystick activity
+	// XXX why this does not work???
+
+	// Check for control port 2 activity
+
+	// ldx #$00
+	// stx CIA1_DDRA                  // set port to input to read joystick
+
+	// lda CIA1_PRA                   // read the joystick 2 status
+
+	// dex
+	// stx CIA1_DDRA                  // set port back to output
+
+	// and #%00001111                 // filter out anything but joystick movement
+	// bne scnkey_joystick_a_filtered
+
+#endif
+
+	// Check for control port 1 activity (can interfere with keyboard)
+
+	jsr keyboard_disconnect        // disconnect all the rows, .X will be $FF
+	cpx CIA1_PRB                   // only control port activity will be reported
+#if CONFIG_JOY1_CURSOR
+	bne scnkey_joystick_x          // use joystick for cursor keys
+#else
+	bne scnkey_no_keys             // if activity detected do not scan the keyboard
+#endif
 
 	// Scan the keyboard matrix
 
+	ldy #$FF                       // offset in key matrix table, $FF for not found yet 
 	ldx #$07 // XXX adapt for C128 and C65 keyboards
-	ldy #$FF                       // offset in key matrix table, $FF for not found yet
 scnkey_matrix_loop:
 	lda kb_matrix_row_keys, x
 	sta CIA1_PRA
@@ -110,9 +137,16 @@ scnkey_matrix_loop_next:
 	dex
 	bpl scnkey_matrix_loop
 
-	// Scanning complete
+	// Scanning complete - check if we got a key
+
 	cpy #$FF
-	bne scnkey_got_key
+	beq scnkey_no_keys
+
+	// To be extra sure, check for possible control port 1 interference once again
+
+	jsr keyboard_disconnect        // disconnect all the rows, .X will be $FF
+	cpx CIA1_PRB                   // only control port activity will be reported
+	beq scnkey_got_key             // branch if joystick activity NOT detected
 
 	// FALLTROUGH
 
@@ -124,6 +158,25 @@ scnkey_no_keys:
 	sta LSTX
 
 	rts
+
+#if CONFIG_JOY1_CURSOR || CONFIG_JOY2_CURSOR
+
+scnkey_joystick_x:
+
+	// Handle joystick activity (in .X) as cursor keys
+
+	txa
+	and #%00001111                 // filter out anything but movement
+
+	// FALLTROUGH
+
+scnkey_joystick_a_filtered:
+
+	// XXX finish the implementation
+
+	rts
+
+#endif
 
 scnkey_got_key: // .Y should now contain the key offset in matrix pointed by KEYTAB
 
@@ -148,6 +201,12 @@ scnkey_got_key: // .Y should now contain the key offset in matrix pointed by KEY
 
 scnkey_output_key:
 
+	// Check if we have free space in the keyboard buffer
+
+	lda NDX
+	cmp XMAX
+	bcs scnkey_early_repeat        // no space in buffer XXX set timer to trigger repeat the next time
+
 	// Reinitialize secondary counter
 
 	lda #$03
@@ -170,12 +229,10 @@ scnkey_handle_repeat:
 
 	// Check whether we should repeat keys
 
-	// XXX some keys should be repeat always!
-
 	lda RPTFLG
 	bpl scnkey_done                // branch if we should do no repeat
 
-	// First countdown (for the first repeat)
+	// Countdown before first repeat
 
 	lda DELAY
 	beq !+
@@ -183,11 +240,22 @@ scnkey_handle_repeat:
 
 	rts
 !:
-	// Second countdown (for both first and subsequential repeats)
+	// Countdown before subsequent repeats
 
 	lda KOUNT
 	beq scnkey_output_key          // if second counter is also 0, we can repeat the key
 	dec KOUNT
+
+	rts
+
+scnkey_early_repeat:
+
+	// Keyboard buffer was full - at least make sure the key
+	// will be repeated as soon as possible
+
+	lda #$00
+	sta DELAY
+	sta KOUNT
 
 	rts
 

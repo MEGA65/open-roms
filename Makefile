@@ -14,7 +14,9 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                 c64/kernal/assets \
                 c64/kernal/jumptable \
                 c64/kernal/iec \
+                c64/kernal/init \
                 c64/kernal/interrupts \
+                c64/kernal/iostack \
                 c64/kernal/keyboard \
                 c64/kernal/print \
                 c64/kernal/screen

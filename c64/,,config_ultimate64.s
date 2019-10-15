@@ -49,6 +49,7 @@
 
 
 // #define CONFIG_LEGACY_SCNKEY // XXX document this
+// #define CONFIG_KEYBOARD_C128 // XXX document this
 // #define CONFIG_KEY_REPEAT_DEFAULT // XXX document this
 // #define CONFIG_KEY_REPEAT_ALWAYS // XXX document this
 #define CONFIG_KEY_FAST_SCAN // XXX document this

@@ -6,7 +6,7 @@
 //
 
 // Idea:
-// - sane defaults for the original Commodore 64 machine
+// - sane defaults for the original Commodore 64/128 machines
 // - do not enable features which are a significant compatibility risk
 
 
@@ -49,6 +49,7 @@
 
 
 // #define CONFIG_LEGACY_SCNKEY // XXX document this
+#define CONFIG_KEYBOARD_C128 // XXX document this
 // #define CONFIG_KEY_REPEAT_DEFAULT // XXX document this
 // #define CONFIG_KEY_REPEAT_ALWAYS // XXX document this
 #define CONFIG_KEY_FAST_SCAN // XXX document this

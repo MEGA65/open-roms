@@ -21,7 +21,7 @@
 // - RPTFLG  - whether key repeat is allowed
 
 
-// XXX add Commodore 128 keyboard support
+// XXX finish Commodore 128 keyboard support
 // XXX add Commodore 65 keyboard support
 
 
@@ -40,14 +40,15 @@ SCNKEY:
 	lda #$00
 	sta SHFLAG
 
-	// XXX retrieve ALT and NO_SCRL status for C128/C65 keyboards
-
 	// Check for any activity
 
 #if !CONFIG_JOY2_CURSOR && CONFIG_KEY_FAST_SCAN
 
 	ldx #$00
 	stx CIA1_PRA                   // connect all the rows
+#if CONFIG_KEYBOARD_C128
+	stx VIC_XSCAN
+#endif
 	dex                            // puts $FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
@@ -56,10 +57,15 @@ SCNKEY:
 
 	// Retrieve SHIFT / VENDOR / CTRL status
 	// Use .X to detect 2 or more keys pressed (should be $FF now)
-	ldy #$03
+
+	ldy #(__kb_matrix_bucky_confmask_end - kb_matrix_bucky_confmask - 1)
 scnkey_bucky_loop:
 	lda kb_matrix_bucky_confmask, y
 	sta CIA1_PRA
+#if CONFIG_KEYBOARD_C128
+	lda kb_matrix_bucky_confmask_c128, y
+	sta VIC_XSCAN
+#endif
 	lda kb_matrix_bucky_testmask, y
 	and CIA1_PRB
 	bne !+                          // not pressed
@@ -75,8 +81,6 @@ scnkey_bucky_loop:
 	jsr via_keylog // XXX for some CPUs we have indirect jsr
 
 #if CONFIG_JOY2_CURSOR
-
-	// XXX why this does not work ???
 
 	// Check for control port 2 activity
 
@@ -97,6 +101,9 @@ scnkey_bucky_loop:
 
 	inx                            // puts $00
 	stx CIA1_PRA                   // connect all the rows
+#if CONFIG_KEYBOARD_C128
+	stx VIC_XSCAN
+#endif
 	dex                            // puts $FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
@@ -169,9 +176,13 @@ scnkey_no_keys:
 
 	// Mark no key press
 
-	lda #$40 // XXX adapt value for C128 and C65 keyboards
-	sta LSTX
+#if CONFIG_KEYBOARD_C128
+	lda #$FF                       // non-standard, but for C128 keyboard $40 is a valid position
+#else
+	lda #$40
+#endif
 
+	sta LSTX
 	rts
 
 #if CONFIG_JOY1_CURSOR
@@ -231,8 +242,6 @@ scnkey_got_key: // .Y should now contain the key offset in matrix pointed by KEY
 	//
 	// Besides - since I am the one who writes the code, I will make the values exactly how I like them :D
 
-	// XXX consider making it configurable, also make configurable RPTFLG
-
 	lda #$16
 	sta DELAY
 
@@ -244,7 +253,7 @@ scnkey_output_key:
 
 	lda NDX
 	cmp XMAX
-	bcs scnkey_early_repeat        // no space in buffer XXX set timer to trigger repeat the next time
+	bcs scnkey_early_repeat        // no space in buffer
 
 	// Reinitialize secondary counter
 

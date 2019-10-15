@@ -9,6 +9,11 @@
 //
 
 
+// NOTE: The code here is described as legacy, because the algorithm (although working very well)
+//       requires much more RAM than the original Kernal routine uses; without any form of extended
+//       RAM available to Open ROMs it will always be a serious compatibility risk.
+
+
 #if CONFIG_LEGACY_SCNKEY
 
 

@@ -15,8 +15,8 @@
 .const KEY_FLAG_SHIFT   = %00000001
 .const KEY_FLAG_VENDOR  = %00000010
 .const KEY_FLAG_CTRL    = %00000100
-.const KEY_FLAG_ALT     = %00001000  // C65 / C128
-.const KEY_FLAG_NO_SCRL = %00100000  // C65 / C128, Open ROMs unofficial
+.const KEY_FLAG_ALT     = %00001000  // C65 / C128                            XXX implement this
+.const KEY_FLAG_NO_SCRL = %00100000  // C65 / C128, Open ROMs unofficial      XXX implement this
 
 
 // Note - the following PETSCII codes are currently unassigned, can be used for further extensions:
@@ -27,18 +27,17 @@
 .const KEY_NA           = $00  // to indicate that no key is presed
 
 
-// PETSCII codes for our extended screen editor
+// PETSCII codes for our extended screen editor       XXX implement these
 
 .const KEY_BOTTOM       = $02  // CTRL+B            - DolphinDOS compatible
 .const KEY_TAB_FW       = $8F  // CTRL+>, TAB       - Open ROMs unofficial
 .const KEY_TAB_BW       = $80  // CTRL+<, SHIFT+TAB - Open ROMs unofficial
 
 
-// PETSCII codes for certain C128 and C65 functionalities
+// PETSCII codes for certain C128 and C65 functionalities                     XXX implement these
 
 .const KEY_BELL         = $07  // C65 / C128, no key
 .const KEY_ESC          = $1B  // C65 / C128
-.const KEY_HELP         = $10  // C65 / C128, Open ROMs unofficial
 
 
 // PETSCII codes for programmable keys
@@ -60,6 +59,8 @@
 .const KEY_F12          = $18  // C65, Open ROMs unofficial
 .const KEY_F13          = $19  // C65, Open ROMs unofficial
 .const KEY_F14          = $1A  // C65, Open ROMs unofficial
+
+.const KEY_HELP         = $10  // C65 / C128, Open ROMs unofficial
 
 
 // PETSCII codes for cursor keys

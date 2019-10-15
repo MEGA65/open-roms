@@ -109,7 +109,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FF96`   |            | `TKSA`      | DONE     |                                                      |
 | `$FF99`   |            | `MEMTOP`    | DONE     |                                                      |
 | `$FF9C`   |            | `MEMBOT`    | DONE     |                                                      |
-| `$FF9F`   |            | `SCNKEY`    | PARTIAL  | future complete version has compatibility problems   |
+| `$FF9F`   |            | `SCNKEY`    | DONE     |                                                      |
 | `$FFA2`   |            | `SETTMO`    | DONE     |                                                      |
 | `$FFA5`   |            | `ACPTR`     | DONE     |                                                      |
 | `$FFA8`   |            | `CIOUT`     | DONE     |                                                      |
@@ -141,7 +141,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFF0`   | `$E50A`    | `PLOT`      | DONE     |                                                      |
 | `$FFF3`   |            | `IOBASE`    | DONE     |                                                      |
 | `($FFFA)` |            | NMI vec     | PARTIAL  |                                                      |
-| `($FFFC)` |            | RESET vec   | PARTIAL  |                                                      |
+| `($FFFC)` | `$FCE2`    | RESET vec   | PARTIAL  |                                                      |
 | `($FFFE)` |            | IRQ/BRK vec | PARTIAL  |                                                      |
 
 <br />

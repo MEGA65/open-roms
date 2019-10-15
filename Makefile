@@ -76,19 +76,19 @@ updatebin: $(STD_TARGET_LIST)
 
 # Rules - tools
 
-$(TOOL_PNGPREPARE): src/pngprepare.c Makefile
+$(TOOL_PNGPREPARE): src/pngprepare.c
 	@mkdir -p build/tools
 	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
 
-$(TOOL_COMPRESS_TEXT): src/compress_text.c Makefile
+$(TOOL_COMPRESS_TEXT): src/compress_text.c
 	@mkdir -p build/tools
 	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lm
 
-build/tools/%: src/%.c Makefile
+build/tools/%: src/%.c
 	@mkdir -p build/tools
 	$(CC) -O2 -Wall -o $@ $<
 
-build/tools/%: src/%.cc Makefile
+build/tools/%: src/%.cc
 	@mkdir -p build/tools
 	$(CXX) -O2 -Wall -o $@ $<
 
@@ -189,7 +189,7 @@ build/symbols_hybrid.vs: build/target_generic/KERNAL_combined.vs
 
 # Rules - platform 'Mega 65' specific
 
-build/newc65.rom: build/kernal_mega65.rom build/basic_mega65.rom build/chargen.rom Makefile
+build/newc65.rom: build/kernal_mega65.rom build/basic_mega65.rom build/chargen.rom
 	dd if=/dev/zero bs=4096 count=10 of=build/newc65.rom
 	cat build/basic_mega65.rom build/chargen.rom build/chargen.rom build/kernal_mega65.rom >> build/newc65.rom
 	dd if=/dev/zero bs=65536 count=1 of=build/padding

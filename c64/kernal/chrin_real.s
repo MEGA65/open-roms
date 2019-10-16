@@ -149,21 +149,3 @@ not_enter:
 
 	// Keep looking for input from keyboard until carriage return
 	jmp chrin_repeat
-
-pop_keyboard_buffer:
-	// Pop key out of keyboard buffer
-	// Disable interrupts while reading from keyboard buffer
-	// so that no race conditions can occur
-	sei
-	ldx #$00
-	ldy #$01
-!:	lda KEYD,y
-	sta KEYD,x
-	inx
-	iny
-	cpy XMAX
-	bne !-
-	dec NDX
-	cli
-
-	rts

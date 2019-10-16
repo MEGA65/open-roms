@@ -12,10 +12,10 @@
 
 kb_matrix_128:
 
-	// XXX fill-in the matrix properly!!!
-	.byte $41,$42,$43,$44,$45,$46,$47,$48
-	.byte $51,$52,$53,$54,$55,$56,$57,$58
-	.byte $61,$62,$63,$64,$65,$66,$67,$68
+	.byte KEY_HELP,$38,$38,KEY_TAB_FW,$32,$34,$37,$31
+	.byte KEY_ESC,$2B,$2D,$8D,$0D,$36,$39,$33
+	.byte $00,$30,$2E,$91,$11,$9D,$1D,$00
+
 
 kb_matrix_128_bucky_filter:
 
@@ -23,7 +23,7 @@ kb_matrix_128_bucky_filter:
 
 	.byte %00000000
 	.byte %00000000 
-	.byte %00000000 // XXX ALT, NO_SCRL - probably here
+	.byte %10000001 // XXX ALT, NO_SCRL - probably here
 
 
 

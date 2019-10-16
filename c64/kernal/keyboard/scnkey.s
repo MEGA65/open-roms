@@ -260,13 +260,39 @@ scnkey_output_key:
 	lda #$03
 	sta KOUNT
 
-	// Output PETSCII code to the keyboard buffer
+	// Retrieve the PETSCII code
+
 #if CONFIG_KEYBOARD_C128
-	
-	// XXX implement C128 key matrix support here
+
+	cpy #$40
+	bcs !+
+
+	lda (KEYTAB), y	               // retrieve key code from standard matrix
+	jmp scnkey_got_petscii
+
+!:
+
+	lda kb_matrix_128 - $40, y           // retrieve key code from C128 extended matrix
+	cmp KEY_TAB_FW                       // special handling for SHIFT+TAB
+	bne scnkey_got_petscii
+	lda SHFLAG                           // special handling for SHIFT+TAB
+	and #KEY_FLAG_SHIFT
+	bne !+
+	lda KEY_TAB_FW
+	bne scnkey_got_petscii               // branch alWAYS 
+!:
+	lda KEY_TAB_BW
+
+#else
+
+	lda (KEYTAB), y
 
 #endif
-	lda (KEYTAB), y
+
+	// Output PETSCII code to the keyboard buffer
+
+scnkey_got_petscii:
+
 	beq scnkey_no_keys             // branch if we have no PETSCII code for this key
 	ldy NDX
 	sta KEYD, y

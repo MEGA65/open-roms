@@ -17,7 +17,7 @@
 
 scnkey_128:
 
-	sty CIA1_PRA                   // disconnect all the classic keys first
+	sty CIA1_PRA                        // disconnect all the classic keys first
 
 	ldx #$02
 scnkey_matrix_128_loop:
@@ -31,18 +31,18 @@ scnkey_matrix_128_loop:
 	bne scnkey_128_no_keys             // clash, more than one key pressed
 	// We have at least one key pressed in this row, we need to find which one exactly
 	ldy #$07
-scnkey_matrix_128_loop_inner: // XXX try to deduplicate this with regular SCNKEY
+scnkey_matrix_128_loop_inner:
 	cmp kb_matrix_row_keys, y
-	bne !+                         // not this particular key
-	tya                            // now .A contains key offset within a row
+	bne !+                             // not this particular key
+	tya                                // now .A contains key offset within a row
 	clc
-	adc kb_matrix_row_offsets, x   // now .A contains key offset from the matrix start
+	adc kb_matrix_row_offsets, x       // now .A contains key offset from the matrix start
 	tay
 	jmp scnkey_matrix_128_loop_next
 !:
 	dey
 	bpl scnkey_matrix_128_loop_inner
-	bmi scnkey_128_no_keys         // branch always, multiple keys must have been pressed
+	bmi scnkey_128_no_keys             // branch always, multiple keys must have been pressed
 scnkey_matrix_128_loop_next:
 	dex
 	bpl scnkey_matrix_128_loop
@@ -53,7 +53,7 @@ scnkey_matrix_128_loop_next:
 	beq scnkey_128_done
 
 	// Shift the matrix code
-.break
+
 	clc
 	tya
 	adc #$40

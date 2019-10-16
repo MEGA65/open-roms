@@ -119,7 +119,7 @@ Needs 70-250 more space in KERNAL segment (depending on the features enabled for
 
 Allows to use additional keys found on the C128 keyboard.
 
-Needs 128 bytes more space in KERNAL segment. If unsure - disable.
+Needs about 125 bytes more space in KERNAL segment. If unsure - disable.
 
 ### `CONFIG_KEY_REPEAT_DEFAULT`
 

@@ -37,6 +37,7 @@ scnkey_matrix_128_loop_inner:
 	tya                                // now .A contains key offset within a row
 	clc
 	adc kb_matrix_row_offsets, x       // now .A contains key offset from the matrix start
+	adc #$40                           // now .A contains fully normalized offset
 	tay
 	jmp scnkey_matrix_128_loop_next
 !:
@@ -51,13 +52,6 @@ scnkey_matrix_128_loop_next:
 
 	cpy #$FF
 	beq scnkey_128_done
-
-	// Shift the matrix code
-
-	clc
-	tya
-	adc #$40
-	tay
 
 	// Continue with C64 keyboard scanning 
 

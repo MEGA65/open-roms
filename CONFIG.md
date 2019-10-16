@@ -105,6 +105,46 @@ Cause the system to support SIDs in `$D4xx` and `$D5xx` ranges, respectively.
 
 Each of them needs a couple of bytes in KERNAL segment - but they can share some code, and `$D4xx` range support replaces the standard `$D400` address handling, so exact amount depends on the exact configuration.
 
+## Keyboard
+
+Original keyboard support routine is just horrible. It does nothing to prevent ghosting - press A+S+D at the same time - it prints F. Try to use joystick connected to control port 1 - it outputs phantom characters. The Open ROMs provides much more sophisticated routines to prevent such problems.
+
+### `CONFIG_LEGACY_SCNKEY`
+
+Uses old Open ROMs keyboard scanning routine, which is basically example routine by TWW/CTR, hacked to work within Kernal. It's greatest advantage is multi-key rollover, it's disadvantages - it's much less compatible (uses several bytes of memory which are normally free for user software - thus, it is considered legacy for now), does not support all the system variables (`RPTFLG` and `KEYLOG` are unsupported), and ignores the configuration options - this can be changed, but it requires some effort.
+
+Needs 70-250 more space in KERNAL segment (depending on the features enabled for current default routine). If unsure - disable.
+
+### `CONFIG_KEYBOARD_C128`
+
+Allows to use additional keys found on the C128 keyboard.
+
+Needs 128 bytes more space in KERNAL segment. If unsure - disable.
+
+### `CONFIG_KEY_REPEAT_DEFAULT`
+
+Enables key repetition by default during the startup (sets `RPTFLG`).
+
+Needs 5 bytes more space in KERNAL segment.
+
+### `CONFIG_KEY_REPEAT_ALWAYS`
+
+Enables the key repetition and ignores `RPTFLG`.
+
+Saves 22 bytes from KERNAL segment.
+
+### `CONFIG_KEY_FAST_SCAN`
+
+Performs somee speed optimizations in the keyboard scanning routine, at the eexpense of some more ROM space.
+
+Needs 13 bytes more space in KERNAL segment. Only disable if you are running out of ROM space.
+
+### `CONFIG_JOY1_CURSOR` and `CONFIG_JOY2_CURSOR`
+
+Joystick movement also moves the cursor.
+
+Needs about 65 bytes of ROM space to handle both joysticks.
+
 ## Eye candy
 
 ### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_VARIANT`

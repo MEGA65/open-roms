@@ -273,15 +273,17 @@ scnkey_output_key:
 !:
 
 	lda kb_matrix_128 - $40, y           // retrieve key code from C128 extended matrix
-	cmp KEY_TAB_FW                       // special handling for SHIFT+TAB
-	bne scnkey_got_petscii
-	lda SHFLAG                           // special handling for SHIFT+TAB
-	and #KEY_FLAG_SHIFT
-	bne !+
-	lda KEY_TAB_FW
-	bne scnkey_got_petscii               // branch alWAYS 
-!:
-	lda KEY_TAB_BW
+
+	// XXX this will be needed for extended screen editor
+	// cmp KEY_TAB_FW                       // special handling for SHIFT+TAB
+	// bne scnkey_got_petscii
+	// lda SHFLAG                           // special handling for SHIFT+TAB
+	// and #KEY_FLAG_SHIFT
+	// bne !+
+	// lda KEY_TAB_FW
+	// bne scnkey_got_petscii               // branch alWAYS 
+    // !:
+	// lda KEY_TAB_BW
 
 #else
 

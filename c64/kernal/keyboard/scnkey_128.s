@@ -6,7 +6,7 @@
 //
 
 
-#if CONFIG_KEYBOARD_C128
+#if CONFIG_KEYBOARD_C128 && !CONFIG_LEGACY_SCNKEY
 
 
 // Inlining this within SCNKEY would both overcomplicate the implementation
@@ -74,4 +74,4 @@ scnkey_128_no_keys:
 	jmp scnkey_no_keys             // pass controll to original routine
 
 
-#endif // CONFIG_KEYBOARD_C128
+#endif // CONFIG_KEYBOARD_C128 and no CONFIG_LEGACY_SCNKEY

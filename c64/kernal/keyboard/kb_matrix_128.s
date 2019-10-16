@@ -7,7 +7,7 @@
 //
 
 
-#if CONFIG_KEYBOARD_C128
+#if CONFIG_KEYBOARD_C128 && !CONFIG_LEGACY_SCNKEY
 
 
 kb_matrix_128:
@@ -27,4 +27,4 @@ kb_matrix_128_bucky_filter:
 
 
 
-#endif // CONFIG_KEYBOARD_C128
+#endif // CONFIG_KEYBOARD_C128 and no CONFIG_LEGACY_SCNKEY

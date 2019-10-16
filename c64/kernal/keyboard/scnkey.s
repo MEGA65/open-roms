@@ -21,9 +21,6 @@
 // - RPTFLG  - whether key repeat is allowed
 
 
-// XXX finish Commodore 128 keyboard support
-// XXX add Commodore 65 keyboard support
-
 
 #if !CONFIG_LEGACY_SCNKEY
 
@@ -130,8 +127,11 @@ scnkey_bucky_loop:
 
 	// Scan the keyboard matrix
 
-	ldy #$FF                       // offset in key matrix table, $FF for not found yet 
-	ldx #$07 // XXX adapt for C128 and C65 keyboards
+	ldy #$FF                       // offset in key matrix table, $FF for not found yet
+#if CONFIG_KEYBOARD_C128
+	jsr scnkey_128
+#endif
+	ldx #$07
 scnkey_matrix_loop:
 	lda kb_matrix_row_keys, x
 	sta CIA1_PRA
@@ -261,6 +261,11 @@ scnkey_output_key:
 	sta KOUNT
 
 	// Output PETSCII code to the keyboard buffer
+#if CONFIG_KEYBOARD_C128
+	
+	// XXX implement C128 key matrix support here
+
+#endif
 	lda (KEYTAB), y
 	beq scnkey_no_keys             // branch if we have no PETSCII code for this key
 	ldy NDX

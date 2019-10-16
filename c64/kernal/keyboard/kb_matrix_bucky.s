@@ -3,9 +3,9 @@
 // Matrix for retrieving bucky key status on the C64 keyboard
 //
 // Values based on:
-// - [CM64] Compute's Mapping the Commodore 64 - pags 58 (SHFLAG), 173 (matrix)
+// - [CM64]  Compute's Mapping the Commodore 64 - pages 58 (SHFLAG), 173 (matrix)
+// - [CM128] Compute's Mapping the Commodore 128 - pages 212 (SHFLAG), 290 (matrix)
 //
-
 
 #if !CONFIG_LEGACY_SCNKEY
 

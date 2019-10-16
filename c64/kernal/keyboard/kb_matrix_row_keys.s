@@ -13,6 +13,7 @@
 kb_matrix_row_keys:
 
 	// - values for CIA1_PRA to connect only the given row
+	// - first 3 values also meant for VIC_XSCAN for C128 keyboards
 	// - also used to scan a single row
 
 	.byte %11111110

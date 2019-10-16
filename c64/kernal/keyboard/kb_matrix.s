@@ -54,21 +54,3 @@ __kb_matrix_ctrl:
 	.byte $00,$10,$0C,$00,$00,$1B,$00,$00
 	.byte $1C,$00,$1D,$00,$00,$1F,$1E,$00
 	.byte $90,$06,$00,$05,$00,$00,$11,$00
-
-
-
-// XXX extended matrices for C128/C65
-
-// kb_matrix_ext128:   $D02F
-
-	// .byte (HELP),$38,$35,(TAB),$32,$34,$37,$31  // $FE
-	// .byte $1B, $2B, $2D,$0A,$0D,$36,$39,$33     // $FD
-	// .byte $00,$30,$2E,$91,$11,$9D,$1D,(NO_SCRL) // $FB
-	
-// kb_matrix_ext65:
-
-	// Last column - normal
-	// .byte (NO_SCRL),(TAB),$00,(HELP),(F9),(F11),(F13),$1B
-	
-	// Last column - shifted
-	// .byte (NO_SCRL),(TAB),$00,(HELP),(F10),(F12),(F14),$1B

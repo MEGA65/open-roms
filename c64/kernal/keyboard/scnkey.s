@@ -53,7 +53,6 @@ SCNKEY:
 #endif
 
 	// Retrieve SHIFT / VENDOR / CTRL status
-	// Use .X to detect 2 or more keys pressed (should be $FF now)
 
 	ldy #(__kb_matrix_bucky_confmask_end - kb_matrix_bucky_confmask - 1)
 scnkey_bucky_loop:
@@ -154,7 +153,7 @@ scnkey_matrix_loop_inner:
 !:
 	dey
 	bpl scnkey_matrix_loop_inner
-	bmi scnkey_no_keys            // branch always, multiple keys must have been pressed
+	bmi scnkey_no_keys             // branch always, multiple keys must have been pressed
 scnkey_matrix_loop_next:
 	dex
 	bpl scnkey_matrix_loop

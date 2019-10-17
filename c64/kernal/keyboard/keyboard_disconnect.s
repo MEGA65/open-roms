@@ -2,6 +2,10 @@
 //
 // Helper routine - disconnects the keyboard from CIA1_PRB,
 // leaves $FF in .X (behavior needed in some places)
+//
+
+
+#if !CONFIG_LEGACY_SCNKEY
 
 
 keyboard_disconnect:
@@ -13,3 +17,6 @@ keyboard_disconnect:
 #endif
 
 	rts
+
+
+#endif

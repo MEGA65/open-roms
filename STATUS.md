@@ -134,7 +134,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFDB`   |            | `SETTIM`    | DONE     |                                                      |
 | `$FFDE`   |            | `RDTIM`     | DONE     |                                                      |
 | `$FFE1`   | `$F6ED`    | `STOP`      | DONE     |                                                      |
-| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | only some devices supported                          |
+| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | only keyaboard supported                             |
 | `$FFE7`   | `$F32F`    | `CLALL`     | DONE     |                                                      |
 | `$FFEA`   |            | `UDTIM`     | DONE     |                                                      |
 | `$FFED`   |            | `SCREEN`    | DONE     |                                                      |

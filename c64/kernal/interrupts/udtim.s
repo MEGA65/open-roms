@@ -26,16 +26,22 @@ udtim_update_stkey: // entry to be used when interrupts are disabled
 	// Another action we have to perform is to copy the last row of keyboard to RAM,
 	// so that various routines can detect the STOP key press
 
+#if CONFIG_KEYBOARD_C128
+	lda #$FF
+	sta VIC_XSCAN // disconnect the extra C128 keys
+#endif
+
 	lda #$7F
 	sta CIA1_PRA  // select the last row (bit to 0)
 
 	lda CIA1_PRB  // read the row
 	sta STKEY
 
-	// Finish by disconnecting the keyboard, this will prevent
-	// interference when scanning joystick in port 1
+	// Leave the CIA configured this way. It would be far better to disconnect
+	// the keyboard at this point, but certain software (mainly intros) is
+	// unable to, for example, read the space bar status.
 
-	jmp keyboard_disconnect
+	rts
 
 udtim_clock_rollover:
 

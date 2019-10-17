@@ -34,6 +34,7 @@ TOOL_COLLECT_DATA   = build/tools/collect_data
 TOOL_COMPRESS_TEXT  = build/tools/compress_text
 TOOL_PNGPREPARE     = build/tools/pngprepare
 TOOL_BUILD_SEGMENT  = build/tools/build_segment
+TOOL_RELEASE        = build/tools/release
 TOOL_SIMILARITY     = build/tools/similarity
 TOOL_ASSEMBLER      = assembler/KickAss.jar
 
@@ -67,7 +68,7 @@ all: $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
 clean:
 	@rm -rf build
 
-updatebin: $(STD_TARGET_LIST)
+updatebin: $(STD_TARGET_LIST) $(STD_TOOL_RELEASE)
 	cp build/chargen.rom              bin/chargen.rom
 	cp build/basic_generic.rom        bin/basic_generic.rom
 	cp build/kernal_generic.rom       bin/kernal_generic.rom
@@ -90,7 +91,7 @@ build/tools/%: src/%.c
 	@mkdir -p build/tools
 	$(CC) -O2 -Wall -o $@ $<
 
-build/tools/%: src/%.cc
+build/tools/%: src/%.cc src/common.h
 	@mkdir -p build/tools
 	$(CXX) -O2 -Wall -o $@ $<
 

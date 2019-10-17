@@ -160,6 +160,7 @@ Not all of them - only these we want to have implemented.
 | `$EA31`   | default IRQ         | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below    | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI    | DONE     |                                                    |
+| `$F142`   | get key from buffer | DONE     |                                                    |
 | `$FD30`   | default vectors     | DONE     |                                                    |
 | `$FE47`   | default NMI         | PARTIAL  |                                                    |
 | `$FE66`   | default BRK         | DONE     |                                                    |

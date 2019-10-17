@@ -3,6 +3,8 @@
 // source files, placing routines where they need to live
 //
 
+#include "common.h"
+
 #include <dirent.h>
 #include <libgen.h>
 #include <string.h>
@@ -13,18 +15,10 @@
 #include <algorithm>
 #include <fstream>
 #include <iomanip>
-#include <iostream>
-#include <string>
 #include <list>
 #include <map>
 #include <set>
 #include <vector>
-
-#if defined(WIN32) || defined(_WIN32)
-    #define DIR_SEPARATOR "\\"
-#else
-    #define DIR_SEPARATOR "/"
-#endif
 
 const std::string ASM_CMD       = "java -jar ";
 
@@ -32,8 +26,6 @@ const std::string LAB_OUT_START = "__routine_START_";
 const std::string LAB_OUT_END   = "__routine_END_";
 const std::string LAB_IN_START  = ".label __routine_START_";
 const std::string LAB_IN_END    = ".label __routine_END_";
-
-const std::string BANNER_LINE   = "//-------------------------------------------------------------------------------------------";
 
 //
 // Command line settings
@@ -53,17 +45,6 @@ std::list<std::string> CMD_inList;
 // Common helper functions
 //
 
-void ERROR()
-{
-    exit(-1);
-}
-
-void ERROR(const std::string &message)
-{
-    std::cout << "\n" << "ERROR: " << message << "\n\n";
-    exit(-1);
-}
-
 void printUsage()
 {
     std::cout << "\n" <<
@@ -71,16 +52,6 @@ void printUsage()
         "                     [-l <start/low address>] [-h <end/high address>]" << "\n" <<
         "                     [-s <segment name>] [-i <segment display info>]" << "\n" <<
         "                     <input dir/file list>" << "\n\n";
-}
-
-void printBannerLineTop()
-{
-    std::cout << "\n\n\n" << BANNER_LINE << "\n";
-}
-
-void printBannerLineBottom()
-{
-    std::cout << BANNER_LINE << "\n\n";
 }
 
 void printBannerCollectAnalyse()
@@ -100,24 +71,6 @@ void printBannerBinCompile()
 //
 // Class definitions
 //
-
-class DualStream
-{
-public:
-    DualStream(std::ostream& str1, std::ostream& str2) : str1(str1), str2(str2) {}
-
-    template<class T> DualStream &operator<<(const T& x)
-    {
-        str1 << x;
-        str2 << x;
-
-        return *this;
-    }
-
-private:
-    std::ostream& str1;
-    std::ostream& str2;
-};
 
 class SourceFile
 {

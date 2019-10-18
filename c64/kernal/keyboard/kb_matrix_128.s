@@ -23,7 +23,7 @@ kb_matrix_128_bucky_filter:
 
 	.byte %00000000
 	.byte %00000000 
-	.byte %10000001 // XXX ALT, NO_SCRL - probably here
+	.byte %10000001 // ALT, NO_SCRL
 
 
 

@@ -37,7 +37,7 @@ scnkey_matrix_128_loop_inner:
 	tya                                // now .A contains key offset within a row
 	clc
 	adc kb_matrix_row_offsets, x       // now .A contains key offset from the matrix start
-	adc #$40                           // now .A contains fully normalized offset
+	adc #$41                           // now .A contains offset after the standard matrix
 	tay
 	jmp scnkey_matrix_128_loop_next
 !:

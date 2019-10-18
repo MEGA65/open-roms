@@ -42,11 +42,11 @@ SCNKEY:
 #if !CONFIG_JOY2_CURSOR && CONFIG_KEY_FAST_SCAN
 
 	ldx #$00
-	stx CIA1_PRA                   // connect all the rows
+	stx CIA1_PRA                       // connect all the rows
 #if CONFIG_KEYBOARD_C128
 	stx VIC_XSCAN
 #endif
-	dex                            // puts $FF
+	dex                                // puts $FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
 
@@ -64,7 +64,7 @@ scnkey_bucky_loop:
 #endif
 	lda kb_matrix_bucky_testmask, y
 	and CIA1_PRB
-	bne !+                          // not pressed
+	bne !+                             // not pressed
 	lda SHFLAG
 	ora kb_matrix_bucky_shflag, y
 	sta SHFLAG
@@ -81,26 +81,26 @@ scnkey_bucky_loop:
 	// Check for control port 2 activity
 
 	ldx #$00
-	stx CIA1_DDRA                  // set port to input to read joystick
+	stx CIA1_DDRA                      // set port to input to read joystick
 
-	lda CIA1_PRA                   // read the joystick 2 status
+	lda CIA1_PRA                       // read the joystick 2 status
 
-	dex                            // puts $FF
-	stx CIA1_DDRA                  // set port back to output
+	dex                                // puts $FF
+	stx CIA1_DDRA                      // set port back to output
 
-	and #%00001111                 // filter out anything but joystick movement
+	and #%00001111                     // filter out anything but joystick movement
 	cmp #%00001111
 
 	bne scnkey_joystick_filtered
 
 #if CONFIG_KEY_FAST_SCAN
 
-	inx                            // puts $00
-	stx CIA1_PRA                   // connect all the rows
+	inx                                // puts $00
+	stx CIA1_PRA                       // connect all the rows
 #if CONFIG_KEYBOARD_C128
 	stx VIC_XSCAN
 #endif
-	dex                            // puts $FF
+	dex                                // puts $FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
 
@@ -110,12 +110,12 @@ scnkey_bucky_loop:
 
 	// Check for control port 1 activity (can interfere with keyboard)
 
-	jsr keyboard_disconnect        // disconnect all the rows, .X will be $FF
-	cpx CIA1_PRB                   // only control port activity will be reported
+	jsr keyboard_disconnect            // disconnect all the rows, .X will be $FF
+	cpx CIA1_PRB                       // only control port activity will be reported
 #if CONFIG_JOY1_CURSOR
-	bne scnkey_joystick_1          // use joystick for cursor keys
+	bne scnkey_joystick_1              // use joystick for cursor keys
 #else
-	bne scnkey_no_keys             // if activity detected do not scan the keyboard
+	bne scnkey_no_keys                 // if activity detected do not scan the keyboard
 #endif
 
 	// Check if KEYTAB is not 0 (happens if more than one bucky key is pressed)
@@ -126,7 +126,7 @@ scnkey_bucky_loop:
 
 	// Scan the keyboard matrix
 
-	ldy #$FF                       // offset in key matrix table, $FF for not found yet
+	ldy #$FF                           // offset in key matrix table, $FF for not found yet
 #if CONFIG_KEYBOARD_C128
 	jsr scnkey_128
 #endif
@@ -134,26 +134,26 @@ scnkey_bucky_loop:
 scnkey_matrix_loop:
 	lda kb_matrix_row_keys, x
 	sta CIA1_PRA
-	lda kb_matrix_bucky_filter, x  // filter out bucky keys
+	lda kb_matrix_bucky_filter, x      // filter out bucky keys
 	ora CIA1_PRB
 	cmp #$FF
-	beq scnkey_matrix_loop_next    // skip if no key pressed from this row
+	beq scnkey_matrix_loop_next        // skip if no key pressed from this row
 	cpy #$FF
-	bne scnkey_no_keys             // clash, more than one key pressed
+	bne scnkey_no_keys                 // clash, more than one key pressed
 	// We have at least one key pressed in this row, we need to find which one exactly
 	ldy #$07
 scnkey_matrix_loop_inner:
 	cmp kb_matrix_row_keys, y
-	bne !+                         // not this particular key
-	tya                            // now .A contains key offset within a row
+	bne !+                             // not this particular key
+	tya                                // now .A contains key offset within a row
 	clc
-	adc kb_matrix_row_offsets, x   // now .A contains key offset from the matrix start
+	adc kb_matrix_row_offsets, x       // now .A contains key offset from the matrix start
 	tay
 	jmp scnkey_matrix_loop_next
 !:
 	dey
 	bpl scnkey_matrix_loop_inner
-	bmi scnkey_no_keys             // branch always, multiple keys must have been pressed
+	bmi scnkey_no_keys                 // branch always, multiple keys must have been pressed
 scnkey_matrix_loop_next:
 	dex
 	bpl scnkey_matrix_loop
@@ -165,9 +165,9 @@ scnkey_matrix_loop_next:
 
 	// To be extra sure, check for possible control port 1 interference once again
 
-	jsr keyboard_disconnect        // disconnect all the rows, .X will be $FF
-	cpx CIA1_PRB                   // only control port activity will be reported
-	beq scnkey_got_key             // branch if joystick activity NOT detected
+	jsr keyboard_disconnect            // disconnect all the rows, .X will be $FF
+	cpx CIA1_PRB                       // only control port activity will be reported
+	beq scnkey_got_key                 // branch if joystick activity NOT detected
 
 	// FALLTROUGH
 
@@ -175,12 +175,7 @@ scnkey_no_keys:
 
 	// Mark no key press
 
-#if CONFIG_KEYBOARD_C128
-	lda #$FF                       // non-standard, but for C128 keyboard $40 is a valid position
-#else
 	lda #$40
-#endif
-
 	sta LSTX
 	rts
 
@@ -191,7 +186,7 @@ scnkey_joystick_1:
 	// Prepare joystick 1 status
 
 	lda CIA1_PRB
-	and #%00001111                 // filter out anything but movement
+	and #%00001111                     // filter out anything but movement
 
 	// FALLTROUGH
 
@@ -230,7 +225,7 @@ scnkey_joystick_filtered:
 scnkey_got_key: // .Y should now contain the key offset in matrix pointed by KEYTAB
 
 	cpy LSTX
-	beq scnkey_try_repeat          // branch if the same key as previously
+	beq scnkey_try_repeat              // branch if the same key as previously
 	sty LSTX
 
 	// Reset key repeat counters - see [CM64] page 58
@@ -252,7 +247,7 @@ scnkey_output_key:
 
 	lda NDX
 	cmp XMAX
-	bcs scnkey_early_repeat        // no space in buffer
+	bcs scnkey_early_repeat            // no space in buffer
 
 	// Reinitialize secondary counter
 
@@ -264,23 +259,22 @@ scnkey_output_key:
 #if CONFIG_KEYBOARD_C128
 
 	cpy #$40
-	bcs !+
+	bcc !+
 
-	lda (KEYTAB), y	               // retrieve key code from standard matrix
+	lda kb_matrix_128 - $41, y         // retrieve key code from C128 extended matrix
 	jmp scnkey_got_petscii
-
 !:
-
-	lda kb_matrix_128 - $40, y           // retrieve key code from C128 extended matrix
+	lda (KEYTAB), y	                   // retrieve key code from standard matrix
 
 	// XXX this will be needed for extended screen editor
-	// cmp KEY_TAB_FW                       // special handling for SHIFT+TAB
+
+	// cmp KEY_TAB_FW                  // special handling for SHIFT+TAB
 	// bne scnkey_got_petscii
-	// lda SHFLAG                           // special handling for SHIFT+TAB
+	// lda SHFLAG                      // special handling for SHIFT+TAB
 	// and #KEY_FLAG_SHIFT
 	// bne !+
 	// lda KEY_TAB_FW
-	// bne scnkey_got_petscii               // branch alWAYS 
+	// bne scnkey_got_petscii          // branch alWAYS 
     // !:
 	// lda KEY_TAB_BW
 
@@ -294,7 +288,7 @@ scnkey_output_key:
 
 scnkey_got_petscii:
 
-	beq scnkey_no_keys             // branch if we have no PETSCII code for this key
+	beq scnkey_no_keys                 // branch if we have no PETSCII code for this key
 	ldy NDX
 	sta KEYD, y
 	inc NDX
@@ -312,7 +306,7 @@ scnkey_try_repeat:
 	// Check whether we should repeat keys - first the flag, afterwards hardcoded list
 
 	lda RPTFLG
-	bmi scnkey_handle_repeat       // branch if we should repeat always
+	bmi scnkey_handle_repeat           // branch if we should repeat always
 
 	tya
 	ldx #(__kb_matrix_alwaysrepeat_end - kb_matrix_alwaysrepeat - 1)
@@ -338,7 +332,7 @@ scnkey_handle_repeat:
 	// Countdown before subsequent repeats
 
 	lda KOUNT
-	beq scnkey_output_key          // if second counter is also 0, we can repeat the key
+	beq scnkey_output_key               // if second counter is also 0, we can repeat the key
 	dec KOUNT
 
 	rts

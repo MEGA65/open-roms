@@ -117,7 +117,7 @@ Needs 70-250 more space in KERNAL segment (depending on the features enabled for
 
 ### `CONFIG_KEYBOARD_C128`
 
-Allows to use additional keys found on the C128 keyboard.
+Allows to use additional keys found on the C128 keyboard. NOTE: might be buggy, on VICE emulator I can't get all the keys working.
 
 Needs about 125 bytes more space in KERNAL segment. If unsure - disable.
 

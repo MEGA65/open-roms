@@ -58,11 +58,11 @@ SCNKEY:
 
 	// First check if this is really a C128 - to avoid false positive
 	lda #$00
-#if !CONFIG_KEYBOARD_C128
-	tax
-#endif
 	sta VIC_XSCAN
 	lda #$FF
+#if !CONFIG_KEYBOARD_C128
+	tax                                // preserve the $FF, will be needed later
+#endif
 	cmp VIC_XSCAN
 	beq !+                             // branch if C64, C128 will keep some bits cleared
 

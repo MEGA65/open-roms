@@ -58,6 +58,9 @@ SCNKEY:
 
 	// First check if this is really a C128 - to avoid false positive
 	lda #$00
+#if !CONFIG_KEYBOARD_C128
+	tax
+#endif
 	sta VIC_XSCAN
 	lda #$FF
 	cmp VIC_XSCAN
@@ -70,6 +73,10 @@ SCNKEY:
 	lda #KEY_CAPS_LOCK
 	sta SHFLAG
 !:
+
+#if !CONFIG_KEYBOARD_C128
+	stx VIC_XSCAN                      // disconnect C128 keys if no C128 keyboard is supported
+#endif
 
 #endif
 
@@ -297,6 +304,8 @@ scnkey_output_key:
     // !:
 	// lda KEY_TAB_BW                  // bne scnkey_got_petscii if CAPS LOCK is handled
 
+#endif // CONFIG_KEYBOARD_C128_CAPS_LOCK
+
 #if CONFIG_KEYBOARD_C128_CAPS_LOCK
 
 	// Check if we need special handling for a CAPS LOCK key
@@ -304,7 +313,10 @@ scnkey_output_key:
 
 scnkey_handle_caps_lock:
 
-	tax
+#if !CONFIG_KEYBOARD_C128
+	lda (KEYTAB), y
+#endif
+	tax 
 	lda SHFLAG
 	and #(%00000111 + KEY_CAPS_LOCK)
 	cmp #KEY_CAPS_LOCK
@@ -324,7 +336,7 @@ scnkey_handle_caps_lock:
 
 #endif // CONFIG_KEYBOARD_C128_CAPS_LOCK
 
-#else
+#if !CONFIG_KEYBOARD_C128 && !CONFIG_KEYBOARD_C128_CAPS_LOCK
 
 	lda (KEYTAB), y
 

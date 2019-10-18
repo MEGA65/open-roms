@@ -123,9 +123,9 @@ Needs about 130 bytes more space in KERNAL segment. If unsure - disable.
 
 ### `CONFIG_KEYBOARD_C128_CAPS_LOCK`
 
-If C128 keyboard support is selected, allows to additionally support it's CAPS LOCK keys. Support is C64-safe (there is a protection against false-positive reading on the C64).
+Allows to use CAPS LOCK key on the C128 keyboard, this is independent from `CONFIG_KEYBOARD_C128`. Support is C64-safe (there is a protection against false-positive reading on the C64).
 
-Needs about 47 bytes more space in KERNAL segment. 
+Needs about 50 bytes more space in KERNAL segment. If unsure - disable.
 
 ### `CONFIG_KEY_REPEAT_DEFAULT`
 

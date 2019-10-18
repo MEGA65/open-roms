@@ -72,7 +72,7 @@ initmsg_real:
 	ldy #$00
 	jmp plot_set
 
-#elif CONFIG_BANNER_VARIANT && CONFIG_VARIANT_MEGA_65
+#elif CONFIG_BANNER_BRAND && CONFIG_BRAND_MEGA_65
 
 	lda #<startup_banner
 	ldy #>startup_banner

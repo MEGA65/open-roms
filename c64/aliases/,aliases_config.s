@@ -19,28 +19,28 @@
 
 
 
-// Check that platform variant configuration is correct
+// Check that platform and brand configuration is correct
 
 {
 	.var selected = 0;
 
-#if CONFIG_VARIANT_GENERIC
+#if CONFIG_BRAND_GENERIC
 	.eval selected++
 #endif
-#if CONFIG_VARIANT_MEGA_65
+#if CONFIG_BRAND_MEGA_65
 	.eval selected++
 #endif
-#if CONFIG_VARIANT_ULTIMATE_64
+#if CONFIG_BRAND_ULTIMATE_64
 	.eval selected++
 #endif
 
-	.if (selected != 1) .error "Please select exactly one CONFIG_VARIANT_* option"
+	.if (selected != 1) .error "Please select exactly one CONFIG_BRAND_* option"
 
-#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_VARIANT_MEGA_65 &&
-	.error "CONFIG_VARIANT_MEGA_65 can only be used with CONFIG_PLATFORM_COMMODORE_64"
+#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_BRAND_MEGA_65 &&
+	.error "CONFIG_BRAND_MEGA_65 can only be used with CONFIG_PLATFORM_COMMODORE_64"
 #endif
-#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_VARIANT_ULTIMATE_64 &&
-	.error "CONFIG_VARIANT_ULTIMATE_64 can only be used with CONFIG_PLATFORM_COMMODORE_64"
+#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_BRAND_ULTIMATE_64 &&
+	.error "CONFIG_BRAND_ULTIMATE_64 can only be used with CONFIG_PLATFORM_COMMODORE_64"
 #endif
 }
 
@@ -97,18 +97,18 @@
 #if CONFIG_BANNER_FANCY
 	.eval selected++
 #endif
-#if CONFIG_BANNER_VARIANT
+#if CONFIG_BANNER_BRAND
 	.eval selected++
 #endif
 
 	.if (selected != 1) .error "Please select exactly one CONFIG_MEMORY_MODEL_* option" 
 
-#if CONFIG_BANNER_VARIANT && !CONFIG_VARIANT_MEGA_65
-	.error "CONFIG_BANNER_VARIANT is not supported for your CONFIG_VARIANT_*" 
+#if CONFIG_BANNER_BRAND && !CONFIG_BRAND_MEGA_65
+	.error "CONFIG_BANNER_BRAND is not supported for your CONFIG_BRAND_*" 
 #endif
 
-#if CONFIG_BANNER_VARIANT && CONFIG_VARIANT_MEGA_65 && CONFIG_SHOW_PAL_NTSC
-	.error "MEGA65 variant banner does not support showing PAL/NTSC" 
+#if CONFIG_BANNER_BRAND && CONFIG_BRAND_MEGA_65 && CONFIG_SHOW_PAL_NTSC
+	.error "MEGA65 brand banner does not support showing PAL/NTSC" 
 #endif
 
 }

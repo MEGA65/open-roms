@@ -11,7 +11,7 @@ Just edit them and recompile the project. To enable particular option - uncommen
 
 Note however, that features do not came for free - enabling them needs some additional ROM space (in BASIC segment, in KERNAL segment, or in both), which is VERY limited on the target machines. Some options might be unavailable for speecific targets - read the comments in the configuration files. Some options might also carry compatibility and/or performance hit - so choose wisely.
 
-## Hardware platform and variant
+## Hardware platform and brand
 
 ### `CONFIG_PLATFORM_COMMODORE_64`
 
@@ -23,11 +23,11 @@ Since Open ROMs is highly modular, it should be possible to add other platforms 
 * 8KB ROM area `$A000`-`$BFFF`
 * 8KB ROM area `$E000`-`$FFFF`
 
-### `CONFIG_VARIANT_GENERIC`
+### `CONFIG_BRAND_GENERIC`
 
 If you don't know which variant to choose - select this one.
 
-### `CONFIG_VARIANT_MEGA_65`, `CONFIG_VARIANT_ULTIMATE_64`
+### `CONFIG_BRAND_MEGA_65`, `CONFIG_BRAND_ULTIMATE_64`
 
 Select if you are using appropriate motherboard.
 
@@ -153,11 +153,11 @@ Needs about 65 bytes of ROM space to handle both joysticks.
 
 ## Eye candy
 
-### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_VARIANT`
+### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_BRAND`
 
-Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_VARIANT` heavily depends on the selected hardware target, not all targets support it.
+Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_BRAND` heavily depends on the selected brand, not all the brands support it.
 
-Richer banners need more BASIC segment, varies between hardware variants.
+Richer banners need more BASIC segment, varies between brands.
 
 ### `CONFIG_BANNER_PAL_NTSC`
 

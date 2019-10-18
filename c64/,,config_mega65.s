@@ -12,13 +12,13 @@
 //   do not enable CPU-specific optimizations; ROMs would be hard to test
 
 
-// Hardware platform and variant
+// Hardware platform and brand
 
 #define CONFIG_PLATFORM_COMMODORE_64
 
-// #define CONFIG_VARIANT_GENERIC
-#define CONFIG_VARIANT_MEGA_65
-// #define CONFIG_VARIANT_ULTIMATE_64
+// #define CONFIG_BRAND_GENERIC
+#define CONFIG_BRAND_MEGA_65
+// #define CONFIG_BRAND_ULTIMATE_64
 
 
 // Processor instruction set

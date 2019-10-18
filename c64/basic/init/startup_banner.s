@@ -6,11 +6,11 @@
 
 .macro BANNER_TEXT() {
 
-#if CONFIG_VARIANT_GENERIC
+#if CONFIG_BRAND_GENERIC
 	.text "OPEN ROMS GENERIC BUILD"
-#elif CONFIG_VARIANT_MEGA_65
+#elif CONFIG_BRAND_MEGA_65
 	.text "OPEN ROMS FOR MEGA65"
-#elif CONFIG_VARIANT_ULTIMATE_64
+#elif CONFIG_BRAND_ULTIMATE_64
 	.text "OPEN ROMS FOR ULTIMATE 64"
 #endif
 
@@ -42,7 +42,7 @@ pre_revision_string:
 	.text "RELEASE "
 	.byte $00
 
-#elif CONFIG_BANNER_VARIANT && CONFIG_VARIANT_MEGA_65
+#elif CONFIG_BANNER_BRAND && CONFIG_BRAND_MEGA_65
 
 	// Fancy Mega65 banner - from Retrofan
 	.byte $9a, $12, $20, $20, $7f, $a9, $20, $20, $1f, $20, $9a, $20, $20, $20

@@ -101,7 +101,7 @@
 	.eval selected++
 #endif
 
-	.if (selected != 1) .error "Please select exactly one CONFIG_MEMORY_MODEL_* option" 
+	.if (selected != 1) .error "Please select exactly one CONFIG_BANNER_* option" 
 
 #if CONFIG_BANNER_BRAND && !CONFIG_BRAND_MEGA_65
 	.error "CONFIG_BANNER_BRAND is not supported for your CONFIG_BRAND_*" 

@@ -15,8 +15,9 @@
 .const KEY_FLAG_SHIFT   = %00000001
 .const KEY_FLAG_VENDOR  = %00000010
 .const KEY_FLAG_CTRL    = %00000100
-.const KEY_FLAG_ALT     = %00001000  // C65 / C128                            XXX implement this
-.const KEY_FLAG_NO_SCRL = %00100000  // C65 / C128, Open ROMs unofficial      XXX implement this
+.const KEY_FLAG_ALT     = %00001000  // C65 / C128
+.const KEY_CAPS_LOCK    = %00010000  // C65 / C128
+.const KEY_FLAG_NO_SCRL = %00100000  // C65 / C128, Open ROMs unofficial
 
 
 // Note - the following PETSCII codes are currently unassigned, can be used for further extensions:

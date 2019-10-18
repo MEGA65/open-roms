@@ -52,7 +52,26 @@ SCNKEY:
 
 #endif
 
-	// Retrieve SHIFT / VENDOR / CTRL status
+	// Retrieve SHIFT / VENDOR / CTRL / ALT / CAPS LOCK status
+
+#if CONFIG_KEYBOARD_C128_CAPS_LOCK
+
+	// First check if this is really a C128 - to avoid false positive
+	lda #$00
+	sta VIC_XSCAN
+	lda #$FF
+	cmp VIC_XSCAN
+	beq !+                             // branch if C64, C128 will keep some bits cleared
+
+	lda CPU_R6510
+	and #$40
+	bne !+                             // branch if no CAPS LOCK
+
+	lda #KEY_CAPS_LOCK
+	sta SHFLAG
+!:
+
+#endif
 
 	ldy #(__kb_matrix_bucky_confmask_end - kb_matrix_bucky_confmask - 1)
 scnkey_bucky_loop:
@@ -269,14 +288,41 @@ scnkey_output_key:
 	// XXX this will be needed for extended screen editor
 
 	// cmp KEY_TAB_FW                  // special handling for SHIFT+TAB
-	// bne scnkey_got_petscii
+	// bne scnkey_got_petscii          // XXX or to scnkey_handle_caps_lock
 	// lda SHFLAG                      // special handling for SHIFT+TAB
 	// and #KEY_FLAG_SHIFT
 	// bne !+
 	// lda KEY_TAB_FW
 	// bne scnkey_got_petscii          // branch alWAYS 
     // !:
-	// lda KEY_TAB_BW
+	// lda KEY_TAB_BW                  // bne scnkey_got_petscii if CAPS LOCK is handled
+
+#if CONFIG_KEYBOARD_C128_CAPS_LOCK
+
+	// Check if we need special handling for a CAPS LOCK key
+	// This is shorter than a separate set of tables
+
+scnkey_handle_caps_lock:
+
+	tax
+	lda SHFLAG
+	and #(%00000111 + KEY_CAPS_LOCK)
+	cmp #KEY_CAPS_LOCK
+	bne !+                             // branch if no special CAPS LOCK handling needed
+
+	cpx #$41                           // 'A'
+	bcc !+
+	cpx #$5B                           // 'Z' + 1
+	bcs !+
+
+	txa
+	clc
+	adc #$20                           // turn lowercase into uppercase
+	tax 
+!:
+	txa
+
+#endif // CONFIG_KEYBOARD_C128_CAPS_LOCK
 
 #else
 

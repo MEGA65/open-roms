@@ -113,13 +113,19 @@ Original keyboard support routine is just horrible. It does nothing to prevent g
 
 Uses old Open ROMs keyboard scanning routine, which is basically example routine by TWW/CTR, hacked to work within Kernal. It's greatest advantage is multi-key rollover, it's disadvantages - it's much less compatible (uses several bytes of memory which are normally free for user software - thus, it is considered legacy for now), does not support all the system variables (`RPTFLG` and `KEYLOG` are unsupported), and ignores the configuration options - this can be changed, but it requires some effort.
 
-Needs 70-250 more space in KERNAL segment (depending on the features enabled for current default routine). If unsure - disable.
+Needs 30-250 more space in KERNAL segment (depending on the features enabled for current default routine). If unsure - disable.
 
 ### `CONFIG_KEYBOARD_C128`
 
 Allows to use additional keys found on the C128 keyboard. NOTE: might be buggy, on VICE emulator I can't get all the keys working.
 
-Needs about 125 bytes more space in KERNAL segment. If unsure - disable.
+Needs about 130 bytes more space in KERNAL segment. If unsure - disable.
+
+### `CONFIG_KEYBOARD_C128_CAPS_LOCK`
+
+If C128 keyboard support is selected, allows to additionally support it's CAPS LOCK keys. Support is C64-safe (there is a protection against false-positive reading on the C64).
+
+Needs about 47 bytes more space in KERNAL segment. 
 
 ### `CONFIG_KEY_REPEAT_DEFAULT`
 

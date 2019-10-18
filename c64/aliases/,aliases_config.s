@@ -115,6 +115,19 @@
 
 
 
+// Check if keyboard options are correct
+
+{
+#if CONFIG_LEGACY_SCNKEY && CONFIG_KEYBOARD_C128
+	.error "CONFIG_LEGACY_SCNKEY and CONFIG_KEYBOARD_C128 are mutually exclusive"
+#endif
+#if CONFIG_KEYBOARD_C128_CAPS_LOCK && !CONFIG_KEYBOARD_C128
+	.error "CONFIG_KEYBOARD_C128_CAPS_LOCK requires CONFIG_KEYBOARD_C128"
+#endif
+}
+
+
+
 // Handle processor configuration
 
 #if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816

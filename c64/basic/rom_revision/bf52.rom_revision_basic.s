@@ -19,6 +19,8 @@ rom_revision_basic:
 
 rom_revision_basic_string:
 
+	// $BF55
+
 	.text "(DEVEL SNAPSHOT)"  // actual ROM revision string; up to 16 characters
 	.byte $00                 // marks the end of string
 

@@ -33,6 +33,8 @@ rom_revision_kernal:
 
 rom_revision_kernal_string:
 
+	// $E4BC
+
 	.text "(DEVEL SNAPSHOT)"  // actual ROM revision string; up to 16 characters
 	.byte $00                 // marks the end of string
 

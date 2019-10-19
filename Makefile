@@ -68,14 +68,9 @@ all: $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
 clean:
 	@rm -rf build
 
-updatebin: $(STD_TARGET_LIST) $(STD_TOOL_RELEASE)
+updatebin: $(STD_TARGET_LIST) $(TOOL_RELEASE)
+	$(TOOL_RELEASE) -i ./build -o ./bin basic_generic.rom kernal_generic.rom basic_mega65.rom kernal_mega65.rom basic_ultimate64.rom kernal_ultimate64.rom
 	cp build/chargen.rom              bin/chargen.rom
-	cp build/basic_generic.rom        bin/basic_generic.rom
-	cp build/kernal_generic.rom       bin/kernal_generic.rom
-	cp build/basic_mega65.rom         bin/basic_mega65.rom
-	cp build/kernal_mega65.rom        bin/kernal_mega65.rom
-	cp build/basic_ultimate64.rom     bin/basic_ultimate64.rom
-	cp build/kernal_ultimate64.rom    bin/kernal_ultimate64.rom
 
 # Rules - tools
 

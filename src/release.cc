@@ -441,10 +441,11 @@ void ROMFile::analyzeContent()
     // Check if meaningful file content is really different
 
     if ((memcmp(&srcFileContent[0x0000], &dstFileContent[0x0000], revOffset) == 0) &&
-        (memcmp(&srcFileContent[revOffset + 0x10], &dstFileContent[revOffset + 0x10], 8192 - revOffset) == 0))
+        (memcmp(&srcFileContent[revOffset + 0x10], &dstFileContent[revOffset + 0x10],
+            descPtr->fileSize - revOffset - 0x10) == 0))
     {
         sameContent = true;
-    }
+    } 
 
     // Determine expected length of developer ID
 

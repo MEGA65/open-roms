@@ -130,7 +130,6 @@
 #if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
 
 #define HAS_BCD_SAFE_INTERRUPTS
-#define HAS_BCD_SAFE_RESET
 
 	.pseudocommand phx { .byte $DA }
 	.pseudocommand phy { .byte $5A }

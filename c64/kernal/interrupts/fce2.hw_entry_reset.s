@@ -6,9 +6,8 @@ hw_entry_reset:
 
 	// The GPL program at https://github.com/Klaus2m5/6502_65C02_functional_tests/blob/master/6502_functional_test.a65
 	// uses the following initial reset sequence, affirmed by c64 PRG p269
-#if !HAS_BCD_SAFE_RESET
-	cld // for CPUs having undefined D flag after reset
-#endif
+
+	cld // for CPUs might clear D flag - but it is possible this is called manually
 	ldx #$FF
 	txs
 	sei

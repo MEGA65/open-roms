@@ -98,10 +98,10 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 
 | Address   | Unofficial | Name        | Status   |  Remarks                                             |
 | :-------: | :--------: | :---------- | :------: | :--------------------------------------------------: |
-| `($028F)` |            | `KEYLOG`    | DONE     | works differently on purpose, to improve kb scanning |
-| `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                      |
+| `($028F)` |            | `KEYLOG`    | DONE     |                                                      |
+| `$FF81`   | `$FF5B`    | `CINT`      | PARTIAL  | probably incomplete, to be checked                   |
 | `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                        |
-| `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                      |
+| `$FF87`   | `$FD50`    | `RAMTAS`    | PARTIAL  | probably shouldn't touch VIC and CIA's               |
 | `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                      |
 | `$FF8D`   | `$FD1A`    | `VECTOR`    | DONE     |                                                      |
 | `$FF90`   |            | `SETMSG`    | DONE     |                                                      |
@@ -156,7 +156,7 @@ Not all of them - only these we want to have implemented.
 | :-------: | :------------------ | :------: | :------------------------------------------------: |
 | `$E544`   | clear screen        | DONE     |                                                    |
 | `$E50C`   | set cursor position | PARTIAL  |                                                    |
-| `$E5A0`   | setup VIC II & IO   | PARTIAL  |                                                    |
+| `$E5A0`   | setup VIC II & IO   | DONE     |                                                    |
 | `$EA31`   | default IRQ         | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below    | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI    | DONE     |                                                    |

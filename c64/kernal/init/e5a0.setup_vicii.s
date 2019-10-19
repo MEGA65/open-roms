@@ -1,4 +1,11 @@
 
+//
+// Well-known Kernal routine, described in:
+//
+// - [CM64] Compute's Mapping the Commodore 64 - page 215
+//
+
+
 setup_vicii:
 
 	// XXX it should also set default devices
@@ -21,12 +28,12 @@ setup_vicii:
 
  	stx VIC_CLKRATE
 
-	// Set up default IO values - Compute's Mapping the 64
-	// - page 129       - VIC_SCROLY
-	// - pages 140-144  - VIC_SCROLX
-	// - pages 145-146  - VIC_YMCSB
+	// Set up default IO values
+	// - [CM64] page 129       - VIC_SCROLY
+	// - [CM64] pages 140-144  - VIC_SCROLX
+	// - [CM64] pages 145-146  - VIC_YMCSB
 
-	lda #$9B
+	lda #$1B                           // according to [CM64] page 137 some software assumes oldest bit is 0
 	sta VIC_SCROLY
 	lda #$C8
 	sta VIC_SCROLX                     // 40 column etc
@@ -35,14 +42,12 @@ setup_vicii:
 	lda #$0F
 	sta VIC_IRQ                        // clear all interrupts
 
-
-	// XXX initialize $D012 (VIC_RASTER) - which values to use?
-
-
 	// We use a different colour scheme of white text on all blue
 
 	lda #$06
 	sta VIC_EXTCOL
 	sta VIC_BGCOL0
 
-	rts
+	// Setup default I/O devices
+
+	jmp clrchn_reset

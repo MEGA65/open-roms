@@ -17,7 +17,7 @@ MEMTOP:
 
 	// FALLTROUGH
 
-memtop_set:
+memtop_set: // for compatibility reasons this has to start at $FE2D
 
 	sty MEMSIZK+1
 	stx MEMSIZK+0

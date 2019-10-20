@@ -76,6 +76,7 @@ Not all of them - only these we want to have implemented.
 | Address   | Name         | Status   |  Remarks                                           |
 | :-------: | :----------- | :------: | :------------------------------------------------: |
 | `$A004`   | revision str | DONE     |                                                    |
+| `$A408`   | REASON       | NOT DONE |                                                    |
 | `$A453`   | (unknown)    | NOT DONE |                                                    |
 | `$A533`   | LINKPRG      | DONE     |                                                    |
 | `$A644`   | new          | NOT DONE |                                                    |

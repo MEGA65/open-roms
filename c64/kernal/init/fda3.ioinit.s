@@ -8,6 +8,7 @@
 // CPU registers that has to be preserved (see [RG64]): none
 //
 
+
 IOINIT:
 
 	// Set $00/$01 port mode and value
@@ -75,22 +76,6 @@ IOINIT:
 	sta CIA2_ICR
 	sta CIA1_ICR
 
-	// Set timer interval to ~1/60th of a second
-	
-	// Probably NTSC is the default one, as PAL support was introduced later,
-	// in a patch - see [CM64] page 242 and page:
-	// - http://commodore64.se/wiki/index.php/Commodore_64_KERNAL_ROM_versions
-	// "The KERNAL ROM R1 was obviously used only in early NTSC systems. It lacks the PAL/NTSC detection"
-
-	// NTSC C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
-	// is clocked at 1.022727 MHz, so that 1/60s is 17045 CPU cycles
-
-	ldy #<17045
-	ldx #>17045
-
-	sty CIA1_TIMALO
-	stx CIA1_TIMAHI
-
 	// Enable timer interrupt
 	lda #$81
 	sta CIA1_ICR
@@ -117,4 +102,3 @@ IOINIT:
 
 	// Set IEC bus to its initial idle state
 	jmp iec_set_idle
-

@@ -5,6 +5,11 @@ default_brk_handler:
 
 	sei // disable IRQs, to be sure they won't interfere
 
+	ldx #$00
+	sta VIC_SCROLX // turn the display off - we want as little screen artifacts as possible
+
+	cld // make sure this dangerous flag is disabled
+
 	jsr JRESTOR
 	jsr JIOINIT
 	jsr cint_brk

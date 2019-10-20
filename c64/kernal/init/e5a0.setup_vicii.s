@@ -8,8 +8,6 @@
 
 setup_vicii:
 
-	// XXX it should also set default devices
-
 	// Clear everything - turn off sprites (observed hanging around after
  	// running programs and resetting), etc.
 

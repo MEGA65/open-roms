@@ -13,7 +13,7 @@ IOINIT:
 	// Set $00/$01 port mode and value
 	// We want BASIC and KERNAL ROMs mapped, and datasette motor off
 	// (https://www.c64-wiki.com/wiki/Zeropage)
-	// XXX - Work around VICE bug: Writing $00 before $01 results in rubbish in $01
+	// Work around for VICE bug: Writing $00 before $01 results in rubbish in $01
 	// after. https://sourceforge.net/p/vice-emu/bugs/1057/
 	lda #$27
 	ldx #$2F

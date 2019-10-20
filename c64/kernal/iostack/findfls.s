@@ -1,5 +1,5 @@
 
-// Just a helper routines
+// Just a helper routine
 
 // Find the LAT / SAT / FAT entry index where LAT corresponds to A, returns index in Y
 // Carry flag set means not found

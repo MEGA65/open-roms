@@ -12,6 +12,7 @@ default_brk_handler:
 
 	jsr JRESTOR
 	jsr JIOINIT
+	jsr setup_vicii // XXX should probably be a part of cint_brk
 	jsr cint_brk
 
 	cli

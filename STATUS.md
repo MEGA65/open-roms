@@ -137,7 +137,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFDB`   |            | `SETTIM`    | DONE     |                                                      |
 | `$FFDE`   |            | `RDTIM`     | DONE     |                                                      |
 | `$FFE1`   | `$F6ED`    | `STOP`      | DONE     |                                                      |
-| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | only keyaboard supported                             |
+| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | only keyboard supported                              |
 | `$FFE7`   | `$F32F`    | `CLALL`     | DONE     |                                                      |
 | `$FFEA`   |            | `UDTIM`     | DONE     |                                                      |
 | `$FFED`   |            | `SCREEN`    | DONE     |                                                      |
@@ -155,26 +155,27 @@ Not all of them - only these we want to have implemented.
 
 <br />
 
-| Address   | Name                | Status   |  Remarks                                           |
-| :-------: | :------------------ | :------: | :------------------------------------------------: |
-| `$E544`   | clear screen        | DONE     |                                                    |
-| `$E50C`   | set cursor position | PARTIAL  |                                                    |
-| `$E566`   | home cursor         | NOT DONE |                                                    |
-| `$E5A0`   | setup VIC II & IO   | DONE     |                                                    |
-| `$E6B6`   | advance cursor      | NOT DONE |                                                    |
-| `$E701`   | previous line       | NOT DONE |                                                    |
-| `$E8EA`   | scroll line         | NOT DONE |                                                    |
-| `$E9FF`   | clear line          | NOT DONE |                                                    |
-| `$EA31`   | default IRQ         | PARTIAL  |                                                    |
-| `$EA7E`   | ack CIA1 + below    | DONE     |                                                    |
-| `$EA81`   | ret from IRQ/NMI    | DONE     |                                                    |
-| `$F142`   | get key from buffer | DONE     |                                                    |
-| `$FD30`   | default vectors     | DONE     |                                                    |
-| `$FD90`   | (unknown)           | NOT DONE |                                                    |
-| `$FD90`   | (unknown)           | NOT DONE |                                                    |
-| `$FE2D`   | memtop set part     | DONE     |                                                    |
-| `$FE47`   | default NMI         | PARTIAL  |                                                    |
-| `$FE66`   | default BRK         | DONE     |                                                    |
-| `$FF80`   | revision byte       | DONE     |                                                    |
+| Address   | Name                         | Status   |  Remarks                                           |
+| :-------: | :--------------------------- | :------: | :------------------------------------------------: |
+| `$E51B`   | init screen keyboard, no VIC | PARTIAL  | not sure if correct                                |
+| `$E544`   | clear screen                 | DONE     |                                                    |
+| `$E50C`   | set cursor position          | PARTIAL  |                                                    |
+| `$E566`   | home cursor                  | NOT DONE |                                                    |
+| `$E5A0`   | setup VIC II & IO            | DONE     |                                                    |
+| `$E6B6`   | advance cursor               | NOT DONE |                                                    |
+| `$E701`   | previous line                | NOT DONE |                                                    |
+| `$E8EA`   | scroll line                  | NOT DONE |                                                    |
+| `$E9FF`   | clear line                   | NOT DONE |                                                    |
+| `$EA31`   | default IRQ                  | PARTIAL  |                                                    |
+| `$EA7E`   | ack CIA1 + below             | DONE     |                                                    |
+| `$EA81`   | ret from IRQ/NMI             | DONE     |                                                    |
+| `$F142`   | get key from buffer          | DONE     |                                                    |
+| `$FD30`   | default vectors              | DONE     |                                                    |
+| `$FD90`   | (unknown)                    | NOT DONE |                                                    |
+| `$FD90`   | (unknown)                    | NOT DONE |                                                    |
+| `$FE2D`   | memtop set part              | DONE     |                                                    |
+| `$FE47`   | default NMI                  | PARTIAL  |                                                    |
+| `$FE66`   | default BRK                  | DONE     |                                                    |
+| `$FF80`   | revision byte                | DONE     |                                                    |
 
 <br />

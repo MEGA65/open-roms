@@ -1,15 +1,15 @@
 
 //
-// Official Kernal routine, described in:
+// It seems this is a part CINT which initializes screen and keyboard, but does not
+// reset VIC-II. See here: https://csdb.dk/forums/index.php?roomid=11&topicid=17048&firstpost=22
 //
+// For more details see:
 // - [RG64] C64 Programmer's Reference Guide   - page 280
 // - [CM64] Compute's Mapping the Commodore 64 - page 242
-//
-// CPU registers that has to be preserved (see [RG64]): none
-//
 
+cint_screen_keyboard_real:
 
-cint_real:
+	// XXX check what really is performed here
 
 	// According to [CM64], this routine checks for PAL/NTSC. It's definitely not done
 	// within the 'BRK' part, this can be easily checked - POKE something
@@ -115,9 +115,6 @@ cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
 	// Put non-zero value in MODE to enable case switch
 	ldx #$00
 	stx MODE
-
-	// Setup video and I/O
-	jsr setup_vicii
 
 	// Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
 

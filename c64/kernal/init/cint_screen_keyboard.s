@@ -1,62 +1,12 @@
 
 //
-// It seems this is a part CINT which initializes screen and keyboard, but does not
-// reset VIC-II. See here: https://csdb.dk/forums/index.php?roomid=11&topicid=17048&firstpost=22
+// This is a part CINT which initializes screen and keyboard
 //
 // For more details see:
 // - [RG64] C64 Programmer's Reference Guide   - page 280
 // - [CM64] Compute's Mapping the Commodore 64 - page 242
 
-cint_screen_keyboard_real:
-
-	// XXX check what really is performed here
-
-	// According to [CM64], this routine checks for PAL/NTSC. It's definitely not done
-	// within the 'BRK' part, this can be easily checked - POKE something
-	// to address 678 on a real C64, press STOP+RESTORE, the value won't change
-
-	// Detect video system (PAL/NTSC), use Graham's method, as it's short and reliable
-	// see here: https://codebase64.org/doku.php?id=base:detect_pal_ntsc
-
-	lda #$C8 // preparation, as the VIC might be uninitialized
-	sta VIC_SCROLX
-
-cint_w0:
-	lda VIC_RASTER
-cint_w1:
-	cmp VIC_RASTER
-	beq cint_w1
-	bmi cint_w0
-
-	// Result in A, if no interrupt happened during the test:
-	// #$37 -> 312 rasterlines, PAL,  VIC 6569
-	// #$06 -> 263 rasterlines, NTSC, VIC 6567R8
-	// #$05 -> 262 rasterlines, NTSC, VIC 6567R56A
-
-	cmp #$07
-	bcs cint_pal
-
-cint_ntsc:
-
-	// NTSC C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
-	// is clocked at 1.022727 MHz, so that 1/60s is 17045 CPU cycles
-
-	ldy #<17045
-	ldx #>17045
-
-	sty CIA1_TIMALO
-	stx CIA1_TIMAHI
-
-	lda #$00
-	beq !+
-
-cint_pal:
-
-	lda #$01
-!:
-	sta TVSFLG
-
-cint_brk: // entry for BRK and STOP+RESTORE - XXX, where should it start?
+cint_screen_keyboard:
 
 	// Setup KEYLOG vector
 

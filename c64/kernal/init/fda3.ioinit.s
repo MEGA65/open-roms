@@ -77,17 +77,16 @@ IOINIT:
 
 	// Set timer interval to ~1/60th of a second
 	
-	// (This value was calculated by running a custom IRQ handler on a C64
-	// with original KERNAL, and writing the values of $DC04/5 to the screen
-	// in the IRQ handler to see roughly what value the timers must be set to)
-	// ldy #<16380
-	// ldx #>16380
+	// Probably NTSC is the default one, as PAL support was introduced later,
+	// in a patch - see [CM64] page 242 and page:
+	// - http://commodore64.se/wiki/index.php/Commodore_64_KERNAL_ROM_versions
+	// "The KERNAL ROM R1 was obviously used only in early NTSC systems. It lacks the PAL/NTSC detection"
 
-	// PAL C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
-	// is clocked at 0.985248 MHz, so that 1/60s is 16421 CPU cycles
+	// NTSC C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
+	// is clocked at 1.022727 MHz, so that 1/60s is 17045 CPU cycles
 
-	ldy #<16421
-	ldx #>16421
+	ldy #<17045
+	ldx #>17045
 
 	sty CIA1_TIMALO
 	stx CIA1_TIMAHI

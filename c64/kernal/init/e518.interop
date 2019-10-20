@@ -1,0 +1,3 @@
+
+Game 'Operacja Proboszcz' explicitly calls $E51B - thus, it is sane
+to place old CINT routine in it's original place

@@ -12,8 +12,12 @@ default_brk_handler:
 
 	jsr JRESTOR
 	jsr JIOINIT
-	jsr setup_vicii // XXX should probably be a part of cint_brk
-	jsr cint_brk
+
+	// Original routine calls just a part of CINT - but I'm not sure which one. Most likely it
+	// skips the PAL/NTSC check by calling $E518. I suspect bug in the original ROM, let's
+	// call the whole CINT, just to be sure everything is initialized.
+
+	jsr CINT
 
 	cli
 

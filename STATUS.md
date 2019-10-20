@@ -102,8 +102,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | Address   | Unofficial | Name        | Status   |  Remarks                                             |
 | :-------: | :--------: | :---------- | :------: | :--------------------------------------------------: |
 | `($028F)` |            | `KEYLOG`    | DONE     |                                                      |
-| `$FF81`   | `$FF5B`    | `CINT`      | PARTIAL  | probably incomplete, needs adjustments for compat.   |
-| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                        |
+| `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                      |
+| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization might be incomplete               |
 | `$FF87`   | `$FD50`    | `RAMTAS`    | PARTIAL  | probably shouldn't touch VIC and CIA's               |
 | `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                      |
 | `$FF8D`   | `$FD1A`    | `VECTOR`    | DONE     |                                                      |
@@ -157,7 +157,8 @@ Not all of them - only these we want to have implemented.
 
 | Address   | Name                         | Status   |  Remarks                                           |
 | :-------: | :--------------------------- | :------: | :------------------------------------------------: |
-| `$E51B`   | init screen keyboard, no VIC | PARTIAL  | not sure if correct                                |
+| `$E518`   | legacy part of CINT          | DONE     |                                                    |
+| `$E51B`   | init screen keyboard, no VIC | DONE     |                                                    |
 | `$E544`   | clear screen                 | DONE     |                                                    |
 | `$E50C`   | set cursor position          | PARTIAL  |                                                    |
 | `$E566`   | home cursor                  | NOT DONE |                                                    |

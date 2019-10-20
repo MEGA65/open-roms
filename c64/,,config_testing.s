@@ -7,13 +7,16 @@
 
 // Idea:
 // - enable compatibility-risky features
-// - enable code not normally used yto make sure it still compiles
+// - enable code not normally used - to make sure they still compile
 
 
 
 // Hardware platform and brand
 
 #define CONFIG_PLATFORM_COMMODORE_64
+
+// #define CONFIG_MB_MEGA_65
+// #define CONFIG_MB_ULTIMATE_64
 
 // #define CONFIG_BRAND_GENERIC
 #define CONFIG_BRAND_TESTING

@@ -19,7 +19,31 @@
 
 
 
-// Check that platform and brand configuration is correct
+// Check that motherboard extras configuration is correct
+
+{
+	.var selected = 0;
+
+#if CONFIG_MB_MEGA_65
+	.eval selected++
+#endif
+#if CONFIG_MB_ULTIMATE_64
+	.eval selected++
+#endif
+
+	.if (selected > 1) .error "Please select at most one CONFIG_MB_* option"
+
+#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_BRAND_MEGA_65 &&
+	.error "CONFIG_BRAND_MEGA_65 can only be used with CONFIG_PLATFORM_COMMODORE_64"
+#endif
+#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_BRAND_ULTIMATE_64 &&
+	.error "CONFIG_BRAND_ULTIMATE_64 can only be used with CONFIG_PLATFORM_COMMODORE_64"
+#endif
+}
+
+
+
+// Check that brand configuration is correct
 
 {
 	.var selected = 0;
@@ -39,11 +63,11 @@
 
 	.if (selected != 1) .error "Please select exactly one CONFIG_BRAND_* option"
 
-#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_BRAND_MEGA_65 &&
-	.error "CONFIG_BRAND_MEGA_65 can only be used with CONFIG_PLATFORM_COMMODORE_64"
+#if CONFIG_MB_MEGA_65 && !(CONFIG_BRAND_MEGA_65 || CONFIG_BRAND_TESTING)
+	.error "Please select brand either matching the CONFIG_MB_*, or a testing one"
 #endif
-#if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_BRAND_ULTIMATE_64 &&
-	.error "CONFIG_BRAND_ULTIMATE_64 can only be used with CONFIG_PLATFORM_COMMODORE_64"
+#if CONFIG_MB_ULTIMATE_64 && !(CONFIG_BRAND_ULTIMATE_64 || CONFIG_BRAND_TESTING)
+	.error "Please select brand either matching the CONFIG_MB_*, or a testing one"
 #endif
 }
 
@@ -121,8 +145,12 @@
 // Check if keyboard options are correct
 
 {
-#if CONFIG_LEGACY_SCNKEY && CONFIG_KEYBOARD_C128
-	.error "CONFIG_LEGACY_SCNKEY and CONFIG_KEYBOARD_C128 are mutually exclusive"
+#if CONFIG_LEGACY_SCNKEY && (CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C128_CAPS_LOCK)
+	.error "CONFIG_LEGACY_SCNKEY and CONFIG_KEYBOARD_C128* are mutually exclusive"
+#endif
+
+#if (CONFIG_MB_MEGA_65 || CONFIG_MB_ULTIMATE_64) && (CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C128_CAPS_LOCK)
+	.error "Selected CONFIG_MB_* is not compatible with CONFIG_KEYBOARD_C128*"
 #endif
 }
 

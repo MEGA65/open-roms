@@ -23,6 +23,10 @@ Since Open ROMs is highly modular, it should be possible to add other platforms 
 * 8KB ROM area `$A000`-`$BFFF`
 * 8KB ROM area `$E000`-`$FFFF`
 
+### `CONFIG_MB_MEGA_65`, `CONFIG_MB_ULTIMATE_64`
+
+Select if the ROM is going to be used exclusively on the specific motherboard. It prevents from enabling options not having sense, skips initialization of C128-only registers, etc.
+
 ### `CONFIG_BRAND_GENERIC`
 
 If you don't know which variant to choose - select this one.

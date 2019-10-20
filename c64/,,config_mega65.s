@@ -7,6 +7,7 @@
 
 // Idea:
 // - sane defaults for the Mega 65 FPGA computer
+// - do not enable features which are a significant compatibility risk
 // - unless VICE gains Commodore 65 (or at least Flash8 cartridge) emulation support,
 //   do not enable CPU-specific optimizations; ROMs would be hard to test
 
@@ -14,6 +15,9 @@
 // Hardware platform and brand
 
 #define CONFIG_PLATFORM_COMMODORE_64
+
+#define CONFIG_MB_MEGA_65
+// #define CONFIG_MB_ULTIMATE_64
 
 // #define CONFIG_BRAND_GENERIC
 // #define CONFIG_BRAND_TESTING

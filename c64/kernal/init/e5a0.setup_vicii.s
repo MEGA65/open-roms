@@ -18,6 +18,8 @@ setup_vicii:
  	dex
  	bpl !-
 
+#if !CONFIG_MB_MEGA_65 && !CONFIG_MB_ULTIMATE_64
+
  	// Disable C128 extra keys - just to be sure they won't interfere with anything
 
  	stx VIC_XSCAN
@@ -25,6 +27,8 @@ setup_vicii:
  	// Disable the C128 2MHz mode, it prevents VIC-II display from working correctly
 
  	stx VIC_CLKRATE
+
+#endif
 
 	// Set up default IO values
 	// - [CM64] page 129       - VIC_SCROLY

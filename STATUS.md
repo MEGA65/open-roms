@@ -165,12 +165,15 @@ Not all of them - only these we want to have implemented.
 | `$E5A0`   | setup VIC II & IO            | DONE     |                                                    |
 | `$E6B6`   | advance cursor               | NOT DONE |                                                    |
 | `$E701`   | previous line                | NOT DONE |                                                    |
+| `$E716`   | screen CHROUT                | NOT DONE |                                                    |
 | `$E8EA`   | scroll line                  | NOT DONE |                                                    |
+| `$E96C`   | insert line on top           | NOT DONE |                                                    |
 | `$E9FF`   | clear line                   | NOT DONE |                                                    |
 | `$EA31`   | default IRQ                  | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below             | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI             | DONE     |                                                    |
 | `$F142`   | get key from buffer          | DONE     |                                                    |
+| `$F646`   | IEC close                    | NOT DONE |                                                    |
 | `$FD30`   | default vectors              | DONE     |                                                    |
 | `$FD90`   | (unknown)                    | NOT DONE |                                                    |
 | `$FD90`   | (unknown)                    | NOT DONE |                                                    |

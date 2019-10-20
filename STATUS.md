@@ -63,7 +63,7 @@ Note: vectors at `$0300` are not supported yet - for now only the locations belo
 | `(00308)` | `$A7E4`    | `GONE`     | NOT DONE | some implementation exists, but not connected here |
 | `(0030A)` | `$AE86`    | `EVAL`     | NOT DONE | some implementation exists, but not connected here |
 | `($A000)` | `$E394`    | cold start | PARTIAL  |                                                    |
-| `($A002)` |            | warm start | PARTIAL  |                                                    |
+| `($A002)` | `$E3B7`    | warm start | PARTIAL  |                                                    |
 
 <br />
 
@@ -76,7 +76,9 @@ Not all of them - only these we want to have implemented.
 | Address   | Name         | Status   |  Remarks                                           |
 | :-------: | :----------- | :------: | :------------------------------------------------: |
 | `$A004`   | revision str | DONE     |                                                    |
+| `$A453`   | (unknown)    | NOT DONE |                                                    |
 | `$A533`   | LINKPRG      | DONE     |                                                    |
+| `$A644`   | new          | NOT DONE |                                                    |
 | `$A659`   | set txt ptr  | NOT DONE |                                                    |
 | `$A68E`   | RUNC         | DONE     |                                                    |
 | `$A7AE`   | NEWSTT       | PARTIAL  | redirected to RUN command                          |
@@ -107,7 +109,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FF90`   |            | `SETMSG`    | DONE     |                                                      |
 | `$FF93`   |            | `SECOND`    | DONE     |                                                      |
 | `$FF96`   |            | `TKSA`      | DONE     |                                                      |
-| `$FF99`   |            | `MEMTOP`    | DONE     |                                                      |
+| `$FF99`   | `$FE25`    | `MEMTOP`    | DONE     |                                                      |
 | `$FF9C`   |            | `MEMBOT`    | DONE     |                                                      |
 | `$FF9F`   |            | `SCNKEY`    | DONE     |                                                      |
 | `$FFA2`   |            | `SETTMO`    | DONE     |                                                      |
@@ -156,12 +158,20 @@ Not all of them - only these we want to have implemented.
 | :-------: | :------------------ | :------: | :------------------------------------------------: |
 | `$E544`   | clear screen        | DONE     |                                                    |
 | `$E50C`   | set cursor position | PARTIAL  |                                                    |
+| `$E566`   | home cursor         | NOT DONE |                                                    |
 | `$E5A0`   | setup VIC II & IO   | DONE     |                                                    |
+| `$E6B6`   | advance cursor      | NOT DONE |                                                    |
+| `$E701`   | previous line       | NOT DONE |                                                    |
+| `$E8EA`   | scroll line         | NOT DONE |                                                    |
+| `$E9FF`   | clear line          | NOT DONE |                                                    |
 | `$EA31`   | default IRQ         | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below    | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI    | DONE     |                                                    |
 | `$F142`   | get key from buffer | DONE     |                                                    |
 | `$FD30`   | default vectors     | DONE     |                                                    |
+| `$FD90`   | (unknown)           | NOT DONE |                                                    |
+| `$FD90`   | (unknown)           | NOT DONE |                                                    |
+| `$FE2D`   | memtop set part     | DONE     |                                                    |
 | `$FE47`   | default NMI         | PARTIAL  |                                                    |
 | `$FE66`   | default BRK         | DONE     |                                                    |
 | `$FF80`   | revision byte       | DONE     |                                                    |

@@ -1,7 +1,7 @@
 // Clear screen and initialise line link table
 // (Compute's Mapping the 64 p215-216)
 
-clear_screen:
+clear_screen_real:
 
 	// XXX it is probably a good idea to hide cursor first
 

@@ -19,7 +19,8 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                 c64/kernal/iostack \
                 c64/kernal/keyboard \
                 c64/kernal/print \
-                c64/kernal/screen
+                c64/kernal/screen \
+                c64/kernal/stubs
 
 SRC_TOOLS  = $(wildcard src/tools/*.c,src/tools/*.cc)
 

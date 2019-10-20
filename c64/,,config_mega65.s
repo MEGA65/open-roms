@@ -7,7 +7,6 @@
 
 // Idea:
 // - sane defaults for the Mega 65 FPGA computer
-// - enable compatibility-risky features too
 // - unless VICE gains Commodore 65 (or at least Flash8 cartridge) emulation support,
 //   do not enable CPU-specific optimizations; ROMs would be hard to test
 
@@ -17,6 +16,7 @@
 #define CONFIG_PLATFORM_COMMODORE_64
 
 // #define CONFIG_BRAND_GENERIC
+// #define CONFIG_BRAND_TESTING
 #define CONFIG_BRAND_MEGA_65
 // #define CONFIG_BRAND_ULTIMATE_64
 
@@ -31,8 +31,8 @@
 
 // Memory model configuration
 
-// #define CONFIG_MEMORY_MODEL_38K
-#define CONFIG_MEMORY_MODEL_60K
+#define CONFIG_MEMORY_MODEL_38K
+// #define CONFIG_MEMORY_MODEL_60K
 
 
 // Multiple SID support
@@ -50,11 +50,11 @@
 // Keyboard settings
 
 
-#define CONFIG_LEGACY_SCNKEY
+// #define CONFIG_LEGACY_SCNKEY
 // #define CONFIG_KEYBOARD_C128
 // #define CONFIG_KEYBOARD_C128_CAPS_LOCK
 // #define CONFIG_KEY_REPEAT_DEFAULT
-// #define CONFIG_KEY_REPEAT_ALWAYS
+#define CONFIG_KEY_REPEAT_ALWAYS
 #define CONFIG_KEY_FAST_SCAN
 #define CONFIG_JOY1_CURSOR
 #define CONFIG_JOY2_CURSOR

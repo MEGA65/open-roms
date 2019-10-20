@@ -1,21 +1,22 @@
 
-.const CONFIG_ID = $00 // should be 1 byte, different for each config file!
+.const CONFIG_ID = $F0 // should be 1 byte, different for each config file!
 
 //
 // Please read CONFIG.md before modifying this file!
 //
 
 // Idea:
-// - sane defaults for the original Commodore 64/128 machines
-// - do not enable features which are a significant compatibility risk
+// - enable compatibility-risky features
+// - enable code not normally used yto make sure it still compiles
+
 
 
 // Hardware platform and brand
 
 #define CONFIG_PLATFORM_COMMODORE_64
 
-#define CONFIG_BRAND_GENERIC
-// #define CONFIG_BRAND_TESTING
+// #define CONFIG_BRAND_GENERIC
+#define CONFIG_BRAND_TESTING
 // #define CONFIG_BRAND_MEGA_65
 // #define CONFIG_BRAND_ULTIMATE_64
 
@@ -28,18 +29,18 @@
 // #define CONFIG_CPU_WDC_65816
 
 
-// Memory model
+// Memory model configuration
 
-#define CONFIG_MEMORY_MODEL_38K
-// #define CONFIG_MEMORY_MODEL_60K
+// #define CONFIG_MEMORY_MODEL_38K
+#define CONFIG_MEMORY_MODEL_60K
 
 
 // Multiple SID support
 
-// #define CONFIG_SID_2ND
+#define CONFIG_SID_2ND
 .const CONFIG_SID_2ND_ADDRESS = $D420
 
-// #define CONFIG_SID_3RD 
+// #define CONFIG_SID_3RD
 .const CONFIG_SID_3RD_ADDRESS = $D440
 
 // #define CONFIG_SID_D4XX
@@ -49,11 +50,11 @@
 // Keyboard settings
 
 
-// #define CONFIG_LEGACY_SCNKEY
-#define CONFIG_KEYBOARD_C128
-#define CONFIG_KEYBOARD_C128_CAPS_LOCK
+#define CONFIG_LEGACY_SCNKEY
+// #define CONFIG_KEYBOARD_C128
+// #define CONFIG_KEYBOARD_C128_CAPS_LOCK
 // #define CONFIG_KEY_REPEAT_DEFAULT
-#define CONFIG_KEY_REPEAT_ALWAYS
+// #define CONFIG_KEY_REPEAT_ALWAYS
 #define CONFIG_KEY_FAST_SCAN
 #define CONFIG_JOY1_CURSOR
 #define CONFIG_JOY2_CURSOR
@@ -64,7 +65,7 @@
 // #define CONFIG_BANNER_SIMPLE
 #define CONFIG_BANNER_FANCY
 // #define CONFIG_BANNER_BRAND
-#define CONFIG_SHOW_PAL_NTSC
+// #define CONFIG_SHOW_PAL_NTSC
 
 
 // Software features
@@ -77,4 +78,4 @@
 // Debug options
 
 // #define CONFIG_DBG_STUBS_BRK
-// #define CONFIG_DBG_PRINTF
+#define CONFIG_DBG_PRINTF

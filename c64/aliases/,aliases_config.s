@@ -27,6 +27,9 @@
 #if CONFIG_BRAND_GENERIC
 	.eval selected++
 #endif
+#if CONFIG_BRAND_TESTING
+	.eval selected++
+#endif
 #if CONFIG_BRAND_MEGA_65
 	.eval selected++
 #endif

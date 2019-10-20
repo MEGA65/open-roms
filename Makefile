@@ -43,6 +43,7 @@ TOOLS_LIST = $(pathsubst src/tools/%,build/tools/%,$(basename $(SRC_TOOLS)))
 # List of targets
 
 STD_TARGET_LIST = build/kernal_generic.rom build/basic_generic.rom \
+                  build/kernal_testing.rom build/basic_testing.rom \
                   build/kernal_mega65.rom build/basic_mega65.rom \
                   build/kernal_ultimate64.rom build/basic_ultimate64.rom \
                   build/chargen.rom
@@ -69,7 +70,7 @@ clean:
 	@rm -rf build
 
 updatebin: $(STD_TARGET_LIST) $(TOOL_RELEASE)
-	$(TOOL_RELEASE) -i ./build -o ./bin basic_generic.rom kernal_generic.rom basic_mega65.rom kernal_mega65.rom basic_ultimate64.rom kernal_ultimate64.rom
+	$(TOOL_RELEASE) -i ./build -o ./bin basic_generic.rom kernal_generic.rom basic_testing.rom kernal_testing.rom basic_mega65.rom kernal_mega65.rom basic_ultimate64.rom kernal_ultimate64.rom
 	cp build/chargen.rom              bin/chargen.rom
 
 # Rules - tools
@@ -101,6 +102,10 @@ build/target_generic/OUTB.BIN     build/target_generic/BASIC_combined.vs: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC) $(SRCDIR_BASIC) \
     c64/,,config_generic.s     build/target_generic/KERNAL_combined.sym \
     $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+build/target_testing/OUTB.BIN     build/target_generic/BASIC_combined.vs: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC) $(SRCDIR_BASIC) \
+    c64/,,config_testing.s     build/target_testing/KERNAL_combined.sym \
+    $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
 build/target_mega65/OUTB.BIN      build/target_mega65/BASIC_combined.vs: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC)  $(SRCDIR_BASIC) \
     c64/,,config_mega65.s      build/target_mega65/KERNAL_combined.sym \
@@ -114,6 +119,10 @@ build/target_generic/OUTK.BIN     build/target_generic/KERNAL_combined.vs     bu
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
     c64/,,config_generic.s \
     $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+build/target_testing/OUTK.BIN     build/target_testing/KERNAL_combined.vs     build/target_testing/KERNAL_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
+    c64/,,config_testing.s \
+    $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
 build/target_mega65/OUTK.BIN      build/target_mega65/KERNAL_combined.vs      build/target_mega65/KERNAL_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
     c64/,,config_mega65.s \
@@ -124,18 +133,22 @@ build/target_ultimate64/OUTK.BIN  build/target_ultimate64/KERNAL_combined.vs  bu
     $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
 
 build/target_generic/newrom:      build/target_generic/OUTB.BIN     build/target_generic/OUTK.BIN
+build/target_testing/newrom:      build/target_testing/OUTB.BIN     build/target_testing/OUTK.BIN
 build/target_mega65/newrom:       build/target_mega65/OUTB.BIN      build/target_mega65/OUTK.BIN
 build/target_ultimate64/newrom:   build/target_ultimate64/OUTB.BIN  build/target_ultimate64/OUTK.BIN
 
 build/kernal_generic.rom:         build/target_generic/newrom
+build/kernal_testing.rom:         build/target_testing/newrom
 build/kernal_mega65.rom:          build/target_mega65/newrom
 build/kernal_ultimate64.rom:      build/target_ultimate64/newrom
 
 build/basic_generic.rom:          build/target_generic/newrom
+build/basic_testing.rom:          build/target_testing/newrom
 build/basic_mega65.rom:           build/target_mega65/newrom
 build/basic_ultimate64.rom:       build/target_ultimate64/newrom
 
 build/symbols_generic.vs:         build/target_generic/BASIC_combined.vs     build/target_generic/KERNAL_combined.vs
+build/symbols_testing.vs:         build/target_testing/BASIC_combined.vs     build/target_testing/KERNAL_combined.vs
 build/symbols_mega65.vs:          build/target_mega65/BASIC_combined.vs      build/target_mega65/KERNAL_combined.vs
 build/symbols_ultimate64.vs:      build/target_ultimate64/BASIC_combined.vs  build/target_ultimate64/KERNAL_combined.vs
 
@@ -196,7 +209,10 @@ build/newc65.rom: build/kernal_mega65.rom build/basic_mega65.rom build/chargen.r
 
 # Rules - tests
 
-.PHONY: test test_generic test_generic_x128 test_mega65 test_mega65_xemu test_ultimate64 test_hybrid test_m65 testremote testsimilarity
+.PHONY: test test_generic test_generic_x128 test_hybrid test_testing \
+        test_mega65 test_mega65_xemu test_m65 \
+        test_ultimate64 \
+        testremote testsimilarity
 
 test: test_generic
 
@@ -205,6 +221,9 @@ test_generic: build/kernal_generic.rom build/basic_generic.rom build/symbols_gen
 
 test_generic_x128: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
 	x128 -go64 -kernal64 build/kernal_generic.rom -basic64 build/basic_generic.rom -moncommands build/symbols_generic.vs -8 empty.d64
+
+test_testing: build/kernal_testing.rom build/basic_testing.rom build/symbols_testing.vs
+	x64 -kernal build/kernal_testing.rom -basic build/basic_testing.rom -moncommands build/symbols_testing.vs -8 empty.d64
 
 test_mega65: build/kernal_mega65.rom build/basic_mega65.rom build/symbols_mega65.vs
 	x64 -kernal build/kernal_mega65.rom -basic build/basic_mega65.rom -moncommands build/symbols_mega65.vs -8 empty.d64

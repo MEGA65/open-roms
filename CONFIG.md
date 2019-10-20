@@ -27,6 +27,10 @@ Since Open ROMs is highly modular, it should be possible to add other platforms 
 
 If you don't know which variant to choose - select this one.
 
+### `CONFIG_BRAND_TESTING`
+
+Use this one for any kind of testing/experimental build.
+
 ### `CONFIG_BRAND_MEGA_65`, `CONFIG_BRAND_ULTIMATE_64`
 
 Select if you are using appropriate motherboard.

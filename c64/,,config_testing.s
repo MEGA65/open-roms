@@ -52,7 +52,6 @@
 
 // Keyboard settings
 
-
 #define CONFIG_LEGACY_SCNKEY
 // #define CONFIG_KEYBOARD_C128
 // #define CONFIG_KEYBOARD_C128_CAPS_LOCK
@@ -65,6 +64,7 @@
 
 // Eye candy
 
+// #define CONFIG_COLORS_BRAND
 // #define CONFIG_BANNER_SIMPLE
 #define CONFIG_BANNER_FANCY
 // #define CONFIG_BANNER_BRAND

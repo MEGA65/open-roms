@@ -33,11 +33,31 @@ startup_banner:
 
 rainbow_logo:
 
-	.byte $1C, $12, $A4, $A4, $A4, $A4, $A4, $A4, $A4, $0D
-    .byte $9E, $12, $A4, $A4, $A4, $A4, $A4, $A4, $0D
-    .byte $1E, $12, $A4, $A4, $A4, $A4, $A4, $0D
-    .byte $9F, $12, $A4, $A4, $A4, $A4, $92
-    .byte $05, $00
+{
+#if CONFIG_COLORS_BRAND && CONFIG_BRAND_MEGA_65
+
+	.var SET_COLOR_0 = $05
+	.var SET_COLOR_1 = $9A
+	.var SET_COLOR_2 = $1E
+	.var SET_COLOR_3 = $9E
+	.var SET_COLOR_4 = $96
+
+#else
+
+	.var SET_COLOR_0 = $05
+	.var SET_COLOR_1 = $1C
+	.var SET_COLOR_2 = $9E
+	.var SET_COLOR_3 = $1E
+	.var SET_COLOR_4 = $9F
+
+#endif
+
+	.byte SET_COLOR_1, $12, $A4, $A4, $A4, $A4, $A4, $A4, $A4, $0D
+    .byte SET_COLOR_2, $12, $A4, $A4, $A4, $A4, $A4, $A4, $0D
+    .byte SET_COLOR_3, $12, $A4, $A4, $A4, $A4, $A4, $0D
+    .byte SET_COLOR_4, $12, $A4, $A4, $A4, $A4, $92
+    .byte SET_COLOR_0, $00
+}
 
 pre_revision_string:
 

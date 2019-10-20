@@ -102,7 +102,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | Address   | Unofficial | Name        | Status   |  Remarks                                             |
 | :-------: | :--------: | :---------- | :------: | :--------------------------------------------------: |
 | `($028F)` |            | `KEYLOG`    | DONE     |                                                      |
-| `$FF81`   | `$FF5B`    | `CINT`      | PARTIAL  | probably incomplete, to be checked                   |
+| `$FF81`   | `$FF5B`    | `CINT`      | PARTIAL  | probably incomplete, needs adjustments for compat.   |
 | `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                        |
 | `$FF87`   | `$FD50`    | `RAMTAS`    | PARTIAL  | probably shouldn't touch VIC and CIA's               |
 | `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                      |

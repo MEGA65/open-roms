@@ -37,9 +37,10 @@ SCNKEY:
 	lda #$00
 	sta SHFLAG
 
-	// Check for any activity
-
 #if !CONFIG_JOY2_CURSOR && CONFIG_KEY_FAST_SCAN
+
+	// Check for any activity - speed optimization, but cannot be done
+	// that early if we are to scan the joystick #2
 
 	ldx #$00
 	stx CIA1_PRA                       // connect all the rows
@@ -57,13 +58,10 @@ SCNKEY:
 #if CONFIG_KEYBOARD_C128_CAPS_LOCK
 
 	// First check if this is really a C128 - to avoid false positive
-	lda #$00
-	sta VIC_XSCAN
-	lda #$FF
-#if !CONFIG_KEYBOARD_C128
-	tax                                // preserve the $FF, will be needed later
-#endif
-	cmp VIC_XSCAN
+	ldx #$00
+	stx VIC_XSCAN
+	dex                                // puts $FF
+	cpx VIC_XSCAN
 	beq !+                             // branch if C64, C128 will keep some bits cleared
 
 	lda CPU_R6510
@@ -90,7 +88,7 @@ scnkey_bucky_loop:
 #endif
 	lda kb_matrix_bucky_testmask, y
 	and CIA1_PRB
-	bne !+                             // not pressed
+	bne !+                             // branch if not pressed
 	lda SHFLAG
 	ora kb_matrix_bucky_shflag, y
 	sta SHFLAG
@@ -165,7 +163,7 @@ scnkey_matrix_loop:
 	cmp #$FF
 	beq scnkey_matrix_loop_next        // skip if no key pressed from this row
 	cpy #$FF
-	bne scnkey_no_keys                 // clash, more than one key pressed
+	bne scnkey_no_keys                 // jam, more than one key pressed
 	// We have at least one key pressed in this row, we need to find which one exactly
 	ldy #$07
 scnkey_matrix_loop_inner:

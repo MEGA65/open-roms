@@ -3,7 +3,7 @@
 // Official Kernal routine, described in:
 //
 // - [RG64] C64 Programmer's Reference Guide   - page 303
-// - [CM64] Compute's Mapping the Commodore 64 - page 232
+// - [CM64] Compute's Mapping the Commodore 64 - pages 27, 232
 //
 // CPU registers that has to be preserved (see [RG64]): .Y
 //
@@ -23,18 +23,33 @@ UDTIM:
 
 udtim_update_stkey: // entry to be used when interrupts are disabled
 
-	// Another action we have to perform is to copy the last row of keyboard to RAM,
-	// so that various routines can detect the STOP key press
+	// According to [CM64], page 27, another action we have to perform is to copy
+	// the last row of keyboard to RAM, so that various routines can detect the STOP
+	// key press. But something as simple as this would have created warm restart
+	// with M+N+SPACE+RESTORE due to ghosting - so the original ROM has to provide
+	// some protection here. I do not know what the mechanism there exactly does,
+	// but I hope the mechanism below will be compatible enough.
 
+	lda #$80
+	sta CIA1_PRA  // select all the rows except the last one
 #if CONFIG_KEYBOARD_C128
-	lda #$FF
-	sta VIC_XSCAN // disconnect the extra C128 keys
+	ldx #$00
+	stx VIC_XSCAN // connect all the extra C128 keys
 #endif
 
+	lda CIA1_PRB  // read the keys
+	eor #$FF
+	sta STKEY     // store reversed state - to filter out anything vulnerable to ghosting
+
+#if CONFIG_KEYBOARD_C128
+	dex           // puts $FF
+	stx VIC_XSCAN // disconnect the extra C128 keys
+#endif
 	lda #$7F
 	sta CIA1_PRA  // select the last row (bit to 0)
 
 	lda CIA1_PRB  // read the row
+	ora STKEY     // filter out what might be the reason of ghosting
 	sta STKEY
 
 	// Leave the CIA configured this way. It would be far better to disconnect

@@ -52,7 +52,7 @@
 // Keyboard settings
 
 // #define CONFIG_LEGACY_SCNKEY
-// #define CONFIG_KEYBOARD_C128
+// #define CONFIG_KEYBOARD_C128 // incomplete
 // #define CONFIG_KEYBOARD_C128_CAPS_LOCK
 // #define CONFIG_KEY_REPEAT_DEFAULT
 // #define CONFIG_KEY_REPEAT_ALWAYS

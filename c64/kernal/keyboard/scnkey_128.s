@@ -28,7 +28,7 @@ scnkey_matrix_128_loop:
 	cmp #$FF
 	beq scnkey_matrix_128_loop_next    // skip if no key pressed from this row
 	cpy #$FF
-	bne scnkey_128_no_keys             // clash, more than one key pressed
+	bne scnkey_128_no_keys             // jam, more than one key pressed
 	// We have at least one key pressed in this row, we need to find which one exactly
 	ldy #$07
 scnkey_matrix_128_loop_inner:

@@ -1,0 +1,3 @@
+DEX + STX $DC02
+
+Optimization to store $FF in I/O register, when X is known to be $00 - trivial, not copyrightable.

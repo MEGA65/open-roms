@@ -31,7 +31,7 @@
 
 // PETSCII codes for our extended screen editor       XXX implement these
 
-.const KEY_BOTTOM       = $02  // CTRL+B            - DolphinDOS compatible
+.const KEY_BOTTOM       = $02  // CTRL+B            - Open ROMs unofficial, DolphinDOS compatible
 .const KEY_TAB_FW       = $8F  // CTRL+>, TAB       - Open ROMs unofficial, original TAB conflicts with C64 PETSCII
 .const KEY_TAB_BW       = $80  // CTRL+<, SHIFT+TAB - Open ROMs unofficial, original TAB conflicts with C64 PETSCII
 

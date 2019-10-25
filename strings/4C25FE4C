@@ -1,0 +1,3 @@
+JMP $FE25 (MEMTOP) + JMP (address doees not match)
+
+Very small part of Kernal jumptable - part of Kernal API, list of facts without any logic (see also fe25.interop). Not copyrightable.

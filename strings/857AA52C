@@ -1,0 +1,3 @@
+STA $7A (TXTPTR low byte) + LDA $2C (TXTAB high byte)
+
+$7A and $2C are documented zeropage locations, they are related so it's normal that they are read/written one after another. Here the similarity is limited to just 2 instructions (does not even cover full access of the variables) - this is trivial and thus not copyrightable.

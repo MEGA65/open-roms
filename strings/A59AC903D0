@@ -1,0 +1,3 @@
+LDA $9A + CMP #$03 + BNE (offset does not match)
+
+Just a check whether the default output device is screen - trivial, not copyrightable.

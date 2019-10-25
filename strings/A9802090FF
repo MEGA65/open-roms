@@ -1,0 +1,3 @@
+LDA #$80 + JSR $FF90 (SETMSG)
+
+There are just two standard parameters of SETMSG - $00 and $80 (to tell Kernal wheether to print out messages or not). This is typical call of Kernal API, not copyrightable.

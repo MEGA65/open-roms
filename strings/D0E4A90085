@@ -1,0 +1,3 @@
+BNE (offset match) + LDA #$00 + STA (zeropage address does not match)
+
+If value is 0, clear some zeropage addres (not even the same in original ROMs and our implementation). Nothing creative - not copyrightable.

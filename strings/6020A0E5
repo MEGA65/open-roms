@@ -1,0 +1,3 @@
+RTS (end of routine) + JSR $E5A0 (setup VIC and I/O)
+
+Similarity only because a routine starts with video chipset initialization - trivial, not copyrightable.

@@ -1,0 +1,3 @@
+CMP #$0E + BNE (7 bytes forward) + LDA $D018 + ORA #$02 + BNE (offset does not match)
+
+A piece of code that (depending on the PETSCII character) sets/unsets lowercase mode. Not many sane ways exists to do this, some similarities are unevitable. Overall, this code is trivial (and not even fully the same) - not copyrightable.

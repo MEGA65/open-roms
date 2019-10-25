@@ -1,0 +1,3 @@
+PETSCII: (space) MISMATCH
+
+Single word with a space character is not copyrightable. What's more, the MISMATCH word in our BASIC is stored in compressed form - this one must come from Kernal, from out 'panic screen' implementation, something not even present in the original ROM.

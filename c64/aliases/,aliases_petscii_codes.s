@@ -3,7 +3,8 @@
 // PETSCII codes for all the supported keys, for all the keyboards
 //
 // - [CM64]  Compute's Mapping the Commodore 64
-// - [CM128] Compute's Mapping the Commodore 128 
+// - [CM128] Compute's Mapping the Commodore 128
+// - https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt
 // - https://en.wikipedia.org/wiki/PETSCII
 //
 
@@ -22,7 +23,7 @@
 
 // Note - the following PETSCII codes are currently unassigned, can be used for further extensions:
 //
-// $01, $04, $06, $0A, $0B, $0C, $0F, $82, $83, $84 
+// $01, $04, $06, $0A, $0B, $0C, $0F, $18, $82
 
 
 .const KEY_NA           = $00  // to indicate that no key is presed
@@ -31,11 +32,11 @@
 // PETSCII codes for our extended screen editor       XXX implement these
 
 .const KEY_BOTTOM       = $02  // CTRL+B            - DolphinDOS compatible
-.const KEY_TAB_FW       = $8F  // CTRL+>, TAB       - Open ROMs unofficial
-.const KEY_TAB_BW       = $80  // CTRL+<, SHIFT+TAB - Open ROMs unofficial
+.const KEY_TAB_FW       = $8F  // CTRL+>, TAB       - Open ROMs unofficial, original TAB conflicts with C64 PETSCII
+.const KEY_TAB_BW       = $80  // CTRL+<, SHIFT+TAB - Open ROMs unofficial, original TAB conflicts with C64 PETSCII
 
 
-// PETSCII codes for certain C128 and C65 functionalities                     XXX implement these
+// PETSCII codes for certain C128 and C65 functionalities     XXX implement these
 
 .const KEY_BELL         = $07  // C65 / C128, no key
 .const KEY_ESC          = $1B  // C65 / C128
@@ -43,7 +44,8 @@
 
 // PETSCII codes for programmable keys
 
-.const KEY_RUN          = $03
+.const KEY_STOP         = $03
+.const KEY_RUN          = $83
 
 .const KEY_F1           = $85
 .const KEY_F2           = $86
@@ -54,14 +56,14 @@
 .const KEY_F7           = $8B
 .const KEY_F8           = $8C
 
-.const KEY_F9           = $15  // C65, Open ROMs unofficial
-.const KEY_F10          = $16  // C65, Open ROMs unofficial
-.const KEY_F11          = $17  // C65, Open ROMs unofficial
-.const KEY_F12          = $18  // C65, Open ROMs unofficial
-.const KEY_F13          = $19  // C65, Open ROMs unofficial
-.const KEY_F14          = $1A  // C65, Open ROMs unofficial
+.const KEY_F9           = $10  // C65
+.const KEY_F10          = $15  // C65
+.const KEY_F11          = $16  // C65
+.const KEY_F12          = $17  // C65
+.const KEY_F13          = $19  // C65
+.const KEY_F14          = $1A  // C65
 
-.const KEY_HELP         = $10  // C65 / C128, Open ROMs unofficial
+.const KEY_HELP         = $84  // C65, also used for our C128 support
 
 
 // PETSCII codes for cursor keys

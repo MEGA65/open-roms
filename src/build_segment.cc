@@ -717,7 +717,7 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
     }
     else if (!isSolved())
     {
-        logOutput << "filled in - dropped bytes: " << gaps[gapAddress] << "\n";
+        logOutput << "filled in - dropped bytes: " << gaps[gapAddress] - offset << "\n";
     }
     else
     {

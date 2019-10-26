@@ -14,7 +14,7 @@ UDTIM:
 	// after this time we have to reset the clock.
 
 	inc TIME+0
-	bne udtim_update_stkey // done with clock
+	bne udtim_update_stkey   // done with clock
 	inc TIME+1
 	bne udtim_clock_rollover
 	inc TIME+2
@@ -31,25 +31,33 @@ udtim_update_stkey: // entry to be used when interrupts are disabled
 	// but I hope the mechanism below will be compatible enough.
 
 	lda #$80
-	sta CIA1_PRA  // select all the rows except the last one
+	sta CIA1_PRA             // select all the rows except the last one
 #if CONFIG_KEYBOARD_C128
 	ldx #$00
-	stx VIC_XSCAN // connect all the extra C128 keys
+	stx VIC_XSCAN            // connect all the extra C128 keys
+#endif
+#if CONFIG_KEYBOARD_C65
+	ldx #$00
+	stx C65_EXTKEYS_PR       // connect all the extra C65 keys
 #endif
 
-	lda CIA1_PRB  // read the keys
+	lda CIA1_PRB             // read the keys
 	eor #$FF
-	sta STKEY     // store reversed state - to filter out anything vulnerable to ghosting
+	sta STKEY                // store reversed state - to filter out anything vulnerable to ghosting
 
 #if CONFIG_KEYBOARD_C128
-	dex           // puts $FF
-	stx VIC_XSCAN // disconnect the extra C128 keys
+	dex                      // puts $FF
+	stx VIC_XSCAN            // disconnect the extra C128 keys
+#endif
+#if CONFIG_KEYBOARD_C65
+	dex                      // puts $FF
+	stx C65_EXTKEYS_PR       // disconnect the extra C65 keys
 #endif
 	lda #$7F
-	sta CIA1_PRA  // select the last row (bit to 0)
+	sta CIA1_PRA             // select the last row (bit to 0)
 
-	lda CIA1_PRB  // read the row
-	ora STKEY     // filter out what might be the reason of ghosting
+	lda CIA1_PRB             // read the row
+	ora STKEY                // filter out what might be the reason of ghosting
 	sta STKEY
 
 	// Leave the CIA configured this way. It would be far better to disconnect
@@ -63,11 +71,11 @@ udtim_clock_rollover:
 	// At this point TIME+0 contains 0
 	lda TIME+1
 	cmp #$1A
-	bne udtim_update_stkey // done with clock
+	bne udtim_update_stkey   // done with clock
 	lda TIME+2
 	cmp #$4F
-	bne udtim_update_stkey // done with clock
+	bne udtim_update_stkey   // done with clock
 	lda #$00
 	sta TIME+2
 	sta TIME+1
-	beq udtim_update_stkey // done with clock - will always jump
+	beq udtim_update_stkey   // done with clock - will always jump

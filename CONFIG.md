@@ -125,7 +125,7 @@ Needs 30-250 more space in KERNAL segment (depending on the features enabled for
 
 ### `CONFIG_KEYBOARD_C128`
 
-Allows to use additional keys found on the C128 keyboard. NOTE: might be buggy, on VICE emulator I can't get all the keys working.
+Allows to use additional keys found on the C128 keyboard.
 
 Needs about 130 bytes more space in KERNAL segment. If unsure - disable.
 
@@ -134,6 +134,10 @@ Needs about 130 bytes more space in KERNAL segment. If unsure - disable.
 Allows to use CAPS LOCK key on the C128 keyboard, this is independent from `CONFIG_KEYBOARD_C128`. Support is C64-safe (there is a protection against false-positive reading on the C64).
 
 Needs about 50 bytes more space in KERNAL segment. If unsure - disable.
+
+### `CONFIG_KEYBOARD_C65`, `CONFIG_KEYBOARD_C65_CAPS_LOCK`
+
+Similar, but for C65 keyboard. Please note - the C65 keyboard support is (as of yet) completely untested!
 
 ### `CONFIG_KEY_REPEAT_DEFAULT`
 

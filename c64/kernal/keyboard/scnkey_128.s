@@ -48,15 +48,11 @@ scnkey_matrix_128_loop_next:
 	dex
 	bpl scnkey_matrix_128_loop
 
-	// Scanning the C128 keyboard part complete - check if we got a key
-
-	cpy #$FF
-	beq scnkey_128_done
-
-	// Continue with C64 keyboard scanning 
+	// Scanning the C128 keyboard part complete
 
 scnkey_128_done:
 
+	stx VIC_XSCAN                  // $FF, disconnects C128 keys
 	rts
 
 

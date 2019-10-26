@@ -42,10 +42,10 @@
 // Multiple SID support
 
 #define CONFIG_SID_2ND
-.const CONFIG_SID_2ND_ADDRESS = $D420
+.const CONFIG_SID_2ND_ADDRESS = $D440
 
 // #define CONFIG_SID_3RD
-.const CONFIG_SID_3RD_ADDRESS = $D440
+.const CONFIG_SID_3RD_ADDRESS = $D420
 
 // #define CONFIG_SID_D4XX
 // #define CONFIG_SID_D5XX
@@ -54,8 +54,10 @@
 // Keyboard settings
 
 // #define CONFIG_LEGACY_SCNKEY
-// #define CONFIG_KEYBOARD_C128 // incomplete
+// #define CONFIG_KEYBOARD_C128
 // #define CONFIG_KEYBOARD_C128_CAPS_LOCK
+#define CONFIG_KEYBOARD_C65 // untested
+#define CONFIG_KEYBOARD_C65_CAPS_LOCK // untested
 // #define CONFIG_KEY_REPEAT_DEFAULT
 // #define CONFIG_KEY_REPEAT_ALWAYS
 #define CONFIG_KEY_FAST_SCAN

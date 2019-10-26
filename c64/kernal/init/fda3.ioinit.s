@@ -96,6 +96,13 @@ IOINIT:
 	// Value checked on original ROM
 	stx CIA2_DDRA
 
+#if CONFIG_KEYBOARD_C65 || CONFIG_KEYBOARD_C65_CAPS_LOCK
+
+	lda #$02
+	sta C65_EXTKEYS_DDR // output for most keys, input for CAPS LOCK bit
+
+#endif
+
 	// Set DDR on CIA2 for IEC bus, VIC-II banking
 	lda #$3F
 	sta CIA2_DDRA

@@ -3,7 +3,7 @@
 
 Here are the features of the Open ROMs not found in the original ROMs from the 80s (many of them are [configurable](CONFIG.md)):
 
-* improved keyboard scanning, supports anti-ghosting and is resistant to joystick interference (one variant even supports multi-keyy rollover)
+* improved keyboard scanning, resistant to ghosting and joystick interference (one variant even supports multi-keyy rollover), supports additional C128 keys
 * joystick can be used to move text cursor
 * uses RAM under ROM and I/O: 61438 bytes free
 * cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses

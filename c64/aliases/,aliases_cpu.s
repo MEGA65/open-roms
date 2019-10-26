@@ -18,6 +18,17 @@
 
 
 //
+// Trick to skip a 2-byte instruction
+//
+
+
+.pseudocommand skip_2_bytes_trash_nvz
+{
+	.byte $2C
+}
+
+
+//
 // Stack manipulation - some CPUs will leave .A unchanged, some will use it as temporary storage, so consider .A trashed
 //
 

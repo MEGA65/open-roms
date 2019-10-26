@@ -78,6 +78,23 @@ SCNKEY:
 
 #endif
 
+#if CONFIG_KEYBOARD_C65_CAPS_LOCK
+
+	lda C65_EXTKEYS_PR
+	and #$01
+	bne !+                             // branch if no CAPS LOCK
+
+	lda #KEY_CAPS_LOCK
+	sta SHFLAG
+!:
+
+#if !CONFIG_KEYBOARD_C65
+	ldx #$FF
+	stx C65_EXTKEYS_PR                 // disconnect C128 keys if no C128 keyboard is supported
+#endif
+
+#endif
+
 	ldy #(__kb_matrix_bucky_confmask_end - kb_matrix_bucky_confmask - 1)
 scnkey_bucky_loop:
 	lda kb_matrix_bucky_confmask, y
@@ -85,6 +102,10 @@ scnkey_bucky_loop:
 #if CONFIG_KEYBOARD_C128
 	lda kb_matrix_bucky_confmask_c128, y
 	sta VIC_XSCAN
+#endif
+#if CONFIG_KEYBOARD_C65
+	lda kb_matrix_bucky_confmask_c65, y
+	sta C65_EXTKEYS_PR
 #endif
 	lda kb_matrix_bucky_testmask, y
 	and CIA1_PRB
@@ -124,6 +145,9 @@ scnkey_bucky_loop:
 #if CONFIG_KEYBOARD_C128
 	stx VIC_XSCAN
 #endif
+#if CONFIG_KEYBOARD_C65
+	stx C65_EXTKEYS_PR
+#endif
 	dex                                // puts $FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
@@ -153,6 +177,9 @@ scnkey_bucky_loop:
 	ldy #$FF                           // offset in key matrix table, $FF for not found yet
 #if CONFIG_KEYBOARD_C128
 	jsr scnkey_128
+#endif
+#if CONFIG_KEYBOARD_C65
+	jsr scnkey_65
 #endif
 	ldx #$07
 scnkey_matrix_loop:
@@ -280,17 +307,37 @@ scnkey_output_key:
 
 	// Retrieve the PETSCII code
 
-#if CONFIG_KEYBOARD_C128
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
 
 	cpy #$40
 	bcc !+
 
+#if CONFIG_KEYBOARD_C128
 	lda kb_matrix_128 - $41, y         // retrieve key code from C128 extended matrix
+#elif CONFIG_KEYBOARD_C65
+
+	// Select key matrix (normal or shifted) for extended C65 keys
+
+	lda SHFLAG
+	and #%00000111 // KEY_FLAG_SHIFT + KEY_FLAG_VENDOR + KEY_FLAG_CTRL
+	beq scnkey_output_65_no_shift
+	cmp #KEY_FLAG_SHIFT
+	// XXX how to behave on VENDOR/CTRL key? Harmonize this with claasic keys behavior
+	bne scnkey_no_keys                 // no scanning for this bucky key combination
+
+	lda kb_matrix_65_shifted - $41, y
+	jmp scnkey_got_petscii
+
+scnkey_output_65_no_shift:
+
+	lda kb_matrix_65 - $41, y 
+
+#endif
 	jmp scnkey_got_petscii
 !:
 	lda (KEYTAB), y	                   // retrieve key code from standard matrix
 
-	// XXX this will be needed for extended screen editor
+	// XXX this will be needed for extended screen editor and C128 keyboard
 
 	// cmp KEY_TAB_FW                  // special handling for SHIFT+TAB
 	// bne scnkey_got_petscii          // XXX or to scnkey_handle_caps_lock
@@ -302,16 +349,16 @@ scnkey_output_key:
     // !:
 	// lda KEY_TAB_BW                  // bne scnkey_got_petscii if CAPS LOCK is handled
 
-#endif // CONFIG_KEYBOARD_C128_CAPS_LOCK
+#endif // CONFIG_KEYBOARD_C128 or CONFIG_KEYBOARD_C65
 
-#if CONFIG_KEYBOARD_C128_CAPS_LOCK
+#if CONFIG_KEYBOARD_C128_CAPS_LOCK || CONFIG_KEYBOARD_C65_CAPS_LOCK
 
 	// Check if we need special handling for a CAPS LOCK key
 	// This is shorter than a separate set of tables
 
 scnkey_handle_caps_lock:
 
-#if !CONFIG_KEYBOARD_C128
+#if !CONFIG_KEYBOARD_C128 && !CONFIG_KEYBOARD_C65
 	lda (KEYTAB), y
 #endif
 	tax 
@@ -332,9 +379,9 @@ scnkey_handle_caps_lock:
 !:
 	txa
 
-#endif // CONFIG_KEYBOARD_C128_CAPS_LOCK
+#endif // CONFIG_KEYBOARD_C128_CAPS_LOCK or CONFIG_KEYBOARD_C65_CAPS_LOCK
 
-#if !CONFIG_KEYBOARD_C128 && !CONFIG_KEYBOARD_C128_CAPS_LOCK
+#if !CONFIG_KEYBOARD_C128 && !CONFIG_KEYBOARD_C128_CAPS_LOCK && !CONFIG_KEYBOARD_C65 && !CONFIG_KEYBOARD_C65_CAPS_LOCK
 
 	lda (KEYTAB), y
 

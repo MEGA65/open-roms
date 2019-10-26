@@ -1,0 +1,4 @@
+$F142 is a well-known address of keyboard reading routine, described for example here:
+- http://sta.c64.org/cbm64kbdfunc.html
+
+It is used for eexample by a music eeditor here: https://github.com/martinpiper/C64Public/blob/master/MusicEditor/GetKey.a

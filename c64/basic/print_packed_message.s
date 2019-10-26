@@ -32,15 +32,13 @@ packed_message_search:
 
 found_message_in_token_stream:
 	// Now print each word in the message
-	tya
-	pha
+	phy_trash_a
 	lda packed_message_tokens,y
 	cmp #$ff
 	beq !+
 	jsr print_packed_word
 	jsr print_space
-	pla
-	tay
+	ply_trash_a
 	iny
 	bne found_message_in_token_stream
 !:
@@ -139,16 +137,14 @@ next_packed_word_char:
 	tax
 
 	// Save Y so it doesn't get clobbered by CHROUT
-	tya
-	pha
+	phy_trash_a
 
 	// X=1-14 = first 14 chars, so subtract one
 	lda packed_message_chars-1,x
 	jsr JCHROUT
 
 	// See if there is a char in the low nybl to print
-	pla
-	tay
+	ply_trash_a
 	lda (FRESPC),y
 	and #$0f
 	beq end_of_packed_word
@@ -158,8 +154,7 @@ next_packed_word_char:
 has_lo_nybl_char:
 	// We need to print the low nybl char as well
 	tax
-	tya
-	pha
+	phy_trash_a
 
 	// Skip lower nybls of $F or $0 in nybl packed
 	// bytes, as these do not encode characters
@@ -173,8 +168,7 @@ has_nybl:
 	lda packed_message_chars-1,x
 	jsr JCHROUT
 !:
-	pla
-	tay
+	ply_trash_a
 	// FALLTHROUGH
 
 no_lo_nybl_char:
@@ -204,8 +198,7 @@ next_is_literal_char:
 unpack_literal_char:
 	// Output the literal char, and ready for next char
 	iny
-	tya
-	pha
+	phy_trash_a
 	lda (FRESPC),y
 	jsr JCHROUT
 	pla
@@ -222,7 +215,6 @@ is_uncommon_char:
 
 	// We need to print the low nybl char as well
 	tax
-	tya
-	pha
+	phy_trash_a
 
 	jmp has_nybl

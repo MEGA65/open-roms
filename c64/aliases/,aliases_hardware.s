@@ -1,7 +1,10 @@
 
 //
-// Names of hardware registers - slightly modified names from C64 Programmer's Reference Guide
+// Names of hardware registers - names from C64 Programmer's Reference Guide, sometimes slightly modified
 //
+
+
+#if CONFIG_PLATFORM_COMMODORE_64
 
 	// CPU memory registers
 
@@ -61,7 +64,14 @@
 	.label VIC_SP5COL   = $D02C
 	.label VIC_SP6COL   = $D02D
 	.label VIC_SP7COL   = $D02E
-	
+
+#if !CONFIG_MB_MEGA_65 && !CONFIG_MB_ULTIMATE_64
+
+	.label VIC_XSCAN    = $D02F // C128 only
+	.label VIC_CLKRATE  = $D030 // C128 only
+
+#endif
+
 	// SID registers
 
 	.label __SID_BASE   = $D400  // base address of the chip
@@ -154,3 +164,13 @@
 	.const BIT_CIA2_PRA_DAT_OUT  = $20  // 1 - low (pulled), 0 - high (released)
 	.const BIT_CIA2_PRA_CLK_IN   = $40  // 0 - low (pulled), 1 - high (released)
 	.const BIT_CIA2_PRA_DAT_IN   = $80  // 0 - low (pulled), 1 - high (released)
+
+#if CONFIG_MB_MEGA_65 
+
+	.const C65_EXTKEYS_PR  = $D607
+	.const C65_EXTKEYS_DDR = $D608
+
+#endif
+
+
+#endif

@@ -1,7 +1,7 @@
 
 default_irq_handler:
 
-	jsr blink_cursor
+	jsr cursor_blink
 	jsr JSCNKEY
 	jsr JUDTIM // update jiffy clock
 

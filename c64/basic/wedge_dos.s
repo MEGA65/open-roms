@@ -1,7 +1,14 @@
 
 #if CONFIG_DOS_WEDGE
 
+// .X has to contain size of the buffer
+
 wedge_dos:
+
+	// Prepare buffer - finish it with '0'
+
+	lda #$00
+	sta BUF,x
 
 	// Close all the channels, so that wedge has full control
 	jsr JCLALL
@@ -11,6 +18,16 @@ wedge_dos:
 	lda #$0F
 	ldy #$0F
 	jsr JSETFLS
+
+	// Setup necessary parts of BASIC
+
+	lda #<(BUF+1)
+	sta TXTPTR+0
+	lda #>(BUF+1)
+	sta TXTPTR+1
+
+	lda #$FF
+	sta CURLIN+1
 
 	// Now we have to check what the user wants us to do
 
@@ -210,13 +227,12 @@ wedge_dos_clean_exit:
 	jsr JCLALL
 	// Print new line
 	jsr print_return
-	jmp basic_end_of_line
+	jmp basic_main_loop
 
 wedge_dos_basic_error:
 	pha
 	jsr JCLALL
-	pla
-	tax
+	plx_trash_a
 	dex
 	jmp do_basic_error
 

@@ -112,26 +112,6 @@ not_a_token:
 	cmp #$3a
 	beq basic_skip_char
 	
-#if CONFIG_DOS_WEDGE
-	
-	// Are we in direct mode?
-	// DOS Wedge is a hacky solution (inelegant, but convenient),
-	// BASIC programmers should implement communication with drives
-	// the standard way, handling channels properly. Besides,
-	// current implementation does not support characters under ROM
-	ldx CURLIN+1
-	cpx #$ff
-	bne !+
-	// We are in direct mode, allow wedge to handle '@' sign
-	// XXX Maybe it should be allowed only as the first command?
-	cmp #$40
-	bne !+
-	jsr basic_consume_character
-	jmp wedge_dos
-!:
-
-#endif // CONFIG_DOS_WEDGE
-
 	// If all else fails, it's a syntax error
 	jmp do_SYNTAX_error
 

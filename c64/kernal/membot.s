@@ -12,13 +12,14 @@ MEMBOT:
 
 	bcc membot_set
 	
-	ldx MEMSTR+0
 	ldy MEMSTR+1
-	rts
+	ldx MEMSTR+0
+
+	// FALLTROUGH
 
 membot_set:
 
+	sty MEMSTR+1
 	stx MEMSTR+0
-	stx MEMSTR+1
 	
 	rts

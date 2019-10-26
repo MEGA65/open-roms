@@ -14,10 +14,8 @@ iec_return_success:
 	lda #$00
 	sta C3PO
 	// Restore registers
-	pla
-	tay
-	pla
-	tax
+	ply_trash_a
+	plx_trash_a
 	// Report success
 	clc
 	rts
@@ -30,9 +28,7 @@ iec_return_DEVICE_NOT_FOUND:
 	lda #$00
 	sta C3PO
 	// Restore registers
-	pla
-	tay
-	pla
-	tax
+	ply_trash_a
+	plx_trash_a
 	// Report error
 	jmp kernalerror_DEVICE_NOT_FOUND

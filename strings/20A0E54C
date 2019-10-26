@@ -1,0 +1,3 @@
+JSR $E5A0 + JMP (address does not match)
+
+Instruction (call to unofficial, but a well-known routine) + some part. Trivial, not copyrightable.

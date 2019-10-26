@@ -1,0 +1,4 @@
+
+// Screen CHROUT
+
+	STUB_IMPLEMENTATION()

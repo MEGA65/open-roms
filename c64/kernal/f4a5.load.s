@@ -36,9 +36,6 @@ LOAD:
 	jsr install_ram_routines
 #endif
 
-	// Allow platform-specific routine to takeover the flow
-	TARGET_HOOK_LOAD()
-
 	// Check whether we support the requested device
 	lda FA
 	and #$FC

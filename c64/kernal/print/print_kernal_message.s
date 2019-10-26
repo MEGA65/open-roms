@@ -9,7 +9,7 @@
 
 print_kernal_message:
 
-	lda __kernal_messages_start, x
+	lda __msg_kernal_first, x
 	bpl !- // 0 marks end of string
 	and #$7F
 	jmp JCHROUT

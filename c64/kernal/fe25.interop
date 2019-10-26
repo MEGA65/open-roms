@@ -1,0 +1,3 @@
+
+Address adjusted to support $FE2D - routine which is probably used by many cartridges and other software to initialize parts of the system. At least the UCart uses it - see here:
+- https://www.elektroda.pl/rtvforum/topic3293027.html

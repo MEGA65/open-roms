@@ -10,10 +10,8 @@
 iec_tx_command:
 
 	// Store .X and .Y on the stack - preserve them
-	txa
-	pha
-	tya
-	pha
+	phx_trash_a
+	phy_trash_a
 
 	// Notify all devices that we are going to send a byte
 	// and it is going to be a command (pulled ATN)

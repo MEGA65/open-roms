@@ -25,7 +25,7 @@ clrchn_real:
 	// Handle IEC output device
 	jsr UNLSN
 !:
-clrchn_reset: // entry needed by CHRIN
+clrchn_reset: // entry needed by setup_vicii
 	// Set input device number to keyboard
 	lda #$00
 	sta DFLTN

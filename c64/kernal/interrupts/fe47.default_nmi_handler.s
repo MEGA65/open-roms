@@ -6,15 +6,8 @@ default_nmi_handler:
 
 	// Save registers, sequence according to Compute's Mapping the Commodore 64, page 73
 	pha
-#if CONFIG_CPU_MOS_6502
-	txa
-	pha
-	tya
-	pha
-#else
-	phx
-	phy
-#endif
+	phx_trash_a
+	phy_trash_a
 
 	// XXX: RS-232 support is not implemented
 

@@ -1,0 +1,3 @@
+CMP #$12 + BNE (skip 4 bytes) + LDA #(value does not match)
+
+Small part of the PETSCII control codes handling routine - do something if handling character $12 (not even the same thing is done). Not creative - not copyrightable.

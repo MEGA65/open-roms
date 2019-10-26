@@ -2,8 +2,7 @@
 
 basic_do_error:
 	// Save error number
-	txa
-	pha
+	phx_trash_a
 
 	// Print ? at start
 	jsr print_return
@@ -11,8 +10,7 @@ basic_do_error:
 	jsr JCHROUT
 
 	// Print main part of error message
-	pla
-	tax
+	plx_trash_a
 	jsr print_packed_message
 
 	// Print ERROR at end

@@ -1,0 +1,3 @@
+$AB + LDY #$00 + LDA (zeropage addres does not match), Y
+
+Instruction + some parts. Not copyrightable.

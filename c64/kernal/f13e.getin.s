@@ -8,26 +8,9 @@
 // CPU registers that has to be preserved (see [RG64]): .X, .Y
 //
 
-// XXX currently does not preserve registers, to be fixed!
 
 GETIN:
 
-	// Wait for a key
-	lda NDX
-	bne !+
+	// XXX this should be a dispatcher for several different devices!
 
-	// Nothing in keyboard buffer to read
-	sec
-	lda #$00
-	rts
-	
-!:
-	lda KEYD
-	pha
-
-	jsr pop_keyboard_buffer
-
-	pla
-	clc
-
-	rts
+	jmp read_kb_buf

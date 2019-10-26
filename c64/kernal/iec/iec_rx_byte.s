@@ -7,13 +7,13 @@
 iec_rx_byte:
 
 	// Store .X and .Y on the stack - preserve them
-	txa
-	pha
-	tya
-	pha
+	phx_trash_a
+	phy_trash_a
 
 	// Timing is critical here - execute on disabled IRQs
-	php
+	// The best practice would be to do PHP first, but it seems this is not
+	// what the original ROM does; furthermore, pushing additional bytes to
+	// stack can wreck autostart softwaree loading at $0100
 	sei
 
 	// First, we wait for the talker to release the CLK line
@@ -107,8 +107,7 @@ iec_rx_clk_wait2:
 	// Timeout
 	jsr kernalstatus_EOI
 	pla
-	plp
-    
+	
 	// Restore registers
 	pla
 	tay
@@ -116,6 +115,7 @@ iec_rx_clk_wait2:
 	tax
     
 	sec // XXX confirm that sec is really a way to report timeout here
+	cli
 	rts
 !:
 	// More bits?
@@ -130,9 +130,6 @@ iec_rx_clk_wait2:
 
 	// Retreive the received byte
 	pla
-
-	// Return no-error
-	plp
 	
 	// Restore registers
 	sta TBTCNT // $A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html
@@ -143,5 +140,6 @@ iec_rx_clk_wait2:
 	lda TBTCNT
 
 	clc
+	cli
 	rts
 

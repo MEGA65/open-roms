@@ -1,0 +1,3 @@
+STA $F4 + RTS (end of subroutine) + JSR (address does not match)
+
+Storing value in a documented memory location, followed by next subroutine started by JSR - not creative, not copyrightable.

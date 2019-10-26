@@ -1,0 +1,3 @@
+$DD + LDA #$3F + STA $DD02
+
+Some part + storing a default value in a documented I/O register - trivial, not copyrightablee.

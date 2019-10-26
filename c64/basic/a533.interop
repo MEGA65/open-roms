@@ -1,0 +1,7 @@
+This routine is used to launch other software. It is used by:
+
+- Uncrunch (see https://github.com/mist64/pucrunch/blob/master/uncrunch.asm)
+- FileBrowser64 (FB64) - found by debugging
+
+and probably others.
+

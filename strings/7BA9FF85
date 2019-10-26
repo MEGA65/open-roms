@@ -1,0 +1,3 @@
+$7B + LDA #$FF + STA (zeropage address does not match)
+
+One instruction + some parts. Not copyrightable.

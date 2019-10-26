@@ -5,10 +5,8 @@
 iec_turnaround_to_listen:
 
 	// Store .X and .Y on the stack - preserve them
-	txa
-	pha
-	tya
-	pha
+	phx_trash_a
+	phy_trash_a
 
 	// Timing is critical here - execute on disabled IRQs
 	php

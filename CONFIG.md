@@ -1,7 +1,7 @@
 
 # Configuring the build
 
-It's not possible to provide ROM builds that suit everyone needs - therefore configuration files were introduced, separately for each of the hardware targets:
+It's not possible to provide ROM builds that suit everyone needs - therefore configuration files were introduced, few predefined configurations are provided with sane defaults:
 
 * [`c64/,,config_generic.s`](c64/,,config_generic.s)
 * [`c64/,,config_mega65.s`](c64/,,config_mega65.s)
@@ -11,7 +11,33 @@ Just edit them and recompile the project. To enable particular option - uncommen
 
 Note however, that features do not came for free - enabling them needs some additional ROM space (in BASIC segment, in KERNAL segment, or in both), which is VERY limited on the target machines. Some options might be unavailable for speecific targets - read the comments in the configuration files. Some options might also carry compatibility and/or performance hit - so choose wisely.
 
-Sane defaults are already present - different for each target.
+## Hardware platform and brand
+
+### `CONFIG_PLATFORM_COMMODORE_64`
+
+Commodore 64 is the only hardware platform available now - and the main one, as the Open ROMs API is meant to be compatible with the Commodore 64.
+
+Since Open ROMs is highly modular, it should be possible to add other platforms in the future (like 8-bit Atari computers or Commander X16), if they share the following common characteristics:
+
+* MOS 6502 CPU or compatible
+* 8KB ROM area `$A000`-`$BFFF`
+* 8KB ROM area `$E000`-`$FFFF`
+
+### `CONFIG_MB_MEGA_65`, `CONFIG_MB_ULTIMATE_64`
+
+Select if the ROM is going to be used exclusively on the specific motherboard. It prevents from enabling options not having sense, skips initialization of C128-only registers, etc.
+
+### `CONFIG_BRAND_GENERIC`
+
+If you don't know which variant to choose - select this one.
+
+### `CONFIG_BRAND_TESTING`
+
+Use this one for any kind of testing/experimental build.
+
+### `CONFIG_BRAND_MEGA_65`, `CONFIG_BRAND_ULTIMATE_64`
+
+Select if you are using appropriate motherboard.
 
 ## Processor instruction set
 
@@ -30,10 +56,17 @@ If unsure - select this one.
 Choose if your CPU supports the Western Design Center 65C02 instruction set, like:
 
 * WDC 65C02 - used in the Turbo Master accelerator
-* CSG 65CE02 
-* CSG 4510 - used in the Commodore 65 prototypes
 
-It enables some speed/size code optimizations. Warning - this is untested!
+It enables some speed/size code optimizations.
+
+### `CONFIG_CPU_CSG_65CE02`
+
+Choose if your CPU supports the Commodore Semiconductor Group 65CE02 instruction set, like:
+
+* CSG 65CE02 
+* CSG 4510 - microcontroller used in the Commodore 65 prototypes
+
+It enables some speed/size code optimizations.
 
 ### `CONFIG_CPU_WDC_65816`
 
@@ -42,9 +75,9 @@ Choose if your CPU supports the 16-bit Western Design Center 65816 instruction s
 * WDC 65C816 - used in the Flash 8 accelerator
 * WDC 65C816S - used in the SuperCPU accelerator
 
-It enables some speed/size code optimizations. Warning - this is untested!
+It enables some speed/size code optimizations.
 
-## Memory models
+## Memory model
 
 Different layouts of memory are possible - but they can be selected at compile time only.
 
@@ -80,13 +113,83 @@ Cause the system to support SIDs in `$D4xx` and `$D5xx` ranges, respectively.
 
 Each of them needs a couple of bytes in KERNAL segment - but they can share some code, and `$D4xx` range support replaces the standard `$D400` address handling, so exact amount depends on the exact configuration.
 
-## Miscelaneous features
+## Keyboard
+
+Original keyboard support routine is just horrible. It does nothing to prevent ghosting - press A+S+D at the same time - it prints F. Try to use joystick connected to control port 1 - it outputs phantom characters. The Open ROMs provides much more sophisticated routines to prevent such problems.
+
+### `CONFIG_LEGACY_SCNKEY`
+
+Uses old Open ROMs keyboard scanning routine, which is basically example routine by TWW/CTR, hacked to work within Kernal. It's greatest advantage is multi-key rollover, it's disadvantages - it's much less compatible (uses several bytes of memory which are normally free for user software - thus, it is considered legacy for now), does not support all the system variables (`RPTFLG` and `KEYLOG` are unsupported), and ignores the configuration options - this can be changed, but it requires some effort.
+
+Needs 30-250 more space in KERNAL segment (depending on the features enabled for current default routine). If unsure - disable.
+
+### `CONFIG_KEYBOARD_C128`
+
+Allows to use additional keys found on the C128 keyboard. NOTE: might be buggy, on VICE emulator I can't get all the keys working.
+
+Needs about 130 bytes more space in KERNAL segment. If unsure - disable.
+
+### `CONFIG_KEYBOARD_C128_CAPS_LOCK`
+
+Allows to use CAPS LOCK key on the C128 keyboard, this is independent from `CONFIG_KEYBOARD_C128`. Support is C64-safe (there is a protection against false-positive reading on the C64).
+
+Needs about 50 bytes more space in KERNAL segment. If unsure - disable.
+
+### `CONFIG_KEY_REPEAT_DEFAULT`
+
+Enables key repetition by default during the startup (sets `RPTFLG`).
+
+Needs 5 bytes more space in KERNAL segment.
+
+### `CONFIG_KEY_REPEAT_ALWAYS`
+
+Enables the key repetition and ignores `RPTFLG`.
+
+Saves 22 bytes from KERNAL segment.
+
+### `CONFIG_KEY_FAST_SCAN`
+
+Performs somee speed optimizations in the keyboard scanning routine, at the eexpense of some more ROM space.
+
+Needs 13 bytes more space in KERNAL segment. Only disable if you are running out of ROM space.
+
+### `CONFIG_JOY1_CURSOR` and `CONFIG_JOY2_CURSOR`
+
+Joystick movement also moves the cursor.
+
+Needs about 65 bytes of ROM space to handle both joysticks.
+
+## Eye candy
+
+### `CONFIG_COLORS_BRAND`
+
+Tries to adjust the color scheme to the selected brand. Some brands might not support this.
+
+### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_BRAND`
+
+Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_BRAND` heavily depends on the selected brand, not all the brands support it.
+
+Richer banners need more BASIC segment, varies between brands.
+
+### `CONFIG_BANNER_PAL_NTSC`
+
+If enabled, prints video system on startup banner. Eye candy only.
+
+Feature needs some bytes in BASIC (depending on banner type) and about 25 bytes in KERNAL segment.
+
+## Software features
+
+### `CONFIG_PANIC_SCREEN`
+
+If enabled, certain fatal errors will produce a nice bluescreen instead of just resetting the machine.
+
+Feature needs over 100 bytes in KERNAL segment. If unsure - enable.
 
 ### `CONFIG_DOS_WEDGE`
 
 If enabled, a simple DOS wedge is available from the direct mode - supports `@<drive_number>`, `@<command>`, `@$`, `@$<params>` and `@` commands.
 
-Feature needs about 330 bytes in BASIC segment.
+Feature needs about 330 bytes in BASIC segment. If unsure - enable.
 
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 
@@ -104,4 +207,4 @@ Replaces `RTS` stubbed routines implementation with one causing a break.
 
 ### `CONFIG_DBG_PRINTF`
 
-Makes 'printf' routine available.
+Makes `printf` routine available.

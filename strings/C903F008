@@ -1,0 +1,3 @@
+CMP #$03 + BEQ (skip 8 bytes)
+
+Skip few bytes if accumulator value is 3 - not creative, not copyrightable.

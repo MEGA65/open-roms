@@ -1,0 +1,3 @@
+JSR $FF5B (CINT) + CLI + JMP (vector does not match)
+
+Small part of the initialization routine, basically a sequence of 2 calls. Not creative - not copyrightable.

@@ -10,10 +10,8 @@
 iec_tx_byte:
 
 	// Store .X and .Y on the stack - preserve them
-	txa
-	pha
-	tya
-	pha
+	phx_trash_a
+	phy_trash_a
 
 	// Notify all devices that we are going to send a byte
 	// and it is going to be a data byte (released ATN)
@@ -26,7 +24,9 @@ iec_tx_byte:
 iec_tx_common:
 
 	// Timing is critical here - execute on disabled IRQs
-	php
+	// The best practice would be to do PHP first, but it seems this is not
+	// what the original ROM does; furthermore, pushing additional bytes to
+	// stack can wreck autostart softwaree loading at $0100
 	sei
 
 	// Wait till all receivers are ready, they should all release DATA
@@ -79,7 +79,7 @@ iec_tx_common_bit_is_sent:
 	dex
 	bpl iec_tx_common_sendbit
 
-	plp
+	cli
 
 	// Give device time to tell if they are busy by pulling DATA
 	// They should do it within 1ms

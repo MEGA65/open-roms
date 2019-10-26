@@ -7,9 +7,8 @@ STROUT:
 	// Setup pointer
 	sty FRESPC+1
 	sta FRESPC+0
-
-	txa	
-	pha
+	
+	phx_trash_a
 
 	// Get offset ready
 	ldy #$00
@@ -29,6 +28,6 @@ STROUT:
 	iny
 	bne !-
 !:
-	pla
+	pla // XXX can we use plx_trash_a here?
 	tax
 	rts

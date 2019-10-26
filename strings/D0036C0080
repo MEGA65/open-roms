@@ -1,0 +1,3 @@
+BNE (skip 3 bytes) + JMP ($8000)
+
+Jump through official (documented) vector depending on the flag state, could be 1 instruction in other architectures. Trivial, not copyrightable.

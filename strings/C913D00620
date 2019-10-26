@@ -1,0 +1,3 @@
+CMP #$13 + BNE (skip 6 bytes) + JSR (address does not match)
+
+Small part of the PETSCII control codes handling routine - do something if handling character $13. Not creative - not copyrightable.

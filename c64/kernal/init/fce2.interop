@@ -1,0 +1,5 @@
+System reset routine has to be placed under it's original location due to 'SYS 64738' being extremaly popular to reset the C64,
+to the point it went into popular culture.
+
+https://twitter.com/hashtag/SYS64738?src=hash
+https://www.computerhope.com/jargon/s/sys64738.htm

@@ -6,7 +6,6 @@
 
 
 // Check that platform configuration is correct
-
 {
 	.var selected = 0;
 
@@ -20,7 +19,6 @@
 
 
 // Check that motherboard extras configuration is correct
-
 {
 	.var selected = 0;
 
@@ -44,7 +42,6 @@
 
 
 // Check that brand configuration is correct
-
 {
 	.var selected = 0;
 
@@ -74,7 +71,6 @@
 
 
 // Check that processor configuration is correct
-
 {
 	.var selected = 0;
 
@@ -97,7 +93,6 @@
 
 
 // Check that memory model configuration is correct
-
 {
 	.var selected = 0;
 
@@ -114,7 +109,6 @@
 
 
 // Check that startup banner configuration is correct
-
 {
 	.var selected = 0;
 
@@ -143,7 +137,11 @@
 
 
 // Check if keyboard options are correct
-
+.function CHECK_KEYCMD(keycmd)
+{
+	.if (keycmd.size() > 0) .return 1
+	.return 0
+}
 {
 #if CONFIG_LEGACY_SCNKEY && (CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C128_CAPS_LOCK || CONFIG_KEYBOARD_C65 || CONFIG_KEYBOARD_C65_CAPS_LOCK)
 	.error "CONFIG_LEGACY_SCNKEY and CONFIG_KEYBOARD_C128* / CONFIG_KEYBOARD_C65* are mutually exclusive"
@@ -154,6 +152,42 @@
 #endif
 #if CONFIG_MB_ULTIMATE_64 && (CONFIG_KEYBOARD_C65 || CONFIG_KEYBOARD_C65_CAPS_LOCK)
 	.error "Selected CONFIG_MB_* is not compatible with CONFIG_KEYBOARD_C65*"
+#endif
+
+	.var num_pkeys_base = 0
+	.var num_pkeys_ext1 = 0
+	.var num_pkeys_ext2 = 0
+
+	.eval num_pkeys_base += CHECK_KEYCMD(CONFIG_KEYCMD_RUN)
+
+	.eval num_pkeys_base += CHECK_KEYCMD(CONFIG_KEYCMD_F1)
+	.eval num_pkeys_base += CHECK_KEYCMD(CONFIG_KEYCMD_F2)
+	.eval num_pkeys_base += CHECK_KEYCMD(CONFIG_KEYCMD_F3)
+	.eval num_pkeys_base += CHECK_KEYCMD(CONFIG_KEYCMD_F4)
+	.eval num_pkeys_base += CHECK_KEYCMD(CONFIG_KEYCMD_F5)
+	.eval num_pkeys_base += CHECK_KEYCMD(CONFIG_KEYCMD_F6)
+	.eval num_pkeys_base += CHECK_KEYCMD(CONFIG_KEYCMD_F7)
+	.eval num_pkeys_base += CHECK_KEYCMD(CONFIG_KEYCMD_F8)
+
+	.eval num_pkeys_ext1 += CHECK_KEYCMD(CONFIG_KEYCMD_HELP)
+
+	.eval num_pkeys_ext2 += CHECK_KEYCMD(CONFIG_KEYCMD_F9)
+	.eval num_pkeys_ext2 += CHECK_KEYCMD(CONFIG_KEYCMD_F10)
+	.eval num_pkeys_ext2 += CHECK_KEYCMD(CONFIG_KEYCMD_F11)
+	.eval num_pkeys_ext2 += CHECK_KEYCMD(CONFIG_KEYCMD_F12)
+	.eval num_pkeys_ext2 += CHECK_KEYCMD(CONFIG_KEYCMD_F13)
+	.eval num_pkeys_ext2 += CHECK_KEYCMD(CONFIG_KEYCMD_F14)
+
+	.var num_pkeys = num_pkeys_base
+#if !CONFIG_LEGACY_SCNKEY && (CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65)
+	.eval num_pkeys += num_pkeys_ext1
+#endif
+#if !CONFIG_LEGACY_SCNKEY && CONFIG_KEYBOARD_C65
+	.eval num_pkeys += num_pkeys_ext2
+#endif
+
+#if CONFIG_PROGRAMMABLE_KEYS
+	.if (num_pkeys == 0) .error "CONFIG_PROGRAMMABLE_KEYS requires at least one defined key"
 #endif
 }
 

@@ -5,6 +5,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 
 * improved keyboard scanning, resistant to ghosting and joystick interference (one variant even supports multi-keyy rollover), supports additional C128 keys
 * joystick can be used to move text cursor
+* pre-defined function keys
 * uses RAM under ROM and I/O: 61438 bytes free
 * cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses
 * wark start due to BRK prints out the instruction address

@@ -6,6 +6,7 @@
 // - [CM64] Compute's Mapping the Commodore 64 - page 228
 //
 // CPU registers that has to be preserved (see [RG64]): .Y
+// Additionally we have to preserve .X for out CHRIN implementation
 //
 
 CHROUT:

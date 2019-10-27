@@ -133,6 +133,8 @@ wedge_dos_x1:
 	rts
 
 wedge_dos_status:
+
+	jsr print_return
 	jsr wedge_dos_status_get
 	// FALLTROUGH
 

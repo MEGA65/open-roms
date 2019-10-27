@@ -161,7 +161,13 @@ Needs 13 bytes more space in KERNAL segment. Only disable if you are running out
 
 Joystick movement also moves the cursor.
 
-Needs about 65 bytes of ROM space to handle both joysticks.
+Needs about 65 bytes of ROM space in KERNAL segment to handle both joysticks.
+
+### `CONFIG_PROGRAMMABLE_KEYS`
+
+Allows to assign command to any function key, `RUN` key and `HELP` key (if selected keybaord has one) - just fill-in appropriate `CONFIG_KEYCMD_*` variable(s). Keys not present on the selected keyboard are ignored.
+
+Needs 25 bytes more space in KERNAL segment for the code. In addition, each configured key takes 3 bytes + length of the command.
 
 ## Eye candy
 

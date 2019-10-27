@@ -3,6 +3,8 @@
 // Startup banner, to be displayed during cold start
 //
 
+.encoding "petscii_upper"
+
 
 .macro BANNER_TEXT() {
 

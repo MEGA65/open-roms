@@ -1,5 +1,6 @@
 
 .const CONFIG_ID = $01 // should be 1 byte, different for each config file!
+.encoding "petscii_upper"
 
 //
 // Please read CONFIG.md before modifying this file!
@@ -33,7 +34,7 @@
 // #define CONFIG_CPU_WDC_65816
 
 
-// Memory model configuration
+// Memory model
 
 #define CONFIG_MEMORY_MODEL_38K
 // #define CONFIG_MEMORY_MODEL_60K
@@ -63,6 +64,28 @@
 #define CONFIG_KEY_FAST_SCAN
 #define CONFIG_JOY1_CURSOR
 #define CONFIG_JOY2_CURSOR
+
+#define CONFIG_PROGRAMMABLE_KEYS
+
+.const CONFIG_KEYCMD_RUN  = @"LOAD\"*\""
+
+.const CONFIG_KEYCMD_F1   = @"@"
+.const CONFIG_KEYCMD_F2   = @""
+.const CONFIG_KEYCMD_F3   = @"RUN:"
+.const CONFIG_KEYCMD_F4   = @""
+.const CONFIG_KEYCMD_F5   = @"LOAD"
+.const CONFIG_KEYCMD_F6   = @""
+.const CONFIG_KEYCMD_F7   = @"@$"
+.const CONFIG_KEYCMD_F8   = @""
+
+.const CONFIG_KEYCMD_HELP = @"LIST"
+
+.const CONFIG_KEYCMD_F9   = @""
+.const CONFIG_KEYCMD_F10  = @""
+.const CONFIG_KEYCMD_F11  = @""
+.const CONFIG_KEYCMD_F12  = @""
+.const CONFIG_KEYCMD_F13  = @""
+.const CONFIG_KEYCMD_F14  = @""
 
 
 // Eye candy

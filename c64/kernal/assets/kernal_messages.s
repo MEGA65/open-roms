@@ -3,6 +3,9 @@
 // Messages to be prined out by Kernal
 //
 
+.encoding "petscii_upper"
+
+
 // Double underscore prevents labels from being passed to VICE (would confuse monitor)
 
 .label __MSG_KERNAL_SEARCHING_FOR      = __msg_kernalsearching_for      - __msg_kernal_first

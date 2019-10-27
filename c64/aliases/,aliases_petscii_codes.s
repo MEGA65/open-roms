@@ -54,12 +54,12 @@
 .const KEY_RUN          = $83
 
 .const KEY_F1           = $85
-.const KEY_F2           = $86
-.const KEY_F3           = $87
-.const KEY_F4           = $88
-.const KEY_F5           = $89
-.const KEY_F6           = $8A
-.const KEY_F7           = $8B
+.const KEY_F2           = $89
+.const KEY_F3           = $86
+.const KEY_F4           = $8A
+.const KEY_F5           = $87
+.const KEY_F6           = $8B
+.const KEY_F7           = $88
 .const KEY_F8           = $8C
 
 #if CONFIG_KEYBOARD_C65

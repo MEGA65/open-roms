@@ -178,6 +178,9 @@ wedge_dos_directory:
 	jsr JCHRIN
 	bcs wedge_dos_basic_error
 
+	// Print new line
+	jsr print_return
+
 wedge_dos_directory_line:
 
 	// Load a single line, reuse BASIC input buffer

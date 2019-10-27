@@ -38,7 +38,7 @@ initmsg_real:
 	ldy #>rainbow_logo
 	jsr STROUT
 
-	ldx #$01
+	ldx #$00
 	ldy #$0A
 	jsr plot_set
 
@@ -46,7 +46,7 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
-	ldx #$03
+	ldx #$02
 	ldy #$0A
 	jsr plot_set
 

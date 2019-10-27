@@ -30,11 +30,11 @@ hw_entry_reset:
 !:
 	// Initialising IO is obviously required. Also indicated by c64 prg p269.
 	jsr JIOINIT
-	
+
 	// Setting up the screen and testing ram is obviously required
 	// also affirmed by p269 of c64 prg
 	jsr JRAMTAS // called RANTAM on Codebase64 wiki
-	
+
 	// Resetting IO vectors is obviously required, if we want interrupts to run
 	// also affirmed by c64 prg p269
 	jsr JRESTOR

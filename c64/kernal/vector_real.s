@@ -1,4 +1,5 @@
 
+
 vector_real:
 
 	// Use MEMUSS as temporary storage location - checked on real C64 that this is the
@@ -8,11 +9,11 @@ vector_real:
 	// According to 'Compute's Mapping the Commodore 64' page 237,
 	// the CBM implementation does not disable IRQs - yet, the
 	// 'C64 Programmers Reference Guide' does not contain such
-	// warning and does not mention any preparations needed, so...
-	// better safe than sorry, disable the IRQ for the duration
-	// of vector manipulation
-	php
-	cli
+	// warning and does not mention any preparations needed.
+
+	// Initial idea was to do php, cli, ..., plp to make the routine safer,
+	// but it seems it might cause problem with initialization sequence,
+	// as the stack might be uninitialized when this routine is called
 	
 	// Prepare the user data pointer - strange order to reduce risk
 	// of potential similarity to the original routine
@@ -38,6 +39,4 @@ vector_end_loop:
 	dey
 	bpl vector_restore
 
-	// Restore status register (IRQ) before return
-	plp
 	rts

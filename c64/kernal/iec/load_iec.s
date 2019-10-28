@@ -4,6 +4,16 @@
 //
 
 
+load_iec_dev_not_found:
+	jmp lvs_device_not_found_error
+
+load_iec_file_not_found:
+	jmp kernalerror_FILE_NOT_FOUND
+
+load_iec_error:
+	jmp lvs_load_verify_error 
+
+
 load_iec:
 
 	// Display SEARCHING FOR + filename
@@ -16,51 +26,43 @@ load_iec:
 	// Call device to LISTEN (p16)
 	lda FA
 	jsr LISTEN
-	bcc !+
-	jmp lvs_device_not_found_error // XXX deduplicate with other jumps in this routine
-!:
+	bcs load_iec_dev_not_found
+
 	// Open channel 0 (reserved for file reading)
 	lda #$00
 	jsr iec_cmd_open
-	bcc !+
-	jmp lvs_device_not_found_error // XXX deduplicate with other jumps in this routine
-!:
+	bcs load_iec_dev_not_found
+
 	// Send file name
 	jsr lvs_send_file_name
-	bcc !+
-	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 
-!:
+	bcs load_iec_error
+
 	// Now command device to talk (p16)
 	lda FA
 	jsr TALK
-	bcc !+
-	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 
-!:
+	bcs load_iec_error
+
 	lda #$60 // open channel / data (p3) , required according to p13
 	sta TBTCNT
 	jsr iec_tx_command
-	bcc !+
-	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 
-!:
+	bcs load_iec_error
+
 	// We are currently talker, so do the IEC turn around so that we
 	// are the listener (p16)
 	jsr iec_turnaround_to_listen
-	bcc !+
-	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 
-!:
+	bcs load_iec_error
+
 	// Get load address and store it if secondary address is zero
 	jsr iec_rx_byte
-	bcc !+
-	jmp kernalerror_FILE_NOT_FOUND // XXX deduplicate with other jumps in this routine
-!:
+	bcs load_iec_file_not_found
+
 	ldx SA
 	beq !+
 	sta STAL+0
 !:
 	jsr iec_rx_byte
-	bcc !+
-	jmp kernalerror_FILE_NOT_FOUND // XXX deduplicate with other jumps in this routine
-!:
+	bcs load_iec_file_not_found
+
 	ldx SA
 	beq !+
 	sta STAL+1
@@ -71,19 +73,16 @@ load_iec:
 iec_load_loop:
 	// We are now ready to receive bytes
 	jsr iec_rx_byte
-	bcc !+
-	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 
-!:
+	bcs load_iec_error
+
 	// Handle the byte (store in memory / verify)
 	jsr lvs_handle_byte_load_verify
-	bcc !+
-	jmp lvs_load_verify_error // XXX deduplicate with other jumps in this routine 
-!:	
+	bcs load_iec_error
+
 	// Advance pointer to data
 	jsr lvs_advance_pointer
-	bcc !+
-	jmp lvs_wrap_around_error
-!:
+	bcs_far lvs_wrap_around_error
+
 	// Check for EOI - if so, this was the last byte
 	lda IOSTATUS
 	and #K_STS_EOI

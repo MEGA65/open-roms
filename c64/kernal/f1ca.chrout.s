@@ -30,7 +30,7 @@ CHROUT:
 	bne !+
 	jmp chrout_screen
 !:
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcs chrout_done_unknown_device // not a supported device
 
 chrout_iec:

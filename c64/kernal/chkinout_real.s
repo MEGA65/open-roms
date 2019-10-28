@@ -41,7 +41,7 @@ chkin_real:
 
 	// For IEC devices, send TALK + TKSA first
 	lda FAT,Y
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcs chkin_set_device
 	
 	jsr TALK
@@ -123,7 +123,7 @@ ckout_real:
 
 	// For IEC devices, send LISTEN + SECOND first
 	lda FAT,Y
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcs chkout_set_device
 
 	jsr LISTEN

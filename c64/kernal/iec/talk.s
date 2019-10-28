@@ -17,7 +17,7 @@ TALK:
 	jsr iec_tx_flush
 
 	// Check whether device number is correct
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcc !+
 	jmp kernalerror_DEVICE_NOT_FOUND
 !:
@@ -28,5 +28,3 @@ common_talk_listen: // common part of TALK and LISTEN
 
 	sta TBTCNT
 	jmp iec_tx_command
-
-

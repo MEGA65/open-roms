@@ -20,7 +20,7 @@ CLOSE:
 
 	// We have the entry index in Y - check whether this is IEC device
 	lda FAT, y
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcs close_remove_from_table
 
 	// IEC device

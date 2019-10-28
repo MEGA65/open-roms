@@ -59,7 +59,7 @@ open_has_space:
 	
 	// Check for IEC device
 	lda FA
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcc open_iec
 
 	// FALLTROUGH

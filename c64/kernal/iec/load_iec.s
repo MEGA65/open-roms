@@ -1,60 +1,17 @@
+
 //
-// Official Kernal routine, described in:
-//
-// - [RG64] C64 Programmer's Reference Guide   - page 286
-// - [CM64] Compute's Mapping the Commodore 64 - page 231
-// - IEC reference at http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
-//
-// CPU registers that has to be preserved (see [RG64]): none
+// IEC part of the LOAD routine
 //
 
 
-	// Expects that SETLFS and SETNAM are called before hand.
-	// $YYXX = load address.
-	// (ignored if SETLFS channel = 1, i.e., like ,8,1)
-	// If A=1 then VERIFY instead of LOAD.
-	// On exit, $YYXX is the highest address into which data
-	// will have been placed.
-
-	// XXX honor MSGFLG bit 6
-	// XXX add VERIFY support
-
-LOAD:
-
-	// Are we loading or verifying?
-	sta VERCKK
-
-	// Store start address of LOAD
-	stx STAL+0
-	sty STAL+1
-
-	// Reset status
-	jsr kernalstatus_reset
-
-#if CONFIG_MEMORY_MODEL_60K
-	// We need our helpers to get to filenames under ROMs or IO area
-	jsr install_ram_routines
-#endif
-
-	// Check whether we support the requested device
-	lda FA
-	and #$FC
-	bne !+
-	jmp lvs_illegal_device_number // device number below 4, not an IEC device
-!:
-	// Device numbers above 30 are also illegal (see https://www.pagetable.com/?p=1031),
-	// as the protocol combines device number with command code int one byte,
-	// above 30 it is no longer possible (UNLISTEN and UNTALK codes prevent using
-	// number 31), yet original ROMs show ILLEGAL DEVICE NUMBER error only
-	// for devices 0-3; in our implementation LISTEN / TALK will cause device
-	// not present detected for numbers above 30
+load_iec:
 
 	// Display SEARCHING FOR + filename
 	jsr lvs_display_searching_for
 
 	// http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
-	// p13, 16; also p16 tells us this routine doesn't mess with the file table
-	// in the C64, only in the drive.
+	// p13, 16; also p16 tells us this routine does not mess with the file
+	// table in the C64, only in the drive.
 
 	// Call device to LISTEN (p16)
 	lda FA
@@ -111,7 +68,7 @@ LOAD:
 	// Display start address
 	jsr lvs_display_loading_verifying
 
-load_loop:
+iec_load_loop:
 	// We are now ready to receive bytes
 	jsr iec_rx_byte
 	bcc !+
@@ -130,7 +87,7 @@ load_loop:
 	// Check for EOI - if so, this was the last byte
 	lda IOSTATUS
 	and #K_STS_EOI
-	beq load_loop
+	beq iec_load_loop
 
 	// Display end address
 	jsr lvs_display_done

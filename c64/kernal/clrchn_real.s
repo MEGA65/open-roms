@@ -13,14 +13,14 @@ clrchn_real:
 
 	// Handle IEC input device
 	lda DFLTN
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcs !+
 	// Previous device was IEC one - send UNTALK first
 	jsr UNTLK
 !:
 	// Restore output device to default
 	lda DFLTO
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcs !+
 	// Handle IEC output device
 	jsr UNLSN

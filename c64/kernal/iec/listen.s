@@ -17,7 +17,7 @@ LISTEN:
 	jsr iec_tx_flush
 
 	// Check whether device number is correct
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcc !+
 	jmp kernalerror_DEVICE_NOT_FOUND
 !:
@@ -25,6 +25,3 @@ LISTEN:
 	ora #$20
 
 	jmp common_talk_listen
-
-
-

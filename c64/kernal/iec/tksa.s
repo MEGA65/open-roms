@@ -12,6 +12,8 @@
 
 TKSA:
 
+#if CONFIG_IEC
+
 	// Due to OPEN/CLOSE/TKSA/SECOND command encoding (see https://www.pagetable.com/?p=1031),
 	// allowed channels are 0-15; report error if out of range
 	cmp #$10
@@ -22,5 +24,8 @@ TKSA:
 
 	jmp common_untlk_tksa
 
+#else
 
+	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
 
+#endif

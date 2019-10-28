@@ -1,4 +1,8 @@
 
+
+#if CONFIG_IEC
+
+
 iec_pull_clk_release_data:
 
 	// Pulled CLK = DATA considered invalid; for extra robustness on non-emulated
@@ -11,3 +15,5 @@ iec_pull_clk_release_data:
 	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
 	sta CIA2_PRA
 	rts
+
+#endif // CONFIG_IEC

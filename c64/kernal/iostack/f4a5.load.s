@@ -40,15 +40,9 @@ LOAD:
 	// Check whether we support the requested device
 	lda FA
 
-	// Try IEC - legal device numbers for LOAD are 8-30
-	// Device numbers above 30 can not be used as IEC (see https://www.pagetable.com/?p=1031),
-	// as the protocol combines device number with command code in one byte, above 30 it is
-	// no longer possible. Original ROMs show ILLEGAL DEVICE NUMBER error only for devices
-	// 0-3; our implementation is more strict here
+#if CONFIG_IEC
+	jsr iec_check_devnum_lvs
+	bcc_far load_iec
+#endif // CONFIG_IEC
 
-	cmp #$1F
-	bcs !+              // >= 31  
-	cmp #$08
-	bcs_far load_iec    // >= 8
-!:
 	jmp lvs_illegal_device_number

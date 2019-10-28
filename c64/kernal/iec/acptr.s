@@ -10,5 +10,11 @@
 
 
 ACPTR:
+
 	jsr kernalstatus_reset
+	
+#if CONFIG_IEC
 	jmp iec_rx_byte
+#else
+	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
+#endif

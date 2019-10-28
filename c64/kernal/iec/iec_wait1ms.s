@@ -8,6 +8,9 @@
 // 63 cycles, we need at least 17 full rasters to be 100% sure we wait enough
 
 
+#if CONFIG_IEC
+
+
 iec_wait1ms:
 	ldx #18 // we probably won't start with the beginning of raster
 	lda VIC_RASTER
@@ -19,3 +22,6 @@ iec_wait1ms:
 	bne !-
 
 	rts
+
+
+#endif // CONFIG_IEC

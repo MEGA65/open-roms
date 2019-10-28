@@ -8,6 +8,10 @@
 // take care about .A and IOSTATUS
 //
 
+
+#if CONFIG_IEC
+
+
 iec_return_success:
 
 	// BSOUR is certainly not valid anymore
@@ -32,3 +36,6 @@ iec_return_DEVICE_NOT_FOUND:
 	plx_trash_a
 	// Report error
 	jmp kernalerror_DEVICE_NOT_FOUND
+
+
+#endif // CONFIG_IEC

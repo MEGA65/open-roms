@@ -1,4 +1,8 @@
 
+
+#if CONFIG_IEC
+
+
 iec_release_atn:
 
 	lda CIA2_PRA
@@ -6,3 +10,5 @@ iec_release_atn:
 	sta CIA2_PRA
 	rts
 
+
+#endif // CONFIG_IEC

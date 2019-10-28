@@ -38,6 +38,13 @@
 // #define CONFIG_MEMORY_MODEL_60K
 
 
+// I/O devices
+
+#define CONFIG_IEC       // please keep enabled for now
+// #define CONFIG_TAPE   // please keep disabled for now
+// #define CONFIG_RS_232 // please keep disabled for now
+
+
 // Multiple SID support
 
 // #define CONFIG_SID_2ND

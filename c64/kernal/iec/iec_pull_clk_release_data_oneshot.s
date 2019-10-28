@@ -1,4 +1,8 @@
 
+
+#if CONFIG_IEC
+
+
 iec_pull_clk_release_data_oneshot:
 
 	lda CIA2_PRA
@@ -6,3 +10,6 @@ iec_pull_clk_release_data_oneshot:
 	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
 	sta CIA2_PRA
 	rts
+
+
+#endif // CONFIG_IEC

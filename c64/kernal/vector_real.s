@@ -12,8 +12,8 @@ vector_real:
 	// warning and does not mention any preparations needed.
 
 	// Initial idea was to do php, cli, ..., plp to make the routine safer,
-	// but it seems it might cause problem with initialization sequence,
-	// as the stack might be uninitialized when this routine is called
+	// but it seems it might cause problem with initialization on XEMU emulator
+	// XXX find out, why
 	
 	// Prepare the user data pointer - strange order to reduce risk
 	// of potential similarity to the original routine

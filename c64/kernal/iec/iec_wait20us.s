@@ -1,4 +1,8 @@
 
+
+#if CONFIG_IEC
+
+
 iec_wait20us:
 
 	// Wait 20usec
@@ -20,3 +24,5 @@ iec_wait20us:
     //   1 cycle to fetch next instruction
     // ---
     //  21 cycles
+
+#endif // CONFIG_IEC

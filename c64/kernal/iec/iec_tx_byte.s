@@ -7,6 +7,8 @@
 // Preserves .X and .Y registers
 
 
+#if CONFIG_IEC
+
 iec_tx_byte:
 
 	// Store .X and .Y on the stack - preserve them
@@ -94,3 +96,6 @@ iec_tx_common_bit_is_sent:
 	jmp iec_return_DEVICE_NOT_FOUND
 !:
 	jmp iec_return_success
+
+
+#endif // CONFIG_IEC

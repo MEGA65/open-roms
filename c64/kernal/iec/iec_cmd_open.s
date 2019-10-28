@@ -6,6 +6,9 @@
 //
 
 
+#if CONFIG_IEC
+
+
 iec_cmd_open: // similar to TKSA, but without turnaround
 
 	jsr iec_check_channel_openclose
@@ -40,3 +43,6 @@ iec_check_channel_openclose:
 !:
 	clc // mark suitable channel number
 	rts
+
+
+#endif // CONFIG_IEC

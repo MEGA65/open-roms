@@ -2,6 +2,10 @@
 // pages 7--8.
 // See also https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
 
+
+#if CONFIG_IEC
+
+
 iec_turnaround_to_talk:
 
 	// Store .X and .Y on the stack - preserve them
@@ -25,3 +29,5 @@ iec_turnaround_to_talk:
 	plp
 	jmp iec_return_success
 
+
+#endif // CONFIG_IEC

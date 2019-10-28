@@ -4,6 +4,9 @@
 //
 
 
+#if CONFIG_IEC
+
+
 load_iec_dev_not_found:
 	jmp lvs_device_not_found_error
 
@@ -94,7 +97,10 @@ iec_load_loop:
 	// Close file on drive
 
 	lda FA
-	jsr close_load
+	jsr iec_close_load
 
 	// Return last address
 	jmp lvs_return_last_address
+
+
+#endif // CONFIG_IEC

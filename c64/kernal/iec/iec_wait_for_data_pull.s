@@ -1,4 +1,8 @@
 
+
+#if CONFIG_IEC
+
+
 iec_wait_for_data_pull:
 
 	lda CIA2_PRA
@@ -6,3 +10,6 @@ iec_wait_for_data_pull:
 	// (highest bit set = negative value)
 	bmi iec_wait_for_data_pull
 	rts
+
+
+#endif // CONFIG_IEC

@@ -39,6 +39,8 @@ chkin_real:
 	cmp #$01
 	beq chkinout_file_not_input
 
+#if CONFIG_IEC
+
 	// For IEC devices, send TALK + TKSA first
 	lda FAT,Y
 	jsr iec_check_devnum_oc
@@ -50,6 +52,8 @@ chkin_real:
 	lda LAT, Y
 	jsr TKSA
 	bcs chkinout_device_not_present
+
+#endif // CONFIG_IEC
 
 chkin_set_device:
 	lda FAT,Y
@@ -121,6 +125,8 @@ ckout_real:
 	lda LAT, Y
 	beq chkinout_file_not_output
 
+#if CONFIG_IEC
+
 	// For IEC devices, send LISTEN + SECOND first
 	lda FAT,Y
 	jsr iec_check_devnum_oc
@@ -132,6 +138,8 @@ ckout_real:
 	lda LAT, Y
 	jsr SECOND
 	bcs chkinout_device_not_present
+
+#endif // CONFIG_IEC
 
 chkout_set_device:
 	lda FAT,Y

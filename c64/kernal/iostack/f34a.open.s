@@ -23,6 +23,7 @@ OPEN:
 	cmp LA
 	bne open_not_yet_open
 	jmp kernalerror_FILE_ALREADY_OPEN
+
 open_not_yet_open:
 	cpy #$00
 	jmp !-
@@ -60,33 +61,11 @@ open_has_space:
 	// Check for IEC device
 	lda FA
 	jsr iec_check_devnum_oc
-	bcc open_iec
+	bcc_far open_iec
 
 	// FALLTROUGH
+
 open_done_success:
 
 	clc
 	rts
-
-open_iec:
-
-	// We have a command to send to IEC device
-	jsr LISTEN
-	bcc !+
-	jmp kernalerror_DEVICE_NOT_FOUND
-!:
-	lda SA
-	jsr iec_cmd_open
-	bcc !+
-	jmp kernalerror_DEVICE_NOT_FOUND
-!:
-
-#if CONFIG_MEMORY_MODEL_60K
-	// We need our helpers to get to filenames under ROMs or IO area
-	jsr install_ram_routines
-#endif
-
-	// Send command ('file name')
-	jsr lvs_send_file_name
-
-	jmp open_done_success

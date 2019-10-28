@@ -1,8 +1,12 @@
 
+//
+// Common part of CLOSE and LOAD routines for IEC
+//
 
-// Common ppart of CLOSE and LOAD routines
 
-close_load:
+#if CONFIG_IEC
+
+iec_close_load:
 
 	tax
 
@@ -21,3 +25,5 @@ close_load:
 	jsr UNLSN
 
 	rts
+
+#endif // CONFIG_IEC

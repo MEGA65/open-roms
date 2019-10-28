@@ -16,30 +16,21 @@ CLOSE:
 	// Find the LAT / SAT / FAT entry which LAT corresponds to A
 
 	jsr find_fls
-	bcs close_error_not_found // XXX can we report error in IOSTATUS here?
+	bcs close_end // XXX can we report error in IOSTATUS here?
 
-	// We have the entry index in Y - check whether this is IEC device
+#if CONFIG_IEC
+
+	// We have the entry index in .Y - check whether this is IEC device
 	lda FAT, y
 	jsr iec_check_devnum_oc
-	bcs close_remove_from_table
+	bcc_far close_iec
 
-	// IEC device
+#endif // CONFIG_IEC
 
-	jsr iec_tx_flush // make sure no byte is awaiting
-	lda SAT, y       // get secondary address
-	cmp #$60
-	bne !+
-	// workaround for using CLOSE on reading executable - XXX is this a proper way?
-	jsr close_load 
-	jmp close_remove_from_table
-!:
-	ora $E0 // CLOSE command
-	sta TBTCNT
-	jsr iec_tx_command
-	bcs close_remove_from_table
-	jsr iec_tx_command_finalize
+	// FALLTROUGH
 
 close_remove_from_table:
+
 	// Remove channel from the table
 	iny
 	cpy #$0A
@@ -56,9 +47,6 @@ close_remove_from_table:
 	dec LDTND
 
 	clc // report success - not sure if original CLOSE does this, but it's nevertheless a good practice
-	rts
 
-close_error_not_found:
-
-	sec // report success - not sure if original CLOSE does this, but it's nevertheless a good practice
+close_end:
 	rts

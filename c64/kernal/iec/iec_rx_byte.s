@@ -4,6 +4,10 @@
 //
 // Preserves .X and .Y registers
 
+
+#if CONFIG_IEC
+
+
 iec_rx_byte:
 
 	// Store .X and .Y on the stack - preserve them
@@ -143,3 +147,5 @@ iec_rx_clk_wait2:
 	cli
 	rts
 
+
+#endif // CONFIG_IEC

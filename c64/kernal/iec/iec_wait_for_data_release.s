@@ -1,4 +1,8 @@
 
+
+#if CONFIG_IEC
+
+
 iec_wait_for_data_release:
 
 	lda CIA2_PRA
@@ -6,3 +10,5 @@ iec_wait_for_data_release:
 	// (highest bit set = negative value)
 	bpl iec_wait_for_data_release
 	rts
+
+#endif // CONFIG_IEC

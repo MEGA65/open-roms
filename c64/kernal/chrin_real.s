@@ -23,6 +23,8 @@ chrin_real:
 	beq chrin_keyboard // #$00 - keyboard
 	// XXX add screen support
 
+#if CONFIG_IEC
+
 	jsr iec_check_devnum_oc
 	bcc chrin_iec
 	jmp lvs_device_not_found_error // not a supported device
@@ -32,6 +34,8 @@ chrin_iec:
 	jsr JACPTR
 	bcs chrin_done_fail
 	// FALLTROUGH
+
+#endif // CONFIG_IEC
 
 chrin_done:
 	clc // indicate success

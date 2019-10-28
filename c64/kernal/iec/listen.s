@@ -13,6 +13,8 @@
 
 LISTEN:
 
+#if CONFIG_IEC
+
 	// According to serial-bus.pdf (page 15) this routine flushes the IEC out buffer
 	jsr iec_tx_flush
 
@@ -25,3 +27,9 @@ LISTEN:
 	ora #$20
 
 	jmp common_talk_listen
+
+#else
+
+	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
+
+#endif

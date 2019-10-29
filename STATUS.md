@@ -128,13 +128,13 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFC0`   | `$F34A`    | `OPEN`      | DONE     |                                                      |
 | `$FFC3`   | `$F291`    | `CLOSE`     | DONE     |                                                      |
 | `$FFC6`   | `$F20E`    | `CHKIN`     | DONE     |                                                      |
-| `$FFC9`   | `$F250`    | `CKOUT`     | PARTIAL  |                                                      |
+| `$FFC9`   | `$F250`    | `CKOUT`     | DONE     |                                                      |
 | `$FFCC`   | `$F333`    | `CLRCHN`    | DONE     |                                                      |
 | `$FFCF`   | `$F157`    | `CHRIN`     | PARTIAL  |                                                      |
 | `$FFD2`   | `$F1CA`    | `CHROUT`    | PARTIAL  |                                                      |
-| `$FFD5`   | `$F49E`    | `LOAD`      | PARTIAL  | not yet clear what's this entry doing                |
-| `($0330)` | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support, no STOP key, check $F49E addr     |
-| `$FFD8`   | `$F5DD`    | `SAVE`      | NOT DONE |                                                      |
+| `$FFD5`   | `$F49E`    | `LOAD`      | DONE     |                                                      |
+| `($0330)` | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support, no STOP key support               |
+| `$FFD8`   | `$F5DD`    | `SAVE`      | DONE     | only this preparation routine part is done           |
 | `($0332)` | `$F5ED`    | `SAVE`      | NOT DONE |                                                      |
 | `$FFDB`   |            | `SETTIM`    | DONE     |                                                      |
 | `$FFDE`   |            | `RDTIM`     | DONE     |                                                      |

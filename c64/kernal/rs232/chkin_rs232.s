@@ -3,6 +3,8 @@
 // RS-232 part of the CHKIN routine
 //
 
+// XXX connect to I/O stack
+
 
 #if HAS_RS232
 

@@ -3,6 +3,8 @@
 // RS-232 part of the CLOSE routine
 //
 
+// XXX connect to I/O stack
+
 
 #if HAS_RS232
 

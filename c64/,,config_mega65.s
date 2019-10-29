@@ -42,10 +42,11 @@
 
 // I/O devices
 
-#define CONFIG_IEC                  // please keep enabled for now
-// #define CONFIG_TAPE_NORMAL       // please keep disabled for now
-// #define CONFIG_TAPE_TURBO        // please keep disabled for now
-// #define CONFIG_RS232_USERPORT    // please keep disabled for now
+#define CONFIG_IEC                // please keep enabled for now
+// #define CONFIG_TAPE_NORMAL     // please keep disabled for now
+// #define CONFIG_TAPE_TURBO      // please keep disabled for now
+// #define CONFIG_RS232_UP2400    // please keep disabled for now
+// #define CONFIG_RS232_UP9600    // please keep disabled for now
 
 
 // Multiple SID support

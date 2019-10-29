@@ -107,6 +107,20 @@
 }
 
 
+// Check that I/O configuration is correct
+{
+	.var selected_rs232 = 0;
+
+#if CONFIG_RS232_UP2400
+	.eval selected_rs232++
+#endif
+#if CONFIG_RS232_UP9600
+	.eval selected_rs232++
+#endif
+
+	.if (selected_rs232 > 1) .error "Please select at most one CONFIG_RS232_* option" 
+}
+
 
 // Check that startup banner configuration is correct
 {
@@ -206,6 +220,12 @@
 
 #endif
 
+
+// Handle I/O configuration
+
+#if CONFIG_RS232_UP2400 || CONFIG_RS232_UP9600
+#define HAS_RS232
+#endif
 
 
 // Handle configuration of various features

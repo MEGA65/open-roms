@@ -85,6 +85,7 @@ Not all of them - only these we want to have implemented.
 | `$A68E`   | RUNC         | DONE     |                                                    |
 | `$A7AE`   | NEWSTT       | PARTIAL  | redirected to RUN command                          |
 | `$AB1E`   | STROUT       | DONE     |                                                    |
+| `$AD9E`   | FRMEVL       | NOT DONE |                                                    |
 | `$BDCD`   | LINPRT       | DONE     | temporary implementation                           |
 | `$E3BF`   | INIT         | NOT DONE |                                                    |
 | `$E422`   | INITMSG      | DONE     |                                                    |
@@ -167,6 +168,7 @@ Not all of them - only these we want to have implemented.
 | `$E6B6`   | advance cursor               | NOT DONE |                                                    |
 | `$E701`   | previous line                | NOT DONE |                                                    |
 | `$E716`   | screen CHROUT                | NOT DONE |                                                    |
+| `$E8DA`   | color code table             | DONE     |                                                    |
 | `$E8EA`   | scroll line                  | NOT DONE |                                                    |
 | `$E96C`   | insert line on top           | NOT DONE |                                                    |
 | `$E9FF`   | clear line                   | NOT DONE |                                                    |

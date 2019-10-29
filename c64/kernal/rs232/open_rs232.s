@@ -3,14 +3,15 @@
 // RS-232 part of the OPEN routine
 //
 
-// XXX connect to I/O stack
-
 
 #if HAS_RS232
 
 
 open_rs232:
-	STUB_IMPLEMENTATION() // XXX provide implementation for both UP2400 and UP9600
+	
+	// XXX provide implementation for both UP2400 and UP9600
+
+	jmp open_done_success
 
 
 #endif // HAS_RS232

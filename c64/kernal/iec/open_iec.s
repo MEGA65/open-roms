@@ -9,6 +9,10 @@
 
 open_iec:
 
+	// Check for command to send
+	ldy FNLEN
+	beq open_iec_done
+
 	// We have a command to send to IEC device
 	jsr LISTEN
 	bcc !+
@@ -27,6 +31,8 @@ open_iec:
 
 	// Send command ('file name')
 	jsr lvs_send_file_name
+
+open_iec_done:
 
 	jmp open_done_success
 

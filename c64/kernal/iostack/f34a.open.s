@@ -54,15 +54,22 @@ open_has_space:
 	iny
 	sty LDTND
 
-	// Check for command to send
-	lda FNLEN
-	beq open_done_success
-	
-	// Check for IEC device
 	lda FA
+
+#if HAS_RS232
+
+	cmp #$02
+	beq_far open_rs232
+
+#endif
+
+#if CONFIG_IEC
+
 	jsr iec_check_devnum_oc
 	bcc_far open_iec
 
+#endif
+	
 	// FALLTROUGH
 
 open_done_success:

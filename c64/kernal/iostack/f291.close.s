@@ -11,21 +11,26 @@
 
 CLOSE:
 
-	// XXX this needs more testing (opening 10 files at once, closing in various orders, etc) once the code is more mature
-
 	// Find the LAT / SAT / FAT entry which LAT corresponds to A
 
 	jsr find_fls
 	bcs close_end // XXX can we report error in IOSTATUS here?
 
-#if CONFIG_IEC
+	// We have the entry index in .Y 
 
-	// We have the entry index in .Y - check whether this is IEC device
 	lda FAT, y
+
+	// Perform device-specific actions
+
+#if HAS_RS232
+	cmp #$02
+	beq_far close_rs232
+#endif
+
+#if CONFIG_IEC
 	jsr iec_check_devnum_oc
 	bcc_far close_iec
-
-#endif // CONFIG_IEC
+#endif
 
 	// FALLTROUGH
 

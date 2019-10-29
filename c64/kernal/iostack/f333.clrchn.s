@@ -9,26 +9,22 @@
 //
 
 
-clrchn_real:
+CLRCHN:
 
-	// Handle IEC input device
-	lda DFLTN
-	jsr iec_check_devnum_oc
-	bcs !+
-	// Previous device was IEC one - send UNTALK first
-	jsr UNTLK
-!:
-	// Restore output device to default
-	lda DFLTO
-	jsr iec_check_devnum_oc
-	bcs !+
-	// Handle IEC output device
-	jsr UNLSN
-!:
+#if CONFIG_IEC
+	jsr clrchn_iec
+#else
+	nop // just to prevent double label
+#endif
+
+	// FALLTROUGH
+
 clrchn_reset: // entry needed by setup_vicii
+
 	// Set input device number to keyboard
 	lda #$00
 	sta DFLTN
+
 	// Set output device number to screen
 	lda #$03
 	sta DFLTO

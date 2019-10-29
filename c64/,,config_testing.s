@@ -41,9 +41,10 @@
 
 // I/O devices
 
-#define CONFIG_IEC       // please keep enabled for now
-// #define CONFIG_TAPE   // please keep disabled for now
-// #define CONFIG_RS_232 // please keep disabled for now
+#define CONFIG_IEC                  // please keep enabled for now
+// #define CONFIG_TAPE_NORMAL       // please keep disabled for now
+// #define CONFIG_TAPE_TURBO        // please keep disabled for now
+// #define CONFIG_RS232_USERPORT    // please keep disabled for now
 
 
 // Multiple SID support
@@ -51,7 +52,7 @@
 #define CONFIG_SID_2ND
 .const CONFIG_SID_2ND_ADDRESS = $D420
 
-// #define CONFIG_SID_3RD
+#define CONFIG_SID_3RD
 .const CONFIG_SID_3RD_ADDRESS = $D440
 
 // #define CONFIG_SID_D4XX
@@ -63,8 +64,8 @@
 #define CONFIG_LEGACY_SCNKEY
 // #define CONFIG_KEYBOARD_C128
 // #define CONFIG_KEYBOARD_C128_CAPS_LOCK
-// #define CONFIG_KEYBOARD_C65 // untested
-// #define CONFIG_KEYBOARD_C65_CAPS_LOCK // untested
+// #define CONFIG_KEYBOARD_C65              // untested
+// #define CONFIG_KEYBOARD_C65_CAPS_LOCK    // untested
 // #define CONFIG_KEY_REPEAT_DEFAULT
 // #define CONFIG_KEY_REPEAT_ALWAYS
 #define CONFIG_KEY_FAST_SCAN

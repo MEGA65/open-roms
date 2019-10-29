@@ -11,6 +11,8 @@
 
 CIOUT:
 
+#if CONFIG_IEC
+
 	pha
 	lda C3PO
 	bne ciout_send_byte
@@ -35,3 +37,9 @@ ciout_send_byte:
 	inc C3PO // iec_tx_byte sets it to 0, but we still have something to send
 	jmp ciout_store_in_buffer
 
+#else
+
+	sec // indicate failure
+	rts
+
+#endif

@@ -11,16 +11,20 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
 
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                 c64/kernal \
+                c64/kernal/,stubs \
                 c64/kernal/assets \
-                c64/kernal/jumptable \
                 c64/kernal/iec \
                 c64/kernal/init \
                 c64/kernal/interrupts \
                 c64/kernal/iostack \
+                c64/kernal/jumptable \
                 c64/kernal/keyboard \
+                c64/kernal/memory \
                 c64/kernal/print \
+                c64/kernal/rom_revision \
                 c64/kernal/screen \
-                c64/kernal/stubs
+                c64/kernal/time
+
 
 SRC_TOOLS  = $(wildcard src/tools/*.c,src/tools/*.cc)
 
@@ -65,14 +69,16 @@ GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 
 .PHONY: all clean updatebin
 
-all: $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
+all:
+	$(MAKE) -j64 --output-sync=target $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
 	@rm -rf build
 
-updatebin: $(STD_TARGET_LIST) $(TOOL_RELEASE)
+updatebin:
+	$(MAKE) -j64 --output-sync=target $(STD_TARGET_LIST) $(TOOL_RELEASE)
 	$(TOOL_RELEASE) -i ./build -o ./bin basic_generic.rom kernal_generic.rom basic_testing.rom kernal_testing.rom basic_mega65.rom kernal_mega65.rom basic_ultimate64.rom kernal_ultimate64.rom
-	cp build/chargen.rom              bin/chargen.rom
+	cp build/chargen.rom bin/chargen.rom
 
 # Rules - tools
 

@@ -107,5 +107,11 @@ IOINIT:
 	lda #$3F
 	sta CIA2_DDRA
 
+	// Set VIC-II bank - needed at least for 'Operacja Proboszcz' game
+	lda #%00000011
+	sta CIA2_PRA
+
+	rts
+
 	// Set IEC bus to its initial idle state
 	jmp iec_set_idle

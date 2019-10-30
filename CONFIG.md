@@ -169,23 +169,13 @@ Allows to assign command to any function key, `RUN` key and `HELP` key (if selec
 
 Needs 25 bytes more space in KERNAL segment for the code. In addition, each configured key takes 3 bytes + length of the command.
 
-## Eye candy
+## Screen editor
 
-### `CONFIG_COLORS_BRAND`
+### `CONFIG_EDIT_STOPQUOTE`
 
-Tries to adjust the color scheme to the selected brand. Some brands might not support this.
+If enabled, STOP key terminates insert/quote mode (like on BlackBox cartridge).
 
-### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_BRAND`
-
-Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_BRAND` heavily depends on the selected brand, not all the brands support it.
-
-Richer banners need more BASIC segment, varies between brands.
-
-### `CONFIG_BANNER_PAL_NTSC`
-
-If enabled, prints video system on startup banner. Eye candy only.
-
-Feature needs some bytes in BASIC (depending on banner type) and about 25 bytes in KERNAL segment.
+Feature needs 10 bytes in KERNAL segment. If unsure - enable.
 
 ## Software features
 
@@ -206,6 +196,24 @@ Feature needs about 330 bytes in BASIC segment. If unsure - enable.
 On the most widespread CPUs the D flag is not cleared upon entering interrupts. Since the original Kernal does not clear it either, it's not safe to use BCD processor mode without disabling the interrupts first. This option makes sure the D flag is disabled at the start of the interrupt - this allows some optimizations in the code.
 
 Feature needs 2 bytes in KERNAL segmment (for CPUs needing the patch), but at the same time allows optimizations allowing to gain some more bytes. If unsure - enable.
+
+## Eye candy
+
+### `CONFIG_COLORS_BRAND`
+
+Tries to adjust the color scheme to the selected brand. Some brands might not support this.
+
+### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_BRAND`
+
+Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_BRAND` heavily depends on the selected brand, not all the brands support it.
+
+Richer banners need more BASIC segment, varies between brands.
+
+### `CONFIG_BANNER_PAL_NTSC`
+
+If enabled, prints video system on startup banner. Eye candy only.
+
+Feature needs some bytes in BASIC (depending on banner type) and about 25 bytes in KERNAL segment.
 
 ## Debug options
 

@@ -109,6 +109,10 @@
 
 // Check that I/O configuration is correct
 {
+#if CONFIG_IEC_JIFFYDOS && !CONFIG_IEC
+	.error "CONFIG_IEC_JIFFYDOS requires CONFIG_IEC"
+#endif
+
 	.var selected_rs232 = 0;
 
 #if CONFIG_RS232_UP2400

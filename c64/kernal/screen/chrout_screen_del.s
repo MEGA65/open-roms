@@ -3,7 +3,7 @@
 // CHROUT routine - screen support, DEL key handling
 //
 
-chrout_screen_del:
+chrout_screen_DEL:
 
 	// In insert mode it embeds control character
 	ldx INSRT

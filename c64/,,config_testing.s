@@ -42,6 +42,7 @@
 // I/O devices
 
 #define CONFIG_IEC                // please keep enabled for now
+// #define CONFIG_IEC_JIFFYDOS    // please keep disabled for now
 // #define CONFIG_TAPE_NORMAL     // please keep disabled for now
 // #define CONFIG_TAPE_TURBO      // please keep disabled for now
 // #define CONFIG_RS232_UP2400    // please keep disabled for now
@@ -96,13 +97,9 @@
 .const CONFIG_KEYCMD_F14  = @""
 
 
-// Eye candy
+// Screen editor
 
-// #define CONFIG_COLORS_BRAND
-// #define CONFIG_BANNER_SIMPLE
-#define CONFIG_BANNER_FANCY
-// #define CONFIG_BANNER_BRAND
-// #define CONFIG_SHOW_PAL_NTSC
+#define CONFIG_EDIT_STOPQUOTE
 
 
 // Software features
@@ -110,6 +107,15 @@
 #define CONFIG_PANIC_SCREEN
 #define CONFIG_DOS_WEDGE
 #define CONFIG_BCD_SAFE_INTERRUPTS
+
+
+// Eye candy
+
+// #define CONFIG_COLORS_BRAND
+// #define CONFIG_BANNER_SIMPLE
+#define CONFIG_BANNER_FANCY
+// #define CONFIG_BANNER_BRAND
+// #define CONFIG_SHOW_PAL_NTSC
 
 
 // Debug options

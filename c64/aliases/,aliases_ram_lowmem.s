@@ -154,8 +154,8 @@
 	.label LDTBL     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
 	.label USER      = $F3  // $F3-$F4  pointer to current color RAM location
 	.label KEYTAB    = $F5  // $F5-$F6  pointer to keyboard lookup table
-	.label RIBUF     = $F7  // $F7-$F8  -- NOT IMPLEMENTED --
-	.label ROBUF     = $F9  // $F9-$FA  -- NOT IMPLEMENTED --
+	.label RIBUF     = $F7  // $F7-$F8  -- NOT IMPLEMENTED -- XXX WIP
+	.label ROBUF     = $F9  // $F9-$FA  -- NOT IMPLEMENTED -- XXX WIP
 	//                 $FB     $FB-$FE  -- UNUSED --          free for user software
 	.label BASZPT    = $FF  //          -- NOT IMPLEMENTED --
 
@@ -202,10 +202,10 @@
 	.label BITNUM    = $298  //            -- NOT IMPLEMENTED --
 	.label BAUDOF    = $299  // $299-$29A  -- NOT IMPLEMENTED --
 #endif
-	.label RIDBE     = $29B  //            -- NOT IMPLEMENTED --
-	.label RIDBS     = $29C  //            -- NOT IMPLEMENTED --
-	.label RODBS     = $29D  //            -- NOT IMPLEMENTED --
-	.label RODBE     = $29E  //            -- NOT IMPLEMENTED --
+	.label RIDBE     = $29B  //            -- NOT IMPLEMENTED -- XXX WIP
+	.label RIDBS     = $29C  //            -- NOT IMPLEMENTED -- XXX WIP
+	.label RODBS     = $29D  //            -- NOT IMPLEMENTED -- XXX WIP
+	.label RODBE     = $29E  //            -- NOT IMPLEMENTED -- XXX WIP
 	.label IRQTMP    = $29F  // $29F-$2A0  -- NOT IMPLEMENTED --
 	.label ENABL     = $2A1  //            -- NOT IMPLEMENTED --
 	.label TODSNS    = $2A2  //            -- NOT IMPLEMENTED --

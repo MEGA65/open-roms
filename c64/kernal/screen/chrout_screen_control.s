@@ -31,6 +31,12 @@ chrout_try_DEL:
 	bne !+
 	jmp chrout_screen_DEL
 !:
+chrout_try_INS:
+
+	cmp #KEY_INS
+	bne !+
+	jmp chrout_screen_INS
+!:
 #if CONFIG_EDIT_STOPQUOTE
 chrout_try_STOP:
 

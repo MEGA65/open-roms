@@ -238,7 +238,7 @@ test_mega65: build/kernal_mega65.rom build/basic_mega65.rom build/symbols_mega65
 	x64 -kernal build/kernal_mega65.rom -basic build/basic_mega65.rom -moncommands build/symbols_mega65.vs -8 empty.d64
 
 test_mega65_xemu: build/newc65.rom
-	../xemu/build/bin/xc65.native -dmarev 2 -rom build/newc65.rom
+	../xemu/build/bin/xmega65.native -dmarev 2 -forcerom -loadrom build/newc65.rom
 
 test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/symbols_ultimate64.vs
 	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -8 empty.d64

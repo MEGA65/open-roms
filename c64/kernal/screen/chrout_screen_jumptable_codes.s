@@ -6,7 +6,6 @@
 
 chrout_screen_jumptable_codes:
 
-	.byte KEY_INS
 	.byte KEY_CLR 
 	.byte KEY_HOME
 	.byte KEY_SHIFT_OFF
@@ -24,7 +23,6 @@ __chrout_screen_jumptable_codes_end:
 
 chrout_screen_jumptable_lo:
 
-	.byte <(chrout_screen_INS        - 1)
 	.byte <(chrout_screen_CLR        - 1)
 	.byte <(chrout_screen_HOME       - 1)
 	.byte <(chrout_screen_SHIFT_OFF  - 1)
@@ -40,7 +38,6 @@ chrout_screen_jumptable_lo:
 
 chrout_screen_jumptable_hi:
 
-	.byte >(chrout_screen_INS        - 1)
 	.byte >(chrout_screen_CLR        - 1)
 	.byte >(chrout_screen_HOME       - 1)
 	.byte >(chrout_screen_SHIFT_OFF  - 1)

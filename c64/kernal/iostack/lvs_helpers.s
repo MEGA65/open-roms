@@ -33,19 +33,19 @@ lvs_send_file_name_done:
 
 lvs_handle_byte_load_verify:
 
-	// XXX add VERIFY support
+	ldy VERCKK
+	bne lvs_handle_byte_verify
 
-	// Save it and advance pointer.
 	// As with our BASIC, we want to enable LOADing
 	// anywhere in memory, including over the IO space.
 	// Thus we have to use a helper routine in low memory
 	// to do the memory access
 
 #if CONFIG_MEMORY_MODEL_60K
+
 	// Save byte under ROMs and IO if required
 	php
 	sei
-	// XXX behavior should depend on address
 	ldx #$33
 	stx $01
 	ldy #0
@@ -53,14 +53,42 @@ lvs_handle_byte_load_verify:
 	ldx #$37
 	stx $01
 	plp
+
 #else
+
 	ldy #0
 	sta (STAL),y
+
 #endif
 
+	// FALLTROUGH
+
+lvs_handle_byte_load_verify_end:
+
+	clc
 	rts
 
+
+lvs_handle_byte_verify:
+
+#if CONFIG_MEMORY_MODEL_60K
+
+	// XXX implement this part
+
+#else
+
+	ldy #0
+	cmp (STAL),y
+	beq lvs_handle_byte_load_verify_end
+
+#endif
+
+	sec
+	rts
+
+
 lvs_advance_pointer:
+
 	// Advance pointer
 	inc STAL
 	beq !+

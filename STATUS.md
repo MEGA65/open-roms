@@ -132,8 +132,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFCF`   | `$F157`    | `CHRIN`     | PARTIAL  | no screen support, keyboard does not preserve .Y     |
 | `$FFD2`   | `$F1CA`    | `CHROUT`    | DONE     |                                                      |
 | `$FFD5`   | `$F49E`    | `LOAD`      | DONE     |                                                      |
-| `($0330)` | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support                                    |
-| `$FFD8`   | `$F5DD`    | `SAVE`      | DONE     | only this preparation routine part is done           |
+| `($0330)` | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support for memory model 60k               |
+| `$FFD8`   | `$F5DD`    | `SAVE`      | DONE     | main routine not done yet                            |
 | `($0332)` | `$F5ED`    | `SAVE`      | NOT DONE |                                                      |
 | `$FFDB`   |            | `SETTIM`    | DONE     |                                                      |
 | `$FFDE`   |            | `RDTIM`     | DONE     |                                                      |

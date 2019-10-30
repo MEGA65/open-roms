@@ -10,19 +10,4 @@
 
 
 GETIN:
-
-	// Determine the device number
-	lda DFLTN
-
-	// Try $00 - keyboard
-	beq_far getin_keyboard
-
-#if HAS_RS232
-
-	// Try $02 - RS-232
-	cmp #$02
-	beq_far getin_rs232
-
-#endif // HAS_RS232
-
-	jmp chrin_getin
+	jmp getin_real

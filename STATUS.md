@@ -130,8 +130,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFC6`   | `$F20E`    | `CHKIN`     | DONE     |                                                      |
 | `$FFC9`   | `$F250`    | `CKOUT`     | DONE     |                                                      |
 | `$FFCC`   | `$F333`    | `CLRCHN`    | DONE     |                                                      |
-| `$FFCF`   | `$F157`    | `CHRIN`     | PARTIAL  |                                                      |
-| `$FFD2`   | `$F1CA`    | `CHROUT`    | PARTIAL  |                                                      |
+| `$FFCF`   | `$F157`    | `CHRIN`     | PARTIAL  | no screen support, keyboard does not preserve .Y     |
+| `$FFD2`   | `$F1CA`    | `CHROUT`    | DONE     |                                                      |
 | `$FFD5`   | `$F49E`    | `LOAD`      | DONE     |                                                      |
 | `($0330)` | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support, no STOP key support               |
 | `$FFD8`   | `$F5DD`    | `SAVE`      | DONE     | only this preparation routine part is done           |
@@ -139,7 +139,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFDB`   |            | `SETTIM`    | DONE     |                                                      |
 | `$FFDE`   |            | `RDTIM`     | DONE     |                                                      |
 | `$FFE1`   | `$F6ED`    | `STOP`      | DONE     |                                                      |
-| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | only keyboard supported                              |
+| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | no screen device support                             |
 | `$FFE7`   | `$F32F`    | `CLALL`     | DONE     |                                                      |
 | `$FFEA`   |            | `UDTIM`     | DONE     |                                                      |
 | `$FFED`   |            | `SCREEN`    | DONE     |                                                      |

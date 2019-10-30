@@ -6,7 +6,7 @@
 //
 
 
-read_kb_buf:
+getin_keyboard: // XXX confirm that here is really a part of GETIN!
 
 	// Check for a key
 	lda NDX

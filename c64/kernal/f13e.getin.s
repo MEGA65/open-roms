@@ -5,12 +5,24 @@
 // - [RG64] C64 Programmer's Reference Guide   - page 283
 // - [CM64] Compute's Mapping the Commodore 64 - page 227/228
 //
-// CPU registers that has to be preserved (see [RG64]): .X, .Y
+// CPU registers that has to be preserved (see [RG64]): for RS-232: .X, .Y
 //
 
 
 GETIN:
 
-	// XXX this should be a dispatcher for several different devices!
+	// Determine the device number
+	lda DFLTN
 
-	jmp read_kb_buf
+	// Try $00 - keyboard
+	beq_far getin_keyboard
+
+#if HAS_RS232
+
+	// Try $02 - RS-232
+	cmp #$02
+	beq_far getin_rs232
+
+#endif // HAS_RS232
+
+	jmp chrin_getin

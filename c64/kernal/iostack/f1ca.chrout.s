@@ -6,7 +6,7 @@
 // - [CM64] Compute's Mapping the Commodore 64 - page 228
 //
 // CPU registers that has to be preserved (see [RG64]): .Y
-// Additionally we have to preserve .X for out CHRIN implementation
+// Additionally we have to preserve .X for out CHRIN and implementation
 //
 
 CHROUT:
@@ -27,17 +27,17 @@ CHROUT:
 	lda DFLTO
 
 	cmp #$03 // screen
-	bne !+
-	jmp chrout_screen
-!:
+	beq_far chrout_screen
+
+#if HAS_RS232
+	cmp #$02 
+	beq_far chrout_rs232
+#endif
+
+#if CONFIG_IEC
 	jsr iec_check_devnum_oc
-	bcs chrout_done_unknown_device // not a supported device
-
-chrout_iec:
-
-	lda SCHAR
-	jsr JCIOUT
-	bcc chrout_done_success
+	bcc_far chrout_iec
+#if CONFIG_IEC
 
 	// FALLTROUGH
 

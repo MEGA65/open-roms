@@ -24,6 +24,7 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                 c64/kernal/rom_revision \
                 c64/kernal/rs232 \
                 c64/kernal/screen \
+                c64/kernal/tape \
                 c64/kernal/time
 
 

@@ -35,6 +35,8 @@ CHRIN:
 
 #endif // HAS_RS232
 
+chrin_getin: // jump entry for GETIN
+
 #if CONFIG_IEC
 
 	// Try IEC devices

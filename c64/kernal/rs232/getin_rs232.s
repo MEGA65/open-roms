@@ -3,8 +3,6 @@
 // RS-232 part of the GETIN routine
 //
 
-// XXX connect to I/O stack
-
 
 #if HAS_RS232
 

@@ -97,16 +97,18 @@ got_loadaddress:
 	jsr print_return
 	pla
 	plp
-	bcc !+
+	bcc load_no_error
 
 	// A = KERNAL error code, which also almost match
-	// basic ERROR codes, so we can just copy the
-	// error code to X, decrement, and handle normally
+	// basic ERROR codes
 	tax
 	dex
+	bpl !+
+	ldx #B_ERR_BREAK
+!:
 	jmp do_basic_error
 	
-!:
+load_no_error:
 	// $YYXX is the last loaded address, so store it
 	stx VARTAB+0
 	sty VARTAB+1

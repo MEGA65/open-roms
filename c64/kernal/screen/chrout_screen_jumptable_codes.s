@@ -4,6 +4,7 @@
 // starting from the least probable routine
 //
 
+
 chrout_screen_jumptable_codes:
 
 	.byte KEY_CLR 
@@ -21,6 +22,7 @@ chrout_screen_jumptable_codes:
 
 __chrout_screen_jumptable_codes_end:
 
+
 chrout_screen_jumptable_lo:
 
 	.byte <(chrout_screen_CLR        - 1)
@@ -35,6 +37,7 @@ chrout_screen_jumptable_lo:
 	.byte <(chrout_screen_CRSR_LEFT  - 1)
 	.byte <(chrout_screen_CRSR_DOWN  - 1)
 	.byte <(chrout_screen_CRSR_UP    - 1)
+
 
 chrout_screen_jumptable_hi:
 

@@ -14,7 +14,15 @@ load_iec_file_not_found:
 	jmp kernalerror_FILE_NOT_FOUND
 
 load_iec_error:
+	lda FA
+	jsr iec_close_load
 	jmp lvs_load_verify_error 
+
+load_break_error:
+	pla
+	lda FA
+	jsr iec_close_load
+	jmp kernalerror_ROUTINE_TERMINATED 
 
 
 load_iec:
@@ -85,7 +93,18 @@ iec_load_loop:
 	// Advance pointer to data
 	jsr lvs_advance_pointer
 	bcs_far lvs_wrap_around_error
-
+	
+	// Handle STOP key; it is probably an overkill to do it
+	// with every byte, once per 32 bytes should be enough
+	lda STAL
+	and #$1F
+	bne !+
+	phx_trash_a
+	jsr udtim_keyboard
+	jsr STOP
+	bcs load_break_error
+	plx_trash_a
+!:
 	// Check for EOI - if so, this was the last byte
 	lda IOSTATUS
 	and #K_STS_EOI

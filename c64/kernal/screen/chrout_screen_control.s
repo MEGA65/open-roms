@@ -8,10 +8,9 @@ chrout_screen_control:
 	txa
 
 	// Order here is not random
-	// 1. First handle the ones that do not depend on quoote mode
+	// 1. First handle the ones that do not depend on quote mode
 	// 2. Handle remaining control codes starting from the most commonly used
-	//    in situations when speed might matter, we want to be
-	//    as snappy as possible
+	// We want to be as snappy as possible
 
 chrout_try_RETURN:
 
@@ -28,15 +27,13 @@ chrout_try_RETURN:
 chrout_try_DEL:
 
 	cmp #KEY_DEL
-	bne !+
-	jmp chrout_screen_DEL
-!:
+	beq_far chrout_screen_DEL
+
 chrout_try_INS:
 
 	cmp #KEY_INS
-	bne !+
-	jmp chrout_screen_INS
-!:
+	beq_far chrout_screen_INS
+
 #if CONFIG_EDIT_STOPQUOTE
 chrout_try_STOP:
 

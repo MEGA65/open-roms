@@ -178,7 +178,6 @@ Not all of them - only these we want to have implemented.
 | `$F646`   | IEC close                    | NOT DONE |                                                    |
 | `$FD30`   | default vectors              | DONE     |                                                    |
 | `$FD90`   | (unknown)                    | NOT DONE |                                                    |
-| `$FD90`   | (unknown)                    | NOT DONE |                                                    |
 | `$FE2D`   | memtop set part              | DONE     |                                                    |
 | `$FE47`   | default NMI                  | PARTIAL  |                                                    |
 | `$FE66`   | default BRK                  | DONE     |                                                    |

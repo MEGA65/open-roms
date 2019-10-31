@@ -37,7 +37,7 @@ CHROUT:
 #if CONFIG_IEC
 	jsr iec_check_devnum_oc
 	bcc_far chrout_iec
-#if CONFIG_IEC
+#endif
 
 	// FALLTROUGH
 

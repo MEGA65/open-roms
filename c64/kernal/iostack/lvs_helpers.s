@@ -3,33 +3,6 @@
 // Helper functions for various LOAD/VERIVY/SAVE routine variants (IEC / U64 / etc.)
 //
 
-lvs_send_file_name:
-	ldy #0
-lvs_send_file_name_loop:
-	cpy FNLEN
-	beq lvs_send_file_name_done
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<FNADDR+0
-	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (FNADDR),y
-#endif
-
-	iny
-	// Set Carry flag on the last file name character, to mark EOI
-	cpy FNLEN
-	clc
-	bne !+
-	sec
-!:
-	// Transmit one character
-	sta TBTCNT
-	jsr iec_tx_byte
-	jmp lvs_send_file_name_loop
-lvs_send_file_name_done:
-	jsr UNLSN
-	rts
 
 lvs_handle_byte_load_verify:
 

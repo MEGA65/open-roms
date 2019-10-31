@@ -45,7 +45,7 @@ load_iec:
 	bcs load_iec_dev_not_found
 
 	// Send file name
-	jsr lvs_send_file_name
+	jsr iec_send_file_name
 	bcs load_iec_error
 
 	// Now command device to talk (p16)

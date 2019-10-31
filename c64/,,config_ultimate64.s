@@ -40,7 +40,7 @@
 
 // I/O devices
 
-#define CONFIG_IEC                // please keep enabled for now
+#define CONFIG_IEC
 // #define CONFIG_IEC_JIFFYDOS    // please keep disabled for now
 // #define CONFIG_TAPE_NORMAL     // please keep disabled for now
 // #define CONFIG_TAPE_TURBO      // please keep disabled for now

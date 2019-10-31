@@ -24,7 +24,7 @@ save_iec:
 	bcs // XXX error
 
 	// Send file name
-	jsr lvs_send_file_name
+	jsr iec_send_file_name
 	bcs load_iec_error
 
 	// XXX finish the implementation

@@ -95,6 +95,14 @@ Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires s
 
 Comparing to standard memoryy model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
 
+## I/O devices
+
+### `CONFIG_IEC`
+
+Adds support for the IEEC bus - for serial printers, disk drives, etc.
+
+Needs over 1000 bytes in KERNAL segment. If unsure - enable.
+
 ## Multiple SID support
 
 The SID is a sound chip - original machine had one installed. However, mods exists to add more of them for improved sound capabilitiee. Emulators and FPGA machines typically allow to simulate more than one too. Unfortunately, there is no standard regarding how these additional chips are visible in the processor address space, and there is no sane way to detect it - thus, it has to be configurable.

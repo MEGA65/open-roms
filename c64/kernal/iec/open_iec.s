@@ -30,7 +30,7 @@ open_iec:
 #endif
 
 	// Send command ('file name')
-	jsr lvs_send_file_name
+	jsr iec_send_file_name
 
 open_iec_done:
 

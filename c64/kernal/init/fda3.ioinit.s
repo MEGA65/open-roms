@@ -111,7 +111,13 @@ IOINIT:
 	lda #%00000011
 	sta CIA2_PRA
 
-	rts
+#if CONFIG_IEC
 
 	// Set IEC bus to its initial idle state
 	jmp iec_set_idle
+
+#else
+
+	rts
+
+#endif

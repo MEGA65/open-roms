@@ -10,52 +10,22 @@
 #if CONFIG_TAPE_TURBO
 
 
-
-
-tape_ask_play:
-
-	sei                                // timing is critical for tape loading
-
-	lda #$1D
-	sta CPU_R6510                      // motor on   XXX make it more system friendly
-
-	ror VIC_SCROLY                     // screen blanked to VIC_EXTCOL color   XXX make it more system friendly
-
-	// XXX finish the implementation
-
-	rts
-
-tape_load_success:
-
-	rol VIC_SCROLY // screen back on
-	lda #$37       // default setting
-	sta CPU_R6510
-
-	// XXX finish this routine
-
-	rts
-
-tape_load_error:
-
-	// XXX finish this routine
-
-	rts
-
-
 load_tape_turbo:
 
-	// XXX if VERIFY asked - error
+	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
 	ldy #$00
 	sty PRTY                           // initial checksum value
 
-	jsr tape_ask_play
-
-	sty CIA2_TIMAHI                    // .Y still 0
+	sty CIA2_TIMAHI
 	lda #$FE                           // timer threshold for TurboTape
 	sta CIA2_TIMALO
 
+	jsr tape_ask_play
+
 	// Read file header
+
+	ldy #$00
 
 	jsr tape_turbo_sync                // .X gets set to 0
 

@@ -16,10 +16,11 @@ IOINIT:
 	// (https://www.c64-wiki.com/wiki/Zeropage)
 	// Work around for VICE bug: Writing $00 before $01 results in rubbish in $01
 	// after. https://sourceforge.net/p/vice-emu/bugs/1057/
+
 	lda #$27
-	ldx #$2F
+	ldx #$EF
 	sta CPU_R6510
-	stx CPU_D6510
+	stx CPU_D6510  // [CM64] page 4
 
 	// Silence the SID chips, depending on the configuration
 

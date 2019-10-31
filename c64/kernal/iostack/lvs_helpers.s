@@ -91,7 +91,9 @@ lvs_advance_pointer:
 	clc
 	rts
 
+
 lvs_display_searching_for:
+
 	lda MSGFLG
 	bpl lvs_display_end
 
@@ -117,7 +119,9 @@ lvs_display_searching_for:
 lvs_display_end:
 	rts
 
+
 lvs_display_loading_verifying:
+
 	// Display LOADING / VERIFYING and start address
 	lda MSGFLG
 	bpl lvs_display_end
@@ -132,6 +136,7 @@ lvs_display_loading_verifying:
 	// FALLTHROUGH
 
 lvs_display_start_addr:
+
 	ldx #__MSG_KERNAL_FROM_HEX
 !:
 	jsr print_kernal_message
@@ -142,6 +147,7 @@ lvs_display_start_addr:
 	jmp print_hex_byte
 
 lvs_display_done:
+
 	// Display end address
 	lda MSGFLG
 	bpl lvs_display_end
@@ -150,14 +156,18 @@ lvs_display_done:
 	jmp !-
 
 lvs_wrap_around_error:
+
 	// This error is probably not even detected by C64 Kernal;
 	// report BASIC error code that looks the most sane
 	lda #B_ERR_OVERFLOW
+
 lvs_error_end:
+
 	sec
 	rts
 
 lvs_return_last_address:
+
 	// Return last address - Compute's Mapping the 64 says without the '+1',
 	// checked (short test program) on original ROMs that this is really the case
 	ldx STAL+0
@@ -165,6 +175,7 @@ lvs_return_last_address:
 	// FALLTHROUGH
 
 lvs_success_end:
+
 	clc
 	rts
 

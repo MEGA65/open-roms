@@ -16,7 +16,6 @@
 	// On exit, $YYXX is the highest address into which data
 	// will have been placed.
 
-	// XXX add VERIFY support
 
 LOAD:
 

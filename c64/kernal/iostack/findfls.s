@@ -7,7 +7,6 @@
 find_fls:
 
 	ldy LDTND
-	beq find_fls_not_found // table empty
 !:
 	dey
 	bmi find_fls_not_found // no more entries

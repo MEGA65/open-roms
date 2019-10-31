@@ -73,15 +73,31 @@ lvs_handle_byte_verify:
 
 #if CONFIG_MEMORY_MODEL_60K
 
-	// XXX implement this part
+	// Store byte for comparing
+	sta TBTCNT
+
+	// Retrieve byte from under ROMs and IO if required
+	php
+	sei
+	ldx #$33
+	stx $01
+	ldy #0
+	lda (STAL),y
+	ldx #$37
+	stx $01
+	plp
+	
+	// Compare with stored byte
+	cmp TBTCNT
 
 #else
 
 	ldy #0
 	cmp (STAL),y
-	beq lvs_handle_byte_load_verify_end
 
 #endif
+
+	beq lvs_handle_byte_load_verify_end
 
 	sec
 	rts

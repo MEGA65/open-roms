@@ -24,7 +24,7 @@ startup_banner:
 
 #if CONFIG_BANNER_SIMPLE
 
-	.text "  " 
+	.text "    " 
 	BANNER_TEXT()
 	.byte $00
 

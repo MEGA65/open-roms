@@ -3,6 +3,8 @@
 // Various configuration dependent aliases/macros/checks
 //
 
+.encoding "petscii_upper"
+
 
 
 // Check that platform configuration is correct
@@ -146,8 +148,8 @@
 	.error "CONFIG_BANNER_BRAND is not supported for your CONFIG_BRAND_*" 
 #endif
 
-#if CONFIG_BANNER_BRAND && CONFIG_BRAND_MEGA_65 && CONFIG_SHOW_PAL_NTSC
-	.error "MEGA65 brand banner does not support showing PAL/NTSC" 
+#if CONFIG_MB_MEGA_65 && CONFIG_SHOW_PAL_NTSC
+	.error "MEGA65 can switch PAL/NTSC during run-time, CONFIG_SHOW_PAL_NTSC makes no sense"
 #endif
 
 }
@@ -260,4 +262,69 @@
 #else
 	STUB_IMPLEMENTATION_RTS()
 #endif
+}
+
+
+// Function for printing out build features
+
+.var feature_new_line = false
+
+.function ADD_FEATURE(current_features, new_feature)
+{
+	.var features_str = current_features
+
+	.if (!feature_new_line && features_str.size() > 0)
+	{
+		.eval features_str = features_str + ", "
+	}
+
+	.if (feature_new_line)
+	{
+		.eval feature_new_line = false
+		.eval features_str = features_str + @"\r"
+	}
+
+	.return features_str + new_feature
+}
+
+.function BUILD_FEATURES_STR()
+{
+	.var features_str = ""
+
+#if CONFIG_TAPE_NORMAL
+	.eval features_str = ADD_FEATURE(features_str, "TAPE NORMAL")
+#elif CONFIG_TAPE_TURBO
+	.eval features_str = ADD_FEATURE(features_str, "TAPE TURBO")
+#elif CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
+	.eval features_str = ADD_FEATURE(features_str, "TAPE NORMAL+TURBO")
+#endif
+
+	.eval feature_new_line = true
+
+#if CONFIG_IEC
+	.eval features_str = ADD_FEATURE(features_str, "IEC")
+#endif
+#if CONFIG_IEC_JIFFYDOS
+	.eval features_str = ADD_FEATURE(features_str, "JIFFY")
+#endif
+
+	.eval feature_new_line = true
+
+#if CONFIG_RS232_UP2400
+	.eval features_str = ADD_FEATURE(features_str, "UP2400")
+#endif
+
+#if CONFIG_RS232_UP2400
+	.eval features_str = ADD_FEATURE(features_str, "UP9600")
+#endif
+
+#if CONFIG_KEYBOARD_C128
+	.eval features_str = ADD_FEATURE(features_str, "KBD 128")
+#endif
+
+#if CONFIG_KEYBOARD_C65
+	.eval features_str = ADD_FEATURE(features_str, "KBD 65")
+#endif
+
+	.return features_str
 }

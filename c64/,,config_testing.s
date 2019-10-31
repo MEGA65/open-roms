@@ -113,10 +113,11 @@
 // Eye candy
 
 // #define CONFIG_COLORS_BRAND
-// #define CONFIG_BANNER_SIMPLE
-#define CONFIG_BANNER_FANCY
+#define CONFIG_BANNER_SIMPLE
+// #define CONFIG_BANNER_FANCY
 // #define CONFIG_BANNER_BRAND
-// #define CONFIG_SHOW_PAL_NTSC
+#define CONFIG_SHOW_FEATURES
+#define CONFIG_SHOW_PAL_NTSC
 
 
 // Debug options

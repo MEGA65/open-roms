@@ -72,10 +72,10 @@ jiffydos_restore_sprites:
 
 .function SAME_PAGE_CHECK(label_1, label_2)
 {
-#if !PASS_SIZETEST
-	return (label_1 - label_1 % 256) == (label_2 - label_2 % 256)
+#if PASS_SIZETEST
+	.return (label_1 - label_1 % 256) == (label_2 - label_2 % 256)
 #else
-	return true
+	.return true
 #endif
 }
 

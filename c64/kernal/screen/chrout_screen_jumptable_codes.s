@@ -25,6 +25,10 @@ __chrout_screen_jumptable_quote_guard:
 #if CONFIG_EDIT_STOPQUOTE
 	.byte KEY_STOP
 #endif
+#if CONFIG_EDIT_TABULATORS
+	.byte KEY_TAB_BW
+	.byte KEY_TAB_FW
+#endif
 	.byte KEY_INS
 	.byte KEY_DEL
 	.byte KEY_RETURN
@@ -49,6 +53,10 @@ chrout_screen_jumptable_lo:
 #if CONFIG_EDIT_STOPQUOTE
 	.byte <(chrout_screen_STOP       - 1)
 #endif
+#if CONFIG_EDIT_TABULATORS
+	.byte <(chrout_screen_TAB_BW     - 1)
+	.byte <(chrout_screen_TAB_FW     - 1)
+#endif
 	.byte <(chrout_screen_INS        - 1)
 	.byte <(chrout_screen_DEL        - 1)
 	.byte <(chrout_screen_RETURN     - 1)
@@ -69,6 +77,10 @@ chrout_screen_jumptable_hi:
 	.byte >(chrout_screen_CRSR_UP    - 1)
 #if CONFIG_EDIT_STOPQUOTE
 	.byte >(chrout_screen_STOP       - 1)
+#endif
+#if CONFIG_EDIT_TABULATORS
+	.byte >(chrout_screen_TAB_BW     - 1)
+	.byte >(chrout_screen_TAB_FW     - 1)
 #endif
 	.byte >(chrout_screen_INS        - 1)
 	.byte >(chrout_screen_DEL        - 1)

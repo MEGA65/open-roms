@@ -27,23 +27,22 @@
 
 // Note - the following PETSCII codes are currently unassigned, can be used for further extensions:
 //
-// $01, $04, $06, $0A, $0B, $0C, $0F, $18, $82
+// $01, $02, $04, $06, $0A, $0B, $0C, $0F, $18, $82
 
 
 .const KEY_NA           = $00  // to indicate that no key is presed
 
 
-// PETSCII codes for our extended screen editor       XXX implement these
+// PETSCII codes for our extended screen editor
 
-.const KEY_BOTTOM       = $02  // CTRL+B            - Open ROMs unofficial, DolphinDOS compatible
 .const KEY_TAB_FW       = $8F  // CTRL+>, TAB       - Open ROMs unofficial, original TAB conflicts with C64 PETSCII
 .const KEY_TAB_BW       = $80  // CTRL+<, SHIFT+TAB - Open ROMs unofficial, original TAB conflicts with C64 PETSCII
 
 
-// PETSCII codes for certain C128 and C65 functionalities     XXX implement these
+// PETSCII codes for certain C128 and C65 functionalities
 
 #if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
-.const KEY_BELL         = $07  // no key, originally CTRL+G
+.const KEY_BELL         = $07  // no key, originally CTRL+G // XXX implement BELL
 .const KEY_ESC          = $1B
 #endif
 

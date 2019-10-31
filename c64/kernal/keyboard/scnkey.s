@@ -337,18 +337,6 @@ scnkey_output_65_no_shift:
 !:
 	lda (KEYTAB), y	                   // retrieve key code from standard matrix
 
-	// XXX this will be needed for extended screen editor and C128 keyboard
-
-	// cmp KEY_TAB_FW                  // special handling for SHIFT+TAB
-	// bne scnkey_got_petscii          // XXX or to scnkey_handle_caps_lock
-	// lda SHFLAG                      // special handling for SHIFT+TAB
-	// and #KEY_FLAG_SHIFT
-	// bne !+
-	// lda KEY_TAB_FW
-	// bne scnkey_got_petscii          // branch alWAYS 
-    // !:
-	// lda KEY_TAB_BW                  // bne scnkey_got_petscii if CAPS LOCK is handled
-
 #endif // CONFIG_KEYBOARD_C128 or CONFIG_KEYBOARD_C65
 
 #if CONFIG_KEYBOARD_C128_CAPS_LOCK || CONFIG_KEYBOARD_C65_CAPS_LOCK
@@ -390,6 +378,22 @@ scnkey_handle_caps_lock:
 	// Output PETSCII code to the keyboard buffer
 
 scnkey_got_petscii:
+
+#if CONFIG_KEYBOARD_C128 && CONFIG_EDIT_TABULATORS
+
+	// Special handling for SHIFT+TAB; it is easier than creating new matrix
+
+	tax
+	cmp #KEY_TAB_FW
+	bne !+
+	lda SHFLAG
+	and #KEY_FLAG_SHIFT
+	beq !+
+	ldx #KEY_TAB_BW
+!:
+	txa
+
+#endif // CONFIG_KEYBOARD_C128 and CONFIG_EDIT_TABULATORS
 
 	beq scnkey_no_keys                 // branch if we have no PETSCII code for this key
 	ldy NDX

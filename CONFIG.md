@@ -175,7 +175,13 @@ Needs 25 bytes more space in KERNAL segment for the code. In addition, each conf
 
 If enabled, STOP key terminates insert/quote mode (like on BlackBox cartridge).
 
-Feature needs 10 bytes in KERNAL segment. If unsure - enable.
+Feature needs 12 bytes in KERNAL segment. If unsure - enable.
+
+### `CONFIG_EDIT_TABULATORS`
+
+If enabled, allows use of TAB (or CTRL+>) and SHIFT+TAB (or CTRL+<) to switch between predefined tabulator positions.
+
+Feature needs 35-45 bytes in KERNAL segment. If unsure - enable.
 
 ## Software features
 

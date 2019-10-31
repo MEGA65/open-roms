@@ -12,6 +12,7 @@ chrout_screen_CRSR_UP:
 	sta PNTR
 	jmp chrout_screen_calc_lptr_done
 
+
 chrout_screen_CRSR_DOWN:
 
 	lda PNTR
@@ -25,14 +26,16 @@ chrout_screen_CRSR_DOWN:
 	jsr screen_scroll_up_if_on_last_line
 	jmp chrout_screen_calc_lptr_done
 
+
 chrout_screen_CRSR_LEFT:
 
 	lda TBLX
 	ora PNTR
-	beq !+ // recalculating pointer is not really necessary, but this is a very rare case nevertheless
+	beq !+ // top-left corner, recalculating pointer is not necessary, but this is a very rare case nevertheless
 	dec PNTR
 !:
 	jmp chrout_screen_calc_lptr_done
+
 
 chrout_screen_CRSR_RIGHT:
 

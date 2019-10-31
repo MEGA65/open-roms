@@ -24,7 +24,7 @@ initmsg_real:
 
 	jsr initmsg_bytes_free
 
-	ldx #$06
+	ldx #$07
 	ldy #$00
 #if CONFIG_SHOW_PAL_NTSC && CONFIG_SHOW_FEATURES
 	jsr plot_set
@@ -72,8 +72,8 @@ initmsg_real:
 
 	jsr initmsg_bytes_free
 
-	ldx #$05
 	ldy #$00
+	ldx #$07
 #if CONFIG_SHOW_PAL_NTSC && CONFIG_SHOW_FEATURES
 	jsr plot_set
 	jsr print_features

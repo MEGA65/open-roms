@@ -93,7 +93,7 @@
 	.label LDTND     = $98  //          number of entries in LAT / FAT / SAT tables
 	.label DFLTN     = $99  //          default input device
 	.label DFLTO     = $9A  //          default output device
-	.label PRTY      = $9B  //          -- NOT IMPLEMENTED --
+	.label PRTY      = $9B  //          tape storage for parity/checksum
 	.label DPSW      = $9C  //          -- NOT IMPLEMENTED --
 	.label MSGFLG    = $9D  //          bit 6 = error messages, bit 7 = control message
 	.label PTR1      = $9E  //          -- NOT IMPLEMENTED --
@@ -131,7 +131,7 @@
 	.label SA        = $B9  //          current secondary address
 	.label FA        = $BA  //          current device number
 	.label FNADDR    = $BB  // $BB-$BC  current file name pointer
-	.label ROPRTY    = $BD  //          -- NOT IMPLEMENTED --
+	.label ROPRTY    = $BD  //          tape / RS-232 temporary storage
 	.label FSBLK     = $BE  //          -- NOT IMPLEMENTED --
 	.label MYCH      = $BF  //          -- NOT IMPLEMENTED --
 	.label CAS1      = $C0  //          -- NOT IMPLEMENTED --

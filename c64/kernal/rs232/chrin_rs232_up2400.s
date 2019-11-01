@@ -1,14 +1,14 @@
 
 //
-// RS-232 part of the CHKRIN routine
+// RS-232 part of the CHRIN routine
 //
 
 
-#if HAS_RS232
+#if CONFIG_RS232_UP2400
 
 
 chrin_rs232:
 	STUB_IMPLEMENTATION() // XXX provide implementation for both UP2400 and UP9600
 
 
-#endif // HAS_RS232
+#endif // CONFIG_RS232_UP2400

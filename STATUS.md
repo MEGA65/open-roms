@@ -32,6 +32,7 @@ The following ROM features are currently missing:
 * BASIC expression parsing
 * floating point routines
 * tape (normal mode) support
+* tape loading ignores secondary address
 * IEC support for SAVE
 * RS-232 support
 * NMI handling is incomplete

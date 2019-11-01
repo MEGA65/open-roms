@@ -79,16 +79,10 @@ lvs_handle_byte_verify:
 lvs_advance_pointer:
 
 	// Advance pointer
-	inc STAL
-	beq !+
-	jmp lvs_success_end
-!:
-	inc STAL+1
-	// If we wrap around to $0000, then this is bad.
+	inc STAL+0
 	bne !+
-	jmp lvs_error_end
+	inc STAL+1
 !:
-	clc
 	rts
 
 
@@ -154,12 +148,6 @@ lvs_display_done:
 
 	ldx #__MSG_KERNAL_TO_HEX
 	jmp !-
-
-lvs_wrap_around_error:
-
-	// This error is probably not even detected by C64 Kernal;
-	// report BASIC error code that looks the most sane
-	lda #B_ERR_OVERFLOW
 
 lvs_error_end:
 

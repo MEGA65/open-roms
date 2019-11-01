@@ -90,9 +90,9 @@ iec_load_loop:
 	jsr lvs_handle_byte_load_verify
 	bcs load_iec_error
 
-	// Advance pointer to data
+	// Advance pointer to data; it is OK if it advances past $FFFF,
+	// one autostart technique does exactly this
 	jsr lvs_advance_pointer
-	bcs_far lvs_wrap_around_error
 	
 	// Handle STOP key; it is probably an overkill to do it
 	// with every byte, once per 32 bytes should be enough

@@ -94,7 +94,11 @@
 	.label DFLTN     = $99  //          default input device
 	.label DFLTO     = $9A  //          default output device
 	.label PRTY      = $9B  //          tape storage for parity/checksum
+#if !CONFIG_TAPE_NORMAL && !CONFIG_TAPE_TURBO	
 	.label DPSW      = $9C  //          -- NOT IMPLEMENTED --
+#else
+    .label COLSTORE  = $9C  //          [!] screen border storage for tape routines 
+#endif
 	.label MSGFLG    = $9D  //          bit 6 = error messages, bit 7 = control message
 	.label PTR1      = $9E  //          -- NOT IMPLEMENTED --
 	.label PTR2      = $9F  //          -- NOT IMPLEMENTED --
@@ -277,6 +281,6 @@
 
 	//                 $314     $334-$33B  -- UNUSED --          free for user software
 	
-	.label TBUFFR    = $33C  // $33C-$3FB, -- NOT IMPLEMENTED --, tape buffer
+	.label TBUFFR    = $33C  // $33C-$3FB  [!] tape buffer, our usage details differ
 
 	//                 $3FC     $3FC-$3FF  -- UNUSED --          free for user software

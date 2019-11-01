@@ -7,43 +7,53 @@
 // - https://codebase64.pokefinder.org/doku.php?id=base:turbotape_loader_source
 
 
+// XXX use calibration bits to improve reading
+// XXX handle load address from Kernal API
+// XXX add name matching
+
+
 #if CONFIG_TAPE_TURBO
 
 
 load_tape_turbo:
 
-	// XXX prepare SID, store screen color somewhere, read header
-
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
-	ldy #$00
-	sty PRTY                           // initial checksum value
-
-	sty CIA2_TIMAHI
+	lda #$00
+	sta CIA2_TIMAHI
 	lda #$FE                           // timer threshold for TurboTape
 	sta CIA2_TIMALO
 
 	jsr tape_ask_play
 
+	// FALLTROUGH
+
+load_tape_turbo_header:
+
 	// Read file header
 
-	ldy #$00
+	jsr tape_turbo_sync
 
-	jsr tape_turbo_sync                // .X gets set to 0
-
-	stx STAL+0                         // instead of a later lda, sta
-	jsr tape_turbo_get_byte            // important trick - save time/bytes by using y-indexing
-	tay
+	ldy #$15
 !:
-	jsr tape_turbo_get_byte	
-	sta STAL+1,x                       // .X still 0
-	inx
-	cpx #$03
-	bne !-
+	jsr tape_turbo_get_byte
+	sta (TAPE1), y
+	dey
+	bpl !-
+
+	jsr tape_handle_header
+	bcs load_tape_turbo_header         // if name does not match, look for other header
+
+	// FALLTROUGH
+
+load_tape_turbo_payload:
 
 	// Read file payload
 
 	jsr tape_turbo_sync                // .X gets set to 0
+
+	ldy #$00
+	sty PRTY                           // initial checksum value
 
 	// FALLTROUGH
 
@@ -51,22 +61,21 @@ load_tape_turbo_loop:
 
 	jsr tape_turbo_get_byte
 
-	dec CPU_R6510                      // to load below i/o area!
-
-	sta (STAL),y	
-	eor PRTY
-	sta PRTY
-
+	dec CPU_R6510                      // to load below I/O area
+	sta (STAL),y
 	inc CPU_R6510
 
-	iny
-	bne !+
-	inc STAL+1
-!:
-	cpy MEMUSS+0
+	eor PRTY                           // handle checksum
+	sta PRTY
+
+	jsr lvs_advance_pointer
+
 	lda STAL+1
-	sbc MEMUSS+1
-	bcc load_tape_turbo_loop
+	cmp EAL+1
+	bne load_tape_turbo_loop
+	lda STAL+0
+	cmp EAL+0
+	bne load_tape_turbo_loop
 
 	// Verify the checksum
 
@@ -74,7 +83,6 @@ load_tape_turbo_loop:
 	cmp PRTY
 	beq_far tape_load_success
 	jmp tape_load_error
-
 
 tape_turbo_get_byte:
 

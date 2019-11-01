@@ -62,17 +62,25 @@ rsl_l1:
 	lda __tokenise_work1
 	beq basic_read_next_line
 
-#if CONFIG_DOS_WEDGE
+	// Check if a wedge should take over
+
+#if CONFIG_DOS_WEDGE || CONFIG_TAPE_WEDGE
+	
+	ldx __tokenise_work1 // here is the size of input
 	
 	// Check if DOS wedge should take over
 	lda BUF
-	cmp #$40 // '@'
-	bne !+
-	ldx __tokenise_work1 // here is the size of input
-	jmp wedge_dos
-!:
 
-#endif // CONFIG_DOS_WEDGE
+#if CONFIG_DOS_WEDGE
+	cmp #$40 // '@'
+	beq_far wedge_dos
+#endif
+#if CONFIG_TAPE_WEDGE
+	cmp #$1F // left arrow
+	beq_far wedge_tape
+#endif
+
+#endif
 
 	// Else, tokenise the line
 	jsr tokenise_line

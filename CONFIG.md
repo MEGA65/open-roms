@@ -107,7 +107,7 @@ Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
 Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges)
 
-Needs about 350 bytes in KERNAL segment. If unsure - enable.
+Needs about 400 bytes in KERNAL segment. If unsure - enable.
 
 ## Multiple SID support
 
@@ -210,6 +210,12 @@ Feature needs over 100 bytes in KERNAL segment. If unsure - enable.
 If enabled, a simple DOS wedge is available from the direct mode - supports `@<drive_number>`, `@<command>`, `@$`, `@$<params>` and `@` commands.
 
 Feature needs about 330 bytes in BASIC segment. If unsure - enable.
+
+### `CONFIG_TAPE_WEDGE`
+
+If enabled, a simple DOS wedge is available from the direct mode for turbo tape loading - supports `←L` only
+
+Feature needs about 30 bytes in BASIC segment. If unsure - enable.
 
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 

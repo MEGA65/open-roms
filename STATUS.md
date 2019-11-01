@@ -13,6 +13,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
     * secondary address over 255 is considered a start address
+* turbo tape load support (as device 7 or using `←L`)
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 
 NOTE: extra features and their syntax can change in the future!
@@ -32,7 +33,7 @@ The following ROM features are currently missing:
 * BASIC expression parsing
 * floating point routines
 * tape (normal mode) support
-* tape loading ignores secondary address
+* tape loading ignores secondary address and has no pattern matching
 * IEC support for SAVE
 * RS-232 support
 * NMI handling is incomplete

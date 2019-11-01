@@ -9,7 +9,7 @@
 
 // XXX use calibration bits to improve reading
 // XXX handle load address from Kernal API
-// XXX add name matching
+// XXX finish pattern matching
 
 
 #if CONFIG_TAPE_TURBO
@@ -32,14 +32,15 @@ load_tape_turbo_header:
 
 	// Read file header
 
-	jsr tape_turbo_sync
+	jsr tape_turbo_sync_header
 
-	ldy #$15
+	ldy #$00
 !:
 	jsr tape_turbo_get_byte
 	sta (TAPE1), y
-	dey
-	bpl !-
+	iny
+	cpy #$15
+	bne !-
 
 	jsr tape_handle_header
 	bcs load_tape_turbo_header         // if name does not match, look for other header
@@ -50,7 +51,7 @@ load_tape_turbo_payload:
 
 	// Read file payload
 
-	jsr tape_turbo_sync                // .X gets set to 0
+	jsr tape_turbo_sync_payload
 
 	ldy #$00
 	sty PRTY                           // initial checksum value
@@ -121,23 +122,43 @@ tape_turbo_get_bit:
 	lsr
 	rts
 
-
-tape_turbo_sync:
+tape_turbo_sync_common:
 
 	jsr tape_turbo_get_bit 
-	rol ROPRTY  
-	lda ROPRTY  
-	cmp #$02  
-	bne tape_turbo_sync
+	rol ROPRTY
+	lda ROPRTY
+	cmp #$02
+	bne tape_turbo_sync_common
+	rts
+
+tape_turbo_sync_header:
+
+	ldx #$FF
+!:
+	ldy #$03
+!:
+	jsr tape_turbo_sync_common
+	dey
+	bne !-
+	dex
+	bne !--
+
+	// FALLTROUGH
+
+tape_turbo_sync_payload:
+
+	jsr tape_turbo_sync_common
+!:
 	ldx #$09                           // 9,8,... is real turboTape
 !:                                     // I sometimes used 8,7,6... to avoid it being listed in vice :)
  	jsr tape_turbo_get_byte
  	cmp #$02
  	beq !-
+ 	ldy #$00
 !: 
 	cpx ROPRTY
-	bne tape_turbo_sync
-	jsr tape_turbo_get_byte  
+	bne tape_turbo_sync_payload
+	jsr tape_turbo_get_byte
 	dex
 	bne !-
 

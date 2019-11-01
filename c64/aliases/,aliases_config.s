@@ -213,6 +213,15 @@
 
 
 
+// Check that features are configured correctly
+{
+#if CONFIG_TAPE_WEDGE && !CONFIG_TAPE_TURBO
+	.error "CONFIG_TAPE_WEDGE requires CONFIG_TAPE_TURBO"
+#endif
+}
+
+
+
 // Handle processor configuration
 
 #if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816

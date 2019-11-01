@@ -39,7 +39,7 @@ iec_tx_common:
 	// At this point a delay 256 usec or more is considered EOI,
 	// receiver should now acknowledge it by pulling data for at least 60 usec
 	// Keep the implementation as simple as possible: data should be released now
-	// so wait until it's pushed and released again
+	// so wait until it is pushed and released again
 	
 	jsr iec_wait_for_data_pull
 	jsr iec_wait_for_data_release
@@ -54,6 +54,42 @@ iec_tx_common:
 	ldx #7
 
 iec_tx_common_sendbit:
+
+#if CONFIG_IEC_JIFFYDOS
+
+	// Here is the place we can detect JiffyDOS protocol, by inserting a long delay
+	// (above 400us?) during sending command last bit, see:
+    // - https://sites.google.com/site/h2obsession/CBM/C128/JiffySoft128
+    // - https://github.com/rkrajnc/sd2iec/blob/master/src/iec.c
+    // The 'iec.s' suggests, that the drive should respond by pulling data
+
+    lda IECPROTO
+    bpl !+                             // branch if protocol is known
+    cpx #$00
+    bne !+                             // branch if not sending the last bit
+
+    ldy #$1B                           // 400us is nearly 410 cycles on NTSC
+                                       // loop iteration below is 15 cycles,
+                                       // and several cycles were already used
+iec_jiffydos_detect_loop:
+	lda CIA2_PRA                       // 4 cycles
+	bpl iec_jiffydos_detected          // 2 cycles
+	dey                                // 2 cycles
+	bne iec_jiffydos_detect_loop       // 2 cyycles
+
+	lda #$00                           // 2 cycles
+	beq iec_jiffydos_store_proto       // 3 cycles, branch always
+
+iec_jiffydos_detected:
+	
+	panic #$FF // WHOAAAA! He wants to speak jiffy, but I do not know this language yet!
+
+iec_jiffydos_store_proto:
+	sta IECPROTO
+
+!:
+#endif // CONFIG_IEC_JIFFYDOS
+
 	// Is next bit 0 or 1?
 	lda TBTCNT
 	lsr
@@ -86,7 +122,8 @@ iec_tx_common_bit_is_sent:
 	// Give device time to tell if they are busy by pulling DATA
 	// They should do it within 1ms
 	ldx #$FF
-!:	lda CIA2_PRA
+!:
+	lda CIA2_PRA
 	// BPL here is checking that bit 7 clears,
 	// i.e, that the DATA line is pulled by drive
 	bpl !+

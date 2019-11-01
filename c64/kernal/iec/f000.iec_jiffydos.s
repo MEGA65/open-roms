@@ -48,8 +48,14 @@ iec_rx_byte_jiffydos:
 
 jiffydos_wait_line:
 
-	// XXX if screen not disabled, wait for badline to pass
+	lda VIC_SCROLY
+	and #$10
+	beq jiffydos_wait_line_done        // screen is disabled, no need to watch for badlines
 
+	// XXX wait for badline to pass
+
+
+jiffydos_wait_line_done:
 	rts
 
 

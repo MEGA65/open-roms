@@ -309,10 +309,11 @@
 #endif
 
 #if CONFIG_IEC
+#if !CONFIG_IEC_JIFFYDOS
 	.eval features_str = ADD_FEATURE(features_str, "IEC")
+#else
+	.eval features_str = ADD_FEATURE(features_str, "IEC+JD")
 #endif
-#if CONFIG_IEC_JIFFYDOS
-	.eval features_str = ADD_FEATURE(features_str, "JIFFY")
 #endif
 
 	.eval feature_new_line = true

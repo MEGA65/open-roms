@@ -16,6 +16,15 @@ iec_tx_command:
 	phx_trash_a
 	phy_trash_a
 
+#if CONFIG_IEC_JIFFYDOS
+
+	// With each and every command, check whether device wants to talk JiffyDOS protocol
+
+	lda #$FF // unknown protocol
+	sta IECPROTO
+
+#endif // CONFIG_IEC_JIFFYDOS
+
 	// Notify all devices that we are going to send a byte
 	// and it is going to be a command (pulled ATN)
 	jsr iec_pull_atn_clk_release_data

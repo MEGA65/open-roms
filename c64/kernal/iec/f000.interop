@@ -1,0 +1,1 @@
+This is not really for interoperabilityy - we need a fixed memory address to be sure no branches will cross page border (timing is critical)

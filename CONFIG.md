@@ -103,6 +103,12 @@ Adds support for the IEEC bus - for serial printers, disk drives, etc.
 
 Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
+### `CONFIG_TAPE_TURBO`
+
+Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges)
+
+Needs about 350 bytes in KERNAL segment. If unsure - enable.
+
 ## Multiple SID support
 
 The SID is a sound chip - original machine had one installed. However, mods exists to add more of them for improved sound capabilitiee. Emulators and FPGA machines typically allow to simulate more than one too. Unfortunately, there is no standard regarding how these additional chips are visible in the processor address space, and there is no sane way to detect it - thus, it has to be configurable.
@@ -113,7 +119,7 @@ The SID support in the ROM is very limited - it only disables the sound during s
 
 Each of them add support for one additional SID - addresses should be given in `CONFIG_SID_2ND_ADDRESS` and `CONFIG_SID_3RD_ADDRESS`, respectively.
 
-Each of these options needs 8 bytes in KERNAL segment.
+Each of these options needs 3 bytes in KERNAL segment.
 
 ### `CONFIG_SID_D4XX` and `CONFIG_SID_D5XX`
 
@@ -181,7 +187,7 @@ Needs 25 bytes more space in KERNAL segment for the code. In addition, each conf
 
 ### `CONFIG_EDIT_STOPQUOTE`
 
-If enabled, STOP key terminates insert/quote mode (like on BlackBox cartridge).
+If enabled, STOP key terminates insert/quote mode (like on some _Black Box_ cartridges).
 
 Feature needs 12 bytes in KERNAL segment. If unsure - enable.
 

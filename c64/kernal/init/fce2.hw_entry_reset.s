@@ -10,12 +10,9 @@ hw_entry_reset:
 	sei // disable the interrupts, as fast as possible - they are disabled in case of HW reset,
 	    // but this routine can be also called manually
 
-	ldx #$00
-	sta VIC_SCROLX // turn the display off - we want as little screen artifacts as possible
-
 	cld // required for all CPUs - due to possibility of manual call
 
-	dex // $FF - to initialize stack pointer
+	ldx #$FF
 	txs
 
 	// The following routine is based on reading the public KERNAL jumptable routine
@@ -28,6 +25,10 @@ hw_entry_reset:
 	bne !+
 	jmp (ICART_COLD_START)
 !:
+	// Disable the screen (and set 40 columns) to prevent visual glitches later
+	ldx #$28
+	stx VIC_SCROLX
+
 	// Initialising IO is obviously required. Also indicated by c64 prg p269.
 	jsr JIOINIT
 

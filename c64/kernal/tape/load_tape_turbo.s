@@ -12,6 +12,8 @@
 
 load_tape_turbo:
 
+	// XXX prepare SID, store screen color somewhere, read header
+
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
 	ldy #$00
@@ -91,16 +93,24 @@ tape_turbo_get_bit:
 
 	lda #$10	
 !:
-	bit CIA2_ICR	
+	bit CIA1_ICR	
 	beq !-                             // busy loop to detect signal
 	lda CIA2_ICR
 	pha	
 	lda #$19	
 	sta CIA2_CRA	
 	pla
-	sta VIC_EXTCOL                     // use bitvalue as d020 effect (I love that one)
-	lsr
+	
+	pha                                // audio/video effects
+	asl
+	sta SID_SIGVOL
+	beq !+
+	lda #$06
+!:
+	sta VIC_EXTCOL
+	pla
 
+	lsr
 	rts
 
 

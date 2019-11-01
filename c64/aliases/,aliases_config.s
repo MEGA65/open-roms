@@ -299,8 +299,6 @@
 	.eval features_str = ADD_FEATURE(features_str, "TAPE NORMAL+TURBO")
 #endif
 
-	.eval feature_new_line = true
-
 #if CONFIG_IEC
 	.eval features_str = ADD_FEATURE(features_str, "IEC")
 #endif

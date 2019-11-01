@@ -20,6 +20,10 @@ NOTE: extra features and their syntax can change in the future!
 
 # Features missing
 
+The following ROM features are currently missing and are not planned due to space considerations:
+
+* full tape support - VERIFY, SAVE, sequential files; tape is considered a legacy medium, so it's support is going to be limited
+* mock 6551 emulation - this inly slows down the RS-232 support for original ROMs, probably noone needs it
 
 The following ROM features are currently missing:
 
@@ -27,7 +31,8 @@ The following ROM features are currently missing:
 * BASIC variables
 * BASIC expression parsing
 * floating point routines
-* tape support
+* tape (normal mode) support
+* IEC support for SAVE
 * RS-232 support
 * NMI handling is incomplete
 
@@ -104,8 +109,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | :-------: | :--------: | :---------- | :------: | :--------------------------------------------------: |
 | `($028F)` |            | `KEYLOG`    | DONE     |                                                      |
 | `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                      |
-| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization might be incomplete               |
-| `$FF87`   | `$FD50`    | `RAMTAS`    | PARTIAL  | probably shouldn't touch VIC and CIA's               |
+| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                        |
+| `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                      |
 | `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                      |
 | `$FF8D`   | `$FD1A`    | `VECTOR`    | DONE     |                                                      |
 | `$FF90`   |            | `SETMSG`    | DONE     |                                                      |

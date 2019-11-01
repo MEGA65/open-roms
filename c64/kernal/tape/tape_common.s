@@ -45,6 +45,8 @@ tape_ask_play:
 	ldx #__MSG_KERNAL_PRESS_PLAY
 	jsr print_kernal_message
 
+	// FALLTROUGH
+
 tape_wait_button_loop:
 
 	jsr udtim_keyboard
@@ -71,7 +73,8 @@ tape_load_success:
 
 	jsr screen_show
 	jsr tape_motor_off
-
+	
+	cli
 	jmp lvs_success_end
 
 
@@ -80,6 +83,7 @@ tape_load_error:
 	jsr screen_show
 	jsr tape_motor_off
 
+	cli
 	jmp lvs_load_verify_error
 
 

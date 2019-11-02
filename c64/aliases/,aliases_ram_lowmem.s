@@ -206,7 +206,7 @@
 	.label M51CRT    = $293  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51CDR    = $294  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51AJB    = $295  // $295-$296  -- NOT IMPLEMENTED -- mock 6551
-	.label RSSTAT    = $297  //            -- WIP -- mock 6551, RS-232 status
+	.label RSSTAT    = $297  //            -- WIP -- (UP9600 only) mock 6551, RS-232 status
 	.label BITNUM    = $298  //            -- NOT IMPLEMENTED --
 	.label BAUDOF    = $299  // $299-$29A  -- NOT IMPLEMENTED --
 #endif

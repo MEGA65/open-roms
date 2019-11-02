@@ -9,7 +9,6 @@
 
 // XXX use calibration bits to improve reading
 // XXX handle load address from Kernal API
-// XXX finish pattern matching
 
 
 #if CONFIG_TAPE_TURBO
@@ -30,17 +29,31 @@ load_tape_turbo:
 
 load_tape_turbo_header:
 
-	// Read file header
+	// Read file header; structure described here:
+	// - https://www.luigidifraia.com/c64/docs/tapeloaders.html#turbotape64
+	//
+	// 1 byte (skipped) - file type (0 = data, odd value = relocatable, even value = non-relocatable)
+	// 2 bytes          - start address
+	// 2 bytes          - end address + 1
+	// 1 byte           - if $0B (tape timing) contained at the time of saving
+	// 16 bytes         - filename, padded with 0x20
 
 	jsr tape_turbo_sync_header
+	ldy #$10
 
-	ldy #$00
-!:
+	// FALLTROUGH
+
+load_tape_turbo_header_loop:           // this strange loop puts metadata after file name
+
 	jsr tape_turbo_get_byte
 	sta (TAPE1), y
 	iny
 	cpy #$15
-	bne !-
+	bne !+
+	ldy #$00
+!:
+	cpy #$10
+	bne load_tape_turbo_header_loop
 
 	jsr tape_handle_header
 	bcs load_tape_turbo_header         // if name does not match, look for other header

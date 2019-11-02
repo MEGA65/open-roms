@@ -122,26 +122,17 @@ tape_handle_header:
 
 	jsr tape_screen_show_motor_off
 
-	// Header structure described here:
-	// - https://www.luigidifraia.com/c64/docs/tapeloaders.html#turbotape64
-	//
-	// 1 byte (skipped) - file type (0 = data, odd value = relocatable, even value = non-relocatable)
-	// 2 bytes          - start address
-	// 2 bytes          - end address + 1
-	// 1 byte           - if $0B (tape timing) contained at the time of saving
-	// 16 bytes         - filename, padded with 0x20
-
 	// Print FOUND + file name
 
 	ldx #__MSG_KERNAL_FOUND
 	jsr print_kernal_message
 
-	ldy #$05
+	ldy #$00
 !:
 	lda (TAPE1), y
 	jsr JCHROUT
 	iny
-	cpy #$15
+	cpy #$10
 	bne !-
 	jsr print_return
 
@@ -152,13 +143,12 @@ tape_handle_header:
 
 	// Check if file name matches
 
-/* XXX does not work yet
 	jsr tape_match_filename
 	bcs tape_handle_header_skip
-*/
+
 	// Setup STAL and EAL
 
-	ldy #$00
+	ldy #$10
 	lda (TAPE1), y
 	sta STAL+0
 
@@ -206,26 +196,25 @@ tape_return_not_ok:
 //
 // Check whether file name matches the pattern
 //
-/* XXX does not work yet
+
 tape_match_filename:
 
 	lda FNLEN
 	beq tape_return_ok                 // no pattern to match
 
-	ldy $00
+	ldy #$00
 
 tape_match_loop:
 
 	lda #$20                           // default byte, for padding
 	cpy FNLEN
-	beq !+                             // end of pattern
+	bcs !+                             // end of pattern
 	lda (FNADDR), y                    // byte from pattern
 !:
-	.break
 	cmp #KEY_ASTERISK
 	beq tape_return_ok
 
-	cmp (TAPE1 + 5),y
+	cmp (TAPE1), y
 	bne tape_return_not_ok
 
 	iny
@@ -234,7 +223,7 @@ tape_match_loop:
 
 	clc
 	rts
-*/
+
 
 //
 // Get user decision whether to load the file or not

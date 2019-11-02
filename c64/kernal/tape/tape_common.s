@@ -106,11 +106,11 @@ tape_wait_play_loop:
 	jsr STOP
 	bcs tape_break_error
 
-!:
 	lda CPU_R6510
 	and #$10                           // check for pressed button
 	bne tape_wait_play_loop
 
+	jsr print_return
 	jmp tape_screen_hide_motor_on
 
 
@@ -134,7 +134,6 @@ tape_handle_header:
 	iny
 	cpy #$10
 	bne !-
-	jsr print_return
 
 	// Header, wait for user decision
 
@@ -215,6 +214,7 @@ tape_handle_header_skip:
 
 	// Skip this file
 
+	jsr print_return
 	jsr tape_screen_hide_motor_on
 	
 	// FALLTROUGH
@@ -300,7 +300,6 @@ tape_load_success:
 
 	jsr tape_screen_show_motor_off
 	jsr lvs_display_done
-	jsr print_return
 !:
 	cli
 	jmp lvs_return_last_address

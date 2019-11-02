@@ -72,7 +72,6 @@ __msg_kernalplay:
 	.byte $80 + $0D // end of string mark + return
 
 __msg_kernalfound:
-	.byte $0D
 	.text "FOUND"
 	.byte $80 + $20 // end of string mark + space
 

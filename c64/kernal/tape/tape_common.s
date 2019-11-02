@@ -164,6 +164,38 @@ tape_handle_header:
 	lda (TAPE1), y
 	sta EAL+1
 
+	// Handle the secondary address, 0 means loading to location from MEMUSS
+
+	lda SA
+	bne !+
+
+	// EAL = EAL - STAL
+
+	sec
+	lda EAL+0
+	sbc STAL+0
+	sta EAL+0
+	lda EAL+1
+	sbc STAL+1
+	sta EAL+1
+	
+	// STAL = MEMUSS
+
+	lda MEMUSS+0
+	sta STAL+0
+	lda MEMUSS+1
+	sta STAL+1
+
+	// EAL = EAL + STAL
+
+	clc
+	lda EAL+0
+	adc STAL+0
+	sta EAL+0
+	lda EAL+1
+	adc STAL+1
+	sta EAL+1
+!:
 	// Print LOADING
 
 	jsr lvs_display_loading_verifying
@@ -269,9 +301,9 @@ tape_load_success:
 	jsr tape_screen_show_motor_off
 	jsr lvs_display_done
 	jsr print_return
-	
+!:
 	cli
-	jmp lvs_success_end
+	jmp lvs_return_last_address
 
 tape_load_error:
 

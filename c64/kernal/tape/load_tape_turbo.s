@@ -8,7 +8,6 @@
 
 
 // XXX use calibration bits to improve reading
-// XXX handle load address from Kernal API
 
 
 #if CONFIG_TAPE_TURBO

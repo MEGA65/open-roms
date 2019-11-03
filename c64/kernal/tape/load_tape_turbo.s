@@ -73,10 +73,7 @@ load_tape_turbo_payload:
 load_tape_turbo_loop:
 
 	jsr tape_turbo_get_byte
-
-	dec CPU_R6510                      // to load below I/O area
 	sta (STAL),y
-	inc CPU_R6510
 
 	eor PRTY                           // handle checksum
 	sta PRTY
@@ -126,7 +123,11 @@ tape_turbo_get_bit:
 	asl
 	sta SID_SIGVOL
 	beq !+
+#if CONFIG_COLORS_BRAND && CONFIG_BRAND_ULTIMATE_64
+	lda #$0B
+#else
 	lda #$06
+#endif
 !:
 	sta VIC_EXTCOL
 	pla

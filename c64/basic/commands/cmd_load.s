@@ -69,13 +69,13 @@ got_devicenumber:
 	lda #$00
 	sta SA
 	jsr injest_comma
-	bcs got_secondaryaddress
+	bcs cmd_load_got_secondaryaddress
 	jsr basic_parse_line_number
 	lda LINNUM+1
 	bne !+
 	lda LINNUM+0
 	sta SA
-	jmp got_secondaryaddress
+	jmp cmd_load_got_secondaryaddress
 !:
 	// Second parameter is above 255, this can't be a secondary address
 	// Use it as load address instead
@@ -85,7 +85,7 @@ got_devicenumber:
 	ldy LINNUM+1
 	bne got_loadaddress
 
-got_secondaryaddress:
+cmd_load_got_secondaryaddress: // input for tape wedge
 	ldy TXTTAB+1
 	ldx TXTTAB+0
 

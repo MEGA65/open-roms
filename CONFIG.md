@@ -215,7 +215,7 @@ Feature needs about 330 bytes in BASIC segment. If unsure - enable.
 
 If enabled, a simple DOS wedge is available from the direct mode for turbo tape loading - supports `←L` only
 
-Feature needs about 30 bytes in BASIC segment. If unsure - enable.
+Feature needs about 5 bytes in BASIC segment. If unsure - enable.
 
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 

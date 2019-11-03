@@ -45,7 +45,7 @@
 #define CONFIG_IEC
 // #define CONFIG_IEC_JIFFYDOS    // please keep disabled for now
 // #define CONFIG_TAPE_NORMAL     // please keep disabled for now
-#define CONFIG_TAPE_TURBO
+// #define CONFIG_TAPE_TURBO
 // #define CONFIG_RS232_UP2400    // please keep disabled for now
 // #define CONFIG_RS232_UP9600    // please keep disabled for now
 
@@ -77,7 +77,7 @@
 
 #define CONFIG_PROGRAMMABLE_KEYS
 
-.const CONFIG_KEYCMD_RUN  = @"\$5FL"
+.const CONFIG_KEYCMD_RUN  = @"LOAD\"*\""
 
 .const CONFIG_KEYCMD_F1   = @"@"
 .const CONFIG_KEYCMD_F2   = @""
@@ -108,7 +108,7 @@
 
 #define CONFIG_PANIC_SCREEN
 #define CONFIG_DOS_WEDGE
-#define CONFIG_TAPE_WEDGE
+// #define CONFIG_TAPE_WEDGE
 #define CONFIG_BCD_SAFE_INTERRUPTS
 
 

@@ -28,9 +28,7 @@ wedge_tape:
 	ldy TXTTAB+1
 	ldx TXTTAB+0
 
-	jsr JLOAD
-
-	jmp basic_main_loop
+	jmp cmd_load_got_secondaryaddress
 
 
 #endif // CONFIG_TAPE_WEDGE

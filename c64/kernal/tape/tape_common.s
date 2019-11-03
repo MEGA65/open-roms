@@ -300,7 +300,7 @@ tape_load_success:
 
 	jsr tape_screen_show_motor_off
 	jsr lvs_display_done
-!:
+
 	cli
 	jmp lvs_return_last_address
 

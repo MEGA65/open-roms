@@ -1,6 +1,6 @@
 
 //
-// Helper functions for various LOAD/VERIVY/SAVE routine variants (IEC / U64 / etc.)
+// Helper functions for various LOAD/VERIFY/SAVE routine variants (IEC / U64 / etc.)
 //
 
 
@@ -148,6 +148,29 @@ lvs_display_done:
 
 	ldx #__MSG_KERNAL_TO_HEX
 	jmp !-
+
+
+lvs_display_saving:
+
+	// Display SAVING and file name
+	lda MSGFLG
+	bpl lvs_display_end
+
+	ldx #__MSG_KERNAL_SAVING
+	jsr print_kernal_message
+
+	ldy #$00
+!:	
+	cpy FNLEN
+	beq !+
+	lda (FNADDR), y
+	jsr JCHROUT
+	iny
+	bne !- // jump alwayys 
+!:
+	jsr print_return
+	rts
+
 
 lvs_error_end:
 

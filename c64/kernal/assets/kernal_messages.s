@@ -53,8 +53,8 @@ __msg_kernalverifying:
 
 __msg_kernalsaving:
 	.byte $0D
-	.text "SAVIN"
-	.byte $80 + $47 // end of string mark + 'G'
+	.text "SAVING"
+	.byte $80 + $20 // end of string mark + space
 
 __msg_kernalfrom_hex:
 	.text " FROM "

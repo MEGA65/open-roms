@@ -118,6 +118,11 @@ tape_wait_play_loop:
 
 tape_wait_play_done:
 
+	// Prepare for reading
+
+	lda #$01
+	sta CAS1                           // set the interlock
+
 	jsr print_return
 	jmp tape_screen_hide_motor_on
 

@@ -5,6 +5,27 @@ default_irq_handler:
 	jsr JSCNKEY
 	jsr JUDTIM // update jiffy clock
 
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+
+	// Turn tape motor on/off depending on the button state
+	// For CAS1 (tape motor interlock) variable description, see Mapping the C64, page 7
+
+	lda CPU_R6510
+	and #$10
+	beq !+                             // branch if tape button pressed
+
+	jsr tape_motor_off
+	lda #$00
+	sta CAS1
+	beq default_irq_handler_end_tape   // branch always
+!:
+	lda CAS1
+	bne default_irq_handler_end_tape
+	jsr tape_motor_on
+
+default_irq_handler_end_tape:
+
+#endif
+
 	// Acknowledge CIA interrupt and return
 	jmp clear_cia1_interrupt_flag_and_return_from_interrupt
-

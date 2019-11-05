@@ -151,8 +151,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFF0`   | `$E50A`    | `PLOT`      | DONE     |                                                      |
 | `$FFF3`   |            | `IOBASE`    | DONE     |                                                      |
 | `($FFFA)` |            | NMI vec     | PARTIAL  |                                                      |
-| `($FFFC)` | `$FCE2`    | RESET vec   | PARTIAL  |                                                      |
-| `($FFFE)` |            | IRQ/BRK vec | PARTIAL  |                                                      |
+| `($FFFC)` | `$FCE2`    | RESET vec   | PARTIAL  | see IOINIT status                                    |
+| `($FFFE)` |            | IRQ/BRK vec | DONE     |                                                      |
 
 <br />
 

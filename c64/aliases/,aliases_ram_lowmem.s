@@ -138,7 +138,7 @@
 	.label ROPRTY    = $BD  //          tape / RS-232 temporary storage
 	.label FSBLK     = $BE  //          -- NOT IMPLEMENTED --
 	.label MYCH      = $BF  //          -- NOT IMPLEMENTED --
-	.label CAS1      = $C0  //          -- NOT IMPLEMENTED --
+	.label CAS1      = $C0  //          tape motor interlock
 	.label STAL      = $C1  // $C1-$C2  LOAD/SAVE start address
 	.label MEMUSS    = $C3  // $C3-$C4  temporary address for tape LOAD/SAVE
 	.label LSTX      = $C5  //          last keyy matrix position [!] our usage probably differs in details

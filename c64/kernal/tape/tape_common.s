@@ -84,6 +84,14 @@ tape_ask_play:
 
 	sei                                // timing is critical for tape loading
 
+	// First check whether the button is already pressed
+
+	lda CPU_R6510
+	and #$10
+	beq tape_wait_play_done
+
+	// Turn off the motor, display message
+
 	jsr tape_motor_off
 
 	ldx #__MSG_KERNAL_PRESS_PLAY
@@ -109,6 +117,8 @@ tape_wait_play_loop:
 	lda CPU_R6510
 	and #$10                           // check for pressed button
 	bne tape_wait_play_loop
+
+tape_wait_play_done:
 
 	jsr print_return
 	jmp tape_screen_hide_motor_on

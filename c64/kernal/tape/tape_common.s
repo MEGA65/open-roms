@@ -90,9 +90,7 @@ tape_ask_play:
 	and #$10
 	beq tape_wait_play_done
 
-	// Turn off the motor, display message
-
-	jsr tape_motor_off
+	// Display message
 
 	ldx #__MSG_KERNAL_PRESS_PLAY
 	jsr print_kernal_message

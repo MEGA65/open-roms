@@ -28,7 +28,7 @@ iec_tx_common:
 	// Timing is critical here - execute on disabled IRQs
 	// The best practice would be to do PHP first, but it seems this is not
 	// what the original ROM does; furthermore, pushing additional bytes to
-	// stack can wreck autostart softwaree loading at $0100
+	// stack can wreck autostart software loading at $0100
 	sei
 
 	// Wait till all receivers are ready, they should all release DATA

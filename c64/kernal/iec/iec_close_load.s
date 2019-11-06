@@ -13,7 +13,7 @@ iec_close_load:
 
 	// Command drive to stop talking before closing the file
 	jsr UNTLK
-!:
+
 	txa
 	jsr LISTEN
 
@@ -26,16 +26,6 @@ iec_close_load:
 	jsr UNLSN
 
 	rts
-
-
-iec_close_save:
-
-	tax
-
-	// Command drive to stop listening before closing the file
-	jsr UNLSN
-
-	bne !-                             // branch alwayys
 
 
 #endif // CONFIG_IEC

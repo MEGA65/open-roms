@@ -5,6 +5,8 @@
 
 
 // XXX this is untested!
+// test EAL/STAL - LOAD (tape, disk), SAVE - Open ROMs vs hybrid vs original
+
 
 
 #if CONFIG_IEC
@@ -46,6 +48,17 @@ save_iec: // XXX finish the implementation
 	jsr iec_tx_command
 	bcs save_iec_error
 
+	// Save start address    XXX optimize this
+	lda STAL+0
+	sta TBTCNT
+	clc
+	jsr iec_tx_byte
+
+	lda STAL+1
+	sta TBTCNT
+	clc
+	jsr iec_tx_byte
+
 	ldy #$00
 iec_save_loop:
 
@@ -76,13 +89,25 @@ iec_save_loop_end:
 
 	// Send last byte 
 	sta TBTCNT
-	sec                                // mark end of stream
+	clc                   // XXX really?
 	jsr iec_tx_byte
 
-
-	// Close file on drive
+	// Close file on drive      // XXX does not work properly
 	lda FA
-	jsr iec_close_save
+	jsr UNLSN
+
+	lda FA
+	jsr LISTEN
+
+	lda #$E1 // CLOSE command
+	sta TBTCNT
+	jsr iec_tx_command
+	jsr iec_tx_command_finalize
+
+	// Tell drive to unlisten
+	lda FA
+	jsr UNLSN
+
 
 	// Return success
 	clc

@@ -24,8 +24,14 @@ load_break_error:
 	jsr iec_close_load
 	jmp kernalerror_ROUTINE_TERMINATED 
 
+load_save_no_file_name:
+
 
 load_iec:
+
+	// Check file name
+	lda FNLEN
+	beq_far kernalerror_FILE_NAME_MISSING
 
 	// Display SEARCHING FOR + filename
 	jsr lvs_display_searching_for

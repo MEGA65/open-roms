@@ -21,7 +21,9 @@ save_iec_error:
 
 save_iec:
 
-	// XXX report error on empty file name
+	// Check file name
+	lda FNLEN
+	beq_far kernalerror_FILE_NAME_MISSING
 
 	// Display SAVING
 	jsr lvs_display_saving

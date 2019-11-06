@@ -17,7 +17,7 @@ chrin_rs232:
 	lda #$00
 	sta XXX_SAVBYTE
     sta RSSTAT
-	jsr XXX_RSIN
+	jsr up9600_rsin
     bcc !+
 	plx_trash_a
 	ply_trash_a

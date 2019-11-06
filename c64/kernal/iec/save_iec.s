@@ -19,7 +19,9 @@ save_iec_error:
 	jmp lvs_device_not_found_error // XXX find a better error
 
 
-save_iec: // XXX finish the implementation
+save_iec:
+
+	// XXX report error on empty file name
 
 	// Display SAVING
 	jsr lvs_display_saving

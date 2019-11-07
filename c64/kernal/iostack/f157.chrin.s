@@ -8,8 +8,6 @@
 // CPU registers that has to be preserved (see [RG64]): .Y
 //
 
-// XXX keyboard part currently does not preserve register Y, to be fixed!
-
 // Reads a byte of input, unless from keyboard.
 // If from keyboard, then it gets a whole line of input, and returns the first char.
 // Repeated calls after that read out the successive bytes of the line of input.

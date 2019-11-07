@@ -7,7 +7,10 @@
 chrin_keyboard:
 
 	// Save .X
-	phx_trash_a
+	stx XSAV
+
+	// Save .Y
+	phy_trash_a
 
 chrin_repeat:
 
@@ -35,7 +38,8 @@ empty_line:
 	// (and don't forget to actually print the carriage return, so that
 	// the cursor advances and screen scrolls as required)
 
-	plx_trash_a
+	ply_trash_a
+	ldx XSAV
 	clc
 	lda #$0d
 	rts
@@ -47,8 +51,11 @@ not_end_of_input:
 	// Return next byte of waiting
 	tay
 chrin_keyboard_return_byte:
-	plx_trash_a
 	lda (LXSP),y
+	tax
+	ply_trash_a
+	txa
+	ldx XSAV
 	jsr screen_code_to_petscii
 	clc
 	rts

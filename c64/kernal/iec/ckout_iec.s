@@ -21,6 +21,7 @@ ckout_iec:
 	bcs_far chkinout_device_not_present
 
 	lda LAT, Y
+	ora #$60
 	jsr SECOND
 	bcs_far chkinout_device_not_present
 

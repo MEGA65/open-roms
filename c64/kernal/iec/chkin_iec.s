@@ -22,6 +22,7 @@ chkin_iec:
 	bcs_far chkinout_device_not_present
 
 	lda LAT, Y
+	ora #$60
 	jsr TKSA
 	bcs_far chkinout_device_not_present
 

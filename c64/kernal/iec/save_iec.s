@@ -47,7 +47,7 @@ save_iec:
 	jsr LISTEN
 	bcs save_iec_dev_not_found
 
-	lda #$60 // open channel / data (p3) , required according to p13
+	lda #$61 // open channel / data (p3) , required according to p13
 	sta TBTCNT
 	jsr iec_tx_command
 	bcs save_iec_error

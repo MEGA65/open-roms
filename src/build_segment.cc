@@ -109,6 +109,10 @@ public:
     std::map<int, SourceFile *> fixedRoutines;    // routines with location already fixed
     std::map<int, int>          gaps;             // gaps by address
     std::vector<SourceFile *>   floatingRoutines; // routines not allocated to any address yet; always keep them sorted!
+
+    int statSize;
+    int statFree;
+    int statWasted;
 };
 
 class Solver
@@ -620,6 +624,12 @@ BinningProblem::BinningProblem(int loAddress, int hiAddress)
     // Create one large gap (initial) to represent the assembly
 
     gaps[loAddress] = hiAddress - loAddress + 1;
+
+	// Initial value of statistics
+
+    statSize = gaps[loAddress];
+    statFree = gaps[loAddress];
+    statWasted = 0;
 }
 
 bool BinningProblem::isSolved() const
@@ -657,6 +667,7 @@ void BinningProblem::addToProblem(SourceFile *routine)
             // Put the routine into the gap, possibly removing it or splitting into two
 
             fixedRoutines[routine->startAddr] = routine;
+			statFree -= routine->codeLength;
 
             // Calculate possible new gap after the routine
 
@@ -702,7 +713,8 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
                      routine->fileName << spacing << "size: " << routine->codeLength << "\n";
 
         fixedRoutines[targetAddr] = routine;
-        offset += routine->codeLength;
+        offset   += routine->codeLength;
+        statFree -= routine->codeLength;
 
         if (offset > gaps[gapAddress]) ERROR(std::string("internal error line ") + std::to_string(__LINE__));
 
@@ -718,6 +730,8 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
     else if (!isSolved())
     {
         logOutput << "filled in - dropped bytes: " << gaps[gapAddress] - offset << "\n";
+        statFree   -= gaps[gapAddress] - offset;
+        statWasted += gaps[gapAddress] - offset;
     }
     else
     {
@@ -759,6 +773,7 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
             gaps[gapAddress] -= routineSize;
             int targetAddr = gapAddress + gaps[gapAddress];
             fixedRoutines[targetAddr] = floatingRoutines.back();
+            statFree   -= routineSize;
 
             logOutput << "forced reducing gap $" << std::hex << gapAddress << std::dec << " to size " <<
                           gaps[gapAddress] << "\n";
@@ -792,6 +807,7 @@ void BinningProblem::removeUselessGaps(DualStream &logOutput)
             if (gap.second < minUsefulSize)
             {
                 logOutput << "dropping gap: $" << std::hex << gap.first << std::dec << " (size: " << gap.second << ")" << "\n";
+                statWasted += gap.second;
                 gaps.erase(gap.first);
                 repeat = true;
                 break;
@@ -847,6 +863,11 @@ void Solver::run()
     if (problem.isSolved())
     {
         logOutput << "\n" << "all the routines sucessfully placed" << "\n\n";
+
+        logOutput << "segment statistics:" << "\n";
+        // logOutput << "    - total size:   " << problem.statSize << "\n"; - for BASIC contains filling gap too
+        logOutput << "    - wasted bytes: " << problem.statWasted << "\n";
+        logOutput << "    - still free:   " << problem.statFree << "\n\n";
     }
 
     // Close the log file

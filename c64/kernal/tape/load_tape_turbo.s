@@ -81,15 +81,7 @@ load_tape_turbo_loop:
 	sta PRTY
 
 	// Advance MEMUSS (see Mapping the C64, page 36)
-	inc MEMUSS+0
-	bne !+
-	inc MEMUSS+1
-!:
-	lda MEMUSS+1
-	cmp EAL+1
-	bne load_tape_turbo_loop
-	lda MEMUSS+0
-	cmp EAL+0
+	jsr lvs_advance_MEMUSS_check_EAL
 	bne load_tape_turbo_loop
 
 	// Get the checksum

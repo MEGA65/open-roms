@@ -217,18 +217,7 @@ tape_handle_header:
 
 	// Print LOADING and start address
 
-	lda MSGFLG
-	bpl tape_handle_header_displayed
-
-	ldx #__MSG_KERNAL_LOADING
-	jsr print_kernal_message
-	ldx #__MSG_KERNAL_FROM_HEX
-	jsr print_kernal_message
-
-	lda STAL+1
-	jsr print_hex_byte
-	lda STAL+0
-	jsr print_hex_byte
+	jsr lvs_display_loading_verifying
 
 tape_handle_header_displayed:
 

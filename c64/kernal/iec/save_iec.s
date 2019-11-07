@@ -86,17 +86,12 @@ iec_save_loop:
 	sta TBTCNT
 	clc
 	jsr iec_tx_byte
-	jsr lvs_advance_pointer
+	jsr lvs_advance_STAL
 	jmp iec_save_loop
 
 iec_save_loop_end:
 
-	// Send last byte 
-	sta TBTCNT
-	clc                   // XXX really?
-	jsr iec_tx_byte
-
-	// Close file on drive      // XXX does not work properly
+	// Close file on drive
 	lda FA
 	jsr UNLSN
 
@@ -111,7 +106,6 @@ iec_save_loop_end:
 	// Tell drive to unlisten
 	lda FA
 	jsr UNLSN
-
 
 	// Return success
 	clc

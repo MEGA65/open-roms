@@ -139,8 +139,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFD2`   | `$F1CA`    | `CHROUT`    | DONE     |                                                      |
 | `$FFD5`   | `$F49E`    | `LOAD`      | DONE     |                                                      |
 | `($0330)` | `$F4A5`    | `LOAD`      | DONE     |                                                      |
-| `$FFD8`   | `$F5DD`    | `SAVE`      | DONE     | main routine not done yet                            |
-| `($0332)` | `$F5ED`    | `SAVE`      | NOT DONE | work in progress, not tested yet                     |
+| `$FFD8`   | `$F5DD`    | `SAVE`      | DONE     |                                                      |
+| `($0332)` | `$F5ED`    | `SAVE`      | PARTIAL  | not fully tested yet                                 |
 | `$FFDB`   |            | `SETTIM`    | DONE     |                                                      |
 | `$FFDE`   |            | `RDTIM`     | DONE     |                                                      |
 | `$FFE1`   | `$F6ED`    | `STOP`      | DONE     |                                                      |

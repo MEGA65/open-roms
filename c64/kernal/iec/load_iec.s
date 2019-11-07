@@ -101,7 +101,7 @@ iec_load_loop:
 
 	// Advance pointer to data; it is OK if it advances past $FFFF,
 	// one autostart technique does exactly this
-	jsr lvs_advance_pointer
+	jsr lvs_advance_EAL
 	
 	// Handle STOP key; it is probably an overkill to do it
 	// with every byte, once per 32 bytes should be enough

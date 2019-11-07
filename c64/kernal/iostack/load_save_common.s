@@ -75,8 +75,19 @@ lvs_handle_byte_verify:
 	sec
 	rts
 
+#if CONFIG_IEC
 
-lvs_advance_pointer:
+lvs_advance_STAL:
+
+	// Advance pointer
+	inc STAL+0
+	bne !+
+	inc STAL+1
+!:
+	rts
+
+
+lvs_advance_EAL:
 
 	// Advance pointer
 	inc EAL+0
@@ -85,6 +96,26 @@ lvs_advance_pointer:
 !:
 	rts
 
+#endif
+
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+
+lvs_advance_MEMUSS_check_EAL:
+
+	// Advance pointer
+	inc MEMUSS+0
+	bne !+
+	inc MEMUSS+1
+!:
+	lda MEMUSS+1
+	cmp EAL+1
+	bne !+
+	lda MEMUSS+0
+	cmp EAL+0
+!:
+	rts
+
+#endif
 
 lvs_display_searching_for:
 
@@ -132,12 +163,37 @@ lvs_display_loading_verifying:
 lvs_display_start_addr:
 
 	ldx #__MSG_KERNAL_FROM_HEX
-!:
 	jsr print_kernal_message
+
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+
+	lda FA
+
+#if CONFIG_TAPE_NORMAL
+	cmp #$01
+	beq lvs_display_addr_STAL
+#endif
+#if CONFIG_TAPE_TURBO
+	cmp #$07
+	beq lvs_display_addr_STAL
+#endif
+
+#endif
+
+	// FALLTROUGH
+
+lvs_display_addr_EAL:
 
 	lda EAL+1
 	jsr print_hex_byte
 	lda EAL+0
+	jmp print_hex_byte
+
+lvs_display_addr_STAL:
+
+	lda STAL+1
+	jsr print_hex_byte
+	lda STAL+0
 	jmp print_hex_byte
 
 lvs_display_done:
@@ -147,8 +203,8 @@ lvs_display_done:
 	bpl lvs_display_end
 
 	ldx #__MSG_KERNAL_TO_HEX
-	jmp !-
-
+	jsr print_kernal_message
+	jmp lvs_display_addr_EAL
 
 lvs_display_saving:
 

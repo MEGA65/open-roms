@@ -6,7 +6,7 @@
 
 chrin_keyboard:
 
-	// Save X
+	// Save .X
 	phx_trash_a
 
 chrin_repeat:
@@ -27,6 +27,14 @@ chrin_repeat:
 	// Return carriage return and clear pending input flag
 	lda #$00
 	sta CRSW
+
+	// FALLTROUGH
+
+empty_line:
+	// For an empty line, just return the carriage return
+	// (and don't forget to actually print the carriage return, so that
+	// the cursor advances and screen scrolls as required)
+
 	plx_trash_a
 	clc
 	lda #$0d
@@ -91,15 +99,6 @@ chrin_enter:
 	// Return first char of line
 	ldy #$00
 	beq chrin_keyboard_return_byte // branch always
-
-empty_line:
-	// For an empty line, just return the carriage return
-	// (and don't forget to actually print the carriage return, so that
-	// the cursor advances and screen scrolls as required)
-	plx_trash_a
-	clc
-	lda #$0d
-	rts
 
 not_enter:
 

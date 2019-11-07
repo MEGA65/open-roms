@@ -28,6 +28,13 @@ is_last_line:
 	// FALLTHROUGH
 
 scroll_screen_up:
+
+	// Preserve EAL
+	lda EAL+0
+	pha
+	lda EAL+1
+	pha	
+
 	// Now scroll the whole screen up either one or two lines
 	// based on whether the first screen line is linked or not.
 
@@ -87,6 +94,12 @@ scroll_copy_loop2:
  	iny
  	dex
  	bne scroll_copy_loop2
+
+ 	// Restore EAL
+ 	pla
+ 	sta EAL+1
+ 	pla
+ 	sta EAL+0
 
 	// Fill in scrolled up area
 	ldx SAL+0

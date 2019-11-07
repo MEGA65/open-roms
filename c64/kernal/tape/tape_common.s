@@ -208,9 +208,29 @@ tape_handle_header:
 	adc STAL+1
 	sta EAL+1
 !:
-	// Print LOADING
+	// Setup MEMUSS (see Mapping the C64, page 36)
 
-	jsr lvs_display_loading_verifying
+	lda STAL+0
+	sta MEMUSS+0
+	lda STAL+1
+	sta MEMUSS+1
+
+	// Print LOADING and start address
+
+	lda MSGFLG
+	bpl tape_handle_header_displayed
+
+	ldx #__MSG_KERNAL_LOADING
+	jsr print_kernal_message
+	ldx #__MSG_KERNAL_FROM_HEX
+	jsr print_kernal_message
+
+	lda STAL+1
+	jsr print_hex_byte
+	lda STAL+0
+	jsr print_hex_byte
+
+tape_handle_header_displayed:
 
 	// Load the file
 

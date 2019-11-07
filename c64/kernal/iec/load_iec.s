@@ -69,20 +69,23 @@ load_iec:
 	jsr iec_turnaround_to_listen
 	bcs load_iec_error
 
-	// Get load address and store it if secondary address is zero
+	// Get load address
+
 	jsr iec_rx_byte
 	bcs load_iec_file_not_found
-
-	ldx SA
-	beq !+
-	sta STAL+0
-!:
+	sta EAL+0
 	jsr iec_rx_byte
 	bcs load_iec_file_not_found
+	sta EAL+1
 
-	ldx SA
-	beq !+
-	sta STAL+1
+	// If secondary address is 0, override EAL with STAL
+
+	lda SA
+	bne !+
+	lda STAL+0
+	sta EAL+0
+	lda STAL+1
+	sta EAL+1	
 !:
 	// Display start address
 	jsr lvs_display_loading_verifying
@@ -102,7 +105,7 @@ iec_load_loop:
 	
 	// Handle STOP key; it is probably an overkill to do it
 	// with every byte, once per 32 bytes should be enough
-	lda STAL
+	lda EAL
 	and #$1F
 	bne !+
 	phx_trash_a

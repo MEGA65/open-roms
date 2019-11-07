@@ -61,36 +61,45 @@ load_tape_turbo_header_loop:           // this strange loop puts metadata after 
 
 load_tape_turbo_payload:
 
+	// Initial checksum value
+
+	lda #$00
+	sta PRTY
+
 	// Read file payload
 
 	jsr tape_turbo_sync_payload
-
-	ldy #$00
-	sty PRTY                           // initial checksum value
 
 	// FALLTROUGH
 
 load_tape_turbo_loop:
 
 	jsr tape_turbo_get_byte
-	sta (STAL),y
+	sta (MEMUSS),y
 
 	eor PRTY                           // handle checksum
 	sta PRTY
 
-	jsr lvs_advance_pointer
-
-	lda STAL+1
+	// Advance MEMUSS (see Mapping the C64, page 36)
+	inc MEMUSS+0
+	bne !+
+	inc MEMUSS+1
+!:
+	lda MEMUSS+1
 	cmp EAL+1
 	bne load_tape_turbo_loop
-	lda STAL+0
+	lda MEMUSS+0
 	cmp EAL+0
 	bne load_tape_turbo_loop
 
-	// Verify the checksum
+	// Get the checksum
 
 	jsr tape_turbo_get_byte
-	cmp PRTY
+	tax
+
+	// Verify the checksum
+
+	cpx PRTY
 	beq_far tape_load_success
 	jmp tape_load_error
 

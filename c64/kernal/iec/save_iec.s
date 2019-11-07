@@ -5,7 +5,7 @@
 
 
 // XXX this is untested!
-// test EAL/STAL - LOAD (tape, disk), SAVE - Open ROMs vs hybrid vs original
+// also test STAL/EAL - Open ROMs vs hybrid vs original
 
 
 

@@ -22,7 +22,7 @@ lvs_handle_byte_load_verify:
 	ldx #$33
 	stx $01
 	ldy #0
-	sta (STAL),y
+	sta (EAL),y
 	ldx #$37
 	stx $01
 	plp
@@ -30,7 +30,7 @@ lvs_handle_byte_load_verify:
 #else
 
 	ldy #0
-	sta (STAL),y
+	sta (EAL),y
 
 #endif
 
@@ -55,7 +55,7 @@ lvs_handle_byte_verify:
 	ldx #$33
 	stx $01
 	ldy #0
-	lda (STAL),y
+	lda (EAL),y
 	ldx #$37
 	stx $01
 	plp
@@ -66,7 +66,7 @@ lvs_handle_byte_verify:
 #else
 
 	ldy #0
-	cmp (STAL),y
+	cmp (EAL),y
 
 #endif
 
@@ -79,9 +79,9 @@ lvs_handle_byte_verify:
 lvs_advance_pointer:
 
 	// Advance pointer
-	inc STAL+0
+	inc EAL+0
 	bne !+
-	inc STAL+1
+	inc EAL+1
 !:
 	rts
 
@@ -135,9 +135,9 @@ lvs_display_start_addr:
 !:
 	jsr print_kernal_message
 
-	lda STAL+1
+	lda EAL+1
 	jsr print_hex_byte
-	lda STAL+0
+	lda EAL+0
 	jmp print_hex_byte
 
 lvs_display_done:
@@ -181,8 +181,8 @@ lvs_return_last_address:
 
 	// Return last address - Compute's Mapping the 64 says without the '+1',
 	// checked (short test program) on original ROMs that this is really the case
-	ldx STAL+0
-	ldy STAL+1
+	ldx EAL+0
+	ldy EAL+1
 	// FALLTHROUGH
 
 lvs_success_end:

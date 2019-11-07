@@ -33,12 +33,15 @@ chrin_repeat:
 	rts
 
 not_end_of_input:
-	// Return next byte of waiting input and advance index
+	// Advance index
+	inc CRSW
+
+	// Return next byte of waiting
 	tay
+chrin_keyboard_return_byte:
 	plx_trash_a
 	lda (LXSP),y
 	jsr screen_code_to_petscii
-	inc CRSW
 	clc
 	rts
 
@@ -84,13 +87,10 @@ chrin_enter:
 	sty INDX
 	lda #$01
 	sta CRSW
+
 	// Return first char of line
 	ldy #$00
-	plx_trash_a
-	lda (LXSP),y
-	jsr screen_code_to_petscii
-	clc
-	rts
+	beq chrin_keyboard_return_byte // branch always
 
 empty_line:
 	// For an empty line, just return the carriage return

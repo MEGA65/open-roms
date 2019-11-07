@@ -210,10 +210,7 @@ tape_handle_header:
 !:
 	// Setup MEMUSS (see Mapping the C64, page 36)
 
-	lda STAL+0
-	sta MEMUSS+0
-	lda STAL+1
-	sta MEMUSS+1
+	jsr lvs_setup_MEMUSS
 
 	// Print LOADING and start address
 

@@ -1,13 +1,13 @@
 # New features
 
 
-Here are the features of the Open ROMs not found in the original ROMs from the 80s (many of them are [configurable](CONFIG.md)):
+Here are the features of the Open ROMs not found in the original ROMs from the 80s (many of them are [configurable](CONFIG.md) during compilation):
 
 * improved keyboard scanning, resistant to ghosting and joystick interference (one variant even supports multi-keyy rollover), supports additional C128 keys
 * joystick can be used to move text cursor
 * pre-defined function keys
 * uses RAM under ROM and I/O: 61438 bytes free
-* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses
+* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses, configured addresses
 * wark start due to BRK prints out the instruction address
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
@@ -24,7 +24,7 @@ NOTE: extra features and their syntax can change in the future!
 The following ROM features are currently missing and are not planned due to space considerations:
 
 * full tape support - VERIFY, SAVE, sequential files; tape is considered a legacy medium, so it's support is going to be limited
-* mock 6551 emulation - this inly slows down the RS-232 support for original ROMs, probably noone needs it
+* mock 6551 emulation - this only complicates the RS-232 support for original ROMs, probably noone needs it
 
 The following ROM features are currently missing:
 
@@ -33,7 +33,6 @@ The following ROM features are currently missing:
 * BASIC expression parsing
 * floating point routines
 * tape (normal mode) support
-* IEC support for SAVE
 * RS-232 support
 * NMI handling is incomplete
 
@@ -53,8 +52,6 @@ For the current status of the low memory location implementation andd usage chec
 ## BASIC
 
 ### Official BASIC routines
-
-Note: vectors at `$0300` are not supported yet - for now only the locations below can be used!
 
 <br />
 
@@ -140,7 +137,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFD5`   | `$F49E`    | `LOAD`      | DONE     |                                                      |
 | `($0330)` | `$F4A5`    | `LOAD`      | DONE     |                                                      |
 | `$FFD8`   | `$F5DD`    | `SAVE`      | DONE     |                                                      |
-| `($0332)` | `$F5ED`    | `SAVE`      | PARTIAL  | not fully tested yet                                 |
+| `($0332)` | `$F5ED`    | `SAVE`      | DONE     |                                                      |
 | `$FFDB`   |            | `SETTIM`    | DONE     |                                                      |
 | `$FFDE`   |            | `RDTIM`     | DONE     |                                                      |
 | `$FFE1`   | `$F6ED`    | `STOP`      | DONE     |                                                      |
@@ -169,7 +166,7 @@ Not all of them - only these we want to have implemented.
 | `$E544`   | clear screen                 | DONE     |                                                    |
 | `$E50C`   | set cursor position          | PARTIAL  |                                                    |
 | `$E566`   | home cursor                  | NOT DONE |                                                    |
-| `$E5A0`   | setup VIC II & IO            | DONE     |                                                    |
+| `$E5A0`   | setup VIC II & I/O           | DONE     |                                                    |
 | `$E6B6`   | advance cursor               | NOT DONE |                                                    |
 | `$E701`   | previous line                | NOT DONE |                                                    |
 | `$E716`   | screen CHROUT                | NOT DONE |                                                    |

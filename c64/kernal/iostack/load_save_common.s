@@ -77,16 +77,6 @@ lvs_handle_byte_verify:
 
 #if CONFIG_IEC
 
-lvs_advance_STAL:
-
-	// Advance pointer
-	inc STAL+0
-	bne !+
-	inc STAL+1
-!:
-	rts
-
-
 lvs_advance_EAL:
 
 	// Advance pointer
@@ -98,7 +88,15 @@ lvs_advance_EAL:
 
 #endif
 
-#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
+
+lvs_setup_MEMUSS:
+
+	lda STAL+0
+	sta MEMUSS+0
+	lda STAL+1
+	sta MEMUSS+1
+	rts
 
 lvs_advance_MEMUSS_check_EAL:
 
@@ -224,7 +222,6 @@ lvs_display_saving:
 	iny
 	bne !- // jump alwayys 
 !:
-	jsr print_return
 	rts
 
 

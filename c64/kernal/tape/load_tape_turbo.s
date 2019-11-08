@@ -18,9 +18,9 @@ load_tape_turbo:
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
 	lda #$00
-	sta CIA2_TIMAHI
+	sta CIA2_TIMAHI // $DD05
 	lda #$FE                           // timer threshold for TurboTape
-	sta CIA2_TIMALO
+	sta CIA2_TIMALO // $DD04
 
 	jsr tape_ask_play
 
@@ -112,12 +112,12 @@ tape_turbo_get_bit:
 
 	lda #$10	
 !:
-	bit CIA1_ICR	
+	bit CIA1_ICR // $DC0D	
 	beq !-                             // busy loop to detect signal
-	lda CIA2_ICR
+	lda CIA2_ICR // $DD0D
 	pha	
 	lda #$19	
-	sta CIA2_CRA	
+	sta CIA2_CRA // $DD0E	
 	pla
 	
 	pha                                // audio/video effects

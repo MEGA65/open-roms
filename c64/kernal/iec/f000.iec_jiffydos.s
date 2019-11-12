@@ -10,29 +10,27 @@
 #if CONFIG_IEC_JIFFYDOS
 
 
+// JiffyDOS timing regime is very strict - before transmitting anything
+// we need to disable sprites and (if screen is not disabled) wait for
+// appropriate moment, so that no badline interruption can happen
+
+
 iec_tx_byte_jiffydos:
 
-	// XXX disable screen - temporary, just for testing
-	tay
-	lda VIC_SCROLY
-	and #($FF - $10)
-	sta VIC_SCROLY
-	lda VIC_RASTER
-!:
-	cmp VIC_RASTER
-	beq !-
-	tya
-
-	// JiffyDOS timing regime is very strict - before transmitting anything
-	// we need to disable sprites and (if screen is not disabled) wait for
-	// appropriate moment, so that no badline interruption can happen
-	
 	jsr jiffydos_hide_sprites
 	pha                                // store previous sprite status on stack
+
+	// XXX prepare bit pairs too send
+
+	// XXX lda TBTCNT
+	// XXX bits to stack: 0, 2
+	// XXX bits to stack: 1, 3
+	// XXX bits to stack: 7, 6
+	// XXX bits to stack: 5, 4
+
 	jsr jiffydos_wait_line
 
 __jd_check1:
-
 
 	// XXX send byte
 
@@ -50,23 +48,24 @@ __jd_check1:
 	
 
 iec_rx_byte_jiffydos:
-
-	// XXX disable screen - temporary, just for testing
-	lda VIC_SCROLY
-	and #($FF - $10)
-	sta VIC_SCROLY
-	lda VIC_RASTER
-!:
-	cmp VIC_RASTER
-	beq !-
-
-	// JiffyDOS timing regime is very strict - before transmitting anything
-	// we need to disable sprites and (if screen is not disabled) wait for
-	// appropriate moment, so that no badline interruption can happen
 	
 	jsr jiffydos_hide_sprites
 	pha                                // store previous sprite status on stack
+	
+	// Wait until device is ready to send
+	jsr iec_wait_for_clk_release
+
+	// Prepare 'start sending' message
+	lda CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
+	pha
+
+	// Wait for appropriate moment
 	jsr jiffydos_wait_line
+
+	// Ask device to start sending bits
+	pla
+	sta CIA2_PRA
 
 
 	// XXX retrieve byte
@@ -95,7 +94,8 @@ jiffydos_wait_line:
 	// To give the transfer routine as much time as possible,
 	// wait till a badline
 
-	// XXX this has to be carefully tested!
+	// XXX this is probably overkill, most likely it is enough to avoid 2 (3?) lines
+	//     before badline - to be adjusted in the future
 !:
 	sec
 	lda VIC_SCROLY
@@ -104,7 +104,7 @@ jiffydos_wait_line:
 	bne !-
 
 jiffydos_wait_line_done:
-	rts                                // XXX 6 cycles... we might be forced to inline this routine
+	rts
 
 
 __jd_check2:

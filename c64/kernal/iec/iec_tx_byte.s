@@ -75,7 +75,7 @@ iec_jiffydos_detect_loop:
 	lda CIA2_PRA                       // 4 cycles
 	bpl iec_jiffydos_detected          // 2 cycles
 	dey                                // 2 cycles
-	bne iec_jiffydos_detect_loop       // 2 cyycles
+	bne iec_jiffydos_detect_loop       // 2 cycles
 
 	lda #$00                           // 2 cycles
 	beq iec_jiffydos_store_proto       // 3 cycles, branch always

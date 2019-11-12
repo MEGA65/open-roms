@@ -29,6 +29,19 @@ TALK:
 common_talk_listen: // common part of TALK and LISTEN
 
 	sta TBTCNT
+
+#if CONFIG_IEC_JIFFYDOS
+
+	// It seems that only TALK/LISTEN is used to detect the JiffyDOS support
+
+	lda #$FF // unknown protocol - check what is supported
+	sta IECPROTO
+
+	// FALLTROUGH
+
+#endif // CONFIG_IEC_JIFFYDOS
+
+
 	jmp iec_tx_command
 
 #else

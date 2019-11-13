@@ -68,7 +68,7 @@ GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 all: $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
-	@rm -rf build
+	@rm -rf build c64/basic/combined.s c64/kernal/combined.s
 
 updatebin: $(STD_TARGET_LIST) $(TOOL_RELEASE)
 	$(TOOL_RELEASE) -i ./build -o ./bin basic_generic.rom kernal_generic.rom basic_testing.rom kernal_testing.rom basic_mega65.rom kernal_mega65.rom basic_ultimate64.rom kernal_ultimate64.rom

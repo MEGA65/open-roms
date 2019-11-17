@@ -17,40 +17,89 @@
 
 iec_tx_byte_jiffydos:
 
+	// We need to preserve 3 lowest bits of CIA2_PRA - as they encode
+	// Use C3PO for this, as afterwards we have to set there 0 nevertheless
+	lda CIA2_PRA
+	and #%00000111
+	sta C3PO
+
+	// Hide sprites, store their previous status on stack
 	jsr jiffydos_hide_sprites
-	pha                                // store previous sprite status on stack
+	pha
 
-	// XXX prepare bit pairs too send
+	// Prepare nibbles to send
+	lda TBTCNT
+	and #$0F
+	pha
+	lda TBTCNT
+	and #$F0
+	pha
 
-	// XXX lda TBTCNT
-	// XXX bits to stack: 0, 2
-	// XXX bits to stack: 1, 3
-	// XXX bits to stack: 7, 6
-	// XXX bits to stack: 5, 4
-
-	jsr jiffydos_wait_line
+	// Wait till receiver is ready
+	jsr iec_wait_for_data_release
 
 __jd_check1:
 
-	// XXX send byte
+	// Wait till it is safe to send data
+	jsr jiffydos_wait_line
+
+	// Notify device that we are going to send byte by releasing everything
+	// Cycles: 3 + 4 = 7
+	lda C3PO
+	sta CIA2_PRA
+
+	// Send high nibble; cycles: 4 + 3 + 4 + 2 + 2 + 2 + 4 = 21
+	pla                                // retrieve high nibble from stack
+	ora C3PO                           // restore VIC-II and RS-232 bits
+	sta CIA2_PRA                       // bits 4 and 5 on CLK/DATA
+	ror                                // move bits 6 and 7 to positions 4 and 5
+	ror
+	and #%00110000                     // clear everything but CLK/DATA
+	sta CIA2_PRA                       // bits 6 and 7 on CLK/DATA
+
+	// Send low nibble; cycles: XXX
+
+	// XXX something strange seems to happen with low nibble:
+	
+	// $0 -> $00
+	// $1 -> $80 = $10 + $70
+	// $2 -> $20
+	// $3 -> $A0 = $30 + $70
+	// $4 -> $40
+	// $5 -> $C0 = $50 + $70
+	// $6 -> $60
+	// $7 -> $E0 = $70 + $70
+	
+	// $8 -> $10 = $80 - $70
+	// $9 -> $90
+	// $A -> $30 = $A0 - $70
+	// $B -> $B0
+	// $C -> $50 = $C0 - $70
+	// $D -> $D0
+	// $E -> $70 = $E0 - $70
+	// $F -> $F0
+
+	// XXX why??? how this is calculated???
+
+	// XXX EOI signalled by early CLK (20us delay for non-CLK?)
 
 
 	// Re-enable sprites
 	pla
 	lda VIC_SPENA
 
-	// XXX reenable screen - temporary, just for testing
-	lda VIC_SCROLY
-	ora #$10
-	sta VIC_SCROLY
+	// Mark TX buffer as empty
+	lda #$00
+	sta C3PO
 
 	rts
 	
 
 iec_rx_byte_jiffydos:
 	
+	// Hide sprites, store their previous status on stack
 	jsr jiffydos_hide_sprites
-	pha                                // store previous sprite status on stack
+	pha
 	
 	// Wait until device is ready to send
 	jsr iec_wait_for_clk_release
@@ -74,13 +123,6 @@ iec_rx_byte_jiffydos:
 	// Re-enable sprites
 	pla
 	lda VIC_SPENA
-
-	// XXX reenable screen - temporary, just for testing
-	tay
-	lda VIC_SCROLY
-	ora #$10
-	sta VIC_SCROLY
-	tya
 
 	rts
 

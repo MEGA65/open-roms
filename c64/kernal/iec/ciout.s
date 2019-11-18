@@ -33,7 +33,11 @@ ciout_store_in_buffer:
 ciout_send_byte:
 
 	clc // don't send with EOI
+#if CONFIG_IEC_JIFFYDOS
+	jsr iec_tx_dispatch
+#else // no turbo supported
 	jsr iec_tx_byte
+#endif
 	inc C3PO // iec_tx_byte sets it to 0, but we still have something to send
 	jmp ciout_store_in_buffer
 

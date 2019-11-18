@@ -68,21 +68,21 @@ iec_tx_common_sendbit:
     cpx #$00
     bne !+                             // branch if not sending the last bit
 
-    ldy #$1B                           // 400us is nearly 410 cycles on NTSC
-                                       // loop iteration below is 15 cycles,
+    ldy #$25                           // 400us is nearly 410 cycles on NTSC
+                                       // loop iteration below is 11 cycles,
                                        // and several cycles were already used
 iec_jiffydos_detect_loop:
 	lda CIA2_PRA                       // 4 cycles
 	bpl iec_jiffydos_detected          // 2 cycles
 	dey                                // 2 cycles
-	bne iec_jiffydos_detect_loop       // 2 cycles
+	bne iec_jiffydos_detect_loop       // 3 cycles if branch
 
-	lda #$00                           // 2 cycles
-	beq iec_jiffydos_store_proto       // 3 cycles, branch always
+	lda #$00                           // normal protocol
+	skip_2_bytes_trash_nvz
 
 iec_jiffydos_detected:
-	
-	panic #$FF // WHOAAAA! He wants to speak jiffy, but I do not know this language yet!
+
+	lda #$01                           // JiffyDOS protocol
 
 iec_jiffydos_store_proto:
 	sta IECPROTO

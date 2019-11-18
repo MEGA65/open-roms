@@ -48,12 +48,20 @@ save_iec:
 	lda STAL+0
 	sta TBTCNT
 	clc
+#if CONFIG_IEC_JIFFYDOS
+	jsr iec_tx_dispatch
+#else // no turbo supported
 	jsr iec_tx_byte
+#endif
 
 	lda STAL+1
 	sta TBTCNT
 	clc
+#if CONFIG_IEC_JIFFYDOS
+	jsr iec_tx_dispatch
+#else // no turbo supported
 	jsr iec_tx_byte
+#endif
 
 	jsr lvs_setup_MEMUSS
 	ldy #$00
@@ -70,7 +78,11 @@ iec_save_loop:
 	// Send the byte
 	sta TBTCNT
 	clc
+#if CONFIG_IEC_JIFFYDOS
+	jsr iec_tx_dispatch
+#else // no turbo supported
 	jsr iec_tx_byte
+#endif
 
 	// Next iteration
 	jsr lvs_advance_MEMUSS_check_EAL

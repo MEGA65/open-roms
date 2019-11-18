@@ -14,7 +14,11 @@ ACPTR:
 	jsr kernalstatus_reset
 	
 #if CONFIG_IEC
+#if CONFIG_IEC_JIFFYDOS
+	jmp iec_rx_dispatch
+#else // no turbo supported
 	jmp iec_rx_byte
+#endif
 #else
 	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
 #endif

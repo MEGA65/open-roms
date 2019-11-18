@@ -30,6 +30,8 @@ iec_tx_byte_jiffydos:
 	// Prepare nibbles to send
 	lda TBTCNT
 	and #$0F
+	tax
+	lda iec_jiffydos_bittable, X       // low nibble has to be encoded
 	pha
 	lda TBTCNT
 	and #$F0
@@ -57,29 +59,16 @@ __jd_check1:
 	and #%00110000                     // clear everything but CLK/DATA
 	sta CIA2_PRA                       // bits 6 and 7 on CLK/DATA
 
-	// Send low nibble; cycles: XXX
+	// Send low nibble; cycles: 4 + 3 + 4 + 2 + 2 + 2 + 4 = 21
+	pla                                // retrieve low nibble from stack
+	ora C3PO                           // restore VIC-II and RS-232 bits
+	sta CIA2_PRA
+	ror
+	ror
+	and #%00110000                     // clear everything but CLK/DATA
+	sta CIA2_PRA
 
-	// XXX something strange seems to happen with low nibble:
-	
-	// $0 -> $00
-	// $1 -> $80 = $10 + $70
-	// $2 -> $20
-	// $3 -> $A0 = $30 + $70
-	// $4 -> $40
-	// $5 -> $C0 = $50 + $70
-	// $6 -> $60
-	// $7 -> $E0 = $70 + $70
-	
-	// $8 -> $10 = $80 - $70
-	// $9 -> $90
-	// $A -> $30 = $A0 - $70
-	// $B -> $B0
-	// $C -> $50 = $C0 - $70
-	// $D -> $D0
-	// $E -> $70 = $E0 - $70
-	// $F -> $F0
 
-	// XXX why??? how this is calculated???
 
 	// XXX EOI signalled by early CLK (20us delay for non-CLK?)
 
@@ -93,14 +82,14 @@ __jd_check1:
 	sta C3PO
 
 	rts
-	
+
 
 iec_rx_byte_jiffydos:
-	
+
 	// Hide sprites, store their previous status on stack
 	jsr jiffydos_hide_sprites
 	pha
-	
+
 	// Wait until device is ready to send
 	jsr iec_wait_for_clk_release
 
@@ -150,14 +139,14 @@ jiffydos_wait_line_done:
 
 
 __jd_check2:
-	
-	
+
+
 jiffydos_hide_sprites:
 
 	lda VIC_SPENA
 	ldx #$00
 	stx VIC_SPENA
-	
+
 	rts
 
 

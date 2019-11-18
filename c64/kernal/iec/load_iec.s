@@ -71,10 +71,18 @@ load_iec:
 
 	// Get load address
 
+#if CONFIG_IEC_JIFFYDOS
+	jsr iec_rx_dispatch
+#else // no turbo supported
 	jsr iec_rx_byte
+#endif
 	bcs load_iec_file_not_found
 	sta EAL+0
+#if CONFIG_IEC_JIFFYDOS
+	jsr iec_rx_dispatch
+#else // no turbo supported
 	jsr iec_rx_byte
+#endif
 	bcs load_iec_file_not_found
 	sta EAL+1
 
@@ -92,7 +100,11 @@ load_iec:
 
 iec_load_loop:
 	// We are now ready to receive bytes
+#if CONFIG_IEC_JIFFYDOS
+	jsr iec_rx_dispatch
+#else // no turbo supported
 	jsr iec_rx_byte
+#endif
 	bcs load_iec_error
 
 	// Handle the byte (store in memory / verify)

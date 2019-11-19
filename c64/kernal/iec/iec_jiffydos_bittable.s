@@ -1,7 +1,8 @@
 
 //
 // Helper table for encoding lower nibble for JiffyyDOS,
-// values found by observing the actual transfer
+// values found by observing the actual transfer using
+// original ROMs
 //
 
 #if CONFIG_IEC_JIFFYDOS

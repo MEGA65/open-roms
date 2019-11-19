@@ -81,7 +81,6 @@ iec_jiffydos_detect_loop:
 	skip_2_bytes_trash_nvz
 
 iec_jiffydos_detected:
-
 	lda #$01                           // JiffyDOS protocol
 
 iec_jiffydos_store_proto:

@@ -304,18 +304,20 @@
 	.var features_str = ""
 
 #if CONFIG_TAPE_NORMAL
-	.eval features_str = ADD_FEATURE(features_str, "TAPE NORMAL")
+	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL")
 #elif CONFIG_TAPE_TURBO
-	.eval features_str = ADD_FEATURE(features_str, "TAPE TURBO")
+	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD TURBO")
 #elif CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
-	.eval features_str = ADD_FEATURE(features_str, "TAPE NORMAL+TURBO")
+	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL+TURBO")
 #endif
+
+	.eval feature_new_line = true
 
 #if CONFIG_IEC
 #if !CONFIG_IEC_JIFFYDOS
 	.eval features_str = ADD_FEATURE(features_str, "IEC")
 #else
-	.eval features_str = ADD_FEATURE(features_str, "IEC+JD")
+	.eval features_str = ADD_FEATURE(features_str, "IEC+JIFFY DEF")
 #endif
 #endif
 

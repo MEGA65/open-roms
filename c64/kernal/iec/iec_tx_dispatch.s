@@ -11,6 +11,7 @@ iec_tx_dispatch:
 
 	php                                // preserve C flag for EOI indication
 	lda IECPROTO
+
 #if CONFIG_IEC_JIFFYDOS
 	cmp #$01
 	beq iec_tx_dispatch_jiffydos

@@ -17,7 +17,17 @@
 
 iec_tx_byte_jiffydos:
 
-	// We need to preserve 3 lowest bits of CIA2_PRA - as they encode
+	// Timing is critical, do not allow interrupts
+	sei
+
+	// Preserve .X (.Y is not used by the routine)
+	phx_trash_a
+
+	// If EOI requested (carryy flag set), mark this in IECPROTO as 0
+	bcc !+
+	dec IECPROTO                       // turns 1 into 0
+!:
+	// We need to preserve 3 lowest bits of CIA2_PRA, they contain important (but unrelated) data
 	// Use C3PO for this, as afterwards we have to set there 0 nevertheless
 	lda CIA2_PRA
 	and #%00000111
@@ -68,20 +78,39 @@ __jd_check1:
 	and #%00110000                     // clear everything but CLK/DATA
 	sta CIA2_PRA
 
+	// Signal EOI if needed     XXX calculate cycles for quicklyy pulling CLK
+	lda C3PO
+	ldx IECPROTO
+	beq iec_tx_byte_jiffydos_wait_eoi
 
+	// FALLTROUGH
 
-	// XXX EOI signalled by early CLK (20us delay for non-CLK?)
+iec_tx_byte_jiffydos_finalize:
 
+	ora #BIT_CIA2_PRA_CLK_OUT          // pull CLK
+	sta CIA2_PRA
 
 	// Re-enable sprites
 	pla
-	lda VIC_SPENA
+	sta VIC_SPENA
 
-	// Mark TX buffer as empty
-	lda #$00
-	sta C3PO
+	// Mark TX buffer as empty, restore proper IECPROTO value
+	ldx #$00
+	stx C3PO
+	inx
+	sta IECPROTO
 
+	// Restore .X, interrupts, return
+	plx_trash_a
+	cli
 	rts
+
+iec_tx_byte_jiffydos_wait_eoi:
+
+	jsr iec_wait20us // XXX is it enough?
+	lda C3PO
+	jmp iec_tx_byte_jiffydos_finalize
+
 
 
 iec_rx_byte_jiffydos:
@@ -105,13 +134,35 @@ iec_rx_byte_jiffydos:
 	pla
 	sta CIA2_PRA
 
+	// Retrieve byte XXX count cycles, synchronize
+	lda CIA2_PRA                       // bits 0 and 1
+	and #%11000000
+	pha
 
-	// XXX retrieve byte
+	lda CIA2_PRA                       // bits 2 and 3
+	and #%11000000
+	pha
+
+	lda CIA2_PRA                       // bits 4 and 5
+	and #%11000000
+	pha
+
+	lda CIA2_PRA                       // bits 6 and 7
+	and #%11000000
+	pha
+
+	// XXX check for EOI here
+
+	// XXX decode byte instead of this - can we do it in real time? 
+	pla                                // bits 6 and 7
+	pla                                // bits 4 and 5
+	pla                                // bits 2 and 3
+	pla                                // bits 0 and 1
 
 
 	// Re-enable sprites
 	pla
-	lda VIC_SPENA
+	sta VIC_SPENA
 
 	rts
 

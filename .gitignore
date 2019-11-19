@@ -5,7 +5,6 @@ kernal_hybrid.rom
 
 # Compilation related files
 
-assembler/KickAss*
 build/*
 
 # Input to the similarity tool - copyrighted material, we can't check it in!

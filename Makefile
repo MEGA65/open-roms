@@ -80,7 +80,7 @@ all:
 	$(MAKE) -j64 --output-sync=target $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
-	@rm -rf build
+	@rm -rf build c64/basic/combined.s c64/kernal/combined.s
 
 updatebin:
 	$(MAKE) -j64 --output-sync=target $(STD_TARGET_LIST) $(TOOL_RELEASE)

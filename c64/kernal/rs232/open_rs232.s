@@ -20,7 +20,8 @@ open_rs232:
 	jsr rs232_count_channels
 	bcs open_rs232_end
 
-	// Allocate buffer
+	// Allocate buffers - first RIBUF, afterwards ROBUF
+	// (checked addresses on original ROMs)
 
 	lda MEMSIZK+0
 	sta ROBUF+0
@@ -28,11 +29,13 @@ open_rs232:
 
 	dec MEMSIZK+1
 	lda MEMSIZK+1
-	sta ROBUF+1	  // XXX RIBUF or ROBUF?
+	sta RIBUF+1
 
 	dec MEMSIZK+1
 	lda MEMSIZK+1
-	sta RIBUF+1	  // XXX RIBUF or ROBUF?
+	sta ROBUF+1
+
+	// Initialize buffer indexes
 
 	lda #$00
 	sta RIDBE

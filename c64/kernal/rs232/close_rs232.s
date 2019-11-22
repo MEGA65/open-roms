@@ -18,6 +18,7 @@ close_rs232:
 	// If more than one, skip deallocation (other channels still uses the buffer).
 
 	jsr rs232_count_channels
+	cpx #$02                           // set Carry if more than one is open
 	bcs close_rs232_end
 
 	// Deallocate buffer

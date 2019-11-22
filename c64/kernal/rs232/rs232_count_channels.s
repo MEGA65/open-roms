@@ -1,7 +1,7 @@
 
 //
 // Sets .X to number of open RS-232 channels
-// Sets Carry if more than one is open
+//
 
 
 #if HAS_RS232
@@ -19,8 +19,6 @@ rs232_count_channels:
 	bne !-
 	inx
 	bpl !- // branch always
-	
-	cpx #$02
 	
 	rts
 

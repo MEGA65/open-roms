@@ -1,9 +1,21 @@
 
 default_irq_handler:
 
+#if CONFIG_RS232_UP9600
+
+	jsr rs232_count_channels
+	cpx #$00
+	beq !+
+	jsr up9600_irq
+!:
+
+#endif // CONFIG_RS232_UP9600
+
+
 	jsr cursor_blink
 	jsr JSCNKEY
 	jsr JUDTIM // update jiffy clock
+
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 
@@ -25,7 +37,8 @@ default_irq_handler:
 
 default_irq_handler_end_tape:
 
-#endif
+#endif // CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+
 
 	// Acknowledge CIA interrupt and return
 	jmp clear_cia1_interrupt_flag_and_return_from_interrupt

@@ -6,19 +6,14 @@
 // Based on UP9600 code by Daniel Dallman with Bo Zimmerman adaptations
 
 
-// XXX integrate with NMI handler
-
-
 #if CONFIG_RS232_UP9600
 
 
 up9600_nmi:
-	// XXX integrate this
+	// XXX integrate with NMI handler
 
-
-NMIDOBIT
 	pha
-	bit CIA2_ICR // $DD0D; CHECK BIT 7 (STARTBIT PRINT)
+	bit CIA2_ICR // $DD0D; check if CIA caused the interrupt
 	bpl NMIDOBI2; NO STARTBIT RECEIVED, THEN SKIP
 	lda #$13
 	sta CIA2_CRB // $DD0F; START TIMER B (FORCED RELOAD, SIGNAL AT PB7)

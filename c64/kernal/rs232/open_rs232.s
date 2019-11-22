@@ -18,6 +18,7 @@ open_rs232:
 	// If more than one, skip allocation (already allocated).
 
 	jsr rs232_count_channels
+	cpx #$02                           // set Carry if more than one is open
 	bcs open_rs232_end
 
 	// Allocate buffers - first RIBUF, afterwards ROBUF
@@ -42,6 +43,14 @@ open_rs232:
 	sta RIDBS
 	sta RODBS
 	sta RODBE
+
+
+#if CONFIG_RS232_UP9600
+
+	jmp up9600_enable
+
+#endif // CONFIG_RS232_UP9600
+
 
 open_rs232_end:
 

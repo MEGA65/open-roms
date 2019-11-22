@@ -1,6 +1,6 @@
 
 //
-// Enable UP9600 interface
+// Enable UP9600 interface support
 //
 
 // Based on UP9600 code by Daniel Dallman with Bo Zimmerman adaptations
@@ -10,6 +10,63 @@
 
 
 up9600_enable: // XXX adapt
+
+	sei
+
+
+
+	lda IRQVECT
+	cmp #<ORIGIRQ
+	bne INSTERR; IRQ-VECTOR ALREADY CHANGED
+	lda IRQVECT+1
+	cmp #>ORIGIRQ
+	bne INSTERR; IRQ-VECTOR ALREADY CHANGED
+	lda NMIVECT
+	cmp #<ORIGNMI
+	bne INSTERR; NMI-VECTOR ALREADY CHANGED
+	lda NMIVECT+1
+	cmp #>ORIGNMI
+	bne INSTERR; NMI-VECTOR ALREADY CHANGED
+	ldy #0
+	sty RODBE
+	sty RODBS
+	sty RIDBE
+	sty RIDBS
+	;  PROBE FOR RS232 INTERFACE
+	cli
+	lda #$7F
+	sta CIA2_ICR // $DD0D ; DISABLE ALL NMIS
+	lda #$80
+	sta CIA2_DDRB // $DD03 ; PB7 USED AS OUTPUT
+	sta $DD0E; STOP TIMERA
+	sta CIA2_CRB // $DD0F ; STOP TIMERB
+	bit CIA2_ICR // $DD0D ; CLEAR PENDING INTERRUPTS
+	ldx #8
+INSTALL2
+	stx CIA2_PRB // $DD01; TOGGLE TXD
+	sta CIA2_PRB // $DD01; AND LOOK IF IT TRIGGERS AN
+	dex; SHIFT-REGISTER INTERRUPT
+	bne INSTALL2
+	lda CIA2_ICR // $DD0D ; CHECK FOR BIT3 (SDR-FLAG)
+	and #8
+	beq INSTERR; NO INTERFACE DETECTED
+	;  GENERATE LOOKUP TABLE
+	ldx #0
+INSTALL3
+	stx OUTSTAT; OUTSTAT USED AS TEMPORARY VARIABLE
+	ldy #8
+INSTALL4
+	asl OUTSTAT
+	ror
+	dey
+	bne INSTALL4
+	sta REVTAB,X
+	inx
+	bpl INSTALL3
+
+
+
+
 
 	sei
 	// XXX set NEWIRQ as IRQ vector
@@ -61,6 +118,16 @@ ENABLE2
 	tax
 	pla
 	rts
+
+
+
+
+INSTERR
+	cli
+	sec
+	rts
+
+
 
 
 #endif // CONFIG_RS232_UP9600

@@ -114,7 +114,7 @@
 	.label INBIT     = $A7  //          -- NOT IMPLEMENTED --
 #if !CONFIG_LEGACY_SCNKEY
 	.label BITCI     = $A8  //          -- NOT IMPLEMENTED --
-	.label RINONE    = $A9  //          -- NOT IMPLEMENTED --
+	.label RINONE    = $A9  //          -- WIP -- (UP9600 only) RS-232 check for start bit flag
 	.label RIDDATA   = $AA  //          -- NOT IMPLEMENTED --
 	.label RIPRTY    = $AB  //          -- NOT IMPLEMENTED --
 #endif

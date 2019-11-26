@@ -78,7 +78,7 @@ __jd_check1:
 	and #%00110000                     // clear everything but CLK/DATA
 	sta CIA2_PRA
 
-	// Signal EOI if needed     XXX calculate cycles for quicklyy pulling CLK
+	// Signal EOI if needed     XXX calculate cycles for quickly pulling CLK
 	lda C3PO
 	ldx IECPROTO
 	beq iec_tx_byte_jiffydos_wait_eoi

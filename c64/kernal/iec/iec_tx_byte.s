@@ -78,9 +78,10 @@ iec_jiffydos_detect_loop:
 	bne iec_jiffydos_detect_loop       // 3 cycles if branch
 
 	lda #$00                           // normal protocol
-	skip_2_bytes_trash_nvz
+	beq iec_jiffydos_store_proto       // branch always
 
 iec_jiffydos_detected:
+	jsr iec_wait_for_data_release      // guessed from VICE logs
 	lda #$01                           // JiffyDOS protocol
 
 iec_jiffydos_store_proto:
@@ -118,7 +119,7 @@ iec_tx_common_bit_is_sent:
 
 	cli
 
-	// Give device time to tell if they are busy by pulling DATA
+	// Give devices time to tell if they are busy by pulling DATA
 	// They should do it within 1ms
 	ldx #$FF
 !:

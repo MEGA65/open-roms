@@ -23,7 +23,7 @@ iec_tx_byte_jiffydos:
 	// Preserve .X (.Y is not used by the routine)
 	phx_trash_a
 
-	// If EOI requested (carryy flag set), mark this in IECPROTO as 0
+	// If EOI requested (carry flag set), mark this in IECPROTO as 0
 	bcc !+
 	dec IECPROTO                       // turns 1 into 0
 !:
@@ -47,6 +47,9 @@ iec_tx_byte_jiffydos:
 	and #$F0
 	pha
 
+	// Prepare value for device notification
+	ldx C3PO
+
 	// Wait till receiver is ready
 	jsr iec_wait_for_data_release
 
@@ -56,17 +59,16 @@ __jd_check1:
 	jsr jiffydos_wait_line
 
 	// Notify device that we are going to send byte by releasing everything
-	// Cycles: 3 + 4 = 7
-	lda C3PO
-	sta CIA2_PRA
+	stx CIA2_PRA                       // cycles: 4
 
-	// Send high nibble; cycles: 4 + 3 + 4 + 2 + 2 + 2 + 4 = 21
+	// Send high nibble; cycles: 4 + 3 + 4 + 2 + 2 + 2 + 3 + 4 = 24
 	pla                                // retrieve high nibble from stack
 	ora C3PO                           // restore VIC-II and RS-232 bits
 	sta CIA2_PRA                       // bits 4 and 5 on CLK/DATA
 	ror                                // move bits 6 and 7 to positions 4 and 5
 	ror
 	and #%00110000                     // clear everything but CLK/DATA
+	ora C3PO
 	sta CIA2_PRA                       // bits 6 and 7 on CLK/DATA
 
 	// Send low nibble; cycles: 4 + 3 + 4 + 2 + 2 + 2 + 4 = 21
@@ -78,7 +80,7 @@ __jd_check1:
 	and #%00110000                     // clear everything but CLK/DATA
 	sta CIA2_PRA
 
-	// Signal EOI if needed     XXX calculate cycles for quickly pulling CLK
+	// Signal EOI if needed; cycles till no EOI: 3 + 3 + 2 + 2 + 4 = 14 
 	lda C3PO
 	ldx IECPROTO
 	beq iec_tx_byte_jiffydos_wait_eoi
@@ -176,8 +178,7 @@ jiffydos_wait_line:
 	// To give the transfer routine as much time as possible,
 	// wait till a badline
 
-	// XXX this is probably overkill, most likely it is enough to avoid 2 (3?) lines
-	//     before badline - to be adjusted in the future
+	// XXX probably overkill, most likely it is enough to avoid 2 lines before badline
 !:
 	sec
 	lda VIC_SCROLY

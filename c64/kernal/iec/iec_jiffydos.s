@@ -66,8 +66,8 @@ __jd_check1:
 	pla                                // retrieve high nibble from stack
 	ora C3PO                           // restore VIC-II and RS-232 bits
 	sta CIA2_PRA                       // bits 4 and 5 on CLK/DATA
-	ror                                // move bits 6 and 7 to positions 4 and 5
-	ror
+	lsr                                // move bits 6 and 7 to positions 4 and 5
+	lsr
 	and #%00110000                     // clear everything but CLK/DATA
 	ora C3PO
 	sta CIA2_PRA                       // bits 6 and 7 on CLK/DATA
@@ -112,7 +112,7 @@ iec_tx_byte_jiffydos_finalize:
 
 iec_tx_byte_jiffydos_wait_eoi:
 
-	jsr iec_wait60us
+	jsr iec_wait20us // XXX is it enough? wait60us damages .Y, so it cannot be used here
 	lda C3PO
 	jmp iec_tx_byte_jiffydos_finalize
 
@@ -196,7 +196,7 @@ jiffydos_wait_line:
 	cmp #$2E
 	bcc jiffydos_wait_line_done        // we are safe, border - lot of time till badline
 !:
-	lda VIC_RASTER                     // carry is definitely set here!
+	lda VIC_RASTER                     // carry+ is definitely set here!
 	sbc VIC_SCROLY
 	and #$07                           // we want 8 lowest bits
 	cmp #$06

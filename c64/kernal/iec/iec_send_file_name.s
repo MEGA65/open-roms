@@ -38,8 +38,7 @@ iec_send_file_name_loop:
 	jmp iec_send_file_name_loop
 
 iec_send_file_name_done:
-	jsr UNLSN
-	rts
+	jmp UNLSN
 
 
 #endif // CONFIG_IEC

@@ -5,10 +5,15 @@
 // original ROMs
 //
 
+// Similar tables are probably used by nearly all the disk turbo loaders,
+// either on the C64 or drive side, soometimes generated in RAM on the fly;
+// example disk turbo presented below has a veryy similar table - but the
+// values are in reversed order:
+// - https://www.pagetable.com/?p=568
+
+
 #if CONFIG_IEC_JIFFYDOS
 
-
-	// XXX consider calculating the values on-the-fly
 
 iec_jiffydos_bittable:
 

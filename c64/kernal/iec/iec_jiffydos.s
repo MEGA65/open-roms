@@ -27,14 +27,15 @@ iec_tx_byte_jiffydos:
 	bcc !+
 	dec IECPROTO                       // turns 1 into 0
 !:
-	// We need to preserve 3 lowest bits of CIA2_PRA, they contain important (but unrelated) data
+	// We need to preserve 3 lowest bits of CIA2_PRA, they contain important
+	// data - fortunately, the bits are never changed by external devices
 	// Use C3PO for this, as afterwards we have to set there 0 nevertheless
 	lda CIA2_PRA
 	and #%00000111
 	sta C3PO
 
 	// Hide sprites, store their previous status on stack
-	jsr jiffydos_hide_sprites
+	jsr jiffydos_hide_sprites // XXX include C3PO initialization
 	pha
 
 	// Prepare nibbles to send
@@ -75,8 +76,8 @@ __jd_check1:
 	pla                                // retrieve low nibble from stack
 	ora C3PO                           // restore VIC-II and RS-232 bits
 	sta CIA2_PRA
-	ror
-	ror
+	lsr
+	lsr
 	and #%00110000                     // clear everything but CLK/DATA
 	sta CIA2_PRA
 
@@ -91,6 +92,8 @@ iec_tx_byte_jiffydos_finalize:
 
 	ora #BIT_CIA2_PRA_CLK_OUT          // pull CLK
 	sta CIA2_PRA
+
+	// XXX part below should be common for TX and RX
 
 	// Re-enable sprites
 	pla
@@ -117,6 +120,19 @@ iec_tx_byte_jiffydos_wait_eoi:
 
 iec_rx_byte_jiffydos:
 
+	// Timing is critical, do not allow interrupts
+	sei
+
+	// Preserve .X (.Y is not used by the routine)
+	phx_trash_a
+
+	// We need to preserve 3 lowest bits of CIA2_PRA, they contain important
+	// data - fortunately, the bits are never changed by external devices
+	// Use C3PO for this, as afterwards we have to set there 0 nevertheless
+	lda CIA2_PRA
+	and #%00000111
+	sta C3PO
+
 	// Hide sprites, store their previous status on stack
 	jsr jiffydos_hide_sprites
 	pha
@@ -127,45 +143,45 @@ iec_rx_byte_jiffydos:
 	// Prepare 'start sending' message
 	lda CIA2_PRA
 	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
-	pha
+	tax
 
 	// Wait for appropriate moment
 	jsr jiffydos_wait_line
 
 	// Ask device to start sending bits
-	pla
-	sta CIA2_PRA
+	stx CIA2_PRA                       // cycles: 4
 
 	// Retrieve byte XXX count cycles, synchronize
-	lda CIA2_PRA                       // bits 0 and 1
-	and #%11000000
-	pha
 
-	lda CIA2_PRA                       // bits 2 and 3
-	and #%11000000
-	pha
+	lda CIA2_PRA                       // bits 0 and 1 on CLK/DATA
+	lsr
+	lsr
 
-	lda CIA2_PRA                       // bits 4 and 5
-	and #%11000000
-	pha
+	ora CIA2_PRA                       // bits 2 and 3 on CLK/DATA
+	lsr
+	lsr
 
-	lda CIA2_PRA                       // bits 6 and 7
-	and #%11000000
-	pha
+	eor C3PO
+	eor CIA2_PRA                       // bits 4 and 5 on CLK/DATA
+	lsr
+	lsr
 
-	// XXX check for EOI here
+	eor C3PO
+	eor CIA2_PRA                       // bits 6 and 7 on CLK/DATA
+	tax
 
-	// XXX decode byte instead of this - can we do it in real time? 
-	pla                                // bits 6 and 7
-	pla                                // bits 4 and 5
-	pla                                // bits 2 and 3
-	pla                                // bits 0 and 1
+	// XXX CLK and DATA active = EOI
+	lda CIA2_PRA
+
 
 
 	// Re-enable sprites
 	pla
 	sta VIC_SPENA
 
+	// Restore .X, interrupts, return
+	plx_trash_a
+	cli
 	rts
 
 

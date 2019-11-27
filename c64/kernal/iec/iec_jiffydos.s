@@ -191,16 +191,14 @@ jiffydos_wait_line:
 	and #$10
 	beq jiffydos_wait_line_done        // screen is disabled, no need to watch for badlines
 
-	// To give the transfer routine as much time as possible,
-	// wait till a badline
-
-	// XXX probably overkill, most likely it is enough to avoid 2 lines before badline
+	// Avoid 2 lines before the badline, otherwise VIC will ruin the synchronization
 !:
 	sec
-	lda VIC_SCROLY
-	sbc VIC_RASTER
+	lda VIC_RASTER
+	sbc VIC_SCROLY
 	and #$07                           // we want 8 lowest bits
-	bne !-
+	cmp #$06
+	bcs !-
 
 jiffydos_wait_line_done:
 	rts

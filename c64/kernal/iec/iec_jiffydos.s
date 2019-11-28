@@ -20,22 +20,16 @@ iec_tx_byte_jiffydos:
 	// Timing is critical, do not allow interrupts
 	sei
 
-	// Preserve .X (.Y is not used by the routine)
-	phx_trash_a
-
 	// If EOI requested (carry flag set), mark this in IECPROTO as 0
 	bcc !+
 	dec IECPROTO                       // turns 1 into 0
 !:
-	// We need to preserve 3 lowest bits of CIA2_PRA, they contain important
-	// data - fortunately, the bits are never changed by external devices
-	// Use C3PO for this, as afterwards we have to set there 0 nevertheless
-	lda CIA2_PRA
-	and #%00000111
-	sta C3PO
+	// Store .X and .Y on the stack - preserve them
+	phx_trash_a
+	phy_trash_a
 
-	// Hide sprites, store their previous status on stack
-	jsr jiffydos_hide_sprites // XXX include C3PO initialization
+	// Store previous sprite status on stack
+	jsr jiffydos_prepare_for_transfer
 	pha
 
 	// Prepare nibbles to send
@@ -53,8 +47,6 @@ iec_tx_byte_jiffydos:
 
 	// Wait till receiver is ready
 	jsr iec_wait_for_data_release
-
-__jd_check1:
 
 	// Wait till it is safe to send data
 	jsr jiffydos_wait_line
@@ -93,26 +85,11 @@ iec_tx_byte_jiffydos_finalize:
 	ora #BIT_CIA2_PRA_CLK_OUT          // pull CLK
 	sta CIA2_PRA
 
-	// XXX part below should be common for TX and RX
-
-	// Re-enable sprites
-	pla
-	sta VIC_SPENA
-
-	// Mark TX buffer as empty, restore proper IECPROTO value
-	ldx #$00
-	stx C3PO
-	inx
-	sta IECPROTO
-
-	// Restore .X, interrupts, return
-	plx_trash_a
-	cli
-	rts
+	bne jiffydos_return_success        // branch always
 
 iec_tx_byte_jiffydos_wait_eoi:
 
-	jsr iec_wait20us // XXX is it enough? wait60us damages .Y, so it cannot be used here
+	jsr iec_wait20us // XXX is it enough?
 	lda C3PO
 	jmp iec_tx_byte_jiffydos_finalize
 
@@ -123,18 +100,12 @@ iec_rx_byte_jiffydos:
 	// Timing is critical, do not allow interrupts
 	sei
 
-	// Preserve .X (.Y is not used by the routine)
+	// Store .X and .Y on the stack - preserve them
 	phx_trash_a
+	phy_trash_a
 
-	// We need to preserve 3 lowest bits of CIA2_PRA, they contain important
-	// data - fortunately, the bits are never changed by external devices
-	// Use C3PO for this, as afterwards we have to set there 0 nevertheless
-	lda CIA2_PRA
-	and #%00000111
-	sta C3PO
-
-	// Hide sprites, store their previous status on stack
-	jsr jiffydos_hide_sprites
+	// Store previous sprite status on stack
+	jsr jiffydos_prepare_for_transfer
 	pha
 
 	// Wait until device is ready to send
@@ -174,15 +145,21 @@ iec_rx_byte_jiffydos:
 	lda CIA2_PRA
 
 
+	// FALLTROUGH
 
-	// Re-enable sprites
+jiffydos_return_success:
+
+	// Restore proper IECPROTO value
+	lda #$01
+	sta IECPROTO
+
+	// Re-enable sprites and interrupts
 	pla
 	sta VIC_SPENA
-
-	// Restore .X, interrupts, return
-	plx_trash_a
 	cli
-	rts
+
+	// Return success
+	jmp iec_return_success
 
 
 jiffydos_wait_line:
@@ -207,36 +184,21 @@ jiffydos_wait_line_done:
 	rts
 
 
-__jd_check2:
+jiffydos_prepare_for_transfer:
 
+	// We need to preserve 3 lowest bits of CIA2_PRA, they contain important
+	// data - fortunately, the bits are never changed by external devices
+	// Use C3PO for this, as afterwards we have to set there 0 nevertheless
+	lda CIA2_PRA
+	and #%00000111
+	sta C3PO
 
-jiffydos_hide_sprites:
-
+	// Hide sprites
 	lda VIC_SPENA
 	ldx #$00
 	stx VIC_SPENA
 
 	rts
-
-
-.function SAME_PAGE_CHECK(label_1, label_2)
-{
-#if PASS_SIZETEST
-	.return (label_1 - label_1 % 256) == (label_2 - label_2 % 256)
-#else
-	.return true
-#endif
-}
-
-.if (!SAME_PAGE_CHECK(__jd_check1, __jd_check2))
-{
-	// To meet the strict JiffyDOS timing, we need to make sure
-	// it does not span across multiple pages, as this would add
-	// 1 cycle to some jump instructions - maybe this wont cause
-	// problems, but better safe than sorry.
-
-	.error "JiffyDOS code can't span across multiple pages"
-}
 
 
 #endif // CONFIG_IEC_JIFFYDOS

@@ -26,6 +26,8 @@ TALK:
 	// Encode and execute the command
 	ora #$40
 
+	// FALLTROUGH
+
 common_talk_listen: // common part of TALK and LISTEN
 
 	sta TBTCNT

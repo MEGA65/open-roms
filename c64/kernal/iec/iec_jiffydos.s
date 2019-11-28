@@ -3,7 +3,8 @@
 // JiffyDOS protocol support for IEC
 //
 
-// XXX finish this
+// XXX make it work
+// XXX split into multiple files
 
 
 
@@ -85,7 +86,18 @@ iec_tx_byte_jiffydos_finalize:
 	ora #BIT_CIA2_PRA_CLK_OUT          // pull CLK
 	sta CIA2_PRA
 
-	bne jiffydos_return_success        // branch always
+	// Restore proper IECPROTO value
+	lda #$01
+	sta IECPROTO
+
+	// Re-enable sprites and interrupts
+	pla
+	sta VIC_SPENA
+	cli
+
+	// Return success
+	jmp iec_return_success
+
 
 iec_tx_byte_jiffydos_wait_eoi:
 
@@ -154,26 +166,33 @@ iec_rx_byte_jiffydos:
 	eor C3PO
 	eor CIA2_PRA                       // bits 6 and 7 on CLK/DATA
 
+	// Preserve read byte
+	sta TBTCNT // $A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html
+
+	// Retrieve status bits
+	lda CIA2_PRA
 	tax
 
-	// XXX CLK and DATA active = EOI
-	lda CIA2_PRA
+	// Pull DATA at the end
+	ora #BIT_CIA2_PRA_DAT_OUT
+	sta CIA2_PRA
 
-	// FALLTROUGH
-
-jiffydos_return_success:
-
+	// Check for EOI
+	txa
+	bmi !+
+	jsr kernalstatus_EOI
+!:
 	// Restore proper IECPROTO value
 	lda #$01
 	sta IECPROTO
 
-	// Re-enable sprites and interrupts
+	// Re-enable sprites
 	pla
 	sta VIC_SPENA
-	cli
 
-	// Return success
-	jmp iec_return_success
+	// End byte reception
+	jmp iec_rx_end
+
 
 
 jiffydos_wait_line:
@@ -196,6 +215,7 @@ jiffydos_wait_line:
 jiffydos_wait_line_done:
 
 	rts
+
 
 
 jiffydos_prepare_for_transfer:

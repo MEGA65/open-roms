@@ -137,10 +137,13 @@ iec_rx_clk_wait2:
 	
 	// Restore registers
 	sta TBTCNT // $A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html
-	pla
-	tay
-	pla
-	tax
+	
+	// FALLTROUGH
+
+iec_rx_end:
+
+	ply_trash_a
+	plx_trash_a
 	lda TBTCNT
 
 	clc

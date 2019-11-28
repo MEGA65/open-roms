@@ -26,16 +26,6 @@ TALK:
 	// Encode and execute the command
 	ora #$40
 
-#if CONFIG_IEC_JIFFYDOS
-
-	// XXX temporary, until receiving is implemented too
-	sta TBTCNT
-	lda #$00 // standard protocol
-	sta IECPROTO
-	jmp iec_tx_command
-
-#endif // CONFIG_IEC_JIFFYDOS
-
 common_talk_listen: // common part of TALK and LISTEN
 
 	sta TBTCNT

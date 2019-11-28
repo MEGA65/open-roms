@@ -308,7 +308,7 @@
 #elif CONFIG_TAPE_TURBO
 	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD TURBO")
 #elif CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
-	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL+TURBO")
+	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL TURBO")
 #endif
 
 	.eval feature_new_line = true
@@ -317,7 +317,7 @@
 #if !CONFIG_IEC_JIFFYDOS
 	.eval features_str = ADD_FEATURE(features_str, "IEC")
 #else
-	.eval features_str = ADD_FEATURE(features_str, "IEC+JIFFY DEV")
+	.eval features_str = ADD_FEATURE(features_str, "IEC JIFFY-DEV")
 #endif
 #endif
 

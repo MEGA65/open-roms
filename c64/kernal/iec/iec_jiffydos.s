@@ -122,28 +122,42 @@ iec_rx_byte_jiffydos:
 	// Ask device to start sending bits
 	stx CIA2_PRA                       // cycles: 4
 
-	// Retrieve byte XXX count cycles, synchronize
+	// XXX we have to wait 20 cycles??? seriously??? what the hell shall we do here???
+	pla // 4 cycles
+	pha // 3 cycles
+	pla // 4 cycles
+	pha // 3 cycles
+	nop // 2 cycles
+	nop // 2 cycles
+	nop // 2 cycles
 
+	// Get bits, cycles: 4 + 2 + 2 = 8
 	lda CIA2_PRA                       // bits 0 and 1 on CLK/DATA
 	lsr
 	lsr
 
+	// Wait for the drive, cycles: 2
+	nop
+
+	// Get bits, cycles: 4 + 2 + 2 = 8
 	ora CIA2_PRA                       // bits 2 and 3 on CLK/DATA
 	lsr
 	lsr
 
+	// Get bits, cycles: 3 + 4 + 2 + 2 = 11
 	eor C3PO
 	eor CIA2_PRA                       // bits 4 and 5 on CLK/DATA
 	lsr
 	lsr
 
+	// Get bits, cycles: 3 + 4 = 7
 	eor C3PO
 	eor CIA2_PRA                       // bits 6 and 7 on CLK/DATA
+
 	tax
 
 	// XXX CLK and DATA active = EOI
 	lda CIA2_PRA
-
 
 	// FALLTROUGH
 

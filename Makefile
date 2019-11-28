@@ -19,6 +19,7 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                 c64/kernal/,stubs \
                 c64/kernal/assets \
                 c64/kernal/iec \
+                c64/kernal/iec_fast \
                 c64/kernal/init \
                 c64/kernal/interrupts \
                 c64/kernal/iostack \

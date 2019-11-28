@@ -15,7 +15,7 @@
 #if CONFIG_IEC_JIFFYDOS
 
 
-iec_jiffydos_bittable:
+jiffydos_bittable:
 
 	.byte $00
 	.byte $80    // $10 + $70

@@ -57,36 +57,11 @@ iec_tx_common_sendbit:
 
 #if CONFIG_IEC_JIFFYDOS
 
-	// Here is the place we can detect JiffyDOS protocol, by inserting a long delay
-	// (above 400us?) during sending command last bit, see:
-    // - https://sites.google.com/site/h2obsession/CBM/C128/JiffySoft128
-    // - https://github.com/rkrajnc/sd2iec/blob/master/src/iec.c
-    // The 'iec.s' suggests, that the drive should respond by pulling data
-
+	bne !+                             // branch if not sending the last bit
     lda IECPROTO
     bpl !+                             // branch if protocol is known
-    cpx #$00
-    bne !+                             // branch if not sending the last bit
 
-    ldy #$25                           // 400us is nearly 410 cycles on NTSC
-                                       // loop iteration below is 11 cycles,
-                                       // and several cycles were already used
-iec_jiffydos_detect_loop:
-	lda CIA2_PRA                       // 4 cycles
-	bpl iec_jiffydos_detected          // 2 cycles
-	dey                                // 2 cycles
-	bne iec_jiffydos_detect_loop       // 3 cycles if branch
-
-	lda #$00                           // normal protocol
-	beq iec_jiffydos_store_proto       // branch always
-
-iec_jiffydos_detected:
-	jsr iec_wait_for_data_release      // guessed from VICE logs
-	lda #$01                           // JiffyDOS protocol
-
-iec_jiffydos_store_proto:
-	sta IECPROTO
-
+    jsr jiffydos_detect
 !:
 #endif // CONFIG_IEC_JIFFYDOS
 

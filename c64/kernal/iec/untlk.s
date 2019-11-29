@@ -18,13 +18,6 @@ UNTLK:
 	// According to serial-bus.pdf (page 15) this routine flushes the IEC out buffer
 	jsr iec_tx_flush
 
-#if CONFIG_IEC_JIFFYDOS
-
-	lda #$00 // switch back to standard protocol
-	sta IECPROTO
-
-#endif
-
 	// Buffer empty, send the command
 	lda #$5F
 

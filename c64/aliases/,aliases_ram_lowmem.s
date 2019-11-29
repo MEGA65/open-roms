@@ -106,7 +106,7 @@
 #if !CONFIG_IEC_JIFFYDOS	
 	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage differs
 #else
-	.label IECPROTO  = $A3  //          -- WIP -- [!] 0 = normal, 1 = JiffyDOS, >= $80 for unknown
+	.label IECPROTO  = $A3  //          -- WIP -- [!] 0 = normal, 1 = JiffyDOS, $80 or above = detect protocol
 #endif
 	.label TBTCNT    = $A4  //          temporary variable for tape and IEC, [!] our usage probably differs in details
 	.label CNTDN     = $A5  //          -- NOT IMPLEMENTED --

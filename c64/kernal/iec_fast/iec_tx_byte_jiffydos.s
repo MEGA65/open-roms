@@ -3,8 +3,6 @@
 // JiffyDOS protocol support for IEC - byte transfer
 //
 
-// XXX make it work
-
 
 #if CONFIG_IEC_JIFFYDOS
 

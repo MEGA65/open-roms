@@ -3,6 +3,8 @@
 // JiffyDOS protocol support for IEC - byte reception
 //
 
+// XXX byte reception does not seem to work yet
+
 
 #if CONFIG_IEC_JIFFYDOS
 
@@ -64,6 +66,7 @@ iec_rx_byte_jiffydos:
 
 	// Get bits, cycles: 3 + 4 = 7
 	eor C3PO
+
 	eor CIA2_PRA                       // bits 6 and 7 on CLK/DATA
 
 	// Preserve read byte

@@ -59,7 +59,10 @@ iec_tx_common_sendbit:
 
 	bne !+                             // branch if not sending the last bit
     lda IECPROTO
-    bpl !+                             // branch if protocol is known
+    beq !+                             // branch if standard protocol
+
+    // JiffyDOS ROM performs detection loop on every command; it seems we have to
+    // replicate this behaviour for compatibility with at least 1541 JiffyDOS ROM
 
     jsr jiffydos_detect
 !:

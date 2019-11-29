@@ -8,6 +8,9 @@
 // - https://github.com/rkrajnc/sd2iec/blob/master/src/iec.c
 // The 'iec.s' suggests, that the drive should respond by pulling data
 
+// The original JiffyyDOS ROM seems to perform detection with every command
+// (even though for many of them it always fails) and we have to replicate
+// this behaviour for compatibility with at least 1541 JiffyDOS ROM
 
 
 #if CONFIG_IEC_JIFFYDOS
@@ -24,6 +27,9 @@ jiffydos_detect_loop:
 	dey                                // 2 cycles
 	bne jiffydos_detect_loop           // 3 cycles if branch
 
+	lda IECPROTO
+	bpl jiffydos_detect_end            // no detection requested, preserve existing protocol
+
 	lda #$00                           // normal protocol
 	beq jiffydos_store_proto           // branch always
 
@@ -36,6 +42,9 @@ jiffydos_detected:
 jiffydos_store_proto:
 	sta IECPROTO
 
+	// FALLTROUGH
+
+jiffydos_detect_end:
 	rts
 
 

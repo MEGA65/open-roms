@@ -20,7 +20,7 @@ UNTLK:
 
 #if CONFIG_IEC_JIFFYDOS
 
-	lda #$00 // switch back to standard protocol
+	lda #$FF // XXX
 	sta IECPROTO
 
 #endif

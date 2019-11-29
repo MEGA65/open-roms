@@ -16,22 +16,6 @@ iec_tx_command:
 	phx_trash_a
 	phy_trash_a
 
-#if CONFIG_IEC_JIFFYDOS
-
-	// IMHO detecting JiffDOS would be sufficient for TALK and LISTEN commands,
-	// this would also make the protocol slightly faster. But, for some reason
-	// (this is clearly visible in the logs) the original JiffyDOS Kernal tries
-	// to detect the JiffyDOS drive during each and every command - and trying
-	// to limit the detection to TALK/LISTEN only was causing transmission
-	// errors (at least with 1541 JiffyDOS ROM)
-
-	lda #$FF // force JiffyDOS detection
-	sta IECPROTO
-
-	// FALLTROUGH
-
-#endif // CONFIG_IEC_JIFFYDOS
-
 	// Notify all devices that we are going to send a byte
 	// and it is going to be a command (pulled ATN)
 	jsr iec_pull_atn_clk_release_data

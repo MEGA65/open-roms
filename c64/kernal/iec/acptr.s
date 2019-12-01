@@ -11,8 +11,14 @@
 
 ACPTR:
 
-	jsr kernalstatus_reset
-	
+	lda IOSTATUS
+	beq !+
+
+	lda #$0D                           // tested on real ROMs
+	clc
+	rts
+!:
+
 #if CONFIG_IEC
 #if CONFIG_IEC_JIFFYDOS
 	jmp iec_rx_dispatch

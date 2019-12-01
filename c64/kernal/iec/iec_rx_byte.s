@@ -111,16 +111,8 @@ iec_rx_clk_wait2:
 	// Timeout
 	jsr kernalstatus_EOI
 	pla
-	
-	// Restore registers
-	pla
-	tay
-	pla
-	tax
-    
-	sec // XXX confirm that sec is really a way to report timeout here
-	cli
-	rts
+
+	jmp iec_rx_end
 !:
 	// More bits?
 	dex

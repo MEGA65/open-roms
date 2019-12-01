@@ -24,8 +24,6 @@ load_break_error:
 	jsr iec_close_load
 	jmp kernalerror_ROUTINE_TERMINATED 
 
-load_save_no_file_name:
-
 
 load_iec:
 
@@ -71,19 +69,10 @@ load_iec:
 
 	// Get load address
 
-#if CONFIG_IEC_JIFFYDOS
-	jsr iec_rx_dispatch
-#else // no turbo supported
-	jsr iec_rx_byte
-#endif
-	bcs load_iec_file_not_found
+	jsr load_iec_get_addr_byte
 	sta EAL+0
-#if CONFIG_IEC_JIFFYDOS
-	jsr iec_rx_dispatch
-#else // no turbo supported
-	jsr iec_rx_byte
-#endif
-	bcs load_iec_file_not_found
+
+	jsr load_iec_get_addr_byte
 	sta EAL+1
 
 	// If secondary address is 0, override EAL with STAL
@@ -141,6 +130,25 @@ iec_load_loop:
 
 	// Return last address
 	jmp lvs_return_last_address
+
+
+load_iec_get_addr_byte:
+
+#if CONFIG_IEC_JIFFYDOS
+	jsr iec_rx_dispatch
+#else // no turbo supported
+	jsr iec_rx_byte
+#endif
+
+	bcs !+
+	lda IOSTATUS
+	and #K_STS_EOI
+	bne !+
+	rts
+!:
+	pla
+	pla
+	jmp load_iec_file_not_found
 
 
 #endif // CONFIG_IEC

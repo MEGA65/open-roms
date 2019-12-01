@@ -7,4 +7,4 @@
 chrin_iec:
 
 	// XXX is this really all?
-	jmp JACPTR // carry will be set accordingly
+	jmp JACPTR

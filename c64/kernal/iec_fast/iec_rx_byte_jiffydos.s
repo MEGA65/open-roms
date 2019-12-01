@@ -3,8 +3,6 @@
 // JiffyDOS protocol support for IEC - byte reception
 //
 
-// XXX byte reception does not seem to work yet
-
 
 #if CONFIG_IEC_JIFFYDOS
 
@@ -36,13 +34,13 @@ iec_rx_byte_jiffydos:
 	// Ask device to start sending bits
 	stx CIA2_PRA                       // cycles: 4
 
-	// XXX how many cycles? (each NOP is 2)
+	// Prepare 'data pull' byte, cycles 3 + 2 + 2 = 7
+	lda C3PO
+	ora #BIT_CIA2_PRA_DAT_OUT
+	tax
 
-	nop
-	nop
-	nop
+	// Delay, JiffyDOS needs some time
 
-	nop
 	nop
 	nop
 
@@ -73,16 +71,18 @@ iec_rx_byte_jiffydos:
 	// Preserve read byte
 	sta TBTCNT // $A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html
 
+	// Delay, JiffyDOS needs some time; for PAL one NOP would be enough,
+	// but NTSC machines are clocked slightly faster
+	nop
+	nop
+
 	// Retrieve status bits
-	lda CIA2_PRA
-	tax
+	bit CIA2_PRA
 
 	// Pull DATA at the end
-	ora #BIT_CIA2_PRA_DAT_OUT
-	sta CIA2_PRA
+	stx CIA2_PRA
 
-	// Check for EOI
-	txa
+	// Check for EOI (DATA line)
 	bmi !+
 	jsr kernalstatus_EOI
 !:

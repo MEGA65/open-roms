@@ -39,8 +39,6 @@ common_talk_listen: // common part of TALK and LISTEN
 	lda #$FF // unknown protocol - check what is supported
 	sta IECPROTO
 
-	// FALLTROUGH
-
 #endif // CONFIG_IEC_JIFFYDOS
 
 

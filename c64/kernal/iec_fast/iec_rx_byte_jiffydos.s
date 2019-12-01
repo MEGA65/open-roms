@@ -36,14 +36,15 @@ iec_rx_byte_jiffydos:
 	// Ask device to start sending bits
 	stx CIA2_PRA                       // cycles: 4
 
-	// XXX we have to wait 20 cycles??? seriously??? what the hell shall we do here???
-	pla // 4 cycles
-	pha // 3 cycles
-	pla // 4 cycles
-	pha // 3 cycles
-	nop // 2 cycles
-	nop // 2 cycles
-	nop // 2 cycles
+	// XXX how many cycles? (each NOP is 2)
+
+	nop
+	nop
+	nop
+
+	nop
+	nop
+	nop
 
 	// Get bits, cycles: 4 + 2 + 2 = 8
 	lda CIA2_PRA                       // bits 0 and 1 on CLK/DATA

@@ -10,9 +10,10 @@
 
 jiffydos_wait_line:
 
-	lda VIC_SCROLY
-	and #$10
-	beq jiffydos_wait_line_done        // screen is disabled, no need to watch for badlines
+	// One might try to optimize the code by checking for disabled screen
+	// (bit 4 of VIC_SCROLY); problem: VIC checks this bit only once per frame:
+	// - https://www.lemon64.com/forum/viewtopic.php?t=56582
+	// so it would complicated the code
 
 	// Avoid 2 lines before the badline, otherwise VIC will ruin the synchronization
 	lda VIC_RASTER

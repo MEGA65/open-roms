@@ -34,13 +34,12 @@ iec_rx_byte_jiffydos:
 	// Ask device to start sending bits
 	stx CIA2_PRA                       // cycles: 4
 
-	// Prepare 'data pull' byte, cycles 3 + 2 + 2 = 7
+	// Prepare 'data pull' byte, cycles: 3 + 2 + 2 = 7
 	lda C3PO
-	ora #BIT_CIA2_PRA_DAT_OUT
+	ora #BIT_CIA2_PRA_DAT_OUT          // pull
 	tax
 
-	// Delay, JiffyDOS needs some time
-
+	// Delay, JiffyDOS needs some time, 4 cycles
 	nop
 	nop
 
@@ -65,21 +64,20 @@ iec_rx_byte_jiffydos:
 
 	// Get bits, cycles: 3 + 4 = 7
 	eor C3PO
-
 	eor CIA2_PRA                       // bits 6 and 7 on CLK/DATA
 
-	// Preserve read byte
+	// Preserve read byte, cycles: 3
 	sta TBTCNT // $A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html
 
 	// Delay, JiffyDOS needs some time; for PAL one NOP would be enough,
-	// but NTSC machines are clocked slightly faster
+	// but NTSC machines are clocked slightly faster; cycles: 4
 	nop
 	nop
 
-	// Retrieve status bits
+	// Retrieve status bits, cycles: 4
 	bit CIA2_PRA
 
-	// Pull DATA at the end
+	// Pull DATA at the end, cycles: 4
 	stx CIA2_PRA
 
 	// Check for EOI (DATA line)

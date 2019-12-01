@@ -77,6 +77,10 @@ iec_tx_byte_jiffydos_finalize:
 	ora #BIT_CIA2_PRA_CLK_OUT          // pull CLK
 	sta CIA2_PRA
 
+	// Indicate that no byte waits in output buffer
+	lda #$00
+	sta C3PO
+
 	// Restore proper IECPROTO value
 	lda #$01
 	sta IECPROTO

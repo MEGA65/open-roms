@@ -84,6 +84,10 @@ iec_rx_byte_jiffydos:
 	bmi !+
 	jsr kernalstatus_EOI
 !:
+	// Indicate that no byte waits in output buffer
+	lda #$00
+	sta C3PO
+
 	// Restore proper IECPROTO value
 	lda #$01
 	sta IECPROTO

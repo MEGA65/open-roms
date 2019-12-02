@@ -63,17 +63,19 @@ kernalstatus_reset:
 	sta IOSTATUS
 	rts
 
-kernalstatus_TIMEOUT_WRITE: // XXX detect this!
-	lda IOSTATUS
-	ora #K_STS_TIMEOUT_WRITE
-	sta IOSTATUS
-	rts
+// The following two statuses are currentl not implemented - and most likely not really needed
 
-kernalstatus_TIMEOUT_READ: // XXX detect this!
-	lda IOSTATUS
-	ora #K_STS_TIMEOUT_READ
-	sta IOSTATUS
-	rts
+// kernalstatus_TIMEOUT_WRITE:
+//	lda IOSTATUS
+//	ora #K_STS_TIMEOUT_WRITE
+//	sta IOSTATUS
+//	rts
+
+// kernalstatus_TIMEOUT_READ:
+//	lda IOSTATUS
+//	ora #K_STS_TIMEOUT_READ
+//	sta IOSTATUS
+//	rts
 
 kernalstatus_EOI:
 	lda IOSTATUS

@@ -20,6 +20,9 @@ iec_tx_byte_jiffydos:
 	phx_trash_a
 	phy_trash_a
 
+	// Make sure we are not sending data on ATN
+	jsr iec_release_atn
+
 	// Store previous sprite status on stack
 	jsr jiffydos_prepare
 	pha
@@ -45,7 +48,7 @@ iec_tx_byte_jiffydos:
 
 	// Notify device that we are going to send byte by releasing everything
 	stx CIA2_PRA                       // cycles: 4
-
+	
 	// Send high nibble; cycles: 4 + 3 + 4 + 2 + 2 + 2 + 3 + 4 = 24
 	pla                                // retrieve high nibble from stack
 	ora C3PO                           // restore VIC-II and RS-232 bits
@@ -96,7 +99,7 @@ iec_tx_byte_jiffydos_finalize:
 
 iec_tx_byte_jiffydos_wait_eoi:
 
-	jsr iec_wait20us // XXX is it enough?
+	jsr iec_wait60us // XXX is it enough?
 	lda C3PO
 	jmp iec_tx_byte_jiffydos_finalize
 

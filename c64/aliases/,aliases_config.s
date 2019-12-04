@@ -317,7 +317,7 @@
 #if !CONFIG_IEC_JIFFYDOS
 	.eval features_str = ADD_FEATURE(features_str, "IEC")
 #else
-	.eval features_str = ADD_FEATURE(features_str, "IEC JIFFY-DEV")
+	.eval features_str = ADD_FEATURE(features_str, "IEC JIFFY")
 #endif
 #endif
 

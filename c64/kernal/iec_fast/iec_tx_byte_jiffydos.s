@@ -48,7 +48,6 @@ iec_tx_byte_jiffydos:
 
 	// Notify device that we are going to send byte by releasing everything
 	stx CIA2_PRA                       // cycles: 4
-	
 	// Send high nibble; cycles: 4 + 3 + 4 + 2 + 2 + 2 + 3 + 4 = 24
 	pla                                // retrieve high nibble from stack
 	ora C3PO                           // restore VIC-II and RS-232 bits
@@ -80,10 +79,6 @@ iec_tx_byte_jiffydos_finalize:
 	ora #BIT_CIA2_PRA_CLK_OUT          // pull CLK
 	sta CIA2_PRA
 
-	// Indicate that no byte waits in output buffer
-	lda #$00
-	sta C3PO
-
 	// Restore proper IECPROTO value
 	lda #$01
 	sta IECPROTO
@@ -99,6 +94,7 @@ iec_tx_byte_jiffydos_finalize:
 
 iec_tx_byte_jiffydos_wait_eoi:
 
+	sta CIA2_PRA
 	jsr iec_wait60us // XXX is it enough?
 	lda C3PO
 	jmp iec_tx_byte_jiffydos_finalize

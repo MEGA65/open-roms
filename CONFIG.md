@@ -103,6 +103,12 @@ Adds support for the IEEC bus - for serial printers, disk drives, etc.
 
 Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
+### `CONFIG_IEC_JIFFYDOS`
+
+Adds support for JiffyDOS pprotocol to the IEC bus (note, that it currentlyy lacks the optimized LOAD loop, so it will be slower than original JiffyDOS enabled Kernal ROMs).
+
+Needs over 320 bytes in KERNAL segment. If unsure - enable.
+
 ### `CONFIG_TAPE_TURBO`
 
 Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges)

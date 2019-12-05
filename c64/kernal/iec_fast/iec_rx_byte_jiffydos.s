@@ -80,10 +80,16 @@ iec_rx_byte_jiffydos:
 	// Pull DATA at the end, cycles: 4
 	stx CIA2_PRA
 
-	// Check for EOI (DATA line)
-	bmi !+
+	// If CLK line active - success
+	bvc iec_rx_byte_jiffydos_end
+
+	// XXX does the DATA line status tell something?
 	jsr kernalstatus_EOI
-!:
+
+	// FALLTROUGH
+
+iec_rx_byte_jiffydos_end:
+
 	// Indicate that no byte waits in output buffer
 	lda #$00
 	sta C3PO

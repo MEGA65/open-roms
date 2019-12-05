@@ -124,7 +124,7 @@ iec_rx_clk_wait2:
 	// the next byte. (p11).
 	jsr iec_release_clk_pull_data
 
-	// Retreive the received byte
+	// Retrieve the received byte
 	pla
 	
 	// Restore registers

@@ -4,10 +4,14 @@
 //
 
 
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K
 
 
-	// XXX add RUN/STOP support
+// Note: original JiffyDOS LOAD loop checks for RUN/STOP key every time a sector is read.
+// For simplicity and some space savings, our routine does not check the RUN/STOP key at all;
+// the protocol is fast enough (especiallyy with modern flash mediums) that probably nobody
+// will want to terminate the loading.
+
 
 load_jiffydos:
 
@@ -18,10 +22,8 @@ load_jiffydos:
 	jsr jiffydos_prepare
 	sta TBTCNT
 
-	// XXX For the first iteration load the whole sector minus 2 bytes
-	// XXX (as they are used to store the start address)
-	// XXX ldy #$FB
-	ldy #$00
+	// A trick to shorten EAL update time
+	ldy #$FF
 
 	// FALLTROUGH
 
@@ -55,8 +57,8 @@ load_jiffydos_loop:
 	lsr
 	lsr
 
-	// Wait for the drive, cycles: 2
-	nop
+	// Wait for the drive - we have time to increment offset, cycles: 2
+	iny
 
 	// Get bits, cycles: 4 + 2 + 2 = 8
 	ora CIA2_PRA                       // bits 2 and 3 on CLK/DATA
@@ -74,7 +76,7 @@ load_jiffydos_loop:
 	eor CIA2_PRA                       // bits 6 and 7 on CLK/DATA
 
 	// Store retrieved byte, cycles: 6 
-	sta (EAL),y
+	sta (EAL),y                        // not compatible with CONFIG_MEMORY_MODEL_60K
 
 	// Retrieve status bits, cycles: 4
 	bit CIA2_PRA
@@ -85,16 +87,25 @@ load_jiffydos_loop:
 	// If CLK line not active - this was the last byte
 	bvs load_jiffydos_end
 
-	// Advance pointer to data XXX use INY instead, advance once per sector only
-	jsr lvs_advance_EAL
-
-	jmp load_jiffydos_loop	
+	// Handle EAL
+	cpy #$FF
+	bne load_jiffydos_loop
+	inc EAL+1
+	jmp load_jiffydos_loop
 
 load_jiffydos_end:
 
-	// Save last byyte
+	// Save last byte
 	tax
 
+	// Update EAL
+	tya
+	sec
+	adc EAL+0
+	sta EAL+0
+	bcc !+
+	inc EAL+1
+!:
 	// Indicate that no byte waits in output buffer
 	lda #$00
 	sta C3PO
@@ -107,11 +118,11 @@ load_jiffydos_end:
 	lda TBTCNT
 	sta VIC_SPENA
 
-	// Store last byte as unoptimized LOAD would
+	// Store last byte as unoptimized LOAD routine would
 	stx TBTCNT
 
 	// End of load loop
 	jmp load_iec_loop_end
 
 
-#endif // CONFIG_IEC_JIFFYDOS
+#endif // CONFIG_IEC_JIFFYDOS and not CONFIG_MEMORY_MODEL_60K

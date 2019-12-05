@@ -91,9 +91,9 @@ Planned for the future - not available yet.
 
 ### `CONFIG_MEMORY_MODEL_60K`
 
-Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires special helper routines installed in `$2A7`-`$2FF` area (normally unused and free for the user). Gives the most free memory for BASIC programs, but it's the slowest and the least compatible model.
+Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires special helper routines installed in `$2A7`-`$2FF` area (normally unused and free for the user). Gives the most free memory for BASIC programs, but it's the slowest (for example, forces disabling optimized LOAD loop for JiffyDOS) and the least compatible model.
 
-Comparing to standard memoryy model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
+Comparing to standard memory model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
 
 ## I/O devices
 
@@ -107,7 +107,7 @@ Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
 Adds support for JiffyDOS fast protocol to the IEC bus.
 
-Needs about 420 bytes in KERNAL segment. If unsure - enable.
+Needs about 430 bytes in KERNAL segment. If unsure - enable.
 
 ### `CONFIG_TAPE_TURBO`
 

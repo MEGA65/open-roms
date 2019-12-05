@@ -144,6 +144,7 @@ load_iec_get_addr_byte:
 	lda IOSTATUS
 	and #K_STS_EOI
 	bne !+
+	lda TBTCNT
 	rts
 !:
 	pla

@@ -87,7 +87,23 @@ load_iec:
 	// Display start address
 	jsr lvs_display_loading_verifying
 
-iec_load_loop:
+#if CONFIG_IEC_JIFFYDOS
+
+	// If feasible, use JiffyDOS optimized LOAD loop
+
+	lda VERCKK
+	bne load_iec_loop                  // branch if VERIFY
+
+	lda IECPROTO
+	cmp #$01
+	bne load_iec_loop                  // branch if not JiffyDOS
+
+	jmp load_jiffydos
+
+#endif
+
+load_iec_loop:
+
 	// We are now ready to receive bytes
 #if CONFIG_IEC_JIFFYDOS
 	jsr iec_rx_dispatch
@@ -118,7 +134,11 @@ iec_load_loop:
 	// Check for EOI - if so, this was the last byte
 	lda IOSTATUS
 	and #K_STS_EOI
-	beq iec_load_loop
+	beq load_iec_loop
+
+	// FALLTROUGH
+
+load_iec_loop_end:
 
 	// Display end address
 	jsr lvs_display_done

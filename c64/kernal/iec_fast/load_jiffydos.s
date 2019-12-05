@@ -1,0 +1,117 @@
+
+//
+// JiffyDOS protocol support for IEC - optimized load loop
+//
+
+
+#if CONFIG_IEC_JIFFYDOS
+
+
+	// XXX add RUN/STOP support
+
+load_jiffydos:
+
+	// Timing is critical, do not allow interrupts
+	sei
+
+	// Store previous sprite status in temporary variable
+	jsr jiffydos_prepare
+	sta TBTCNT
+
+	// XXX For the first iteration load the whole sector minus 2 bytes
+	// XXX (as they are used to store the start address)
+	// XXX ldy #$FB
+	ldy #$00
+
+	// FALLTROUGH
+
+load_jiffydos_loop:
+
+	// Wait until device is ready to send
+	jsr iec_wait_for_clk_release
+
+	// Prepare 'start sending' message
+	lda CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
+	tax
+
+	// Wait for appropriate moment
+	jsr jiffydos_wait_line // XXX try to inline this, maybe one raster is enough?
+
+	// Ask device to start sending bits
+	stx CIA2_PRA                       // cycles: 4
+
+	// Prepare 'data pull' byte, cycles: 3 + 2 + 2 = 7
+	lda C3PO
+	ora #BIT_CIA2_PRA_DAT_OUT          // pull
+	tax
+
+	// Delay, JiffyDOS needs some time, 4 cycles
+	nop
+	nop
+
+	// Get bits, cycles: 4 + 2 + 2 = 8
+	lda CIA2_PRA                       // bits 0 and 1 on CLK/DATA
+	lsr
+	lsr
+
+	// Wait for the drive, cycles: 2
+	nop
+
+	// Get bits, cycles: 4 + 2 + 2 = 8
+	ora CIA2_PRA                       // bits 2 and 3 on CLK/DATA
+	lsr
+	lsr
+
+	// Get bits, cycles: 3 + 4 + 2 + 2 = 11
+	eor C3PO
+	eor CIA2_PRA                       // bits 4 and 5 on CLK/DATA
+	lsr
+	lsr
+
+	// Get bits, cycles: 3 + 4 = 7
+	eor C3PO
+	eor CIA2_PRA                       // bits 6 and 7 on CLK/DATA
+
+	// Store retrieved byte, cycles: 6 
+	sta (EAL),y
+
+	// Retrieve status bits, cycles: 4
+	bit CIA2_PRA
+
+	// Pull DATA at the end, cycles: 4
+	stx CIA2_PRA
+
+	// If CLK line not active - this was the last byte
+	bvs load_jiffydos_end
+
+	// Advance pointer to data XXX use INY instead, advance once per sector only
+	jsr lvs_advance_EAL
+
+	jmp load_jiffydos_loop	
+
+load_jiffydos_end:
+
+	// Save last byyte
+	tax
+
+	// Indicate that no byte waits in output buffer
+	lda #$00
+	sta C3PO
+
+	// Restore proper IECPROTO value
+	lda #$01
+	sta IECPROTO
+
+	// Re-enable sprites
+	lda TBTCNT
+	sta VIC_SPENA
+
+	// Store last byte as unoptimized LOAD would
+	stx TBTCNT
+
+	// End of load loop
+	jmp load_iec_loop_end
+
+
+#endif // CONFIG_IEC_JIFFYDOS

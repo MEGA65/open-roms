@@ -8,11 +8,12 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * pre-defined function keys
 * uses RAM under ROM and I/O: 61438 bytes free
 * cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses, configured addresses
-* wark start due to BRK prints out the instruction address
+* warm start due to BRK prints out the instruction address
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
     * secondary address over 255 is considered a start address
+* JiffyDOS protocol support
 * turbo tape load support (as device 7 or using `←L`)
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 

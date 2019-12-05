@@ -105,9 +105,9 @@ Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
 ### `CONFIG_IEC_JIFFYDOS`
 
-Adds support for JiffyDOS pprotocol to the IEC bus (note, that it currentlyy lacks the optimized LOAD loop, so it will be slower than original JiffyDOS enabled Kernal ROMs).
+Adds support for JiffyDOS fast protocol to the IEC bus.
 
-Needs over 320 bytes in KERNAL segment. If unsure - enable.
+Needs about 420 bytes in KERNAL segment. If unsure - enable.
 
 ### `CONFIG_TAPE_TURBO`
 

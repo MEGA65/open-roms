@@ -23,21 +23,15 @@ load_jiffydos:
 
 #if CONFIG_IEC_BLANK_SCREEN
 
-	// Blank screen to make sure no sprite/badline will interrupt
+	// Preserve register with screen status (blank/visibe)
 	lda VIC_SCROLY
 	sta TBTCNT
-	and #($FF - $10)
-	sta VIC_SCROLY
 
-	// Only the next screen is badline-free
-!:
-	lda VIC_SCROLY                     // wait for lower part of screen
-	bpl !-
-!:
-	lda VIC_SCROLY                     // wait for screen start
-	bmi !-
+	// Blank screen to make sure no sprite/badline will interrupt
+	jsr screen_off
 
 	// Preserve 3 lowest bits of CIA2_PRA  XXX deduplicate this
+
 	lda CIA2_PRA
 	and #%00000111
 	sta C3PO
@@ -58,7 +52,7 @@ load_jiffydos:
 load_jiffydos_loop:
 
 	// Wait until device is ready to send (releases CLK)
-	jsr iec_wait_for_clk_release // XXX consider inlining this
+	jsr iec_wait_for_clk_release
 
 #if CONFIG_IEC_BLANK_SCREEN
 

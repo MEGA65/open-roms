@@ -58,20 +58,20 @@ tape_motor_on:
 // store/restore screen color
 //
 
-tape_screen_show_motor_off:
+tape_screen_on_motor_off:
 
 	jsr tape_motor_off
 
 	lda COLSTORE
 	sta VIC_EXTCOL
 
-	jmp screen_show
+	jmp screen_on
 
-tape_screen_hide_motor_on:
+tape_screen_off_motor_on:
 	lda VIC_EXTCOL
 	sta COLSTORE
 
-	jsr screen_blank
+	jsr screen_off
 	jmp tape_motor_on
 
 
@@ -124,7 +124,7 @@ tape_wait_play_done:
 	sta CAS1                           // set the interlock
 
 	jsr print_return
-	jmp tape_screen_hide_motor_on
+	jmp tape_screen_off_motor_on
 
 
 //
@@ -133,7 +133,7 @@ tape_wait_play_done:
 
 tape_handle_header:
 
-	jsr tape_screen_show_motor_off
+	jsr tape_screen_on_motor_off
 
 	// Print FOUND + file name
 
@@ -220,7 +220,7 @@ tape_handle_header_displayed:
 
 	// Load the file
 
-	jsr tape_screen_hide_motor_on
+	jsr tape_screen_off_motor_on
 	
 	// FALLTROUGH
 
@@ -234,7 +234,7 @@ tape_handle_header_skip:
 	// Skip this file
 
 	jsr print_return
-	jsr tape_screen_hide_motor_on
+	jsr tape_screen_off_motor_on
 	
 	// FALLTROUGH
 
@@ -317,7 +317,7 @@ tape_header_wait_stop:
 
 tape_load_success:
 
-	jsr tape_screen_show_motor_off
+	jsr tape_screen_on_motor_off
 	jsr lvs_display_done
 
 	cli
@@ -325,7 +325,7 @@ tape_load_success:
 
 tape_load_error:
 
-	jsr tape_screen_show_motor_off
+	jsr tape_screen_on_motor_off
 
 	cli
 	jmp lvs_load_verify_error

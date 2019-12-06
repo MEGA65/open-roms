@@ -60,7 +60,7 @@ The following ROM features are currently missing:
 | Driver              | Status   |  Remarks                                           |
 | :-----------------: | :------: | :------------------------------------------------: |
 | standard protocol   | DONE     |                                                    |
-| JiffyDOS            | NOT DONE | work in progress, not functional yet               |
+| JiffyDOS            | PARTIAL  | needs more optimizations, SD2IEC not tested yet    |
 | DolphinDOS serial   | NOT DONE |                                                    |
 | DolphinDOS parallel | NOT DONE |                                                    |
 | CIA burst mod       | NOT DONE |                                                    |

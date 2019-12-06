@@ -20,7 +20,7 @@ iec_rx_byte_jiffydos:
 	jsr jiffydos_prepare
 	pha
 
-	// Wait until device is ready to send
+	// Wait until device is ready to send (releases CLK)
 	jsr iec_wait_for_clk_release
 
 	// Prepare 'start sending' message

@@ -3,11 +3,14 @@
 // JiffyDOS protocol support for IEC - optimized load loop
 //
 
+// XXX does not work yet #define CONFIG_IEC_BLANK_SCREEN
 
 #if CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K
 
 
-// Note: original JiffyDOS LOAD loop checks for RUN/STOP key every time a sector is read.
+// Note: original JiffyDOS LOAD loop checks for RUN/STOP key every time a sector is read,
+// see description at https://sites.google.com/site/h2obsession/CBM/C128/JiffySoft128
+//
 // For simplicity and some space savings, our routine does not check the RUN/STOP key at all;
 // the protocol is fast enough (especiallyy with modern flash mediums) that probably nobody
 // will want to terminate the loading.
@@ -18,9 +21,34 @@ load_jiffydos:
 	// Timing is critical, do not allow interrupts
 	sei
 
+#if CONFIG_IEC_BLANK_SCREEN
+
+	// Blank screen to make sure no sprite/badline will interrupt
+	lda VIC_SCROLY
+	sta TBTCNT
+	and #($FF - $10)
+	sta VIC_SCROLY
+
+	// Only the next screen is badline-free
+!:
+	lda VIC_SCROLY                     // wait for lower part of screen
+	bpl !-
+!:
+	lda VIC_SCROLY                     // wait for screen start
+	bmi !-
+
+	// Preserve 3 lowest bits of CIA2_PRA  XXX deduplicate this
+	lda CIA2_PRA
+	and #%00000111
+	sta C3PO
+
+#else
+
 	// Store previous sprite status in temporary variable
 	jsr jiffydos_prepare
 	sta TBTCNT
+
+#endif
 
 	// A trick to shorten EAL update time
 	ldy #$FF
@@ -29,8 +57,17 @@ load_jiffydos:
 
 load_jiffydos_loop:
 
-	// Wait until device is ready to send
-	jsr iec_wait_for_clk_release
+	// Wait until device is ready to send (releases CLK)
+	jsr iec_wait_for_clk_release // XXX consider inlining this
+
+#if CONFIG_IEC_BLANK_SCREEN
+
+	// Ask device to start sending bits
+	lda CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
+	sta CIA2_PRA
+
+#else
 
 	// Prepare 'start sending' message
 	lda CIA2_PRA
@@ -38,10 +75,12 @@ load_jiffydos_loop:
 	tax
 
 	// Wait for appropriate moment
-	jsr jiffydos_wait_line // XXX try to inline this, maybe one raster is enough?
+	jsr jiffydos_wait_line
 
 	// Ask device to start sending bits
 	stx CIA2_PRA                       // cycles: 4
+
+#endif
 
 	// Prepare 'data pull' byte, cycles: 3 + 2 + 2 = 7
 	lda C3PO
@@ -114,12 +153,25 @@ load_jiffydos_end:
 	lda #$01
 	sta IECPROTO
 
+#if CONFIG_IEC_BLANK_SCREEN
+
+	// Restore screen state
+	lda TBTCNT
+	sta VIC_SCROLY
+
+#else
+
 	// Re-enable sprites
 	lda TBTCNT
 	sta VIC_SPENA
 
+#endif
+
 	// Store last byte as unoptimized LOAD routine would
 	stx TBTCNT
+
+	// No need to re-enable interrupts; other IEC routines
+	// called by LOAD will do this nevertheless
 
 	// End of load loop
 	jmp load_iec_loop_end

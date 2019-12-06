@@ -3,7 +3,8 @@
 // JiffyDOS protocol support for IEC - optimized load loop
 //
 
-// XXX does not work yet #define CONFIG_IEC_BLANK_SCREEN
+// XXX option does not work yet
+// #define CONFIG_IEC_BLANK_SCREEN
 
 #if CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K
 
@@ -54,24 +55,20 @@ load_jiffydos_loop:
 	// Wait until device is ready to send (releases CLK)
 	jsr iec_wait_for_clk_release
 
+	// Prepare 'start sending' message
+	lda CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
+
 #if CONFIG_IEC_BLANK_SCREEN
 
 	// Ask device to start sending bits
-	lda CIA2_PRA
-	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
 	sta CIA2_PRA
 
 #else
 
-	// Prepare 'start sending' message
-	lda CIA2_PRA
-	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
+	// Wait for appropriate moment, ask device to start sending bits
 	tax
-
-	// Wait for appropriate moment
 	jsr jiffydos_wait_line
-
-	// Ask device to start sending bits
 	stx CIA2_PRA                       // cycles: 4
 
 #endif

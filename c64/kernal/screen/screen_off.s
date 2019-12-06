@@ -16,10 +16,10 @@ screen_off:
 	// To be sure there are no badlines we have to wait till the next screen,
 	// as the bit is checked by VIC-II at the start of the frame only
 !:
-	lda VIC_SCROLY                     // wait for lower part of screen
+	lda VIC_SCROLY                     // wait for higher part of screen
 	bpl !-
 !:
-	lda VIC_SCROLY                     // wait for screen start
+	lda VIC_SCROLY                     // wait for lower part of the screen
 	bmi !-
 
 	rts

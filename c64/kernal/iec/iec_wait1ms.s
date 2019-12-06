@@ -29,6 +29,8 @@ wait_x_bars: // additional entry point for tape support
 	dex
 	bne !-
 
+iec_wait_rts: // dummy RTS, for very short waits
+
 	rts
 
 

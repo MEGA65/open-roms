@@ -43,6 +43,7 @@
 // I/O devices
 
 #define CONFIG_IEC
+#define CONFIG_IEC_BLANK_SCREEN
 #define CONFIG_IEC_JIFFYDOS
 // #define CONFIG_TAPE_NORMAL     // please keep disabled for now
 // #define CONFIG_TAPE_TURBO

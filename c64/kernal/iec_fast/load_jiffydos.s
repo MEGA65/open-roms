@@ -3,8 +3,6 @@
 // JiffyDOS protocol support for IEC - optimized load loop
 //
 
-// XXX option does not work yet
-// #define CONFIG_IEC_BLANK_SCREEN
 
 #if CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K
 
@@ -61,6 +59,10 @@ load_jiffydos_loop:
 
 #if CONFIG_IEC_BLANK_SCREEN
 
+	// It JiffyDOS needs some time here; waste few cycles
+	nop
+	jsr iec_wait_rts
+
 	// Ask device to start sending bits
 	sta CIA2_PRA
 
@@ -87,8 +89,8 @@ load_jiffydos_loop:
 	lsr
 	lsr
 
-	// Wait for the drive - we have time to increment offset, cycles: 2
-	iny
+	// Delay, JiffyDOS needs some time, 2 cycles
+	nop
 
 	// Get bits, cycles: 4 + 2 + 2 = 8
 	ora CIA2_PRA                       // bits 2 and 3 on CLK/DATA
@@ -105,7 +107,8 @@ load_jiffydos_loop:
 	eor C3PO
 	eor CIA2_PRA                       // bits 6 and 7 on CLK/DATA
 
-	// Store retrieved byte, cycles: 6 
+	// Store retrieved byte, cycles: 2 + 6 = 8 
+	iny                                // NTSC needs this delay
 	sta (EAL),y                        // not compatible with CONFIG_MEMORY_MODEL_60K
 
 	// Retrieve status bits, cycles: 4

@@ -103,6 +103,10 @@ Adds support for the IEEC bus - for serial printers, disk drives, etc.
 
 Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
+### `CONFIG_IEC_BLANK_SCREEN`
+
+Causes screen blanking during some IEC operations (currently only JiffyDOS file loading) to increase the data transfer performance.
+
 ### `CONFIG_IEC_JIFFYDOS`
 
 Adds support for JiffyDOS fast protocol to the IEC bus.

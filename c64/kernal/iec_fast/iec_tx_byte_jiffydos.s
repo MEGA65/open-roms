@@ -95,7 +95,7 @@ iec_tx_byte_jiffydos_finalize:
 iec_tx_byte_jiffydos_wait_eoi:
 
 	sta CIA2_PRA
-	jsr iec_wait60us // XXX is it enough?
+	jsr iec_wait20us
 	lda C3PO
 	jmp iec_tx_byte_jiffydos_finalize
 

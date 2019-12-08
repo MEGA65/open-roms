@@ -76,6 +76,22 @@ tape_screen_off_motor_on:
 
 
 //
+// Clear the SID settings - for sound effects during LOAD
+//
+
+tape_clean_sid:
+
+	lda #$00
+	ldy #$1C
+!:
+	sta __SID_BASE, y
+	dey
+	bpl !-
+
+	rts
+
+
+//
 // Ask user to press PLAY on tape deck, 
 // Unless user cancelled loading, blank screen and start motor
 //
@@ -94,15 +110,6 @@ tape_ask_play:
 
 	ldx #__MSG_KERNAL_PRESS_PLAY
 	jsr print_kernal_message
-
-	// Clean the SID registers, we need it for sound effects
-
-	lda #$00
-	ldy #$1C
-!:
-	sta __SID_BASE, y
-	dey
-	bpl !-
 
 	// FALLTROUGH
 

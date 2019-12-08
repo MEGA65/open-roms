@@ -22,6 +22,7 @@ load_tape_turbo:
 	lda #$FE                           // timer threshold for TurboTape
 	sta CIA2_TIMALO // $DD04
 
+	jsr tape_clean_sid
 	jsr tape_ask_play
 
 	// FALLTROUGH
@@ -54,6 +55,7 @@ load_tape_turbo_header_loop:           // this strange loop puts metadata after 
 	cpy #$10
 	bne load_tape_turbo_header_loop
 
+	jsr tape_clean_sid
 	jsr tape_handle_header
 	bcs load_tape_turbo_header         // if name does not match, look for other header
 
@@ -85,12 +87,13 @@ load_tape_turbo_loop:
 	bne load_tape_turbo_loop
 
 	// Get the checksum
-
 	jsr tape_turbo_get_byte
 	tax
 
-	// Verify the checksum
+	// Silence audio
+	jsr tape_clean_sid
 
+	// Verify the checksum
 	cpx PRTY
 	beq_far tape_load_success
 	jmp tape_load_error

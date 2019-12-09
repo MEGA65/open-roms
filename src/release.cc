@@ -20,9 +20,10 @@ typedef struct
 {
     std::string romTypeName;
     size_t  fileSize;
-    size_t  signatureOffset; // offset to 'OR' string
-    bool    requireIdBASIC;
-    bool    requireIdKERNAL;
+    size_t  signatureOffset1; // offset to 'OR' string
+    size_t  signatureOffset2; // offset to 'OR' string
+    size_t  idBasicOffset;    // offset to BASIC identification string
+    size_t  idKernalOffset;   // offset to KERNAL identification byte
 
 } ROMTypeDescriptionEntry;
 
@@ -30,22 +31,33 @@ const std::vector<ROMTypeDescriptionEntry> ROM_DEFINITIONS =
 {
     {
         "BASIC",
-        8192,     // file size
-        0x1F52,   // signature offset
-        true,     // whether to require BASIC ID
-        false     // whether to require KERNAL ID
+        8192,         // file size
+        0x1F52,       // signature offset 1
+        0,            // signature offset 2
+        0x0004,       // BASIC ID offset
+        0             // KERNAL ID offset
     },
     
     {
         "KERNAL",
-        8192,     // file size
-        0x04B9,   // signature offset
-        false,    // whether to require BASIC ID
-        false     // whether to require KERNAL ID
+        8192,         // file size
+        0x04B9,       // signature offset 1
+        0,            // signature offset 2
+        0,            // BASIC ID offset
+        0x1F80        // KERNAL ID offset
+    },
+
+    {
+        "MEGA65",
+        128 * 1024,   // file size
+        0xBF52,       // signature offset 1
+        0xE4B9,       // signature offset 2
+        0xA004,       // BASIC ID offset
+        0xFF80        // KERNAL ID offset
     },
 };
 
-const uint16_t MAX_FILE_SIZE = 8192;
+const uint32_t MAX_FILE_SIZE = 128 * 1024;
 
 const std::vector<uint8_t> STR_MEGABAS  = { 0x4D, 0x45, 0x47, 0x41, 0x42, 0x41, 0x53, 0x32 };
 const std::vector<uint8_t> STR_OR       = { 0x4F, 0x52 };
@@ -365,33 +377,49 @@ void ROMFile::recognizeSrcFile()
 {
     // Recognize source file type
 
-    for (auto &SPEC : ROM_DEFINITIONS)
+    auto checkSignature = [this](size_t signatureOffset) -> bool
     {
-        if (srcFileContent.size() != SPEC.fileSize) continue;
-
-        if (SPEC.requireIdBASIC && memcmp(&srcFileContent[0x0004], STR_MEGABAS.data(), STR_MEGABAS.size()) != 0)
+        if (signatureOffset == 0)
         {
-            continue;
+            return true;
         }
 
-        if (SPEC.requireIdKERNAL && srcFileContent[0x1F80] != 0xF0)
+        if (memcmp(&srcFileContent[signatureOffset], STR_OR.data(), STR_OR.size()) != 0)
         {
-            continue;
+            return false;
         }
 
-        if (memcmp(&srcFileContent[SPEC.signatureOffset], STR_OR.data(), STR_OR.size()) != 0)
-        {
-            continue;
-        }
-
-        auto snapshotStrOffset = SPEC.signatureOffset + STR_OR.size() + 1;
+        auto snapshotStrOffset = signatureOffset + STR_OR.size() + 1;
         if (memcmp(&srcFileContent[snapshotStrOffset], STR_SNAPSHOT.data(), STR_SNAPSHOT.size()) != 0)
         {
-            continue;
+            return false;
         }
 
         auto zeroByteoffset = snapshotStrOffset + 0x10;
         if (srcFileContent[zeroByteoffset] != 0)
+        {
+            return false;
+        }
+
+        return true;
+    };
+
+    for (auto &SPEC : ROM_DEFINITIONS)
+    {
+        if (srcFileContent.size() != SPEC.fileSize) continue;
+
+        if ((SPEC.idBasicOffset != 0) &&
+            memcmp(&srcFileContent[SPEC.idBasicOffset], STR_MEGABAS.data(), STR_MEGABAS.size()) != 0)
+        {
+            continue;
+        }
+
+        if ((SPEC.idKernalOffset != 0) && srcFileContent[SPEC.idKernalOffset] != 0xF0)
+        {
+            continue;
+        }
+
+        if (!checkSignature(SPEC.signatureOffset1) || !checkSignature(SPEC.signatureOffset2))
         {
             continue;
         }
@@ -411,19 +439,26 @@ void ROMFile::dropUnmatchingDst()
 {
     // Drop unmatching destination file data
 
-    if (!dstFileContent.empty() && descPtr->requireIdBASIC &&
-        memcmp(&dstFileContent[0x0004], STR_MEGABAS.data(), STR_MEGABAS.size()) != 0)
+    if (!dstFileContent.empty() && (descPtr->idBasicOffset != 0) &&
+        memcmp(&dstFileContent[descPtr->idBasicOffset], STR_MEGABAS.data(), STR_MEGABAS.size()) != 0)
     {
         dstFileContent.clear();
     }
 
-    if (!dstFileContent.empty() && descPtr->requireIdKERNAL && dstFileContent[0x1F80] != 0xF0)
+    if (!dstFileContent.empty() && (descPtr->idKernalOffset != 0) &&
+        dstFileContent[descPtr->idKernalOffset] != 0xF0)
     {
         dstFileContent.clear();
     }
 
-    if (!dstFileContent.empty() &&
-        memcmp(&dstFileContent[descPtr->signatureOffset], STR_OR.data(), STR_OR.size()) != 0)
+    if (!dstFileContent.empty() && (descPtr->signatureOffset1 != 0) &&
+        memcmp(&dstFileContent[descPtr->signatureOffset1], STR_OR.data(), STR_OR.size()) != 0)
+    {
+        dstFileContent.clear();
+    }
+
+    if (!dstFileContent.empty() && (descPtr->signatureOffset2 != 0) &&
+        memcmp(&dstFileContent[descPtr->signatureOffset2], STR_OR.data(), STR_OR.size()) != 0)
     {
         dstFileContent.clear();
     }
@@ -431,21 +466,54 @@ void ROMFile::dropUnmatchingDst()
 
 void ROMFile::analyzeContent()
 {
-    auto revOffset = descPtr->signatureOffset + 3;
+    auto revOffset1 = (descPtr->signatureOffset1 != 0) ? (descPtr->signatureOffset1 + 3) : 0;
+    auto revOffset2 = (descPtr->signatureOffset2 != 0) ? (descPtr->signatureOffset2 + 3) : 0;
+    
+    if (revOffset1 == 0)
+    {
+        revOffset1 = revOffset2;
+        revOffset2 = 0;
+    }
+
+    if (revOffset1 == 0)
+    {
+        return;
+    }
 
     if (dstFileContent.empty())
     {
         return;
     }
 
+    // If two ID strings are present, they should be the same
+
+    if (0 != revOffset1 && 0 != revOffset2 &&
+        memcmp(&dstFileContent[revOffset1], &dstFileContent[revOffset2], 0x10) != 0)
+    {
+        return;
+    }
+
     // Check if meaningful file content is really different
 
-    if ((memcmp(&srcFileContent[0x0000], &dstFileContent[0x0000], revOffset) == 0) &&
-        (memcmp(&srcFileContent[revOffset + 0x10], &dstFileContent[revOffset + 0x10],
-            descPtr->fileSize - revOffset - 0x10) == 0))
+    sameContent = true;
+    for (uint32_t idx = 0; idx < descPtr->fileSize; idx++)
     {
-        sameContent = true;
-    } 
+        if (revOffset1 != 0 && idx - revOffset1 < 0x10)
+        {
+            continue;
+        }
+
+        if (revOffset2 != 0 && idx - revOffset2 < 0x10)
+        {
+            continue;
+        }
+
+        if (srcFileContent[idx] != dstFileContent[idx])
+        {
+            sameContent = false;
+            break;
+        }
+    }
 
     // Determine expected length of developer ID
 
@@ -453,12 +521,12 @@ void ROMFile::analyzeContent()
 
     // Determine if old version is a devel version compatible with this tool
 
-    if (memcmp(&dstFileContent[revOffset], STR_DEV.data(), STR_DEV.size()) != 0)
+    if (memcmp(&dstFileContent[revOffset1], STR_DEV.data(), STR_DEV.size()) != 0)
     {
         return;
     }
 
-    uint16_t idxDate  = revOffset + STR_DEV.size();
+    uint16_t idxDate  = revOffset1 + STR_DEV.size();
     uint16_t idxLimit = idxDate + ENV_dateString.length();
 
     uint16_t idx = idxDate;
@@ -503,8 +571,17 @@ void ROMFile::embedRevisionStr(const std::string &newRevisionStr)
 
     while (revStr.length() < 16) revStr = revStr + '\0';
 
-    memcpy(&srcFileContent[descPtr->signatureOffset + 3],
-           revStr.data(), revStr.size());
+    if (descPtr->signatureOffset1 != 0)
+    {
+        memcpy(&srcFileContent[descPtr->signatureOffset1 + 3],
+               revStr.data(), revStr.size());       
+    }
+
+    if (descPtr->signatureOffset2 != 0)
+    {
+        memcpy(&srcFileContent[descPtr->signatureOffset2 + 3],
+               revStr.data(), revStr.size());       
+    }
 }
 
 void ROMFile::save()

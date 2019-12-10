@@ -42,36 +42,35 @@ The following ROM features are currently missing:
 
 ## Keyboard
 
-| Driver              | Status   |  Remarks                                           |
-| :-----------------: | :------: | :------------------------------------------------: |
-| C64                 | DONE     |                                                    |
-| C128                | DONE     |                                                    |
-| C65 / Mega65        | NOT DONE | code should be complete, but is not tested yet     |
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| C64           | DONE     |                                                    |
+| C128          | DONE     |                                                    |
+| C65 / Mega65  | NOT DONE | code should be complete, but is not tested yet     |
 
 ## Tape storage (LOAD only!)
 
-| Driver              | Status   |  Remarks                                           |
-| :-----------------: | :------: | :------------------------------------------------: |
-| normal              | NOT DONE |                                                    |
-| turbo               | PARTIAL  | works, to do: use sync to calibrate read speed     |
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| normal        | NOT DONE |                                                    |
+| turbo         | PARTIAL  | works, to do: use sync to calibrate read speed     |
 
 ## IEC bus (disk drives, etc.)
 
-| Driver              | Status   |  Remarks                                           |
-| :-----------------: | :------: | :------------------------------------------------: |
-| standard protocol   | DONE     |                                                    |
-| JiffyDOS            | PARTIAL  | not fully tested yet                               |
-| DolphinDOS serial   | NOT DONE |                                                    |
-| DolphinDOS parallel | NOT DONE |                                                    |
-| CIA burst mod       | NOT DONE |                                                    |
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| standard      | DONE     |                                                    |
+| JiffyDOS      | DONE     |                                                    |
+| DolphinDOS    | NOT DONE |                                                    |
+| CIA burst mod | NOT DONE |                                                    |
 
 ## RS-232
 
-| Driver              | Status   |  Remarks                                           |
-| :-----------------: | :------: | :------------------------------------------------: |
-| UP2400              | NOT DONE |                                                    |
-| UP9600              | NOT DONE | work in progress, not functional yet               |
-| ACIA 6551           | NOT DONE |                                                    |
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| UP2400        | NOT DONE |                                                    |
+| UP9600        | NOT DONE | work in progress, not functional yet               |
+| ACIA 6551     | NOT DONE |                                                    |
 
 
 # API status

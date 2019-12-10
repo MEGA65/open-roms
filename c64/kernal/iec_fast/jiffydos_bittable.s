@@ -1,6 +1,6 @@
 
 //
-// Helper table for encoding lower nibble for JiffyyDOS,
+// Helper table for encoding lower nibble for JiffyDOS,
 // values found by observing the actual transfer using
 // original ROMs
 //

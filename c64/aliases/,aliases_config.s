@@ -314,11 +314,17 @@
 	.eval feature_new_line = true
 
 #if CONFIG_IEC
-#if !CONFIG_IEC_JIFFYDOS
-	.eval features_str = ADD_FEATURE(features_str, "IEC")
-#else
-	.eval features_str = ADD_FEATURE(features_str, "IEC JIFFY")
+	.var iec_features_str = "IEC"
+#if CONFIG_IEC_DOLPHINDOS
+	.eval iec_features_str = iec_features_str + " DOLPHIN-DEV"
 #endif
+#if CONFIG_IEC_JIFFYDOS
+	.eval iec_features_str = iec_features_str + " JIFFY"
+#endif
+#if !CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC_JIFFYDOS
+	.eval iec_features_str = iec_features_str + " NORMAL"
+#endif
+	.eval features_str = ADD_FEATURE(features_str, iec_features_str)
 #endif
 
 	.eval feature_new_line = true

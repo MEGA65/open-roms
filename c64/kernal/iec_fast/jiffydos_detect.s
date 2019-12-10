@@ -8,7 +8,7 @@
 // - https://github.com/rkrajnc/sd2iec/blob/master/src/iec.c
 // The 'iec.s' suggests, that the drive should respond by pulling data
 
-// The original JiffyyDOS ROM seems to perform detection with every command
+// The original JiffyDOS ROM seems to perform detection with every command
 // (even though for many of them it always fails) and we have to replicate
 // this behaviour for compatibility with at least 1541 JiffyDOS ROM
 

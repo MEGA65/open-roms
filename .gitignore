@@ -14,5 +14,6 @@ build/*
 
 # Various IDE project files, temporary files, etc.
 
+dump.mem
 *project
 .*swp

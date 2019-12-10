@@ -82,8 +82,8 @@ iec_rx_byte_jiffydos:
 
 	// If CLK line active - success
 	bvc iec_rx_byte_jiffydos_end
+	// XXX the DATA line can probably be used to distinguish between file not found error and normal stream EOI
 
-	// XXX does the DATA line status tell something?
 	jsr kernalstatus_EOI
 
 	// FALLTROUGH

@@ -7,7 +7,7 @@
 
 // Similar tables are probably used by nearly all the disk turbo loaders,
 // either on the C64 or drive side, soometimes generated in RAM on the fly;
-// example disk turbo presented below has a veryy similar table - but the
+// example disk turbo presented below has a very similar table - but the
 // values are in reversed order:
 // - https://www.pagetable.com/?p=568
 

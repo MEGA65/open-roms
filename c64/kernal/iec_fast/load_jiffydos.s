@@ -11,7 +11,7 @@
 // see description at https://sites.google.com/site/h2obsession/CBM/C128/JiffySoft128
 //
 // For simplicity and some space savings, our routine does not check the RUN/STOP key at all;
-// the protocol is fast enough (especiallyy with modern flash mediums) that probably nobody
+// the protocol is fast enough (especially with modern flash mediums) that probably nobody
 // will want to terminate the loading.
 
 

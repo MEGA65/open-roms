@@ -20,7 +20,7 @@ For legal reasons, no disassembling of the JiffyDOS ROMs was performed (only IEC
 When sending/receiving a byte, the JiffyDOS protocol timing is much more strict than the standard IEC. It is not enough to mask the interrupts - one has to make sure nothing will steal the CPU cycles. There are two ways to achieve this:
 
 - disable the screen completely for the duration of transmission; since VIC-II checks the bit in SCROLY register once per frame only, the code has to wait till the beginning of the next frame
-- disable the sprites for the duration of transmission and synchronize with VIC-II RASTER/SCROLY registers to avoid badlines. Current implementation simply avoids transmission two lines before the badline; I suspect it can be reduced to one line, but it would need even more careful timing and would definitely mean inlining some subroutines - probably not worth the effort and increased code size, especially that 1541 JiffyDOS is not too fast sending bytes nevertheless
+- disable the sprites for the duration of transmission and synchronize with VIC-II RASTER/SCROLY registers to avoid badlines. Current implementation simply avoids transmission two lines before the badline; I suspect it can be reduced to one line, but it would need even more careful timing and would definitely mean inlining some subroutines - probably not worth the effort and increased code size
 
 Timing details are omitted by purpose - they are already described in [2], besides most of the time it was determined by observing VICE IEC logs and (for example) adding NOPs when necessary. The protocool is not cycle-exact, so our implementation probably behaves slightly differently than the original one.
 
@@ -52,7 +52,6 @@ What happens now has to be carefully synchronized between bus controller and rec
 Encoding the low nibble is done via lookup table, reverse engineered by observing the IEC logs from the original JiffyDOS ROMs in action. Unfortunately, IEC registers of the C64 and 1541 do not have the same layout - some bits are reversed and the bit layout is different (see [3]). Thus every single fast IEC protocol has to perform some kind of encoding/decoding; when sending byte using the JiffyDOS protocol the drive handles the high nibble and the controller - the lower one.
 
 Afterwards the controller either pulls the CLK quickly, or signals EOI by delaying this action. In our implementation the acceptable timing was adjusted by experimentation (pre-existing delay subroutine was used to reduce code size, also note that NTSC machines have slightly higher CPU frequency) - but it's important not to wait too long, 1541 JiffyDOS ROM can handle it, but SD2IEC implementation can not!
-
 
 ## Receiving a byte
 

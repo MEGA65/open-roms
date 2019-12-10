@@ -141,7 +141,7 @@
 	.label CAS1      = $C0  //          tape motor interlock
 	.label STAL      = $C1  // $C1-$C2  LOAD/SAVE start address
 	.label MEMUSS    = $C3  // $C3-$C4  temporary address for tape LOAD/SAVE
-	.label LSTX      = $C5  //          last keyy matrix position [!] our usage probably differs in details
+	.label LSTX      = $C5  //          last key matrix position [!] our usage probably differs in details
 	.label NDX       = $C6  //          number of chars in keyboard buffer
 	.label RVS       = $C7  //          flag, whether to print reversed characters
 	.label INDX      = $C8  //          end of logical line (column, 0-79)
@@ -150,7 +150,7 @@
 	.label BLNSW     = $CC  //          cursor blink disable flag
 	.label BLNCT     = $CD  //          cursor blink countdown
 	.label GDBLN     = $CE  //          cursor saved character
-	.label BLNON     = $CF  //          cursor visibilityy flag
+	.label BLNON     = $CF  //          cursor visibility flag
 	.label CRSW      = $D0  //          whether to input from screen or keyboard
 	.label PNT       = $D1  // $D1-$D2  pointer to the current screen line
 	.label PNTR      = $D3  //          current screen X position

@@ -220,7 +220,7 @@ lvs_display_saving:
 	lda (FNADDR), y
 	jsr JCHROUT
 	iny
-	bne !- // jump alwayys 
+	bne !- // jump always
 !:
 	rts
 

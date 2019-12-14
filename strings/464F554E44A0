@@ -1,0 +1,3 @@
+PETSCII string, with end of string encoded by high bit set: 'FOUND '
+
+Single word followed by space, string encoding common for 6502 CPU (for example, Turbo Basic XL for Atari uses the same) - not copyrightable.

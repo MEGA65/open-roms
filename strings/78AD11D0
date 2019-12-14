@@ -1,0 +1,4 @@
+SEI + LDA $D011
+
+Disable interrupts and load value of the I/O register - nothing creative here, to use value from $D011 one often disables interrupts,
+otherwise several scanlines might pass if interrupt happens in between our routine. Not copyrightable.

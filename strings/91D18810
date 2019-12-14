@@ -1,0 +1,3 @@
+STA ($D1),Y + DEY + BPL (offset does not match)
+
+Small part of a loop filling a screen line - trivial, not copyrightable.

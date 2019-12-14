@@ -1,0 +1,3 @@
+DEX + BNE (offset matches) + RTS
+
+End of a loop indexed by .X register, counting down to 0 - similar code can be found in any non-trivial 6502 software. Not creative - not coprightable.

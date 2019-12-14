@@ -1,0 +1,3 @@
+INC $AE + BNE (offset matches) + INC $AF
+
+Incrementing a 16-bit zeropage variable (not the hoole increment matches) - trivial, not copyrightable.

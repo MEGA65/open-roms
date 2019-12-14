@@ -1,0 +1,3 @@
+PLA + STA $AF + PLA + STA (zero page address does not match)
+
+Piece of code retrieving some zero page variables from the stack (not even identical varaibles) - trivial, not copyrightable.

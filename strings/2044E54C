@@ -1,0 +1,3 @@
+JSR $E544 (clear screen) + JMP (address does not match)
+
+Instruction (call to a well-known routine) + some part - trivial, not copyrightable.

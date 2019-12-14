@@ -1,0 +1,3 @@
+RTS + LDA $99 + BNE (offset does not match)
+
+Routine starts by checking whether a documented zeropagevariable is 0 or not - trivial, not copyrightable.

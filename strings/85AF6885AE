@@ -1,0 +1,3 @@
+STA $AF + PLA + STA (zeropage address does not match)
+
+Part of a routine retrieving EAL 16-bit variable value from stack - trivial, not copyrightable.

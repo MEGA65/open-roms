@@ -1,0 +1,3 @@
+LDA $D011 + ORA #$10 + STA $D011
+
+Setting a bit in a documented I/O register (to turn on the screen) - trivial, not copyrightable.

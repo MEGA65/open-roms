@@ -1,0 +1,3 @@
+STA $DD05 + LDA (value does not match)
+
+Instruction (storing byte in a documented I/O register) + some part. Trivial, not copyrightable.

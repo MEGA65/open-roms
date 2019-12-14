@@ -1,0 +1,4 @@
+NOP + NOP + LDA $DD00
+
+Delayed reading of a documented I/O register - what's interesting, this was detected as a similarity between original IEC code
+and our JiffyDOS protocol implementation (protocol, which is not supported by original ROM). Not creative - not copyrightable.

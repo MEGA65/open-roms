@@ -1,0 +1,3 @@
+LDA $AE + PHA + LDA $AF + PHA
+
+Piece of code copying EAL variable from zero page to the stack. Trivial - not copyrightable.

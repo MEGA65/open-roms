@@ -59,7 +59,7 @@ load_jiffydos_loop:
 
 #if CONFIG_IEC_BLANK_SCREEN
 
-	// It JiffyDOS needs some time here; waste few cycles
+	// It seems JiffyDOS needs some time here; waste few cycles
 	nop
 	jsr iec_wait_rts
 

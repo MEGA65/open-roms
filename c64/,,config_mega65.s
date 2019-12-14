@@ -117,8 +117,8 @@
 
 #define CONFIG_COLORS_BRAND
 // #define CONFIG_BANNER_SIMPLE
-// #define CONFIG_BANNER_FANCY
-#define CONFIG_BANNER_BRAND
+#define CONFIG_BANNER_FANCY
+// #define CONFIG_BANNER_BRAND       // do not enable for now, triggers screen editor bug under XEMU
 #define CONFIG_SHOW_FEATURES
 // #define CONFIG_SHOW_PAL_NTSC
 

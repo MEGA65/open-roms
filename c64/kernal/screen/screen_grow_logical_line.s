@@ -12,29 +12,31 @@ screen_grow_logical_line:
 	// If we are on the last physical line of the screen,
 	// Then we need to scroll the screen up
 	jsr screen_scroll_up_if_on_last_line
-	
+
+	// Count the number of logical lines to scroll down
+	ldx #$00
+	ldy TBLX
+!:
+	iny
+	cpy #23
+	bcs !+
+
+	lda LDTBL,y
+	bmi !-
+	inx
+	bne !-                             // branch always
+!:
+	cpx #$00
+	beq no_copy_down
+
 	// Scroll screen down to make space
 	// As we are scrolling down, we start from the end,
-	// and work backwards.  We can't be as simple and efficient
+	// and work backwards. We can't be as simple and efficient
 	// here as we are for scrolling up, because we don't know
 	// how much must be scrolled.
 	// Simple solution is to work out how many physical lines
 	// need shifting down, and then move lines at a time after
 	// initialising the pointers to the end area of the screen.
-	ldx #25-2
-	ldy #0
-count_rows_loop:
-	dex
-	lda LDTBL,y
-	bpl !+
-	dex
-!:	iny
-	cpy TBLX
-	bne count_rows_loop
-
-	cpx #0
-	beq no_copy_down
-	bmi no_copy_down
 
 	// Preserve EAL
 	lda EAL+0

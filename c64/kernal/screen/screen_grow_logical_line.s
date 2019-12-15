@@ -3,9 +3,8 @@ screen_grow_logical_line:
 	ldy TBLX
 	// Don't grow line if it is already grown
 	lda LDTBL,y
-	bpl !+
-	jmp not_last_line // doneb grow line
-!:
+	bmi_far not_last_line // done grow line
+
 	lda #$80
 	sta LDTBL,y
 
@@ -128,7 +127,7 @@ no_copy_down:
 	lda #$20
 	sta (PNT),y
 	dey
-	cpy #40
+	cpy #39
 	bne !-
 
 	rts

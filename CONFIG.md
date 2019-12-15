@@ -91,9 +91,33 @@ Planned for the future - not available yet.
 
 ### `CONFIG_MEMORY_MODEL_60K`
 
-Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires special helper routines installed in `$2A7`-`$2FF` area (normally unused and free for the user). Gives the most free memory for BASIC programs, but it's the slowest and the least compatible model.
+Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires special helper routines installed in `$2A7`-`$2FF` area (normally unused and free for the user). Gives the most free memory for BASIC programs, but it's the slowest (for example, forces disabling optimized LOAD loop for JiffyDOS) and the least compatible model.
 
-Comparing to standard memoryy model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
+Comparing to standard memory model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
+
+## I/O devices
+
+### `CONFIG_IEC`
+
+Adds support for the IEEC bus - for serial printers, disk drives, etc.
+
+Needs over 1000 bytes in KERNAL segment. If unsure - enable.
+
+### `CONFIG_IEC_BLANK_SCREEN`
+
+Causes screen blanking during some IEC operations (currently only JiffyDOS file loading) to increase the data transfer performance.
+
+### `CONFIG_IEC_JIFFYDOS`
+
+Adds support for JiffyDOS fast protocol to the IEC bus.
+
+Needs about 430 bytes in KERNAL segment. If unsure - enable.
+
+### `CONFIG_TAPE_TURBO`
+
+Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges)
+
+Needs about 400 bytes in KERNAL segment. If unsure - enable.
 
 ## Multiple SID support
 
@@ -105,7 +129,7 @@ The SID support in the ROM is very limited - it only disables the sound during s
 
 Each of them add support for one additional SID - addresses should be given in `CONFIG_SID_2ND_ADDRESS` and `CONFIG_SID_3RD_ADDRESS`, respectively.
 
-Each of these options needs 8 bytes in KERNAL segment.
+Each of these options needs 3 bytes in KERNAL segment.
 
 ### `CONFIG_SID_D4XX` and `CONFIG_SID_D5XX`
 
@@ -125,7 +149,7 @@ Needs 30-250 more space in KERNAL segment (depending on the features enabled for
 
 ### `CONFIG_KEYBOARD_C128`
 
-Allows to use additional keys found on the C128 keyboard. NOTE: might be buggy, on VICE emulator I can't get all the keys working.
+Allows to use additional keys found on the C128 keyboard.
 
 Needs about 130 bytes more space in KERNAL segment. If unsure - disable.
 
@@ -134,6 +158,10 @@ Needs about 130 bytes more space in KERNAL segment. If unsure - disable.
 Allows to use CAPS LOCK key on the C128 keyboard, this is independent from `CONFIG_KEYBOARD_C128`. Support is C64-safe (there is a protection against false-positive reading on the C64).
 
 Needs about 50 bytes more space in KERNAL segment. If unsure - disable.
+
+### `CONFIG_KEYBOARD_C65`, `CONFIG_KEYBOARD_C65_CAPS_LOCK`
+
+Similar, but for C65 keyboard. Please note - the C65 keyboard support is (as of yet) completely untested!
 
 ### `CONFIG_KEY_REPEAT_DEFAULT`
 
@@ -157,25 +185,27 @@ Needs 13 bytes more space in KERNAL segment. Only disable if you are running out
 
 Joystick movement also moves the cursor.
 
-Needs about 65 bytes of ROM space to handle both joysticks.
+Needs about 65 bytes of ROM space in KERNAL segment to handle both joysticks.
 
-## Eye candy
+### `CONFIG_PROGRAMMABLE_KEYS`
 
-### `CONFIG_COLORS_BRAND`
+Allows to assign command to any function key, `RUN` key and `HELP` key (if selected keybaord has one) - just fill-in appropriate `CONFIG_KEYCMD_*` variable(s). Keys not present on the selected keyboard are ignored.
 
-Tries to adjust the color scheme to the selected brand. Some brands might not support this.
+Needs 25 bytes more space in KERNAL segment for the code. In addition, each configured key takes 3 bytes + length of the command.
 
-### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_BRAND`
+## Screen editor
 
-Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_BRAND` heavily depends on the selected brand, not all the brands support it.
+### `CONFIG_EDIT_STOPQUOTE`
 
-Richer banners need more BASIC segment, varies between brands.
+If enabled, STOP key terminates insert/quote mode (like on some _Black Box_ cartridges).
 
-### `CONFIG_BANNER_PAL_NTSC`
+Feature needs 12 bytes in KERNAL segment. If unsure - enable.
 
-If enabled, prints video system on startup banner. Eye candy only.
+### `CONFIG_EDIT_TABULATORS`
 
-Feature needs some bytes in BASIC (depending on banner type) and about 25 bytes in KERNAL segment.
+If enabled, allows use of TAB (or CTRL+>) and SHIFT+TAB (or CTRL+<) to switch between predefined tabulator positions.
+
+Feature needs 35-45 bytes in KERNAL segment. If unsure - enable.
 
 ## Software features
 
@@ -191,11 +221,41 @@ If enabled, a simple DOS wedge is available from the direct mode - supports `@<d
 
 Feature needs about 330 bytes in BASIC segment. If unsure - enable.
 
+### `CONFIG_TAPE_WEDGE`
+
+If enabled, a simple DOS wedge is available from the direct mode for turbo tape loading - supports `←L` only
+
+Feature needs about 5 bytes in BASIC segment. If unsure - enable.
+
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 
 On the most widespread CPUs the D flag is not cleared upon entering interrupts. Since the original Kernal does not clear it either, it's not safe to use BCD processor mode without disabling the interrupts first. This option makes sure the D flag is disabled at the start of the interrupt - this allows some optimizations in the code.
 
 Feature needs 2 bytes in KERNAL segmment (for CPUs needing the patch), but at the same time allows optimizations allowing to gain some more bytes. If unsure - enable.
+
+## Eye candy
+
+### `CONFIG_COLORS_BRAND`
+
+Tries to adjust the color scheme to the selected brand. Some brands might not support this.
+
+### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_BRAND`
+
+Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_BRAND` heavily depends on the selected brand, not all the brands support it.
+
+Richer banners need more BASIC segment, varies between brands.
+
+### `CONFIG_SHOW_FEATURES`
+
+If enabled, shows the most important compiled-in features on the startup screen.
+
+It is recommended to keep it enabled for informational purposes.
+
+### `CONFIG_BANNER_PAL_NTSC`
+
+If enabled, prints video system on startup banner. Eye candy only.
+
+Feature needs few bytes in BASIC and about 25 bytes in KERNAL segment.
 
 ## Debug options
 

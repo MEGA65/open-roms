@@ -1,0 +1,3 @@
+INY + BNE (offset matches) + LDX #$3C
+
+End of the loop indexed by .Y followed by loading a value into .X - too small piece of code to be creative, not copyrightable.

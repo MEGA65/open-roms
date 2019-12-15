@@ -1,0 +1,3 @@
+$01 + AND #$10 + BEQ (offset does not match)
+
+Instrcution + some parts. Trivial - not copyrightable.

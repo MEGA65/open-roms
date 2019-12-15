@@ -1,0 +1,3 @@
+JMP ($0330) + STA $93
+
+Jump via vector + loading value of a documented zero page variable - trivial, not copyrightable.

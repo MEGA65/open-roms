@@ -1,17 +1,20 @@
 # New features
 
 
-Here are the features of the Open ROMs not found in the original ROMs from the 80s (many of them are [configurable](CONFIG.md)):
+Here are the features of the Open ROMs not found in the original ROMs from the 80s (many of them are [configurable](CONFIG.md) during compilation):
 
-* improved keyboard scanning, supports anti-ghosting and is resistant to joystick interference (one variant even supports multi-keyy rollover)
+* improved keyboard scanning, resistant to ghosting and joystick interference (one variant even supports multi-keyy rollover), supports additional C128 keys
 * joystick can be used to move text cursor
+* pre-defined function keys
 * uses RAM under ROM and I/O: 61438 bytes free
-* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses
-* wark start due to BRK prints out the instruction address
+* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses, configured addresses
+* warm start due to BRK prints out the instruction address
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
     * secondary address over 255 is considered a start address
+* JiffyDOS protocol support
+* turbo tape load support (as device 7 or using `←L`)
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 
 NOTE: extra features and their syntax can change in the future!
@@ -19,6 +22,10 @@ NOTE: extra features and their syntax can change in the future!
 
 # Features missing
 
+The following ROM features are currently missing and are not planned due to space considerations:
+
+* full tape support - VERIFY, SAVE, sequential files; tape is considered a legacy medium, so it's support is going to be limited
+* mock 6551 emulation - this only complicates the RS-232 support for original ROMs, probably noone needs it
 
 The following ROM features are currently missing:
 
@@ -26,10 +33,44 @@ The following ROM features are currently missing:
 * BASIC variables
 * BASIC expression parsing
 * floating point routines
-* tape support
+* tape (normal mode) support
 * RS-232 support
-* breaking Kernal routines with RUN/STOP key
 * NMI handling is incomplete
+
+
+# Hardware support status
+
+## Keyboard
+
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| C64           | DONE     |                                                    |
+| C128          | DONE     |                                                    |
+| C65 / Mega65  | NOT DONE | code should be complete, but is not tested yet     |
+
+## Tape storage (LOAD only!)
+
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| normal        | NOT DONE |                                                    |
+| turbo         | PARTIAL  | works, to do: use sync to calibrate read speed     |
+
+## IEC bus (disk drives, etc.)
+
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| standard      | DONE     |                                                    |
+| JiffyDOS      | DONE     |                                                    |
+| DolphinDOS    | NOT DONE |                                                    |
+| CIA burst mod | NOT DONE |                                                    |
+
+## RS-232
+
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| UP2400        | NOT DONE |                                                    |
+| UP9600        | NOT DONE | work in progress, not functional yet               |
+| ACIA 6551     | NOT DONE |                                                    |
 
 
 # API status
@@ -47,8 +88,6 @@ For the current status of the low memory location implementation andd usage chec
 ## BASIC
 
 ### Official BASIC routines
-
-Note: vectors at `$0300` are not supported yet - for now only the locations below can be used!
 
 <br />
 
@@ -84,6 +123,7 @@ Not all of them - only these we want to have implemented.
 | `$A68E`   | RUNC         | DONE     |                                                    |
 | `$A7AE`   | NEWSTT       | PARTIAL  | redirected to RUN command                          |
 | `$AB1E`   | STROUT       | DONE     |                                                    |
+| `$AD9E`   | FRMEVL       | NOT DONE |                                                    |
 | `$BDCD`   | LINPRT       | DONE     | temporary implementation                           |
 | `$E3BF`   | INIT         | NOT DONE |                                                    |
 | `$E422`   | INITMSG      | DONE     |                                                    |
@@ -103,8 +143,8 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | :-------: | :--------: | :---------- | :------: | :--------------------------------------------------: |
 | `($028F)` |            | `KEYLOG`    | DONE     |                                                      |
 | `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                      |
-| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization might be incomplete               |
-| `$FF87`   | `$FD50`    | `RAMTAS`    | PARTIAL  | probably shouldn't touch VIC and CIA's               |
+| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                        |
+| `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                      |
 | `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                      |
 | `$FF8D`   | `$FD1A`    | `VECTOR`    | DONE     |                                                      |
 | `$FF90`   |            | `SETMSG`    | DONE     |                                                      |
@@ -126,26 +166,26 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFC0`   | `$F34A`    | `OPEN`      | DONE     |                                                      |
 | `$FFC3`   | `$F291`    | `CLOSE`     | DONE     |                                                      |
 | `$FFC6`   | `$F20E`    | `CHKIN`     | DONE     |                                                      |
-| `$FFC9`   | `$F250`    | `CKOUT`     | PARTIAL  |                                                      |
+| `$FFC9`   | `$F250`    | `CKOUT`     | DONE     |                                                      |
 | `$FFCC`   | `$F333`    | `CLRCHN`    | DONE     |                                                      |
-| `$FFCF`   | `$F157`    | `CHRIN`     | PARTIAL  |                                                      |
-| `$FFD2`   | `$F1CA`    | `CHROUT`    | PARTIAL  |                                                      |
-| `$FFD5`   | `$F49E`    | `LOAD`      | PARTIAL  | not yet clear what's this entry doing                |
-| `($0330)` | `$F4A5`    | `LOAD`      | PARTIAL  | no VERIFY support, no STOP key, check $F49E addr     |
-| `$FFD8`   | `$F5DD`    | `SAVE`      | NOT DONE |                                                      |
-| `($0332)` | `$F5ED`    | `SAVE`      | NOT DONE |                                                      |
+| `$FFCF`   | `$F157`    | `CHRIN`     | PARTIAL  | no screen device support                             |
+| `$FFD2`   | `$F1CA`    | `CHROUT`    | DONE     |                                                      |
+| `$FFD5`   | `$F49E`    | `LOAD`      | DONE     |                                                      |
+| `($0330)` | `$F4A5`    | `LOAD`      | DONE     |                                                      |
+| `$FFD8`   | `$F5DD`    | `SAVE`      | DONE     |                                                      |
+| `($0332)` | `$F5ED`    | `SAVE`      | DONE     |                                                      |
 | `$FFDB`   |            | `SETTIM`    | DONE     |                                                      |
 | `$FFDE`   |            | `RDTIM`     | DONE     |                                                      |
 | `$FFE1`   | `$F6ED`    | `STOP`      | DONE     |                                                      |
-| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | only keyboard supported                              |
+| `$FFE4`   | `$F13E`    | `GETIN`     | PARTIAL  | no screen device support                             |
 | `$FFE7`   | `$F32F`    | `CLALL`     | DONE     |                                                      |
 | `$FFEA`   |            | `UDTIM`     | DONE     |                                                      |
 | `$FFED`   |            | `SCREEN`    | DONE     |                                                      |
 | `$FFF0`   | `$E50A`    | `PLOT`      | DONE     |                                                      |
 | `$FFF3`   |            | `IOBASE`    | DONE     |                                                      |
 | `($FFFA)` |            | NMI vec     | PARTIAL  |                                                      |
-| `($FFFC)` | `$FCE2`    | RESET vec   | PARTIAL  |                                                      |
-| `($FFFE)` |            | IRQ/BRK vec | PARTIAL  |                                                      |
+| `($FFFC)` | `$FCE2`    | RESET vec   | PARTIAL  | see IOINIT status                                    |
+| `($FFFE)` |            | IRQ/BRK vec | DONE     |                                                      |
 
 <br />
 
@@ -162,10 +202,11 @@ Not all of them - only these we want to have implemented.
 | `$E544`   | clear screen                 | DONE     |                                                    |
 | `$E50C`   | set cursor position          | PARTIAL  |                                                    |
 | `$E566`   | home cursor                  | NOT DONE |                                                    |
-| `$E5A0`   | setup VIC II & IO            | DONE     |                                                    |
+| `$E5A0`   | setup VIC II & I/O           | DONE     |                                                    |
 | `$E6B6`   | advance cursor               | NOT DONE |                                                    |
 | `$E701`   | previous line                | NOT DONE |                                                    |
 | `$E716`   | screen CHROUT                | NOT DONE |                                                    |
+| `$E8DA`   | color code table             | DONE     |                                                    |
 | `$E8EA`   | scroll line                  | NOT DONE |                                                    |
 | `$E96C`   | insert line on top           | NOT DONE |                                                    |
 | `$E9FF`   | clear line                   | NOT DONE |                                                    |
@@ -175,7 +216,6 @@ Not all of them - only these we want to have implemented.
 | `$F142`   | get key from buffer          | DONE     |                                                    |
 | `$F646`   | IEC close                    | NOT DONE |                                                    |
 | `$FD30`   | default vectors              | DONE     |                                                    |
-| `$FD90`   | (unknown)                    | NOT DONE |                                                    |
 | `$FD90`   | (unknown)                    | NOT DONE |                                                    |
 | `$FE2D`   | memtop set part              | DONE     |                                                    |
 | `$FE47`   | default NMI                  | PARTIAL  |                                                    |

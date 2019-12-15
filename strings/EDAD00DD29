@@ -1,0 +1,3 @@
+$ED + LDA $DD00 + AND (value does not match)
+
+Instruction (reading a documented I/O register) + some parts. Trivial, not copyrightable.

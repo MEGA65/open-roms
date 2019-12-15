@@ -1,0 +1,3 @@
+$BB + JSR $FFD2 + INY
+
+Call to well-known routine (CHROUT) within a loop indexed by .Y (onlyy a small part of the loop matches) - not creative, not copyrightable.

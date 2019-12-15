@@ -1,0 +1,3 @@
+STX $D016 + JSR (address does not match)
+
+Instruction (storing data in a documented I/O register) + some part. Trivial - not copyrightable.

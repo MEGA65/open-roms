@@ -89,24 +89,32 @@
 	.label C3PO      = $94  //          flag - is BSOUR content valid
 	.label BSOUR     = $95  //          serial bus buffered output byte
 	.label SYNO      = $96  //          -- NOT IMPLEMENTED --
-	.label XSAV      = $97  //          -- NOT IMPLEMENTED --
+	.label XSAV      = $97  //          temporary register storage for ASCII related routines [!] usage details might differ
 	.label LDTND     = $98  //          number of entries in LAT / FAT / SAT tables
 	.label DFLTN     = $99  //          default input device
 	.label DFLTO     = $9A  //          default output device
-	.label PRTY      = $9B  //          -- NOT IMPLEMENTED --
+	.label PRTY      = $9B  //          tape storage for parity/checksum
+#if !CONFIG_TAPE_NORMAL && !CONFIG_TAPE_TURBO	
 	.label DPSW      = $9C  //          -- NOT IMPLEMENTED --
+#else
+    .label COLSTORE  = $9C  //          [!] screen border storage for tape routines 
+#endif
 	.label MSGFLG    = $9D  //          bit 6 = error messages, bit 7 = control message
 	.label PTR1      = $9E  //          -- NOT IMPLEMENTED --
 	.label PTR2      = $9F  //          -- NOT IMPLEMENTED --
 	.label TIME      = $A0  // $A0-$A2  jiffy clock
-	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage probably differs in details
+#if !CONFIG_IEC_JIFFYDOS	
+	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage differs
+#else
+	.label IECPROTO  = $A3  //          -- WIP -- [!] 0 = normal, 1 = JiffyDOS, >= $80 for unknown
+#endif
 	.label TBTCNT    = $A4  //          temporary variable for tape and IEC, [!] our usage probably differs in details
 	.label CNTDN     = $A5  //          -- NOT IMPLEMENTED --
 	.label BUFPNT    = $A6  //          -- NOT IMPLEMENTED --
 	.label INBIT     = $A7  //          -- NOT IMPLEMENTED --
 #if !CONFIG_LEGACY_SCNKEY
 	.label BITCI     = $A8  //          -- NOT IMPLEMENTED --
-	.label RINONE    = $A9  //          -- NOT IMPLEMENTED --
+	.label RINONE    = $A9  //          -- WIP -- (UP9600 only) RS-232 check for start bit flag
 	.label RIDDATA   = $AA  //          -- NOT IMPLEMENTED --
 	.label RIPRTY    = $AB  //          -- NOT IMPLEMENTED --
 #endif
@@ -127,13 +135,13 @@
 	.label SA        = $B9  //          current secondary address
 	.label FA        = $BA  //          current device number
 	.label FNADDR    = $BB  // $BB-$BC  current file name pointer
-	.label ROPRTY    = $BD  //          -- NOT IMPLEMENTED --
+	.label ROPRTY    = $BD  //          tape / RS-232 temporary storage
 	.label FSBLK     = $BE  //          -- NOT IMPLEMENTED --
 	.label MYCH      = $BF  //          -- NOT IMPLEMENTED --
-	.label CAS1      = $C0  //          -- NOT IMPLEMENTED --
+	.label CAS1      = $C0  //          tape motor interlock
 	.label STAL      = $C1  // $C1-$C2  LOAD/SAVE start address
 	.label MEMUSS    = $C3  // $C3-$C4  temporary address for tape LOAD/SAVE
-	.label LSTX      = $C5  //          last keyy matrix position [!] our usage probably differs in details
+	.label LSTX      = $C5  //          last key matrix position [!] our usage probably differs in details
 	.label NDX       = $C6  //          number of chars in keyboard buffer
 	.label RVS       = $C7  //          flag, whether to print reversed characters
 	.label INDX      = $C8  //          end of logical line (column, 0-79)
@@ -142,7 +150,7 @@
 	.label BLNSW     = $CC  //          cursor blink disable flag
 	.label BLNCT     = $CD  //          cursor blink countdown
 	.label GDBLN     = $CE  //          cursor saved character
-	.label BLNON     = $CF  //          cursor visibilityy flag
+	.label BLNON     = $CF  //          cursor visibility flag
 	.label CRSW      = $D0  //          whether to input from screen or keyboard
 	.label PNT       = $D1  // $D1-$D2  pointer to the current screen line
 	.label PNTR      = $D3  //          current screen X position
@@ -154,8 +162,8 @@
 	.label LDTBL     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
 	.label USER      = $F3  // $F3-$F4  pointer to current color RAM location
 	.label KEYTAB    = $F5  // $F5-$F6  pointer to keyboard lookup table
-	.label RIBUF     = $F7  // $F7-$F8  -- NOT IMPLEMENTED --
-	.label ROBUF     = $F9  // $F9-$FA  -- NOT IMPLEMENTED --
+	.label RIBUF     = $F7  // $F7-$F8  -- WIP -- RS-232 receive buffer pointer
+	.label ROBUF     = $F9  // $F9-$FA  -- WIP -- RS-232 send buffer pointer
 	//                 $FB     $FB-$FE  -- UNUSED --          free for user software
 	.label BASZPT    = $FF  //          -- NOT IMPLEMENTED --
 
@@ -198,14 +206,14 @@
 	.label M51CRT    = $293  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51CDR    = $294  //            -- NOT IMPLEMENTED -- mock 6551
 	.label M51AJB    = $295  // $295-$296  -- NOT IMPLEMENTED -- mock 6551
-	.label RSSTAT    = $297  //            -- NOT IMPLEMENTED -- mock 6551, RS-232 status
+	.label RSSTAT    = $297  //            -- WIP -- (UP9600 only) mock 6551, RS-232 status
 	.label BITNUM    = $298  //            -- NOT IMPLEMENTED --
 	.label BAUDOF    = $299  // $299-$29A  -- NOT IMPLEMENTED --
 #endif
-	.label RIDBE     = $29B  //            -- NOT IMPLEMENTED --
-	.label RIDBS     = $29C  //            -- NOT IMPLEMENTED --
-	.label RODBS     = $29D  //            -- NOT IMPLEMENTED --
-	.label RODBE     = $29E  //            -- NOT IMPLEMENTED --
+	.label RIDBE     = $29B  //            -- WIP -- write pointer into RS-232 receive buffer
+	.label RIDBS     = $29C  //            -- WIP -- read pointer into RS-232 receive buffer
+	.label RODBS     = $29D  //            -- WIP -- read pointer into RS-232 send buffer
+	.label RODBE     = $29E  //            -- WIP -- write pointer into RS-232 send buffer
 	.label IRQTMP    = $29F  // $29F-$2A0  -- NOT IMPLEMENTED --
 	.label ENABL     = $2A1  //            -- NOT IMPLEMENTED --
 	.label TODSNS    = $2A2  //            -- NOT IMPLEMENTED --
@@ -273,6 +281,9 @@
 
 	//                 $314     $334-$33B  -- UNUSED --          free for user software
 	
-	.label TBUFFR    = $33C  // $33C-$3FB, -- NOT IMPLEMENTED --, tape buffer
+	.label TBUFFR    = $33C  // $33C-$3FB  [!] tape buffer, our usage details differ
+#if CONFIG_RS232_UP9600
+    .label REVTAB    = $37C  // $37C-$3FB  -- WIP -- [!] RS-232 precalculated data
+#endif
 
 	//                 $3FC     $3FC-$3FF  -- UNUSED --          free for user software

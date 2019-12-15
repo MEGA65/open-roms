@@ -3,6 +3,8 @@
 // Startup banner, to be displayed during cold start
 //
 
+.encoding "petscii_upper"
+
 
 .macro BANNER_TEXT() {
 
@@ -22,7 +24,7 @@ startup_banner:
 
 #if CONFIG_BANNER_SIMPLE
 
-	.text "  " 
+	.text "    " 
 	BANNER_TEXT()
 	.byte $00
 

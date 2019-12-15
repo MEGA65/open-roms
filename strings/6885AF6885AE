@@ -1,0 +1,3 @@
+PLA + STA $AF + PLA + STA $AE
+
+Piece of code copying EAL variable from the stack to zero page locatioon. Trivial - not copyrightable.

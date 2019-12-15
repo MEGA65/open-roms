@@ -5,6 +5,7 @@
 // Values based on:
 // - [CM64]  Compute's Mapping the Commodore 64 - pages 58 (SHFLAG), 173 (matrix)
 // - [CM128] Compute's Mapping the Commodore 128 - pages 212 (SHFLAG), 290 (matrix)
+// - https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt
 //
 
 #if !CONFIG_LEGACY_SCNKEY
@@ -16,11 +17,10 @@ kb_matrix_bucky_confmask: // values to be written to CIA1_PRA
 	.byte %10111111 // SHIFT (right)
 	.byte %01111111 // VENDOR      
 	.byte %01111111 // CTRL
-#if CONFIG_KEYBOARD_C128
-	.byte %11111111 // C128 extra keys
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+	.byte %11111111 // C128 / C65 extra keys
 	.byte %11111111
 #endif
-
 
 __kb_matrix_bucky_confmask_end:
 
@@ -39,6 +39,20 @@ kb_matrix_bucky_confmask_c128: // values to be written to VIC_XSCAN
 
 #endif
 
+#if CONFIG_KEYBOARD_C65
+
+kb_matrix_bucky_confmask_c65: // values to be written to C65_EXTKEYS_PR
+
+	.byte %11111111
+	.byte %11111111
+	.byte %11111111
+	.byte %11111111
+
+	.byte %11111101 // ALT
+	.byte %11111101 // NO_SCRL
+
+#endif
+
 
 kb_matrix_bucky_testmask: // for AND with CIA1_PRB value
 
@@ -50,6 +64,10 @@ kb_matrix_bucky_testmask: // for AND with CIA1_PRB value
 	.byte %10000000 // ALT
 	.byte %00000001 // NO_SCRL
 #endif
+#if CONFIG_KEYBOARD_C65
+	.byte %00000100 // ALT
+	.byte %00000001 // NO_SCRL
+#endif
 
 
 kb_matrix_bucky_shflag: // mask to be ORed to SHFLAG to mark key status
@@ -58,7 +76,7 @@ kb_matrix_bucky_shflag: // mask to be ORed to SHFLAG to mark key status
 	.byte KEY_FLAG_SHIFT
 	.byte KEY_FLAG_VENDOR
 	.byte KEY_FLAG_CTRL
-#if CONFIG_KEYBOARD_C128
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
 	.byte KEY_FLAG_ALT
 	.byte KEY_FLAG_NO_SCRL
 #endif

@@ -16,30 +16,35 @@
 .const KEY_FLAG_SHIFT   = %00000001
 .const KEY_FLAG_VENDOR  = %00000010
 .const KEY_FLAG_CTRL    = %00000100
-.const KEY_FLAG_ALT     = %00001000  // C65 / C128
-.const KEY_CAPS_LOCK    = %00010000  // C65 / C128
-.const KEY_FLAG_NO_SCRL = %00100000  // C65 / C128, Open ROMs unofficial
 
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+.const KEY_FLAG_ALT     = %00001000
+#if CONFIG_KEYBOARD_C128_CAPS_LOCK || CONFIG_KEYBOARD_C65_CAPS_LOCK
+.const KEY_CAPS_LOCK    = %00010000
+#endif
+.const KEY_FLAG_NO_SCRL = %00100000  // Open ROMs unofficial
+#endif
 
 // Note - the following PETSCII codes are currently unassigned, can be used for further extensions:
 //
-// $01, $04, $06, $0A, $0B, $0C, $0F, $18, $82
+// $01, $02, $04, $06, $0A, $0B, $0C, $0F, $18, $82
 
 
 .const KEY_NA           = $00  // to indicate that no key is presed
 
 
-// PETSCII codes for our extended screen editor       XXX implement these
+// PETSCII codes for our extended screen editor
 
-.const KEY_BOTTOM       = $02  // CTRL+B            - Open ROMs unofficial, DolphinDOS compatible
 .const KEY_TAB_FW       = $8F  // CTRL+>, TAB       - Open ROMs unofficial, original TAB conflicts with C64 PETSCII
 .const KEY_TAB_BW       = $80  // CTRL+<, SHIFT+TAB - Open ROMs unofficial, original TAB conflicts with C64 PETSCII
 
 
-// PETSCII codes for certain C128 and C65 functionalities     XXX implement these
+// PETSCII codes for certain C128 and C65 functionalities
 
-.const KEY_BELL         = $07  // C65 / C128, no key
-.const KEY_ESC          = $1B  // C65 / C128
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+.const KEY_BELL         = $07  // no key, originally CTRL+G // XXX implement BELL
+.const KEY_ESC          = $1B
+#endif
 
 
 // PETSCII codes for programmable keys
@@ -48,22 +53,26 @@
 .const KEY_RUN          = $83
 
 .const KEY_F1           = $85
-.const KEY_F2           = $86
-.const KEY_F3           = $87
-.const KEY_F4           = $88
-.const KEY_F5           = $89
-.const KEY_F6           = $8A
-.const KEY_F7           = $8B
+.const KEY_F2           = $89
+.const KEY_F3           = $86
+.const KEY_F4           = $8A
+.const KEY_F5           = $87
+.const KEY_F6           = $8B
+.const KEY_F7           = $88
 .const KEY_F8           = $8C
 
-.const KEY_F9           = $10  // C65
-.const KEY_F10          = $15  // C65
-.const KEY_F11          = $16  // C65
-.const KEY_F12          = $17  // C65
-.const KEY_F13          = $19  // C65
-.const KEY_F14          = $1A  // C65
+#if CONFIG_KEYBOARD_C65
+.const KEY_F9           = $10
+.const KEY_F10          = $15
+.const KEY_F11          = $16
+.const KEY_F12          = $17
+.const KEY_F13          = $19
+.const KEY_F14          = $1A
+#endif
 
-.const KEY_HELP         = $84  // C65, also used for our C128 support
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+.const KEY_HELP         = $84  // normally C65 only, also used for our C128 support
+#endif
 
 
 // PETSCII codes for cursor keys
@@ -150,5 +159,6 @@
 .const KEY_EQ           = $3D
 .const KEY_GT           = $3E
 .const KEY_QUESTION     = $3F
+
 
 // XXX finish this: $4x, $5x, $6x, $7x, $Ax, $Bx, $Cx, $Dx, $Ex, $Fx

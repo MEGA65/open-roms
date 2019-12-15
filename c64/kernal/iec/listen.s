@@ -13,11 +13,13 @@
 
 LISTEN:
 
+#if CONFIG_IEC
+
 	// According to serial-bus.pdf (page 15) this routine flushes the IEC out buffer
 	jsr iec_tx_flush
 
 	// Check whether device number is correct
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcc !+
 	jmp kernalerror_DEVICE_NOT_FOUND
 !:
@@ -26,5 +28,8 @@ LISTEN:
 
 	jmp common_talk_listen
 
+#else
 
+	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
 
+#endif

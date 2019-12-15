@@ -1,0 +1,3 @@
+LDA $C3 + STA $C1 + LDA $C4
+
+Copying one 16-bit zero page variable to another (not even complete) - trivial, not copyrightable.

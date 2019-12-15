@@ -1,0 +1,3 @@
+$02 + LDX #$1E + JMP (address does not match)
+
+Instruction and some parts - trivial, not copyrightable.

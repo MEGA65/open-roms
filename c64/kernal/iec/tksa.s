@@ -12,15 +12,19 @@
 
 TKSA:
 
-	// Due to OPEN/CLOSE/TKSA/SECOND command encoding (see https://www.pagetable.com/?p=1031),
-	// allowed channels are 0-15; report error if out of range
-	cmp #$10
-	bcc !+ 
-	jmp kernalerror_DEVICE_NOT_FOUND // XXX find a better error message for wrong channel (create new one?)
-!:
-	ora #$F0
+#if CONFIG_IEC
+
+	// Due to OPEN/CLOSE/TKSA/SECOND command encoding, allowed channels are 0-15; it is the caller
+	// responsibility, hovewer, to provide value ORed with $60
+	// - https://www.lemon64.com/forum/viewtopic.php?t=57694&sid=531ba3592bcffadef2ac8b9162f2e529
+	// - https://www.pagetable.com/?p=1031 (Kernal API description)
+
+	ora #$90
 
 	jmp common_untlk_tksa
 
+#else
 
+	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
 
+#endif

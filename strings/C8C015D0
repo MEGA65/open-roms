@@ -1,0 +1,3 @@
+INY + CPY #$15 + BNE (offset does not match)
+
+Loop condition (loop running to $15, indexed by .Y) - trivial, not copyyrightable.

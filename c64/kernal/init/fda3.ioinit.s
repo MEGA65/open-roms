@@ -11,38 +11,71 @@
 
 IOINIT:
 
-	// Set $00/$01 port mode and value
+	//
+	// First initialize the CPU port, to make sure we have correct memory map
+	//
+
 	// We want BASIC and KERNAL ROMs mapped, and datasette motor off
 	// (https://www.c64-wiki.com/wiki/Zeropage)
 	// Work around for VICE bug: Writing $00 before $01 results in rubbish in $01
 	// after. https://sourceforge.net/p/vice-emu/bugs/1057/
-	lda #$27
-	ldx #$2F
-	sta CPU_R6510
-	stx CPU_D6510
 
-	// Silence the SID chips, depending on the configuration
+	ldx #$27
+	stx CPU_R6510
+	ldx #$EF
+	stx CPU_D6510  // [CM64] page 4
+
+	//
+	// Now prevent the CIAs from generating interrupts, who knows what damage they can do
+	//
+
+	// Disable IRQ generation for both CIAs - see [CM64], page 149
+
+	ldx #$7F
+	stx CIA1_ICR // $DC0D
+	stx CIA2_ICR // $DD0D
+
+	// See discussion here:
+	// https://www.lemon64.com/forum/viewtopic.php?t=41744&sid=e294c254db2ba671cde643f100aae341
+	// It seems that initializing this register to $7F is the best idea - UDTIM key scanning
+	// also leaves this at $7F
+
+	stx CIA1_PRA // $DC00
+
+	//
+	// Now silence the SID chip(s), depending on the configuration - we want them silent ASAP
+	//
+
+	// First the standard chip (skip if it is covered by whole $D4XX range)
+
+	lda #$00
 
 #if !CONFIG_SID_D4XX
-	lda SID_SIGVOL
-	and #$F0
 	sta SID_SIGVOL
 #endif // !CONFIG_SID_D4XX
 
+	// Silence manually configured 2nd and 3rd SIDs
+
+#if CONFIG_SID_2ND
+	sta SID_SIGVOL - __SID_BASE + CONFIG_SID_2ND_ADDRESS
+#endif // CONFIG_SID_2ND
+
+#if CONFIG_SID_3RD
+	sta SID_SIGVOL - __SID_BASE + CONFIG_SID_3RD_ADDRESS
+#endif // CONFIG_SID_3RD
+
+	// Silence whole D4XX and D5XX ranges (if configured)
+
 #if CONFIG_SID_D4XX || CONFIG_SID_D5XX
+
 	ldy #$00
 !:
 
 #if CONFIG_SID_D4XX 
-	lda SID_SIGVOL, Y
-	and #$F0
-	sta SID_SIGVOL, Y
+	sta SID_SIGVOL + $000, Y
 #endif // CONFIG_SID_D4XX
 
 #if CONFIG_SID_D5XX 
-	// SIDs under $D5xx
-	lda SID_SIGVOL + $100, Y
-	and #$F0
 	sta SID_SIGVOL + $100, Y
 #endif // CONFIG_SID_D4XX
 
@@ -51,54 +84,68 @@ IOINIT:
 	adc #$20
 	tay
 	bne !-
+
 #endif // CONFIG_SID_D4XX || CONFIG_SID_D5XX
 
-#if CONFIG_SID_2ND
-	lda SID_SIGVOL - __SID_BASE + CONFIG_SID_2ND_ADDRESS
-	and #$F0
-	sta SID_SIGVOL - __SID_BASE + CONFIG_SID_2ND_ADDRESS
-#endif // CONFIG_SID_2ND
+	//
+	// Now continue the CIAs initialization
+	//
 
-#if CONFIG_SID_3RD
-	lda SID_SIGVOL - __SID_BASE + CONFIG_SID_3RD_ADDRESS
-	and #$F0
-	sta SID_SIGVOL - __SID_BASE + CONFIG_SID_3RD_ADDRESS
-#endif // CONFIG_SID_3RD
-
-    // Initialize CIAs
-
-	// XXX: calibrate TOD for both CIA's, see here: https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
-
-	// Enable CIA1 IRQ and ~50Hz timer (https://csdb.dk/forums/?roomid=11&topicid=69037)
-	
-	// First disable IRQ generation for both CIA's
-	lda #$7F
-	sta CIA2_ICR
-	sta CIA1_ICR
-
-	// Enable timer interrupt
-	lda #$81
-	sta CIA1_ICR
-
-	// Enable timer A to run continuously (http://codebase64.org/doku.php?id=base:timerinterrupts)
-	lda #$11
-	sta CIA1_CRA
-	lda CIA1_ICR
-
-	// Setup the CIA1 for reading the keyboard - 'POKE 56322, 0' on original ROMs proves this
-	// is done during initialization, not during the interrupt
+	// For CIA #1 we need port A as output and port B as input to scan the keyboard
 
 	ldx #$FF
-	stx CIA1_DDRA  // output
-	inx            // $00
-	stx CIA1_DDRB  // input
+	stx CIA1_DDRA    // $DC02
+	inx
+	stx CIA1_DDRB    // $DC03
+	stx CIA2_DDRB    // $DD03  // XXX this port is used for RS-232, value here is most likely wrong!
 
-	// Value checked on original ROM
-	stx CIA2_DDRA
+#if CONFIG_KEYBOARD_C65 || CONFIG_KEYBOARD_C65_CAPS_LOCK
 
-	// Set DDR on CIA2 for IEC bus, VIC-II banking
+	lda #$02
+	sta C65_EXTKEYS_DDR // output for most keys, input for CAPS LOCK bit
+
+#endif
+
+	// Set DDR on CIA2 for IEC bus, VIC-II banking (see [CM64], $DDOO description on page 193)
 	lda #$3F
-	sta CIA2_DDRA
+	sta CIA2_DDRA    // $DD02
+
+	// XXX detect TOD clock, see  https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
+
+	// XXX how to initialize these timers???
+	// stx CIA1_CRB    // $DC0F
+	// stx CIA2_CRA    // $DD0E
+	// stx CIA2_CRB    // $DD0F
+
+	// Set VIC-II bank - at least the 'Operacja Proboszcz' game needs this within IOINIT
+	// Checked on original ROMs, that it sets bit #2 (RS-232 output) high
+
+	ldx #%00000111 // XXX adapt this to IEC idle state, JMP at the end won't be needed
+	stx CIA2_PRA    // $DD00
+
+	// 
+
+	ldy #<16421
+	ldx #>16421
+
+	sty CIA1_TIMALO    // $DC04
+	stx CIA1_TIMAHI    // $DC05
+
+	// Enable timer A to run continuously (http://codebase64.org/doku.php?id=base:timerinterrupts)
+	ldx #$11
+	stx CIA1_CRA    // $DC0E
+
+	// Enable timer interrupt
+	ldx #$81
+	stx CIA1_ICR    // $DC0D
+
+#if CONFIG_IEC
 
 	// Set IEC bus to its initial idle state
 	jmp iec_set_idle
+
+#else
+
+	rts
+
+#endif

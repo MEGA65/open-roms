@@ -3,7 +3,7 @@
 // CHROUT routine - screen support, INS key handling
 //
 
-chrout_screen_ins:
+chrout_screen_INS:
 
 	// Insert (shift-DELETE)
 	

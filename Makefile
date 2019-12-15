@@ -1,4 +1,9 @@
 
+# Test files
+
+TESTDISK = testsuite/testdisk.d64
+TESTTAPE = testsuite/testtape-turbo.tap
+
 # Source files
 
 SRCDIR_COMMON  = c64/aliases
@@ -11,16 +16,23 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
 
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                 c64/kernal \
+                c64/kernal/,stubs \
                 c64/kernal/assets \
-                c64/kernal/jumptable \
                 c64/kernal/iec \
+                c64/kernal/iec_fast \
                 c64/kernal/init \
                 c64/kernal/interrupts \
                 c64/kernal/iostack \
+                c64/kernal/jumptable \
                 c64/kernal/keyboard \
+                c64/kernal/memory \
                 c64/kernal/print \
+                c64/kernal/rom_revision \
+                c64/kernal/rs232 \
                 c64/kernal/screen \
-                c64/kernal/stubs
+                c64/kernal/tape \
+                c64/kernal/time
+
 
 SRC_TOOLS  = $(wildcard src/tools/*.c,src/tools/*.cc)
 
@@ -65,14 +77,16 @@ GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 
 .PHONY: all clean updatebin
 
-all: $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
+all:
+	$(MAKE) -j64 --output-sync=target $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
 	@rm -rf build c64/basic/combined.s c64/kernal/combined.s
 
-updatebin: $(STD_TARGET_LIST) $(TOOL_RELEASE)
-	$(TOOL_RELEASE) -i ./build -o ./bin basic_generic.rom kernal_generic.rom basic_testing.rom kernal_testing.rom basic_mega65.rom kernal_mega65.rom basic_ultimate64.rom kernal_ultimate64.rom
-	cp build/chargen.rom              bin/chargen.rom
+updatebin:
+	$(MAKE) -j64 --output-sync=target $(STD_TARGET_LIST) $(EXT_TARGET_LIST) $(TOOL_RELEASE)
+	$(TOOL_RELEASE) -i ./build -o ./bin basic_generic.rom kernal_generic.rom basic_testing.rom kernal_testing.rom basic_mega65.rom kernal_mega65.rom basic_ultimate64.rom kernal_ultimate64.rom newc65.rom
+	cp build/chargen.rom bin/chargen.rom
 
 # Rules - tools
 
@@ -218,28 +232,28 @@ build/newc65.rom: build/kernal_mega65.rom build/basic_mega65.rom build/chargen.r
 test: test_generic
 
 test_generic: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
-	x64 -kernal build/kernal_generic.rom -basic build/basic_generic.rom -moncommands build/symbols_generic.vs -8 empty.d64
+	x64 -kernal build/kernal_generic.rom -basic build/basic_generic.rom -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_generic_x128: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
-	x128 -go64 -kernal64 build/kernal_generic.rom -basic64 build/basic_generic.rom -moncommands build/symbols_generic.vs -8 empty.d64
+	x128 -go64 -kernal64 build/kernal_generic.rom -basic64 build/basic_generic.rom -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_testing: build/kernal_testing.rom build/basic_testing.rom build/symbols_testing.vs
-	x64 -kernal build/kernal_testing.rom -basic build/basic_testing.rom -moncommands build/symbols_testing.vs -8 empty.d64
+	x64 -kernal build/kernal_testing.rom -basic build/basic_testing.rom -moncommands build/symbols_testing.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_mega65: build/kernal_mega65.rom build/basic_mega65.rom build/symbols_mega65.vs
-	x64 -kernal build/kernal_mega65.rom -basic build/basic_mega65.rom -moncommands build/symbols_mega65.vs -8 empty.d64
+	x64 -kernal build/kernal_mega65.rom -basic build/basic_mega65.rom -moncommands build/symbols_mega65.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_mega65_xemu: build/newc65.rom
-	../xemu/build/bin/xc65.native -dmarev 2 -rom build/newc65.rom
+	../xemu/build/bin/xmega65.native -dmarev 2 -forcerom -loadrom build/newc65.rom
 
 test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/symbols_ultimate64.vs
-	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -8 empty.d64
+	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_hybrid: build/kernal_hybrid.rom build/symbols_hybrid.vs
 	@echo
 	@echo $(HYBRID_WARNING)
 	@echo
-	x64 -kernal build/kernal_hybrid.rom -moncommands build/symbols_hybrid.vs -8 empty.d64
+	x64 -kernal build/kernal_hybrid.rom -moncommands build/symbols_hybrid.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 	@echo
 	@echo $(HYBRID_WARNING)
 	@echo

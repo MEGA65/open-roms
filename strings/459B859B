@@ -1,0 +1,3 @@
+EOR $9B + STA $9B
+
+Part of the code (incomplete) calculating EOR checksum of data stream - not creative, not copyrightable.

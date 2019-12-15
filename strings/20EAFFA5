@@ -1,0 +1,3 @@
+JSR $FFEA (UDTIM) + LDA (zeropage address does not match)
+
+Instruction (call to the official routine) + some part. Trivial, not copyrightable.

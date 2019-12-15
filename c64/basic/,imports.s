@@ -19,6 +19,10 @@
 .label print_return        = KERNAL.print_return
 .label print_space         = KERNAL.print_space
 
+#if CONFIG_SHOW_FEATURES
+.label print_features      = KERNAL.print_features
+#endif
+
 #if CONFIG_SHOW_PAL_NTSC
 .label print_pal_ntsc      = KERNAL.print_pal_ntsc
 #endif

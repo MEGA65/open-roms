@@ -1,0 +1,3 @@
+LDA ($B2),Y + JSR $FFD2 + INY + CPY (value does not match)
+
+Small part of loop indexed by .Y, outputing data via CHROUT - not creative, not copyrightable.

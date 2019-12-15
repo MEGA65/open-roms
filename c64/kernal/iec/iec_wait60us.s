@@ -1,4 +1,8 @@
 
+
+#if CONFIG_IEC
+
+
 iec_wait60us:
 
 	// Wait 60usec
@@ -21,3 +25,5 @@ iec_wait60us:
     // ---
     //  64 cycles
 
+
+#endif // CONFIG_IEC

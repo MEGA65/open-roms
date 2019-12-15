@@ -1,0 +1,3 @@
+STX $DC03 + STX $DD03
+
+Part of system initialization - store the same value in both CIA chips. Trivial - not copyrightable.

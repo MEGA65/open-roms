@@ -17,8 +17,9 @@ default_nmi_handler:
 	bne !+
 	jmp (ICART_WARM_START)
 !:
-
 	// According to C64 Wiki, if STOP key is pressed, the routine assumes warm start request
+
+	// XXX is it right? how to check that IRQ was caused by RESTORE?
 
 	jsr JSTOP
 	bcs !+

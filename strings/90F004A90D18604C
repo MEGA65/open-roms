@@ -1,0 +1,3 @@
+$90 + BEQ (skip 3 bytes) + LDA #$0D + CLC + RTS + JMP
+
+Routine ending, returning error code or success - trivial, not copyrightable.

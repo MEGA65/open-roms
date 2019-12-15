@@ -1,0 +1,3 @@
+LDA $00,X + STA $C1
+
+Small part (match limited to 2 instructions) of a routine retrieving start address from the variable pointed by register - matching part is trivial, not copyrightable.

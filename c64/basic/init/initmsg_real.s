@@ -10,27 +10,35 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
-	ldx #$02
-	ldy #$02
+	ldx #$01
+	ldy #$04
 	jsr plot_set
 
 	lda #<rom_revision_basic_string
 	ldy #>rom_revision_basic_string
 	jsr STROUT
 
-	ldx #$04
-	ldy #$02
+	ldx #$03
+	ldy #$04
 	jsr plot_set
-
-#if CONFIG_SHOW_PAL_NTSC
-	jsr print_pal_ntsc
-#endif
 
 	jsr initmsg_bytes_free
 
-	ldx #$07
+	ldx #$06
 	ldy #$00
+#if CONFIG_SHOW_PAL_NTSC && CONFIG_SHOW_FEATURES
+	jsr plot_set
+	jsr print_features
+	jmp print_pal_ntsc
+#elif CONFIG_SHOW_PAL_NTSC
+	jsr plot_set
+	jmp print_pal_ntsc
+#elif CONFIG_SHOW_FEATURES
+	jsr plot_set
+	jmp print_features
+#else
 	jmp plot_set
+#endif
 
 #elif CONFIG_BANNER_FANCY
 	
@@ -38,7 +46,7 @@ initmsg_real:
 	ldy #>rainbow_logo
 	jsr STROUT
 
-	ldx #$01
+	ldx #$00
 	ldy #$0A
 	jsr plot_set
 
@@ -46,7 +54,7 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
-	ldx #$03
+	ldx #$01
 	ldy #$0A
 	jsr plot_set
 
@@ -58,19 +66,27 @@ initmsg_real:
 	ldy #>rom_revision_basic_string
 	jsr STROUT
 
-	ldx #$05
-	ldy #$00
+	ldx #$03
+	ldy #$0A
 	jsr plot_set
-
-#if CONFIG_SHOW_PAL_NTSC
-	jsr print_pal_ntsc
-#endif
 
 	jsr initmsg_bytes_free
 
-	ldx #$07
+	ldx #$06
 	ldy #$00
+#if CONFIG_SHOW_PAL_NTSC && CONFIG_SHOW_FEATURES
+	jsr plot_set
+	jsr print_features
+	jmp print_pal_ntsc
+#elif CONFIG_SHOW_PAL_NTSC
+	jsr plot_set
+	jmp print_pal_ntsc
+#elif CONFIG_SHOW_FEATURES
+	jsr plot_set
+	jmp print_features
+#else
 	jmp plot_set
+#endif
 
 #elif CONFIG_BANNER_BRAND && CONFIG_BRAND_MEGA_65
 
@@ -88,8 +104,17 @@ initmsg_real:
 
 	jsr initmsg_bytes_free
 
+#if CONFIG_SHOW_FEATURES
+	ldx #$04
+	ldy #$00
+	jsr plot_set
+	jsr print_features
+	jmp print_return
+#else
 	ldx #$05
 	ldy #$00
 	jmp plot_set
+#endif
+
 
 #endif

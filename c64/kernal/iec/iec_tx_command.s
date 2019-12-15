@@ -7,6 +7,9 @@
 // Preserves .X and .Y registers
 
 
+#if CONFIG_IEC
+
+
 iec_tx_command:
 
 	// Store .X and .Y on the stack - preserve them
@@ -36,3 +39,5 @@ iec_tx_command:
 	clc // Carry flag set is used for EOI mark
 	jmp iec_tx_common
 
+
+#endif // CONFIG_IEC

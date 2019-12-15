@@ -51,6 +51,10 @@ __kb_matrix_ctrl:
 	.byte $9C,$12,$04,$1E,$03,$06,$14,$18
 	.byte $1F,$19,$07,$9E,$02,$08,$15,$16
 	.byte $12,$09,$0A,$92,$0D,$0B,$0F,$0E
+#if CONFIG_EDIT_TABULATORS
+	.byte $00,$10,$0C,$00,KEY_TAB_FW,$1B,$00,KEY_TAB_BW
+#else
 	.byte $00,$10,$0C,$00,$00,$1B,$00,$00
+#endif
 	.byte $1C,$00,$1D,$00,$00,$1F,$1E,$00
 	.byte $90,$06,$00,$05,$00,$00,$11,$00

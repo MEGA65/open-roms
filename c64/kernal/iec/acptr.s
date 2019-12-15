@@ -10,5 +10,21 @@
 
 
 ACPTR:
-	jsr kernalstatus_reset
+
+	lda IOSTATUS
+	beq !+
+
+	lda #$0D                           // tested on real ROMs
+	clc
+	rts
+!:
+
+#if CONFIG_IEC
+#if CONFIG_IEC_JIFFYDOS
+	jmp iec_rx_dispatch
+#else // no turbo supported
 	jmp iec_rx_byte
+#endif
+#else
+	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
+#endif

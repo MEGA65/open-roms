@@ -1,6 +1,9 @@
 # open-roms
 
-A project to create unencumbered open-source ROMs for use on selected retro computers. For the current status check [this document](STATUS.md)
+A project to create unencumbered open-source ROMs for use on selected retro computers. Besides this manifest, the following documents are available:
+
+* [implementation status](STATUS.md) of various APIs and functionalities
+* [configuration options](CONFIG.md) for those willing to compile their own, customized build
 
 # Problem Statement and Motivation
 

@@ -1,5 +1,6 @@
 
 .const CONFIG_ID = $00 // should be 1 byte, different for each config file!
+.encoding "petscii_upper"
 
 //
 // Please read CONFIG.md before modifying this file!
@@ -37,6 +38,17 @@
 // #define CONFIG_MEMORY_MODEL_60K
 
 
+// I/O devices
+
+#define CONFIG_IEC
+#define CONFIG_IEC_BLANK_SCREEN
+#define CONFIG_IEC_JIFFYDOS
+// #define CONFIG_TAPE_NORMAL     // please keep disabled for now
+#define CONFIG_TAPE_TURBO
+// #define CONFIG_RS232_UP2400    // please keep disabled for now
+// #define CONFIG_RS232_UP9600    // please keep disabled for now
+
+
 // Multiple SID support
 
 // #define CONFIG_SID_2ND
@@ -52,13 +64,51 @@
 // Keyboard settings
 
 // #define CONFIG_LEGACY_SCNKEY
-#define CONFIG_KEYBOARD_C128 // incomplete
+#define CONFIG_KEYBOARD_C128
 #define CONFIG_KEYBOARD_C128_CAPS_LOCK
+// #define CONFIG_KEYBOARD_C65              // untested
+// #define CONFIG_KEYBOARD_C65_CAPS_LOCK    // untested
 // #define CONFIG_KEY_REPEAT_DEFAULT
 // #define CONFIG_KEY_REPEAT_ALWAYS
 #define CONFIG_KEY_FAST_SCAN
 #define CONFIG_JOY1_CURSOR
 #define CONFIG_JOY2_CURSOR
+
+#define CONFIG_PROGRAMMABLE_KEYS
+
+.const CONFIG_KEYCMD_RUN  = @"\$5FL"
+
+.const CONFIG_KEYCMD_F1   = @"@"
+.const CONFIG_KEYCMD_F2   = @""
+.const CONFIG_KEYCMD_F3   = @"RUN:"
+.const CONFIG_KEYCMD_F4   = @""
+.const CONFIG_KEYCMD_F5   = @"LOAD"
+.const CONFIG_KEYCMD_F6   = @""
+.const CONFIG_KEYCMD_F7   = @"@$"
+.const CONFIG_KEYCMD_F8   = @""
+
+.const CONFIG_KEYCMD_HELP = @"LIST"
+
+.const CONFIG_KEYCMD_F9   = @""
+.const CONFIG_KEYCMD_F10  = @""
+.const CONFIG_KEYCMD_F11  = @""
+.const CONFIG_KEYCMD_F12  = @""
+.const CONFIG_KEYCMD_F13  = @""
+.const CONFIG_KEYCMD_F14  = @""
+
+
+// Screen editor
+
+#define CONFIG_EDIT_STOPQUOTE
+#define CONFIG_EDIT_TABULATORS
+
+
+// Software features
+
+#define CONFIG_PANIC_SCREEN
+#define CONFIG_DOS_WEDGE
+#define CONFIG_TAPE_WEDGE
+#define CONFIG_BCD_SAFE_INTERRUPTS
 
 
 // Eye candy
@@ -67,14 +117,8 @@
 // #define CONFIG_BANNER_SIMPLE
 #define CONFIG_BANNER_FANCY
 // #define CONFIG_BANNER_BRAND
+#define CONFIG_SHOW_FEATURES
 #define CONFIG_SHOW_PAL_NTSC
-
-
-// Software features
-
-#define CONFIG_PANIC_SCREEN
-#define CONFIG_DOS_WEDGE
-#define CONFIG_BCD_SAFE_INTERRUPTS
 
 
 // Debug options

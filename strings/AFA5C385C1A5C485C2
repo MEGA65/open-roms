@@ -1,0 +1,3 @@
+$AF + LDA $C3 + STA $C1 + LDA $C4 + STA $C2
+
+Copyying one 16-bit zeropage variable to another. Trivial - not copyrightable.

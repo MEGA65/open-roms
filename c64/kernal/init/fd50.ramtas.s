@@ -1,0 +1,83 @@
+
+//
+// Official Kernal routine, described in:
+//
+// - [RG64] C64 Programmer's Reference Guide   - page 291
+// - [CM64] Compute's Mapping the Commodore 64 - page 237
+//
+// CPU registers that has to be preserved (see [RG64]): none
+//
+
+RAMTAS:
+
+	// C64 Programmer's Reference guide p291:
+	// Clear $0000-$0101, $0200-$03ff
+	// PGS: $0000, $0001 are CPU IO ports, so shouldn't get written to
+
+	// How many ways are there to efficiently erase these two pages
+	// of RAM? We would like to avoid any unnecessary byte similarity
+	// with the C64 KERNAL. Thus we do $0300 before $0200, even though
+	// with the longer sequence of identicale bytes we see no basis for
+	// it being copyrightable.  Again, we just want to redue the attack
+	// surface for any misguided suit.
+
+	ldy #$00
+	lda #$00
+!:
+	sta $0300,Y
+	sta $0200,Y
+	sta $0002,Y // that's why we don't use .X for index, we do not want zeropage addressing here!
+	iny
+	bne !-
+
+	// Allocate cassette buffer
+	ldx #<$033C
+	stx TAPE1+0
+	ldx #>$033C
+	stx TAPE1+1
+
+	// Set screen address pointer ("Compute's Mapping the 64" p238)
+	// This is obvious boiler plate containing no creative input, but to avoid
+	// unnecessarily similarity to the C64 KERNAL, we use X instead of A to do this,
+	// and several following
+	ldx #>$0400
+	stx HIBASE
+
+	// Set BASIC start text pointer
+	// (remember, that low memory is 0 initialized at this moment)
+
+	ldx #>$0800
+	stx MEMSTR+1
+
+	// Work out RAM size and put in MEMSIZK
+	// Try to modify $8000, if it fails then RAM ends at $7FFF, else $9FFF
+
+	ldx $8000
+	inx
+	stx $8000
+	cpx $8000
+	bne ramtas_32k
+
+	// FALLTROUGH
+	
+ramtas_40k:
+
+	// 40K RAM - restore memory content, set MEMSIZK
+
+	ldy #$A0
+!:
+	sty MEMSIZK+1
+
+	// Always restore memory, cartridge might have RAM under ROM
+
+	dex
+	stx $8000
+
+	rts
+
+ramtas_32k:
+
+	// 32K RAM - restore memory content, set MEMSIZK
+
+	ldy #$80
+	bne !- // branch always

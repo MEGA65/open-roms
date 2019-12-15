@@ -66,6 +66,7 @@ wedge_dos_command:
 !:
 	// Retrieve status, print it if not OK
 	jsr JCLALL
+	jsr print_return
 	jsr wedge_dos_status_get
 	lda BUF+0
 	cmp #$30 // '0'
@@ -92,6 +93,7 @@ wedge_dos_change_drive:
 	jmp do_ILLEGAL_DEVICE_NUMBER_error
 !:
 	sta FA
+	jsr print_return
 	jmp basic_end_of_line
 
 wedge_dos_status_get:
@@ -133,7 +135,9 @@ wedge_dos_x1:
 	rts
 
 wedge_dos_status:
+
 	jsr wedge_dos_status_get
+	jsr print_return
 	// FALLTROUGH
 
 wedge_dos_status_print:
@@ -177,6 +181,9 @@ wedge_dos_directory:
 	bcs wedge_dos_basic_error
 	jsr JCHRIN
 	bcs wedge_dos_basic_error
+
+	// Print new line
+	jsr print_return
 
 wedge_dos_directory_line:
 
@@ -225,8 +232,6 @@ wedge_dos_directory_display:
 
 wedge_dos_clean_exit:
 	jsr JCLALL
-	// Print new line
-	jsr print_return
 	jmp basic_main_loop
 
 wedge_dos_basic_error:

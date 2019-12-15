@@ -13,8 +13,17 @@
 
 UNTLK:
 
+#if CONFIG_IEC
+
 	// According to serial-bus.pdf (page 15) this routine flushes the IEC out buffer
 	jsr iec_tx_flush
+
+#if CONFIG_IEC_JIFFYDOS
+
+	lda #$FF // XXX
+	sta IECPROTO
+
+#endif
 
 	// Buffer empty, send the command
 	lda #$5F
@@ -31,3 +40,9 @@ common_untlk_tksa: // common part of UNTLK and TKSA
 	jmp iec_turnaround_to_listen
 !:
 	rts
+
+#else
+
+	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
+
+#endif

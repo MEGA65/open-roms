@@ -32,7 +32,7 @@ setup_pal:
 	// ldx #>16380
 
 	// PAL C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
-	// is clocked at 0.985248 MHz, so that 1/60s is 16421 CPU cycles
+	// is clocked at 0.985248 MHz, so that 1/60s is 16421 ($4025) CPU cycles
 
 	ldy #<16421
 	ldx #>16421
@@ -43,8 +43,8 @@ setup_pal:
 
 setup_pal_ntsc_end:
 
-	sty CIA1_TIMALO
-	stx CIA1_TIMAHI
+	sty CIA1_TIMALO    // $DC04
+	stx CIA1_TIMAHI    // $DC05
 
 	sta TVSFLG
 
@@ -55,7 +55,7 @@ setup_ntsc:
 	// Set timer interval to ~1/60th of a second
 	
 	// NTSC C64 (https://codebase64.org/doku.php?id=base:cpu_clocking),
-	// is clocked at 1.022727 MHz, so that 1/60s is 17045 CPU cycles
+	// is clocked at 1.022727 MHz, so that 1/60s is 17045 ($4295) CPU cycles
 
 	ldy #<17045
 	ldx #>17045

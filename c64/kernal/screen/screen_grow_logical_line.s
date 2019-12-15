@@ -36,7 +36,13 @@ count_rows_loop:
 	cpx #0
 	beq no_copy_down
 	bmi no_copy_down
-	
+
+	// Preserve EAL
+	lda EAL+0
+	pha
+	lda EAL+1
+	pha
+
 	// Set pointers to end of screen line, and one line
 	// above.  (It is always one physical line, because
 	// this can only happen when expanding a line from 40 to
@@ -104,6 +110,12 @@ cl_inner:
 
 	dex
 	bne copy_line_down_loop
+
+ 	// Restore EAL
+ 	pla
+ 	sta EAL+1
+ 	pla
+ 	sta EAL+0
 
 no_copy_down:
 	jsr screen_calculate_line_pointer

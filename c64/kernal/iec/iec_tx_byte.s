@@ -7,6 +7,8 @@
 // Preserves .X and .Y registers
 
 
+#if CONFIG_IEC
+
 iec_tx_byte:
 
 	// Store .X and .Y on the stack - preserve them
@@ -26,7 +28,7 @@ iec_tx_common:
 	// Timing is critical here - execute on disabled IRQs
 	// The best practice would be to do PHP first, but it seems this is not
 	// what the original ROM does; furthermore, pushing additional bytes to
-	// stack can wreck autostart softwaree loading at $0100
+	// stack can wreck autostart software loading at $0100
 	sei
 
 	// Wait till all receivers are ready, they should all release DATA
@@ -37,7 +39,7 @@ iec_tx_common:
 	// At this point a delay 256 usec or more is considered EOI,
 	// receiver should now acknowledge it by pulling data for at least 60 usec
 	// Keep the implementation as simple as possible: data should be released now
-	// so wait until it's pushed and released again
+	// so wait until it is pushed and released again
 	
 	jsr iec_wait_for_data_pull
 	jsr iec_wait_for_data_release
@@ -52,6 +54,20 @@ iec_tx_common:
 	ldx #7
 
 iec_tx_common_sendbit:
+
+#if CONFIG_IEC_JIFFYDOS
+
+	bne !+                             // branch if not sending the last bit
+    lda IECPROTO
+    beq !+                             // branch if standard protocol
+
+    // JiffyDOS ROM performs detection loop on every command; it seems we have to
+    // replicate this behaviour for compatibility with at least 1541 JiffyDOS ROM
+
+    jsr jiffydos_detect
+!:
+#endif // CONFIG_IEC_JIFFYDOS
+
 	// Is next bit 0 or 1?
 	lda TBTCNT
 	lsr
@@ -81,10 +97,11 @@ iec_tx_common_bit_is_sent:
 
 	cli
 
-	// Give device time to tell if they are busy by pulling DATA
+	// Give devices time to tell if they are busy by pulling DATA
 	// They should do it within 1ms
 	ldx #$FF
-!:	lda CIA2_PRA
+!:
+	lda CIA2_PRA
 	// BPL here is checking that bit 7 clears,
 	// i.e, that the DATA line is pulled by drive
 	bpl !+
@@ -94,3 +111,6 @@ iec_tx_common_bit_is_sent:
 	jmp iec_return_DEVICE_NOT_FOUND
 !:
 	jmp iec_return_success
+
+
+#endif // CONFIG_IEC

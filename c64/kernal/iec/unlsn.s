@@ -13,13 +13,25 @@
 
 UNLSN:
 
+#if CONFIG_IEC
+
 	// According to serial-bus.pdf (page 15) this routine flushes the IEC out buffer
 	jsr iec_tx_flush
+
+#if CONFIG_IEC_JIFFYDOS
+
+	lda #$FF // XXX
+	sta IECPROTO
+
+#endif
 
 	// Buffer empty, send the command
 	lda #$3F
 
 	jmp common_open_close_unlsn_second
 
+#else
 
+	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
 
+#endif

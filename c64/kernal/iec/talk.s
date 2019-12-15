@@ -13,20 +13,39 @@
 
 TALK:
 
+#if CONFIG_IEC
+
 	// According to serial-bus.pdf (page 15) this routine flushes the IEC out buffer
 	jsr iec_tx_flush
 
 	// Check whether device number is correct
-	jsr iec_check_devnum
+	jsr iec_check_devnum_oc
 	bcc !+
 	jmp kernalerror_DEVICE_NOT_FOUND
 !:
 	// Encode and execute the command
 	ora #$40
 
+	// FALLTROUGH
+
 common_talk_listen: // common part of TALK and LISTEN
 
 	sta TBTCNT
+
+#if CONFIG_IEC_JIFFYDOS
+
+	// It seems that only TALK/LISTEN is used to detect the JiffyDOS support
+
+	lda #$FF // unknown protocol - check what is supported
+	sta IECPROTO
+
+#endif // CONFIG_IEC_JIFFYDOS
+
+
 	jmp iec_tx_command
 
+#else
 
+	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
+
+#endif

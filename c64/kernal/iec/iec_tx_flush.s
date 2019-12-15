@@ -3,6 +3,10 @@
 //
 // Preserves .X, .Y and .A registers
 
+
+#if CONFIG_IEC
+
+
 iec_tx_flush:
 
 	pha
@@ -13,3 +17,6 @@ iec_tx_flush:
 !:
 	pla
 	rts
+
+
+#endif // CONFIG_IEC

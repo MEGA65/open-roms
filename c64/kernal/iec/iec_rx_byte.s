@@ -4,6 +4,10 @@
 //
 // Preserves .X and .Y registers
 
+
+#if CONFIG_IEC
+
+
 iec_rx_byte:
 
 	// Store .X and .Y on the stack - preserve them
@@ -107,16 +111,8 @@ iec_rx_clk_wait2:
 	// Timeout
 	jsr kernalstatus_EOI
 	pla
-	
-	// Restore registers
-	pla
-	tay
-	pla
-	tax
-    
-	sec // XXX confirm that sec is really a way to report timeout here
-	cli
-	rts
+
+	jmp iec_rx_end
 !:
 	// More bits?
 	dex
@@ -128,18 +124,23 @@ iec_rx_clk_wait2:
 	// the next byte. (p11).
 	jsr iec_release_clk_pull_data
 
-	// Retreive the received byte
+	// Retrieve the received byte
 	pla
 	
 	// Restore registers
 	sta TBTCNT // $A4 is a byte buffer according to http://sta.c64.org/cbm64mem.html
-	pla
-	tay
-	pla
-	tax
+	
+	// FALLTROUGH
+
+iec_rx_end:
+
+	ply_trash_a
+	plx_trash_a
 	lda TBTCNT
 
 	clc
 	cli
 	rts
 
+
+#endif // CONFIG_IEC

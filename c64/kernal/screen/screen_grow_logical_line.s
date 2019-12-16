@@ -58,8 +58,7 @@ screen_grow_logical_line:
 	lda EAL+1
 	pha
 
-	// XXX prevent cursor from interfering
-	// XXX fix TBLX value
+	// XXX fix TBLX value, it seems to show logical line number, which is wrong!
 
 	// Set pointers to end of screen line, and one line
 	// above.  (It is always one physical line, because
@@ -96,6 +95,12 @@ cl_inner:
 	sta (PNT),y
 	dey
 	bpl cl_inner
+
+	// This ugly hack prevents cursor blink interference     XXX solve this in better way
+	php
+	sei
+	jsr cursor_hide_if_visible
+	plp
 
 	// Decrement all pointers by 40
 	// Low bytes are in common pairs

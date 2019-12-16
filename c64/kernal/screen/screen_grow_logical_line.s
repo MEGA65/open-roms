@@ -1,10 +1,24 @@
 
-screen_grow_logical_line:
-	ldy TBLX
-	// Don't grow line if it is already grown
-	lda LDTBL,y
-	bmi_far not_last_line // done grow line
 
+screen_grow_logical_line_done:
+	rts
+
+screen_grow_logical_line:
+	
+	// Do not grow line if it is already grown
+	ldy TBLX
+	lda LDTBL,y
+	bmi screen_grow_logical_line_done
+
+	// Do not grow line if previous grown
+	dey
+	bmi !+
+	lda LDTBL,y
+	bmi screen_grow_logical_line_done
+!:
+	iny
+
+	// Mark current line as grown
 	lda #$80
 	sta LDTBL,y
 
@@ -13,8 +27,8 @@ screen_grow_logical_line:
 	// Then we need to scroll the screen up
 	jsr screen_scroll_up_if_on_last_line
 
-	// Count the number of logical lines to scroll down
-	ldx #$00
+	// Count the number of physical lines to scroll down
+	ldx #$01
 	ldy TBLX
 !:
 	iny
@@ -43,6 +57,9 @@ screen_grow_logical_line:
 	pha
 	lda EAL+1
 	pha
+
+	// XXX prevent cursor from interfering
+	// XXX fix TBLX value
 
 	// Set pointers to end of screen line, and one line
 	// above.  (It is always one physical line, because

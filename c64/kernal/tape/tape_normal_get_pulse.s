@@ -32,11 +32,12 @@ tape_normal_get_pulse:
 	// lda - 4 cycles
 	// ldx - 2 cycles
 	// stx - 4 cycles
-	// plus approx. 3 cycles (bit + beq time divided by 2) from value change to 'bit' instruction,
-	// this is total 19 cycles, or $5 periods of 4 ticks (timer A) each - we need to take it into account
+	// plus average 3 cycles (bit + beq time divided by 2) from value change to 'bit' instruction
+	// minus average 2 cycles due to timer A running continouslyy (might start before the pulse)
+	// this is total 17 cycles, or $4 periods of 4 ticks (timer A) each - we need to take it into account
 	// every time we check the pulse length
 
-	cmp #($100 - $6C - $05)            // short vs medium is the default check
+	cmp #($100 - $6C - $04)            // short vs medium is the default check
 	rts
 
 

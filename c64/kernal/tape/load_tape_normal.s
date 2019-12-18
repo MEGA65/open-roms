@@ -49,7 +49,7 @@ load_tape_normal:
 	// Let timer A run continuously
 
 	ldx #%00010001                     // start timer, force latch reload
-	stx CIA2_CRA  // $DD0E
+	stx CIA2_CRA    // $DD0E
 	
 	// Start playing
 	jsr tape_ask_play

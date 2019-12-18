@@ -7,17 +7,19 @@
 // We have the following possible CPU frequencies:
 // - C64    PAL:  CPU frequency 0.985248 MHz
 // - C64    NTSC: CPU frequency 1.022727 MHz
-// - VIC-20 PAL:  CPU frequency 1.108405 MHz
-// - VIC-20 NTSC: CPU frequency 1.022727 MHz
-// Since VIC-20 tapes are not expected to be loaded often, routine will be optimized for C64 timings
-
+// Average is 1.0039875 MHz and we will take this value for calculation (but it really does not change much).
+//
 // We have to distinguish the following pulse lengths (http://sidpreservation.6581.org/tape-format/):
 // - S (short)    352 us
 // - M (medium)   512 us
 // - L (long)     672 us
-// This gives us the following thresholds (where average CPU frequency is 1.0039875 MHz):
-// - S vs M       432 us (54 8-cycle periods)
-// - M vs L       592 us (74 8-cycle periods)
+//
+// This gives us the following thresholds
+// - S vs M       432 us (108 or $6C 4-tick periods)
+// - M vs L       592 us (149 or $95 4-tick periods)
+//
+// 4-tick periods should be enough - TAP file format description (http://unusedino.de/ec64/technical/formats/tap.html)
+// tells it uses exactly 8 PAL ticks as a resolution
 
 // The following encoding is used:
 // (S,M) = 0 bit
@@ -30,7 +32,50 @@
 
 
 load_tape_normal:
-	STUB_IMPLEMENTATION()
+
+	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
+
+	// Setup CIA #2 timers
+	
+	ldx #$03                           // set timer A to 4 ticks
+	stx CIA2_TIMALO // $DD04
+	ldx #$00
+	stx CIA2_TIMAHI // $DD05
+
+	stx CIA2_TIMBHI // $DD07
+	dex                                // puts $FF - for running timer B as long as possible
+	stx CIA2_TIMBLO // $DD06
+
+	// Let timer A run continuously
+
+	ldx #%00010001                     // start timer, force latch reload
+	stx CIA2_CRA  // $DD0E
+
+	// Start playing
+
+	jsr tape_clean_sid
+	jsr tape_ask_play
+
+	// FALLTROUGH
+
+load_tape_normal_header:
+
+	// XXX replace this placeholder by a real routine
+
+
+	jsr tape_load_get_pulse
+	ldx #$00
+	cmp #($100 - $6C - $05)
+
+	bcs !+
+#if CONFIG_COLORS_BRAND && CONFIG_BRAND_ULTIMATE_64
+	ldx #$0B
+#else
+	ldx #$06
+#endif
+!:
+	stx VIC_EXTCOL
+	jmp load_tape_normal_header
 
 
 #endif

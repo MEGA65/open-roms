@@ -22,7 +22,10 @@ load_tape_turbo:
 	lda #$FE                           // timer threshold for TurboTape
 	sta CIA2_TIMALO // $DD04
 
+	// Prepare for sound effects
 	jsr tape_clean_sid
+
+	// Start playing
 	jsr tape_ask_play
 
 	// FALLTROUGH

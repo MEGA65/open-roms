@@ -2,6 +2,8 @@
 //
 // Tape (turbo) helper routine - byte reading
 //
+// Returns byte in .A
+//
 
 // Based on routine by enthusi/Onslaught, found here:
 // - https://codebase64.pokefinder.org/doku.php?id=base:turbotape_loader_source

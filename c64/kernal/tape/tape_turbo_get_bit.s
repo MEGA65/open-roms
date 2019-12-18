@@ -26,11 +26,7 @@ tape_turbo_get_bit:
 	asl
 	sta SID_SIGVOL
 	beq !+
-#if CONFIG_COLORS_BRAND && CONFIG_BRAND_ULTIMATE_64
-	lda #$0B
-#else
 	lda #$06
-#endif
 !:
 	sta VIC_EXTCOL
 	pla

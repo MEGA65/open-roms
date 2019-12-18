@@ -51,9 +51,10 @@ load_tape_normal:
 	ldx #%00010001                     // start timer, force latch reload
 	stx CIA2_CRA  // $DD0E
 
+	// Prepare for sound effects
+	jsr tape_clean_sid                 // XXX implement some effects
+	
 	// Start playing
-
-	jsr tape_clean_sid
 	jsr tape_ask_play
 
 	// FALLTROUGH
@@ -62,19 +63,7 @@ load_tape_normal_header:
 
 	// XXX replace this placeholder by a real routine
 
-
-	jsr tape_load_get_pulse
-	ldx #$00
-	cmp #($100 - $6C - $05)
-
-	bcs !+
-#if CONFIG_COLORS_BRAND && CONFIG_BRAND_ULTIMATE_64
-	ldx #$0B
-#else
-	ldx #$06
-#endif
-!:
-	stx VIC_EXTCOL
+	jsr tape_normal_get_byte
 	jmp load_tape_normal_header
 
 

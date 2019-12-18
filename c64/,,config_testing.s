@@ -45,8 +45,10 @@
 // #define CONFIG_IEC_BLANK_SCREEN
 // #define CONFIG_IEC_DOLPHINDOS  // please keep disabled for now  
 #define CONFIG_IEC_JIFFYDOS
+
 // #define CONFIG_TAPE_NORMAL     // please keep disabled for now
 #define CONFIG_TAPE_TURBO
+
 // #define CONFIG_RS232_UP2400    // please keep disabled for now
 // #define CONFIG_RS232_UP9600    // please keep disabled for now
 

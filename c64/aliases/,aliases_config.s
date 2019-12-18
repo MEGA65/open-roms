@@ -303,12 +303,14 @@
 {
 	.var features_str = ""
 
-#if CONFIG_TAPE_NORMAL
-	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL")
-#elif CONFIG_TAPE_TURBO
+#if CONFIG_TAPE_NORMAL && !CONFIG_TAPE_TURBO
+	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL-DEV")
+#endif
+#if !CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
 	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD TURBO")
-#elif CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
-	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL TURBO")
+#endif
+#if CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
+	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL-DEV TURBO")
 #endif
 
 	.eval feature_new_line = true

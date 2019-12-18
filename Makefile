@@ -2,7 +2,7 @@
 # Test files
 
 TESTDISK = testsuite/testdisk.d64
-TESTTAPE = testsuite/testtape-turbo.tap
+TESTTAPE = testsuite/testtape-normal.tap
 
 # Source files
 

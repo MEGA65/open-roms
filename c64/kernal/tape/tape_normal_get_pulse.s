@@ -9,7 +9,7 @@
 #if CONFIG_TAPE_NORMAL
 
 
-tape_load_get_pulse:
+tape_normal_get_pulse:
 
 	// Contrary to original ROM implementation we do not use interrupts
 	// (see http://unusedino.de/ec64/technical/formats/tap.html) - busy wait
@@ -36,6 +36,7 @@ tape_load_get_pulse:
 	// this is total 19 cycles, or $5 periods of 4 ticks (timer A) each - we need to take it into account
 	// every time we check the pulse length
 
+	cmp #($100 - $6C - $05)            // short vs medium is the default check
 	rts
 
 

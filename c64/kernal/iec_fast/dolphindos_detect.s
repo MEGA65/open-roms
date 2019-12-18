@@ -18,9 +18,38 @@
 #if CONFIG_IEC_DOLPHINDOS
 
 
-dolphindos_detect:
+dolphindos_detect: // XXX find out why this does not work
+
+	// According to logs collected from modified VICE emulator, original DolphinDOS ROM
+	// constantly reads $DD0D and $DD01 until handshake bit of $DD0D is set, or some kind
+	// of timeout occurs
+
+	php
+	ldx #$20
+
+dolphindos_detect_loop:
+
+	lda CIA2_ICR
+	and #$10
+	bne dolphindos_detect_success
+	lda CIA2_PRB                       // XXX do we need this read?
+
+	dex
+	bne dolphindos_detect_loop
+
+	// Protocol not detected
+
+	plp
+	rts
+
+dolphindos_detect_success:
+
+	// XXX protocol not implemented yet
 
 	panic #$00
+
+	plp
+	rts
 
 
 #endif // CONFIG_IEC_DOLPHINDOS

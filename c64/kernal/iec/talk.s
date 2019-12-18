@@ -41,8 +41,17 @@ common_talk_listen: // common part of TALK and LISTEN
 
 #endif // CONFIG_IEC_JIFFYDOS
 
+#if CONFIG_IEC_DOLPHINDOS
+
+	jsr iec_tx_command
+	jmp dolphindos_detect
+
+#else
 
 	jmp iec_tx_command
+
+#endif // no CONFIG_IEC_JIFFYDOS
+
 
 #else
 

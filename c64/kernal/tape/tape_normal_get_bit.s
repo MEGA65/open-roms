@@ -2,7 +2,7 @@
 //
 // Tape (turbo) helper routine - bit reading
 //
-// Returns bit in Zero flag, Carry set means error
+// Returns bit in Zero flag, Carry set means error, on 0 bit .A is 0 too
 //
 
 
@@ -23,7 +23,7 @@ tape_normal_get_bit:
 
 	// We have a bit '1'
 
-	clc
+	// Carry flag already clear
 	lda #$06
 
 	// FALLTROUGH
@@ -43,13 +43,12 @@ tape_normal_get_bit_0:
 
 	// We have a bit '0'
 
-	// Carry flag already clear
+	clc
 	lda #$00
 	beq tape_normal_get_bit_done       // branch always
 
 
 tape_normal_get_bit_error:
-
 	sec
 	rts
 

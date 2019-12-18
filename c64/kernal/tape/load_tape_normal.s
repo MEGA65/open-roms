@@ -50,9 +50,6 @@ load_tape_normal:
 
 	ldx #%00010001                     // start timer, force latch reload
 	stx CIA2_CRA  // $DD0E
-
-	// Prepare for sound effects
-	jsr tape_clean_sid                 // XXX implement some effects
 	
 	// Start playing
 	jsr tape_ask_play

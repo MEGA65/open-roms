@@ -775,8 +775,11 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
             fixedRoutines[targetAddr] = floatingRoutines.back();
             statFree   -= routineSize;
 
-            logOutput << "forced reducing gap $" << std::hex << gapAddress << std::dec << " to size " <<
-                          gaps[gapAddress] << "\n";
+            if (gaps.size() > 1)
+            {
+                logOutput << "forced reducing gap $" << std::hex << gapAddress << std::dec <<
+                             " to size " << gaps[gapAddress] << "\n";
+            }
 
             spacing.resize(GLOBAL_maxFileNameLen + 4 - floatingRoutines.back()->fileName.length(), ' ');
             logOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<

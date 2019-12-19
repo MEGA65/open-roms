@@ -61,13 +61,59 @@ load_tape_normal:
 
 load_tape_normal_header:
 
-	lda #$00
-	sta ROPRTY                         // initialize EOR checksum
-!:
 	jsr tape_normal_pilot
 	ldy #$89
 	jsr tape_normal_sync
-	bcs !-
+	bcs load_tape_normal_header
+
+	ldy #$10
+
+	// FALLTROUGH
+
+load_tape_normal_header_loop:           // this strange loop puts metadata after file name
+
+	jsr tape_normal_get_byte            // XXX handle errors
+	sta (TAPE1), y
+	iny
+	cpy #$14
+	bne !+
+	ldy #$00
+!:
+	cpy #$10
+	bne load_tape_normal_header_loop
+
+	// Read pilot and sync of the second header
+
+	jsr tape_normal_pilot
+	ldy #$09
+	jsr tape_normal_sync
+	bcs load_tape_normal_header
+
+	// XXX do not skip second header, use it to correct data
+	ldy #$15
+!:
+	jsr tape_normal_get_byte
+	dey
+	bne !-
+
+	// For now only one type of header is supported
+
+	lda TAPE1+$10
+	cmp #$01
+	bne load_tape_normal_header        // XXX also handle other header types
+
+	// Handle the header
+
+	jsr tape_handle_header
+	bcs load_tape_normal_header        // if name does not match, look for other header
+
+	// FALLTROUGH
+
+
+
+
+	lda #$00
+	sta ROPRTY                         // initialize EOR checksum XXX is it needed here?
 
 	// XXX replace this placeholder with a real routine
 !:

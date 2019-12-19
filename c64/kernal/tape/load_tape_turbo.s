@@ -58,6 +58,8 @@ load_tape_turbo_header_loop:           // this strange loop puts metadata after 
 	cpy #$10
 	bne load_tape_turbo_header_loop
 
+	// Handle the header
+
 	jsr tape_clean_sid
 	jsr tape_handle_header
 	bcs load_tape_turbo_header         // if name does not match, look for other header

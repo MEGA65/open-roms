@@ -61,25 +61,25 @@ load_tape_normal:
 
 load_tape_normal_header:
 
+	// Read pilot and sync of the first header
+
 	jsr tape_normal_pilot
 	ldy #$89
 	jsr tape_normal_sync
 	bcs load_tape_normal_header
 
-	ldy #$10
+	ldy #$00
 
 	// FALLTROUGH
 
-load_tape_normal_header_loop:           // this strange loop puts metadata after file name
+load_tape_normal_header_loop:
+
+	// Read the header
 
 	jsr tape_normal_get_byte            // XXX handle errors
 	sta (TAPE1), y
 	iny
-	cpy #$14
-	bne !+
-	ldy #$00
-!:
-	cpy #$10
+	cpy #$15
 	bne load_tape_normal_header_loop
 
 	// Read pilot and sync of the second header
@@ -98,9 +98,11 @@ load_tape_normal_header_loop:           // this strange loop puts metadata after
 
 	// For now only one type of header is supported
 
-	lda TAPE1+$10
+	ldy #$00
+	lda (TAPE1),y
+
 	cmp #$01
-	bne load_tape_normal_header        // XXX also handle other header types
+	bne load_tape_normal_header        // XXX also handle other header types, see Mapping the C64 page 77
 
 	// Handle the header
 
@@ -109,11 +111,10 @@ load_tape_normal_header_loop:           // this strange loop puts metadata after
 
 	// FALLTROUGH
 
+load_tape_normal_payload:
 
 
 
-	lda #$00
-	sta ROPRTY                         // initialize EOR checksum XXX is it needed here?
 
 	// XXX replace this placeholder with a real routine
 !:

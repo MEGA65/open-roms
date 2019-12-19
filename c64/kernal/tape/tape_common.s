@@ -147,12 +147,12 @@ tape_handle_header:
 	ldx #__MSG_KERNAL_FOUND
 	jsr print_kernal_message
 
-	ldy #$00
+	ldy #$05
 !:
 	lda (TAPE1), y
 	jsr JCHROUT
 	iny
-	cpy #$10
+	cpy #$15
 	bne !-
 
 	// Header, wait for user decision
@@ -167,7 +167,7 @@ tape_handle_header:
 
 	// Setup STAL and EAL
 
-	ldy #$10
+	ldy #$01
 	lda (TAPE1), y
 	sta STAL+0
 

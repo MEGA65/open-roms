@@ -135,7 +135,7 @@
 	.label SA        = $B9  //          current secondary address
 	.label FA        = $BA  //          current device number
 	.label FNADDR    = $BB  // $BB-$BC  current file name pointer
-	.label ROPRTY    = $BD  //          tape / RS-232 temporary storage
+	.label ROPRTY    = $BD  //          -- NOT IMPLEMENTED -- tape / RS-232 temporary storage
 	.label FSBLK     = $BE  //          -- NOT IMPLEMENTED --
 	.label MYCH      = $BF  //          -- NOT IMPLEMENTED --
 	.label CAS1      = $C0  //          tape motor interlock

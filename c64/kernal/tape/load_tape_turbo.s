@@ -8,6 +8,8 @@
 
 
 // XXX use calibration bits to improve reading
+// XXX find out how to use B0 tape timing
+// XXX put header type into (TAPE1)
 
 
 #if CONFIG_TAPE_TURBO
@@ -38,24 +40,25 @@ load_tape_turbo_header:
 	// 1 byte (skipped) - file type (0 = data, odd value = relocatable, even value = non-relocatable)
 	// 2 bytes          - start address
 	// 2 bytes          - end address + 1
-	// 1 byte           - if $0B (tape timing) contained at the time of saving
+	// 1 byte           - if $B0 (tape timing) contained at the time of saving
+	//                    (we skip this one to match normal system header)
 	// 16 bytes         - filename, padded with 0x20
 
 	jsr tape_turbo_sync_header
-	ldy #$10
+	ldy #$01                           // to match original ROM header layout
 
 	// FALLTROUGH
 
-load_tape_turbo_header_loop:           // this strange loop puts metadata after file name
+load_tape_turbo_header_loop:
 
 	jsr tape_turbo_get_byte
 	sta (TAPE1), y
 	iny
-	cpy #$15
+	cpy #$05
 	bne !+
-	ldy #$00
+	jsr tape_turbo_get_byte            // tape timing - skip this XXX how to use it?
 !:
-	cpy #$10
+	cpy #$15
 	bne load_tape_turbo_header_loop
 
 	// Handle the header

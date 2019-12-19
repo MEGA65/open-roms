@@ -748,7 +748,8 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
 
     std::string spacing;
 
-    bool repeat = true;
+    bool repeat  = true;
+    bool lastGap = false;
     while (repeat && !floatingRoutines.empty() && !gaps.empty())
     {
         repeat = false;
@@ -764,6 +765,13 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
                 matchingGaps++;
                 gapAddress = gap.first;
             }
+        }
+
+        if (!lastGap && gaps.size() == 1)
+        {
+            lastGap = true;
+            logOutput << "selected gap: $" << std::hex << gapAddress << std::dec <<
+                         " (size: " << gaps[gapAddress] << ") - the last remaining" << "\n";
         }
 
         if (matchingGaps == 1)

@@ -225,25 +225,12 @@
 
 
 
-// Handle processor configuration
-
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
-
-#define HAS_BCD_SAFE_INTERRUPTS
-
-	.pseudocommand phx { .byte $DA }
-	.pseudocommand phy { .byte $5A }
-	.pseudocommand plx { .byte $FA }
-	.pseudocommand ply { .byte $7A }
-
-#endif
-
-
 // Handle I/O configuration
 
 #if CONFIG_RS232_UP2400 || CONFIG_RS232_UP9600
 #define HAS_RS232
 #endif
+
 
 
 // Handle configuration of various features

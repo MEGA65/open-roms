@@ -15,12 +15,12 @@
 tape_turbo_get_byte:
 
 	lda #$01
-	sta ROPRTY                         // init the to-be-read byte with 1 (canary bit to mark loop end)
+	sta INBIT                          // init the to-be-read byte with 1 (canary bit to mark loop end)
 !:
 	jsr tape_turbo_get_bit	
-	rol ROPRTY
+	rol INBIT
 	bcc !-	                           // is the initial 1 shifted into carry already?
-	lda ROPRTY                         // much nicer than ldx #8: dex: loop
+	lda INBIT                          // much nicer than ldx #8: dex: loop
 	
 	rts
 

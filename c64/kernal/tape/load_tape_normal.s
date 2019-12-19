@@ -28,6 +28,9 @@
 // (L,S) = end-of-data marker
 
 
+// XXX use pilot to calibrate reading speed
+
+
 #if CONFIG_TAPE_NORMAL
 
 
@@ -58,10 +61,18 @@ load_tape_normal:
 
 load_tape_normal_header:
 
-	// XXX replace this placeholder by a real routine
+	lda #$00
+	sta ROPRTY                         // initialize EOR checksum
+!:
+	jsr tape_normal_pilot
+	ldy #$89
+	jsr tape_normal_sync
+	bcs !-
 
+	// XXX replace this placeholder with a real routine
+!:
 	jsr tape_normal_get_byte
-	jmp load_tape_normal_header
+	jmp !-
 
 
 #endif

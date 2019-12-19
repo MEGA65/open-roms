@@ -14,17 +14,17 @@ tape_normal_get_bit:
 	// Fetch the first pulse
 
 	jsr tape_normal_get_pulse
-	bcc tape_normal_get_bit_0
+	bcc tape_normal_get_bit_1
 
-	// First impulse was short, second should be long
+	// First impulse was short, second should be medium
 
 	jsr tape_normal_get_pulse
 	bcs tape_normal_get_bit_error
 
-	// We have a bit '1'
+	// We have a bit '0'
 
 	// Carry flag already clear
-	lda #$06
+	lda #$00
 
 	// FALLTROUGH
 
@@ -34,21 +34,22 @@ tape_normal_get_bit_done:
 	rts
 
 
-tape_normal_get_bit_0:
+tape_normal_get_bit_1:
 
-	// First impulse was long, second should be short
+	// First impulse was medium, second should be short
 
 	jsr tape_normal_get_pulse
 	bcc tape_normal_get_bit_error
 
-	// We have a bit '0'
+	// We have a bit '1'
 
 	clc
-	lda #$00
-	beq tape_normal_get_bit_done       // branch always
+	lda #$06
+	bne tape_normal_get_bit_done       // branch always
 
 
 tape_normal_get_bit_error:
+	
 	sec
 	rts
 

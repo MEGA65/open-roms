@@ -111,7 +111,7 @@
 	.label TBTCNT    = $A4  //          temporary variable for tape and IEC, [!] our usage probably differs in details
 	.label CNTDN     = $A5  //          -- NOT IMPLEMENTED --
 	.label BUFPNT    = $A6  //          -- NOT IMPLEMENTED --
-	.label INBIT     = $A7  //          -- NOT IMPLEMENTED --
+	.label INBIT     = $A7  //          temporary storage for tape / RS-232 received bits
 #if !CONFIG_LEGACY_SCNKEY
 	.label BITCI     = $A8  //          -- NOT IMPLEMENTED --
 	.label RINONE    = $A9  //          -- WIP -- (UP9600 only) RS-232 check for start bit flag

@@ -117,7 +117,7 @@ build/target_generic/OUTB.BIN     build/target_generic/BASIC_combined.vs: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC) $(SRCDIR_BASIC) \
     c64/,,config_generic.s     build/target_generic/KERNAL_combined.sym \
     $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
-build/target_testing/OUTB.BIN     build/target_generic/BASIC_combined.vs: \
+build/target_testing/OUTB.BIN     build/target_testing/BASIC_combined.vs: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC) $(SRCDIR_BASIC) \
     c64/,,config_testing.s     build/target_testing/KERNAL_combined.sym \
     $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))

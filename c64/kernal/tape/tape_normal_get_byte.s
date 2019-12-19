@@ -13,9 +13,9 @@ tape_normal_get_byte:
 
 	// Init byte checksum and canary bit
 	lda #$01
-	sta ROPRTY
+	sta PRTY
 	lda #%01111111                     // canary bit is 0
-	pha
+	sta INBIT
 
 	// First we need a byte marker - (L,M)
 !:
@@ -35,16 +35,13 @@ tape_normal_get_byte_loop:
 
 	// Handle parity bit
 	lda #$01
-	eor ROPRTY
-	sta ROPRTY
+	eor PRTY
+	sta PRTY
 
 	sec
 !:                                     // moved bit state from Zero to Carry flag
 
-	pla
-	ror                                // put the bit in
-	pha
-
+	ror INBIT                          // put the bit in
 	bcs tape_normal_get_byte_loop      // loop if no canary bit reached
 
 	// Byte retrieved (on stack), now we need to validate the checksum
@@ -54,8 +51,8 @@ tape_normal_get_byte_loop:
 	beq !+
 	lda #$01
 !:
-	eor ROPRTY
-	beq tape_normal_get_byte_error
+	eor PRTY
+	bne tape_normal_get_byte_error
 
 	// Checksum validated succesfully
 	
@@ -66,8 +63,8 @@ tape_normal_get_byte_loop:
 
 tape_normal_get_byte_done:
 
-	pla
 	stx VIC_EXTCOL
+	lda INBIT
 	rts
 
 

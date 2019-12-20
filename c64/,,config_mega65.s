@@ -1,5 +1,5 @@
 
-.const CONFIG_ID = $01 // should be 1 byte, different for each config file!
+.const CONFIG_ID = $02 // should be 1 byte, different for each config file!
 .encoding "petscii_upper"
 
 //
@@ -9,8 +9,6 @@
 // Idea:
 // - sane defaults for the Mega 65 FPGA computer
 // - do not enable features which are a significant compatibility risk
-// - unless VICE gains Commodore 65 (or at least Flash8 cartridge) emulation support,
-//   do not enable CPU-specific optimizations; ROMs would be hard to test
 
 
 // Hardware platform and brand
@@ -28,9 +26,9 @@
 
 // Processor instruction set
 
-#define CONFIG_CPU_MOS_6502
+// #define CONFIG_CPU_MOS_6502
 // #define CONFIG_CPU_WDC_65C02
-// #define CONFIG_CPU_CSG_65CE02
+#define CONFIG_CPU_CSG_65CE02
 // #define CONFIG_CPU_WDC_65816
 
 
@@ -44,14 +42,9 @@
 
 #define CONFIG_IEC
 #define CONFIG_IEC_BLANK_SCREEN
-// #define CONFIG_IEC_DOLPHINDOS  // please keep disabled for now  
 #define CONFIG_IEC_JIFFYDOS
 
-// #define CONFIG_TAPE_NORMAL     // please keep disabled for now
 // #define CONFIG_TAPE_TURBO
-
-// #define CONFIG_RS232_UP2400    // please keep disabled for now
-// #define CONFIG_RS232_UP9600    // please keep disabled for now
 
 
 // Multiple SID support

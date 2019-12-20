@@ -1,5 +1,5 @@
 
-.const CONFIG_ID = $03 // should be 1 byte, different for each config file!
+.const CONFIG_ID = $00 // should be 1 byte, different for each config file!
 .encoding "petscii_upper"
 
 //
@@ -7,8 +7,8 @@
 //
 
 // Idea:
-// - sane defaults for the Ultimate 64 FPGA computer
-// - do not enable features which are a significant compatibility risk
+// - configuration for custom builds and for development
+// - file contains options to enable unfinished functionalities
 
 
 // Hardware platform and brand
@@ -16,12 +16,15 @@
 #define CONFIG_PLATFORM_COMMODORE_64
 
 // #define CONFIG_MB_MEGA_65
-#define CONFIG_MB_ULTIMATE_64
+// #define CONFIG_MB_ULTIMATE_64
 
+#define CONFIG_BRAND_CUSTOM_BUILD
 // #define CONFIG_BRAND_GENERIC
 // #define CONFIG_BRAND_TESTING
 // #define CONFIG_BRAND_MEGA_65
-#define CONFIG_BRAND_ULTIMATE_64
+// #define CONFIG_BRAND_ULTIMATE_64
+
+.const CONFIG_CUSTOM_BRAND = @"CUSTOM BUILD"
 
 
 // Processor instruction set
@@ -42,10 +45,14 @@
 
 #define CONFIG_IEC
 #define CONFIG_IEC_BLANK_SCREEN
+// #define CONFIG_IEC_DOLPHINDOS  // please keep disabled for now  
 #define CONFIG_IEC_JIFFYDOS
 
+#define CONFIG_TAPE_NORMAL        // not finished yet!
 #define CONFIG_TAPE_TURBO
 
+// #define CONFIG_RS232_UP2400    // please keep disabled for now
+// #define CONFIG_RS232_UP9600    // please keep disabled for now
 
 
 // Multiple SID support
@@ -53,11 +60,11 @@
 // #define CONFIG_SID_2ND
 .const CONFIG_SID_2ND_ADDRESS = $D420
 
-// #define CONFIG_SID_3RD
+// #define CONFIG_SID_3RD 
 .const CONFIG_SID_3RD_ADDRESS = $D440
 
-#define CONFIG_SID_D4XX
-#define CONFIG_SID_D5XX
+// #define CONFIG_SID_D4XX
+// #define CONFIG_SID_D5XX
 
 
 // Keyboard settings
@@ -112,7 +119,7 @@
 
 // Eye candy
 
-#define CONFIG_COLORS_BRAND
+// #define CONFIG_COLORS_BRAND
 // #define CONFIG_BANNER_SIMPLE
 #define CONFIG_BANNER_FANCY
 // #define CONFIG_BANNER_BRAND

@@ -1,5 +1,5 @@
 
-.const CONFIG_ID = $00 // should be 1 byte, different for each config file!
+.const CONFIG_ID = $01 // should be 1 byte, different for each config file!
 .encoding "petscii_upper"
 
 //
@@ -42,14 +42,9 @@
 
 #define CONFIG_IEC
 #define CONFIG_IEC_BLANK_SCREEN
-// #define CONFIG_IEC_DOLPHINDOS  // please keep disabled for now  
 #define CONFIG_IEC_JIFFYDOS
 
-#define CONFIG_TAPE_NORMAL        // not finished yet!
 #define CONFIG_TAPE_TURBO
-
-// #define CONFIG_RS232_UP2400    // please keep disabled for now
-// #define CONFIG_RS232_UP9600    // please keep disabled for now
 
 
 // Multiple SID support

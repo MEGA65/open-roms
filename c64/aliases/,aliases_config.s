@@ -47,6 +47,9 @@
 {
 	.var selected = 0;
 
+#if CONFIG_BRAND_CUSTOM_BUILD
+	.eval selected++
+#endif
 #if CONFIG_BRAND_GENERIC
 	.eval selected++
 #endif
@@ -62,11 +65,11 @@
 
 	.if (selected != 1) .error "Please select exactly one CONFIG_BRAND_* option"
 
-#if CONFIG_MB_MEGA_65 && !(CONFIG_BRAND_MEGA_65 || CONFIG_BRAND_TESTING)
-	.error "Please select brand either matching the CONFIG_MB_*, or a testing one"
+#if CONFIG_MB_MEGA_65 && !(CONFIG_BRAND_MEGA_65 || CONFIG_BRAND_TESTING || CONFIG_BRAND_CUSTOM_BUILD)
+	.error "Please select brand either matching the CONFIG_MB_*, or a testing/custom one"
 #endif
-#if CONFIG_MB_ULTIMATE_64 && !(CONFIG_BRAND_ULTIMATE_64 || CONFIG_BRAND_TESTING)
-	.error "Please select brand either matching the CONFIG_MB_*, or a testing one"
+#if CONFIG_MB_ULTIMATE_64 && !(CONFIG_BRAND_ULTIMATE_64 || CONFIG_BRAND_TESTING || CONFIG_BRAND_CUSTOM_BUILD)
+	.error "Please select brand either matching the CONFIG_MB_*, or a testing/custom one"
 #endif
 }
 

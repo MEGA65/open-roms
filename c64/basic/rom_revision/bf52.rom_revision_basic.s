@@ -21,7 +21,12 @@ rom_revision_basic_string:
 
 	// $BF55
 
+#if !CONFIG_BRAND_CUSTOM_BUILD
 	.text "(DEVEL SNAPSHOT)"  // actual ROM revision string; up to 16 characters
+#else
+	.text "(CUSTOM BUILD)"
+#endif
+
 	.byte $00                 // marks the end of string
 
 __rom_revision_basic_end:

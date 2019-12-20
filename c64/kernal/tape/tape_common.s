@@ -8,21 +8,6 @@
 
 
 //
-// Check if VERIFY asked - if yes, terminate loading
-//
-
-tape_ditch_verify:
-
-	lda VERCKK
-	bne !+
-	rts
-!:
-	pla
-	pla
-	jmp lvs_device_not_found_error
-
-
-//
 // Loading terminated by user
 //
 
@@ -32,44 +17,6 @@ tape_break_error:
 	pla
 	cli
 	jmp kernalerror_ROUTINE_TERMINATED
-
-
-//
-// Handle screen (visible/blanked) + tape deck motor (on/off),
-// store/restore screen color
-//
-
-tape_screen_on_motor_off:
-
-	jsr tape_motor_off
-
-	lda COLSTORE
-	sta VIC_EXTCOL
-
-	jmp screen_on
-
-tape_screen_off_motor_on:
-	lda VIC_EXTCOL
-	sta COLSTORE
-
-	jsr screen_off
-	jmp tape_motor_on
-
-
-//
-// Clear the SID settings - for sound effects during LOAD
-//
-
-tape_clean_sid:
-
-	lda #$00
-	ldy #$1C
-!:
-	sta __SID_BASE, y
-	dey
-	bpl !-
-
-	rts
 
 
 //

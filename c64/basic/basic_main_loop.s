@@ -64,7 +64,7 @@ rsl_l1:
 
 	// Check if a wedge should take over
 
-#if CONFIG_DOS_WEDGE || CONFIG_TAPE_WEDGE || CONFIG_HEAD_FIT_TOOL
+#if CONFIG_DOS_WEDGE || CONFIG_TAPE_WEDGE
 	
 	ldx __tokenise_work1 // here is the size of input
 	
@@ -75,7 +75,7 @@ rsl_l1:
 	cmp #$40 // '@'
 	beq_far wedge_dos
 #endif
-#if CONFIG_TAPE_WEDGE || CONFIG_HEAD_FIT_TOOL
+#if CONFIG_TAPE_WEDGE
 	cmp #$1F // left arrow
 	beq_far wedge_tape
 #endif

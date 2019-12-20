@@ -114,7 +114,6 @@
 #define CONFIG_PANIC_SCREEN
 #define CONFIG_DOS_WEDGE
 #define CONFIG_TAPE_WEDGE
-#define CONFIG_HEAD_FIT_TOOL           // ver experimental!
 #define CONFIG_BCD_SAFE_INTERRUPTS
 
 

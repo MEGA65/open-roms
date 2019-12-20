@@ -20,7 +20,7 @@ tape_normal_get_byte:
 	// First we need a byte marker - (L,M)
 !:
 	jsr tape_normal_get_pulse
-	cmp #($FF - $95 - $04)
+	cmp #($100 - $95 - $04)
 	bcs !-                             // too short for a long pulse
 	jsr tape_normal_get_pulse
 	bcs !-                             // too short for a medium pulse

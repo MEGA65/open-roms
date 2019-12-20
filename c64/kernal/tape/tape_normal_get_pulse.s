@@ -16,9 +16,6 @@ tape_normal_get_pulse:
 	// implementation is probably just shorter
 
 	lda #$10
-!:
-	bit CIA1_ICR    // $DC0D
-	bne !-
 !:   
 	bit CIA1_ICR    // $DC0D
 	beq !-                             // busy loop to detect signal, restart timer afterwards

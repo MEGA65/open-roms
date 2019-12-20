@@ -1,5 +1,5 @@
 
-#if CONFIG_TAPE_WEDGE
+#if CONFIG_TAPE_WEDGE || CONFIG_HEAD_FIT_TOOL
 
 
 // .X has to contain size of the buffer
@@ -13,6 +13,19 @@ wedge_tape:
 	bne_far do_SYNTAX_error
 
 	lda BUF+1
+
+#if CONFIG_HEAD_FIT_TOOL
+
+	cmp #$48                           // 'H'
+	beq_far head_fit
+
+#endif
+#if !CONFIG_TAPE_WEDGE
+
+	jmp do_SYNTAX_error
+
+#endif
+
 	cmp #$4C                           // 'L'
 	bne_far do_SYNTAX_error
 
@@ -31,4 +44,4 @@ wedge_tape:
 	jmp cmd_load_got_secondaryaddress
 
 
-#endif // CONFIG_TAPE_WEDGE
+#endif

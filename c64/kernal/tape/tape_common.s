@@ -35,25 +35,6 @@ tape_break_error:
 
 
 //
-// Handle tape deck motor
-//
-
-tape_motor_off:
-
-	lda CPU_R6510
-	ora #$20
-	bne !+                             // branch always
-
-tape_motor_on:
-
-	lda CPU_R6510
-	and #($FF - $20)
-!:
-	sta CPU_R6510 
-	rts
-
-
-//
 // Handle screen (visible/blanked) + tape deck motor (on/off),
 // store/restore screen color
 //

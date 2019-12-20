@@ -26,3 +26,7 @@
 #if CONFIG_SHOW_PAL_NTSC
 .label print_pal_ntsc      = KERNAL.print_pal_ntsc
 #endif
+
+#if CONFIG_HEAD_FIT_TOOL
+.label head_fit            = KERNAL.head_fit
+#endif

@@ -6,7 +6,7 @@
 //
 
 
-#if CONFIG_TAPE_NORMAL
+#if CONFIG_TAPE_NORMAL || CONFIG_HEAD_FIT_TOOL
 
 
 tape_normal_get_pulse:
@@ -26,6 +26,8 @@ tape_normal_get_pulse:
 	ldx #%01010001                     // start timer, force latch reload, count timer A underflows
 	stx CIA2_CRB    // $DD0F
 
+#if CONFIG_TAPE_NORMAL 
+
 	// Since the signal appeared to the point of timer restart we used:
 	// bit - 4 cycles
 	// beq - 2 cycles
@@ -37,7 +39,10 @@ tape_normal_get_pulse:
 	// this is total 17 cycles, or $4 periods of 4 ticks (timer A) each - we need to take it into account
 	// every time we check the pulse length
 
-	cmp #($100 - $6C - $04)            // short vs medium is the default check
+	cmp #($FF - $6C - $04)            // short vs medium is the default check
+
+#endif
+
 	rts
 
 

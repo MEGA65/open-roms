@@ -36,7 +36,7 @@ __chrout_screen_jumptable_quote_guard:
 __chrout_screen_jumptable_codes_end:
 
 
-#if !HAS_OPCODES_65C02_XXX_DISABLED
+#if !HAS_OPCODES_65C02
 
 chrout_screen_jumptable_lo:
 

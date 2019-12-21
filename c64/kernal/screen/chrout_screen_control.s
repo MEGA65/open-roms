@@ -34,7 +34,7 @@ chrout_try_jumptable_loop_noquote:
 	bne !+
 
 	// Found, perform a jump to subroutine
-#if !HAS_OPCODES_65C02_XXX_DISABLED
+#if !HAS_OPCODES_65C02
 	lda chrout_screen_jumptable_hi, x
 	pha
 	lda chrout_screen_jumptable_lo, x
@@ -44,7 +44,7 @@ chrout_try_jumptable_loop_noquote:
 	txa
 	asl
 	tax
-	jmp (chrout_screen_jumptable, x) // XXX whyy Kick Assembler does not accept this?
+	jmp (chrout_screen_jumptable, x)
 #endif
 !:
 	dex

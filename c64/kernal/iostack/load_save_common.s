@@ -75,7 +75,7 @@ lvs_handle_byte_verify:
 	sec
 	rts
 
-#if CONFIG_IEC
+#if CONFIG_IEC && !HAS_OPCODES_65CE02
 
 lvs_advance_EAL:
 
@@ -101,10 +101,14 @@ lvs_setup_MEMUSS:
 lvs_advance_MEMUSS_check_EAL:
 
 	// Advance pointer
+#if !HAS_OPCODES_65CE02
 	inc MEMUSS+0
 	bne !+
 	inc MEMUSS+1
 !:
+#else
+	inw MEMUSS+0
+#endif
 	lda MEMUSS+1
 	cmp EAL+1
 	bne !+

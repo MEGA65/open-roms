@@ -14,9 +14,13 @@ UDTIM:
 	// (24 hours * 60 minutes * 60 seconds * 60 jiffies),
 	// after this time we have to reset the clock.
 
+#if !HAS_OPCODES_65CE02
 	inc TIME+0
 	bne udtim_time_done   // done with clock
 	inc TIME+1
+#else
+	inw TIME+0
+#endif
 	bne udtim_clock_rollover
 	inc TIME+2
 

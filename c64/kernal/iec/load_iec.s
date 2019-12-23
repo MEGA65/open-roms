@@ -118,8 +118,12 @@ load_iec_loop:
 
 	// Advance pointer to data; it is OK if it advances past $FFFF,
 	// one autostart technique does exactly this
+#if !HAS_OPCODES_65CE02
 	jsr lvs_advance_EAL
-	
+#else
+	inw EAL+0
+#endif
+
 	// Handle STOP key; it is probably an overkill to do it
 	// with every byte, once per 32 bytes should be enough
 	lda EAL

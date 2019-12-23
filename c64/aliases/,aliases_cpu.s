@@ -48,6 +48,30 @@
 
 
 //
+// Some additional 65CE02 instructions
+//
+
+
+#if HAS_OPCODES_65CE02
+
+.pseudocommand dew addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "DEW requires zeropage address"
+	.byte $C3, arg
+}
+
+.pseudocommand inw addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "INW requires zeropage address"
+	.byte $E3, arg
+}
+
+#endif
+
+
+//
 // Stack manipulation - some CPUs will leave .A unchanged, some will use it as temporary storage, so consider .A trashed
 //
 

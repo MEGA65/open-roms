@@ -13,6 +13,7 @@ tape_normal_sync:
 
 	// Injest bytes of decreasing values
 
+	jsr tape_normal_get_marker         // XXX handle result
 	jsr tape_normal_get_byte
 	bcs tape_normal_sync_fail
 

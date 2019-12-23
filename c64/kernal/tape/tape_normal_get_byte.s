@@ -17,8 +17,6 @@ tape_normal_get_byte:
 	lda #%01111111                     // canary bit is 0
 	sta INBIT
 
-	jsr tape_normal_get_marker         // XXX this is probablyy not the proper place 
-
 	// Now fetch individual bits
 
 tape_normal_get_byte_loop:

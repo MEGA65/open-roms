@@ -119,7 +119,10 @@ load_iec_loop:
 	// Advance pointer to data; it is OK if it advances past $FFFF,
 	// one autostart technique does exactly this
 #if !HAS_OPCODES_65CE02
-	jsr lvs_advance_EAL
+	inc EAL+0
+	bne !+
+	inc EAL+1
+!:
 #else
 	inw EAL+0
 #endif
@@ -132,7 +135,7 @@ load_iec_loop:
 	phx_trash_a
 	jsr udtim_keyboard
 	jsr STOP
-	bcs load_break_error
+	bcs_far load_break_error
 	plx_trash_a
 !:
 	// Check for EOI - if so, this was the last byte

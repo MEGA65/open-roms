@@ -18,7 +18,7 @@
 // this implementation sets the timer for twice the precision (timer B is triggered every 4 CPU cycles),
 // probably an overkill, but in realityy it does not cost us anything.
 //
-// So -= we have the following thresholds:
+// So - we have the following thresholds:
 // - S vs M       $72 (in our units of 4 ticks)
 // - M vs L       $98 (in our units of 4 ticks)
 //
@@ -78,6 +78,7 @@ load_tape_normal_header_loop:
 
 	// Read the header
 
+	jsr tape_normal_get_marker          // XXX handle result
 	jsr tape_normal_get_byte            // XXX handle errors
 	sta (TAPE1), y
 	iny
@@ -94,6 +95,7 @@ load_tape_normal_header_loop:
 	// XXX do not skip second header, use it to correct data
 	ldy #$15
 !:
+	jsr tape_normal_get_marker
 	jsr tape_normal_get_byte
 	dey
 	bne !-
@@ -115,11 +117,16 @@ load_tape_normal_header_loop:
 
 load_tape_normal_payload:
 
+	jsr tape_normal_pilot
+	ldy #$09
+	jsr tape_normal_sync
+
 
 
 
 	// XXX replace this placeholder with a real routine
 !:
+	jsr tape_normal_get_marker
 	jsr tape_normal_get_byte
 	jmp !-
 

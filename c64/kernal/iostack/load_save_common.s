@@ -75,19 +75,6 @@ lvs_handle_byte_verify:
 	sec
 	rts
 
-#if CONFIG_IEC && !HAS_OPCODES_65CE02
-
-lvs_advance_EAL:
-
-	// Advance pointer
-	inc EAL+0
-	bne !+
-	inc EAL+1
-!:
-	rts
-
-#endif
-
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
 
 lvs_setup_MEMUSS:

@@ -1,6 +1,6 @@
 
 //
-// Tape (turbo) helper routine - pulse reading
+// Tape (normal) helper routine - pulse reading
 //
 // Returns pulse length (with a bias, see comments) in .A
 //
@@ -34,7 +34,7 @@ tape_normal_get_pulse:
 	// this is total 17 cycles, or $4 periods of 4 ticks (timer A) each - we need to take it into account
 	// every time we check the pulse length
 
-	cmp #($FF - $6C - $04)            // short vs medium is the default check
+	cmp #($FF - $72 - $04)            // short vs medium is the default check
 	rts
 
 

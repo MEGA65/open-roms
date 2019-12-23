@@ -1,6 +1,6 @@
 
 //
-// Tape (turbo) helper routine - byte reading
+// Tape (normal) helper routine - byte reading
 //
 // Returns byte in .A, Carry flag set = error
 //
@@ -11,19 +11,13 @@
 
 tape_normal_get_byte:
 
-	// Init byte checksum and canary bit
+	// Init parity bit and canary bit
 	lda #$01
 	sta PRTY
 	lda #%01111111                     // canary bit is 0
 	sta INBIT
 
-	// First we need a byte marker - (L,M)
-!:
-	jsr tape_normal_get_pulse
-	cmp #($FF - $95 - $04)
-	bcs !-                             // too short for a long pulse
-	jsr tape_normal_get_pulse
-	bcs !-                             // too short for a medium pulse
+	jsr tape_normal_get_marker         // XXX this is probablyy not the proper place 
 
 	// Now fetch individual bits
 
@@ -44,7 +38,7 @@ tape_normal_get_byte_loop:
 	ror INBIT                          // put the bit in
 	bcs tape_normal_get_byte_loop      // loop if no canary bit reached
 
-	// Byte retrieved (on stack), now we need to validate the checksum
+	// Byte retrieved (on stack), now we need to validate the parity
 
 	jsr tape_normal_get_bit
 	bcs tape_normal_get_byte_error

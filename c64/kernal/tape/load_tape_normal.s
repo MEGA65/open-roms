@@ -7,21 +7,23 @@
 // We have the following possible CPU frequencies:
 // - C64    PAL:  CPU frequency 0.985248 MHz
 // - C64    NTSC: CPU frequency 1.022727 MHz
-// Average is 1.0039875 MHz and we will take this value for calculation (but it really does not change much).
+// The clock difference is about 4% - it is unlikely to cause problems.
 //
 // We have to distinguish the following pulse lengths (http://sidpreservation.6581.org/tape-format/):
-// - S (short)    352 us
-// - M (medium)   512 us
-// - L (long)     672 us
+// - S (short)    tap value $30 (PAL: 352 us)
+// - M (medium)   tap value $42 (PAL: 512 us)
+// - L (long)     tap value $56 (PAL: 672 us)
 //
-// This gives us the following thresholds
-// - S vs M       432 us (108 or $6C 4-tick periods)
-// - M vs L       592 us (149 or $95 4-tick periods)
+// The TAP format (http://unusedino.de/ec64/technical/formats/tap.html) uses a resolution of 8 PAL ticks;
+// this implementation sets the timer for twice the precision (timer B is triggered every 4 CPU cycles),
+// probably an overkill, but in realityy it does not cost us anything.
 //
-// 4-tick periods should be enough - TAP file format description (http://unusedino.de/ec64/technical/formats/tap.html)
-// tells it uses exactly 8 PAL ticks as a resolution
-
-// The following encoding is used:
+// So -= we have the following thresholds:
+// - S vs M       $72 (in our units of 4 ticks)
+// - M vs L       $98 (in our units of 4 ticks)
+//
+// We need to recognize the following pulse sequences:
+//
 // (S,M) = 0 bit
 // (M,S) = 1 bit
 // (L,M) = new-data marker

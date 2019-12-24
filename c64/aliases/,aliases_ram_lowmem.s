@@ -89,7 +89,7 @@
 	.label C3PO      = $94  //          flag - is BSOUR content valid
 	.label BSOUR     = $95  //          serial bus buffered output byte
 	.label SYNO      = $96  //          -- NOT IMPLEMENTED --
-	.label XSAV      = $97  //          temporary register storage for ASCII related routines [!] usage details might differ
+	.label XSAV      = $97  //          temporary register storage for ASCII/tape related routines [!] usage details might differ
 	.label LDTND     = $98  //          number of entries in LAT / FAT / SAT tables
 	.label DFLTN     = $99  //          default input device
 	.label DFLTO     = $9A  //          default output device

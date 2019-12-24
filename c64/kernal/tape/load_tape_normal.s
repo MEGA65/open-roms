@@ -81,7 +81,8 @@ load_tape_normal_header:
 	// Retrieve the header
 
 	jsr tape_normal_pilot_header
-	jsr tape_normal_get_data           // XXX limit it to 192 bytes
+	ldy #$C1                           // size limit (including checksum)
+	jsr tape_normal_get_data
 	bcs load_tape_normal_header        // unable to read block, try again
 
 	// Check header type
@@ -121,6 +122,7 @@ load_tape_normal_payload:
 	// Retrieve data
 
 	jsr tape_normal_pilot_data
+	ldy #$00                           // no data size limit
 	jsr tape_normal_get_data
 	bcs_far tape_load_error
 

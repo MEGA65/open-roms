@@ -85,7 +85,12 @@ iec_save_loop:
 #endif
 
 	// Next iteration
-	jsr lvs_advance_MEMUSS_check_EAL
+#if !HAS_OPCODES_65CE02
+	jsr lvs_advance_MEMUSS
+#else
+	inw MEMUSS+0
+#endif
+	jsr lvs_check_EAL
 	bne iec_save_loop
 
 iec_save_loop_end:

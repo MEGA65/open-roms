@@ -2,7 +2,7 @@
 //
 // Tape (normal) helper routine - byte reading
 //
-// Returns byte in .A, Carry flag set = error
+// Returns byte in .A (also sotred in INBIT), Carry flag set = error
 //
 
 

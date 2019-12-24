@@ -14,61 +14,46 @@
 
 tape_normal_get_data:
 
+	// Initialize checksum (RIPRTY, see http://sta.c64.org/cbm64mem.html)
+	
+	lda #$00
+	sta RIPRTY
+
 	// Read the pilot and sync of the block
 
-	jsr tape_normal_pilot
 	ldy #$89
 	jsr tape_normal_sync
 	bcs tape_normal_get_block_done     // XXX make it more erroor resistant
-	
-	// Initialize byte counter
-	ldy #$00
+	jsr tape_normal_get_marker
 
 tape_normal_get_data_loop:
 
-	jsr tape_normal_get_marker
-	bcs tape_normal_get_data_2nd_copy // end of data for the block
 	jsr tape_normal_get_byte
-
 	bcs tape_normal_get_block_done     // error reading byte - fatal for now
+	jsr tape_normal_get_marker
+	bcs tape_normal_get_checksum       // end of data for the block
 
 	// Store byte, calculate checksum
+	lda INBIT
+	ldy #$00                           // XXX probably can be optimized for 65C02
 	sta (MEMUSS), y
 	eor RIPRTY
 	sta RIPRTY
 	
-	iny
-	bne tape_normal_get_data_loop
+	// Advance pointer
+#if !HAS_OPCODES_65CE02
+	jsr lvs_advance_MEMUSS
+#else
+	inw MEMUSS+0
+#endif
 
-	// 256 bytes read
-
-	inc MEMUSS+1
 	jmp tape_normal_get_data_loop
 
-tape_normal_get_data_2nd_copy:
+tape_normal_get_checksum: // XXX handle second copy, with pilot starting from $09
 
-	// Read the pilot and sync of the block
-
-	jsr tape_normal_pilot
-	ldy #$09
-	jsr tape_normal_sync
-	bcs tape_normal_get_block_done     // XXX make it more error resistant
-
-	// For now skip the error correction data
-!:
-	jsr tape_normal_get_marker
-	bcs tape_normal_get_checksum
-	jsr tape_normal_get_byte
-	tay
-	jmp !-
-
-tape_normal_get_checksum:
-
-	tya
+	lda INBIT
 	eor RIPRTY
-	cmp #$01                           // sets Carry if checksum verification failed
-
-	clc // XXX checksum calculation fails - why?
+	cmp #$01                           // sets Carry if checksum verification fails
 
 	// FALLTROUGH
 

@@ -64,7 +64,7 @@ load_tape_turbo_header_loop:
 	// Handle the header
 
 	jsr tape_clean_sid
-	jsr tape_handle_header
+	jsr tape_handle_header             // XXX handle non-relocatable programs - any non-0 even header type
 	bcs load_tape_turbo_header         // if name does not match, look for other header
 
 	// FALLTROUGH
@@ -91,7 +91,12 @@ load_tape_turbo_loop:
 	sta PRTY
 
 	// Advance MEMUSS (see Mapping the C64, page 36)
-	jsr lvs_advance_MEMUSS_check_EAL
+#if !HAS_OPCODES_65CE02
+	jsr lvs_advance_MEMUSS
+#else
+	inw MEMUSS+0
+#endif
+	jsr lvs_check_EAL
 	bne load_tape_turbo_loop
 
 	// Get the checksum

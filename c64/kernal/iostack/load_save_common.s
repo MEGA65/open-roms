@@ -87,24 +87,21 @@ lvs_setup_MEMUSS:
 
 #endif
 
-#if CONFIG_TAPE_TURBO || CONFIG_IEC
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
 
-lvs_advance_MEMUSS_check_EAL:
+#if !HAS_OPCODES_65CE02
+
+lvs_advance_MEMUSS:
 
 	// Advance pointer
-#if !HAS_OPCODES_65CE02
+
 	inc MEMUSS+0
 	bne !+
 	inc MEMUSS+1
 !:
-#else
-	inw MEMUSS+0
+	rts
 
 #endif
-
-	// FALLTROUGH
-
-#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
 
 lvs_check_EAL:
 
@@ -116,7 +113,6 @@ lvs_check_EAL:
 !:
 	rts
 
-#endif
 
 lvs_display_searching_for:
 

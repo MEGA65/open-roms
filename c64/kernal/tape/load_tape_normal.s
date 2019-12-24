@@ -56,14 +56,20 @@ load_tape_normal:
 	ldx #%00010001                     // start timer, force latch reload
 	stx CIA2_CRA    // $DD0E
 	
+	// Temporarily store MEMUSS in EAL
+
+	lda MEMUSS+1
+	sta EAL+1
+	lda MEMUSS+0
+	sta EAL+0
+
 	// Start playing
+
 	jsr tape_ask_play
 
 	// FALLTROUGH
 
 load_tape_normal_header:
-
-/* XXX try to reuse block retrieeval rooutine, like this:
 
 	// Try to load header into tape buffer
 
@@ -72,66 +78,36 @@ load_tape_normal_header:
 	lda TAPE1+0
 	sta MEMUSS+0
 
-	// Initialize checksum (RIPRTY, see http://sta.c64.org/cbm64mem.html)
-	
-	lda #$00
-	sta RIPRTY
+	// Retrieve the header
 
-	// Retrieve the header          XXX limit it to 192 bytes
-
-	jsr tape_normal_get_block
+	jsr tape_normal_pilot_header
+	jsr tape_normal_get_data           // XXX limit it to 192 bytes
 	bcs load_tape_normal_header        // unable to read block, try again
 
-	// Handle the header
+	// Check header type
 
-	jsr tape_handle_header
-	bcs load_tape_normal_header        // if name does not match, look for other header
-*/
-
-	// Read pilot and sync of the first header
-
-	jsr tape_normal_pilot
-	ldy #$89
-	jsr tape_normal_sync
-	bcs load_tape_normal_header
-
-	ldy #$00
-
-	// FALLTROUGH
-
-load_tape_normal_header_loop:
-
-	// Read the header
-
-	jsr tape_normal_get_marker          // XXX handle result
-	jsr tape_normal_get_byte            // XXX handle errors
-	sta (TAPE1), y
-	iny
-	cpy #$15
-	bne load_tape_normal_header_loop
-
-	// Read pilot and sync of the second header
-
-	jsr tape_normal_pilot
-	ldy #$09
-	jsr tape_normal_sync
-	bcs load_tape_normal_header
-
-	// XXX do not skip second header, use it to correct data
-	ldy #$15
-!:
-	jsr tape_normal_get_marker
-	jsr tape_normal_get_byte
-	dey
-	bne !-
-
-	// For now only one type of header is supported
-
-	ldy #$00
+	ldy #$00                           // XXX probably can be optimized for 65C02
 	lda (TAPE1),y
 
+	cmp #$05
+	beq_far tape_load_error            // end of tape mark, nothing to load
+
 	cmp #$01
-	bne load_tape_normal_header        // XXX also handle other header types, see Mapping the C64 page 77
+	beq !+
+	cmp #$03
+	bne load_tape_normal_header        // header types 1 and 3 are loadable, see Mapping the C64, page 77
+
+	// XXX handle non-relocatable program, header type 3
+
+!:
+	// Handle the header
+
+	// Restore MEMUSS
+
+	lda EAL+1
+	sta MEMUSS+1
+	lda EAL+0
+	sta MEMUSS+0
 
 	// Handle the header
 
@@ -142,28 +118,14 @@ load_tape_normal_header_loop:
 
 load_tape_normal_payload:
 
-	// Initialize checksum (RIPRTY, see http://sta.c64.org/cbm64mem.html)
-	
-	lda #$00
-	sta RIPRTY
-
 	// Retrieve data
 
+	jsr tape_normal_pilot_data
 	jsr tape_normal_get_data
 	bcs_far tape_load_error
 
-	// Advance MEMUSS (see Mapping the C64, page 36), check if end
-
-	tya
-	clc
-	adc MEMUSS+0
-	sta MEMUSS+0
-	bcc !+
-	inc MEMUSS+1
-!:
-	// XXX check below does not work - why?
-	// jsr lvs_check_EAL
-	// bne_far tape_load_error            // amount of data read does not match header info
+	jsr lvs_check_EAL
+	bne_far tape_load_error            // amount of data read does not match header info
 
 	jmp tape_load_success
 

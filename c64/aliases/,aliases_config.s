@@ -114,6 +114,10 @@
 
 // Check that I/O configuration is correct
 {
+#if CONFIG_RS232_UP9600 && (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO)
+	.error "CONFIG_RS232_UP9600 is not compatible with CONFIG_TAPE_*"
+#endif
+
 #if CONFIG_IEC_JIFFYDOS && !CONFIG_IEC
 	.error "CONFIG_IEC_JIFFYDOS requires CONFIG_IEC"
 #endif

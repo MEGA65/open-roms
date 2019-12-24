@@ -37,7 +37,7 @@ load_tape_turbo_header:
 	// Read file header; structure described here:
 	// - https://www.luigidifraia.com/c64/docs/tapeloaders.html#turbotape64
 	//
-	// 1 byte (skipped) - file type (0 = data, odd value = relocatable, even value = non-relocatable)
+	// 1 byte           - file type (0 = data, odd value = relocatable, even value = non-relocatable)
 	// 2 bytes          - start address
 	// 2 bytes          - end address + 1
 	// 1 byte           - if $B0 (tape timing) contained at the time of saving
@@ -45,7 +45,9 @@ load_tape_turbo_header:
 	// 16 bytes         - filename, padded with 0x20
 
 	jsr tape_turbo_sync_header
-	ldy #$01                           // to match original ROM header layout
+	ldy #$00
+	sta (TAPE1), y                     // store header type
+	iny
 
 	// FALLTROUGH
 
@@ -56,9 +58,9 @@ load_tape_turbo_header_loop:
 	iny
 	cpy #$05
 	bne !+
-	jsr tape_turbo_get_byte            // tape timing - skip this XXX how to use it?
+	jsr tape_turbo_get_byte            // tape timing - skip this one
 !:
-	cpy #$15
+	cpy #$C0                           // header is 192 bytes long in total
 	bne load_tape_turbo_header_loop
 
 	// Handle the header

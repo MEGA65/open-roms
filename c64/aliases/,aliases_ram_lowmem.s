@@ -281,8 +281,9 @@
 
 	//                 $314     $334-$33B  -- UNUSED --          free for user software
 	
+#if !CONFIG_RS232_UP9600
 	.label TBUFFR    = $33C  // $33C-$3FB  [!] tape buffer, our usage details differ
-#if CONFIG_RS232_UP9600
+#else
     .label REVTAB    = $37C  // $37C-$3FB  -- WIP -- [!] RS-232 precalculated data
 #endif
 

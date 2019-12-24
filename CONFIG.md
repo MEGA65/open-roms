@@ -119,6 +119,12 @@ Adds support for JiffyDOS fast protocol to the IEC bus.
 
 Needs about 430 bytes in KERNAL segment. If unsure - enable.
 
+### `CONFIG_TAPE_LOAD`
+
+Adds a minimal normal (standard Commodore format) tape support - just LOAD command.
+
+Needs some space in KERNAL segment. If unsure - enable.
+
 ### `CONFIG_TAPE_TURBO`
 
 Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges)

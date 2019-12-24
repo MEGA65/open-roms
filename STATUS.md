@@ -52,7 +52,7 @@ The following ROM features are currently missing:
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
-| normal        | NOT DONE |                                                    |
+| normal        | PARITAL  | works, but needs improvements, no error correction |
 | turbo         | PARTIAL  | works, to do: use sync to calibrate read speed     |
 
 ## IEC bus (disk drives, etc.)

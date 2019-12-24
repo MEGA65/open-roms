@@ -11,6 +11,7 @@
 // - do not enable features which are a significant compatibility risk
 
 
+
 // Hardware platform and brand
 
 #define CONFIG_PLATFORM_COMMODORE_64
@@ -44,8 +45,8 @@
 #define CONFIG_IEC_BLANK_SCREEN
 #define CONFIG_IEC_JIFFYDOS
 
+#define CONFIG_TAPE_NORMAL
 #define CONFIG_TAPE_TURBO
-
 
 
 // Multiple SID support

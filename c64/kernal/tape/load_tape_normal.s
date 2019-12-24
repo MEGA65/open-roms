@@ -63,6 +63,31 @@ load_tape_normal:
 
 load_tape_normal_header:
 
+/* XXX try to reuse block retrieeval rooutine, like this:
+
+	// Try to load header into tape buffer
+
+	lda TAPE1+1
+	sta MEMUSS+1
+	lda TAPE1+0
+	sta MEMUSS+0
+
+	// Initialize checksum (RIPRTY, see http://sta.c64.org/cbm64mem.html)
+	
+	lda #$00
+	sta RIPRTY
+
+	// Retrieve the header          XXX limit it to 192 bytes
+
+	jsr tape_normal_get_block
+	bcs load_tape_normal_header        // unable to read block, try again
+
+	// Handle the header
+
+	jsr tape_handle_header
+	bcs load_tape_normal_header        // if name does not match, look for other header
+*/
+
 	// Read pilot and sync of the first header
 
 	jsr tape_normal_pilot
@@ -117,9 +142,15 @@ load_tape_normal_header_loop:
 
 load_tape_normal_payload:
 
-	// Retrieve block
+	// Initialize checksum (RIPRTY, see http://sta.c64.org/cbm64mem.html)
+	
+	lda #$00
+	sta RIPRTY
 
-	jsr tape_normal_get_block // XXX handle errors
+	// Retrieve data
+
+	jsr tape_normal_get_data
+	bcs_far tape_load_error
 
 	// Advance MEMUSS (see Mapping the C64, page 36), check if end
 
@@ -130,9 +161,9 @@ load_tape_normal_payload:
 	bcc !+
 	inc MEMUSS+1
 !:
-
-	jsr lvs_check_EAL
-	bne load_tape_normal_payload
+	// XXX check below does not work - why?
+	// jsr lvs_check_EAL
+	// bne_far tape_load_error            // amount of data read does not match header info
 
 	jmp tape_load_success
 

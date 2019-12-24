@@ -11,6 +11,7 @@
 // - file contains options to enable unfinished functionalities
 
 
+
 // Hardware platform and brand
 
 #define CONFIG_PLATFORM_COMMODORE_64
@@ -48,7 +49,7 @@
 // #define CONFIG_IEC_DOLPHINDOS  // please keep disabled for now  
 #define CONFIG_IEC_JIFFYDOS
 
-#define CONFIG_TAPE_NORMAL        // not finished yet!
+#define CONFIG_TAPE_NORMAL
 #define CONFIG_TAPE_TURBO
 
 // #define CONFIG_RS232_UP2400    // please keep disabled for now

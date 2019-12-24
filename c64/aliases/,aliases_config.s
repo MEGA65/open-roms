@@ -297,13 +297,13 @@
 	.var features_str = ""
 
 #if CONFIG_TAPE_NORMAL && !CONFIG_TAPE_TURBO
-	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL-DEV")
+	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL")
 #endif
 #if !CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
 	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD TURBO")
 #endif
 #if CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
-	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL-DEV TURBO")
+	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL TURBO")
 #endif
 
 	.eval feature_new_line = true

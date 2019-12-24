@@ -117,18 +117,24 @@ load_tape_normal_header_loop:
 
 load_tape_normal_payload:
 
-	jsr tape_normal_pilot
-	ldy #$09
-	jsr tape_normal_sync
+	// Retrieve block
 
+	jsr tape_normal_get_block // XXX handle errors
 
+	// Advance MEMUSS (see Mapping the C64, page 36), check if end
 
-
-	// XXX replace this placeholder with a real routine
+	tya
+	clc
+	adc MEMUSS+0
+	sta MEMUSS+0
+	bcc !+
+	inc MEMUSS+1
 !:
-	jsr tape_normal_get_marker
-	jsr tape_normal_get_byte
-	jmp !-
+
+	jsr lvs_check_EAL
+	bne load_tape_normal_payload
+
+	jmp tape_load_success
 
 
 #endif

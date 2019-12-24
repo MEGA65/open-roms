@@ -1,6 +1,6 @@
 
 //
-// Tape (turbo) helper routine - bit reading
+// Tape (normal) helper routine - bit reading
 //
 // Returns bit in Zero flag, Carry set means error, on 0 bit .A is 0 too
 //

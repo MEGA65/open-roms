@@ -116,7 +116,7 @@
 	.label BITCI     = $A8  //          -- NOT IMPLEMENTED --
 	.label RINONE    = $A9  //          -- WIP -- (UP9600 only) RS-232 check for start bit flag
 	.label RIDDATA   = $AA  //          -- NOT IMPLEMENTED --
-	.label RIPRTY    = $AB  //          -- NOT IMPLEMENTED --
+	.label RIPRTY    = $AB  //          -- WIP -- checksum while reading tape
 #endif
 	.label SAL       = $AC  // $AC-$AD  -- NOT IMPLEMENTED -- (implemented screen part)
 	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also by screen editor, for temporary color storage when scrolling

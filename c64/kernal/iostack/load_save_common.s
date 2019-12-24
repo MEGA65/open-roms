@@ -85,6 +85,10 @@ lvs_setup_MEMUSS:
 	sta MEMUSS+1
 	rts
 
+#endif
+
+#if CONFIG_TAPE_TURBO || CONFIG_IEC
+
 lvs_advance_MEMUSS_check_EAL:
 
 	// Advance pointer
@@ -95,7 +99,15 @@ lvs_advance_MEMUSS_check_EAL:
 !:
 #else
 	inw MEMUSS+0
+
 #endif
+
+	// FALLTROUGH
+
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
+
+lvs_check_EAL:
+
 	lda MEMUSS+1
 	cmp EAL+1
 	bne !+

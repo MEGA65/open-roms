@@ -62,6 +62,12 @@ load_iec:
 	jsr iec_tx_command
 	bcs load_iec_error
 
+#if CONFIG_IEC_DOLPHINDOS
+
+	jsr dolphindos_detect
+
+#endif
+
 	// We are currently talker, so do the IEC turn around so that we
 	// are the listener (p16)
 	jsr iec_turnaround_to_listen

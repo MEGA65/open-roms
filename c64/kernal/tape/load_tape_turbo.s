@@ -63,6 +63,15 @@ load_tape_turbo_header_loop:
 	cpy #$C0                           // header is 192 bytes long in total
 	bne load_tape_turbo_header_loop
 
+	// For non-relocatable files, override secondary address
+	ldy #$00                           // XXX optimize out for 65C02
+	lda (TAPE1), y
+	beq !+
+	and #$01
+	bne !+
+	lda #$01                           // XXX for 65C02 just set the bit with one instruction
+	sta SA
+!:
 	// Handle the header
 
 	jsr tape_clean_sid

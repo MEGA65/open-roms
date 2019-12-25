@@ -98,8 +98,8 @@ load_tape_normal_header:
 	cmp #$03
 	bne load_tape_normal_header        // header types 1 and 3 are loadable, see Mapping the C64, page 77
 
-	// XXX handle non-relocatable program, header type 3
-
+	lda #$01
+	sta SA                             // this file is non-relocatable; override secondary address with 1
 !:
 	// Handle the header
 

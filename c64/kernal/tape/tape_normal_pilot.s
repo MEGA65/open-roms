@@ -66,7 +66,7 @@ tape_normal_pilot_header: // require 128x $40 pulses
 
 	lda #$80
 
-	jmp tape_normal_pilot_common    // XXX calibrate tape speeed afterwards
+	jmp tape_normal_pilot_common    // XXX calibrate tape speed afterwards
 
 
 #endif

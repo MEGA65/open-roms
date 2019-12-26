@@ -111,7 +111,7 @@ load_iec:
 load_iec_loop:
 
 	// We are now ready to receive bytes
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 	jsr iec_rx_dispatch
 #else // no turbo supported
 	jsr iec_rx_byte
@@ -167,7 +167,7 @@ load_iec_loop_end:
 
 load_iec_get_addr_byte:
 
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 	jsr iec_rx_dispatch
 #else // no turbo supported
 	jsr iec_rx_byte

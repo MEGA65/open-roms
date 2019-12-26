@@ -4,7 +4,7 @@
 //
 
 
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 
 
 iec_tx_dispatch:
@@ -16,6 +16,11 @@ iec_tx_dispatch:
 	cmp #$01
 	beq iec_tx_dispatch_jiffydos
 #endif // CONFIG_IEC_JIFFYDOS
+
+#if CONFIG_IEC_DOLPHINDOS
+	cmp #$02
+	beq iec_tx_dispatch_dolphindos
+#endif // CONFIG_IEC_DOLPHINDOS
 
 	// FALLTROUGH
 
@@ -29,6 +34,12 @@ iec_tx_dispatch_jiffydos:
 	plp
 	jmp iec_tx_byte_jiffydos
 #endif // CONFIG_IEC_JIFFYDOS
+
+#if CONFIG_IEC_DOLPHINDOS
+iec_tx_dispatch_dolphindos:
+	plp
+	jmp iec_tx_byte_dolphindos
+#endif // CONFIG_IEC_DOLPHINDOS
 
 
 #endif // any turbo supported

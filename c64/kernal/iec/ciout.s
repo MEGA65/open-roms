@@ -33,7 +33,7 @@ ciout_store_in_buffer:
 ciout_send_byte:
 
 	clc // don't send with EOI
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 	jsr iec_tx_dispatch
 #else // no turbo supported
 	jsr iec_tx_byte

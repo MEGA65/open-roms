@@ -48,7 +48,7 @@ save_iec:
 	lda STAL+0
 	sta TBTCNT
 	clc
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 	jsr iec_tx_dispatch
 #else // no turbo supported
 	jsr iec_tx_byte
@@ -57,7 +57,7 @@ save_iec:
 	lda STAL+1
 	sta TBTCNT
 	clc
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 	jsr iec_tx_dispatch
 #else // no turbo supported
 	jsr iec_tx_byte
@@ -78,7 +78,7 @@ iec_save_loop:
 	// Send the byte
 	sta TBTCNT
 	clc
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 	jsr iec_tx_dispatch
 #else // no turbo supported
 	jsr iec_tx_byte

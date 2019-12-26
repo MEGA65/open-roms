@@ -30,7 +30,7 @@ iec_send_file_name_loop:
 !:
 	// Transmit one character
 	sta TBTCNT
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 	jsr iec_tx_dispatch
 #else // no turbo supported
 	jsr iec_tx_byte

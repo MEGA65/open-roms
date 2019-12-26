@@ -95,7 +95,7 @@ load_iec:
 
 #if (CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS) && !CONFIG_MEMORY_MODEL_60K
 
-	// If feasible, use JiffyDOS optimized LOAD loop
+	// If feasible, use protocol-specific optimized LOAD loop
 
 	lda VERCKK
 	bne load_iec_loop                  // branch if VERIFY

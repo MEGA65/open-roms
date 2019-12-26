@@ -20,9 +20,9 @@ ACPTR:
 !:
 
 #if CONFIG_IEC
-#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
+#if CONFIG_IEC_JIFFYDOS
 	jmp iec_rx_dispatch
-#else // no turbo supported
+#else
 	jmp iec_rx_byte
 #endif
 #else

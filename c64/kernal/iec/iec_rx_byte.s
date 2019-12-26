@@ -55,6 +55,22 @@ iec_rx_not_empty:
 
 iec_rx_not_eoi:
 
+#if CONFIG_IEC_DOLPHINDOS
+
+	// Check if DolphinDOS was detected
+	lda IECPROTO
+	cmp #$02
+	bne iec_rx_no_dolphindos
+
+	// For DolphinDOS just fetch the byte from parallel port
+	lda CIA2_PRB
+	pha
+	jmp iec_rx_acknowledge
+
+iec_rx_no_dolphindos:
+
+#endif // CONFIG_IEC_DOLPHINDOS
+
 	// Latch input bits in on rising edge of CLK, eight times for eight bits.
 	ldx #7
 
@@ -117,6 +133,10 @@ iec_rx_clk_wait2:
 	// More bits?
 	dex
 	bpl iec_rx_bit_loop
+
+	// FALLTROUGH
+
+iec_rx_acknowledge:
 
 	// Then we must within 1000 usec acknowledge the frame by
 	// pulling DATA. At this point, CLK is pulled by the

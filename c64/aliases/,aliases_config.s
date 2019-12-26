@@ -315,7 +315,7 @@
 #if CONFIG_IEC
 	.var iec_features_str = "IEC"
 #if CONFIG_IEC_DOLPHINDOS
-	.eval iec_features_str = iec_features_str + " DOLPHIN-DEV"
+	.eval iec_features_str = iec_features_str + " DOLPHIN"
 #endif
 #if CONFIG_IEC_JIFFYDOS
 	.eval iec_features_str = iec_features_str + " JIFFY"

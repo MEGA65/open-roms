@@ -7,10 +7,9 @@
 #if (CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS) && !CONFIG_MEMORY_MODEL_60K
 
 
-iec_update_EAL_by_Y:
+iec_update_EAL_by_Y: // note: Carry has to be set by caller!
 
 	tya
-	sec
 	adc EAL+0
 	sta EAL+0
 	bcc !+

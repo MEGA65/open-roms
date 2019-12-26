@@ -132,6 +132,7 @@ load_jiffydos_end:
 	tax
 
 	// Update EAL
+	sec
 	jsr iec_update_EAL_by_Y
 
 	// Indicate that no byte waits in output buffer

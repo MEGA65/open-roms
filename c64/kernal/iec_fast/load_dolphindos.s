@@ -13,16 +13,15 @@ load_dolphindos:
 	sei
 
 	// A trick to shorten EAL update time
-	ldy #$FF
+	ldy #$00
 
 	// FALLTROUGH
 
 load_dolphindos_loop:
 
 	// Check if this was EOI
-	lda IOSTATUS
-	and #K_STS_EOI
-	bne load_dolphindos_end
+	bit IOSTATUS
+	bvs load_dolphindos_end
 
 	// Wait for the talker to release the CLK line
 !:
@@ -34,9 +33,9 @@ load_dolphindos_loop:
 	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
 	sta CIA2_PRA
 
-	// Wait till data line is released (someone else might be holding it)
+	// Wait till DATA line is released (someone else might be holding it)
 !:
-	lda CIA2_PRA
+	bit CIA2_PRA
 	bpl !-
 
 	// Check if EOI - routine can damage .X, but this is safe
@@ -44,7 +43,6 @@ load_dolphindos_loop:
 
 	// Retrieve and store byte
 	lda CIA2_PRB
-	iny
 	sta (EAL),y
 
 	// Pull DATA to acknowledge
@@ -53,7 +51,7 @@ load_dolphindos_loop:
 	sta CIA2_PRA
 
 	// Handle EAL
-	cpy #$FF
+	iny
 	bne load_dolphindos_loop
 	inc EAL+1
 	jmp load_dolphindos_loop
@@ -61,6 +59,7 @@ load_dolphindos_loop:
 load_dolphindos_end:
 
 	// Update EAL
+	clc
 	jsr iec_update_EAL_by_Y
 
 	// End of load loop

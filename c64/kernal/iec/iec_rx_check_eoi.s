@@ -7,17 +7,20 @@ iec_rx_check_eoi:
 
 	// Wait for talker to pull CLK.
 	// If over 200 usec (205 cycles on NTSC machine) , then it is EOI.
-	// Loop iteraction takes 13 cycles, 17 full iterations are enough
+	// Loop iteraction takes 11 cycles, 19 full iterations are enough
 
-	ldx #$11                           // 2 cycles
+	ldx #$13                           // 2 cycles
 
 !:
-	lda CIA2_PRA                       // 4 cycles
-	rol                                // 2 cycles, to put CLK in as the last bit
-	bpl iec_rx_check_eoi_done          // 2 cycles if not jumped
+	bit CIA2_PRA                       // 4 cycles
+	bvc iec_rx_check_eoi_done          // 2 cycles if not jumped
 	dex                                // 2 cycles
     bne !-                             // 3 cycles if jumped
-    
+
+    // FALLTROUGH
+
+iec_rx_check_eoi_confirm:
+
 	// Timeout - either this is the last byte of stream, or the stream is empty at all.
 	// Mark end of stream in IOSTATUS
 	jsr kernalstatus_EOI

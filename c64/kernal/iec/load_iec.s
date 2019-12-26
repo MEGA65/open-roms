@@ -93,7 +93,7 @@ load_iec:
 	// Display start address
 	jsr lvs_display_loading_verifying
 
-#if CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K
+#if (CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS) && !CONFIG_MEMORY_MODEL_60K
 
 	// If feasible, use JiffyDOS optimized LOAD loop
 

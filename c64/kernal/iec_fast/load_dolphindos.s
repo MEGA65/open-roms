@@ -39,10 +39,8 @@ load_dolphindos_loop:
 	lda CIA2_PRA
 	bpl !-
 
-	// Check if EOI - routine can damage .Y, so store it in safe place
-	sty TBTCNT
+	// Check if EOI - routine can damage .X, but this is safe
 	jsr iec_rx_check_eoi
-	ldy TBTCNT
 
 	// Retrieve and store byte
 	lda CIA2_PRB
@@ -62,14 +60,8 @@ load_dolphindos_loop:
 
 load_dolphindos_end:
 
-	// Update EAL - XXX deduplicate with JiffyDOS counterpart
-	tya
-	sec
-	adc EAL+0
-	sta EAL+0
-	bcc !+
-	inc EAL+1
-!:
+	// Update EAL
+	jsr iec_update_EAL_by_Y
 
 	// End of load loop
 	jmp load_iec_loop_end

@@ -132,13 +132,8 @@ load_jiffydos_end:
 	tax
 
 	// Update EAL
-	tya
-	sec
-	adc EAL+0
-	sta EAL+0
-	bcc !+
-	inc EAL+1
-!:
+	jsr iec_update_EAL_by_Y
+
 	// Indicate that no byte waits in output buffer
 	lda #$00
 	sta C3PO

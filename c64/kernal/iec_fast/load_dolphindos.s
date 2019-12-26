@@ -15,13 +15,24 @@ load_dolphindos:
 	// A trick to shorten EAL update time
 	ldy #$00
 
+#if CONFIG_IEC_DOLPHINDOS_FAST
+	// Another trick: prepare values for quickly setting/releasing DATA
+	lda CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_DAT_OUT - BIT_CIA2_PRA_CLK_OUT - BIT_CIA2_PRA_ATN_OUT
+	sta IECPROTO                       // release DATA
+	ora #BIT_CIA2_PRA_DAT_OUT
+	sta TBTCNT                         // pull DATA
+#endif
+
 	// FALLTROUGH
 
 load_dolphindos_loop:
 
+#if !CONFIG_IEC_DOLPHINDOS_FAST
 	// Check if this was EOI
 	bit IOSTATUS
 	bvs load_dolphindos_end
+#endif
 
 	// Wait for the talker to release the CLK line
 !:
@@ -29,25 +40,60 @@ load_dolphindos_loop:
 	bvc !-
 
 	// Release the DATA to signal we are ready
+#if !CONFIG_IEC_DOLPHINDOS_FAST
 	lda CIA2_PRA
 	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
+#else
+	lda IECPROTO
+#endif
 	sta CIA2_PRA
 
-	// Wait till DATA line is released (someone else might be holding it)
+#if !CONFIG_IEC_DOLPHINDOS_FAST
+
+	// Check if EOI
+	jsr iec_rx_check_eoi               // can damage .X, but this is safe
+
+#else
+
+	// Check if EOI - inlined code to avoid wasting cycles on RTS
+	ldx #$13
 !:
 	bit CIA2_PRA
-	bpl !-
+	bvc load_dolphindos_no_eoi
+	dex
+    bne !-  
 
-	// Check if EOI - routine can damage .X, but this is safe
-	jsr iec_rx_check_eoi
+    // EOI - mark it and retrieve the last byte
+    jsr iec_rx_check_eoi_confirm
+	lda CIA2_PRB
+	sta (EAL),y
+
+	// Update EAL for the last time
+	sec
+	jsr iec_update_EAL_by_Y
+
+	// Restore proper IECPROTO value
+	lda #$02
+	sta IECPROTO
+
+	// End of load loop
+	jmp load_iec_loop_end
+
+load_dolphindos_no_eoi:
+
+#endif
 
 	// Retrieve and store byte
 	lda CIA2_PRB
 	sta (EAL),y
 
 	// Pull DATA to acknowledge
+#if !CONFIG_IEC_DOLPHINDOS_FAST
 	lda CIA2_PRA
 	ora #BIT_CIA2_PRA_DAT_OUT
+#else
+	lda TBTCNT
+#endif
 	sta CIA2_PRA
 
 	// Handle EAL
@@ -55,6 +101,8 @@ load_dolphindos_loop:
 	bne load_dolphindos_loop
 	inc EAL+1
 	jmp load_dolphindos_loop
+
+#if !CONFIG_IEC_DOLPHINDOS_FAST
 
 load_dolphindos_end:
 
@@ -64,6 +112,8 @@ load_dolphindos_end:
 
 	// End of load loop
 	jmp load_iec_loop_end
+
+#endif
 
 
 #endif // CONFIG_IEC_DOLPHINDOS and not CONFIG_MEMORY_MODEL_60K

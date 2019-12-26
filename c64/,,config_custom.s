@@ -46,7 +46,8 @@
 
 #define CONFIG_IEC
 #define CONFIG_IEC_BLANK_SCREEN
-#define CONFIG_IEC_DOLPHINDOS     // not finished yet, but LOAD works
+#define CONFIG_IEC_DOLPHINDOS      // not finished yet, but LOAD works
+#define CONFIG_IEC_DOLPHINDOS_FAST // needs more testing
 #define CONFIG_IEC_JIFFYDOS
 
 #define CONFIG_TAPE_NORMAL

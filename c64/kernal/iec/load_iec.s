@@ -150,9 +150,8 @@ load_iec_loop:
 	plx_trash_a
 !:
 	// Check for EOI - if so, this was the last byte
-	lda IOSTATUS
-	and #K_STS_EOI
-	beq load_iec_loop
+	bit IOSTATUS
+	bvc load_iec_loop
 
 	// FALLTROUGH
 

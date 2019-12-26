@@ -19,9 +19,60 @@ load_dolphindos:
 
 load_dolphindos_loop:
 
+	// Check if this was EOI
+	lda IOSTATUS
+	and #K_STS_EOI
+	bne load_dolphindos_end
 
+	// Wait for the talker to release the CLK line
+!:
+	bit CIA2_PRA
+	bvc !-
 
-	panic #$00 // XXX this routine is not finished yet
+	// Release the DATA to signal we are ready
+	lda CIA2_PRA
+	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
+	sta CIA2_PRA
+
+	// Wait till data line is released (someone else might be holding it)
+!:
+	lda CIA2_PRA
+	bpl !-
+
+	// Check if EOI - routine can damage .Y, so store it in safe place
+	sty TBTCNT
+	jsr iec_rx_check_eoi
+	ldy TBTCNT
+
+	// Retrieve and store byte
+	lda CIA2_PRB
+	iny
+	sta (EAL),y
+
+	// Pull DATA to acknowledge
+	lda CIA2_PRA
+	ora #BIT_CIA2_PRA_DAT_OUT
+	sta CIA2_PRA
+
+	// Handle EAL
+	cpy #$FF
+	bne load_dolphindos_loop
+	inc EAL+1
+	jmp load_dolphindos_loop
+
+load_dolphindos_end:
+
+	// Update EAL - XXX deduplicate with JiffyDOS counterpart
+	tya
+	sec
+	adc EAL+0
+	sta EAL+0
+	bcc !+
+	inc EAL+1
+!:
+
+	// End of load loop
+	jmp load_iec_loop_end
 
 
 #endif // CONFIG_IEC_DOLPHINDOS and not CONFIG_MEMORY_MODEL_60K

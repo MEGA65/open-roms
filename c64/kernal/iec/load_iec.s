@@ -107,9 +107,8 @@ load_iec:
 #endif
 
 #if CONFIG_IEC_DOLPHINDOS
-	// XXX enable when finished
-	// cmp #$02
-	// beq_far load_dolphindos            // branch if JiffyDOS
+	cmp #$02
+	beq_far load_dolphindos            // branch if DolphinDOS
 #endif
 
 #endif

@@ -113,6 +113,12 @@ Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
 Causes screen blanking during some IEC operations (currently only JiffyDOS file loading) to increase the data transfer performance.
 
+### `CONFIG_IEC_DOLPHINDOS`
+
+Adds support for DolphinDOS fast protocol to the IEC bus, using UserPort cable.
+
+Needs some space in KERNAL segment. If unsure - enable.
+
 ### `CONFIG_IEC_JIFFYDOS`
 
 Adds support for JiffyDOS fast protocol to the IEC bus.

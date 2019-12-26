@@ -61,7 +61,7 @@ The following ROM features are currently missing:
 | :-----------: | :------: | :------------------------------------------------: |
 | standard      | DONE     |                                                    |
 | JiffyDOS      | DONE     |                                                    |
-| DolphinDOS    | NOT DONE |                                                    |
+| DolphinDOS    | PARTIAL  | for now only LOAD is accelerated                   |
 | CIA burst mod | NOT DONE |                                                    |
 
 ## RS-232

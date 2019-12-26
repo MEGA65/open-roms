@@ -24,7 +24,7 @@ iec_rx_byte:
 	jsr iec_wait_for_clk_release
 
 	// We then release the DATA to signal we are ready
-	// We can use this routine, since we weren't pulling CLK anyway
+	// We can use this routine, since we were not pulling CLK anyway
 	jsr iec_release_clk_data
 
 	// Wait till data line is released (someone else might be holding it)
@@ -68,7 +68,7 @@ iec_rx_bit_loop:
 	jsr iec_wait_for_clk_release
 
 	// (we do this implicitly below, with a tighter routine,
-	// so that we don't have timing problems, as the requirements
+	// so that we do not have timing problems, as the requirements
 	// are quite tight. Basically we need to read the clock and data
 	// bit from the same byte read.
 

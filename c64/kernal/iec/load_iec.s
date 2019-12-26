@@ -99,12 +99,18 @@ load_iec:
 
 	lda VERCKK
 	bne load_iec_loop                  // branch if VERIFY
-
 	lda IECPROTO
-	cmp #$01
-	bne load_iec_loop                  // branch if not JiffyDOS
 
-	jmp load_jiffydos
+#if CONFIG_IEC_JIFFYDOS
+	cmp #$01
+	beq_far load_jiffydos              // branch if JiffyDOS
+#endif
+
+#if CONFIG_IEC_DOLPHINDOS
+	// XXX enable when finished
+	// cmp #$02
+	// beq_far load_dolphindos            // branch if JiffyDOS
+#endif
 
 #endif
 

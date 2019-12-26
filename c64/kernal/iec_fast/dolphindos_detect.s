@@ -54,6 +54,8 @@ dolphindos_detect_loop:
 
 dolphindos_detect_fail:
 
+	panic #$00
+
 	rts
 
 dolphindos_detect_success:

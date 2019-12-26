@@ -30,30 +30,8 @@ iec_rx_byte:
 	// Wait till data line is released (someone else might be holding it)
 	jsr iec_wait_for_data_release
 
-	// Wait for talker to pull CLK.
-	// If over 200 usec (205 cycles on NTSC machine) , then it is EOI.
-	// Loop iteraction takes 13 cycles, 17 full iterations are enough
-
-	ldx #$11                // 2 cycles
-iec_rx_clk_wait1:
-	lda CIA2_PRA            // 4 cycles
-	rol                     // 2 cycles, to put CLK in as the last bit
-	bpl iec_rx_not_eoi      // 2 cycles if not jumped
-	dex                     // 2 cycles
-    bne iec_rx_clk_wait1    // 3 cycles if jumped
-    
-	// Timeout - either this is the last byte of stream, or the stream is empty at all.
-	// Mark end of stream in IOSTATUS
-	jsr kernalstatus_EOI
-
-iec_rx_not_empty:
-
-	// Pull data for 60 usec to confirm it
-	jsr iec_release_clk_pull_data
-	jsr iec_wait60us
-	jsr iec_release_clk_data
-
-iec_rx_not_eoi:
+	// Check if EOI
+	jsr iec_rx_check_eoi
 
 #if CONFIG_IEC_DOLPHINDOS
 

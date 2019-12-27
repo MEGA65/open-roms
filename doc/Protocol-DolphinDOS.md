@@ -35,7 +35,7 @@ Turnover (both to listener and to back to talker) is performed as usual.
 
 ## Sending a byte
 
-XXX TODO - not fully clear yet
+Byte transmission reuses quite some part of the standard IEC byte transmission mechanism. At the moment where EOI has been possibly signalled, controller using the standard protocol pulls CLK to indicate invalid DATA - but when DolphinDOS is in use, the C64 instead puts the byte in CIA2 port B (has to be set for output) and pulls the CLK to indicate data is now valid. Afterwards, the reader can pull DATA to indicate it's busy - everything continues the standard way.
 
 ## Receiving a byte
 

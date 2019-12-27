@@ -61,14 +61,22 @@ The following ROM features are currently missing:
 | VIC-II        | PARTIAL  | 80 chars in logical line support is very buggy     |
 | VDC 80 col.   | NOT DONE |                                                    |
 
-## Tape port (Tapuino, Datasette - LOAD only!)
+## Tape port (LOAD only!)
+
+* Tapuino
+* Datasette
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
 | normal        | PARTIAL  | no error correction, no tape speed calibratrion    |
 | turbo         | PARTIAL  | up to 250 blocks, no tape speed calibratrion yet   |
 
-## IEC bus (SD2IEC, petSD+, µIEC, Pi1541, Ultimate II, most disk drives and printers, some hard drives)
+## IEC bus
+
+* SD2IEC, petSD+, µIEC
+* Pi1541, Ultimate II
+* most disk drives and printers
+* some hard drives
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
@@ -78,13 +86,20 @@ The following ROM features are currently missing:
 | CIA burst mod | NOT DONE |                                                    |
 | Mega65 burst  | NOT DONE | pure software implementation should be feasible    |
 
-## IEEE-488 bus (petSD+, PET era disk drives and printers, various scientific equipment)
+## IEEE-488 bus
+
+* petSD+
+* PET era disk drives and printers
+* various scientific equipment
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
 | CBM cartridge | NOT DONE |                                                    |
 
-## RS-232 (modems, parallel port printers)
+## RS-232
+
+* modems (telephone, WiFi)
+* parallel port printers
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |

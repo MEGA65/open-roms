@@ -64,12 +64,6 @@ iec_tx_common:
 	jsr iec_wait_for_data_pull
 	jsr iec_wait_for_data_release
 !:
-	// Pull CLK back to indicate that DATA is not valid, keep it for 60us
-	// We can use this routine as we don't hold DATA anyway (and its state doesn't even matter)
-
-	jsr iec_pull_clk_release_data_oneshot
-	jsr iec_wait60us
-
 #if CONFIG_IEC_DOLPHINDOS
 
 	// Check if DolphinDOS was detected
@@ -83,8 +77,8 @@ iec_tx_common:
 	lda TBTCNT
 	sta CIA2_PRB
 
-	// Release CLK to indicate data is now valid (we should not hold DATA nevertheless)
-	jsr iec_release_clk_data
+	// Pull CLK to indicate data is now valid (we should not hold DATA nevertheless)
+	jsr iec_pull_clk_release_data_oneshot
 
 	// Finish the flow
 	jmp iec_tx_common_finalize
@@ -92,6 +86,12 @@ iec_tx_common:
 iec_tx_no_dolphindos:
 
 #endif // CONFIG_IEC_DOLPHINDOS
+
+	// Pull CLK back to indicate that DATA is not valid, keep it for 60us
+	// We can use this routine as we don't hold DATA anyway (and its state doesn't even matter)
+
+	jsr iec_pull_clk_release_data_oneshot
+	jsr iec_wait60us
 
 	// Now, we can start transmission of 8 bits of data
 	ldx #7

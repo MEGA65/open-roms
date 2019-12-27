@@ -44,6 +44,12 @@ save_iec:
 	jsr iec_tx_command
 	bcs save_iec_dev_not_found
 
+#if CONFIG_IEC_DOLPHINDOS
+
+	jsr dolphindos_detect
+
+#endif
+
 	// Save start address
 	lda STAL+0
 	sta TBTCNT

@@ -43,8 +43,8 @@ dolphindos_detect:
 dolphindos_detect_loop:
 
 	lda CIA2_ICR
-	and #$10
-	bne dolphindos_detect_success
+	cmp #$10
+	beq dolphindos_detect_success
 	lda CIA2_PRB                       // XXX do we need this read?
 
 	dex

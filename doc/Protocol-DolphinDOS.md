@@ -35,7 +35,7 @@ Turnover (both to listener and to back to talker) is performed as usual.
 
 ## Sending a byte
 
-XXX TODO
+XXX TODO - not fully clear yet
 
 ## Receiving a byte
 

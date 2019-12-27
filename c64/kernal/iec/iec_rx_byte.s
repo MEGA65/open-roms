@@ -129,7 +129,7 @@ iec_rx_clk_wait2:
 
 iec_rx_acknowledge:
 
-	// Then we must within 1000 usec acknowledge the frame by
+	// Then we must within 1000 usec acknowledge the byte by
 	// pulling DATA. At this point, CLK is pulled by the
 	// talker and DATA by us, i.e., we are ready to receive
 	// the next byte. (p11).

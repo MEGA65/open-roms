@@ -9,7 +9,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * pre-defined function keys
 
 * JiffyDOS protocol support
-* partial DolphinDOS protocol support (for now only LOAD is accelerated)
+* partial DolphinDOS protocol support
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 
 * turbo tape load support (as device 7, or using `←L`), up to 250 blocks (can store bytes under I/O)
@@ -61,30 +61,30 @@ The following ROM features are currently missing:
 | VIC-II        | PARTIAL  | 80 chars in logical line support is very buggy     |
 | VDC 80 col.   | NOT DONE |                                                    |
 
-## Tape storage (LOAD only!)
+## Tape port (Tapuino, Datasette - LOAD only!)
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
-| normal        | PARITAL  | no error correction, no tape speed calibratrion    |
+| normal        | PARTIAL  | no error correction, no tape speed calibratrion    |
 | turbo         | PARTIAL  | up to 250 blocks, no tape speed calibratrion yet   |
 
-## IEC bus (disk drives, printers, some hard drives)
+## IEC bus (SD2IEC, petSD+, µIEC, Pi1541, Ultimate II, most disk drives and printers, some hard drives)
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
 | standard      | DONE     |                                                    |
 | JiffyDOS      | DONE     |                                                    |
-| DolphinDOS    | PARTIAL  | for now only LOAD is accelerated                   |
+| DolphinDOS    | DONE     |                                                    |
 | CIA burst mod | NOT DONE |                                                    |
 | Mega65 burst  | NOT DONE | pure software implementation should be feasible    |
 
-## IEEE-488 bus (scientific equipment, PET era disk drives and printers)
+## IEEE-488 bus (petSD+, PET era disk drives and printers, various scientific equipment)
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
 | CBM cartridge | NOT DONE |                                                    |
 
-## RS-232
+## RS-232 (modems, parallel port printers)
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |

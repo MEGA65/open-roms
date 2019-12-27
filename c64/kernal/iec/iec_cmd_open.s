@@ -17,7 +17,20 @@ iec_cmd_open: // similar to TKSA, but without turnaround
 !:
 	ora #$F0
 
+#if CONFIG_IEC_DOLPHINDOS
+/* XXX does not work yet
+	sta TBTCNT
+	jsr iec_tx_command
+	bcs !+ // branch if error
+
+	jsr dolphindos_detect
+	jmp iec_tx_command_finalize
+*/
+#else
+
 	// FALLTROUGH
+
+#endif
 
 common_open_close_unlsn_second: // common part of several commands
 

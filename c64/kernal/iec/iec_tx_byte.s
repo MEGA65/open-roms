@@ -70,6 +70,29 @@ iec_tx_common:
 	jsr iec_pull_clk_release_data_oneshot
 	jsr iec_wait60us
 
+#if CONFIG_IEC_DOLPHINDOS
+
+	// Check if DolphinDOS was detected
+	lda IECPROTO
+	cmp #$02
+	bne iec_tx_no_dolphindos
+
+	// For DolphinDOS just push the byte to parallel port (set it to output first)
+	lda #$FF
+	sta CIA2_DDRB
+	lda TBTCNT
+	sta CIA2_PRB
+
+	// Release CLK to indicate data is now valid (we should not hold DATA nevertheless)
+	jsr iec_release_clk_data
+
+	// Finish the flow
+	jmp iec_tx_common_finalize
+
+iec_tx_no_dolphindos:
+
+#endif // CONFIG_IEC_DOLPHINDOS
+
 	// Now, we can start transmission of 8 bits of data
 	ldx #7
 
@@ -114,6 +137,10 @@ iec_tx_common_bit_is_sent:
 	// More bits to send?
 	dex
 	bpl iec_tx_common_sendbit
+
+	// FALLTROUGH
+
+iec_tx_common_finalize:
 
 	cli
 

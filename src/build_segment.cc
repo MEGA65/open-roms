@@ -420,7 +420,7 @@ void prepareBinningProblem()
 
     logOutput << "\n" <<
                  "free space (after floating routines are placed):    " <<
-                 std::to_string(CMD_hiAddress - CMD_loAddress - GLOBAL_totalRoutinesSize) << "\n" <<
+                 std::to_string(CMD_hiAddress - CMD_loAddress + 1 - GLOBAL_totalRoutinesSize) << "\n" <<
                  "number of floating routines:                        " <<
                  std::to_string(GLOBAL_binningProblem.floatingRoutines.size()) << "\n" <<
                  "number of gaps for the floating routines:           " <<
@@ -730,7 +730,6 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
     else if (!isSolved())
     {
         logOutput << "filled in - dropped bytes: " << gaps[gapAddress] - offset << "\n";
-        statFree   -= gaps[gapAddress] - offset;
         statWasted += gaps[gapAddress] - offset;
     }
     else
@@ -878,7 +877,7 @@ void Solver::run()
         logOutput << "segment statistics:" << "\n";
         // logOutput << "    - total size:   " << problem.statSize << "\n"; - for BASIC contains filling gap too
         logOutput << "    - wasted bytes: " << problem.statWasted << "\n";
-        logOutput << "    - still free:   " << problem.statFree << "\n\n";
+        logOutput << "    - still free:   " << problem.statFree - problem.statWasted << "\n\n";
     }
 
     // Close the log file

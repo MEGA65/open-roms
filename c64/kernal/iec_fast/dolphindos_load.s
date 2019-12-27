@@ -7,7 +7,7 @@
 #if CONFIG_IEC_DOLPHINDOS && !CONFIG_MEMORY_MODEL_60K
 
 
-load_dolphindos:
+dolphindos_load:
 
 	// Timing is critical for some parts, do not allow interrupts
 	sei
@@ -26,12 +26,12 @@ load_dolphindos:
 
 	// FALLTROUGH
 
-load_dolphindos_loop:
+dolphindos_load_loop:
 
 #if !CONFIG_IEC_DOLPHINDOS_FAST
 	// Check if this was EOI
 	bit IOSTATUS
-	bvs load_dolphindos_end
+	bvs dolphindos_load_end
 #endif
 
 	// Wait for the talker to release the CLK line
@@ -59,7 +59,7 @@ load_dolphindos_loop:
 	ldx #$13
 !:
 	bit CIA2_PRA
-	bvc load_dolphindos_no_eoi
+	bvc dolphindos_load_no_eoi
 	dex
     bne !-  
 
@@ -79,7 +79,7 @@ load_dolphindos_loop:
 	// End of load loop
 	jmp load_iec_loop_end
 
-load_dolphindos_no_eoi:
+dolphindos_load_no_eoi:
 
 #endif
 
@@ -98,13 +98,13 @@ load_dolphindos_no_eoi:
 
 	// Handle EAL
 	iny
-	bne load_dolphindos_loop
+	bne dolphindos_load_loop
 	inc EAL+1
-	jmp load_dolphindos_loop
+	jmp dolphindos_load_loop
 
 #if !CONFIG_IEC_DOLPHINDOS_FAST
 
-load_dolphindos_end:
+dolphindos_load_end:
 
 	// Update EAL
 	clc

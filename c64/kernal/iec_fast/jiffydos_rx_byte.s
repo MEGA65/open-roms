@@ -7,7 +7,7 @@
 #if CONFIG_IEC_JIFFYDOS
 
 
-iec_rx_byte_jiffydos:
+jiffydos_rx_byte:
 
 	// Timing is critical, do not allow interrupts
 	sei
@@ -81,14 +81,15 @@ iec_rx_byte_jiffydos:
 	stx CIA2_PRA
 
 	// If CLK line active - success
-	bvc iec_rx_byte_jiffydos_end
+	bvc jiffydos_rx_byte_end
+
 	// XXX the DATA line can probably be used to distinguish between file not found error and normal stream EOI
 
 	jsr kernalstatus_EOI
 
 	// FALLTROUGH
 
-iec_rx_byte_jiffydos_end:
+jiffydos_rx_byte_end:
 
 	// Indicate that no byte waits in output buffer
 	lda #$00

@@ -7,7 +7,7 @@
 #if CONFIG_IEC_JIFFYDOS
 
 
-iec_tx_byte_jiffydos:
+jiffydos_tx_byte:
 
 	// Timing is critical, do not allow interrupts
 	sei
@@ -70,11 +70,11 @@ iec_tx_byte_jiffydos:
 	// Signal EOI if needed; cycles till no EOI: 3 + 3 + 2 + 2 + 4 = 14 
 	lda C3PO
 	ldx IECPROTO
-	beq iec_tx_byte_jiffydos_wait_eoi
+	beq jiffydos_tx_byte_wait_eoi
 
 	// FALLTROUGH
 
-iec_tx_byte_jiffydos_finalize:
+jiffydos_tx_byte_finalize:
 
 	ora #BIT_CIA2_PRA_CLK_OUT          // pull CLK
 	sta CIA2_PRA
@@ -92,12 +92,12 @@ iec_tx_byte_jiffydos_finalize:
 	jmp iec_return_success
 
 
-iec_tx_byte_jiffydos_wait_eoi:
+jiffydos_tx_byte_wait_eoi:
 
 	sta CIA2_PRA
 	jsr iec_wait20us
 	lda C3PO
-	jmp iec_tx_byte_jiffydos_finalize
+	jmp jiffydos_tx_byte_finalize
 
 
 #endif // CONFIG_IEC_JIFFYDOS

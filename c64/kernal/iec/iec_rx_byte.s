@@ -8,6 +8,19 @@
 #if CONFIG_IEC
 
 
+#if CONFIG_IEC_JIFFYDOS
+
+iec_rx_dispatch:
+
+	lda IECPROTO
+	cmp #$01
+	beq_far jiffydos_rx_byte
+
+	// FALLTROUGH
+
+#endif // CONFIG_IEC_JIFFYDOS
+
+
 iec_rx_byte:
 
 	// Store .X and .Y on the stack - preserve them

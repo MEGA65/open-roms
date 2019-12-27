@@ -103,12 +103,12 @@ load_iec:
 
 #if CONFIG_IEC_JIFFYDOS
 	cmp #$01
-	beq_far load_jiffydos              // branch if JiffyDOS
+	beq_far jiffydos_load              // branch if JiffyDOS
 #endif
 
 #if CONFIG_IEC_DOLPHINDOS
 	cmp #$02
-	beq_far load_dolphindos            // branch if DolphinDOS
+	beq_far dolphindos_load            // branch if DolphinDOS
 #endif
 
 #endif

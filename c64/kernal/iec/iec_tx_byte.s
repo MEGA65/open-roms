@@ -9,6 +9,26 @@
 
 #if CONFIG_IEC
 
+
+#if CONFIG_IEC_JIFFYDOS
+
+iec_tx_dispatch:
+
+	php                                // preserve C flag for EOI indication
+	lda IECPROTO
+	cmp #$01
+	bne !+
+
+	plp
+	jmp jiffydos_tx_byte
+!:
+	plp
+	
+	// FALLTROUGH
+
+#endif // CONFIG_IEC_JIFFYDOS
+
+
 iec_tx_byte:
 
 	// Store .X and .Y on the stack - preserve them

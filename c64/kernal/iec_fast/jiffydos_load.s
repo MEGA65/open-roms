@@ -15,7 +15,7 @@
 // will want to terminate the loading.
 
 
-load_jiffydos:
+jiffydos_load:
 
 	// Timing is critical, do not allow interrupts
 	sei
@@ -48,7 +48,7 @@ load_jiffydos:
 
 	// FALLTROUGH
 
-load_jiffydos_loop:
+jiffydos_load_loop:
 
 	// Wait until device is ready to send (releases CLK)
 	jsr iec_wait_for_clk_release
@@ -118,15 +118,15 @@ load_jiffydos_loop:
 	stx CIA2_PRA
 
 	// If CLK line not active - this was the last byte
-	bvs load_jiffydos_end
+	bvs jiffydos_load_end
 
 	// Handle EAL
 	cpy #$FF
-	bne load_jiffydos_loop
+	bne jiffydos_load_loop
 	inc EAL+1
-	jmp load_jiffydos_loop
+	jmp jiffydos_load_loop
 
-load_jiffydos_end:
+jiffydos_load_end:
 
 	// Save last byte
 	tax

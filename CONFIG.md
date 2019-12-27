@@ -141,7 +141,7 @@ Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, a
 
 Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges)
 
-Needs about 600 bytes in KERNAL segment (if both normal and turbo are enabled, about 900 bytes are needed, as they share some code). If unsure - enable.
+Needs about 650 bytes in KERNAL segment (if both normal and turbo are enabled, about 950 bytes are needed, as they share some code). If unsure - enable.
 
 ## Multiple SID support
 

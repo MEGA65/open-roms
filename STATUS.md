@@ -3,19 +3,26 @@
 
 Here are the features of the Open ROMs not found in the original ROMs from the 80s (many of them are [configurable](CONFIG.md) during compilation):
 
+
 * improved keyboard scanning, resistant to ghosting and joystick interference (one variant even supports multi-keyy rollover), supports additional C128 keys
 * joystick can be used to move text cursor
 * pre-defined function keys
-* uses RAM under ROM and I/O: 61438 bytes free
-* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses, configured addresses
-* warm start due to BRK prints out the instruction address
+
+* JiffyDOS protocol support
+* partial DolphinDOS protocol support (for now only LOAD is accelerated)
+* DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
+
+* turbo tape load support (as device 7, or using `←L`), up to 250 blocks (can store bytes under I/O)
+
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
     * secondary address over 255 is considered a start address
-* JiffyDOS protocol support
-* turbo tape load support (as device 7 or using `←L`)
-* DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
+
+* uses RAM under ROM and I/O: 61438 bytes free
+* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses, configured addresses
+* warm start due to BRK prints out the instruction address
+
 
 NOTE: extra features and their syntax can change in the future!
 
@@ -33,7 +40,6 @@ The following ROM features are currently missing:
 * BASIC variables
 * BASIC expression parsing
 * floating point routines
-* tape (normal mode) support
 * RS-232 support
 * NMI handling is incomplete
 

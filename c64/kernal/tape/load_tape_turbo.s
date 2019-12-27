@@ -82,6 +82,18 @@ load_tape_turbo_header_loop:
 
 load_tape_turbo_payload:
 
+	// Copy helper byte store routine to RAM, provide default memory mapping
+
+	ldx #(__tape_turbo_bytestore_size - 1)
+!:
+	lda tape_turbo_bytestore_source, x
+	sta __tape_turbo_bytestore, x
+	dex
+	bpl !-
+
+	lda CPU_R6510
+	sta __tape_turbo_bytestore_defmap
+
 	// Initial checksum value
 
 	lda #$00
@@ -96,7 +108,7 @@ load_tape_turbo_payload:
 load_tape_turbo_loop:
 
 	jsr tape_turbo_get_byte
-	sta (MEMUSS),y
+	jsr __tape_turbo_bytestore         // like 'sta (MEMUSS),y' - but under I/O
 
 	eor PRTY                           // handle checksum
 	sta PRTY

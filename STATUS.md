@@ -52,16 +52,23 @@ The following ROM features are currently missing:
 | :-----------: | :------: | :------------------------------------------------: |
 | C64           | DONE     |                                                    |
 | C128          | DONE     |                                                    |
-| C65 / Mega65  | NOT DONE | code should be complete, but is not tested yet     |
+| Mega65        | NOT DONE | code should be complete, but is not tested yet     |
+
+## Screen
+
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| VIC-II        | PARTIAL  | 80 chars in logical line support is very buggy     |
+| VDC 80 col.   | NOT DONE |                                                    |
 
 ## Tape storage (LOAD only!)
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
-| normal        | PARITAL  | works, but needs improvements, no error correction |
-| turbo         | PARTIAL  | works, to do: use sync to calibrate read speed     |
+| normal        | PARITAL  | no error correction, no tape speed calibratrion    |
+| turbo         | PARTIAL  | up to 250 blocks, no tape speed calibratrion yet   |
 
-## IEC bus (disk drives, etc.)
+## IEC bus (disk drives, printers, some hard drives)
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
@@ -69,13 +76,20 @@ The following ROM features are currently missing:
 | JiffyDOS      | DONE     |                                                    |
 | DolphinDOS    | PARTIAL  | for now only LOAD is accelerated                   |
 | CIA burst mod | NOT DONE |                                                    |
+| Mega65 burst  | NOT DONE | pure software implementation should be feasible    |
+
+## IEEE-488 bus (scientific equipment, PET era disk drives and printers)
+
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| CBM cartridge | NOT DONE |                                                    |
 
 ## RS-232
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
 | UP2400        | NOT DONE |                                                    |
-| UP9600        | NOT DONE | work in progress, not functional yet               |
+| UP9600        | NOT DONE | work started, not functional yet                   |
 | ACIA 6551     | NOT DONE |                                                    |
 
 

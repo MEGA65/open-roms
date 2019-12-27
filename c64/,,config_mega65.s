@@ -91,12 +91,12 @@
 
 .const CONFIG_KEYCMD_HELP = @"LIST"
 
-.const CONFIG_KEYCMD_F9   = @""
-.const CONFIG_KEYCMD_F10  = @""
-.const CONFIG_KEYCMD_F11  = @""
-.const CONFIG_KEYCMD_F12  = @""
-.const CONFIG_KEYCMD_F13  = @""
-.const CONFIG_KEYCMD_F14  = @""
+.const CONFIG_KEYCMD_F9   = @"REM F9"
+.const CONFIG_KEYCMD_F10  = @"REM F10"
+.const CONFIG_KEYCMD_F11  = @"REM F11"
+.const CONFIG_KEYCMD_F12  = @"REM F12"
+.const CONFIG_KEYCMD_F13  = @"REM F13"
+.const CONFIG_KEYCMD_F14  = @"REM F14"
 
 
 // Screen editor

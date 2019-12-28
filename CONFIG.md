@@ -117,7 +117,7 @@ Causes screen blanking during some IEC operations (currently only JiffyDOS file 
 
 Adds support for DolphinDOS fast protocol to the IEC bus, using UserPort cable.
 
-Needs some space in KERNAL segment. If unsure - enable.
+Needs about 160 buytes in KERNAL segment. If unsure - enable.
 
 ### `CONFIG_IEC_DOLPHINDOS_FAST`
 

@@ -1,0 +1,3 @@
+LDY #$05 + LDA ($B2),Y + JSR $FFD2 (display character, documented routine) + INY + CPY #$15 + BNE (offset matches)
+
+A simple loop displaying a constant-size string pointed by a zeropage vector - nothing more. Due to 6502 addressing modes limiations, such a code will always look this way - this is not creative, and thus not copyrightable.

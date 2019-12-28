@@ -1,0 +1,3 @@
+$DD + LDX #$00 + STX (address does not match)
+
+Instruction + some parts. Trivial, not copyrightable.

@@ -1,0 +1,3 @@
+LDA $C4 + STA $AF
+
+Move value from one zeropage location to another one (both documented, MEMUSS and EAL) - trivial, not copyrightable.

@@ -1,0 +1,4 @@
+STA $DD0D + LDA (value does not match)
+
+Instruction (accessing a documented I/O register) + some part. Trivial, not copyrightable.
+

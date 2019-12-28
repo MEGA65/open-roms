@@ -1,0 +1,3 @@
+LDA #$04 + $2C (BIT) + LDA #$80
+
+Part of the code putting $04 or $80 to accumulator depending on some condition (not included in a similarity) - trivial, not copyrightable.

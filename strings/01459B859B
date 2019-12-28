@@ -1,0 +1,3 @@
+$01 + EOR $9B + STA $9B
+
+Small part of code calculating parity/XOR type checksum. Trivial, not copyrightable.

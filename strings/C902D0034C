@@ -1,0 +1,3 @@
+CMP #$02 + BNE (skip next instruction) + JMP (address does not match)
+
+Decision based on a check if accumulator contains 2 - trivial, not copyrightable.

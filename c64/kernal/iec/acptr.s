@@ -14,8 +14,8 @@ ACPTR:
 	lda IOSTATUS
 	beq !+
 
-	lda #$0D                           // tested on real ROMs
 	clc
+	lda #$0D                           // tested on real ROMs
 	rts
 !:
 

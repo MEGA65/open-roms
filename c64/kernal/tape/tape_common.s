@@ -28,11 +28,15 @@ tape_ask_play:
 
 	sei                                // timing is critical for tape loading
 
+#if !CONFIG_TAPE_NO_KEY_SENSE
+
 	// First check whether the button is already pressed
 
 	lda CPU_R6510
 	and #$10
 	beq tape_wait_play_done
+
+#endif
 
 	// Display message
 
@@ -40,6 +44,8 @@ tape_ask_play:
 	jsr print_kernal_message
 
 	// FALLTROUGH
+
+#if !CONFIG_TAPE_NO_KEY_SENSE
 
 tape_wait_play_loop:
 
@@ -50,6 +56,26 @@ tape_wait_play_loop:
 	lda CPU_R6510
 	and #$10                           // check for pressed button
 	bne tape_wait_play_loop
+
+	// FALLTROUGH
+
+#else
+
+	// We have no key sense - so just turn the motor on and wait for the first pulse
+
+	jsr tape_motor_on
+
+	lda #$10
+!:
+	bit CIA1_ICR    // $DC0D
+	bne !-
+!:
+	bit CIA1_ICR    // $DC0D
+	beq !-
+
+#endif
+
+	// FALLTROUGH
 
 tape_wait_play_done:
 
@@ -68,7 +94,11 @@ tape_wait_play_done:
 
 tape_handle_header:
 
+#if !CONFIG_TAPE_NO_MOTOR_CONTROL
+
 	jsr tape_screen_on_motor_off
+
+#endif
 
 	// Print FOUND + file name
 
@@ -83,10 +113,14 @@ tape_handle_header:
 	cpy #$15
 	bne !-
 
+#if !CONFIG_TAPE_NO_MOTOR_CONTROL
+
 	// Header, wait for user decision
 
 	jsr tape_header_get_decision
 	bcs tape_break_error
+
+#endif
 
 	// Check if file name matches
 
@@ -151,13 +185,19 @@ tape_handle_header:
 
 	jsr lvs_display_loading_verifying
 
+	// FALLTROUGH
+
+#if !CONFIG_TAPE_NO_MOTOR_CONTROL
+
 tape_handle_header_displayed:
 
 	// Load the file
 
 	jsr tape_screen_off_motor_on
-	
+
 	// FALLTROUGH
+
+#endif
 
 tape_return_ok:
 
@@ -211,6 +251,8 @@ tape_match_loop:
 	rts
 
 
+#if !CONFIG_TAPE_NO_MOTOR_CONTROL
+
 //
 // Get user decision whether to load the file or not
 //
@@ -223,7 +265,7 @@ tape_header_get_decision:
 	lda STKEY
 	bpl tape_header_wait_stop          // STOP pressed
 	and #$10
-	beq tape_header_wait_space         // space pressed
+	beq tape_header_wait_space         // SPACE pressed
 
 	ldx #$80
 	jsr wait_x_bars                    // sets .X to 0
@@ -244,6 +286,8 @@ tape_header_wait_stop:
 	
 	sec
 	rts
+
+#endif
 
 
 //

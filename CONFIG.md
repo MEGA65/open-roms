@@ -143,6 +143,14 @@ Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action
 
 Needs about 650 bytes in KERNAL segment (if both normal and turbo are enabled, about 950 bytes are needed, as they share some code). If unsure - enable.
 
+### `CONFIG_TAPE_NO_KEY_SENSE`
+
+Enable this option if you are using a tape interface adapter with some audio signal source connected. These adapters lack key sense functionality, so the computer is unable to tell whether Play got pressed or not - with this option ROM will assume Play got pressed after imppulses start arriving from the tape.
+
+### `CONFIG_TAPE_NO_MOTOR_CONTROL`
+
+Enable this option if you are using a tape interface adapter lacking tape motor control (most likely every adapter currently being sold) - this will eliminate the need to quickly press space when the program header information gets displayed. Note: if you are using a cassette player with REM port, and your adapter is connected to this port too, than you do not need this option.
+
 ## Multiple SID support
 
 The SID is a sound chip - original machine had one installed. However, mods exists to add more of them for improved sound capabilitiee. Emulators and FPGA machines typically allow to simulate more than one too. Unfortunately, there is no standard regarding how these additional chips are visible in the processor address space, and there is no sane way to detect it - thus, it has to be configurable.

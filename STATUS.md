@@ -13,6 +13,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 
 * turbo tape load support (as device 7, or using `←L`), up to 250 blocks (can store bytes under I/O)
+* improved support for tape adapters (for using regular casette players and other audio devices instead of Datasette)
 
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style

@@ -35,7 +35,12 @@ rom_revision_kernal_string:
 
 	// $E4BC
 
+#if !CONFIG_BRAND_CUSTOM_BUILD
 	.text "(DEVEL SNAPSHOT)"  // actual ROM revision string; up to 16 characters
+#else
+	.text "(CUSTOM BUILD)"
+#endif
+
 	.byte $00                 // marks the end of string
 
 __rom_revision_kernal_end:

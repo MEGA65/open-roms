@@ -1,0 +1,3 @@
+STA $DD0D + LDA #$00 + STA (address does not match)
+
+Store a value in a documented I/O register, afterwards store 0 somewhere else (address does not match). Trivial, not copyrightable.

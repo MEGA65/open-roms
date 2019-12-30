@@ -14,15 +14,15 @@ ACPTR:
 	lda IOSTATUS
 	beq !+
 
-	lda #$0D                           // tested on real ROMs
 	clc
+	lda #$0D                           // tested on real ROMs
 	rts
 !:
 
 #if CONFIG_IEC
 #if CONFIG_IEC_JIFFYDOS
 	jmp iec_rx_dispatch
-#else // no turbo supported
+#else
 	jmp iec_rx_byte
 #endif
 #else

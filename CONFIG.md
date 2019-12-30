@@ -3,9 +3,11 @@
 
 It's not possible to provide ROM builds that suit everyone needs - therefore configuration files were introduced, few predefined configurations are provided with sane defaults:
 
+* [`c64/,,config_custom.s`](c64/,,config_custom.s)
 * [`c64/,,config_generic.s`](c64/,,config_generic.s)
 * [`c64/,,config_mega65.s`](c64/,,config_mega65.s)
 * [`c64/,,config_ultimate64.s`](c64/,,config_ultimate64.s)
+* [`c64/,,config_testing.s`](c64/,,config_testing.s)
 
 Just edit them and recompile the project. To enable particular option - uncomment it by removing leading `//` from before `#define` directive (as you probably guessed, commenting out disables it). Some options are followed by constants - you can change them too to further fine-tune the build.
 
@@ -26,6 +28,10 @@ Since Open ROMs is highly modular, it should be possible to add other platforms 
 ### `CONFIG_MB_MEGA_65`, `CONFIG_MB_ULTIMATE_64`
 
 Select if the ROM is going to be used exclusively on the specific motherboard. It prevents from enabling options not having sense, skips initialization of C128-only registers, etc.
+
+### `CONFIG_BRAND_CUSTOM`
+
+Intended for custom builds, which are not to be redistributed. Allows to configure branding with `CONFIG_CUSTOM_BRAND` varaible
 
 ### `CONFIG_BRAND_GENERIC`
 
@@ -107,17 +113,35 @@ Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
 Causes screen blanking during some IEC operations (currently only JiffyDOS file loading) to increase the data transfer performance.
 
+### `CONFIG_IEC_DOLPHINDOS`
+
+Adds support for DolphinDOS fast protocol to the IEC bus, using UserPort cable.
+
+Needs about 160 buytes in KERNAL segment. If unsure - enable.
+
+### `CONFIG_IEC_DOLPHINDOS_FAST`
+
+Faster `LOAD` loop implementation for DolphinDOS protocol.
+
+Needs 20 more bytes in KERNAL segment.
+
 ### `CONFIG_IEC_JIFFYDOS`
 
 Adds support for JiffyDOS fast protocol to the IEC bus.
 
 Needs about 430 bytes in KERNAL segment. If unsure - enable.
 
+### `CONFIG_TAPE_NORMAL`
+
+Adds a minimal normal (standard Commodore format) tape support - just LOAD command.
+
+Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, about 900 bytes are needed, as they share some code). If unsure - enable.
+
 ### `CONFIG_TAPE_TURBO`
 
 Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges)
 
-Needs about 400 bytes in KERNAL segment. If unsure - enable.
+Needs about 650 bytes in KERNAL segment (if both normal and turbo are enabled, about 950 bytes are needed, as they share some code). If unsure - enable.
 
 ## Multiple SID support
 

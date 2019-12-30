@@ -10,6 +10,8 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
+#if !CONFIG_BRAND_CUSTOM_BUILD
+
 	ldx #$01
 	ldy #$04
 	jsr plot_set
@@ -18,13 +20,23 @@ initmsg_real:
 	ldy #>rom_revision_basic_string
 	jsr STROUT
 
+#endif // no CONFIG_BRAND_CUSTOM_BUILD
+
+#if !CONFIG_BRAND_CUSTOM_BUILD
 	ldx #$03
+#else
+	ldx #$02
+#endif
 	ldy #$04
 	jsr plot_set
 
 	jsr initmsg_bytes_free
 
+#if !CONFIG_BRAND_CUSTOM_BUILD
 	ldx #$06
+#else
+	ldx #$05
+#endif
 	ldy #$00
 #if CONFIG_SHOW_PAL_NTSC && CONFIG_SHOW_FEATURES
 	jsr plot_set
@@ -54,6 +66,8 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
+#if !CONFIG_BRAND_CUSTOM_BUILD
+
 	ldx #$01
 	ldy #$0A
 	jsr plot_set
@@ -66,13 +80,23 @@ initmsg_real:
 	ldy #>rom_revision_basic_string
 	jsr STROUT
 
+#endif // no CONFIG_BRAND_CUSTOM_BUILD
+
+#if !CONFIG_BRAND_CUSTOM_BUILD
 	ldx #$03
+#else
+	ldx #$02
+#endif
 	ldy #$0A
 	jsr plot_set
 
 	jsr initmsg_bytes_free
 
+#if !CONFIG_BRAND_CUSTOM_BUILD
 	ldx #$06
+#else
+	ldx #$05
+#endif
 	ldy #$00
 #if CONFIG_SHOW_PAL_NTSC && CONFIG_SHOW_FEATURES
 	jsr plot_set
@@ -94,18 +118,22 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
+	ldx #$04
+	ldy #$00
+	jsr plot_set
+
 	lda #<rom_revision_basic_string
 	ldy #>rom_revision_basic_string
 	jsr STROUT
 
-	ldx #$03
+	ldx #$04
 	ldy #$12
 	jsr plot_set
 
 	jsr initmsg_bytes_free
 
 #if CONFIG_SHOW_FEATURES
-	ldx #$04
+	ldx #$05
 	ldy #$00
 	jsr plot_set
 	jsr print_features

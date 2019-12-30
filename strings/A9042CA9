@@ -1,0 +1,3 @@
+LDA #$04 + $2C (BIT) + LDA (value does not match)
+
+Put $04 to acumulator and skip thee next 2 bytes (common space optimization) - trivial, not copyrightable.

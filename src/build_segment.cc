@@ -420,7 +420,7 @@ void prepareBinningProblem()
 
     logOutput << "\n" <<
                  "free space (after floating routines are placed):    " <<
-                 std::to_string(CMD_hiAddress - CMD_loAddress - GLOBAL_totalRoutinesSize) << "\n" <<
+                 std::to_string(CMD_hiAddress - CMD_loAddress + 1 - GLOBAL_totalRoutinesSize) << "\n" <<
                  "number of floating routines:                        " <<
                  std::to_string(GLOBAL_binningProblem.floatingRoutines.size()) << "\n" <<
                  "number of gaps for the floating routines:           " <<
@@ -730,7 +730,6 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
     else if (!isSolved())
     {
         logOutput << "filled in - dropped bytes: " << gaps[gapAddress] - offset << "\n";
-        statFree   -= gaps[gapAddress] - offset;
         statWasted += gaps[gapAddress] - offset;
     }
     else
@@ -748,7 +747,8 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
 
     std::string spacing;
 
-    bool repeat = true;
+    bool repeat  = true;
+    bool lastGap = false;
     while (repeat && !floatingRoutines.empty() && !gaps.empty())
     {
         repeat = false;
@@ -766,6 +766,13 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
             }
         }
 
+        if (!lastGap && gaps.size() == 1)
+        {
+            lastGap = true;
+            logOutput << "selected gap: $" << std::hex << gapAddress << std::dec <<
+                         " (size: " << gaps[gapAddress] << ") - the last remaining" << "\n";
+        }
+
         if (matchingGaps == 1)
         {
             // Routine can only be placed in this particular gap - do so
@@ -775,8 +782,11 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
             fixedRoutines[targetAddr] = floatingRoutines.back();
             statFree   -= routineSize;
 
-            logOutput << "forced reducing gap $" << std::hex << gapAddress << std::dec << " to size " <<
-                          gaps[gapAddress] << "\n";
+            if (gaps.size() > 1)
+            {
+                logOutput << "forced reducing gap $" << std::hex << gapAddress << std::dec <<
+                             " to size " << gaps[gapAddress] << "\n";
+            }
 
             spacing.resize(GLOBAL_maxFileNameLen + 4 - floatingRoutines.back()->fileName.length(), ' ');
             logOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
@@ -867,7 +877,7 @@ void Solver::run()
         logOutput << "segment statistics:" << "\n";
         // logOutput << "    - total size:   " << problem.statSize << "\n"; - for BASIC contains filling gap too
         logOutput << "    - wasted bytes: " << problem.statWasted << "\n";
-        logOutput << "    - still free:   " << problem.statFree << "\n\n";
+        logOutput << "    - still free:   " << problem.statFree - problem.statWasted << "\n\n";
     }
 
     // Close the log file

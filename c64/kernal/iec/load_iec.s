@@ -62,6 +62,12 @@ load_iec:
 	jsr iec_tx_command
 	bcs load_iec_error
 
+#if CONFIG_IEC_DOLPHINDOS
+
+	jsr dolphindos_detect
+
+#endif
+
 	// We are currently talker, so do the IEC turn around so that we
 	// are the listener (p16)
 	jsr iec_turnaround_to_listen
@@ -87,18 +93,23 @@ load_iec:
 	// Display start address
 	jsr lvs_display_loading_verifying
 
-#if CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K
+#if (CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS) && !CONFIG_MEMORY_MODEL_60K
 
-	// If feasible, use JiffyDOS optimized LOAD loop
+	// If feasible, use protocol-specific optimized LOAD loop
 
 	lda VERCKK
 	bne load_iec_loop                  // branch if VERIFY
-
 	lda IECPROTO
-	cmp #$01
-	bne load_iec_loop                  // branch if not JiffyDOS
 
-	jmp load_jiffydos
+#if CONFIG_IEC_JIFFYDOS
+	cmp #$01
+	beq_far jiffydos_load              // branch if JiffyDOS
+#endif
+
+#if CONFIG_IEC_DOLPHINDOS
+	cmp #$02
+	beq_far dolphindos_load            // branch if DolphinDOS
+#endif
 
 #endif
 
@@ -107,7 +118,7 @@ load_iec_loop:
 	// We are now ready to receive bytes
 #if CONFIG_IEC_JIFFYDOS
 	jsr iec_rx_dispatch
-#else // no turbo supported
+#else
 	jsr iec_rx_byte
 #endif
 	bcs load_iec_error
@@ -118,8 +129,15 @@ load_iec_loop:
 
 	// Advance pointer to data; it is OK if it advances past $FFFF,
 	// one autostart technique does exactly this
-	jsr lvs_advance_EAL
-	
+#if !HAS_OPCODES_65CE02
+	inc EAL+0
+	bne !+
+	inc EAL+1
+!:
+#else
+	inw EAL+0
+#endif
+
 	// Handle STOP key; it is probably an overkill to do it
 	// with every byte, once per 32 bytes should be enough
 	lda EAL
@@ -128,13 +146,12 @@ load_iec_loop:
 	phx_trash_a
 	jsr udtim_keyboard
 	jsr STOP
-	bcs load_break_error
+	bcs_far load_break_error
 	plx_trash_a
 !:
 	// Check for EOI - if so, this was the last byte
-	lda IOSTATUS
-	and #K_STS_EOI
-	beq load_iec_loop
+	bit IOSTATUS
+	bvc load_iec_loop
 
 	// FALLTROUGH
 

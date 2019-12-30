@@ -18,9 +18,9 @@ UNLSN:
 	// According to serial-bus.pdf (page 15) this routine flushes the IEC out buffer
 	jsr iec_tx_flush
 
-#if CONFIG_IEC_JIFFYDOS
+#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 
-	lda #$FF // XXX
+	lda #$FF                           // do not use JiffyDOS / DolphinDOS anymore, trigger JiffyDOS detection
 	sta IECPROTO
 
 #endif

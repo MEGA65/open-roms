@@ -1,0 +1,3 @@
+BNE (offset matches) + LDX #$3C
+
+Putting a value to .X depending on some condition - trivial, not copyrightable.

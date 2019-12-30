@@ -8,21 +8,6 @@
 
 
 //
-// Check if VERIFY asked - if yes, terminate loading
-//
-
-tape_ditch_verify:
-
-	lda VERCKK
-	bne !+
-	rts
-!:
-	pla
-	pla
-	jmp lvs_device_not_found_error
-
-
-//
 // Loading terminated by user
 //
 
@@ -32,63 +17,6 @@ tape_break_error:
 	pla
 	cli
 	jmp kernalerror_ROUTINE_TERMINATED
-
-
-//
-// Handle tape deck motor
-//
-
-tape_motor_off:
-
-	lda CPU_R6510
-	ora #$20
-	bne !+                             // branch always
-
-tape_motor_on:
-
-	lda CPU_R6510
-	and #($FF - $20)
-!:
-	sta CPU_R6510 
-	rts
-
-
-//
-// Handle screen (visible/blanked) + tape deck motor (on/off),
-// store/restore screen color
-//
-
-tape_screen_on_motor_off:
-
-	jsr tape_motor_off
-
-	lda COLSTORE
-	sta VIC_EXTCOL
-
-	jmp screen_on
-
-tape_screen_off_motor_on:
-	lda VIC_EXTCOL
-	sta COLSTORE
-
-	jsr screen_off
-	jmp tape_motor_on
-
-
-//
-// Clear the SID settings - for sound effects during LOAD
-//
-
-tape_clean_sid:
-
-	lda #$00
-	ldy #$1C
-!:
-	sta __SID_BASE, y
-	dey
-	bpl !-
-
-	rts
 
 
 //
@@ -147,12 +75,12 @@ tape_handle_header:
 	ldx #__MSG_KERNAL_FOUND
 	jsr print_kernal_message
 
-	ldy #$00
+	ldy #$05
 !:
 	lda (TAPE1), y
 	jsr JCHROUT
 	iny
-	cpy #$10
+	cpy #$15
 	bne !-
 
 	// Header, wait for user decision
@@ -167,7 +95,7 @@ tape_handle_header:
 
 	// Setup STAL and EAL
 
-	ldy #$10
+	ldy #$01
 	lda (TAPE1), y
 	sta STAL+0
 

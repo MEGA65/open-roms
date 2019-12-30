@@ -1,6 +1,25 @@
 //
-// Provide pseudocommands to make CPU optimizations easier
+// Provide pseudocommands (and other goodies) to make CPU optimizations easier
 //
+
+
+#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
+	.cpu _65c02
+	#define HAS_OPCODES_65C02
+#endif
+
+#if CONFIG_CPU_CSG_65CE02
+	#define HAS_OPCODES_65CE02
+#endif
+
+#if CONFIG_CPU_WDC_65816
+	#define HAS_OPCODES_65816
+#endif
+
+
+#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
+	#define HAS_BCD_SAFE_INTERRUPTS
+#endif
 
 
 //
@@ -29,13 +48,37 @@
 
 
 //
+// Some additional 65CE02 instructions
+//
+
+
+#if HAS_OPCODES_65CE02
+
+.pseudocommand dew addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "DEW requires zeropage address"
+	.byte $C3, arg
+}
+
+.pseudocommand inw addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "INW requires zeropage address"
+	.byte $E3, arg
+}
+
+#endif
+
+
+//
 // Stack manipulation - some CPUs will leave .A unchanged, some will use it as temporary storage, so consider .A trashed
 //
 
 
 .pseudocommand phx_trash_a
 {
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
+#if HAS_OPCODES_65C02
 	phx
 #else
 	txa
@@ -45,7 +88,7 @@
 
 .pseudocommand phy_trash_a
 {
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
+#if HAS_OPCODES_65C02
 	phy
 #else
 	tya
@@ -55,7 +98,7 @@
 
 .pseudocommand plx_trash_a
 {
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
+#if HAS_OPCODES_65C02
 	plx
 #else
 	pla
@@ -65,7 +108,7 @@
 
 .pseudocommand ply_trash_a
 {
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
+#if HAS_OPCODES_65C02
 	ply
 #else
 	pla
@@ -81,7 +124,7 @@
 
 .pseudocommand bcs_far dst
 {
-#if CONFIG_CPU_CSG_65CE02
+#if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
 	.byte $B3, mod(offset, $100), floor(offset / $100)
 #else
@@ -93,7 +136,7 @@ __l:
 
 .pseudocommand bcc_far dst
 {
-#if CONFIG_CPU_CSG_65CE02
+#if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
 	.byte $93, mod(offset, $100), floor(offset / $100)
 #else
@@ -105,7 +148,7 @@ __l:
 
 .pseudocommand beq_far dst
 {
-#if CONFIG_CPU_CSG_65CE02
+#if HAS_OPCODES_65CE02 && XXX_DISABLED        // XXX causes problems with XEMU, investigate why
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
 	.byte $F3, mod(offset, $100), floor(offset / $100)
 #else
@@ -117,7 +160,7 @@ __l:
 
 .pseudocommand bne_far dst
 {
-#if CONFIG_CPU_CSG_65CE02
+#if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
 	.byte $D3, mod(offset, $100), floor(offset / $100)
 #else
@@ -129,7 +172,7 @@ __l:
 
 .pseudocommand bmi_far dst
 {
-#if CONFIG_CPU_CSG_65CE02
+#if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
 	.byte $33, mod(offset, $100), floor(offset / $100)
 #else
@@ -141,7 +184,7 @@ __l:
 
 .pseudocommand bpl_far dst
 {
-#if CONFIG_CPU_CSG_65CE02
+#if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
 	.byte $13, mod(offset, $100), floor(offset / $100)
 #else
@@ -153,7 +196,7 @@ __l:
 
 .pseudocommand bvc_far dst
 {
-#if CONFIG_CPU_CSG_65CE02
+#if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
 	.byte $53, mod(offset, $100), floor(offset / $100)
 #else
@@ -165,7 +208,7 @@ __l:
 
 .pseudocommand bvs_far dst
 {
-#if CONFIG_CPU_CSG_65CE02
+#if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
 	.byte $73, mod(offset, $100), floor(offset / $100)
 #else

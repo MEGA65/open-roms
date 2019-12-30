@@ -8,7 +8,10 @@
 
 .macro BANNER_TEXT() {
 
-#if CONFIG_BRAND_GENERIC
+#if CONFIG_BRAND_CUSTOM_BUILD
+	.text "OPEN ROMS "
+	.text CONFIG_CUSTOM_BRAND
+#elif CONFIG_BRAND_GENERIC
 	.text "OPEN ROMS GENERIC BUILD"
 #elif CONFIG_BRAND_TESTING
 	.text "OPEN ROMS TESTING BUILD"
@@ -61,10 +64,14 @@ rainbow_logo:
     .byte SET_COLOR_0, $00
 }
 
+#if !CONFIG_BRAND_CUSTOM_BUILD
+
 pre_revision_string:
 
 	.text "RELEASE "
 	.byte $00
+
+#endif // no CONFIG_BRAND_CUSTOM_BUILD
 
 #elif CONFIG_BANNER_BRAND && CONFIG_BRAND_MEGA_65
 

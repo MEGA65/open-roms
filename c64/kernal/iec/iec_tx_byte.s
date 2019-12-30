@@ -9,6 +9,26 @@
 
 #if CONFIG_IEC
 
+
+#if CONFIG_IEC_JIFFYDOS
+
+iec_tx_dispatch:
+
+	php                                // preserve C flag for EOI indication
+	lda IECPROTO
+	cmp #$01
+	bne !+
+
+	plp
+	jmp jiffydos_tx_byte
+!:
+	plp
+	
+	// FALLTROUGH
+
+#endif // CONFIG_IEC_JIFFYDOS
+
+
 iec_tx_byte:
 
 	// Store .X and .Y on the stack - preserve them
@@ -44,6 +64,29 @@ iec_tx_common:
 	jsr iec_wait_for_data_pull
 	jsr iec_wait_for_data_release
 !:
+#if CONFIG_IEC_DOLPHINDOS
+
+	// Check if DolphinDOS was detected
+	lda IECPROTO
+	cmp #$02
+	bne iec_tx_no_dolphindos
+
+	// For DolphinDOS just push the byte to parallel port (set it to output first)
+	lda #$FF
+	sta CIA2_DDRB
+	lda TBTCNT
+	sta CIA2_PRB
+
+	// Pull CLK to indicate data is now valid (we should not hold DATA nevertheless)
+	jsr iec_pull_clk_release_data_oneshot
+
+	// Finish the flow
+	jmp iec_tx_common_finalize
+
+iec_tx_no_dolphindos:
+
+#endif // CONFIG_IEC_DOLPHINDOS
+
 	// Pull CLK back to indicate that DATA is not valid, keep it for 60us
 	// We can use this routine as we don't hold DATA anyway (and its state doesn't even matter)
 
@@ -94,6 +137,10 @@ iec_tx_common_bit_is_sent:
 	// More bits to send?
 	dex
 	bpl iec_tx_common_sendbit
+
+	// FALLTROUGH
+
+iec_tx_common_finalize:
 
 	cli
 

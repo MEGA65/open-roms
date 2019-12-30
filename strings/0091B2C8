@@ -1,0 +1,3 @@
+$00 + STA ($B2),Y + INY
+
+Small part of the loop storing data in a tape buffer - trivial, not copyrightable.

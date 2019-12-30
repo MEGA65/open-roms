@@ -3,19 +3,26 @@
 
 Here are the features of the Open ROMs not found in the original ROMs from the 80s (many of them are [configurable](CONFIG.md) during compilation):
 
+
 * improved keyboard scanning, resistant to ghosting and joystick interference (one variant even supports multi-keyy rollover), supports additional C128 keys
 * joystick can be used to move text cursor
 * pre-defined function keys
-* uses RAM under ROM and I/O: 61438 bytes free
-* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses, configured addresses
-* warm start due to BRK prints out the instruction address
+
+* JiffyDOS protocol support
+* partial DolphinDOS protocol support
+* DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
+
+* turbo tape load support (as device 7, or using `←L`), up to 250 blocks (can store bytes under I/O)
+
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
     * secondary address over 255 is considered a start address
-* JiffyDOS protocol support
-* turbo tape load support (as device 7 or using `←L`)
-* DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
+
+* uses RAM under ROM and I/O: 61438 bytes free
+* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses, configured addresses
+* warm start due to BRK prints out the instruction address
+
 
 NOTE: extra features and their syntax can change in the future!
 
@@ -33,7 +40,6 @@ The following ROM features are currently missing:
 * BASIC variables
 * BASIC expression parsing
 * floating point routines
-* tape (normal mode) support
 * RS-232 support
 * NMI handling is incomplete
 
@@ -46,30 +52,59 @@ The following ROM features are currently missing:
 | :-----------: | :------: | :------------------------------------------------: |
 | C64           | DONE     |                                                    |
 | C128          | DONE     |                                                    |
-| C65 / Mega65  | NOT DONE | code should be complete, but is not tested yet     |
+| Mega65        | NOT DONE | code should be complete, but is not tested yet     |
 
-## Tape storage (LOAD only!)
+## Screen
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
-| normal        | NOT DONE |                                                    |
-| turbo         | PARTIAL  | works, to do: use sync to calibrate read speed     |
+| VIC-II        | PARTIAL  | 80 chars in logical line support is very buggy     |
+| VDC 80 col.   | NOT DONE |                                                    |
 
-## IEC bus (disk drives, etc.)
+## Tape port (LOAD only!)
+
+* Tapuino
+* Datasette
+
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| normal        | PARTIAL  | no error correction, no tape speed calibratrion    |
+| turbo         | PARTIAL  | up to 250 blocks, no tape speed calibratrion yet   |
+
+## IEC bus
+
+* SD2IEC, petSD+, µIEC
+* Pi1541, Ultimate II
+* most disk drives and printers
+* some hard drives
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
 | standard      | DONE     |                                                    |
 | JiffyDOS      | DONE     |                                                    |
-| DolphinDOS    | NOT DONE |                                                    |
+| DolphinDOS    | DONE     |                                                    |
 | CIA burst mod | NOT DONE |                                                    |
+| Mega65 burst  | NOT DONE | pure software implementation should be feasible    |
+
+## IEEE-488 bus
+
+* petSD+
+* PET era disk drives and printers
+* various scientific equipment
+
+| Driver        | Status   |  Remarks                                           |
+| :-----------: | :------: | :------------------------------------------------: |
+| CBM cartridge | NOT DONE |                                                    |
 
 ## RS-232
+
+* modems (telephone, WiFi)
+* parallel port printers
 
 | Driver        | Status   |  Remarks                                           |
 | :-----------: | :------: | :------------------------------------------------: |
 | UP2400        | NOT DONE |                                                    |
-| UP9600        | NOT DONE | work in progress, not functional yet               |
+| UP9600        | NOT DONE | work started, not functional yet                   |
 | ACIA 6551     | NOT DONE |                                                    |
 
 

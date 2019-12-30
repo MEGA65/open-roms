@@ -1,0 +1,3 @@
+RTS + LDX #$00 + STX (zeropage address does not match)
+
+Subroutine starting buy using .X to store 0 somewhere (place does not match). Trivial - not copyrightable.

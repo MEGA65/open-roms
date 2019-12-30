@@ -1,0 +1,3 @@
+$01 + BEQ (offset matches) + CMP #$03
+
+Comparing .A with #$03 depending on a CPU flag - nothing creative, not copyrightable.

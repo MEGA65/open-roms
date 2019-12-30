@@ -89,7 +89,7 @@
 	.label C3PO      = $94  //          flag - is BSOUR content valid
 	.label BSOUR     = $95  //          serial bus buffered output byte
 	.label SYNO      = $96  //          -- NOT IMPLEMENTED --
-	.label XSAV      = $97  //          temporary register storage for ASCII related routines [!] usage details might differ
+	.label XSAV      = $97  //          temporary register storage for ASCII/tape related routines [!] usage details might differ
 	.label LDTND     = $98  //          number of entries in LAT / FAT / SAT tables
 	.label DFLTN     = $99  //          default input device
 	.label DFLTO     = $9A  //          default output device
@@ -103,7 +103,7 @@
 	.label PTR1      = $9E  //          -- NOT IMPLEMENTED --
 	.label PTR2      = $9F  //          -- NOT IMPLEMENTED --
 	.label TIME      = $A0  // $A0-$A2  jiffy clock
-#if !CONFIG_IEC_JIFFYDOS	
+#if !CONFIG_IEC_JIFFYDOS && !CONFIG_IEC_DOLPHINDOS
 	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage differs
 #else
 	.label IECPROTO  = $A3  //          -- WIP -- [!] 0 = normal, 1 = JiffyDOS, >= $80 for unknown
@@ -111,12 +111,12 @@
 	.label TBTCNT    = $A4  //          temporary variable for tape and IEC, [!] our usage probably differs in details
 	.label CNTDN     = $A5  //          -- NOT IMPLEMENTED --
 	.label BUFPNT    = $A6  //          -- NOT IMPLEMENTED --
-	.label INBIT     = $A7  //          -- NOT IMPLEMENTED --
+	.label INBIT     = $A7  //          temporary storage for tape / RS-232 received bits
 #if !CONFIG_LEGACY_SCNKEY
 	.label BITCI     = $A8  //          -- NOT IMPLEMENTED --
 	.label RINONE    = $A9  //          -- WIP -- (UP9600 only) RS-232 check for start bit flag
 	.label RIDDATA   = $AA  //          -- NOT IMPLEMENTED --
-	.label RIPRTY    = $AB  //          -- NOT IMPLEMENTED --
+	.label RIPRTY    = $AB  //          -- WIP -- checksum while reading tape
 #endif
 	.label SAL       = $AC  // $AC-$AD  -- NOT IMPLEMENTED -- (implemented screen part)
 	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also by screen editor, for temporary color storage when scrolling
@@ -135,8 +135,8 @@
 	.label SA        = $B9  //          current secondary address
 	.label FA        = $BA  //          current device number
 	.label FNADDR    = $BB  // $BB-$BC  current file name pointer
-	.label ROPRTY    = $BD  //          tape / RS-232 temporary storage
-	.label FSBLK     = $BE  //          -- NOT IMPLEMENTED --
+	.label ROPRTY    = $BD  //          -- NOT IMPLEMENTED -- tape / RS-232 temporary storage
+	.label FSBLK     = $BE  //          -- NOT IMPLEMENTED -- tape / RS-232 temporary storage
 	.label MYCH      = $BF  //          -- NOT IMPLEMENTED --
 	.label CAS1      = $C0  //          tape motor interlock
 	.label STAL      = $C1  // $C1-$C2  LOAD/SAVE start address
@@ -281,8 +281,9 @@
 
 	//                 $314     $334-$33B  -- UNUSED --          free for user software
 	
+#if !CONFIG_RS232_UP9600
 	.label TBUFFR    = $33C  // $33C-$3FB  [!] tape buffer, our usage details differ
-#if CONFIG_RS232_UP9600
+#else
     .label REVTAB    = $37C  // $37C-$3FB  -- WIP -- [!] RS-232 precalculated data
 #endif
 

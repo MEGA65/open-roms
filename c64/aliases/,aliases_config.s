@@ -47,6 +47,9 @@
 {
 	.var selected = 0;
 
+#if CONFIG_BRAND_CUSTOM_BUILD
+	.eval selected++
+#endif
 #if CONFIG_BRAND_GENERIC
 	.eval selected++
 #endif
@@ -62,11 +65,11 @@
 
 	.if (selected != 1) .error "Please select exactly one CONFIG_BRAND_* option"
 
-#if CONFIG_MB_MEGA_65 && !(CONFIG_BRAND_MEGA_65 || CONFIG_BRAND_TESTING)
-	.error "Please select brand either matching the CONFIG_MB_*, or a testing one"
+#if CONFIG_MB_MEGA_65 && !(CONFIG_BRAND_MEGA_65 || CONFIG_BRAND_TESTING || CONFIG_BRAND_CUSTOM_BUILD)
+	.error "Please select brand either matching the CONFIG_MB_*, or a testing/custom one"
 #endif
-#if CONFIG_MB_ULTIMATE_64 && !(CONFIG_BRAND_ULTIMATE_64 || CONFIG_BRAND_TESTING)
-	.error "Please select brand either matching the CONFIG_MB_*, or a testing one"
+#if CONFIG_MB_ULTIMATE_64 && !(CONFIG_BRAND_ULTIMATE_64 || CONFIG_BRAND_TESTING || CONFIG_BRAND_CUSTOM_BUILD)
+	.error "Please select brand either matching the CONFIG_MB_*, or a testing/custom one"
 #endif
 }
 
@@ -111,6 +114,18 @@
 
 // Check that I/O configuration is correct
 {
+#if CONFIG_RS232_UP9600 && (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO)
+	.error "CONFIG_RS232_UP9600 is not compatible with CONFIG_TAPE_*"
+#endif
+
+#if CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC
+	.error "CONFIG_IEC_DOLPHINDOS requires CONFIG_IEC"
+#endif
+
+#if CONFIG_IEC_DOLPHINDOS_FAST && !CONFIG_IEC_DOLPHINDOS
+	.error "CONFIG_IEC_DOLPHINDOS_FAST requires CONFIG_IEC_DOLPHINDOS"
+#endif
+
 #if CONFIG_IEC_JIFFYDOS && !CONFIG_IEC
 	.error "CONFIG_IEC_JIFFYDOS requires CONFIG_IEC"
 #endif
@@ -165,6 +180,9 @@
 {
 #if CONFIG_LEGACY_SCNKEY && CONFIG_RS232_UP9600
 	.error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_RS232_UP9600"
+#endif
+#if CONFIG_LEGACY_SCNKEY && CONFIG_TAPE_NORMAL
+	.error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_TAPE_NORMAL"
 #endif
 #if CONFIG_LEGACY_SCNKEY && (CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C128_CAPS_LOCK || CONFIG_KEYBOARD_C65 || CONFIG_KEYBOARD_C65_CAPS_LOCK)
 	.error "CONFIG_LEGACY_SCNKEY and CONFIG_KEYBOARD_C128* / CONFIG_KEYBOARD_C65* are mutually exclusive"
@@ -225,25 +243,12 @@
 
 
 
-// Handle processor configuration
-
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
-
-#define HAS_BCD_SAFE_INTERRUPTS
-
-	.pseudocommand phx { .byte $DA }
-	.pseudocommand phy { .byte $5A }
-	.pseudocommand plx { .byte $FA }
-	.pseudocommand ply { .byte $7A }
-
-#endif
-
-
 // Handle I/O configuration
 
 #if CONFIG_RS232_UP2400 || CONFIG_RS232_UP9600
 #define HAS_RS232
 #endif
+
 
 
 // Handle configuration of various features
@@ -303,11 +308,13 @@
 {
 	.var features_str = ""
 
-#if CONFIG_TAPE_NORMAL
+#if CONFIG_TAPE_NORMAL && !CONFIG_TAPE_TURBO
 	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL")
-#elif CONFIG_TAPE_TURBO
+#endif
+#if !CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
 	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD TURBO")
-#elif CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
+#endif
+#if CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
 	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL TURBO")
 #endif
 
@@ -316,7 +323,7 @@
 #if CONFIG_IEC
 	.var iec_features_str = "IEC"
 #if CONFIG_IEC_DOLPHINDOS
-	.eval iec_features_str = iec_features_str + " DOLPHIN-DEV"
+	.eval iec_features_str = iec_features_str + " DOLPHIN"
 #endif
 #if CONFIG_IEC_JIFFYDOS
 	.eval iec_features_str = iec_features_str + " JIFFY"

@@ -75,19 +75,6 @@ lvs_handle_byte_verify:
 	sec
 	rts
 
-#if CONFIG_IEC
-
-lvs_advance_EAL:
-
-	// Advance pointer
-	inc EAL+0
-	bne !+
-	inc EAL+1
-!:
-	rts
-
-#endif
-
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
 
 lvs_setup_MEMUSS:
@@ -98,13 +85,26 @@ lvs_setup_MEMUSS:
 	sta MEMUSS+1
 	rts
 
-lvs_advance_MEMUSS_check_EAL:
+#endif
+
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
+
+#if !HAS_OPCODES_65CE02
+
+lvs_advance_MEMUSS:
 
 	// Advance pointer
+
 	inc MEMUSS+0
 	bne !+
 	inc MEMUSS+1
 !:
+	rts
+
+#endif
+
+lvs_check_EAL:
+
 	lda MEMUSS+1
 	cmp EAL+1
 	bne !+
@@ -113,7 +113,6 @@ lvs_advance_MEMUSS_check_EAL:
 !:
 	rts
 
-#endif
 
 lvs_display_searching_for:
 

@@ -1,0 +1,3 @@
+$D0 + AND #$EF + STA $D011 + LDA (address does not match)
+
+Small part of code manipulating a bit in a documented I/O register. Trivial, not copyrightable.

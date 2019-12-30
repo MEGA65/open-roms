@@ -8,6 +8,19 @@
 #if CONFIG_IEC
 
 
+#if CONFIG_IEC_JIFFYDOS
+
+iec_rx_dispatch:
+
+	lda IECPROTO
+	cmp #$01
+	beq_far jiffydos_rx_byte
+
+	// FALLTROUGH
+
+#endif // CONFIG_IEC_JIFFYDOS
+
+
 iec_rx_byte:
 
 	// Store .X and .Y on the stack - preserve them
@@ -24,36 +37,30 @@ iec_rx_byte:
 	jsr iec_wait_for_clk_release
 
 	// We then release the DATA to signal we are ready
-	// We can use this routine, since we weren't pulling CLK anyway
+	// We can use this routine, since we were not pulling CLK anyway
 	jsr iec_release_clk_data
 
 	// Wait till data line is released (someone else might be holding it)
 	jsr iec_wait_for_data_release
 
-	// Wait for talker to pull CLK.
-	// If over 200 usec (205 cycles on NTSC machine) , then it is EOI.
-	// Loop iteraction takes 13 cycles, 17 full iterations are enough
+	// Check if EOI
+	jsr iec_rx_check_eoi
 
-	ldx #$11                // 2 cycles
-iec_rx_clk_wait1:
-	lda CIA2_PRA            // 4 cycles
-	rol                     // 2 cycles, to put CLK in as the last bit
-	bpl iec_rx_not_eoi      // 2 cycles if not jumped
-	dex                     // 2 cycles
-    bne iec_rx_clk_wait1    // 3 cycles if jumped
-    
-	// Timeout - either this is the last byte of stream, or the stream is empty at all.
-	// Mark end of stream in IOSTATUS
-	jsr kernalstatus_EOI
+#if CONFIG_IEC_DOLPHINDOS
 
-iec_rx_not_empty:
+	// Check if DolphinDOS was detected
+	lda IECPROTO
+	cmp #$02
+	bne iec_rx_no_dolphindos
 
-	// Pull data for 60 usec to confirm it
-	jsr iec_release_clk_pull_data
-	jsr iec_wait60us
-	jsr iec_release_clk_data
+	// For DolphinDOS just fetch the byte from parallel port
+	lda CIA2_PRB
+	pha
+	jmp iec_rx_acknowledge
 
-iec_rx_not_eoi:
+iec_rx_no_dolphindos:
+
+#endif // CONFIG_IEC_DOLPHINDOS
 
 	// Latch input bits in on rising edge of CLK, eight times for eight bits.
 	ldx #7
@@ -68,7 +75,7 @@ iec_rx_bit_loop:
 	jsr iec_wait_for_clk_release
 
 	// (we do this implicitly below, with a tighter routine,
-	// so that we don't have timing problems, as the requirements
+	// so that we do not have timing problems, as the requirements
 	// are quite tight. Basically we need to read the clock and data
 	// bit from the same byte read.
 
@@ -118,7 +125,11 @@ iec_rx_clk_wait2:
 	dex
 	bpl iec_rx_bit_loop
 
-	// Then we must within 1000 usec acknowledge the frame by
+	// FALLTROUGH
+
+iec_rx_acknowledge:
+
+	// Then we must within 1000 usec acknowledge the byte by
 	// pulling DATA. At this point, CLK is pulled by the
 	// talker and DATA by us, i.e., we are ready to receive
 	// the next byte. (p11).

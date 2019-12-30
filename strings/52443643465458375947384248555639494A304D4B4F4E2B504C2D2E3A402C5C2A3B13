@@ -1,0 +1,16 @@
+List of key codes generated when certain key combinations are pressed
+
+This sequence is a list of which ASCII/PETSCII code should be generated
+when certain key combinations are pressed, based on the keyboard matrix
+position.  That is, it is a sequence in keyboard matrix order, of the
+codes that should be generated. Thus it is a list of facts, which cannot
+be copyright, according to the long standing precedent under US copyright law:
+
+https://www.law.cornell.edu/copyright/cases/499_US_340.htm
+
+Similar decisions exist in other jurisidctions.
+
+Note also that the matrix order list of keys is a fact of the C64 hardware,
+and which has been repeated in many publications, such as Compute's Mapping the 64,
+without challenge from the C64 ROM copyright owners, which serves to reinforce the
+claim that this sequence of bytes is not copyrightable.

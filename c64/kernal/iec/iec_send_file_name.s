@@ -32,7 +32,7 @@ iec_send_file_name_loop:
 	sta TBTCNT
 #if CONFIG_IEC_JIFFYDOS
 	jsr iec_tx_dispatch
-#else // no turbo supported
+#else
 	jsr iec_tx_byte
 #endif
 	jmp iec_send_file_name_loop

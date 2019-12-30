@@ -1,0 +1,3 @@
+RTS + LDA $01 + ORA #$20 (turning motor off)
+
+Small part of code manipulating a bit in a documented I/O register. Trivial, not copyrightable.

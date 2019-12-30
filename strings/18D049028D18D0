@@ -1,0 +1,3 @@
+$D018 + EOR #$02 + STA $D018
+
+Small part of code manipulating a bit in a documented I/O register. Trivial, not copyrightable.

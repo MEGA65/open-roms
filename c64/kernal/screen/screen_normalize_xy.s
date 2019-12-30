@@ -14,13 +14,13 @@ screen_normalize_xy:
 	lda #0
 	sta TBLX
 
-!:	jsr add_40_to_screen_x
+!:	jsr screen_add_40_to_PNTR
 
 	// Check if line is linked, if so, add 40 again
 	ldy TBLX
 	lda LDTBL,y
 	bpl !+
-	jsr add_40_to_screen_x
+	jsr screen_add_40_to_PNTR
 !:
 
 x_not_negative:
@@ -29,7 +29,7 @@ x_not_negative:
 	lda LDTBL,y
 	bpl !+
 	lda #79
-	.byte $2C 		// BIT $nnnn, used to skip next instruction
+	skip_2_bytes_trash_nvz
 !:	lda #39
 	cmp PNTR
 	bcs x_not_too_big
@@ -72,11 +72,4 @@ link_count_loop:
 	bcs y_ok
 	sta TBLX
 y_ok:
-	rts
-
-add_40_to_screen_x:
-	lda PNTR
-	clc
-	adc #40
-	sta PNTR
 	rts

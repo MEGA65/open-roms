@@ -1,0 +1,3 @@
+RTS + LDA $90 (IOSTATUS) + BEQ (offset matches)
+
+Subroutine started with decision based on IOSTATUS value (zero or not) - trivial, not copyrightable.

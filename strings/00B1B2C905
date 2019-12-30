@@ -1,0 +1,3 @@
+$00 + LDA ($B2),Y + CMP #$05
+
+Check if end of tape mark - trivial, not copyrightable.

@@ -1,0 +1,3 @@
+$D1 + STA $F3 + LDA $D2
+
+Manipulation on some zeropage variables (copying one to another) - trivial, not copyrightable.

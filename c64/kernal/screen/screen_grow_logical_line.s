@@ -1,11 +1,24 @@
 
+
+screen_grow_logical_line_done:
+	rts
+
 screen_grow_logical_line:
+	
+	// Do not grow line if it is already grown
 	ldy TBLX
-	// Don't grow line if it is already grown
 	lda LDTBL,y
-	bpl !+
-	jmp not_last_line // doneb grow line
+	bmi screen_grow_logical_line_done
+
+	// Do not grow line if previous grown
+	dey
+	bmi !+
+	lda LDTBL,y
+	bmi screen_grow_logical_line_done
 !:
+	iny
+
+	// Mark current line as grown
 	lda #$80
 	sta LDTBL,y
 
@@ -13,35 +26,39 @@ screen_grow_logical_line:
 	// If we are on the last physical line of the screen,
 	// Then we need to scroll the screen up
 	jsr screen_scroll_up_if_on_last_line
-	
+
+	// Count the number of physical lines to scroll down
+	ldx #$01
+	ldy TBLX
+!:
+	iny
+	cpy #23
+	bcs !+
+
+	lda LDTBL,y
+	bmi !-
+	inx
+	bne !-                             // branch always
+!:
+	cpx #$00
+	beq no_copy_down
+
 	// Scroll screen down to make space
 	// As we are scrolling down, we start from the end,
-	// and work backwards.  We can't be as simple and efficient
+	// and work backwards. We can't be as simple and efficient
 	// here as we are for scrolling up, because we don't know
 	// how much must be scrolled.
 	// Simple solution is to work out how many physical lines
 	// need shifting down, and then move lines at a time after
 	// initialising the pointers to the end area of the screen.
-	ldx #25-2
-	ldy #0
-count_rows_loop:
-	dex
-	lda LDTBL,y
-	bpl !+
-	dex
-!:	iny
-	cpy TBLX
-	bne count_rows_loop
-
-	cpx #0
-	beq no_copy_down
-	bmi no_copy_down
 
 	// Preserve EAL
 	lda EAL+0
 	pha
 	lda EAL+1
 	pha
+
+	// XXX fix TBLX value, it seems to show logical line number, which is wrong!
 
 	// Set pointers to end of screen line, and one line
 	// above.  (It is always one physical line, because
@@ -78,6 +95,12 @@ cl_inner:
 	sta (PNT),y
 	dey
 	bpl cl_inner
+
+	// This ugly hack prevents cursor blink interference     XXX solve this in better way
+	php
+	sei
+	jsr cursor_hide_if_visible
+	plp
 
 	// Decrement all pointers by 40
 	// Low bytes are in common pairs
@@ -128,7 +151,7 @@ no_copy_down:
 	lda #$20
 	sta (PNT),y
 	dey
-	cpy #40
+	cpy #39
 	bne !-
 
 	rts

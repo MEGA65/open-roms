@@ -34,11 +34,18 @@ chrout_try_jumptable_loop_noquote:
 	bne !+
 
 	// Found, perform a jump to subroutine
+#if !HAS_OPCODES_65C02
 	lda chrout_screen_jumptable_hi, x
 	pha
 	lda chrout_screen_jumptable_lo, x
 	pha
 	rts
+#else
+	txa
+	asl
+	tax
+	jmp (chrout_screen_jumptable, x)
+#endif
 !:
 	dex
 	bpl chrout_try_jumptable_loop

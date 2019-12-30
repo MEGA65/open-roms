@@ -1,4 +1,8 @@
 
+//
+// Note: damages .X
+//
+
 
 #if CONFIG_IEC
 
@@ -14,8 +18,8 @@ iec_wait60us:
 
 	// Waste cycles in a loop
 
-	ldy #$0A   // 2 cycles
-!:	dey        // 2 cycles * 10
+	ldx #$0A   // 2 cycles
+!:	dex        // 2 cycles * 10
 	bpl !-     // 3 cycles * 9  + 2 cycles
 	rts        // 6 cycles
 

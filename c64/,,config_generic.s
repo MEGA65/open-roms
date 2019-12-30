@@ -1,5 +1,5 @@
 
-.const CONFIG_ID = $00 // should be 1 byte, different for each config file!
+.const CONFIG_ID = $01 // should be 1 byte, different for each config file!
 .encoding "petscii_upper"
 
 //
@@ -9,6 +9,7 @@
 // Idea:
 // - sane defaults for the original Commodore 64/128 machines
 // - do not enable features which are a significant compatibility risk
+
 
 
 // Hardware platform and brand
@@ -42,11 +43,12 @@
 
 #define CONFIG_IEC
 #define CONFIG_IEC_BLANK_SCREEN
+#define CONFIG_IEC_DOLPHINDOS
+#define CONFIG_IEC_DOLPHINDOS_FAST
 #define CONFIG_IEC_JIFFYDOS
-// #define CONFIG_TAPE_NORMAL     // please keep disabled for now
+
+#define CONFIG_TAPE_NORMAL
 #define CONFIG_TAPE_TURBO
-// #define CONFIG_RS232_UP2400    // please keep disabled for now
-// #define CONFIG_RS232_UP9600    // please keep disabled for now
 
 
 // Multiple SID support

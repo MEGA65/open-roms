@@ -1,0 +1,3 @@
+LDA ($B2),Y + STA (zeropage address does not match)
+
+Instruction and some part. Trivial, not copyrightable.

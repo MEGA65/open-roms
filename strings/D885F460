@@ -1,0 +1,3 @@
+$D8 + STA $F4 + RTS
+
+Store acumulator in a documented zeropage location and return from subroutine - trivial, not copyrightable.

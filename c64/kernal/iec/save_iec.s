@@ -44,13 +44,19 @@ save_iec:
 	jsr iec_tx_command
 	bcs save_iec_dev_not_found
 
+#if CONFIG_IEC_DOLPHINDOS
+
+	jsr dolphindos_detect
+
+#endif
+
 	// Save start address
 	lda STAL+0
 	sta TBTCNT
 	clc
 #if CONFIG_IEC_JIFFYDOS
 	jsr iec_tx_dispatch
-#else // no turbo supported
+#else
 	jsr iec_tx_byte
 #endif
 
@@ -59,7 +65,7 @@ save_iec:
 	clc
 #if CONFIG_IEC_JIFFYDOS
 	jsr iec_tx_dispatch
-#else // no turbo supported
+#else
 	jsr iec_tx_byte
 #endif
 
@@ -80,12 +86,17 @@ iec_save_loop:
 	clc
 #if CONFIG_IEC_JIFFYDOS
 	jsr iec_tx_dispatch
-#else // no turbo supported
+#else
 	jsr iec_tx_byte
 #endif
 
 	// Next iteration
-	jsr lvs_advance_MEMUSS_check_EAL
+#if !HAS_OPCODES_65CE02
+	jsr lvs_advance_MEMUSS
+#else
+	inw MEMUSS+0
+#endif
+	jsr lvs_check_EAL
 	bne iec_save_loop
 
 iec_save_loop_end:

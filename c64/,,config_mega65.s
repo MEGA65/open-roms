@@ -1,5 +1,5 @@
 
-.const CONFIG_ID = $01 // should be 1 byte, different for each config file!
+.const CONFIG_ID = $02 // should be 1 byte, different for each config file!
 .encoding "petscii_upper"
 
 //
@@ -9,8 +9,7 @@
 // Idea:
 // - sane defaults for the Mega 65 FPGA computer
 // - do not enable features which are a significant compatibility risk
-// - unless VICE gains Commodore 65 (or at least Flash8 cartridge) emulation support,
-//   do not enable CPU-specific optimizations; ROMs would be hard to test
+
 
 
 // Hardware platform and brand
@@ -28,9 +27,9 @@
 
 // Processor instruction set
 
-#define CONFIG_CPU_MOS_6502
+// #define CONFIG_CPU_MOS_6502
 // #define CONFIG_CPU_WDC_65C02
-// #define CONFIG_CPU_CSG_65CE02
+#define CONFIG_CPU_CSG_65CE02
 // #define CONFIG_CPU_WDC_65816
 
 
@@ -44,11 +43,12 @@
 
 #define CONFIG_IEC
 #define CONFIG_IEC_BLANK_SCREEN
+// #define CONFIG_IEC_DOLPHINDOS
+// #define CONFIG_IEC_DOLPHINDOS_FAST
 #define CONFIG_IEC_JIFFYDOS
-// #define CONFIG_TAPE_NORMAL     // please keep disabled for now
+
+// #define CONFIG_TAPE_NORMAL
 // #define CONFIG_TAPE_TURBO
-// #define CONFIG_RS232_UP2400    // please keep disabled for now
-// #define CONFIG_RS232_UP9600    // please keep disabled for now
 
 
 // Multiple SID support
@@ -91,12 +91,12 @@
 
 .const CONFIG_KEYCMD_HELP = @"LIST"
 
-.const CONFIG_KEYCMD_F9   = @""
-.const CONFIG_KEYCMD_F10  = @""
-.const CONFIG_KEYCMD_F11  = @""
-.const CONFIG_KEYCMD_F12  = @""
-.const CONFIG_KEYCMD_F13  = @""
-.const CONFIG_KEYCMD_F14  = @""
+.const CONFIG_KEYCMD_F9   = @"REM F9"
+.const CONFIG_KEYCMD_F10  = @"REM F10"
+.const CONFIG_KEYCMD_F11  = @"REM F11"
+.const CONFIG_KEYCMD_F12  = @"REM F12"
+.const CONFIG_KEYCMD_F13  = @"REM F13"
+.const CONFIG_KEYCMD_F14  = @"REM F14"
 
 
 // Screen editor
@@ -117,8 +117,8 @@
 
 #define CONFIG_COLORS_BRAND
 // #define CONFIG_BANNER_SIMPLE
-#define CONFIG_BANNER_FANCY
-// #define CONFIG_BANNER_BRAND       // do not enable for now, triggers screen editor bug under XEMU
+// #define CONFIG_BANNER_FANCY
+#define CONFIG_BANNER_BRAND
 #define CONFIG_SHOW_FEATURES
 // #define CONFIG_SHOW_PAL_NTSC
 

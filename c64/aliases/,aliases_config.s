@@ -112,10 +112,15 @@
 }
 
 
-// Check that I/O configuration is correct
+
+// Check that IEC configuration is correct
 {
-#if CONFIG_RS232_UP9600 && (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO)
-	.error "CONFIG_RS232_UP9600 is not compatible with CONFIG_TAPE_*"
+#if CONFIG_IEC_JIFFYDOS && !CONFIG_IEC
+	.error "CONFIG_IEC_JIFFYDOS requires CONFIG_IEC"
+#endif
+
+#if CONFIG_IEC_JIFFYDOS_BLANK && !CONFIG_IEC_JIFFYDOS
+	.error "CONFIG_IEC_JIFFYDOS_BLANK requires CONFIG_IEC_JIFFYDOS"
 #endif
 
 #if CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC
@@ -126,8 +131,35 @@
 	.error "CONFIG_IEC_DOLPHINDOS_FAST requires CONFIG_IEC_DOLPHINDOS"
 #endif
 
-#if CONFIG_IEC_JIFFYDOS && !CONFIG_IEC
-	.error "CONFIG_IEC_JIFFYDOS requires CONFIG_IEC"
+#if (CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_SOFT) && !CONFIG_IEC
+	.error "CONFIG_IEC_BURST_* requires CONFIG_IEC"
+#endif
+
+#if CONFIG_IEC_BURST_SOFT && !CONFIG_MB_MEGA_65
+	.error "CONFIG_IEC_BURST_SOFT requires CONFIG_MB_MEGA_65"
+#endif
+
+	.var selected_iec_burst = 0;
+
+#if CONFIG_IEC_BURST_CIA1
+	.eval selected_iec_burst++
+#endif
+#if CONFIG_IEC_BURST_CIA2
+	.eval selected_iec_burst++
+#endif
+#if CONFIG_IEC_BURST_SOFT
+	.eval selected_iec_burst++
+#endif
+
+	.if (selected_iec_burst > 1) .error "Please select at most one CONFIG_IEC_BURST_* option" 
+}
+
+
+
+// Check that RS-232 configuration is correct
+{
+#if CONFIG_RS232_UP9600 && (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO)
+	.error "CONFIG_RS232_UP9600 is not compatible with CONFIG_TAPE_*"
 #endif
 
 	.var selected_rs232 = 0;
@@ -141,6 +173,7 @@
 
 	.if (selected_rs232 > 1) .error "Please select at most one CONFIG_RS232_* option" 
 }
+
 
 
 // Check that startup banner configuration is correct
@@ -322,13 +355,22 @@
 
 #if CONFIG_IEC
 	.var iec_features_str = "IEC"
+#if CONFIG_IEC_BURST_CIA1
+	.eval iec_features_str = iec_features_str + " BURST1"
+#endif
+#if CONFIG_IEC_BURST_CIA2
+	.eval iec_features_str = iec_features_str + " BURST2"
+#endif
+#if CONFIG_IEC_BURST_SOFT
+	.eval iec_features_str = iec_features_str + " BURST"
+#endif
 #if CONFIG_IEC_DOLPHINDOS
 	.eval iec_features_str = iec_features_str + " DOLPHIN"
 #endif
 #if CONFIG_IEC_JIFFYDOS
 	.eval iec_features_str = iec_features_str + " JIFFY"
 #endif
-#if !CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC_JIFFYDOS
+#if !CONFIG_IEC_BURST_CIA1 && !CONFIG_IEC_BURST_CIA2 && !CONFIG_IEC_BURST_SOFT && !CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC_JIFFYDOS
 	.eval iec_features_str = iec_features_str + " NORMAL"
 #endif
 	.eval features_str = ADD_FEATURE(features_str, iec_features_str)

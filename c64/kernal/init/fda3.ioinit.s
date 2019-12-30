@@ -110,8 +110,6 @@ IOINIT:
 	lda #$3F
 	sta CIA2_DDRA    // $DD02
 
-	// XXX detect TOD clock, see  https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
-
 	// XXX how to initialize these timers???
 	// stx CIA1_CRB    // $DC0F
 	// stx CIA2_CRA    // $DD0E
@@ -123,13 +121,8 @@ IOINIT:
 	ldx #%00000111 // XXX adapt this to IEC idle state, JMP at the end won't be needed
 	stx CIA2_PRA    // $DD00
 
-	// 
-
-	ldy #<16421
-	ldx #>16421
-
-	sty CIA1_TIMALO    // $DC04
-	stx CIA1_TIMAHI    // $DC05
+	// Put something sane in the IRQ timer
+	jsr setup_irq_timer
 
 	// Enable timer A to run continuously (http://codebase64.org/doku.php?id=base:timerinterrupts)
 	ldx #$11

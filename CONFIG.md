@@ -109,10 +109,6 @@ Adds support for the IEEC bus - for serial printers, disk drives, etc.
 
 Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
-### `CONFIG_IEC_BLANK_SCREEN`
-
-Causes screen blanking during some IEC operations (currently only JiffyDOS file loading) to increase the data transfer performance.
-
 ### `CONFIG_IEC_DOLPHINDOS`
 
 Adds support for DolphinDOS fast protocol to the IEC bus, using UserPort cable.
@@ -130,6 +126,10 @@ Needs 20 more bytes in KERNAL segment.
 Adds support for JiffyDOS fast protocol to the IEC bus.
 
 Needs about 430 bytes in KERNAL segment. If unsure - enable.
+
+### `CONFIG_IEC_JIFFYDOS_BLANK`
+
+Causes screen blanking during iffyDOS file loading to increase performance.
 
 ### `CONFIG_TAPE_NORMAL`
 

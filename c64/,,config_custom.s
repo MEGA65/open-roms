@@ -45,16 +45,19 @@
 // I/O devices
 
 #define CONFIG_IEC
-#define CONFIG_IEC_BLANK_SCREEN
-#define CONFIG_IEC_DOLPHINDOS      // not finished yet, but LOAD works
+#define CONFIG_IEC_DOLPHINDOS
 #define CONFIG_IEC_DOLPHINDOS_FAST
 #define CONFIG_IEC_JIFFYDOS
+#define CONFIG_IEC_JIFFYDOS_BLANK
+// #define CONFIG_IEC_BURST_CIA1       // please keep disabled for now
+// #define CONFIG_IEC_BURST_CIA2       // please keep disabled for now
+// #define CONFIG_IEC_BURST_SOFT       // please keep disabled for now
 
 #define CONFIG_TAPE_NORMAL
 #define CONFIG_TAPE_TURBO
 
-// #define CONFIG_RS232_UP2400    // please keep disabled for now
-// #define CONFIG_RS232_UP9600    // please keep disabled for now
+// #define CONFIG_RS232_UP2400         // please keep disabled for now
+// #define CONFIG_RS232_UP9600         // please keep disabled for now
 
 
 // Multiple SID support

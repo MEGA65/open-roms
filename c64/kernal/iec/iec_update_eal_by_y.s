@@ -1,6 +1,6 @@
 
 //
-// Common routines for multiple IEC fact protocols
+// Common EAL update routine
 //
 
 

@@ -17,13 +17,19 @@ iec_cmd_open: // similar to TKSA, but without turnaround
 !:
 	ora #$F0
 
-#if CONFIG_IEC_DOLPHINDOS
+#if CONFIG_IEC_DOLPHINDOS || CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
 
 	sta TBTCNT
 	jsr iec_tx_command
 	bcs !+ // branch if error
 
+#if CONFIG_IEC_DOLPHINDOS
 	jsr dolphindos_detect
+#endif
+#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
+	jsr burst_detect
+#endif
+
 	jmp iec_tx_command_finalize
 
 #else

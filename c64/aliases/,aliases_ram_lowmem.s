@@ -103,7 +103,7 @@
 	.label PTR1      = $9E  //          -- NOT IMPLEMENTED --
 	.label PTR2      = $9F  //          -- NOT IMPLEMENTED --
 	.label TIME      = $A0  // $A0-$A2  jiffy clock
-#if !CONFIG_IEC_JIFFYDOS && !CONFIG_IEC_DOLPHINDOS
+#if !CONFIG_IEC_JIFFYDOS && !CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC_BURST_CIA1 && !CONFIG_IEC_BURST_CIA2 && !CONFIG_IEC_BURST_SOFT
 	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage differs
 #else
 	.label IECPROTO  = $A3  //          -- WIP -- [!] 0 = normal, 1 = JiffyDOS, >= $80 for unknown

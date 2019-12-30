@@ -63,9 +63,10 @@ load_iec:
 	bcs load_iec_error
 
 #if CONFIG_IEC_DOLPHINDOS
-
 	jsr dolphindos_detect
-
+#endif
+#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
+	jsr burst_detect
 #endif
 
 	// We are currently talker, so do the IEC turn around so that we

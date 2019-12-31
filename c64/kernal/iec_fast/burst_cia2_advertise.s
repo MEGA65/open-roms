@@ -1,29 +1,30 @@
 
 //
-// Helper routine for burst IEC protocol support
+// Advertise burst IEC protocol support to the receiver
 //
 
 //
-// Based on idea by Pasi 'Albert' Ojala
+// Based on idea by Pasi 'Albert' Ojala and description from
+// https://sites.google.com/site/h2obsession/CBM/C128/fast-serial-for-uiec
 //
 
 
 #if CONFIG_IEC_BURST_CIA2
 
 
-burst_detect:
+burst_advertise:
 
-#if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
+#if CONFIG_IEC_JIFFYDOS
 
+	// Skip if other protocol (only JiffyDOS is possible at this moment) already detected
 	lda IECPROTO
 	bmi !+
-	bne burst_detect_fail              // skip if other protocol already detected
+	bne burst_advertise_done              
 !:
 #endif
 
-	// For extra safety, do it on disabled interupts
-	php
-	sei
+	// Make sure this is not done under ATN
+	jst iec_release_atn
 
 	// Set the clock rate to the fastest possible
 	ldy #$01
@@ -46,19 +47,9 @@ burst_detect:
 	bit CIA2_ICR                       
 	beq !-
 
-	// Now see if we get any byte back
-
-	lda CIA2_SDR    // XXX we do not need a value, we need to know if it was received
-
-
-	panic #$00      // XXX finish this routine
-	
-
-	plp
-
 	// FALLTROUGH
 
-burst_detect_fail:
+burst_advertise_done:
 
 	rts
 

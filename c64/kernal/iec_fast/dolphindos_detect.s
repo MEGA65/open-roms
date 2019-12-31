@@ -20,13 +20,6 @@
 
 dolphindos_detect:
 
-#if CONFIG_IEC_JIFFYDOS
-
-	lda IECPROTO
-	bne dolphindos_detect_fail         // skip if other protocol already detected
-
-#endif
-
 	// Make sure the port settings are correct
 
 	lda #$7F

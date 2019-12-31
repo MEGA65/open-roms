@@ -8,8 +8,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * joystick can be used to move text cursor
 * pre-defined function keys
 
-* JiffyDOS protocol support
-* partial DolphinDOS protocol support
+* JiffyDOS and DolphinDOS protocols support
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 
 * turbo tape load support (as device 7, or using `←L`), up to 250 blocks (can store bytes under I/O)

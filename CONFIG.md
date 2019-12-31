@@ -129,7 +129,7 @@ Needs about 430 bytes in KERNAL segment. If unsure - enable.
 
 ### `CONFIG_IEC_JIFFYDOS_BLANK`
 
-Causes screen blanking during iffyDOS file loading to increase performance.
+Causes screen blanking during JiffyDOS file loading to increase performance.
 
 ### `CONFIG_TAPE_NORMAL`
 

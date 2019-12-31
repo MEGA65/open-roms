@@ -39,6 +39,10 @@ save_iec:
 	jsr LISTEN
 	bcs save_iec_dev_not_found
 
+#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
+	jsr burst_advertise
+#endif
+
 	lda #$61 // open channel / data (p3) , required according to p13
 	sta TBTCNT
 	jsr iec_tx_command
@@ -46,9 +50,6 @@ save_iec:
 
 #if CONFIG_IEC_DOLPHINDOS
 	jsr dolphindos_detect
-#endif
-#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
-	jsr burst_detect
 #endif
 
 	// Save start address

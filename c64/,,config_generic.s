@@ -30,6 +30,7 @@
 #define CONFIG_CPU_MOS_6502
 // #define CONFIG_CPU_WDC_65C02
 // #define CONFIG_CPU_CSG_65CE02
+// #define CONFIG_CPU_M65_45GS02
 // #define CONFIG_CPU_WDC_65816
 
 

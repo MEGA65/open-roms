@@ -88,6 +88,9 @@
 #if CONFIG_CPU_CSG_65CE02
 	.eval selected++
 #endif
+#if CONFIG_CPU_M65_45GS02
+	.eval selected++
+#endif
 #if CONFIG_CPU_WDC_65816
 	.eval selected++
 #endif

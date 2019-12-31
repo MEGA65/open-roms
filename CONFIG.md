@@ -74,6 +74,10 @@ Choose if your CPU supports the Commodore Semiconductor Group 65CE02 instruction
 
 It enables some speed/size code optimizations.
 
+### `CONFIG_CPU_M65_45GS02`
+
+Choose if you have a Mega65 FPGA board.
+
 ### `CONFIG_CPU_WDC_65816`
 
 Choose if your CPU supports the 16-bit Western Design Center 65816 instruction set, like:

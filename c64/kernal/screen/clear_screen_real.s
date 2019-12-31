@@ -1,6 +1,12 @@
 // Clear screen and initialise line link table
 // (Compute's Mapping the 64 p215-216)
 
+
+clear_screen_real:
+	rts
+
+/* YYY disabled for rework
+
 clear_screen_real:
 
 	// XXX it is probably a good idea to hide cursor first
@@ -60,3 +66,5 @@ clearscreen_l3:
 
 	// (Compute's Mapping the 64 p216)
 	jmp cursor_home
+
+*/

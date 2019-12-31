@@ -11,8 +11,8 @@ default_irq_handler:
 
 #endif // CONFIG_RS232_UP9600
 
-
-	jsr cursor_blink
+/* YYY disabled for rework
+	jsr cursor_blink */
 	jsr JSCNKEY
 	jsr JUDTIM // update jiffy clock
 

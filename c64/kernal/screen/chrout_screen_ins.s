@@ -4,6 +4,10 @@
 //
 
 chrout_screen_INS:
+	rts
+
+/* YYY disabled for rework
+chrout_screen_INS:
 
 	// Insert (shift-DELETE)
 	
@@ -62,3 +66,4 @@ chrout_screen_INS:
 	sta (PNT),y
 
 	jmp chrout_screen_done
+*/

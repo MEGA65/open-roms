@@ -4,7 +4,7 @@
 //
 
 
-chrout_screen_RETURN:
+chrout_screen_RETURN: /* YYY disabled for rework
 
 	// RETURN clears quote and insert modes, it also clears reverse flag
 	lda #$00
@@ -12,3 +12,5 @@ chrout_screen_RETURN:
 	sta INSRT
 	sta RVS
 	jmp chrout_screen_advance_to_next_line
+
+*/

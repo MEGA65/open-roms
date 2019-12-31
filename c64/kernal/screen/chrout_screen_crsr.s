@@ -5,6 +5,16 @@
 
 
 chrout_screen_CRSR_UP:
+	rts
+chrout_screen_CRSR_DOWN:
+	rts
+chrout_screen_CRSR_LEFT:
+	rts
+chrout_screen_CRSR_RIGHT:
+	rts
+
+/* YYY disabled for rework
+chrout_screen_CRSR_UP:
 
 	lda PNTR
 	sec
@@ -41,3 +51,5 @@ chrout_screen_CRSR_RIGHT:
 
 	inc PNTR
 	jmp chrout_screen_calc_lptr_done
+
+*/

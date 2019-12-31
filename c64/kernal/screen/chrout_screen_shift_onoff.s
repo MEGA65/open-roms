@@ -3,6 +3,7 @@
 // SHIFT ON/OFF handling within CHROUT
 //
 
+
 chrout_screen_SHIFT_ON:
 
 	lda #$00 // enable SHIFT+VENDOR combination

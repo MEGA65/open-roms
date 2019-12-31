@@ -6,7 +6,12 @@
 
 #if CONFIG_EDIT_TABULATORS
 
+chrout_screen_TAB_FW:
+	rts
+chrout_screen_TAB_BW:
+	rts
 
+/* YYY disabled for rework
 chrout_screen_TAB_FW:
 
 	lda PNTR
@@ -27,7 +32,7 @@ chrout_screen_TAB_BW:
 	and #%11111000
 	sta PNTR
 !:
-	jmp chrout_screen_calc_lptr_done
+	jmp chrout_screen_calc_lptr_done */
 
 
 #endif // CONFIG_EDIT_TABULATORS

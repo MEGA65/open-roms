@@ -55,7 +55,7 @@ chrout_screen:
 	clc
 	adc #$20
 
-output_literal_char:
+output_literal_char: /* YYY disabled for rework
 	
 	// Write normal character on the screen
 
@@ -108,7 +108,7 @@ chrout_screen_calc_lptr_done:
 	jsr screen_calculate_line_pointer
 
 	// FALLTROUGH
-
+*/
 chrout_screen_done:
 
 	jsr cursor_show_if_enabled

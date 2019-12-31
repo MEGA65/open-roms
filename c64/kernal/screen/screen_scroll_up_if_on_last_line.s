@@ -1,4 +1,6 @@
 
+/* YYY disabled for rework
+
 not_last_line:
 	rts
 
@@ -126,3 +128,4 @@ link_copy:
 
 	// Restore correct line pointers
 	jmp screen_calculate_line_pointer
+*/

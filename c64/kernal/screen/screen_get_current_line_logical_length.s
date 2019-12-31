@@ -1,5 +1,10 @@
 
 screen_get_current_line_logical_length:
+	rts
+
+/* YYY disabled for rework
+
+screen_get_current_line_logical_length:
 	ldy TBLX
 	lda LDTBL,y
 	bpl !+
@@ -9,3 +14,4 @@ screen_get_current_line_logical_length:
 	lda #39
 	sta LNMX
 	rts
+*/

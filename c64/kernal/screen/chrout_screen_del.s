@@ -4,6 +4,10 @@
 //
 
 chrout_screen_DEL:
+	rts
+
+/* YYY disabled for rework
+chrout_screen_DEL:
 
 	// In insert mode it embeds control character
 	ldx INSRT
@@ -63,3 +67,5 @@ chrout_screen_del_column_non_0:
 
 chrout_screen_del_done:
 	jmp chrout_screen_done
+
+*/

@@ -11,7 +11,13 @@
 // - PNTR  (current screen x position)
 //
 
+cursor_disable:
+	rts
 
+cursor_hide_if_visible:
+	rts
+
+/* YYY disabled for rework
 cursor_blink:
 	// Is the cursor enabled?
 	lda BLNSW
@@ -79,3 +85,4 @@ cursor_blink_timer_reset:
 
 cursor_blink_end:
 	rts
+*/

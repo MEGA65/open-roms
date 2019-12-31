@@ -4,6 +4,8 @@
 // If X < 0, then make X = X + 40 (or 80, if previous line is linked)
 //
 
+/* YYY disabled for rework
+
 screen_normalize_xy:	
 
 	lda PNTR
@@ -73,3 +75,5 @@ link_count_loop:
 	sta TBLX
 y_ok:
 	rts
+
+*/

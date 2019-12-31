@@ -3,6 +3,7 @@
 // Home the cursor (Compute's Mapping the 64 p216)
 //
 
+/* YYY disabled for rework
 cursor_home:
 
 	lda #$00
@@ -10,3 +11,4 @@ cursor_home:
 	sta TBLX // y position
 
 	jmp screen_calculate_line_pointer
+*/

@@ -8,7 +8,12 @@
 // CPU registers that has to be preserved (see [RG64]): none
 //
 
-PLOT:
+
+plot_set:
+	rts
+
+
+PLOT: /* YYY disabled for rework
 	bcs plot_get
 
 	// Note: the 'set' part has to start from $E50C, as this is a known address
@@ -30,3 +35,4 @@ plot_get:
 	ldy PNTR
 	ldx TBLX
 	rts
+*/

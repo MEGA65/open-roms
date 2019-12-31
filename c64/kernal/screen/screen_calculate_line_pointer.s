@@ -1,4 +1,6 @@
 
+/* YYY disabled for rework
+
 screen_calculate_line_pointer:
 	jsr screen_normalize_xy
 	
@@ -52,3 +54,4 @@ update_colour_line_pointer:
 	sta USER+1
 
 	rts
+*/

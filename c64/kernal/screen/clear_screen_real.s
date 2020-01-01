@@ -8,8 +8,8 @@
 
 clear_screen_real:
 
-	// First disable the cursor
-	jsr cursor_disable
+	// YYY - do we need this? First disable the cursor
+	// jsr cursor_disable
 
 	// Clear the line link table - cheecked on original ROMs,
 	// the highest bit set means that the line is NOT a logical
@@ -37,7 +37,7 @@ clear_screen_real:
 clear_screen_loop:
 
 	ldy #$00
-	lda #$01		                   // space character screen code
+	lda #$20                           // space character screen code
 !:
 	sta (PNT),y
 	iny

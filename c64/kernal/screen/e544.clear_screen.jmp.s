@@ -1,6 +1,9 @@
 
-// Clear screen and initialise line link table
-// (Compute's Mapping the 64 p215-216)
+//
+// Clear screen and initialise line link table, described in:
+//
+// - [CM64] Computes Mapping the Commodore 64 - pages 215-216
+//
 
 
 clear_screen:

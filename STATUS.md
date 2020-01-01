@@ -236,7 +236,8 @@ Not all of them - only these we want to have implemented.
 | `$E51B`   | init screen keyboard, no VIC | DONE     |                                                    |
 | `$E544`   | clear screen                 | DONE     |                                                    |
 | `$E50C`   | set cursor position          | PARTIAL  |                                                    |
-| `$E566`   | home cursor                  | NOT DONE |                                                    |
+| `$E566`   | home cursor                  | DONE     |                                                    |
+| `$E56C`   | set PNTR value               |          |                                                    |
 | `$E5A0`   | setup VIC II & I/O           | DONE     |                                                    |
 | `$E6B6`   | advance cursor               | NOT DONE |                                                    |
 | `$E701`   | previous line                | NOT DONE |                                                    |

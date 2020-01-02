@@ -237,7 +237,7 @@ Not all of them - only these we want to have implemented.
 | `$E544`   | clear screen                 | DONE     |                                                    |
 | `$E50C`   | set cursor position          | PARTIAL  |                                                    |
 | `$E566`   | home cursor                  | DONE     |                                                    |
-| `$E56C`   | set PNTR value               |          |                                                    |
+| `$E56C`   | set PNT and USER values      | DONE     |                                                    |
 | `$E5A0`   | setup VIC II & I/O           | DONE     |                                                    |
 | `$E6B6`   | advance cursor               | NOT DONE |                                                    |
 | `$E701`   | previous line                | NOT DONE |                                                    |

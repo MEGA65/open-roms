@@ -8,9 +8,6 @@
 
 clear_screen_real:
 
-	// YYY - do we need this? First disable the cursor
-	// jsr cursor_disable
-
 	// Clear the line link table - cheecked on original ROMs,
 	// the highest bit set means that the line is NOT a logical
 	// continuation of the previous one

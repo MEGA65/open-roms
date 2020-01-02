@@ -9,7 +9,7 @@
 cursor_home:
 
 	lda #$00
-	sta PNTR                           // current column
+	sta PNTR                           // current column (logical)
 	sta TBLX                           // current row
 
 	// FALLTROUGH to the next routine

@@ -17,4 +17,4 @@ chrout_screen_quote:
 	bcc !+
 	adc #$BF    // C=1, so adding $BF + C = add $C0
 !:	
-	jmp output_literal_char
+	jmp chrout_screen_literal

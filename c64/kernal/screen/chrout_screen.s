@@ -29,12 +29,12 @@ chrout_screen:
 	bcc !+
 	
 	and #$7F
-	jmp output_literal_char // not high char
+	jmp chrout_screen_literal // not high char
 
 !:
 	// Range $20-$3F is unchanged
 	cmp #$40
-	bcc output_literal_char // not high char
+	bcc chrout_screen_literal // not high char
 
 	// Unshifted letters and symbols from $40-$5F
 	// all end up being -$40
@@ -49,41 +49,62 @@ chrout_screen:
 
 	// Fix shifted chars by adding $20 again
 	cmp #$20
-	bcc output_literal_char // not high char
+	bcc chrout_screen_literal // not high char
 	cmp #$40
-	bcs output_literal_char // not high char
+	bcs chrout_screen_literal // not high char
 	clc
 	adc #$20
 
-output_literal_char: /* YYY disabled for rework
-	
+	// FALLTROUGH
+
+chrout_screen_literal:
+
 	// Write normal character on the screen
 
-	pha
-	
-	ldy PNTR
-	ora RVS    // Compute's Mapping the 64  p38
+	tax                                // store screen code, we need .A for calculations
+
+	// First we need offset from PNT in .Y, we can take it from PNTR (0-79)
+
+	lda PNTR
+	cmp #40
+	bcc !+
+	sec
+	sbc #40
+!:
+	tay
+
+	// Put the character on the screen
+
+	txa
+	ora RVS                            // Computes Mapping the 64, page 38
 	sta (PNT),y
 
 	// Decrement number of chars waiting to be inserted
+
 	lda INSRT
 	beq !+
 	dec INSRT
 !:	
-	pla
-	cmp #$22
-	bne not_quote
+	// Toggle quote flag if required
 
-	//  Toggle quote flag if required
+	txa
+	cmp #$22
+	bne !+
+
 	lda QTSW
 	eor #$80
 	sta QTSW
+!:
+	// Set colour of the newly printed character
 
-not_quote:
-
-	// Set colour
 	lda COLOR
 	sta (USER),y
+
+
+	jmp !-
+
+
+ /* YYY disabled for rework
 
 	// Advance the column, and scroll screen down if we need
 	// to insert a 2nd line in this logical line.

@@ -100,36 +100,36 @@ chrout_screen_literal:
 	lda COLOR
 	sta (USER),y
 
+	// Advance the column
 
-	jmp !-
-
-
- /* YYY disabled for rework
-
-	// Advance the column, and scroll screen down if we need
-	// to insert a 2nd line in this logical line.
-	// (eg Compute's Mapping the 64 p41)
-	ldx TBLX
+	ldy PNTR
 	iny
 	sty PNTR
+
+	// Scroll down (extend logical line) if needed
+
 	cpy #40
 	bne !+
 	jsr screen_grow_logical_line
 	ldy PNTR
 !:
+	// If not the 80th character of the logical row, we are done
+
 	cpy #80
 	bcc chrout_screen_done
+
+	// Advance to the next line
+
 	lda #0
 	sta PNTR
-	jmp chrout_screen_advance_to_next_line
-
+	jmp screen_advance_to_next_line
 
 chrout_screen_calc_lptr_done:
 
-	jsr screen_calculate_line_pointer
+	jsr screen_calculate_PNT_USER
 
 	// FALLTROUGH
-*/
+
 chrout_screen_done:
 
 	jsr cursor_show_if_enabled

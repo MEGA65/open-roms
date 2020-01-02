@@ -1,7 +1,10 @@
 
-/* YYY disabled for rework
 
-chrout_screen_advance_to_next_line:
+screen_advance_to_next_line:
+.break
+	rts
+
+/* YYY disabled for rework
 
 	//  Go to start of line
 	lda #0

@@ -1,12 +1,16 @@
 
 
-/* YYY disabled for rework
 
 screen_grow_logical_line_done:
 	rts
 
+
 screen_grow_logical_line:
-	
+.break
+	rts
+
+/* YYY disabled for rework
+
 	// Do not grow line if it is already grown
 	ldy TBLX
 	lda LDTBL,y

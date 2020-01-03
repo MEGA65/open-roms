@@ -1,5 +1,8 @@
 
-/* YYY disabled for rework
+screen_scroll_up:
+	rts
+
+/* YYY disabled for rework, add CTRL and NO_SCROLL support
 
 not_last_line:
 	rts

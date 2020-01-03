@@ -9,11 +9,8 @@
 //
 
 
-plot_set:
-	rts
+PLOT:
 
-
-PLOT: /* YYY disabled for rework
 	bcs plot_get
 
 	// Note: the 'set' part has to start from $E50C, as this is a known address
@@ -26,7 +23,7 @@ plot_set:
 	sty PNTR
 	stx TBLX
 
-	jsr screen_calculate_line_pointer
+	jsr screen_calculate_PNT_USER
 
 	// FALLTROUGH to save one byte on RTS
 
@@ -35,4 +32,3 @@ plot_get:
 	ldy PNTR
 	ldx TBLX
 	rts
-*/

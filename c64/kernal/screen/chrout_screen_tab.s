@@ -7,9 +7,9 @@
 #if CONFIG_EDIT_TABULATORS
 
 chrout_screen_TAB_FW:
-	rts
+	jmp chrout_screen_done
 chrout_screen_TAB_BW:
-	rts
+	jmp chrout_screen_done
 
 /* YYY disabled for rework
 chrout_screen_TAB_FW:

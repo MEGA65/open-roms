@@ -4,7 +4,7 @@
 //
 
 chrout_screen_DEL:
-	rts
+	jmp chrout_screen_done
 
 /* YYY disabled for rework
 chrout_screen_DEL:

@@ -5,13 +5,13 @@
 
 
 chrout_screen_CRSR_UP:
-	rts
+	jmp chrout_screen_done
 chrout_screen_CRSR_DOWN:
-	rts
+	jmp chrout_screen_done
 chrout_screen_CRSR_LEFT:
-	rts
+	jmp chrout_screen_done
 chrout_screen_CRSR_RIGHT:
-	rts
+	jmp chrout_screen_done
 
 /* YYY disabled for rework
 chrout_screen_CRSR_UP:

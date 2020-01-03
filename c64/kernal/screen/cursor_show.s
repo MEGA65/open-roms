@@ -6,10 +6,7 @@
 // - BLNCT (cursor blink countdown)
 //
 
-cursor_show_if_enabled:
-	rts
 
-/* YYY disabled for rework
 cursor_show_if_enabled:
 	lda BLNSW
 	bne cursor_show_end
@@ -36,4 +33,3 @@ cursor_show:
 
 cursor_show_end:
 	rts
-*/

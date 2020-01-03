@@ -11,13 +11,7 @@
 // - PNTR  (current screen x position)
 //
 
-cursor_disable:
-	rts
 
-cursor_hide_if_visible:
-	rts
-
-/* YYY disabled for rework
 cursor_blink:
 	// Is the cursor enabled?
 	lda BLNSW
@@ -34,9 +28,10 @@ cursor_blink:
 	// FALLTROUGH
 
 cursor_draw:
-	jsr screen_calculate_line_pointer // XXX try to make this call not needed
+	jsr screen_calculate_PNT_USER // YYY try to make this call not needed
 
 	ldy PNTR
+	// XXX clip PNTR to 0-39
 	lda (PNT),y
 	sta GDBLN
 	eor #$80
@@ -66,6 +61,7 @@ cursor_undraw:
 
 	lda GDBLN
 	ldy PNTR
+	// XXX clip PNTR to 0-39
 	sta (PNT),y
 	lda GDCOL
 	sta (USER),y
@@ -85,4 +81,3 @@ cursor_blink_timer_reset:
 
 cursor_blink_end:
 	rts
-*/

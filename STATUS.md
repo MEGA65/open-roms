@@ -245,7 +245,7 @@ Not all of them - only these we want to have implemented.
 | `$E8DA`   | color code table             | DONE     |                                                    |
 | `$E8EA`   | scroll line                  | NOT DONE |                                                    |
 | `$E96C`   | insert line on top           | NOT DONE |                                                    |
-| `$E9FF`   | clear line                   | NOT DONE |                                                    |
+| `$E9FF`   | clear line                   | DONE     |                                                    |
 | `$EA31`   | default IRQ                  | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below             | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI             | DONE     |                                                    |

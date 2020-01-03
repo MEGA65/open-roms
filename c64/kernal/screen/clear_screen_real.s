@@ -19,7 +19,7 @@ clear_screen_real:
 	dey
 	bpl !-
 
-	// YYY flow can probably be size-optimized, by clearing a single row each time (we will need such a subroutine)
+	// YYY flow can probably be size-optimized by calling screen_clear_line in a loop
 
 	// Clear screen character RAM. Unfortunately, the HIBASE value is not on the zero page,
 	// we will reuse PNT (it will be overridden in a moment nevertheless) as the pointer

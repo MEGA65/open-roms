@@ -6,8 +6,9 @@ screen_grow_logical_line_done:
 
 
 screen_grow_logical_line:
-.break
-	rts
+
+	jmp screen_grow_logical_line // YYY
+
 
 /* YYY disabled for rework
 

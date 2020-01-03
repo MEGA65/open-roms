@@ -1,8 +1,8 @@
 
 
 screen_advance_to_next_line:
-.break
-	rts
+
+	jmp screen_advance_to_next_line
 
 /* YYY disabled for rework
 

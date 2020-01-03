@@ -9,7 +9,11 @@
 
 screen_calculate_PNT_USER:
 
-	// YYY jsr screen_normalize_xy - do we need this? probably not
+	ldx TBLX
+
+	// FALLTROUGH
+
+screen_calculate_PNT_USER_from_X: // entry point for screen_clear_line
 
 	// Reset pointer to start of screen
 
@@ -20,7 +24,7 @@ screen_calculate_PNT_USER:
 
 	// Add 40 to PNT for every line
 
-	ldx TBLX
+	cpx #$00	
 	beq screen_calculate_USER
 !:
 	lda #40

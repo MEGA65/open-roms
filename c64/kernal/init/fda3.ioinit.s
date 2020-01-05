@@ -22,8 +22,8 @@ IOINIT:
 
 	ldx #$27
 	stx CPU_R6510
-	ldx #$EF
-	stx CPU_D6510  // [CM64] page 4
+	ldx #$2F                           // checked real ROM value
+	stx CPU_D6510
 
 	//
 	// Now prevent the CIAs from generating interrupts, who knows what damage they can do

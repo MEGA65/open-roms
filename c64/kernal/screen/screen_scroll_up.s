@@ -1,6 +1,109 @@
 
+//
+// Scroll the whole screen up by 1 logical line
+//
+
+
 screen_scroll_up:
+
+	// Preserve SAL and EAL
+
+	lda SAL+0
+	pha
+	lda SAL+1
+	pha	
+	lda EAL+0
+	pha
+	lda EAL+1
+	pha	
+
+screen_scroll_up_next:
+
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+
+	// Do not scroll if NO_SCRL is pressed and interrupts are enabled
+!:
+	php
+	pla
+	and #%00000010
+	bne !+                             // branch if IRQs disabled, we cannot detect NO_SCRL status
+
+	lda SHFLAG
+	and #KEY_FLAG_NO_SCRL
+	bne !-
+!:
+#endif
+
+	// Check if CTRL key pressed - if so, perform a delay
+
+	lda SHFLAG
+	and #KEY_FLAG_CTRL
+	beq screen_scroll_up_delay_done
+
+	ldy #$03
+!:
+	ldx #$FF
+	jsr wait_x_bars
+	dey
+	bne !-
+
+screen_scroll_up_delay_done:
+
+	// First scroll the LDTBL (line link table)
+
+	ldy #$00
+!:
+	lda LDTBL+1, y
+	sta LDTBL+0, y
+	iny
+	cpy #24
+	bne !-
+
+	lda #$80
+	sta LDTBL+24
+
+	// Now, we need to scroll both screen memory and color memory
+
+
+
+	// YYY implement
+
+
+
+
+	// Clear the newly introduced line
+
+	ldx #24
+	jsr screen_clear_line
+
+	// Decrement the current physical line number
+
+	dec TBLX
+
+	// If the first line is linked, scroll once more
+
+	bit LDTBL+0
+	bpl screen_scroll_up_next
+
+	// Restore SAL and EAL
+	
+ 	pla
+ 	sta EAL+1
+ 	pla
+ 	sta EAL+0
+ 	pla
+ 	sta SAL+1
+ 	pla
+ 	sta SAL+0
+
+ 	// Return
+
 	rts
+
+
+
+
+
 
 /* YYY disabled for rework, add CTRL and NO_SCROLL support
 
@@ -30,7 +133,9 @@ is_last_line:
 
 	dec TBLX
 
-	// FALLTHROUGH
+	// FALLTHROUGH to screen_scroll_up
+
+
 
 scroll_screen_up:
 

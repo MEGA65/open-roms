@@ -120,8 +120,6 @@ chrout_screen_literal:
 
 	// Advance to the next line
 
-	lda #0
-	sta PNTR
 	jmp screen_advance_to_next_line
 
 chrout_screen_calc_lptr_done:

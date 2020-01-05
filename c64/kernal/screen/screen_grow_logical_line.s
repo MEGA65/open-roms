@@ -7,32 +7,37 @@ screen_grow_logical_line_done:
 
 screen_grow_logical_line:
 
-	jmp screen_grow_logical_line // YYY
+	// Do not grow line if previus one is grown
+
+	ldy TBLX
+	lda LDTBL,y
+	bpl screen_grow_logical_line_done
+
+	// If last line, scroll the screen up
+	cpy #24
+	bne !+
+	jsr screen_scroll_up
+	ldy TBLX
+!:
+	// Do not grow line if already grown
+	iny
+	lda LDTBL,y
+	bpl screen_grow_logical_line_done
+	
+	// Mark current line as grown
+	lda #$00
+	sta LDTBL,y
+
+	// Now we have to scroll lines downwards to make space
+
+
+
+	.break
+	rts
+
 
 
 /* YYY disabled for rework
-
-	// Do not grow line if it is already grown
-	ldy TBLX
-	lda LDTBL,y
-	bmi screen_grow_logical_line_done
-
-	// Do not grow line if previous grown
-	dey
-	bmi !+
-	lda LDTBL,y
-	bmi screen_grow_logical_line_done
-!:
-	iny
-
-	// Mark current line as grown
-	lda #$80
-	sta LDTBL,y
-
-	// Now make space for the extra line added.
-	// If we are on the last physical line of the screen,
-	// Then we need to scroll the screen up
-	jsr screen_scroll_up_if_on_last_line
 
 	// Count the number of physical lines to scroll down
 	ldx #$01

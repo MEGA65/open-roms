@@ -235,7 +235,7 @@ Not all of them - only these we want to have implemented.
 | `$E518`   | legacy part of CINT          | DONE     |                                                    |
 | `$E51B`   | init screen keyboard, no VIC | DONE     |                                                    |
 | `$E544`   | clear screen                 | DONE     |                                                    |
-| `$E50C`   | set cursor position          | PARTIAL  |                                                    |
+| `$E50C`   | set cursor position          | DONE     |                                                    |
 | `$E566`   | home cursor                  | DONE     |                                                    |
 | `$E56C`   | set PNT and USER values      | DONE     |                                                    |
 | `$E5A0`   | setup VIC II & I/O           | DONE     |                                                    |
@@ -243,7 +243,7 @@ Not all of them - only these we want to have implemented.
 | `$E701`   | previous line                | NOT DONE |                                                    |
 | `$E716`   | screen CHROUT                | NOT DONE |                                                    |
 | `$E8DA`   | color code table             | DONE     |                                                    |
-| `$E8EA`   | scroll line                  | NOT DONE |                                                    |
+| `$E8EA`   | scroll logical line up       | DONE     |                                                    |
 | `$E96C`   | insert line on top           | NOT DONE |                                                    |
 | `$E9FF`   | clear line                   | DONE     |                                                    |
 | `$EA31`   | default IRQ                  | PARTIAL  |                                                    |

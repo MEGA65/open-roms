@@ -1,43 +1,18 @@
 
 //
-// Scroll the whole screen up by 1 logical line
+// Scroll the whole screen up by 1 logical line, described in:
+//
+// - [CM64] Computes Mapping the Commodore 64 - page 218
 //
 
 
 screen_scroll_up:
 
+	// First handle CTRL and NO_SCRL keys
 
-#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+	jsr screen_scroll_delay
 
-	// Do not scroll if NO_SCRL is pressed and interrupts are enabled
-!:
-	php
-	pla
-	and #%00000010
-	bne !+                             // branch if IRQs disabled, we cannot detect NO_SCRL status
-
-	lda SHFLAG
-	and #KEY_FLAG_NO_SCRL
-	bne !-
-!:
-#endif
-
-	// Check if CTRL key pressed - if so, perform a delay
-
-	lda SHFLAG
-	and #KEY_FLAG_CTRL
-	beq screen_scroll_up_delay_done
-
-	ldy #$09
-!:
-	ldx #$FF
-	jsr wait_x_bars
-	dey
-	bne !-
-
-screen_scroll_up_delay_done:
-
-	// First scroll the LDTBL (line link table)
+	// Scroll the LDTBL (line link table)
 
 	ldy #$00
 !:
@@ -133,49 +108,8 @@ screen_scroll_up_loop_done:
 	// If the first line is linked, scroll once more
 
 	bit LDTBL+0
-#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
-	bpl_far screen_scroll_up
-#else
 	bpl screen_scroll_up
-#endif
 
  	// Recalculate PNT and USER
 
 	jmp screen_calculate_PNT_USER
-
-
-
-
-
-
-/* YYY disabled for rework, add CTRL and NO_SCROLL support
-
-not_last_line:
-	rts
-
-screen_scroll_up_if_on_last_line:
-
-	// Colour RAM is always in fixed place, so is easiest
-	// to use to check if we are on the last line.
-	// The last line is at $D800 + 24*40 = $DBC0
-	lda USER+1
-	cmp #>$DBC0
-	bne not_last_line
-
-	lda USER+0
-	cmp #<$DBC0
-	beq is_last_line
-
-	jsr screen_get_current_line_logical_length
-	clc
-	adc USER+0
-	cmp #<$DBE7-1
-	bcc not_last_line
-
-is_last_line:
-
-	dec TBLX
-
-	// FALLTHROUGH to screen_scroll_up
-
-*/

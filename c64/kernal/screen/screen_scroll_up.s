@@ -28,7 +28,7 @@ screen_scroll_up:
 	and #KEY_FLAG_CTRL
 	beq screen_scroll_up_delay_done
 
-	ldy #$03
+	ldy #$09
 !:
 	ldx #$FF
 	jsr wait_x_bars

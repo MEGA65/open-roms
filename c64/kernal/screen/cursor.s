@@ -28,10 +28,8 @@ cursor_blink:
 	// FALLTROUGH
 
 cursor_draw:
-	jsr screen_calculate_PNT_USER // YYY try to make this call not needed
 
-	ldy PNTR
-	// XXX clip PNTR to 0-39
+	jsr screen_get_clipped_PNTR
 	lda (PNT),y
 	sta GDBLN
 	eor #$80
@@ -59,9 +57,8 @@ cursor_hide_if_visible:
 
 cursor_undraw:
 
+	jsr screen_get_clipped_PNTR
 	lda GDBLN
-	ldy PNTR
-	// XXX clip PNTR to 0-39
 	sta (PNT),y
 	lda GDCOL
 	sta (USER),y

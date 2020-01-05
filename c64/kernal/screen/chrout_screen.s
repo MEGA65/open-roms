@@ -63,15 +63,9 @@ chrout_screen_literal:
 
 	tax                                // store screen code, we need .A for calculations
 
-	// First we need offset from PNT in .Y, we can take it from PNTR (0-79)
+	// First we need offset from PNT in .Y, we can take it from PNTR
 
-	lda PNTR
-	cmp #40
-	bcc !+
-	sec
-	sbc #40
-!:
-	tay
+	jsr screen_get_clipped_PNTR
 
 	// Put the character on the screen
 

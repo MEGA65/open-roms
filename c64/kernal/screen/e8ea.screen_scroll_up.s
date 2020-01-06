@@ -56,11 +56,9 @@ screen_scroll_up_delay_done:
 	lda #$80
 	sta LDTBL+24
 
-	// Preserve SAL and EAL
+	// Preserve SAL and EAL, prepare initial SAL/EAL/PNT/USER values
 
 	jsr screen_preserve_sal_eal
-
-	// Now, we need to scroll both screen memory and color memory; first create start/end pointers
 
 	lda HIBASE
 	sta SAL+1

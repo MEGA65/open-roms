@@ -1,8 +1,16 @@
 
 
 
-screen_grow_logical_line_done:
-	rts
+screen_grow_logical_line_screen_up:
+
+	jsr screen_scroll_up
+
+	// FALLTROUGH
+
+screen_grow_logical_line_already_done:
+
+	inc TBLX
+	jmp screen_calculate_PNT_USER
 
 
 screen_grow_logical_line:
@@ -14,10 +22,8 @@ screen_grow_logical_line:
 
 	// If last line, scroll the screen up
 	cpy #24
-	bne !+
-	jsr screen_scroll_up
-	ldy TBLX
-!:
+	beq screen_grow_logical_line_screen_up
+
 	// Do not grow line if already grown
 	iny
 	lda LDTBL,y
@@ -27,158 +33,89 @@ screen_grow_logical_line:
 	lda #$00
 	sta LDTBL,y
 
+	// Now we have to scroll lines downwards to make space. We start from the end,
+	// and work backwards. We cannot be as simple and efficient here as we are
+	// for scrolling up, because we do not know how much must be scrolled.
+
 	// Preserve SAL and EAL
+
 	jsr screen_preserve_sal_eal
 
-	// Now we have to scroll lines downwards to make space
+	// Work out how many physical lines to scroll down
 
+	lda #23
+	sec
+	sbc TBLX
+	beq screen_grow_logical_line_copy_done       // branch if no need to copyy
+	tax
 
-	// YYY implement here
+	// Prepare initial SAL/EAL/PNT/USER values
 
-	.break
-
-
-
-
-
-
-
-	// Restore SAL and EAL
-	jsr screen_restore_sal_eal
-
- 	// Recalculate PNT and USER    YYY is it needed?
-	jmp screen_calculate_PNT_USER
-
-
-
-/* YYY disabled for rework
-
-	// Count the number of physical lines to scroll down
-	ldx #$01
-	ldy TBLX
-!:
-	iny
-	cpy #23
-	bcs !+
-
-	lda LDTBL,y
-	bmi !-
-	inx
-	bne !-                             // branch always
-!:
-	cpx #$00
-	beq no_copy_down
-
-	// Scroll screen down to make space
-	// As we are scrolling down, we start from the end,
-	// and work backwards. We can't be as simple and efficient
-	// here as we are for scrolling up, because we don't know
-	// how much must be scrolled.
-	// Simple solution is to work out how many physical lines
-	// need shifting down, and then move lines at a time after
-	// initialising the pointers to the end area of the screen.
-
-	// Preserve EAL
-	lda EAL+0
-	pha
-	lda EAL+1
-	pha
-
-	// XXX fix TBLX value, it seems to show logical line number, which is wrong!
-
-	// Set pointers to end of screen line, and one line
-	// above.  (It is always one physical line, because
-	// this can only happen when expanding a line from 40 to
-	// 80 characters).
-	// XXX - This is not very efficient, and longer than it
-	// needs to be. Better would be to work out size to
-	// copy, and count it down in a pointer somewhere, so
-	// that loop iteration logic is simpler.
 	lda HIBASE
 	clc
 	adc #3
-	sta PNT+1
 	sta SAL+1
-	lda #>$DBC0
 	sta EAL+1
+
+	lda #>$DB00                        // 3rd page of the color memory
+	sta PNT+1
 	sta USER+1
 
-	lda #<$03C0
-	sta PNT+0
+	lda #<$03C0                        // start of destination row
+	sta EAL+0
 	sta USER+0
-	//  souce address is line above
+	lda #<$03C0                        // start of source row
+	sta SAL+0
+	sta PNT+0
+
+screen_grow_logical_line_loop:
+
+	// Scroll down one line each loop iteration
+
+	ldy #39
+!:
+	lda (SAL),  y
+	sta (EAL),  y
+	lda (PNT),  y
+	sta (USER), y
+	dey
+	bpl !-
+
+	// Decrement SAL/PNT pointers by 40 (optimized due to fact they share LSB)
+
+	lda SAL+0
 	sec
 	sbc #40
 	sta SAL+0
-	sta EAL+0
+	sta PNT+0
+	bcs !+
+	dec SAL+1
+	dec PNT+1
+!:
+	// Decrement EAL/USER pointers by 40 (optimized due to fact they share LSB)
 
-copy_line_down_loop:
-	ldy #39
-cl_inner:
-	lda (EAL),y
-	sta (USER),y
-	lda (SAL),y
-	sta (PNT),y
-	dey
-	bpl cl_inner
-
-	// This ugly hack prevents cursor blink interference     XXX solve this in better way
-	php
-	sei
-	jsr cursor_hide_if_visible
-	plp
-
-	// Decrement all pointers by 40
-	// Low bytes are in common pairs
-
-	// Old source is new destination
-	// Use different registers to minimise byte similarity with C64 KERNAl
-	ldy SAL+1
-	sty PNT+1
-	lda EAL+1
-	ldy SAL+0
-	sta USER+1
-	sty PNT+0
-	sty USER+0
-	
-	// Decrementing source pointers
-	lda SAL+0
+	lda EAL+0
 	sec
-	sbc #<40
-	sta SAL+0
+	sbc #40
 	sta EAL+0
-	lda SAL+1
-	sbc #>40
-	sta SAL+1
-	// convert to screen equivalent
-	sec
-	sbc HIBASE
-	clc
-	adc #>$D800
-	sta EAL+1
+	sta USER+0
+	bcs !+
+	dec EAL+1
+	dec USER+1
+!:
+	// Next loop iteration
 
 	dex
-	bne copy_line_down_loop
+	bne screen_grow_logical_line_loop
 
- 	// Restore EAL
- 	pla
- 	sta EAL+1
- 	pla
- 	sta EAL+0
+screen_grow_logical_line_copy_done:
 
-no_copy_down:
-	jsr screen_calculate_line_pointer
+	// Restore SAL and EAL
 
-	// Erase newly inserted line
-	ldy #79
-!:
-	lda COLOR
-	sta (USER),y
-	lda #$20
-	sta (PNT),y
-	dey
-	cpy #39
-	bne !-
+	jsr screen_restore_sal_eal
 
-	rts
-*/
+	// Erase newly inserted line and quit
+
+	ldx TBLX
+	inx
+	jmp screen_clear_line

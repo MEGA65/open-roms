@@ -10,7 +10,38 @@ screen_scroll_up:
 
 	// First handle CTRL and NO_SCRL keys
 
-	jsr screen_scroll_delay
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+
+	// Do not scroll if NO_SCRL is pressed and interrupts are enabled
+!:
+	php
+	pla
+	and #%00000010
+	bne !+                             // branch if IRQs disabled, we cannot detect NO_SCRL status
+
+	lda SHFLAG
+	and #KEY_FLAG_NO_SCRL
+	bne !-
+!:
+
+#endif
+
+	// Check if CTRL key pressed - if so, perform a delay
+
+	lda SHFLAG
+	and #KEY_FLAG_CTRL
+	beq screen_scroll_up_delay_done
+
+	ldy #$09
+!:
+	ldx #$FF
+	jsr wait_x_bars
+	dey
+	bne !-
+
+	// FALLTROUGH
+
+screen_scroll_up_delay_done:
 
 	// Scroll the LDTBL (line link table)
 
@@ -27,14 +58,7 @@ screen_scroll_up:
 
 	// Preserve SAL and EAL
 
-	lda SAL+0
-	pha
-	lda SAL+1
-	pha	
-	lda EAL+0
-	pha
-	lda EAL+1
-	pha
+	jsr screen_preserve_sal_eal
 
 	// Now, we need to scroll both screen memory and color memory; first create start/end pointers
 
@@ -86,15 +110,8 @@ screen_scroll_up_loop:
 screen_scroll_up_loop_done:
 
 	// Restore SAL and EAL
-	
- 	pla
- 	sta EAL+1
- 	pla
- 	sta EAL+0
- 	pla
- 	sta SAL+1
- 	pla
- 	sta SAL+0
+
+	jsr screen_restore_sal_eal
 
 	// Clear the newly introduced line
 

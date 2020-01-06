@@ -8,7 +8,6 @@ screen_grow_logical_line_done:
 screen_grow_logical_line:
 
 	// Do not grow line if previus one is grown
-
 	ldy TBLX
 	lda LDTBL,y
 	bpl screen_grow_logical_line_done
@@ -28,12 +27,27 @@ screen_grow_logical_line:
 	lda #$00
 	sta LDTBL,y
 
+	// Preserve SAL and EAL
+	jsr screen_preserve_sal_eal
+
 	// Now we have to scroll lines downwards to make space
 
 
+	// YYY implement here
 
 	.break
-	rts
+
+
+
+
+
+
+
+	// Restore SAL and EAL
+	jsr screen_restore_sal_eal
+
+ 	// Recalculate PNT and USER    YYY is it needed?
+	jmp screen_calculate_PNT_USER
 
 
 

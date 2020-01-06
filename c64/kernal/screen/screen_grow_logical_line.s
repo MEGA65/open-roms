@@ -1,4 +1,5 @@
 
+// YYY test all the cases!
 
 
 screen_grow_logical_line_screen_up:
@@ -7,7 +8,7 @@ screen_grow_logical_line_screen_up:
 
 	// FALLTROUGH
 
-screen_grow_logical_line_already_done:
+screen_grow_logical_line_done:
 
 	inc TBLX
 	jmp screen_calculate_PNT_USER

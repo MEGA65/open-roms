@@ -41,7 +41,7 @@ screen_scroll_up:
 
 	// FALLTROUGH
 
-screen_scroll_up_delay_done:
+screen_scroll_up_delay_done: // entry point for cursor move control codes
 
 	// Scroll the LDTBL (line link table)
 

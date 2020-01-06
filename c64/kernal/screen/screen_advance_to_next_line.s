@@ -12,15 +12,7 @@ screen_advance_to_next_line:
 !:
 	inc TBLX
 
-	// Set PNTR to 0 or 40 (for continued line)
-	ldy TBLX
-	lda LDTBL, y
-	and #$80
-	bne !+
-
-	lda #40
-	skip_2_bytes_trash_nvz
-!:
+	// Set PNTR to 0 (for continued line will be fixed later)
 	lda #$00
 	sta PNTR
 

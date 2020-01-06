@@ -3,13 +3,19 @@
 // Cursor keys handling within CHROUT
 //
 
+// YYY bug: after line growth cursor LEFT/RIGHT jumps to previous line!!!
+
 
 chrout_screen_CRSR_UP:
 
 	lda TBLX
-	beq !+
+	beq chrout_screen_CRSR_done
 	dec TBLX
-!:
+
+	// FALLTROUGH
+
+chrout_screen_CRSR_done:
+
 	jmp chrout_screen_calc_lptr_done
 
 
@@ -18,35 +24,34 @@ chrout_screen_CRSR_DOWN:
 	lda TBLX
 	cmp #24
 	bne !+
-
-	jsr screen_scroll_up_delay_done
+	jsr screen_scroll_up
 !:
 	inc TBLX
 	jmp chrout_screen_calc_lptr_done
 
 
-
-
-chrout_screen_CRSR_LEFT:
-	jmp chrout_screen_calc_lptr_done
 chrout_screen_CRSR_RIGHT:
-	jmp chrout_screen_calc_lptr_done
 
-/* YYY disabled for rework
+	jsr screen_get_clipped_PNTR
+	cpy #39
+	beq_far screen_advance_to_next_line
+	
+	iny
+!:
+	sty PNTR
+	bpl chrout_screen_CRSR_done        // branch always
+
 
 chrout_screen_CRSR_LEFT:
+
+	jsr screen_get_clipped_PNTR
+	dey
+	bpl !-
 
 	lda TBLX
-	ora PNTR
-	beq !+ // top-left corner, recalculating pointer is not necessary, but this is a very rare case nevertheless
-	dec PNTR
-!:
-	jmp chrout_screen_calc_lptr_done
+	beq chrout_screen_CRSR_done
 
-
-chrout_screen_CRSR_RIGHT:
-
-	inc PNTR
-	jmp chrout_screen_calc_lptr_done
-
-*/
+	dec TBLX
+	lda #39
+	sta PNTR
+	bne chrout_screen_CRSR_done        // branch always

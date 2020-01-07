@@ -1,5 +1,5 @@
 
-// YYY test all the cases, does not work correctly yet!
+// YYY test all the cases
 
 
 screen_grow_logical_line_screen_up:
@@ -65,7 +65,7 @@ screen_grow_logical_line:
 	lda #<$03C0                        // start of destination row
 	sta EAL+0
 	sta USER+0
-	lda #<$03C0                        // start of source row
+	lda #<$0398                        // start of source row
 	sta SAL+0
 	sta PNT+0
 

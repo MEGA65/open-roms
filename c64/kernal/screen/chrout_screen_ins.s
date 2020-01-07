@@ -3,39 +3,30 @@
 // CHROUT routine - screen support, INS key handling
 //
 
-chrout_screen_INS:
-	jmp chrout_screen_done
 
-/* YYY disabled for rework
+// YYY does not work properly on growing logical line
+// YYY implement LNMX
+
+
 chrout_screen_INS:
 
-	// Insert (shift-DELETE)
+	// First check if last character of the line is space
 	
-	// Abort if line already max length, ie 79th char is not a space
-	jsr screen_get_current_line_logical_length
-	cmp #79
-	bne !+
-	tay
-	lda (PNT),y
-	cmp #$20
-	beq !+
+	jsr screen_check_space_ends_line
+	beq chrout_screen_ins_possible
 
-	// Line is too long to extend
-	jmp chrout_screen_done
-
-!:
-	// Work out if line needs to be expanded, and if so expand it
-	ldy #39
-	lda (PNT),y
-	cmp #$20
-	beq !+
+	// Not space, try to grow logical line and check once again
 
 	jsr screen_grow_logical_line
+	jsr screen_check_space_ends_line
+	bne_far chrout_screen_done
 	
-!:	
-	// Shuffle chars towards end of line
-	jsr screen_get_current_line_logical_length
-	tay
+	// FALLTROUGH
+
+chrout_screen_ins_possible:
+
+	// Move chars towards end of the line
+	jsr screen_get_logical_line_end_ptr
 !:
 	// Note: While the following routine is obvious to any skilled
 	// in the art as the most obvious simple and efficient solution,
@@ -43,7 +34,7 @@ chrout_screen_INS:
 	// in a relatively long verbatim stretch of bytes when compared to
 	// the C64 KERNAL.  Thus we have swapped the order, just to reduce
 	// the potential for any argument of copyright infringement, even
-	// though we really don't believe that the routine can be copyrighted
+	// though we really do not believe that the routine can be copyrighted
 	// due to the lack of creativity.
 	dey
 	lda (USER),y
@@ -63,7 +54,6 @@ chrout_screen_INS:
 
 	// Put space in the inserted gap
 	lda #$20
-	sta (PNT),y
+	sta (PNT), y
 
 	jmp chrout_screen_done
-*/

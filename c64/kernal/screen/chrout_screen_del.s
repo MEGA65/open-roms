@@ -3,10 +3,7 @@
 // CHROUT routine - screen support, DEL key handling
 //
 
-chrout_screen_DEL:
-	jmp chrout_screen_done
 
-/* YYY disabled for rework
 chrout_screen_DEL:
 
 	// In insert mode it embeds control character
@@ -14,6 +11,14 @@ chrout_screen_DEL:
 	beq !+
 	jmp chrout_screen_quote
 !:
+
+
+
+	jmp chrout_screen_done
+
+/* YYY disabled for rework
+chrout_screen_DEL:
+
 	ldx PNTR
 	bne chrout_screen_del_column_non_0
 

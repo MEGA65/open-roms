@@ -90,8 +90,7 @@ chrin_enter:
 	sta LXSP+1
 
 	// Calculate length
-	jsr screen_get_current_line_logical_length
-	tay
+	jsr screen_get_logical_line_end_ptr
 	iny
 !:	dey
 	bmi empty_line

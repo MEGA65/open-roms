@@ -105,6 +105,7 @@ chrout_screen_literal:
 	cpy #40
 	bne !+
 	jsr screen_grow_logical_line
+	inc TBLX
 	ldy PNTR
 !:
 	// If not the 80th character of the logical row, we are done

@@ -26,7 +26,6 @@ chrout_screen_TAB_FW:
 chrout_screen_TAB_BW:
 
 	jsr screen_get_clipped_PNTR
-	cpy #$00                           // YYY maybe it's worth to put this inside screen_get_clipped_PNTR?
 	beq !+                             // column 0,  recalculating pointers is not necessary, but this is a rare case nevertheless
 
 	dey

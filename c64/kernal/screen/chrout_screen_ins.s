@@ -5,7 +5,6 @@
 
 
 // YYY does not work properly on growing logical line
-// YYY implement LNMX
 
 
 chrout_screen_INS:

@@ -4,6 +4,9 @@
 screen_grow_logical_line_screen_up:
 
 	jsr screen_scroll_up
+	ldy TBLX
+	lda #$00
+	sta LDTBL+1, y                      // mark the next line as continuation
 
 	// FALLTROUGH
 
@@ -17,7 +20,7 @@ screen_grow_logical_line:
 
 	// Do not grow line if previus one is grown
 	ldy TBLX
-	lda LDTBL,y
+	lda LDTBL+0, y
 	bpl screen_grow_logical_line_done
 
 	// If last line, scroll the screen up
@@ -25,21 +28,34 @@ screen_grow_logical_line:
 	beq screen_grow_logical_line_screen_up
 
 	// Do not grow line if already grown
-	iny
-	lda LDTBL,y
+	lda LDTBL+1, y
 	bpl screen_grow_logical_line_done
 	
+	// Preserve SAL and EAL
+
+	jsr screen_preserve_sal_eal
+
+	// Scroll LDTBL down (start from the end)
+	ldy #23
+!:
+	cpy TBLX
+	beq !+
+	bcc !+
+
+	lda LDTBL+0, y
+	sta LDTBL+1, y
+
+	dey
+	bne !-
+!:
 	// Mark current line as grown
+	ldy TBLX
 	lda #$00
-	sta LDTBL,y
+	sta LDTBL+1, y
 
 	// Now we have to scroll lines downwards to make space. We start from the end,
 	// and work backwards. We cannot be as simple and efficient here as we are
 	// for scrolling up, because we do not know how much must be scrolled.
-
-	// Preserve SAL and EAL
-
-	jsr screen_preserve_sal_eal
 
 	// Work out how many physical lines to scroll down
 
@@ -71,7 +87,6 @@ screen_grow_logical_line:
 screen_grow_logical_line_loop:
 
 	// Scroll down one line each loop iteration
-	// YYY add LDTBL scrolling
 
 	ldy #39
 !:

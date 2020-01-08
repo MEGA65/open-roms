@@ -3,8 +3,6 @@
 // Cursor keys handling within CHROUT
 //
 
-// YYY bug: after line growth cursor LEFT/RIGHT jumps to previous line!!!
-
 
 chrout_screen_CRSR_UP:
 

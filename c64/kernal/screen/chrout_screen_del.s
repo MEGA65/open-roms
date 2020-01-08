@@ -11,8 +11,7 @@ chrout_screen_DEL:
 	beq !+
 	jmp chrout_screen_quote
 !:
-	// ldx PNTR
-	jsr screen_get_clipped_PNTR
+	ldy PNTR
 	bne chrout_screen_del_column_non_0
 
 	// FALLTROUGH
@@ -40,15 +39,14 @@ chrout_screen_del_column_0:
 
 chrout_screen_del_column_non_0:
 
-/* YYY disabled for rework
+	// We need to scroll back the rest of the logical line
+	// YYY this part scrolls back too much!
 
-	// Copy rest of logical line back 
 	jsr screen_get_logical_line_end_ptr
-	ldy PNTR
-	cpy LNMX
-	beq !++
-	dey
 !:
+	cpy PNTR
+	beq !+
+
 	iny
 	lda (PNT),y
 	dey
@@ -58,20 +56,18 @@ chrout_screen_del_column_non_0:
 	dey
 	sta (USER),y
 	iny
-	cpy LNMX
-	bne !-
 
-	// Clear char at end of line
-	jsr screen_get_current_line_logical_length
+	bne !-                                // branch always
+!:
+	// Clear char at end of line (just the character - not color!)
+
+	jsr screen_get_logical_line_end_ptr
 	tay
 	lda #$20
 	sta (PNT),y
-!:
 	dec PNTR
 
 	// FALLTROUGH
-
-*/
 
 chrout_screen_del_done:
 

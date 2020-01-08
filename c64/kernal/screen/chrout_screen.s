@@ -126,5 +126,7 @@ chrout_screen_calc_lptr_done:
 
 chrout_screen_done:
 
+	// YYY should we update character under cursor here? or in cursor_show_if_enabled?
+
 	jsr cursor_show_if_enabled
 	jmp chrout_done_success

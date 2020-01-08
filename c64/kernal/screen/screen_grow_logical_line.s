@@ -1,5 +1,4 @@
 
-// YYY test all the cases
 
 
 screen_grow_logical_line_screen_up:
@@ -72,6 +71,7 @@ screen_grow_logical_line:
 screen_grow_logical_line_loop:
 
 	// Scroll down one line each loop iteration
+	// YYY add LDTBL scrolling
 
 	ldy #39
 !:

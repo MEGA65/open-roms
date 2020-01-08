@@ -118,7 +118,7 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
-	ldx #$04
+	ldx #$05
 	ldy #$00
 	jsr plot_set
 
@@ -126,20 +126,20 @@ initmsg_real:
 	ldy #>rom_revision_basic_string
 	jsr STROUT
 
-	ldx #$04
+	ldx #$05
 	ldy #$12
 	jsr plot_set
 
 	jsr initmsg_bytes_free
 
 #if CONFIG_SHOW_FEATURES
-	ldx #$05
+	ldx #$08
 	ldy #$00
 	jsr plot_set
 	jsr print_features
 	jmp print_return
 #else
-	ldx #$05
+	ldx #$08
 	ldy #$00
 	jmp plot_set
 #endif

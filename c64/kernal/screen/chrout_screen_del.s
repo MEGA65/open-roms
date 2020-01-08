@@ -40,13 +40,16 @@ chrout_screen_del_column_0:
 chrout_screen_del_column_non_0:
 
 	// We need to scroll back the rest of the logical line
-	// YYY this part scrolls back too much!
+
+	// YYY does not work properly when cursor crosses physical line boundary
+	// YYY possibly it should remove the 'continuaed line' mark in some cases, test on original ROMs
 
 	jsr screen_get_logical_line_end_ptr
+	tya
+	tax
+	ldy PNTR
+	dey
 !:
-	cpy PNTR
-	beq !+
-
 	iny
 	lda (PNT),y
 	dey
@@ -57,12 +60,13 @@ chrout_screen_del_column_non_0:
 	sta (USER),y
 	iny
 
-	bne !-                                // branch always
+	dex
+	cpx PNTR
+	bne !-
 !:
 	// Clear char at end of line (just the character - not color!)
 
 	jsr screen_get_logical_line_end_ptr
-	tay
 	lda #$20
 	sta (PNT),y
 	dec PNTR

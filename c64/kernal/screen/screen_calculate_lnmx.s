@@ -4,7 +4,7 @@
 //
 
 
-screen_calculate_LNMX: // YYY review all the code, mayybe some optimizations are possible using this value
+screen_calculate_LNMX:
 
 	ldy TBLX
 	lda LDTBL, y

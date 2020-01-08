@@ -4,9 +4,6 @@
 //
 
 
-// YYY value is improper shortly after linee growth!
-
-
 screen_calculate_LNMX: // YYY review all the code, mayybe some optimizations are possible using this value
 
 	ldy TBLX

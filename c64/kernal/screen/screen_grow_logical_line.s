@@ -134,4 +134,5 @@ screen_grow_logical_line_copy_done:
 
 	ldx TBLX
 	inx
-	jmp screen_clear_line
+	jsr screen_clear_line
+	jmp screen_calculate_LNMX

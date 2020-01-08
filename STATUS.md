@@ -48,28 +48,29 @@ The following ROM features are currently missing:
 
 ## Keyboard
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| C64           | DONE     |                                                    |
-| C128          | DONE     |                                                    |
-| Mega65        | NOT DONE | code should be complete, but is not tested yet     |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| C64                | DONE     |                                                    |
+| C128               | DONE     |                                                    |
+| Mega65             | NOT DONE | code should be complete, but is not tested yet     |
 
 ## Screen
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| VIC-II        | PARTIAL  | 80 chars in logical line support is very buggy     |
-| VDC 80 col.   | NOT DONE |                                                    |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| VIC-II             | PARTIAL  | rework in progress                                 |
+| 80 columns, VDC    | NOT DONE |                                                    |
+| 80 columns, Mega65 | NOT DONE |                                                    |
 
 ## Tape port (LOAD only!)
 
 * Tapuino
 * Datasette
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| normal        | PARTIAL  | no error correction, no tape speed calibratrion    |
-| turbo         | PARTIAL  | up to 250 blocks, no tape speed calibratrion yet   |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| normal             | PARTIAL  | no tape speed calibratrion, no error correction    |
+| turbo (250 blocks) | PARTIAL  | no tape speed calibratrion                         |
 
 ## IEC bus
 
@@ -78,13 +79,13 @@ The following ROM features are currently missing:
 * most disk drives and printers
 * some hard drives
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| standard      | DONE     |                                                    |
-| JiffyDOS      | DONE     |                                                    |
-| DolphinDOS    | DONE     |                                                    |
-| CIA burst mod | NOT DONE |                                                    |
-| Mega65 burst  | NOT DONE | pure software implementation should be feasible    |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| standard           | DONE     |                                                    |
+| JiffyDOS           | DONE     |                                                    |
+| DolphinDOS         | DONE     |                                                    |
+| CIA burst mod      | NOT DONE |                                                    |
+| Mega65 burst       | NOT DONE |                                                    |
 
 ## IEEE-488 bus
 
@@ -92,20 +93,20 @@ The following ROM features are currently missing:
 * PET era disk drives and printers
 * various scientific equipment
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| CBM cartridge | NOT DONE |                                                    |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| CBM cartridge      | NOT DONE |                                                    |
 
 ## RS-232
 
 * modems (telephone, WiFi)
 * parallel port printers
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| UP2400        | NOT DONE |                                                    |
-| UP9600        | NOT DONE | work started, not functional yet                   |
-| ACIA 6551     | NOT DONE |                                                    |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| UP2400             | NOT DONE |                                                    |
+| UP9600             | NOT DONE | work started, not functional yet                   |
+| ACIA 6551          | NOT DONE |                                                    |
 
 
 # API status

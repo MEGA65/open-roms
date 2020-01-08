@@ -155,7 +155,7 @@
 	.label PNT       = $D1  // $D1-$D2  pointer to the current screen line
 	.label PNTR      = $D3  //          current screen X position (logical column), 0-79
 	.label QTSW      = $D4  //          quote mode flag
-	.label LNMX      = $D5  //          logical line length, [!] our usage probably differs in details
+	.label LNMX      = $D5  //          logical line length, 39 or 79
 	.label TBLX      = $D6  //          current screen Y position (row), 0-24
 	.label SCHAR     = $D7  //          ASCII value of the last printed character
 	.label INSRT     = $D8  //          insert mode flag/counter

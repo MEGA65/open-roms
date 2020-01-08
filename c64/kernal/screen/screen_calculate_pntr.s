@@ -4,18 +4,18 @@
 //
 
 
-screen_fix_PNTR:
+screen_calculate_PNTR:
 
 	ldy TBLX
 	lda LDTBL, y
 	php
 	jsr screen_get_clipped_PNTR
 	plp
-	bmi screen_fix_PNTR_0_39
+	bmi screen_calculate_PNTR_0_39
 
 	// FALLTROUGH
 
-screen_fix_PNTR_40_79:
+screen_calculate_PNTR_40_79:
 
 	tya
 	clc
@@ -24,7 +24,7 @@ screen_fix_PNTR_40_79:
 
 	// FALLTROUGH
 
-screen_fix_PNTR_0_39:
+screen_calculate_PNTR_0_39:
 
 	sty PNTR
 	rts

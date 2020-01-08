@@ -120,11 +120,12 @@ chrout_screen_literal:
 chrout_screen_calc_lptr_done:
 
 	jsr screen_calculate_PNT_USER
-	jsr screen_fix_PNTR
+	jsr screen_calculate_PNTR
+	jsr screen_calculate_LNMX
 
 	// FALLTROUGH
 
-chrout_screen_done:
+chrout_screen_done: // YYY review all the jumps here
 
 	// YYY should we update character under cursor here? or in cursor_show_if_enabled?
 

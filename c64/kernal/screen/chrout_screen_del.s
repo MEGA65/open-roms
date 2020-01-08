@@ -12,7 +12,7 @@ chrout_screen_DEL:
 	jmp chrout_screen_quote
 !:
 	ldy PNTR
-	bne chrout_screen_del_column_non_0
+	bne chrout_screen_del_column_normal
 
 	// FALLTROUGH
 
@@ -35,18 +35,26 @@ chrout_screen_del_column_0:
 	sta (PNT),y
 
 	// Finish with recalculating all the variables
-	jmp chrout_screen_calc_lptr_done
+	bne chrout_screen_del_done
 
-chrout_screen_del_column_non_0:
+chrout_screen_del_column_normal:
 
 	// We need to scroll back the rest of the logical line
 
-	// YYY does not work properly when cursor crosses physical line boundary
-	// YYY possibly it should remove the 'continuaed line' mark in some cases, test on original ROMs
+	// First reduce PNTR to 0-39 range
+	jsr screen_get_clipped_PNTR
+	sty PNTR
 
+	// Now get the offset to the last logical line character
 	jsr screen_get_logical_line_end_ptr
 	tya
+
+	// Substract the PNTR value, this will tell us how many characters we need to move
+	sec
+	sbc PNTR
 	tax
+
+	// Perform the character copy (scroll back) in a loop
 	ldy PNTR
 	dey
 !:
@@ -61,9 +69,8 @@ chrout_screen_del_column_non_0:
 	iny
 
 	dex
-	cpx PNTR
-	bne !-
-!:
+	bpl !-
+
 	// Clear char at end of line (just the character - not color!)
 
 	jsr screen_get_logical_line_end_ptr
@@ -75,4 +82,4 @@ chrout_screen_del_column_non_0:
 
 chrout_screen_del_done:
 
-	jmp chrout_screen_done
+	jmp chrout_screen_calc_lptr_done

@@ -4,7 +4,8 @@
 //
 
 
-// YYY does not work properly on growing logical line
+// YYY does not work properly when insertion no longer possible
+// YYY does not work properlyy in second part of logical line
 
 
 chrout_screen_INS:
@@ -25,6 +26,7 @@ chrout_screen_INS:
 chrout_screen_ins_possible:
 
 	// Move chars towards end of the line
+	jsr screen_calculate_PNT_USER
 	jsr screen_get_logical_line_end_ptr
 !:
 	// Note: While the following routine is obvious to any skilled

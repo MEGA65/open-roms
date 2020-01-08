@@ -13,7 +13,6 @@ chrout_screen_DEL:
 !:
 	// ldx PNTR
 	jsr screen_get_clipped_PNTR
-	cpy #$00
 	bne chrout_screen_del_column_non_0
 
 	// FALLTROUGH
@@ -31,12 +30,10 @@ chrout_screen_del_column_0:
 	// Update PNT and USER pointers
 	jsr screen_calculate_PNT_USER
 
-	// Put space character at the current cursor position
+	// Put space character at the current cursor position (do not clear the color!)
 	ldy #39
 	lda #$20
 	sta (PNT),y
-	
-	// XXX should we clear the color too?
 
 	// Finish with recalculating all the variables
 	jmp chrout_screen_calc_lptr_done

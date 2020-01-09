@@ -1,4 +1,5 @@
 
+// YYY growing logical line in the last line is unstable
 
 
 screen_grow_logical_line_screen_up:

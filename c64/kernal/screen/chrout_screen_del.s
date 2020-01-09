@@ -59,13 +59,13 @@ chrout_screen_del_column_normal:
 	dey
 !:
 	iny
-	lda (PNT),y
-	dey
-	sta (PNT),y
-	iny
 	lda (USER),y
 	dey
 	sta (USER),y
+	iny
+	lda (PNT),y
+	dey
+	sta (PNT),y
 	iny
 
 	dex

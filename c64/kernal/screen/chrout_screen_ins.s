@@ -19,7 +19,7 @@ chrout_screen_INS:
 
 	jsr screen_grow_logical_line
 	jsr screen_check_space_ends_line
-	bne_far chrout_screen_done
+	bne_far chrout_screen_calc_lptr_done
 	
 	// FALLTROUGH
 
@@ -57,4 +57,4 @@ chrout_screen_ins_possible:
 	lda #$20
 	sta (PNT), y
 
-	jmp chrout_screen_done
+	jmp chrout_screen_calc_lptr_done

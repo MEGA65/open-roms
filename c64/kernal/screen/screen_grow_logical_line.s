@@ -1,20 +1,16 @@
 
-// YYY growing logical line in the last line is unstable
-
-
-screen_grow_logical_line_screen_up:
-
-	jsr screen_scroll_up
-	ldy TBLX
-	lda #$00
-	sta LDTBL+1, y                      // mark the next line as continuation
-
-	// FALLTROUGH
 
 screen_grow_logical_line_done:
 
 	inc TBLX
 	jmp screen_calculate_PNT_USER
+
+
+screen_grow_logical_line_screen_up:
+
+	jsr screen_scroll_up
+
+	// FALLTROUGH
 
 
 screen_grow_logical_line:
@@ -136,4 +132,4 @@ screen_grow_logical_line_copy_done:
 	ldx TBLX
 	inx
 	jsr screen_clear_line
-	jmp screen_calculate_LNMX
+	jmp screen_calculate_PNTR_LNMX

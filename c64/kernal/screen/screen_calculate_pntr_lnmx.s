@@ -1,8 +1,35 @@
 
 //
+// Sets PNTR in a proper range (0-39 or 40-79)
 // Sets LNMX to 39 or 79
 //
 
+
+screen_calculate_PNTR_LNMX:
+
+	ldy TBLX
+	lda LDTBL, y
+	php
+	jsr screen_get_clipped_PNTR
+	plp
+	bmi screen_calculate_PNTR_0_39
+
+	// FALLTROUGH
+
+screen_calculate_PNTR_40_79:
+
+	tya
+	clc
+	adc #40
+	tay
+
+	// FALLTROUGH
+
+screen_calculate_PNTR_0_39:
+
+	sty PNTR
+
+	// FALLTROUGH
 
 screen_calculate_LNMX:
 

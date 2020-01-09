@@ -72,7 +72,7 @@ read_from_keyboard:
 	cmp #$0D
 	bne not_enter
 
-chrin_enter: // YYY test this!
+chrin_enter:
 
 	jsr cursor_disable
 	jsr pop_keyboard_buffer

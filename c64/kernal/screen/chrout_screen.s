@@ -111,7 +111,7 @@ chrout_screen_literal:
 	// If not the 80th character of the logical row, we are done
 
 	cpy #80
-	bcc chrout_screen_done
+	bcc chrout_screen_calc_lptr_done
 
 	// Advance to the next line
 

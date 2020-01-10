@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // SAVE preparation routine
@@ -27,3 +28,6 @@ SAVE_PREP:
 	sta STAL+0
 
     jmp (ISAVE)
+
+
+#endif // ROM layout

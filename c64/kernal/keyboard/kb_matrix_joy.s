@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Matrix for retrieving C64 joystick status and inject is as keyboard event
@@ -36,3 +37,6 @@ kb_matrix_joy_keytab_hi:
 	.byte >__kb_matrix_normal      // right
 
 #endif
+
+
+#endif // ROM layout

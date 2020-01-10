@@ -1,3 +1,6 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+
 basic_follow_link_to_next_line:
 	ldy #0
 
@@ -21,3 +24,6 @@ basic_follow_link_to_next_line:
 	pla
 	sta OLDTXT+0
 	rts
+
+
+#endif // ROM layout

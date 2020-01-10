@@ -1,9 +1,10 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 285
-// - [CM64] Compute's Mapping the Commodore 64 - page 223
+// - [RG64] C64 Programmers Reference Guide   - page 285
+// - [CM64] Computes Mapping the Commodore 64 - page 223
 // - https://www.pagetable.com/?p=1031, https://github.com/mist64/cbmbus_doc
 // - http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 //
@@ -33,3 +34,6 @@ LISTEN:
 	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
 
 #endif
+
+
+#endif // ROM layout

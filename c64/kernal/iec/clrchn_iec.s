@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // IEC part of the CLRCHN routine
@@ -28,3 +29,6 @@ clrchn_iec:
 
 
 #endif // CONFIG_IEC
+
+
+#endif // ROM layout

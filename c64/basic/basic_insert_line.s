@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 // Insert the tokenised line stored at $0200.
 // First work out where in the list to put it
 // (basic_find_line with the line number can be used to work
@@ -98,3 +100,6 @@ line_store_loop:
 	
 	clc
 	rts
+
+
+#endif // ROM layout

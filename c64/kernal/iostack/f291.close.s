@@ -1,9 +1,10 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 281/282
-// - [CM64] Compute's Mapping the Commodore 64 - page 229/230
+// - [RG64] C64 Programmers Reference Guide   - page 281/282
+// - [CM64] Computes Mapping the Commodore 64 - page 229/230
 // - https://www.pagetable.com/?p=1031, https://github.com/mist64/cbmbus_doc (IEC command)
 //
 // CPU registers that has to be preserved (see [RG64]): none
@@ -51,7 +52,10 @@ close_remove_from_table:
 	// Decrement the list size variable
 	dec LDTND
 
-	clc // report success - not sure if original CLOSE does this, but it's nevertheless a good practice
+	clc // report success - not sure if original CLOSE does this, but it is nevertheless a good practice
 
 close_end:
 	rts
+
+
+#endif // ROM layout

@@ -36,6 +36,7 @@ std::string CMD_outFile   = "OUT.BIN";
 std::string CMD_outDir    = "./out";
 std::string CMD_segName   = "MAIN";
 std::string CMD_segInfo   = "(unnamed)";
+std::string CMD_romLayout = "STD";
 int         CMD_loAddress = 0xC000;
 int         CMD_hiAddress = 0xCFFF;
 
@@ -51,6 +52,7 @@ void printUsage()
         "usage: build_segment [-a <assembler jar file>] [-o <out file>] [-d <out dir>]" << "\n" <<
         "                     [-l <start/low address>] [-h <end/high address>]" << "\n" <<
         "                     [-s <segment name>] [-i <segment display info>]" << "\n" <<
+        "                     [-r <rom layout>]" << "\n" <<
         "                     <input dir/file list>" << "\n\n";
 }
 
@@ -153,7 +155,7 @@ void parseCommandLine(int argc, char **argv)
 
     // Retrieve command line options
 
-    while ((opt = getopt(argc, argv, "a:o:d:s:i:l:h:")) != -1)
+    while ((opt = getopt(argc, argv, "a:o:d:s:i:r:l:h:")) != -1)
     {
         switch(opt)
         {
@@ -162,6 +164,7 @@ void parseCommandLine(int argc, char **argv)
             case 'd': CMD_outDir    = optarg; break;
             case 's': CMD_segName   = optarg; break;
             case 'i': CMD_segInfo   = optarg; break;
+			case 'r': CMD_romLayout = optarg; break;
             case 'l': CMD_loAddress = strtol(optarg, nullptr ,16); break;
             case 'h': CMD_hiAddress = strtol(optarg, nullptr ,16); break;
             default: printUsage(); ERROR();
@@ -278,6 +281,7 @@ void calcRoutineSizes()
 
     outFile << "\n" << ".segment " << CMD_segName << " [start=$100, min=$100, max=$FFFF]" << "\n";
     outFile << "#define SEGMENT_" << CMD_segName << "\n";
+    outFile << "#define ROM_LAYOUT_" << CMD_romLayout << "\n";
 
     for (const auto &sourceFile : GLOBAL_sourceFiles)
     {
@@ -481,6 +485,7 @@ void compileSegment()
                ", outBin=\"" << CMD_outFile << "\", fill]" <<
                "\n";
     outFile << "#define SEGMENT_" << CMD_segName << "\n";
+	outFile << "#define ROM_LAYOUT_" << CMD_romLayout << "\n";
     outFile << ".namespace " << CMD_segName << " {" << "\n\n";
 
     // Write files which only contain definitions (no routines)
@@ -694,7 +699,8 @@ void BinningProblem::addToProblem(SourceFile *routine)
 
         if (!gapFound)
         {
-            ERROR(std::string("start address of fixed address file '") + routine->fileName + "' already occupied");
+            ERROR(std::string("start address of fixed address file '") + \
+                  routine->fileName + "' already occupied or out of range");
         }
     }
 }

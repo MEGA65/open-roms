@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Timer values for PAL/NTSC - high bytes
@@ -16,3 +17,6 @@ up9600_ihitab:
 
 
 #endif // CONFIG_RS232_UP9600
+
+
+#endif // ROM layout

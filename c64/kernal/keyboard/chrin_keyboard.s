@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Keyboard part of the CHRIN routine
@@ -170,3 +171,6 @@ chrin_programmable_key:
 	bne !-     // jumps always
 
 #endif // CONFIG_PROGRAMMABLE_KEYS
+
+
+#endif // ROM layout

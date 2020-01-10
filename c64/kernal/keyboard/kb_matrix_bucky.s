@@ -1,10 +1,11 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Matrix for retrieving bucky key status on the C64 keyboard
 //
 // Values based on:
-// - [CM64]  Compute's Mapping the Commodore 64 - pages 58 (SHFLAG), 173 (matrix)
-// - [CM128] Compute's Mapping the Commodore 128 - pages 212 (SHFLAG), 290 (matrix)
+// - [CM64]  Computes Mapping the Commodore 64 - pages 58 (SHFLAG), 173 (matrix)
+// - [CM128] Computes Mapping the Commodore 128 - pages 212 (SHFLAG), 290 (matrix)
 // - https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt
 //
 
@@ -83,3 +84,6 @@ kb_matrix_bucky_shflag: // mask to be ORed to SHFLAG to mark key status
 
 
 #endif // no CONFIG_LEGACY_SCNKEY
+
+
+#endif // ROM layout

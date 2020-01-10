@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 
 screen_restore_sal_eal:
@@ -23,4 +24,7 @@ screen_restore_sal_eal:
  	sta SAL+0
 
  	jmp screen_common_sal_eal
+ 
+
+ #endif // ROM layout
  

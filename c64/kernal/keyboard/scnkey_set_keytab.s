@@ -1,8 +1,9 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Well-known Kernal routine, described in:
 //
-// - [CM64] Compute's Mapping the Commodore 64 - pages 220, 221
+// - [CM64] Computes Mapping the Commodore 64 - pages 220, 221
 //
 
 
@@ -79,3 +80,6 @@ scnkey_toggle_if_needed: // entry for SCNKEY (TWW/CTR version)
 	sta VIC_YMCSB
 !:
 	rts
+
+
+#endif // ROM layout

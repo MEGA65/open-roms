@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Something terrible happened - show the panic screen
@@ -72,3 +73,6 @@ kernal_panic_infinite_loop:
 	bne kernal_panic_infinite_loop // branch always
 
 #endif // CONFIG_PANIC_SCREEN
+
+
+#endif // ROM layout

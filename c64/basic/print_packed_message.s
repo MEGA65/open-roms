@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 // This routine prints messages that have been packed
 // using the make_error_tables program.
 // The general idea is to save space in the ROM.
@@ -226,3 +228,6 @@ is_uncommon_char:
 	phy_trash_a
 
 	jmp has_nybl
+
+
+#endif // ROM layout

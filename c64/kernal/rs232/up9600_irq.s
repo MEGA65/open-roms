@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // RS-232 IRQ handler part
@@ -38,3 +39,6 @@ up9600_irq_end:
 
 
 #endif // CONFIG_RS232_UP9600
+
+
+#endif // ROM layout

@@ -1,3 +1,6 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+
 basic_shift_mem_down_and_relink:
 	// Shift memory down to basic_current_line_pointer
 	// from X bytes further along.
@@ -169,3 +172,5 @@ relink_down_loop:
 	clc
 	rts
 	
+
+#endif // ROM layout

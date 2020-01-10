@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
 // IMPORTANT:
 // These routines lengths cannot be changed without changing
 // the aliases for peek_under_roms, poke_under_roms etc
@@ -66,3 +68,6 @@ memmap_allram_routine:
 __ram_routines_end:
 
 #endif // CONFIG_MEMORY_MODEL_60K
+
+
+#endif // ROM layout

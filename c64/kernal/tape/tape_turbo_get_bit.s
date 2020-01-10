@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Tape (turbo) helper routine - bit reading
@@ -36,3 +37,6 @@ tape_turbo_get_bit:
 
 
 #endif // CONFIG_TAPE_TURBO
+
+
+#endif // ROM layout

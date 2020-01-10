@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
 
 //
 // Startup banner, to be displayed during cold start
@@ -110,3 +111,6 @@ pre_revision_string:
 	// .byte $0D,$05,$92,$00
 
 #endif
+
+
+#endif // ROM layout

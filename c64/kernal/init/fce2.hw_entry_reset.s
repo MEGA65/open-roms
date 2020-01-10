@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
 // Resources describing the C64 reset sequence:
 // https://www.c64-wiki.com/wiki/Reset_(Process)
 
@@ -48,3 +50,6 @@ hw_entry_reset:
 
 	// c64 prg p269
 	jmp (IBASIC_COLD_START)
+
+
+#endif // ROM layout

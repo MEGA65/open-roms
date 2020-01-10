@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 
 vector_real:
@@ -6,7 +7,7 @@ vector_real:
 	// address originally used; after calling VECTOR and checking zero page
 	// area afterwards, the address could be found there
 
-	// According to 'Compute's Mapping the Commodore 64' page 237,
+	// According to 'Computes Mapping the Commodore 64' page 237,
 	// the CBM implementation does not disable IRQs - yet, the
 	// 'C64 Programmers Reference Guide' does not contain such
 	// warning and does not mention any preparations needed.
@@ -40,3 +41,6 @@ vector_end_loop:
 	bpl vector_restore
 
 	rts
+
+
+#endif // ROM layout

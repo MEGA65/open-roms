@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 
 cmd_new:
 	jsr basic_do_new
@@ -78,3 +80,6 @@ basic_do_clr:
 	sta STREND+1
 
 	rts
+
+
+#endif // ROM layout

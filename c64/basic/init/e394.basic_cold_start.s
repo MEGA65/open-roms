@@ -1,5 +1,8 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+
 // BASIC Cold start entry point
-// Compute's Mapping the 64 p211
+// Computes Mapping the 64 p211
 
 basic_cold_start:
 
@@ -17,6 +20,9 @@ basic_cold_start:
 	dey
 	bpl !--
 
-	// Remaining part wouldn't fit here
+	// Remaining part would not fit here
 
 	jmp basic_cold_start_internal
+
+
+#endif // ROM layout

@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 
 init_oldtxt:
 
@@ -7,3 +9,6 @@ init_oldtxt:
 	sta OLDTXT+1
 
 	rts
+
+
+#endif // ROM layout

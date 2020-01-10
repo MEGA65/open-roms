@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Tape (normal) part of the LOAD routine
@@ -133,3 +134,6 @@ load_tape_normal_payload:
 
 
 #endif
+
+
+#endif // ROM layout

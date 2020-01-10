@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 // Tokenise a line of BASIC
 // Stored at $0200
 // Length in __tokenise_work1
@@ -267,3 +269,5 @@ done_searching_for_token:
 	lda #$00
 	rts
 
+
+#endif // ROM layout

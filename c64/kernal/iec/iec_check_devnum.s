@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Checks whether device number (in .A) is a correct IEC device number
@@ -31,3 +32,6 @@ iec_check_devnum_failed:
 	rts
 
 #endif // CONFIG_IEC
+
+
+#endif // ROM layout

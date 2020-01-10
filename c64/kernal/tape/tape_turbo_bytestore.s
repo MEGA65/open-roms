@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Tape (turbo) helper routine - storing byte uder I/O
@@ -38,3 +39,6 @@ __tape_turbo_bytestore_source_end:
 
 
 #endif // CONFIG_TAPE_TURBO
+
+
+#endif // ROM layout

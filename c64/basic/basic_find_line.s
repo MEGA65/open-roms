@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 // Find the BASIC line with number LINNUM
 
 
@@ -79,3 +81,6 @@ more_lines_exist:
 	sta OLDTXT+0
 
 	jmp basic_find_line_loop
+
+
+#endif // ROM layout

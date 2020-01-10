@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // CHROUT routine - screen support, INS key handling
@@ -91,3 +92,6 @@ chrout_screen_ins_copy_loop:
 
 	// Return from loop
 	rts
+
+
+#endif // ROM layout

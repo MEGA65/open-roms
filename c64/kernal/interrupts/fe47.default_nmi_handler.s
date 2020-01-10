@@ -1,10 +1,11 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 default_nmi_handler:
 
-	// Implemented according to Compute's Mapping the Commodore 64, page 74
+	// Implemented according to Computes Mapping the Commodore 64, page 74
 	// and to https://www.c64-wiki.com/wiki/Interrupt
 
-	// Save registers, sequence according to Compute's Mapping the Commodore 64, page 73
+	// Save registers, sequence according to Computes Mapping the Commodore 64, page 73
 	pha
 	phx_trash_a
 	phy_trash_a
@@ -25,8 +26,11 @@ default_nmi_handler:
 	bcs !+
 	jmp return_from_interrupt // no STOP pressed
 !:
-	// STOP + RESTORE - clean the address of the BRK instruction (it's not BRK) first
+	// STOP + RESTORE - clean the address of the BRK instruction (it is not BRK) first
 	lda #$00
 	sta CMP0+0
 	sta CMP0+1
 	jmp (CBINV)
+
+
+#endif // ROM layout

@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 // IMPORTANT:
 // These routines lengths cannot be changed without changing
 // the aliases for peek_under_roms, poke_under_roms etc
@@ -152,3 +154,6 @@ smd1:
 	rts
 
 #endif
+
+
+#endif // ROM layout

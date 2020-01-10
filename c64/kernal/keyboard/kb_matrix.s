@@ -1,9 +1,10 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Keyboard matrix, based on
 //
-// - [RG64] C64 Programmer's Reference Guide        - pages 379-381
-// - [CM64] Compute's Mapping the Commodore 64      - pages 38-39
+// - [RG64] C64 Programmers Reference Guide        - pages 379-381
+// - [CM64] Computes Mapping the Commodore 64      - pages 38-39
 // - http://commodore128.mirkosoft.sk/keyboard.html (C128 extension)
 // - http://www.zimmers.net/cbmpics/cbm/c65/c65manual.txt
 
@@ -58,3 +59,6 @@ __kb_matrix_ctrl:
 #endif
 	.byte $1C,$00,$1D,$00,$00,$1F,$1E,$00
 	.byte $90,$06,$00,$05,$00,$00,$11,$00
+
+
+#endif // ROM layout

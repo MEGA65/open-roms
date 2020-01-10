@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
 
 screen_check_space_ends_line:
 
@@ -8,3 +10,5 @@ screen_check_space_ends_line:
 
 	rts
 
+
+#endif // ROM layout

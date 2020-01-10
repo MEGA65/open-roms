@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Tape (normal) helper routine - data block reading
@@ -71,3 +72,6 @@ tape_normal_get_block_done:
 
 
 #endif
+
+
+#endif // ROM layout

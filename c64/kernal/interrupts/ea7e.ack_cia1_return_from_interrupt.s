@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
 // https://csdb.dk/forums/index.php?roomid=11&topicid=5776
 // Clear the CIA1 interrupt flag, and then fall through to
 // the return from interrupt routine
@@ -9,3 +11,6 @@ clear_cia1_interrupt_flag_and_return_from_interrupt:
 	ldy CIA1_ICR
 
 	// FALL THROUGH to $EA81
+
+
+#endif // ROM layout

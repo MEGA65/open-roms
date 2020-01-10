@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Clear screen and initialise line link table, described in:
@@ -28,3 +29,6 @@ clear_screen:
 
 	// Fall to cursor home routine
 	jmp cursor_home
+
+
+#endif // ROM layout

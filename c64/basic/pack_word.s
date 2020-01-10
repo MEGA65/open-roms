@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 // Pack a word using the simple compression scheme.
 // This has to be the same implementation as in compress_text.c
 // because we compress input lines of BASIC to do the tokenisation.
@@ -253,3 +255,6 @@ not_a_match:
 	// Not a char that we can pack, so return 0
 	lda #$00
 	rts
+
+
+#endif // ROM layout

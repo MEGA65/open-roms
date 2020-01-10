@@ -1,4 +1,6 @@
-// Compute's Mapping the 64 p93
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+// Computes Mapping the 64 p93
 
 basic_do_error:
 	// Save error number
@@ -29,3 +31,6 @@ basic_do_error:
 	ldx #$FE
 	txs
 	jmp basic_main_loop
+
+
+#endif // ROM layout

@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // RVS ON/OFF handling within CHROUT
@@ -15,3 +16,6 @@ chrout_screen_RVS_OFF:
 !:
 	sta RVS
 	jmp chrout_screen_done
+
+
+#endif // ROM layout

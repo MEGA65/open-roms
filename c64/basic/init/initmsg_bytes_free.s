@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
 
 //
 // Print out the amount of free bytes - for the startup banner
@@ -19,3 +20,6 @@ initmsg_bytes_free:
 	// Print rest of the start up message
 	ldx #34
 	jmp print_packed_message
+
+
+#endif // ROM layout

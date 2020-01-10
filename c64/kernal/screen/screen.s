@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Official Kernal routine, described in:
@@ -8,6 +9,7 @@
 // CPU registers that has to be preserved (see [RG64]): .A
 //
 
+
 SCREEN:
 
 	// There are only 2 sane ways to implement this routine,
@@ -17,3 +19,5 @@ SCREEN:
 	ldx #40 // 40 rows
 
 	rts
+
+#endif // ROM layout

@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Well-known Kernal routine, described in:
@@ -28,3 +29,6 @@ getin_keyboard: // XXX confirm that here is really a part of GETIN!
 	clc
 
 	rts
+
+
+#endif // ROM layout

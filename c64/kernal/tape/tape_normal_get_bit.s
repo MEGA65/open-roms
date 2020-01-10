@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Tape (normal) helper routine - bit reading
@@ -55,3 +56,6 @@ tape_normal_get_bit_error:
 
 
 #endif // CONFIG_TAPE_NORMAL
+
+
+#endif // ROM layout

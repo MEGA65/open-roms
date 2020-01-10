@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Helper values to quickly determine row offset from the start of keyboard matrix
@@ -21,3 +22,6 @@ kb_matrix_row_offsets:
 	.byte 7*8
 
 #endif // no CONFIG_LEGACY_SCNKEY
+
+
+#endif // ROM layout

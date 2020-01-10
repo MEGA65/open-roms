@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Work out if normal, shifted, control or Vendor modified keyboard. 
@@ -26,3 +27,6 @@ kb_matrix_lookup:
 	.byte $80		// Vendor + CTRL + SHIFT
 
 #endif // CONFIG_LEGACY_SCNKEY
+
+
+#endif // ROM layout

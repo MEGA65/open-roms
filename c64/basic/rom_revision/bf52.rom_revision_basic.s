@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
 
 //
 // !!! PROPOSAL ONLY !!! PROPOSAL ONLY !!! NOT FOR USING EXTERNALLY YET !!!
@@ -6,7 +7,7 @@
 // Do not change! Locations of the following data should be constant - now and forever!
 //
 // If you want to integrate Open ROMs support in your emulator, FPGA ccomputer, etc. - this
-// is the official way to recognize the ROM and it's revision.
+// is the official way to recognize the ROM and its revision.
 //
 
 
@@ -30,3 +31,6 @@ rom_revision_basic_string:
 	.byte $00                 // marks the end of string
 
 __rom_revision_basic_end:
+
+
+#endif // ROM layout

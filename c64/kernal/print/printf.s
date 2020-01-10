@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
 // printf()-like routine for simplifying debugging
 
 // Prints the literal zero-terminated string that follows,
@@ -141,3 +143,5 @@ printf_retreat:
 
 #endif // CONFIG_DBG_PRINTF
 
+
+#endif // ROM layout

@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 // Flush the IEC output buffer (if not empty) - send byte with EOI
 //
@@ -20,3 +21,6 @@ iec_tx_flush:
 
 
 #endif // CONFIG_IEC
+
+
+#endif // ROM layout

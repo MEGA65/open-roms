@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 //
 // Default handler for all not-yet-implemented commands
 //
@@ -154,3 +156,6 @@ cmd_go:
 cmd_unimplemented:
 
 	jmp do_NOT_IMPLEMENTED_error
+
+
+#endif // ROM layout

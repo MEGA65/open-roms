@@ -1,5 +1,6 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
-// Detect video system (PAL/NTSC), use Graham's method, as it's short and reliable
+// Detect video system (PAL/NTSC), use method by Graham, as it is short and reliable
 // see here: https://codebase64.org/doku.php?id=base:detect_pal_ntsc
 
 
@@ -59,3 +60,6 @@ setup_irq_timer: // entry point needed by UP9600 and CIA1 burst mod support
 	sta CIA1_TIMAHI                    // $DC05
 
 	rts
+
+
+#endif // ROM layout

@@ -1,8 +1,9 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // This byte (hex $FF80, dec 65408) identifies Kernal revision on several machines. Although not all
 // of the, used it for versioning purpose, here is the list of all the values I could find. Sources:
-// - [CM64]  Compute's Mapping the Commodore 64 (page 242/243)
+// - [CM64]  Computes Mapping the Commodore 64 (page 242/243)
 // - [MM]    Marko Mäkelä article, http://www.zimmers.net/anonftp/pub/cbm/firmware/computers/c64/revisions.txt
 // - [VICE]  Checked with ROMs included in VICE emulator
 // - [XEMU]  Checked with ROMs retrieved by XEMU emulator
@@ -59,5 +60,9 @@
 // - $FF - Commander X16 (emulator r28)
 //
 
+
 kernal_revision:
     .byte $F0 // chosen not to conflict with anything known so far
+
+
+#endif // ROM layout

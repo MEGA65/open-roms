@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // STOP key handling within CHROUT
@@ -16,3 +17,6 @@ chrout_screen_STOP:
 
 
 #endif
+
+
+#endif // ROM layout

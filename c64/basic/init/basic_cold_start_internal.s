@@ -1,7 +1,9 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
 
 //
 // Continuation of the BASIC cold start routine
 //
+
 
 basic_cold_start_internal:
 
@@ -34,3 +36,6 @@ basic_cold_start_internal:
 
 	// jump into warm start loop
 	jmp basic_warm_start
+
+
+#endif // ROM layout

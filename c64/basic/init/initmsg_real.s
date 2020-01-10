@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
 
 // Routine is too long to fit in the original location
 
@@ -146,3 +147,6 @@ initmsg_real:
 
 
 #endif
+
+
+#endif // ROM layout

@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Advertise burst IEC protocol support to the receiver
@@ -31,3 +32,6 @@ burst_advertise_done:
 
 
 #endif
+
+
+#endif // ROM layout

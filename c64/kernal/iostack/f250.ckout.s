@@ -1,9 +1,10 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Official Kernal routines, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 276
-// - [CM64] Compute's Mapping the Commodore 64 - page 229
+// - [RG64] C64 Programmers Reference Guide   - page 276
+// - [CM64] Computes Mapping the Commodore 64 - page 229
 //
 // CPU registers that has to be preserved (see [RG64]): .Y, .A (see [CM64], page 213)
 //
@@ -62,15 +63,4 @@ ckout_file_not_output:
 	jmp kernalerror_FILE_NOT_OUTPUT
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+#endif // ROM layout

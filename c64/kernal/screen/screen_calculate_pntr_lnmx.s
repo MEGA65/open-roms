@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Sets PNTR in a proper range (0-39 or 40-79)
@@ -58,3 +59,6 @@ screen_calculate_lnmx_79:
 	lda #79
 	sta LNMX
 	rts
+
+
+#endif // ROM layout

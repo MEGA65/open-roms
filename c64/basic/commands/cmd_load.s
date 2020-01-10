@@ -1,3 +1,6 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+
 cmd_load:
 
 	// Parse filename
@@ -7,7 +10,7 @@ cmd_load:
 	// Parse optional device #
 	// Parse optional secondary address
 	
-	// XXX - C64 BASIC apparently doesn't clear variables after a LOAD in the
+	// XXX - C64 BASIC apparently does not clear variables after a LOAD in the
 	// middle of a program. For safety, we do.
 	jsr basic_do_clr
 	
@@ -77,7 +80,7 @@ got_devicenumber:
 	sta SA
 	jmp cmd_load_got_secondaryaddress
 !:
-	// Second parameter is above 255, this can't be a secondary address
+	// Second parameter is above 255, this can not be a secondary address
 	// Use it as load address instead
 	// XXX temporary syntax, it would be better to use something
 	// XXX like 'LOAD"FILE",8 TO 49152'
@@ -126,3 +129,6 @@ load_no_error:
 
 	// XXX - should run program if LOAD was used in program mode
 	jmp basic_main_loop
+
+
+#endif // ROM layout

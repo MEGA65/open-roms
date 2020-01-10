@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // RS-232 NMI handler part
@@ -64,3 +65,6 @@ NMIBYTR2
 	rti
 
 #endif // CONFIG_RS232_UP9600
+
+
+#endif // ROM layout

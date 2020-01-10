@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
 
 default_irq_handler:
 
@@ -42,3 +44,6 @@ default_irq_handler_end_tape:
 
 	// Acknowledge CIA interrupt and return
 	jmp clear_cia1_interrupt_flag_and_return_from_interrupt
+
+
+#endif // ROM layout

@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Common routines for tape support
@@ -311,3 +312,6 @@ tape_load_error:
 
 
 #endif
+
+
+#endif // ROM layout

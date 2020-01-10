@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD
 
 //
 // LOAD routine hook for fast loading via UltiDOS
@@ -129,3 +130,6 @@ u64_load_check_status_ok:
 	jmp !-
 !:
 	rts
+
+
+#endif // ROM layout

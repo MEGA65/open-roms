@@ -1,3 +1,6 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+
 basic_main_loop:
 
 	// XXX - Check if direct or program mode, and get next line of input
@@ -24,7 +27,7 @@ read_line_loop:
 	// Not carriage return, so try to append to line so far
 	cpx #80
 	bcc !+
-	// Report STRING TOO LONG error (Compute's Mapping the 64 p93)
+	// Report STRING TOO LONG error (Computes Mapping the 64 p93)
 	ldx #22
 	jmp basic_do_error
 !:
@@ -168,8 +171,11 @@ not_a_line:
 
 	// Put invalid line number in current line number value,
 	// so that we know we are in direct mode
-	// (Compute's Mapping the 64 p19)
+	// (Computes Mapping the 64 p19)
 	lda #$FF
 	sta CURLIN+1
 
 	jmp basic_execute_statement
+
+
+#endif // ROM layout

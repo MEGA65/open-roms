@@ -1,8 +1,9 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Keyboard scanning routine extension for C65 keyboards
 //
-// - [CM128] Compute's Mapping the Commodore 128 - pages 212 (SHFLAG)
+// - [CM128] Computes Mapping the Commodore 128 - pages 212 (SHFLAG)
 // - https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt (matrix)
 //
 
@@ -63,3 +64,6 @@ scnkey_65_done:
 
 
 #endif // CONFIG_KEYBOARD_C65 and no CONFIG_LEGACY_SCNKEY
+
+
+#endif // ROM layout

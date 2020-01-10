@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Tape (turbo) helper routine - synchronization handling
@@ -35,3 +36,6 @@ tape_normal_sync_fail:
 
 
 #endif
+
+
+#endif // ROM layout

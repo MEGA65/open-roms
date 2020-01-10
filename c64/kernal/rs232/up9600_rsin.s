@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Get byte from serial interface
@@ -41,3 +42,6 @@ up9600_rsin_end:
 	rts
 
 #endif // CONFIG_RS232_UP9600
+
+
+#endif // ROM layout

@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Helper functions for various LOAD/VERIFY/SAVE routine variants (IEC / U64 / etc.)
@@ -231,7 +232,7 @@ lvs_error_end:
 
 lvs_return_last_address:
 
-	// Return last address - Compute's Mapping the 64 says without the '+1',
+	// Return last address - Computes Mapping the 64 says without the '+1',
 	// checked (short test program) on original ROMs that this is really the case
 	ldx EAL+0
 	ldy EAL+1
@@ -264,3 +265,6 @@ lvs_verify_error:
 	lda #B_ERR_VERIFY
 	sec
 	rts
+
+
+#endif // ROM layout

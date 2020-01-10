@@ -1,5 +1,7 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 // Print string at $YYAA
-// Compute's Mapping the 64 p101
+// Computes Mapping the 64 p101
 
 // print string routine
 
@@ -31,3 +33,6 @@ STROUT:
 	pla // XXX can we use plx_trash_a here?
 	tax
 	rts
+
+
+#endif // ROM layout

@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // RETURN key handling within CHROUT
@@ -27,3 +28,6 @@ chrout_screen_RETURN:
 	jsr screen_calculate_PNT_USER
 !:
 	jmp screen_advance_to_next_line
+
+
+#endif // ROM layout

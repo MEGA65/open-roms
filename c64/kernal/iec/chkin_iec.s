@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // IEC part of the CHKIN routine
@@ -29,3 +30,6 @@ chkin_iec:
 	jmp chkin_set_device
 
 #endif // CONFIG_IEC
+
+
+#endif // ROM layout

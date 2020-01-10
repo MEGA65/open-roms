@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 // Advance OLDTXT by following the
 // link to the next line
 
@@ -25,3 +27,6 @@ basic_find_next_line:
 	pla
 	sta OLDTXT+0
 	rts
+
+
+#endif // ROM layout

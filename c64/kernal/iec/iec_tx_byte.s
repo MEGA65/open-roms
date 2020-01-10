@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 // Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
 
@@ -161,3 +162,6 @@ iec_tx_common_finalize:
 
 
 #endif // CONFIG_IEC
+
+
+#endif // ROM layout

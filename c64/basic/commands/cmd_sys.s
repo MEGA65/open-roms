@@ -1,3 +1,6 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+
 cmd_sys:
 	
 	jsr basic_end_of_statement_check
@@ -66,3 +69,6 @@ cmd_sys_setup_call:
 
 cmd_sys_hack_str:
 	.byte $FF, $AC, $36, $35, $36, $00
+
+
+#endif // ROM layout

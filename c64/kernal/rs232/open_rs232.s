@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // RS-232 part of the OPEN routine
@@ -58,3 +59,6 @@ open_rs232_end:
 
 
 #endif // HAS_RS232
+
+
+#endif // ROM layout

@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Messages to be prined out by Kernal
@@ -110,3 +111,6 @@ __msg_kernalfeatures:
 	.byte $80 + $0D // end of string mark + return
 
 #endif // CONFIG_SHOW_FEATURES
+
+
+#endif // ROM layout

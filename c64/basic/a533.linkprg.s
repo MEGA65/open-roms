@@ -1,8 +1,9 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
 
 //
 // Well-known BASIC routine, described in:
 //
-// - [CM64] Compute's Mapping the Commodore 64 - page 95
+// - [CM64] Computes Mapping the Commodore 64 - page 95
 // - https://www.lemon64.com/forum/viewtopic.php?t=64721&sid=bc400a5a6d404f8f092e4d32a92f5de7
 //
 
@@ -89,3 +90,6 @@ linkprg_end_of_line_search:
 	sta OLDTXT+0
 
 	jmp linkprg_loop
+
+
+#endif // ROM layout

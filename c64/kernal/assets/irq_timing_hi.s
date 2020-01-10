@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Values for IRQ generation timer - original idea was:
@@ -21,3 +22,6 @@ irq_timing_hi:                         // high bytes
 
 	.byte >17045                       // NTSC
 	.byte >16421                       // PAL
+
+
+#endif // ROM layout

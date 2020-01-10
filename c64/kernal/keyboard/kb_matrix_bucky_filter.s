@@ -1,9 +1,10 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Matrix for filtering out bucky keys while scanning the C64 keyboard
 //
 // Values based on:
-// - [CM64] Compute's Mapping the Commodore 64 - pags 58 (SHFLAG), 173 (matrix)
+// - [CM64] Computes Mapping the Commodore 64 - pags 58 (SHFLAG), 173 (matrix)
 //
 
 
@@ -25,3 +26,6 @@ kb_matrix_bucky_filter:
 
 
 #endif // no CONFIG_LEGACY_SCNKEY
+
+
+#endif // ROM layout

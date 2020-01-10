@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Print configured features on startup banner
@@ -12,3 +13,6 @@ print_features:
 	jmp print_kernal_message
 
 #endif // CONFIG_SHOW_FEATURES
+
+
+#endif // ROM layout

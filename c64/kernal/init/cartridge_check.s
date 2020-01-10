@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
 // c64 prg p263
 
 cartridge_check:
@@ -11,3 +13,6 @@ cartridge_check_l1:
 	// FALLTROUGH
 no_cartridge:
 	rts
+
+
+#endif // ROM layout

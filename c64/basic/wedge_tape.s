@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 
 #if CONFIG_TAPE_WEDGE
 
@@ -32,3 +34,6 @@ wedge_tape:
 
 
 #endif // CONFIG_TAPE_WEDGE
+
+
+#endif // ROM layout

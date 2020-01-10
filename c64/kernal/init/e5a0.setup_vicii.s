@@ -1,8 +1,9 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Well-known Kernal routine, described in:
 //
-// - [CM64] Compute's Mapping the Commodore 64 - page 215
+// - [CM64] Computes Mapping the Commodore 64 - page 215
 //
 
 
@@ -20,7 +21,7 @@ setup_vicii:
 
 #if !CONFIG_MB_MEGA_65 && !CONFIG_MB_ULTIMATE_64
 
- 	// Disable C128 extra keys - just to be sure they won't interfere with anything
+ 	// Disable C128 extra keys - just to be sure they will not interfere with anything
 
  	stx VIC_XSCAN
 
@@ -64,3 +65,6 @@ setup_vicii:
 	// Setup default I/O devices
 
 	jmp clrchn_reset
+
+
+#endif // ROM layout

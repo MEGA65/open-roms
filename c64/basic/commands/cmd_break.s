@@ -1,3 +1,6 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+
 cmd_stop:
 	ldx #30 // "BREAK"
 	jsr print_packed_message
@@ -20,3 +23,6 @@ cmd_stop:
 
 cmd_end:
 	jmp basic_main_loop
+
+
+#endif // ROM layout

@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 // Pop key out of keyboard buffer
 // Disable interrupts while reading from keyboard buffer
@@ -20,3 +21,6 @@ pop_keyboard_buffer:
 	cli
 
 	rts
+
+
+#endif // ROM layout

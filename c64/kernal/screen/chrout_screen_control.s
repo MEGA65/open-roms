@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // CHROUT routine - screen support, control codes
@@ -66,3 +67,6 @@ chrout_try_color_loop:
 
 	// Unknown code, or key not requiring any handling
 	jmp chrout_screen_done
+
+
+#endif // ROM layout

@@ -1,5 +1,8 @@
-
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 // IEC close
 
 	STUB_IMPLEMENTATION()
+
+
+#endif // ROM layout

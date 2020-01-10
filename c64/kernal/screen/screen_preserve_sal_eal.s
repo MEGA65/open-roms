@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 
 screen_preserve_sal_eal:
@@ -29,3 +30,6 @@ screen_common_sal_eal:
 	phy_trash_a
 	phx_trash_a
 	rts
+
+
+#endif // ROM layout

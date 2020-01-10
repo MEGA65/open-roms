@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 
 screen_grow_logical_line_done_scroll:
@@ -138,3 +139,6 @@ screen_grow_logical_line_copy_done:
 	inx
 	jsr screen_clear_line
 	jmp screen_calculate_PNTR_LNMX
+
+
+#endif // ROM layout

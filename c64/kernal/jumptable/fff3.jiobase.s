@@ -1,9 +1,10 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 284
-// - [CM64] Compute's Mapping the Commodore 64 - page 214
+// - [RG64] C64 Programmers Reference Guide   - page 284
+// - [CM64] Computes Mapping the Commodore 64 - page 214
 // - http://codebase64.org/doku.php?id=base:kernalreference (original source)
 //
 // CPU registers that has to be preserved (see [RG64]): .A
@@ -17,3 +18,5 @@
     ldx #$00
     rts
 
+
+#endif // ROM layout

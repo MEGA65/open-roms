@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Sends file (stream) name to IEC device
@@ -42,3 +43,6 @@ iec_send_file_name_done:
 
 
 #endif // CONFIG_IEC
+
+
+#endif // ROM layout

@@ -1,7 +1,8 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
 
 // Well-known BASIC routine, described in:
 //
-// - [CM64] Compute's Mapping the Commodore 64 - page 97
+// - [CM64] Computes Mapping the Commodore 64 - page 97
 // - https://www.c64-wiki.com/wiki/BASIC-ROM
 // - https://csdb.dk/forums/?roomid=11&topicid=137233
 // 
@@ -13,7 +14,7 @@ RUNC:
 	// But CSDB claims, that it should 'set current character pointer to start of basic - 1' - this
 	// looks sane, also checked that the original BASIC routine does this (short test program)
 
-	// Let's initialize TXTPTR using TXTTAB
+	// Lets initialize TXTPTR using TXTTAB
 
 	lda TXTTAB+0
 	sec
@@ -25,3 +26,6 @@ RUNC:
 	sta TXTPTR+1
 
 	rts
+
+
+#endif // ROM layout

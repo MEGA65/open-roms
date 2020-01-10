@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Scroll the whole screen up by 1 logical line, described in:
@@ -128,3 +129,6 @@ screen_scroll_up_loop_done:
  	// Recalculate PNT and USER
 
 	jmp screen_calculate_PNT_USER
+
+
+#endif // ROM layout

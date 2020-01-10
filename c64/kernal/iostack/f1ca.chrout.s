@@ -1,9 +1,10 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 278/279
-// - [CM64] Compute's Mapping the Commodore 64 - page 228
+// - [RG64] C64 Programmers Reference Guide   - page 278/279
+// - [CM64] Computes Mapping the Commodore 64 - page 228
 //
 // CPU registers that has to be preserved (see [RG64]): .Y
 // Additionally we have to preserve .X for out CHRIN and implementation
@@ -15,7 +16,7 @@ CHROUT:
 
 	// Save X and Y values
 	// (Confirmed by writing a test program that X and Y
-	// don't get modified, in agreement with C64 PRG's
+	// do not get modified, in agreement with C64 PRG
 	// description of CHROUT)
 
 	phx_trash_a
@@ -74,3 +75,6 @@ chrout_done_success:
 	lda SCHAR
 	clc // indicate success
 	rts
+
+
+#endif // ROM layout

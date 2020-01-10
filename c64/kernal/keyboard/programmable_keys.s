@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Command string definitions for programmable keys
@@ -123,3 +124,6 @@ programmable_keys_offsets:
 
 
 #endif // CONFIG_PROGRAMMABLE_KEYS
+
+
+#endif // ROM layout

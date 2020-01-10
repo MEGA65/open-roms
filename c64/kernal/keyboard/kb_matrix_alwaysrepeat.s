@@ -1,9 +1,10 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Matrix ids of keys which should be repeated regardless of RPTFLG
 //
 // Values based on:
-// - [CM64] Compute's Mapping the Commodore 64 - page 58
+// - [CM64] Computes Mapping the Commodore 64 - page 58
 //
 
 
@@ -21,3 +22,6 @@ __kb_matrix_alwaysrepeat_end:
 
 
 #endif // no CONFIG_LEGACY_SCNKEY and no CONFIG_KEY_REPEAT_ALWAYS
+
+
+#endif // ROM layout

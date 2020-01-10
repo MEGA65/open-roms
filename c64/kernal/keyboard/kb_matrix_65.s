@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Extended keyboard matrix for Commodore 65 keyboards, based on
@@ -19,3 +20,6 @@ kb_matrix_65_shifted:
 
 
 #endif // CONFIG_KEYBOARD_C65 and no CONFIG_LEGACY_SCNKEY
+
+
+#endif // ROM layout

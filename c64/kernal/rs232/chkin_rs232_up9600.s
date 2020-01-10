@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
 
 //
 // RS-232 part of the CHKIN routine
@@ -46,3 +48,6 @@ chkin_rs232_nochkin
 
 
 #endif // CONFIG_RS232_UP9600
+
+
+#endif // ROM layout

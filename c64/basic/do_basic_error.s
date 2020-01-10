@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 //  As many errors are triggered from many places in the BASIC
 // interprettor, it is important to have an efficicent means of
 // calling them.
@@ -165,3 +167,6 @@ do_basic_error:
 	// XXX - Restore stack depth first?
 
 	jmp basic_main_loop
+
+
+#endif // ROM layout

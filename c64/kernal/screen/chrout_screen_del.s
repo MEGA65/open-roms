@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // CHROUT routine - screen support, DEL key handling
@@ -83,3 +84,6 @@ chrout_screen_del_column_normal:
 chrout_screen_del_done:
 
 	jmp chrout_screen_calc_lptr_done
+
+
+#endif // ROM layout

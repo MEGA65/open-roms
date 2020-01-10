@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Common EAL update routine
@@ -19,3 +20,6 @@ iec_update_EAL_by_Y: // note: Carry has to be set by caller!
 
 
 #endif
+
+
+#endif // ROM layout

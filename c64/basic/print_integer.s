@@ -1,3 +1,5 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
 // Works similar to $BDCD in original C64 BASIC
 // XXX Should eventually get replaced by a more flexible and optimal routine.
 // Temp result gets written to $0100-$0104
@@ -142,3 +144,6 @@ number_table_hi:
 	.byte 0,8,1,9,2
 	.byte 1,6,3,8,4
 	.byte 3,2,7,6,8
+
+
+#endif // ROM layout

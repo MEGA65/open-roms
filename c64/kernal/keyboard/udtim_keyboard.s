@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // Keyboard part of the UDTIM routine, has to preserve .Y
@@ -48,3 +49,6 @@ udtim_keyboard:
 	// unable to, for example, read the space bar status.
 
 	rts
+
+
+#endif // ROM layout

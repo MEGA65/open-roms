@@ -1,3 +1,4 @@
+#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
 // GFX/TXT mode switch handling within CHROUT
@@ -17,3 +18,6 @@ chrout_screen_TXT:
 	lda VIC_YMCSB
 	ora #$02    // to lower case
 	bne !-      // branch always
+
+
+#endif // ROM layout

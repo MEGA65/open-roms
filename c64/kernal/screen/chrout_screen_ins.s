@@ -4,9 +4,6 @@
 //
 
 
-// YYY in second part of the logical line moves everything from the start of the line
-
-
 chrout_screen_INS:
 
 	// First check if last character of the logical line is space
@@ -22,7 +19,52 @@ chrout_screen_ins_possible:
 
 	// Move chars towards end of the line
 	jsr screen_get_logical_line_end_ptr
-!:
+
+	// Special handling for cursor in second line
+	ldx TBLX
+	lda LDTBL+0, x
+	bpl chrout_screen_ins_second_line
+
+	// Perform character copy
+	jsr chrout_screen_ins_copy_loop
+
+	// Put space in the inserted gap
+	lda #$20
+	sta (PNT), y
+
+	// If line does not end with space now, try to grow the logical line
+	
+	jsr screen_check_space_ends_line
+	beq chrout_screen_ins_done
+	jsr screen_grow_logical_line
+
+	// FALLTROUGH
+
+chrout_screen_ins_done:
+
+	// End of processing
+	jmp chrout_screen_calc_lptr_done
+
+chrout_screen_ins_second_line:
+
+	// Adapt PNTR for copying
+	lda PNTR
+	sec
+	sbc #40
+	sta PNTR
+
+	// Perform character copy
+	jsr chrout_screen_ins_copy_loop
+
+	// Put space in the inserted gap
+	lda #$20
+	sta (PNT), y
+
+	// End of processing
+	bne chrout_screen_ins_done         // branch always
+
+chrout_screen_ins_copy_loop:
+
 	// Note: While the following routine is obvious to any skilled
 	// in the art as the most obvious simple and efficient solution,
 	// if the screen writes are before the colour writes, it results
@@ -42,20 +84,10 @@ chrout_screen_ins_possible:
 
 	dey
 	cpy PNTR
-	bne !-
+	bne chrout_screen_ins_copy_loop
 
 	// Increase insert mode count (which causes quote-mode like behaviour)
 	inc INSRT
 
-	// Put space in the inserted gap
-	lda #$20
-	sta (PNT), y
-
-	// If line does not end with space now, grow try to grow the logical line
-	
-	jsr screen_check_space_ends_line
-	beq !+
-
-	jsr screen_grow_logical_line
-!:
-	jmp chrout_screen_calc_lptr_done
+	// Return from loop
+	rts

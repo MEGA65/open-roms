@@ -265,11 +265,11 @@ build/symbols_hybrid.vs: build/target_generic/KERNAL_combined.vs
 
 # Rules - platform 'Mega 65' specific
 
-build/mega65.rom: build/kernal_0_mega65.rom build/target_mega65/OUTK_1.BIN build/basic_mega65.rom build/chargen.rom
-	cat build/target_mega65/OUTK_1.BIN > build/mega65.rom
+build/mega65.rom: build/kernal_mega65.rom_0 build/kernal_mega65.rom_1 build/basic_mega65.rom_0 build/chargen.rom
+	cat build/kernal_mega65.rom_1 > build/mega65.rom
 	dd if=/dev/zero bs=4096 count=6 of=build/padding1
 	cat build/padding1 >> build/mega65.rom
-	cat build/basic_mega65.rom build/chargen.rom build/chargen.rom build/kernal_0_mega65.rom >> build/mega65.rom
+	cat build/basic_mega65.rom_0 build/chargen.rom build/chargen.rom build/kernal_mega65.rom_0 >> build/mega65.rom
 	dd if=/dev/zero bs=4096 count=16 of=build/padding2
 	cat build/padding2 >> build/mega65.rom
 	rm -f build/padding*

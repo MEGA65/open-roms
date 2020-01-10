@@ -104,6 +104,7 @@ lvs_advance_MEMUSS:
 
 #endif
 
+
 lvs_check_EAL:
 
 	lda MEMUSS+1
@@ -224,7 +225,6 @@ lvs_display_saving:
 !:
 	rts
 
-
 lvs_error_end:
 
 	sec
@@ -242,6 +242,8 @@ lvs_success_end:
 
 	clc
 	rts
+
+#endif // XXX is this endif in propeer place?
 
 lvs_device_not_found_error:
 

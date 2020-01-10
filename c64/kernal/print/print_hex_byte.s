@@ -17,7 +17,9 @@ print_hex_byte:
 	lsr
 	cmp #$0A
 	adc #$30
+	cld
 	jsr JCHROUT
+	sed
 	pla
 	and #$0F
 	cmp #$0A

@@ -160,7 +160,7 @@ __l:
 
 .pseudocommand bne_far dst
 {
-#if HAS_OPCODES_65CE02
+#if HAS_OPCODES_65CE02 && XXX_DISABLED        // XXX causes problems with XEMU, investigate why
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
 	.byte $D3, mod(offset, $100), floor(offset / $100)
 #else

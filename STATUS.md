@@ -58,7 +58,7 @@ The following ROM features are currently missing:
 
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
-| VIC-II             | PARTIAL  | rework in progress                                 |
+| VIC-II             | DONE     |                                                    |
 | 80 columns, VDC    | NOT DONE |                                                    |
 | 80 columns, Mega65 | NOT DONE |                                                    |
 

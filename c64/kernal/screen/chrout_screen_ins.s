@@ -4,20 +4,19 @@
 //
 
 
-// YYY moves cursor down the first time no more insertion is possible
-// YYY in second part of the logical line moves everything froom the start of the line
+// YYY in second part of the logical line moves everything from the start of the line
 
 
 chrout_screen_INS:
 
-	// First check if last character of the logiccall line is space
+	// First check if last character of the logical line is space
 	
 	jsr screen_check_space_ends_line
 	beq chrout_screen_ins_possible
 
 	// Not space, we cannot insert anything
 
-	bne_far chrout_screen_calc_lptr_done
+	bne_far chrout_screen_done
 
 chrout_screen_ins_possible:
 

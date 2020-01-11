@@ -16,13 +16,13 @@ getin_real:
 	lda DFLTN
 
 	// Try $00 - keyboard
-	beq_far getin_keyboard
+	beq_16 getin_keyboard
 
 #if HAS_RS232
 
 	// Try $02 - RS-232
 	cmp #$02
-	beq_far getin_rs232
+	beq_16 getin_rs232
 
 #endif // HAS_RS232
 

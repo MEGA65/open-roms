@@ -132,7 +132,7 @@ load_tape_turbo_loop:
 
 	// Verify the checksum
 	cpx PRTY
-	beq_far tape_load_success
+	beq_16 tape_load_success
 	jmp tape_load_error
 
 

@@ -12,11 +12,11 @@ wedge_tape:
 	sta CURLIN+1                       // in case of error do not print line number
 
 	cpx #$02
-	bne_far do_SYNTAX_error
+	bne_16 do_SYNTAX_error
 
 	lda BUF+1
 	cmp #$4C                           // 'L'
-	bne_far do_SYNTAX_error
+	bne_16 do_SYNTAX_error
 
 	// Execute 'arrow + L'
 	

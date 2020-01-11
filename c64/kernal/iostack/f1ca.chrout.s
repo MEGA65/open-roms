@@ -28,16 +28,16 @@ CHROUT:
 	lda DFLTO
 
 	cmp #$03 // screen
-	beq_far chrout_screen
+	beq_16 chrout_screen
 
 #if HAS_RS232
 	cmp #$02 
-	beq_far chrout_rs232
+	beq_16 chrout_rs232
 #endif
 
 #if CONFIG_IEC
 	jsr iec_check_devnum_oc
-	bcc_far chrout_iec
+	bcc_16 chrout_iec
 #endif
 
 	// FALLTROUGH

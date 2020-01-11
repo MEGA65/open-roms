@@ -92,7 +92,7 @@ load_tape_normal_header:
 	lda (TAPE1),y
 
 	cmp #$05
-	beq_far tape_load_error            // end of tape mark, nothing to load
+	beq_16 tape_load_error             // end of tape mark, nothing to load
 
 	cmp #$01
 	beq !+
@@ -125,10 +125,10 @@ load_tape_normal_payload:
 	jsr tape_normal_pilot_data
 	ldy #$00                           // no data size limit
 	jsr tape_normal_get_data
-	bcs_far tape_load_error
+	bcs_16 tape_load_error
 
 	jsr lvs_check_EAL
-	bne_far tape_load_error            // amount of data read does not match header info
+	bne_16 tape_load_error             // amount of data read does not match header info
 
 	jmp tape_load_success
 

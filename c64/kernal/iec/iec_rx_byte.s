@@ -16,7 +16,7 @@ iec_rx_dispatch:
 
 	lda IECPROTO
 	cmp #$01
-	beq_far jiffydos_rx_byte
+	beq_16 jiffydos_rx_byte
 
 	// FALLTROUGH
 

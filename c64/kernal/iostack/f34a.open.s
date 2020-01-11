@@ -60,14 +60,14 @@ open_has_space:
 #if HAS_RS232
 
 	cmp #$02
-	beq_far open_rs232
+	beq_16 open_rs232
 
 #endif
 
 #if CONFIG_IEC
 
 	jsr iec_check_devnum_oc
-	bcc_far open_iec
+	bcc_16 open_iec
 
 #endif
 	

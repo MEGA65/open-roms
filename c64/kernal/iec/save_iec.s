@@ -16,7 +16,7 @@ save_iec:
 
 	// Check file name
 	lda FNLEN
-	beq_far kernalerror_FILE_NAME_MISSING
+	beq_16 kernalerror_FILE_NAME_MISSING
 
 	// Display SAVING
 	jsr lvs_display_saving

@@ -20,17 +20,17 @@ CHRIN:
 	lda DFLTN
 
 	// Try $00 - keyboard
-	beq_far chrin_keyboard
+	beq_16 chrin_keyboard
 
 	// XXX Try $03 - screen
 	// cmp #$03
-	// beq_far chrin_screen
+	// beq_16 chrin_screen
 
 #if HAS_RS232
 
 	// Try $02 - RS-232
 	cmp #$02
-	beq_far chrin_rs232
+	beq_16 chrin_rs232
 
 #endif // HAS_RS232
 
@@ -40,7 +40,7 @@ chrin_getin: // jump entry for GETIN
 
 	// Try IEC devices
 	jsr iec_check_devnum_oc
-	bcc_far chrin_iec
+	bcc_16 chrin_iec
 
 #endif // CONFIG_IEC
 

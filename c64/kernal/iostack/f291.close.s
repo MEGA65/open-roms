@@ -25,12 +25,12 @@ CLOSE:
 
 #if HAS_RS232
 	cmp #$02
-	beq_far close_rs232
+	beq_16 close_rs232
 #endif
 
 #if CONFIG_IEC
 	jsr iec_check_devnum_oc
-	bcc_far close_iec
+	bcc_16 close_iec
 #endif
 
 	// FALLTROUGH

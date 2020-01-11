@@ -23,7 +23,7 @@ clrchn_iec:
 	jsr iec_check_devnum_oc
 
 	// If it was IEC device - send UNLSN first
-	bcc_far UNLSN
+	bcc_16 UNLSN
 
 	rts
 

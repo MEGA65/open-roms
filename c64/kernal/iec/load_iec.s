@@ -30,7 +30,7 @@ load_iec:
 
 	// Check file name
 	lda FNLEN
-	beq_far kernalerror_FILE_NAME_MISSING
+	beq_16 kernalerror_FILE_NAME_MISSING
 
 	// Display SEARCHING FOR + filename
 	jsr lvs_display_searching_for
@@ -106,12 +106,12 @@ load_iec:
 
 #if CONFIG_IEC_JIFFYDOS
 	cmp #$01
-	beq_far jiffydos_load              // branch if JiffyDOS
+	beq_16 jiffydos_load               // branch if JiffyDOS
 #endif
 
 #if CONFIG_IEC_DOLPHINDOS
 	cmp #$02
-	beq_far dolphindos_load            // branch if DolphinDOS
+	beq_16 dolphindos_load             // branch if DolphinDOS
 #endif
 
 #endif
@@ -149,7 +149,7 @@ load_iec_loop:
 	phx_trash_a
 	jsr udtim_keyboard
 	jsr STOP
-	bcs_far load_break_error
+	bcs_16 load_break_error
 	plx_trash_a
 !:
 	// Check for EOI - if so, this was the last byte

@@ -76,11 +76,11 @@ rsl_l1:
 
 #if CONFIG_DOS_WEDGE
 	cmp #$40 // '@'
-	beq_far wedge_dos
+	beq_16 wedge_dos
 #endif
 #if CONFIG_TAPE_WEDGE
 	cmp #$1F // left arrow
-	beq_far wedge_tape
+	beq_16 wedge_tape
 #endif
 
 #endif

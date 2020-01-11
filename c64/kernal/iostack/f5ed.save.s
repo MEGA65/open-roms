@@ -25,7 +25,7 @@ SAVE:
 
 #if CONFIG_IEC
 	jsr iec_check_devnum_lvs
-	bcc_far save_iec
+	bcc_16 save_iec
 #endif
 
 	jmp lvs_illegal_device_number 

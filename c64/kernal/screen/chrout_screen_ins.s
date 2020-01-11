@@ -14,7 +14,7 @@ chrout_screen_INS:
 
 	// Not space, we cannot insert anything
 
-	bne_far chrout_screen_done
+	bne_16 chrout_screen_done
 
 chrout_screen_ins_possible:
 

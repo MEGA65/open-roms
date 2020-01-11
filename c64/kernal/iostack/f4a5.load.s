@@ -43,17 +43,17 @@ LOAD:
 
 #if CONFIG_TAPE_NORMAL
 	cmp #$01
-	beq_far load_tape_normal
+	beq_16 load_tape_normal
 #endif
 
 #if CONFIG_TAPE_TURBO
 	cmp #$07
-	beq_far load_tape_turbo
+	beq_16 load_tape_turbo
 #endif
 
 #if CONFIG_IEC
 	jsr iec_check_devnum_lvs
-	bcc_far load_iec
+	bcc_16 load_iec
 #endif
 
 	jmp lvs_illegal_device_number

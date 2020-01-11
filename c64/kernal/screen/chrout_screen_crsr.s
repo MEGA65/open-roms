@@ -33,7 +33,7 @@ chrout_screen_CRSR_RIGHT:
 
 	jsr screen_get_clipped_PNTR
 	cpy #39
-	beq_far screen_advance_to_next_line
+	beq_16 screen_advance_to_next_line
 	
 	iny
 !:

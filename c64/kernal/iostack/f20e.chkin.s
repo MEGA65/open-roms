@@ -23,7 +23,7 @@ CHKIN:
 
 	txa
 	jsr find_fls
-	bcs_far chkinout_file_not_open
+	bcs_16 chkinout_file_not_open
 
 	// Now we have table index in Y
 
@@ -38,19 +38,19 @@ CHKIN:
 #if HAS_RS232
 
 	cmp #$02
-	beq_far chkin_rs232
+	beq_16 chkin_rs232
 
 #endif // HAS_RS232
 
 #if CONFIG_IEC
 
 	jsr iec_check_devnum_oc
-	bcc_far chkin_iec
+	bcc_16 chkin_iec
 
 #endif // CONFIG_IEC
 
 	cmp #$03 // screen - only legal one left
-	bne_far chkinout_device_not_present
+	bne_16 chkinout_device_not_present
 
 chkin_set_device:
 	lda FAT,Y

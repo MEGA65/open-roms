@@ -1,3 +1,4 @@
+
 //
 // Provide pseudocommands (and other goodies) to make CPU optimizations easier
 //
@@ -10,6 +11,10 @@
 
 #if CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_M65_45GS02
 	#define HAS_OPCODES_65CE02
+#endif
+
+#if CONFIG_CPU_M65_45GS02
+	#define HAS_OPCODES_45GS02
 #endif
 
 #if CONFIG_CPU_WDC_65816
@@ -36,10 +41,10 @@
 }
 
 
+
 //
 // Trick to skip a 2-byte instruction
 //
-
 
 .pseudocommand skip_2_bytes_trash_nvz
 {
@@ -47,10 +52,48 @@
 }
 
 
+
+//
+// Some additional 45GS02 instructions
+//
+
+#if HAS_OPCODES_45GS02
+
+.function byteLO(value)
+{
+	.return mod(value.getValue(), $100)
+}
+
+.function byteHI(value)
+{
+	.return (value.getValue() - byteLO(value)) / $100
+}
+
+.pseudocommand rts_32                   // XXX not tested yet
+{
+	.byte $F8, $F8, $60
+}
+
+.pseudocommand jmp_32 bank:address      // XXX not tested yet
+{
+	.byte $F8, $F8, $4C, byteLO(address), byteHI(address), byteLO(bank), byteHI(bank)
+}
+
+.pseudocommand jsr_32 bank:address      // XXX not tested yet
+{
+	.var al = address.getValue();
+	.var ah = bank.getValue();
+
+	.byte $F8, $F8, $20, byteLO(address), byteHI(address), byteLO(bank), byteHI(bank)
+}
+
+#endif
+
+
+
 //
 // Some additional 65CE02 instructions
 //
-
 
 #if HAS_OPCODES_65CE02
 
@@ -71,10 +114,10 @@
 #endif
 
 
+
 //
 // Stack manipulation - some CPUs will leave .A unchanged, some will use it as temporary storage, so consider .A trashed
 //
-
 
 .pseudocommand phx_trash_a
 {
@@ -117,12 +160,12 @@
 }
 
 
+
 //
 // Branches with far offsets, substitutes by Bxx + JMP for CPUs not supporting the instruction
 //
 
-
-.pseudocommand bcs_far dst
+.pseudocommand bcs_16 dst
 {
 #if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
@@ -134,7 +177,7 @@ __l:
 #endif
 }
 
-.pseudocommand bcc_far dst
+.pseudocommand bcc_16 dst
 {
 #if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
@@ -146,7 +189,7 @@ __l:
 #endif
 }
 
-.pseudocommand beq_far dst
+.pseudocommand beq_16 dst
 {
 #if HAS_OPCODES_65CE02 && XXX_DISABLED        // XXX causes problems with XEMU, investigate why
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
@@ -158,7 +201,7 @@ __l:
 #endif
 }
 
-.pseudocommand bne_far dst
+.pseudocommand bne_16 dst
 {
 #if HAS_OPCODES_65CE02 && XXX_DISABLED        // XXX causes problems with XEMU, investigate why
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
@@ -170,7 +213,7 @@ __l:
 #endif
 }
 
-.pseudocommand bmi_far dst
+.pseudocommand bmi_16 dst
 {
 #if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
@@ -182,7 +225,7 @@ __l:
 #endif
 }
 
-.pseudocommand bpl_far dst
+.pseudocommand bpl_16 dst
 {
 #if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
@@ -194,7 +237,7 @@ __l:
 #endif
 }
 
-.pseudocommand bvc_far dst
+.pseudocommand bvc_16 dst
 {
 #if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)
@@ -206,7 +249,7 @@ __l:
 #endif
 }
 
-.pseudocommand bvs_far dst
+.pseudocommand bvs_16 dst
 {
 #if HAS_OPCODES_65CE02
 	.var offset = mod($10000 + dst.getValue() - *, $10000)

@@ -120,8 +120,7 @@ chrout_screen_literal:
 
 chrout_screen_calc_lptr_done:
 
-	jsr screen_calculate_PNT_USER
-	jsr screen_calculate_PNTR_LNMX
+	jsr screen_calculate_pointers
 
 	// FALLTROUGH
 

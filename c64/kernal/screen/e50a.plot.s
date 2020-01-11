@@ -24,7 +24,7 @@ plot_set:
 	sty PNTR
 	stx TBLX
 
-	jsr screen_calculate_PNT_USER
+	jsr screen_calculate_pointers
 
 	// FALLTROUGH to save one byte on RTS
 

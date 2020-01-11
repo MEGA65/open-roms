@@ -1,10 +1,7 @@
 #if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 //
-// Set pointer (PNT) to current screen line , described in:
-//
-// - [CM64] Computes Mapping the Commodore 64 - page 216
-// - http://sta.c64.org/cbm64scrfunc.html
+// Set pointers PNT and USER to current screen line
 //
 
 

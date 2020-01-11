@@ -251,6 +251,7 @@ Not all of them - only these we want to have implemented.
 | `$EA7E`   | ack CIA1 + below             | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI             | DONE     |                                                    |
 | `$F142`   | get key from buffer          | DONE     |                                                    |
+| `$F3F6`   | (unknown)                    | NOT DONE |                                                    |
 | `$F646`   | IEC close                    | NOT DONE |                                                    |
 | `$FD30`   | default vectors              | DONE     |                                                    |
 | `$FD90`   | (unknown)                    | NOT DONE |                                                    |

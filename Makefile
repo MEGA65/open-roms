@@ -9,30 +9,31 @@ TESTTAPE = testsuite/testtape-c64-pal-turbo.tap
 SRCDIR_COMMON  = c64/aliases
 
 SRCDIR_BASIC   = $(SRCDIR_COMMON) \
-                c64/basic \
-                c64/basic/commands \
-                c64/basic/init \
-                c64/basic/rom_revision
+                 c64/basic \
+                 c64/basic/,stubs \
+                 c64/basic/commands \
+                 c64/basic/init \
+                 c64/basic/rom_revision
 
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
-                c64/kernal \
-                c64/kernal/,stubs \
-                c64/kernal/assets \
-                c64/kernal/banking \
-                c64/kernal/iec \
-                c64/kernal/iec_fast \
-                c64/kernal/init \
-                c64/kernal/interrupts \
-                c64/kernal/iostack \
-                c64/kernal/jumptable \
-                c64/kernal/keyboard \
-                c64/kernal/memory \
-                c64/kernal/print \
-                c64/kernal/rom_revision \
-                c64/kernal/rs232 \
-                c64/kernal/screen \
-                c64/kernal/tape \
-                c64/kernal/time
+                 c64/kernal \
+                 c64/kernal/,stubs \
+                 c64/kernal/assets \
+                 c64/kernal/banking \
+                 c64/kernal/iec \
+                 c64/kernal/iec_fast \
+                 c64/kernal/init \
+                 c64/kernal/interrupts \
+                 c64/kernal/iostack \
+                 c64/kernal/jumptable \
+                 c64/kernal/keyboard \
+                 c64/kernal/memory \
+                 c64/kernal/print \
+                 c64/kernal/rom_revision \
+                 c64/kernal/rs232 \
+                 c64/kernal/screen \
+                 c64/kernal/tape \
+                 c64/kernal/time
 
 
 SRC_TOOLS  = $(wildcard src/tools/*.c,src/tools/*.cc)

@@ -31,6 +31,11 @@ basic_cold_start_internal:
 	lda #>do_ILLEGAL_QUANTITY_error
 	sta USRADD+1
 
+	// Clear the BRK location address
+	lda #$00
+	sta CMP0+0
+	sta CMP0+1
+
 	// Print startup messages
 	jsr INITMSG
 

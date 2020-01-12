@@ -5,6 +5,10 @@
 
 initmsg_real:
 
+	// Clear the screen first, some cartridges (like IEEE-488) leeave a mess on the screen
+	lda #147
+	jsr JCHROUT
+
 #if CONFIG_BANNER_SIMPLE
 
 	lda #<startup_banner

@@ -4,6 +4,9 @@
 // Helper routine to check for EOI while receiving byte from IEC
 //
 
+#if CONFIG_IEC
+
+
 iec_rx_check_eoi:
 
 	// Wait for talker to pull CLK.
@@ -34,6 +37,9 @@ iec_rx_check_eoi_confirm:
 iec_rx_check_eoi_done:
 
 	rts
+
+
+#endif // CONFIG_IEC
 
 
 #endif // ROM layout

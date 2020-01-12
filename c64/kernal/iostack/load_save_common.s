@@ -243,7 +243,7 @@ lvs_success_end:
 	clc
 	rts
 
-#endif // XXX is this endif in propeer place?
+#endif
 
 lvs_device_not_found_error:
 
@@ -254,6 +254,8 @@ lvs_illegal_device_number:
 
 	jsr kernalstatus_DEVICE_NOT_FOUND
 	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
+
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
 
 lvs_load_verify_error:
 	// XXX should we really return BASIC error code here?
@@ -267,6 +269,8 @@ lvs_verify_error:
 	lda #B_ERR_VERIFY
 	sec
 	rts
+
+#endif
 
 
 #endif // ROM layout

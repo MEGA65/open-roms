@@ -156,7 +156,7 @@
 .pseudocommand bcs_16 dst
 {
 #if HAS_OPCODES_65CE02
-	.var offset = mod($10000 + dst.getValue() - *, $10000)
+	.var offset = mod($10000 + dst.getValue() - *, $10000) -2
 	.byte $B3, mod(offset, $100), floor(offset / $100)
 #else
 	bcc __l
@@ -168,7 +168,7 @@ __l:
 .pseudocommand bcc_16 dst
 {
 #if HAS_OPCODES_65CE02
-	.var offset = mod($10000 + dst.getValue() - *, $10000)
+	.var offset = mod($10000 + dst.getValue() - *, $10000) -2
 	.byte $93, mod(offset, $100), floor(offset / $100)
 #else
 	bcs __l
@@ -179,8 +179,8 @@ __l:
 
 .pseudocommand beq_16 dst
 {
-#if HAS_OPCODES_65CE02 && XXX_DISABLED        // XXX causes problems with XEMU, investigate why
-	.var offset = mod($10000 + dst.getValue() - *, $10000)
+#if HAS_OPCODES_65CE02
+	.var offset = mod($10000 + dst.getValue() - *, $10000) -2
 	.byte $F3, mod(offset, $100), floor(offset / $100)
 #else
 	bne __l
@@ -191,8 +191,8 @@ __l:
 
 .pseudocommand bne_16 dst
 {
-#if HAS_OPCODES_65CE02 && XXX_DISABLED        // XXX causes problems with XEMU, investigate why
-	.var offset = mod($10000 + dst.getValue() - *, $10000)
+#if HAS_OPCODES_65CE02
+	.var offset = mod($10000 + dst.getValue() - *, $10000) -2
 	.byte $D3, mod(offset, $100), floor(offset / $100)
 #else
 	beq __l
@@ -204,7 +204,7 @@ __l:
 .pseudocommand bmi_16 dst
 {
 #if HAS_OPCODES_65CE02
-	.var offset = mod($10000 + dst.getValue() - *, $10000)
+	.var offset = mod($10000 + dst.getValue() - *, $10000) -2
 	.byte $33, mod(offset, $100), floor(offset / $100)
 #else
 	bpl __l
@@ -216,7 +216,7 @@ __l:
 .pseudocommand bpl_16 dst
 {
 #if HAS_OPCODES_65CE02
-	.var offset = mod($10000 + dst.getValue() - *, $10000)
+	.var offset = mod($10000 + dst.getValue() - *, $10000) -2
 	.byte $13, mod(offset, $100), floor(offset / $100)
 #else
 	bmi __l
@@ -228,7 +228,7 @@ __l:
 .pseudocommand bvc_16 dst
 {
 #if HAS_OPCODES_65CE02
-	.var offset = mod($10000 + dst.getValue() - *, $10000)
+	.var offset = mod($10000 + dst.getValue() - *, $10000) -2
 	.byte $53, mod(offset, $100), floor(offset / $100)
 #else
 	bvs __l
@@ -240,7 +240,7 @@ __l:
 .pseudocommand bvs_16 dst
 {
 #if HAS_OPCODES_65CE02
-	.var offset = mod($10000 + dst.getValue() - *, $10000)
+	.var offset = mod($10000 + dst.getValue() - *, $10000) -2
 	.byte $73, mod(offset, $100), floor(offset / $100)
 #else
 	bvc __l

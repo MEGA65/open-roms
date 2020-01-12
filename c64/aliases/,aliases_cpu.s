@@ -3,14 +3,18 @@
 // Provide pseudocommands (and other goodies) to make CPU optimizations easier
 //
 
-
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_WDC_65816
+#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_CSG_4510 || CONFIG_CPU_M65_45GS02 || CONFIG_CPU_WDC_65816
 	.cpu _65c02
 	#define HAS_OPCODES_65C02
+	#define HAS_BCD_SAFE_INTERRUPTS
 #endif
 
-#if CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_M65_45GS02
+#if CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_CSG_4510 || CONFIG_CPU_M65_45GS02
 	#define HAS_OPCODES_65CE02
+#endif
+
+#if CONFIG_CPU_CSG_4510 || CONFIG_CPU_M65_45GS02
+	#define HAS_OPCODES_4510
 #endif
 
 #if CONFIG_CPU_M65_45GS02
@@ -21,10 +25,6 @@
 	#define HAS_OPCODES_65816
 #endif
 
-
-#if CONFIG_CPU_WDC_65C02 || CONFIG_CPU_CSG_65CE02 || CONFIG_CPU_M65_45GS02 || CONFIG_CPU_WDC_65816
-	#define HAS_BCD_SAFE_INTERRUPTS
-#endif
 
 
 //
@@ -46,46 +46,18 @@
 // Trick to skip a 2-byte instruction
 //
 
-.pseudocommand skip_2_bytes_trash_nvz
-{
-	.byte $2C
-}
+.pseudocommand skip_2_bytes_trash_nvz { .byte $2C }
 
 
 
 //
-// Some additional 45GS02 instructions
+// Memory mapping for C65 and Mega65
 //
 
-#if HAS_OPCODES_45GS02
+#if HAS_OPCODES_4510
 
-.function byteLO(value)
-{
-	.return mod(value.getValue(), $100)
-}
-
-.function byteHI(value)
-{
-	.return (value.getValue() - byteLO(value)) / $100
-}
-
-.pseudocommand rts_32                   // XXX not tested yet
-{
-	.byte $F8, $F8, $60
-}
-
-.pseudocommand jmp_32 bank:address      // XXX not tested yet
-{
-	.byte $F8, $F8, $4C, byteLO(address), byteHI(address), byteLO(bank), byteHI(bank)
-}
-
-.pseudocommand jsr_32 bank:address      // XXX not tested yet
-{
-	.var al = address.getValue();
-	.var ah = bank.getValue();
-
-	.byte $F8, $F8, $20, byteLO(address), byteHI(address), byteLO(bank), byteHI(bank)
-}
+.pseudocommand map { .byte $5C }
+.pseudocommand eom { .byte $EA }
 
 #endif
 
@@ -96,6 +68,22 @@
 //
 
 #if HAS_OPCODES_65CE02
+
+// .B register support
+
+.pseudocommand tab { .byte $5B }
+.pseudocommand tba { .byte $7B }
+
+// .Z register support
+
+.pseudocommand inz { .byte $1B }
+.pseudocommand dez { .byte $3B }
+.pseudocommand phz { .byte $DB }
+.pseudocommand plz { .byte $FB }
+.pseudocommand taz { .byte $4B }
+.pseudocommand tza { .byte $6B }
+
+// 16-bit data processing
 
 .pseudocommand dew addr
 {

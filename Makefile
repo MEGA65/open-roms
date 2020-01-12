@@ -224,7 +224,7 @@ build/target_mega65/OUTK_0.BIN build/target_mega65/KERNAL_0_combined.vs build/ta
 build/kernal_mega65.rom_1 build/target_mega65/OUTK_1.BIN build/target_mega65/KERNAL_1_combined.vs build/target_mega65/KERNAL_1_combined.sym:
 	@mkdir -p build/target_mega65
 	@rm -f $@* build/kernal_mega65.rom_1 build/target_mega65/KERNAL_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_1 -i KERNAL_1-mega65 -o OUTK_1.BIN -d build/target_mega65 -l 4000 -h 7fff c64/,,config_mega65.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_1 -i KERNAL_1-mega65 -o OUTK_1.BIN -d build/target_mega65 -l 4000 -h 5fff c64/,,config_mega65.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
 	@cp build/target_mega65/OUTK_1.BIN build/kernal_mega65.rom_1
 
 .PRECIOUS: build/target_%/newrom
@@ -268,7 +268,7 @@ build/symbols_hybrid.vs: build/target_generic/KERNAL_combined.vs
 
 build/mega65.rom: build/kernal_mega65.rom_0 build/kernal_mega65.rom_1 build/basic_mega65.rom_0 build/chargen.rom
 	cat build/kernal_mega65.rom_1 > build/mega65.rom
-	dd if=/dev/zero bs=4096 count=6 of=build/padding1
+	dd if=/dev/zero bs=4096 count=8 of=build/padding1
 	cat build/padding1 >> build/mega65.rom
 	cat build/basic_mega65.rom_0 build/chargen.rom build/chargen.rom build/kernal_mega65.rom_0 >> build/mega65.rom
 	dd if=/dev/zero bs=4096 count=16 of=build/padding2

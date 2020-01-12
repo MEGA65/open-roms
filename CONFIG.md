@@ -74,9 +74,17 @@ Choose if your CPU supports the Commodore Semiconductor Group 65CE02 instruction
 
 It enables some speed/size code optimizations.
 
+### `CONFIG_CPU_CSG_4510`
+
+Choose if your CPU supports the Commodore Semiconductor Group 4510 instruction set, like:
+
+* CSG 4510 - microcontroller used in the Commodore 65 prototypes
+
+It enables some speed/size code optimizations and allows C65 memory mapping to work.
+
 ### `CONFIG_CPU_M65_45GS02`
 
-Choose if you have a Mega65 FPGA board.
+Choose if you have a Mega65 FPGA board. It enables some speed/size code optimizations and allows Mega65 memory mapping to work.
 
 ### `CONFIG_CPU_WDC_65816`
 

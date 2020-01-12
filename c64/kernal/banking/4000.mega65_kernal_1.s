@@ -7,7 +7,7 @@
 
 // XXX this is for testing only
 
-	rts_32
+	rts
 
 
 #endif // ROM layout

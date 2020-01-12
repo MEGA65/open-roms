@@ -13,30 +13,37 @@ chrout_screen_DEL:
 	jmp chrout_screen_quote
 !:
 	ldy PNTR
+	beq chrout_screen_del_column_0
+	cpy #40
 	bne chrout_screen_del_column_normal
 
 	// FALLTROUGH
 
-chrout_screen_del_column_0:
+chrout_screen_del_column_40:
 
-	ldy TBLX
-	beq chrout_screen_del_done         // delete from row 0, col 0 does nothing
+	// First column of the extended line - decrement USER/PNT for copying
 
-	// Move cursor to end of previous line
-	dec TBLX
-	lda #39
-	sta PNTR
-	
-	// Update PNT and USER pointers
-	jsr screen_calculate_PNT_USER
+#if HAS_OPCODES_65CE02
+	dew USER
+	dew PNT
+#else
+	lda USER+0
+	bne !+
+	dec USER+1
+	dec PNT+1
+!:
+	dec USER+0
+	dec PNT+0
+#endif
 
-	// Put space character at the current cursor position (do not clear the color!)
-	ldy #39
-	lda #$20
-	sta (PNT),y
+	// Copy characters
+	ldx #39
+	ldy #0
 
-	// Finish with recalculating all the variables
-	bne chrout_screen_del_done
+	jsr chrout_screen_del_copy_loop
+
+	// Finish by moving the cursor left
+	jmp chrout_screen_CRSR_LEFT
 
 chrout_screen_del_column_normal:
 
@@ -58,7 +65,18 @@ chrout_screen_del_column_normal:
 	// Perform the character copy (scroll back) in a loop
 	ldy PNTR
 	dey
-!:
+	jsr chrout_screen_del_copy_loop
+
+	dec PNTR
+
+	// FALLTROUGH
+
+chrout_screen_del_done:
+
+	jmp chrout_screen_calc_lptr_done
+
+chrout_screen_del_copy_loop:
+
 	iny
 	lda (USER),y
 	dey
@@ -70,20 +88,34 @@ chrout_screen_del_column_normal:
 	iny
 
 	dex
-	bpl !-
+	bpl chrout_screen_del_copy_loop
 
 	// Clear char at end of line (just the character - not color!)
-
-	jsr screen_get_logical_line_end_ptr
 	lda #$20
 	sta (PNT),y
-	dec PNTR
 
-	// FALLTROUGH
+	rts
 
-chrout_screen_del_done:
+chrout_screen_del_column_0:
 
-	jmp chrout_screen_calc_lptr_done
+	ldy TBLX
+	beq chrout_screen_del_done         // delete from row 0, col 0 does nothing
+
+	// Move cursor to end of previous line
+	dec TBLX
+	lda #39
+	sta PNTR
+	
+	// Update PNT and USER pointers
+	jsr screen_calculate_PNT_USER
+
+	// Put space character at the current cursor position (do not clear the color!)
+	ldy #39
+	lda #$20
+	sta (PNT),y
+
+	// Finish with recalculating all the variables
+	bne chrout_screen_del_done
 
 
 #endif // ROM layout

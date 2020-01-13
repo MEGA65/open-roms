@@ -111,10 +111,11 @@ IOINIT:
 	lda #$3F
 	sta CIA2_DDRA    // $DD02
 
-	// XXX how to initialize these timers???
-	// stx CIA1_CRB    // $DC0F
-	// stx CIA2_CRA    // $DD0E
-	// stx CIA2_CRB    // $DD0F
+	// Checked using VICE that original ROM initializes timers this way
+	ldx #$08
+	stx CIA1_CRB    // $DC0F
+	stx CIA2_CRA    // $DD0E
+	stx CIA2_CRB    // $DD0F
 
 	// Set VIC-II bank - at least the 'Operacja Proboszcz' game needs this within IOINIT
 	// Checked on original ROMs, that it sets bit #2 (RS-232 output) high

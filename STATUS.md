@@ -179,7 +179,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | :-------: | :--------: | :---------- | :------: | :--------------------------------------------------: |
 | `($028F)` |            | `KEYLOG`    | DONE     |                                                      |
 | `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                      |
-| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                        |
+| `$FF84`   | `$FDA3`    | `IOINIT`    | DONE     |                                                      |
 | `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                      |
 | `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                      |
 | `$FF8D`   | `$FD1A`    | `VECTOR`    | DONE     |                                                      |
@@ -220,7 +220,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFF0`   | `$E50A`    | `PLOT`      | DONE     |                                                      |
 | `$FFF3`   |            | `IOBASE`    | DONE     |                                                      |
 | `($FFFA)` |            | NMI vec     | PARTIAL  |                                                      |
-| `($FFFC)` | `$FCE2`    | RESET vec   | PARTIAL  | see IOINIT status                                    |
+| `($FFFC)` | `$FCE2`    | RESET vec   | DONE     |                                                      |
 | `($FFFE)` |            | IRQ/BRK vec | DONE     |                                                      |
 
 <br />

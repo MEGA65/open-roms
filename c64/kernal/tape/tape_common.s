@@ -27,8 +27,6 @@ tape_break_error:
 
 tape_ask_play:
 
-	sei                                // timing is critical for tape loading
-
 #if !CONFIG_TAPE_NO_KEY_SENSE
 
 	// First check whether the button is already pressed
@@ -50,7 +48,6 @@ tape_ask_play:
 
 tape_wait_play_loop:
 
-	jsr udtim_keyboard
 	jsr STOP
 	bcs tape_break_error
 
@@ -299,15 +296,11 @@ tape_load_success:
 
 	jsr tape_screen_on_motor_off
 	jsr lvs_display_done
-
-	cli
 	jmp lvs_return_last_address
 
 tape_load_error:
 
 	jsr tape_screen_on_motor_off
-
-	cli
 	jmp lvs_load_verify_error
 
 

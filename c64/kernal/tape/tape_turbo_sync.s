@@ -11,16 +11,8 @@
 #if CONFIG_TAPE_TURBO
 
 
-tape_turbo_sync_common:
-
-	jsr tape_turbo_get_bit 
-	rol INBIT
-	lda INBIT
-	cmp #$02
-	bne tape_turbo_sync_common
-	rts
-
 tape_turbo_sync_header:
+
 
 #if CONFIG_TAPE_TURBO_AUTOCALIBRATE
 
@@ -38,13 +30,19 @@ tape_turbo_sync_header:
 
 #endif // CONFIG_TAPE_TURBO_AUTOCALIBRATE
 
+	// Synchronize with start of sync sequence
+	jsr tape_turbo_sync_first
+
 	// Perform synchronization
 	ldx #$C0
 !:
 	phx_trash_a
 	ldy #$04
 !:
-	jsr tape_turbo_sync_common
+	jsr tape_turbo_get_byte
+	cmp #$02
+	bne tape_turbo_sync_header         // branch if failure
+
 	dey
 	bne !-
 	plx_trash_a
@@ -96,7 +94,7 @@ tape_turbo_sync_calibrate_loop:
 
 tape_turbo_sync_payload:
 
-	jsr tape_turbo_sync_common
+	jsr tape_turbo_sync_first
 !:
 	ldx #$09                           // 9, 8, ...
 !:

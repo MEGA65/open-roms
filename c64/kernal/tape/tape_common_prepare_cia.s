@@ -8,7 +8,7 @@ tape_common_prepare_cia:
 
 	// Setup CIA #2 timers
 	
-	ldx #$03                           // set timer A to 4 ticks    XXX consider setting to 8
+	ldx #$03                           // set timer A to 4 ticks
 	stx CIA2_TIMALO // $DD04
 	ldx #$00
 	stx CIA2_TIMAHI // $DD05

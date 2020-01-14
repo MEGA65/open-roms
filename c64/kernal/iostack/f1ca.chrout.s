@@ -67,7 +67,7 @@ chrout_done_unknown_device:
 chrout_done_success:
 	
 	plp
-	cli // XXX certainly needed for screen, what about other devices?
+	cli // needed for screen (checked calling the routine on original ROMs), XXX what about other devices?
 
 	// Restore X and Y
 	ply_trash_a

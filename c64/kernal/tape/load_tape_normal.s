@@ -32,6 +32,7 @@
 
 
 // XXX use pilot to calibrate reading speed
+// XXX add error correction
 
 
 #if CONFIG_TAPE_NORMAL
@@ -41,22 +42,6 @@ load_tape_normal:
 
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
-	// Setup CIA #2 timers
-	
-	ldx #$03                           // set timer A to 4 ticks
-	stx CIA2_TIMALO // $DD04
-	ldx #$00
-	stx CIA2_TIMAHI // $DD05
-
-	stx CIA2_TIMBHI // $DD07
-	dex                                // puts $FF - for running timer B as long as possible
-	stx CIA2_TIMBLO // $DD06
-
-	// Let timer A run continuously
-
-	ldx #%00010001                     // start timer, force latch reload
-	stx CIA2_CRA    // $DD0E
-	
 	// Temporarily store MEMUSS in EAL
 
 	lda MEMUSS+1
@@ -66,6 +51,7 @@ load_tape_normal:
 
 	// Start playing
 
+	jsr tape_common_prepare_cia
 	jsr tape_ask_play
 
 	// FALLTROUGH

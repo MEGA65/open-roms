@@ -11,7 +11,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * JiffyDOS and DolphinDOS protocols support
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 
-* turbo tape load support (as device 7, or using `←L`), up to 250 blocks (can store bytes under I/O)
+* turbo tape load support (as device 7, or using `←L`), quite sophisticated: up to 250 blocks (can store bytes under I/O), can use sync signal for autocalibration (less load errors than simple turbos)
 * improved support for tape adapters (for using regular casette players and other audio devices instead of Datasette)
 
 * extended `LOAD` command
@@ -70,7 +70,7 @@ The following ROM features are currently missing:
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
 | normal             | PARTIAL  | no tape speed calibratrion, no error correction    |
-| turbo (250 blocks) | PARTIAL  | no tape speed calibratrion                         |
+| turbo (250 blocks) | DONE     |                                                    |
 
 ## IEC bus
 

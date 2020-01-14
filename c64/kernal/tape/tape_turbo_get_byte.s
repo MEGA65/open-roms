@@ -15,14 +15,16 @@
 
 tape_turbo_get_byte:
 
+	phx_trash_a
 	lda #$01
 	sta INBIT                          // init the to-be-read byte with 1 (canary bit to mark loop end)
 !:
 	jsr tape_turbo_get_bit	
 	rol INBIT
 	bcc !-	                           // is the initial 1 shifted into carry already?
-	lda INBIT                          // much nicer than ldx #8: dex: loop
-	
+	plx_trash_a
+	lda INBIT
+
 	rts
 
 

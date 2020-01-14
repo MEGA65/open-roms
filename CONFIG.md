@@ -151,9 +151,15 @@ Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, a
 
 ### `CONFIG_TAPE_TURBO`
 
-Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges)
+Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges), up to 250 blocks
 
 Needs about 650 bytes in KERNAL segment (if both normal and turbo are enabled, about 950 bytes are needed, as they share some code). If unsure - enable.
+
+### `CONFIG_TAPE_TURBO_AUTOCALIBRATE`
+
+Extends the tape turbo load functionality by ability to adjust to tape speed differences.
+
+Needs about 100 bytes in KERNAL segment. If unsure - enable for Datasette or other tape recorder, disable for digital solutions like Tapuino.
 
 ### `CONFIG_TAPE_NO_KEY_SENSE`
 

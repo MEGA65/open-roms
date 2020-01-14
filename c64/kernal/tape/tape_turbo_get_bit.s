@@ -13,26 +13,34 @@
 
 tape_turbo_get_bit:
 
-	lda #$10	
+	lda #$10
 !:
-	bit CIA1_ICR // $DC0D	
-	beq !-                             // busy loop to detect signal
-	lda CIA2_ICR // $DD0D
-	pha
-	lda #%00011001                     // start timer, one-shot, force latch reload
-	sta CIA2_CRA // $DD0E	
-	pla
-	
-	pha                                // audio/video effects
-	asl
-	sta SID_SIGVOL
-	beq !+
-	lda #$06
-!:
-	sta VIC_EXTCOL
-	pla
+	bit CIA1_ICR    // $DC0D
+	beq !-                             // busy loop to detect signal, restart timer afterwards
+	lda CIA2_TIMBLO // $DD06
+	ldx #%01010001                     // start timer, force latch reload, count timer A underflows
+	stx CIA2_CRB    // $DD0F
 
-	lsr
+#if CONFIG_TAPE_TURBO_AUTOCALIBRATE
+	tax
+	cmp IRQTMP+0
+#else
+	cmp #$BF                           // threshold calculated by autocalibration routines under VICE
+#endif
+
+	bcs !+
+
+	lda #$01
+	sta SID_SIGVOL
+	lda #$06
+	sta VIC_EXTCOL
+	sec
+	rts
+!:
+	lda #$00
+	sta SID_SIGVOL
+	sta VIC_EXTCOL
+	clc
 	rts
 
 

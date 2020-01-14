@@ -214,7 +214,7 @@
 	.label RIDBS     = $29C  //            -- WIP -- read pointer into RS-232 receive buffer
 	.label RODBS     = $29D  //            -- WIP -- read pointer into RS-232 send buffer
 	.label RODBE     = $29E  //            -- WIP -- write pointer into RS-232 send buffer
-	.label IRQTMP    = $29F  // $29F-$2A0  -- NOT IMPLEMENTED --
+	.label IRQTMP    = $29F  // $29F-$2A0  temporary IRQ vector storage [!] we use it for tape speed calibration instead
 	.label ENABL     = $2A1  //            -- NOT IMPLEMENTED --
 	.label TODSNS    = $2A2  //            -- NOT IMPLEMENTED --
 	.label TRDTMP    = $2A3  //            -- NOT IMPLEMENTED --

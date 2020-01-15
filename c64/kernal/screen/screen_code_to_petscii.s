@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 
 screen_code_to_petscii:
@@ -36,6 +38,3 @@ s2p_adc_40:
 
 s2p_end:
 	rts
-
-
-#endif // ROM layout

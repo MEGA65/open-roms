@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 //
 // Official BASIC routine, described in:
@@ -12,6 +14,3 @@
 
 GONE:
 	STUB_IMPLEMENTATION()
-
-
-#endif // ROM layout

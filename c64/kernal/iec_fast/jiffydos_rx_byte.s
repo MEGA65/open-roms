@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // JiffyDOS protocol support for IEC - byte reception
@@ -109,6 +111,3 @@ jiffydos_rx_byte_end:
 
 
 #endif // CONFIG_IEC_JIFFYDOS
-
-
-#endif // ROM layout

@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Helper routine - disconnects the keyboard from CIA1_PRB,
@@ -21,6 +23,3 @@ keyboard_disconnect:
 
 
 #endif
-
-
-#endif // ROM layout

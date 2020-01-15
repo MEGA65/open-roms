@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // RS-232 part of the GETIN routine
@@ -13,6 +15,3 @@ getin_rs232:
 
 
 #endif // HAS_RS232
-
-
-#endif // ROM layout

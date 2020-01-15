@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Keyboard scanning routine extension for C65 keyboards
@@ -62,8 +64,4 @@ scnkey_65_done:
 	rts
 
 
-
 #endif // CONFIG_KEYBOARD_C65 and no CONFIG_LEGACY_SCNKEY
-
-
-#endif // ROM layout

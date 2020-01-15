@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // IEC part of the CHROUT routine
@@ -11,6 +13,3 @@ chrout_iec:
 	jsr JCIOUT
 	bcc_16 chrout_done_success
 	jmp chrout_done_fail
-
-
-#endif // ROM layout

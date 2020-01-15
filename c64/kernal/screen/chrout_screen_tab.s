@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tabulation keys handling within CHROUT
@@ -38,6 +40,3 @@ chrout_screen_TAB_BW:
 
 
 #endif // CONFIG_EDIT_TABULATORS
-
-
-#endif // ROM layout

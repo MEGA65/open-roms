@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 
 basic_main_loop:
@@ -176,6 +178,3 @@ not_a_line:
 	sta CURLIN+1
 
 	jmp basic_execute_statement
-
-
-#endif // ROM layout

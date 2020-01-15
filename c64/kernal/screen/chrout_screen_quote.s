@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // CHROUT routine - screen support, control codes in quote mode
@@ -19,6 +21,3 @@ chrout_screen_quote:
 	adc #$BF    // C=1, so adding $BF + C = add $C0
 !:	
 	jmp chrout_screen_literal
-
-
-#endif // ROM layout

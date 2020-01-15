@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
@@ -47,6 +49,3 @@ chrin_getin: // jump entry for GETIN
 	// Not a supported device
 
 	jmp lvs_device_not_found_error
-
-
-#endif // ROM layout

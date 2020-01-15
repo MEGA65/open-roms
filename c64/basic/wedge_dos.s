@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 
 #if CONFIG_DOS_WEDGE
@@ -258,6 +260,3 @@ wedge_dos_setnam:
 	jmp JSETNAM
 
 #endif // CONFIG_DOS_WEDGE
-
-
-#endif // ROM layout

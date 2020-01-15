@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Matrix for filtering out bucky keys while scanning the C64 keyboard
@@ -26,6 +28,3 @@ kb_matrix_bucky_filter:
 
 
 #endif // no CONFIG_LEGACY_SCNKEY
-
-
-#endif // ROM layout

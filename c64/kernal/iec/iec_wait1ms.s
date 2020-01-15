@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Wait 1 ms (1000 usec)
@@ -32,6 +34,3 @@ wait_x_bars: // additional entry point for delayy in screen and tape support
 iec_wait_rts: // dummy RTS, for very short waits
 
 	rts
-
-
-#endif // ROM layout

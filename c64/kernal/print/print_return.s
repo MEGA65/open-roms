@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Print the carriage return
@@ -7,6 +9,3 @@
 print_return:
     lda #$0D // carriage return code
     jmp JCHROUT
-
-
-#endif // ROM layout

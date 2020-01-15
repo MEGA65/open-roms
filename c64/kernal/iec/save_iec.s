@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // IEC part of the SAVE routine
@@ -126,6 +128,3 @@ iec_save_loop_end:
 
 
 #endif // CONFIG_IEC
-
-
-#endif // ROM layout

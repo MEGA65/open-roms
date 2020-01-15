@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Set pointers PNT and USER to current screen line
@@ -51,6 +53,3 @@ screen_calculate_USER:
 	sta USER+1
 
 	rts
-
-
-#endif // ROM layout

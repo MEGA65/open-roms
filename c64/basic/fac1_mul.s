@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 // Multiply Floating Point Accumulator by 10
 // = 8x + 2x
@@ -97,6 +99,3 @@ f1md2_l1:
 	dey
 	bpl f1md2_l1
 	rts
-
-
-#endif // ROM layout

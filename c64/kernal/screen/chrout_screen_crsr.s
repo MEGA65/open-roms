@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Cursor keys handling within CHROUT
@@ -54,6 +56,3 @@ chrout_screen_CRSR_LEFT:
 	lda #39
 	sta PNTR
 	bne chrout_screen_CRSR_done        // branch always
-
-
-#endif // ROM layout

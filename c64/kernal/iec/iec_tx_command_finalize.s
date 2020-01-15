@@ -1,5 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
-
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 // Routine to finalize some IEC commands - which do not end in turnaround and are not followed by others
 // Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc
@@ -24,6 +25,3 @@ iec_tx_command_finalize:
 
 
 #endif // CONFIG_IEC
-
-
-#endif // ROM layout

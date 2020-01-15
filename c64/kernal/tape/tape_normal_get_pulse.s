@@ -1,5 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
-
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tape (normal) helper routine - pulse reading
@@ -41,6 +42,3 @@ tape_normal_get_pulse:
 
 
 #endif
-
-
-#endif // ROM layout

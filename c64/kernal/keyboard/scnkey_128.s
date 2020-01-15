@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Keyboard scanning routine extension for C128 keyboards
@@ -66,6 +68,3 @@ scnkey_128_no_keys:
 
 
 #endif // CONFIG_KEYBOARD_C128 and no CONFIG_LEGACY_SCNKEY
-
-
-#endif // ROM layout

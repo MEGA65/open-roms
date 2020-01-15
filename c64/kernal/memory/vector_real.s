@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 
 vector_real:
@@ -41,6 +43,3 @@ vector_end_loop:
 	bpl vector_restore
 
 	rts
-
-
-#endif // ROM layout

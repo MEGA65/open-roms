@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 // Delete the current BASIC line, which is assumed to have already
 // been found with basic_find_line.
@@ -82,6 +84,3 @@ basic_delete_line:
 
 	clc
 	rts
-
-
-#endif // ROM layout

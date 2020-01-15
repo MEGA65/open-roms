@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Disable UP9600 interface
@@ -41,8 +43,4 @@ up9600_disable: // XXX adapt
 	pla
 
 
-
 #endif // CONFIG_RS232_UP9600
-
-
-#endif // ROM layout

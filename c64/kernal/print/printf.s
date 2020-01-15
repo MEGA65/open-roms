@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 // printf()-like routine for simplifying debugging
 
@@ -142,6 +144,3 @@ printf_retreat:
 	rts
 
 #endif // CONFIG_DBG_PRINTF
-
-
-#endif // ROM layout

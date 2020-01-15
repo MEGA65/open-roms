@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
@@ -34,6 +36,3 @@ clall_real:
 	
 	// Not sure whether original Kernal does so, but it seems sane to also clear possible errors
 	jmp kernalstatus_reset
-
-
-#endif // ROM layout

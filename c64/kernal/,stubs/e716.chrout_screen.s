@@ -1,8 +1,8 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 
 // Screen CHROUT
 
 	STUB_IMPLEMENTATION()
-
-
-#endif // ROM layout

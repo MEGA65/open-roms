@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Common part of CLOSE and LOAD/SAVE routines for IEC
@@ -30,6 +32,3 @@ iec_close_load:
 
 
 #endif // CONFIG_IEC
-
-
-#endif // ROM layout

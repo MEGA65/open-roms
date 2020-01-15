@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
@@ -44,6 +46,3 @@ udtim_clock_rollover:
 	sta TIME+2
 	sta TIME+1
 	beq udtim_time_done   // done with clock - will always jump
-
-
-#endif // ROM layout

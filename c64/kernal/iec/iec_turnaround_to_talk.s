@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 // According to http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 // pages 7--8.
@@ -33,6 +35,3 @@ iec_turnaround_to_talk:
 
 
 #endif // CONFIG_IEC
-
-
-#endif // ROM layout

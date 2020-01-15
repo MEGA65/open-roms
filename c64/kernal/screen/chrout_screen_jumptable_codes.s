@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Jumptable for screen control codes support. To improve performance, should be sorted
@@ -121,6 +123,3 @@ chrout_screen_jumptable:
 .if (mod(*, $2) == 0) { nop }          // make sure routine size is always the same, needed by build system
 
 #endif
-
-
-#endif // ROM layout

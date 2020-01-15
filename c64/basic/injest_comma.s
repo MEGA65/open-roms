@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 
 // Consummes a comma in a BASIC code, C set for no coma found
@@ -19,6 +21,3 @@ injest_comma:
 injest_comma_found:
 	clc
 	rts
-
-
-#endif // ROM layout

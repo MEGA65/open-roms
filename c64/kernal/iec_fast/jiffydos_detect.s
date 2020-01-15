@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Helper routine for JiffyDOS detection
@@ -50,6 +52,3 @@ jiffydos_detect_end:
 
 
 #endif // CONFIG_IEC_JIFFYDOS
-
-
-#endif // ROM layout

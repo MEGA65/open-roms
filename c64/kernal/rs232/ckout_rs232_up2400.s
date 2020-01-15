@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // RS-232 part of the CKOUT routine
@@ -13,6 +15,3 @@ ckout_rs232:
 
 
 #endif // CONFIG_RS232_UP2400
-
-
-#endif // ROM layout

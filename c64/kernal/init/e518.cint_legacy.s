@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Part of the official Kernal routine, described in:
@@ -21,6 +23,3 @@ cint_legacy: // $E518
 	// Game 'Operacja Proboszcz' is one example.
 
 	jmp cint_screen_keyboard // XXX try to fit the code here
-
-
-#endif // ROM layout

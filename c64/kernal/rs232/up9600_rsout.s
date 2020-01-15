@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Put byte to serial interface
@@ -55,6 +57,3 @@ rs232_rsout_wait:
 
 
 #endif // CONFIG_RS232_UP9600
-
-
-#endif // ROM layout

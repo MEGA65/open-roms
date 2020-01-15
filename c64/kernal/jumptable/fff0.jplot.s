@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 // $FFF0 - Get/Set cursor location vector
 // (http://codebase64.org/doku.php?id=base:kernalreference)
@@ -6,6 +8,3 @@
 // X=row, Y=column
 
 	jmp PLOT
-
-
-#endif // ROM layout

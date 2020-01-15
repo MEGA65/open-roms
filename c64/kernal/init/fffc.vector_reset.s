@@ -1,9 +1,9 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 
 // $FFFC - CPU Reset Vector
 // Uncontrovertial, as it is a CPU requirement, and nothing else.
 
 	.word hw_entry_reset
-
-
-#endif // ROM layout

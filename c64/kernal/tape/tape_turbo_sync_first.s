@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tape (turbo) helper routine - syynchronize to first byte with value $02
@@ -19,6 +21,3 @@ tape_turbo_sync_first:
 
 
 #endif
-
-
-#endif // ROM layout

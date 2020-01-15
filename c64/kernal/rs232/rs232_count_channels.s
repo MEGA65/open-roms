@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Sets .X to number of open RS-232 channels
@@ -25,6 +27,3 @@ rs232_count_channels:
 
 
 #endif
-
-
-#endif // ROM layout

@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 
 // Kernal error codes are described in 'Commodore 64 Programmers Reference Guide', page 306
@@ -91,6 +93,3 @@ kernalstatus_DEVICE_NOT_FOUND:
 	ora #K_STS_DEVICE_NOT_FOUND
 	sta IOSTATUS
 	rts
-
-
-#endif // ROM layout

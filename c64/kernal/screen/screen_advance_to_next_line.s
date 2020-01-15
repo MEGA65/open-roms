@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 
 screen_advance_to_next_line:
@@ -18,6 +20,3 @@ screen_advance_to_next_line:
 	sta PNTR
 
 	jmp chrout_screen_calc_lptr_done
-
-
-#endif // ROM layout

@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Well-known Kernal routine, described in:
@@ -80,6 +82,3 @@ scnkey_toggle_if_needed: // entry for SCNKEY (TWW/CTR version)
 	sta VIC_YMCSB
 !:
 	rts
-
-
-#endif // ROM layout

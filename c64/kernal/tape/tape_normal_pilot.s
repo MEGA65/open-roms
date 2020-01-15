@@ -1,5 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
-
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tape (turbo) helper routine - handling the pilot
@@ -72,6 +73,3 @@ tape_normal_pilot_header: // require 128x $40 pulses
 
 
 #endif
-
-
-#endif // ROM layout

@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // This byte (hex $FF80, dec 65408) identifies Kernal revision on several machines. Although not all
@@ -63,6 +65,3 @@
 
 kernal_revision:
     .byte $F0 // chosen not to conflict with anything known so far
-
-
-#endif // ROM layout

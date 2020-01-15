@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Helper routine to check for EOI while receiving byte from IEC
@@ -40,6 +42,3 @@ iec_rx_check_eoi_done:
 
 
 #endif // CONFIG_IEC
-
-
-#endif // ROM layout

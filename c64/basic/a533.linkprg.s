@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 //
 // Well-known BASIC routine, described in:
@@ -90,6 +92,3 @@ linkprg_end_of_line_search:
 	sta OLDTXT+0
 
 	jmp linkprg_loop
-
-
-#endif // ROM layout

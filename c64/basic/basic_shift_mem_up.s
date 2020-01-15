@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 
 basic_shift_mem_up_and_relink:
@@ -203,6 +205,3 @@ relink_up_loop:
 	bcs relink_up_next_line
 
 	rts
-
-
-#endif // ROM layout

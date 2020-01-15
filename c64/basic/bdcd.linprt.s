@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 //
 // Well-known BASIC routine, described in:
@@ -11,6 +13,3 @@ LINPRT:
 	// XXX This is temporary, to allow some software to work!
 	//     To be replaced by real impleementation.
 	jmp print_integer 
-
-
-#endif // ROM layout

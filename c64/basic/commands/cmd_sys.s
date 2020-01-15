@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 
 cmd_sys:
@@ -69,6 +71,3 @@ cmd_sys_setup_call:
 
 cmd_sys_hack_str:
 	.byte $FF, $AC, $36, $35, $36, $00
-
-
-#endif // ROM layout

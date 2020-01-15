@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // CHROUT routine - screen support (character output)
@@ -128,6 +130,3 @@ chrout_screen_done:
 
 	jsr cursor_show_if_enabled
 	jmp chrout_done_success
-
-
-#endif // ROM layout

@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Enable UP9600 interface support
@@ -130,6 +132,3 @@ INSTERR
 
 
 #endif // CONFIG_RS232_UP9600
-
-
-#endif // ROM layout

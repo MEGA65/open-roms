@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
@@ -25,6 +27,3 @@ tape_common_prepare_cia:
 	rts
 
 #endif
-
-
-#endif // ROM layout

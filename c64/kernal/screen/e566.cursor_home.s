@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Home the cursor, described in:
@@ -14,6 +16,3 @@ cursor_home:
 	sta TBLX                           // current row
 
 	// FALLTROUGH to the next routine
-
-
-#endif // ROM layout

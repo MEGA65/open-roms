@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Handle screen (visible/blanked) + tape deck motor (on/off),
@@ -35,6 +37,3 @@ tape_screen_off_motor_on:
 	jmp tape_motor_on
 
 #endif
-
-
-#endif // ROM layout

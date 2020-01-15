@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // This is a part CINT which initializes screen and keyboard
@@ -6,6 +8,8 @@
 // For more details see:
 // - [RG64] C64 Programmers Reference Guide   - page 280
 // - [CM64] Computes Mapping the Commodore 64 - page 242
+//
+
 
 cint_screen_keyboard:
 
@@ -70,6 +74,3 @@ cint_screen_keyboard:
 	// Fallthrough/jump to screen clear routine (Computes Mapping the 64 p215)
 
 	jmp clear_screen
-
-
-#endif // ROM layout

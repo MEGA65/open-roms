@@ -1,4 +1,7 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 
 default_nmi_handler:
 
@@ -31,6 +34,3 @@ default_nmi_handler:
 	sta CMP0+0
 	sta CMP0+1
 	jmp (CBINV)
-
-
-#endif // ROM layout

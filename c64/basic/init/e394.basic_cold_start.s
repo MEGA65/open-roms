@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 
 // BASIC Cold start entry point
@@ -23,6 +25,3 @@ basic_cold_start:
 	// Remaining part would not fit here
 
 	jmp basic_cold_start_internal
-
-
-#endif // ROM layout

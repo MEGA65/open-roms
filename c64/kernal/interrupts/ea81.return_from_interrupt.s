@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 // The IRQ is a commonly messed with thing on the C64,
 // so we need to handle entry points that are commonly
@@ -17,7 +19,5 @@ return_from_interrupt:
 	ply_trash_a
 	plx_trash_a
 	pla
+
 	rti
-
-
-#endif // ROM layout

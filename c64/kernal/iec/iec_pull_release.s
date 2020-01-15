@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Helper IEC routines to pull/release certain lines
@@ -84,6 +86,3 @@ iec_pull_release_end:
 
 
 #endif // CONFIG_IEC
-
-
-#endif // ROM layout

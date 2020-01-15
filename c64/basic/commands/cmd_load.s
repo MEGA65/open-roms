@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 
 cmd_load:
@@ -129,6 +131,3 @@ load_no_error:
 
 	// XXX - should run program if LOAD was used in program mode
 	jmp basic_main_loop
-
-
-#endif // ROM layout

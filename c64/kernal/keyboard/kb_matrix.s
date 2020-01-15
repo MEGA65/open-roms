@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Keyboard matrix, based on
@@ -59,6 +61,3 @@ __kb_matrix_ctrl:
 #endif
 	.byte $1C,$00,$1D,$00,$00,$1F,$1E,$00
 	.byte $90,$06,$00,$05,$00,$00,$11,$00
-
-
-#endif // ROM layout

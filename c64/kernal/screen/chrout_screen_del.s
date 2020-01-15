@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // CHROUT routine - screen support, DEL key handling
@@ -116,6 +118,3 @@ chrout_screen_del_column_0:
 
 	// Finish with recalculating all the variables
 	bne chrout_screen_del_done
-
-
-#endif // ROM layout

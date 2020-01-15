@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 // Jump back into the BASIC execute line loop
 // after first checking that we have a colon
@@ -367,6 +369,3 @@ basic_command_jump_table:
 	.word cmd_unimplemented-1
 	.word cmd_unimplemented-1
 	.word cmd_unimplemented-1
-
-
-#endif // ROM layout

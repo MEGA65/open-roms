@@ -1,4 +1,7 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 
 default_brk_handler:
 
@@ -23,6 +26,3 @@ default_brk_handler:
 	cli
 
 	jmp (IBASIC_WARM_START)
-
-
-#endif // ROM layout

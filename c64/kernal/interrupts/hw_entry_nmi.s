@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 
 hw_entry_nmi:
@@ -20,6 +22,3 @@ hw_entry_nmi:
 	// Vector not initialized - call default interrupt routine
 	pla
 	jmp default_nmi_handler
-
-
-#endif // ROM layout

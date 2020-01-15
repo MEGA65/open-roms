@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Well-known Kernal routine, described in:
@@ -65,6 +67,3 @@ setup_vicii:
 	// Setup default I/O devices
 
 	jmp clrchn_reset
-
-
-#endif // ROM layout

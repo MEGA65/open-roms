@@ -1,4 +1,7 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 
 // LIST basic text.
 // XXX - Does not currently support line number ranges
@@ -147,6 +150,3 @@ list_is_literal:
 list_end_of_line:
 	// Print end of line
 	jmp print_return
-
-
-#endif // ROM layout

@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Helper routines to return with error/success
@@ -40,6 +42,3 @@ iec_return_DEVICE_NOT_FOUND:
 
 
 #endif // CONFIG_IEC
-
-
-#endif // ROM layout

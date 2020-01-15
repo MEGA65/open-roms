@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Print the hex value in .A as two digits
@@ -49,6 +51,3 @@ print_hex_byte:
 !:	jmp JCHROUT
 
 #endif
-
-
-#endif // ROM layout

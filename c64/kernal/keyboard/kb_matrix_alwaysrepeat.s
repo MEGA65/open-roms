@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Matrix ids of keys which should be repeated regardless of RPTFLG
@@ -22,6 +24,3 @@ __kb_matrix_alwaysrepeat_end:
 
 
 #endif // no CONFIG_LEGACY_SCNKEY and no CONFIG_KEY_REPEAT_ALWAYS
-
-
-#endif // ROM layout

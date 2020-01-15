@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Clear the SID settings - for sound effects during LOAD
@@ -21,6 +23,3 @@ tape_clean_sid:
 
 
 #endif
-
-
-#endif // ROM layout

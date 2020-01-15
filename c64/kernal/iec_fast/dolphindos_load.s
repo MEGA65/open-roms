@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // DolphinDOS protocol support for IEC - optimized load loop
@@ -118,6 +120,3 @@ dolphindos_load_end:
 
 
 #endif // CONFIG_IEC_DOLPHINDOS and not CONFIG_MEMORY_MODEL_60K
-
-
-#endif // ROM layout

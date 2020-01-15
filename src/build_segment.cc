@@ -639,7 +639,8 @@ void SourceFile::preprocess()
     while (std::getline(stream, line))
     {
         if (line.empty()) continue;
-        std::replace(std::begin(line), std::end(line), '\t', ' ');
+        std::replace(line.begin(), line.end(), '\t', ' ');
+        line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
         if (!preprocessLine(line)) break;
     }
 }
@@ -693,7 +694,7 @@ bool SourceFile::preprocessLine(const std::string &line)
     }
     else if (iter->compare("#TAKE") != 0)
     {
-        ERROR("syntax error, unsupported action in '#LAYOUT#'");
+        ERROR(std::string("syntax error, unsupported action '") + token + "' in '#LAYOUT#'");
     }
 
     // Tell the caller to finish processing the file

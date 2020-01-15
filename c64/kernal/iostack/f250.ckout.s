@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routines, described in:
@@ -61,6 +63,3 @@ ckout_file_not_output:
 	ply_trash_a
 	pla
 	jmp kernalerror_FILE_NOT_OUTPUT
-
-
-#endif // ROM layout

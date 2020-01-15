@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 
 basic_parse_line_number:	
@@ -27,6 +29,3 @@ ml_bad_line_number:
 	sta LINNUM+1
 	clc
 	rts
-
-
-#endif // ROM layout

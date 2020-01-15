@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 // Return C=1 if a pointer in BASIC memory space is NULL, else C=0
 // X = ZP pointer to check
@@ -34,6 +36,3 @@ peek_line_pointer_null_check:
 ptr_not_null:
 	sec
 	rts
-
-
-#endif // ROM layout

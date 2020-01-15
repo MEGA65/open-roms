@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // JiffyDOS helper routine to wait for appropriate moment,
@@ -33,6 +35,3 @@ jiffydos_wait_line_done:
 
 
 #endif // CONFIG_IEC_JIFFYDOS
-
-
-#endif // ROM layout

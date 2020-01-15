@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Helper table for determining keyboard matrix decoding table on the C64 keyboard
@@ -22,6 +24,3 @@ kb_matrix_lookup:
 	.byte $FF                               // %111 SHIFT+VENDOR+CTRL
 
 #endif
-
-
-#endif // ROM layout

@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Set pointer (PNT) to current screen line , described in:
@@ -14,6 +16,3 @@ screen_calculate_pointers:
 
 	jsr screen_calculate_PNT_USER
 	jmp screen_calculate_PNTR_LNMX
-
-
-#endif // ROM layout

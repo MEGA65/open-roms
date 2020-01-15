@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 
 screen_check_space_ends_line:
@@ -9,6 +11,3 @@ screen_check_space_ends_line:
 	cmp #$20
 
 	rts
-
-
-#endif // ROM layout

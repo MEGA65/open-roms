@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
@@ -47,6 +49,3 @@ common_untlk_tksa: // common part of UNTLK and TKSA
 	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
 
 #endif
-
-
-#endif // ROM layout

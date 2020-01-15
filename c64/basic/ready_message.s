@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 
 ready_message:
@@ -6,6 +8,3 @@ ready_message:
 	// information.
 	ldx #29
 	jmp print_packed_message
-
-
-#endif // ROM layout

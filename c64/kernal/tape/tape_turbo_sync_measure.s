@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tape (turbo) helper routine - measure bit length for calibration purposes
@@ -41,6 +43,3 @@ tape_turbo_sync_measure_fail:
 
 
 #endif
-
-
-#endif // ROM layout

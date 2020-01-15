@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 // IMPORTANT:
 // These routines lengths cannot be changed without changing
@@ -154,6 +156,3 @@ smd1:
 	rts
 
 #endif
-
-
-#endif // ROM layout

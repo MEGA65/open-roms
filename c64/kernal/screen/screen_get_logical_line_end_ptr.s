@@ -1,4 +1,6 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 
 screen_get_logical_line_end_ptr:
@@ -24,6 +26,3 @@ screen_get_logical_line_end_39:
 
 	ldy #39
 	rts
-
-
-#endif // ROM layout

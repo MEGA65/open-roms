@@ -12,6 +12,7 @@
 
 map_NORMAL:
 
+	php
 	pha
 	phx
 	phy
@@ -33,12 +34,14 @@ map_end:
 	ply
 	plx
 	pla
+	plp
 
 	rts
 
 
 map_KERNAL_1:
 
+	php
 	pha
 	phx
 	phy

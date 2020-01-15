@@ -12,20 +12,15 @@
 	// Labels for jumps
 
 
-	.label KERNAL_1__TESTROUTINE = $4000
+	.label KERNAL_1__RAMTAS = $4000
 
 
-#elif
+#else
 
 	// Jumptable (OpenROMs private!)
 
 
-	jmp TESTROUTINE
-
-
-TESTROUTINE:
-
-	rts
+	jmp RAMTAS
 
 
 #endif

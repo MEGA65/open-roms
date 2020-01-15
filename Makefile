@@ -61,9 +61,7 @@ STD_TARGET_LIST_CUSTOM     = build/kernal_custom.rom     build/basic_custom.rom
 STD_TARGET_LIST_GENERIC    = build/kernal_generic.rom    build/basic_generic.rom
 STD_TARGET_LIST_TESTING    = build/kernal_testing.rom    build/basic_testing.rom 
 STD_TARGET_LIST_ULTIMATE64 = build/kernal_ultimate64.rom build/basic_ultimate64.rom
-STD_TARGET_LIST_MEGA65     = build/kernal_mega65.rom_0 \
-                             build/kernal_mega65.rom_1 \
-							 build/basic_mega65.rom_0
+STD_TARGET_LIST_MEGA65     = build/mega65.rom
 
 STD_TARGET_LIST = build/chargen.rom \
                   $(STD_TARGET_LIST_CUSTOM) \
@@ -161,10 +159,6 @@ build/target_mega65/OUTK_0.BIN    build/target_mega65/KERNAL_0_combined.vs    bu
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
     c64/,,config_mega65.s \
     $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
-build/target_mega65/OUTK_1.BIN    build/target_mega65/KERNAL_1_combined.vs    build/target_mega65/KERNAL_1_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
-    c64/,,config_mega65.s \
-    $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))	
 build/target_ultimate64/OUTK.BIN  build/target_ultimate64/KERNAL_combined.vs  build/target_ultimate64/KERNAL_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
     c64/,,config_ultimate64.s \
@@ -222,11 +216,10 @@ build/target_mega65/OUTK_0.BIN build/target_mega65/KERNAL_0_combined.vs build/ta
 	@rm -f $@* build/target_mega65/KERNAL_0*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_0 -i KERNAL_0-mega65 -o OUTK_0.BIN -d build/target_mega65 -l e4d3 -h ffff c64/,,config_mega65.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
-build/kernal_mega65.rom_1 build/target_mega65/OUTK_1.BIN build/target_mega65/KERNAL_1_combined.vs build/target_mega65/KERNAL_1_combined.sym: $(TOOL_BUILD_SEGMENT)
+build/target_mega65/kernal.seg_1 build/target_mega65/KERNAL_1_combined.vs build/target_mega65/KERNAL_1_combined.sym: $(TOOL_BUILD_SEGMENT)
 	@mkdir -p build/target_mega65
-	@rm -f $@* build/kernal_mega65.rom_1 build/target_mega65/KERNAL_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_1 -i KERNAL_1-mega65 -o OUTK_1.BIN -d build/target_mega65 -l 4000 -h 5fff c64/,,config_mega65.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
-	@cp build/target_mega65/OUTK_1.BIN build/kernal_mega65.rom_1
+	@rm -f $@* build/target_mega65/kernal.seg_1 build/target_mega65/KERNAL_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_1 -i KERNAL_1-mega65 -o kernal.seg_1 -d build/target_mega65 -l 4000 -h 5fff c64/,,config_mega65.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 .PRECIOUS: build/target_%/newrom
 build/target_%/newrom:
@@ -267,12 +260,12 @@ build/symbols_hybrid.vs: build/target_generic/KERNAL_combined.vs
 
 # Rules - platform 'Mega 65' specific
 
-build/mega65.rom: build/kernal_mega65.rom_0 build/kernal_mega65.rom_1 build/basic_mega65.rom_0 build/chargen.rom
+build/mega65.rom: build/kernal_mega65.rom_0 build/target_mega65/kernal.seg_1 build/basic_mega65.rom_0 build/chargen.rom
 	dd if=/dev/zero bs=8192 count=1 of=build/padding_8k
 	dd if=/dev/zero bs=8192 count=8 of=build/padding_64k
 	cat build/padding_8k                     > build/mega65.rom
 	cat build/padding_8k                    >> build/mega65.rom
-	cat build/kernal_mega65.rom_1           >> build/mega65.rom
+	cat build/target_mega65/kernal.seg_1    >> build/mega65.rom
 	cat build/padding_8k                    >> build/mega65.rom
 	cat build/padding_8k                    >> build/mega65.rom
 	cat build/basic_mega65.rom_0            >> build/mega65.rom

@@ -1,4 +1,7 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# M65 KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE-FLOAT
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
@@ -10,6 +13,14 @@
 //
 
 RAMTAS:
+
+#if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
+	jsr map_KERNAL_1
+	jsr KERNAL_1__RAMTAS
+	jmp map_NORMAL
+
+#else
 
 	// C64 Programmers Reference guide p291:
 	// Clear $0000-$0101, $0200-$03ff
@@ -82,6 +93,5 @@ ramtas_32k:
 
 	ldy #$80
 	bne !- // branch always
-
 
 #endif // ROM layout

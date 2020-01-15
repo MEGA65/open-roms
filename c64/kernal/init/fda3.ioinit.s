@@ -12,12 +12,6 @@
 
 IOINIT:
 
-	// XXX make something useful with this
-	//
-	// jsr map_KERNAL_1
-	// jsr KERNAL_1__TESTROUTINE
-	// jsr map_NORMAL
-
 	//
 	// First initialize the CPU port, to make sure we have correct memory map
 	//

@@ -673,11 +673,11 @@ bool SourceFile::preprocessLine(const std::string &line)
 
     // Check if segment name and rom layout match
 
-    if (iter == tokens.end()) ERROR("syntax error, missing segment name in '#LAYOUT#'");
-    if (!nameMatch(*(iter++), CMD_segName)) return true;
-
     if (iter == tokens.end()) ERROR("syntax error, missing rom layout in '#LAYOUT#'");
     if (!nameMatch(*(iter++), CMD_romLayout)) return true;
+
+    if (iter == tokens.end()) ERROR("syntax error, missing segment name in '#LAYOUT#'");
+    if (!nameMatch(*(iter++), CMD_segName)) return true;
 
     // Retrieve and apply action
 

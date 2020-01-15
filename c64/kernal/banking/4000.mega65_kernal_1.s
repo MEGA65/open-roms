@@ -1,18 +1,21 @@
+// #LAYOUT# M65 KERNAL_0 #TAKE-FLOAT
+// #LAYOUT# M65 KERNAL_1 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Definitions for communication with Mega65 segment KERNAL_1
 //
 
 
-#if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+#if SEGMENT_KERNAL_0
 
 	// Labels for jumps
 
 
-.label KERNAL_1__TESTROUTINE = $4000
+	.label KERNAL_1__TESTROUTINE = $4000
 
 
-#elif (ROM_LAYOUT_M65 && SEGMENT_KERNAL_1)
+#elif
 
 	// Jumptable (OpenROMs private!)
 

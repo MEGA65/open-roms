@@ -65,12 +65,12 @@ STD_TARGET_LIST_MEGA65     = build/kernal_mega65.rom_0 \
                              build/kernal_mega65.rom_1 \
 							 build/basic_mega65.rom_0
 
-STD_TARGET_LIST = $(STD_TARGET_LIST_CUSTOM) \
+STD_TARGET_LIST = build/chargen.rom \
+                  $(STD_TARGET_LIST_CUSTOM) \
                   $(STD_TARGET_LIST_GENERIC) \
                   $(STD_TARGET_LIST_TESTING) \
                   $(STD_TARGET_LIST_MEGA65) \
-                  $(STD_TARGET_LIST_ULTIMATE64) \
-                  build/chargen.rom
+                  $(STD_TARGET_LIST_ULTIMATE64)
 
 EXT_TARGET_LIST = build/mega65.rom
 
@@ -222,7 +222,7 @@ build/target_mega65/OUTK_0.BIN build/target_mega65/KERNAL_0_combined.vs build/ta
 	@rm -f $@* build/target_mega65/KERNAL_0*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_0 -i KERNAL_0-mega65 -o OUTK_0.BIN -d build/target_mega65 -l e4d3 -h ffff c64/,,config_mega65.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
-build/kernal_mega65.rom_1 build/target_mega65/OUTK_1.BIN build/target_mega65/KERNAL_1_combined.vs build/target_mega65/KERNAL_1_combined.sym:
+build/kernal_mega65.rom_1 build/target_mega65/OUTK_1.BIN build/target_mega65/KERNAL_1_combined.vs build/target_mega65/KERNAL_1_combined.sym: $(TOOL_BUILD_SEGMENT)
 	@mkdir -p build/target_mega65
 	@rm -f $@* build/kernal_mega65.rom_1 build/target_mega65/KERNAL_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_1 -i KERNAL_1-mega65 -o OUTK_1.BIN -d build/target_mega65 -l 4000 -h 5fff c64/,,config_mega65.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
@@ -268,12 +268,17 @@ build/symbols_hybrid.vs: build/target_generic/KERNAL_combined.vs
 # Rules - platform 'Mega 65' specific
 
 build/mega65.rom: build/kernal_mega65.rom_0 build/kernal_mega65.rom_1 build/basic_mega65.rom_0 build/chargen.rom
-	cat build/kernal_mega65.rom_1 > build/mega65.rom
-	dd if=/dev/zero bs=4096 count=8 of=build/padding1
-	cat build/padding1 >> build/mega65.rom
-	cat build/basic_mega65.rom_0 build/chargen.rom build/chargen.rom build/kernal_mega65.rom_0 >> build/mega65.rom
-	dd if=/dev/zero bs=4096 count=16 of=build/padding2
-	cat build/padding2 >> build/mega65.rom
+	dd if=/dev/zero bs=8192 count=1 of=build/padding_8k
+	dd if=/dev/zero bs=8192 count=8 of=build/padding_64k
+	cat build/padding_8k                     > build/mega65.rom
+	cat build/padding_8k                    >> build/mega65.rom
+	cat build/kernal_mega65.rom_1           >> build/mega65.rom
+	cat build/padding_8k                    >> build/mega65.rom
+	cat build/padding_8k                    >> build/mega65.rom
+	cat build/basic_mega65.rom_0            >> build/mega65.rom
+	cat build/chargen.rom build/chargen.rom >> build/mega65.rom
+	cat build/kernal_mega65.rom_0           >> build/mega65.rom
+	cat build/padding_64k                   >> build/mega65.rom
 	rm -f build/padding*
 
 # Rules - tests

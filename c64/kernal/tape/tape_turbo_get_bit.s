@@ -31,15 +31,12 @@ tape_turbo_get_bit:
 
 #endif
 
-
-#if CONFIG_TAPE_TURBO_AUTOCALIBRATE
-	tax
-	cmp IRQTMP+0
-#else
-	cmp #$BF                           // threshold calculated by autocalibration routines under VICE
-#endif
-
+	cmp SYNO                           // threshold
 	bcs !+
+
+	clc
+	ror
+	sta IRQTMP+0                       // store half of the last measurement result for short pulse
 
 	lda #$01
 	sta SID_SIGVOL
@@ -48,6 +45,10 @@ tape_turbo_get_bit:
 	sec
 	rts
 !:
+	clc
+	ror
+	sta IRQTMP+1                       // store half of the last measurement result for long pulse
+
 	lda #$00
 	sta SID_SIGVOL
 	sta VIC_EXTCOL

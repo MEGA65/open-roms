@@ -2,6 +2,37 @@
 // #LAYOUT# *   KERNAL_0 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
+//
+// Prepare CIA timers for tape reading
+//
+
+//
+// Checked under VICE, PAL, average of 256 pulses:
+//
+//     normal - short  - timer goes down to $C9
+//     normal - medium - timer goes down to $79
+//     normal - long   - timer goes down to $52
+//
+//     turbo  - short  - timer goes down to $B1
+//     turbo  - long   - timer goes down to $CD
+//
+//
+// Measurement subroutine: .A should contain timer value, $C000-$C002 zeroed
+//
+//        clc
+//        adc $C001
+//        sta $C001
+//        bcc !+
+//        inc $C000
+//    !:
+//	      inc $C002
+//	      beq !+
+//	      rts
+//    !:
+//	      lda $C000
+//	  .break         // .A contains our average
+//        rts
+//
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 

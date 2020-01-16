@@ -155,12 +155,6 @@ Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action
 
 Needs about 650 bytes in KERNAL segment (if both normal and turbo are enabled, about 950 bytes are needed, as they share some code). If unsure - enable.
 
-### `CONFIG_TAPE_TURBO_AUTOCALIBRATE`
-
-Extends the tape turbo load functionality by ability to adjust to tape speed differences.
-
-Needs about 100 bytes in KERNAL segment. If unsure - enable for Datasette or other tape recorder, disable for digital solutions like Tapuino.
-
 ### `CONFIG_TAPE_NO_KEY_SENSE`
 
 Enable this option if you are using a tape interface adapter with some audio signal source connected. These adapters lack key sense functionality, so the computer is unable to tell whether Play got pressed or not - with this option ROM will assume Play got pressed after imppulses start arriving from the tape.

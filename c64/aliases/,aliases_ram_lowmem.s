@@ -88,7 +88,7 @@
 	.label VERCKK    = $93  //          0 = LOAD, 1 = VERIFY
 	.label C3PO      = $94  //          flag - is BSOUR content valid
 	.label BSOUR     = $95  //          serial bus buffered output byte
-	.label SYNO      = $96  //          -- NOT IMPLEMENTED --
+	.label SYNO      = $96  //          temporary tape routines storage, [!] our usage differs
 	.label XSAV      = $97  //          temporary register storage for ASCII/tape related routines [!] usage details might differ
 	.label LDTND     = $98  //          number of entries in LAT / FAT / SAT tables
 	.label DFLTN     = $99  //          default input device

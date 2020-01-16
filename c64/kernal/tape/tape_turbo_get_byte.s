@@ -25,8 +25,35 @@ tape_turbo_get_byte:
 	rol INBIT
 	bcc !-	                           // is the initial 1 shifted into carry already?
 	plx_trash_a
-	lda INBIT
 
+	// Compensate for tape speed variations
+
+	lda IRQTMP+0                       // half of the last value for bit '0'
+	clc
+	adc IRQTMP+1                       // half of the last value for bit '1'
+	
+	sec
+	sbc SYNO                           // now we have a diff between current threshold and calculated one
+	beq tape_turbo_get_byte_done       // branch if threshold correction not needed
+
+	bpl !+
+
+	lda SYNO
+	cmp #($BF - 10)
+	beq tape_turbo_get_byte_done       // do not decrease threshold too far no matter what
+
+	dec SYNO
+	bne tape_turbo_get_byte_done       // branch always
+!:
+	lda SYNO
+	cmp #($BF + 10)
+	beq tape_turbo_get_byte_done       // do not increase threshold too far no matter what
+
+	inc SYNO
+
+tape_turbo_get_byte_done:
+
+	lda INBIT
 	rts
 
 

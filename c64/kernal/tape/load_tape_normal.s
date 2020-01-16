@@ -44,17 +44,34 @@ load_tape_normal:
 
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
+#if CONFIG_TAPE_TURBO && CONFIG_TAPE_AUTODETECT
+
+	// Prepare for sound effects in case of turbo takeover
+	jsr tape_clean_sid
+
+#endif
+
+	// Start playing
+	jsr tape_common_prepare_cia
+	jsr tape_ask_play
+
+#if CONFIG_TAPE_TURBO && CONFIG_TAPE_AUTODETECT
+
+	// FALLTROUGH
+
+load_tape_normal_takeover:             // entry point for turbo->normal takeover
+
+	jsr tape_common_autodetect
+	bcs_16 load_tape_turbo_takeover
+
+#endif
+
 	// Temporarily store MEMUSS in EAL
 
 	lda MEMUSS+1
 	sta EAL+1
 	lda MEMUSS+0
 	sta EAL+0
-
-	// Start playing
-
-	jsr tape_common_prepare_cia
-	jsr tape_ask_play
 
 	// FALLTROUGH
 

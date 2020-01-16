@@ -7,14 +7,14 @@
 //
 
 //
-// Checked under VICE, PAL, average of 256 pulses:
+// Checked under VICE, PAL, average of 256 pulses:  XXX retry measurements for NORMAL, something is probably wrong
 //
-//     normal - short  - timer goes down to $C9
-//     normal - medium - timer goes down to $79
+//     normal - short  - timer goes down to $A5
+//     normal - medium - timer goes down to $7D
 //     normal - long   - timer goes down to $52
 //
-//     turbo  - short  - timer goes down to $B1
-//     turbo  - long   - timer goes down to $CD
+//     turbo  - short  - timer goes down to $CD
+//     turbo  - long   - timer goes down to $B1
 //
 //
 // Measurement subroutine: .A should contain timer value, $C000-$C002 zeroed
@@ -58,3 +58,19 @@ tape_common_prepare_cia:
 	rts
 
 #endif
+
+
+xxx_measure:
+        clc
+        adc $C001
+        sta $C001
+        bcc !+
+        inc $C000
+    !:
+	      inc $C002
+	      beq !+
+	      rts
+    !:
+	      lda $C000
+	  .break         // .A contains our average
+        rts

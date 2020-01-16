@@ -17,8 +17,7 @@
 tape_common_autodetect:
 
 	// Set screen color to something neutral, silence the audio
-
-	lda #$0C
+	lda #$0B
 	sta VIC_EXTCOL
 	lda #$00
 	sta SID_SIGVOL

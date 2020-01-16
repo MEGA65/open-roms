@@ -58,19 +58,3 @@ tape_common_prepare_cia:
 	rts
 
 #endif
-
-
-xxx_measure:
-        clc
-        adc $C001
-        sta $C001
-        bcc !+
-        inc $C000
-    !:
-	      inc $C002
-	      beq !+
-	      rts
-    !:
-	      lda $C000
-	  .break         // .A contains our average
-        rts

@@ -1,0 +1,3 @@
+$EC + CLC + RTS (end of routine) + JSR (address does not match)
+
+Routine ending with enabling interrupts + beginning of another one (just instruction opcode matches, not the argument). Trivial - not copyrightable.

@@ -1,0 +1,3 @@
+$EA + LDA $01 + AND #$10
+
+Clearing bit on bte fetched from a documented hardware port + some part of other instruction. Trivial - not copyyrightable.

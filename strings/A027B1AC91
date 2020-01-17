@@ -1,0 +1,3 @@
+LDY #$27 + LDA ($AC),Y + STA (zeroopage address deos not match),Y
+
+Get the last character from the screen line (using a documented vector) and store it somewhere (details differ here). Trivial - not copyrightable.

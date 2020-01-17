@@ -1,0 +1,3 @@
+$C3 + STA $AE + LDA (zeropage adddress does not match)
+
+Instruction + some parts. Trivial - noot copyrightable.

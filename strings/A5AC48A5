@@ -1,0 +1,3 @@
+LDA $AC + PHA + LDA (zeropage address does not match)
+
+Storing some data on a stack, among them the same zeropage variable - trivial, not copyrightable.

@@ -1,0 +1,3 @@
+BNE (offset matches) + LDA #$80 + STA (zeropage address does not match)
+
+Depending on some condition (check does not fully match) store $80 in some memoryy location (address does not match). Trivial - not copyrightable.

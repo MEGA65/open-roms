@@ -1,0 +1,3 @@
+LDY #$E4 + JSR $AB1E
+
+Print a string by calling a well-known routine, only part of the string address matches. Trivial - not copyrightable.

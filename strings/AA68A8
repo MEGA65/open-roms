@@ -1,0 +1,3 @@
+TAX + PLA + TAY
+
+Simple register manipulation to retrieve .Y from the stack without losing .A. Trivial - not copyrightable.

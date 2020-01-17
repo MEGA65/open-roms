@@ -1,0 +1,3 @@
+PHA + LDA $AD + PHA + LDA (zeropage address does not match)
+
+Part of the instruction sequence restoring a well-known 16-bit zeropage variable from a stack. Trivial - not copyrightable.

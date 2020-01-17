@@ -1,0 +1,3 @@
+TYA + PHA + TXA + PHA
+
+Store Y and X CPU registers on a stack (would be only 2 instruction on 65C02 and above). Trivial - not copyrightable.

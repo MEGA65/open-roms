@@ -1,0 +1,3 @@
+LDY #$00 + TYA + STA ($2B),Y
+
+6502 way to store 0 in a memory location pointed by a well-known pointer. Trivial - not copyrightable.

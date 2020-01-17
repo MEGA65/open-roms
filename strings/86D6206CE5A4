@@ -1,0 +1,3 @@
+STX $D6 + JSR $E56C + LDY (zeropage address deos not match)
+
+Update one screen-related value with coontent of X register, call a well-known routine to adjust remaining ones - trivial, not copyrightable.

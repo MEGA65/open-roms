@@ -1,0 +1,3 @@
+SEI + LDA #$00 + STA (zeropage address does not match)
+
+Disable interrupts, store 0 in some memoryy location (address does not match). Trivial and not creative - not copyrightable.

@@ -1,7 +1,14 @@
 
 # OpenROMs development guide
 
-Note: preliminary version, incomplete!
+NOTE: this document is a preliminary version, definitely incomplete!
+
+
+## In-depth protocol description
+
+- [JiffyDOS](./Protocol-JiffyDOS.md) 
+- [DolphinDOS](./Protocol-DolphinDOS.md) 
+
 
 ## Guidelines for software developers for OpenROMs compatibility
 
@@ -28,17 +35,17 @@ OpenROMs interrupt handlers do not touch the ROM mapping, range `0x4000-0xBFFF` 
 
 OpenROMs provides support for several additional PETSCII codes (all compatible with C128 and/or C65):
 
-| PETSCII | description                                         |
-|:-------:|:---------------------------------------------------:|
-| `$07`   | bell (C128 and C65 compatible), not implemented yet |
-| `$1B`   | `ESC` key (C128 and C65 compatible)                 |
-| `$84`   | `HELP` key (C128 and C65 compatible)                |
-| `$10`   | `F9` key (C65 compatible)                           |
-| `$15`   | `F10` key (C65 compatible)                          |
-| `$16`   | `F11` key (C65 compatible)                          |
-| `$17`   | `F12` key (C65 compatible)                          |
-| `$19`   | `F13` key (C65 compatible)                          |
-| `$1A`   | `F14` key (C65 compatible)                          |
+| PETSCII code | description                                         |
+| :----------: | :-------------------------------------------------- |
+| `$07`        | bell (C128 and C65 compatible), not implemented yet |
+| `$1B`        | `ESC` key (C128 and C65 compatible)                 |
+| `$84`        | `HELP` key (C128 and C65 compatible)                |
+| `$10`        | `F9` key (C65 compatible)                           |
+| `$15`        | `F10` key (C65 compatible)                          |
+| `$16`        | `F11` key (C65 compatible)                          |
+| `$17`        | `F12` key (C65 compatible)                          |
+| `$19`        | `F13` key (C65 compatible)                          |
+| `$1A`        | `F14` key (C65 compatible)                          |
 
 There is no official PETSCII code for `TAB` - we can't utilize the ones from C128 or C65 because it conflicts with some C64 codes.
 
@@ -46,9 +53,9 @@ There is no official PETSCII code for `TAB` - we can't utilize the ones from C12
 
 `SHFLAG` (`$028D`) variable is extended to support additional bucky keys on C128 and C65 keyboards:
 
-| bits 7-5 | bit 4       | bit 3 | bit 2  | bit 1    | bit 0   |
-|:--------:|:-----------:|:-----:|:-----: |:--------:|:-------:|
-| reserved | `CAPS LOCK` | `ALT` | `CTRL` | `VENDOR` | `SHIFT` |
+| bits 7-5 | bit 4       | bit 3    | bit 2    | bit 1    | bit 0    |
+| :------: | :---------: | :------: | :------: | :------: | :------: |
+| reserved | `CAPS LOCK` | `ALT`    | `CTRL`   | `VENDOR` | `SHIFT`  |
 
 Bits 3 and 4 are extension to the original variable, compatible with the C128 ROMs API. There is no official way to retrieve `NO_SCRL` status as of yet. The `40/80` key status cannot be retrieved in C64 mode at all (C128 hardware limitation).
 
@@ -61,8 +68,8 @@ Make sure to read the main [README](../README.md) first - although any help with
 
 List of the most important make targets:
 
-| target              | meaning                                                                        |
-|:-------------------:|:------------------------------------------------------------------------------:|
+| target              | description                                                                    |
+| :------------------ | :----------------------------------------------------------------------------- |
 | `all`               | builds all ROMs, places them in 'build' subdirectory                           |
 | `clean`             | removes all the compilation results and intermediate files                     |
 | `updatebin`         | upates ROMs in 'bin' subdirectory - with embedded version string, for release  |
@@ -80,7 +87,7 @@ List of the most important make targets:
 
 Currently there are 2 ROM layouts defined:
 
-- `STD` - with 2 code segments: `BASIC` (`$A000-$E4D2`, where `$C000-$DFFF` is a skip-gap for RAM and I/O) and `KERNAL` (`$E4D2 - $FFFF`)
+- `STD` - with 2 code segments: `BASIC` (`$A000-$E4D2`, where `$C000-$DFFF` is a skip-gap for RAM and I/O area) and `KERNAL` (`$E4D3 - $FFFF`)
 - `M65` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, additional segments might be added to the build system in the future; at the moment of writing this document additional 8KB of ROM is defined as `KERNAL_1` segment
 
 To check for current ROM layout or code segment use KickAssembler preprocessor defines, like `ROM_LAYOUT_STD`, `ROM_LAYOUT_M65`, `SEGMENT_BASIC`, `SEGMENT_KERNAL_1`.
@@ -110,7 +117,7 @@ where:
 - `<code-segment>` - `KERNAL`, `BASIC`, `KERNAL_0`, `KERNAL_1`, etc., asterisk symbol can be used to match any segment
 - `<action>` - what to do when layout and segment match:
 
-| action        | meaning                                       |
+| action        | description                                   |
 | :------------ | :-------------------------------------------- |
 | `#IGNORE`     | ignore the file completely                    |
 | `#TAKE`       | compile the file normally                     |

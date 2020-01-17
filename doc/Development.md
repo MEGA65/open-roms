@@ -24,12 +24,57 @@ OpenROMs interrupt handlers do not touch the ROM mapping, range `0x4000-0xBFFF` 
 
 ### API extensions
 
-TODO - additional keys - bucky
-TODO - additional keys - PETSCII
+#### PETSCII
+
+OpenROMs provides support for several additional PETSCII codes (all compatible with C128 and/or C65):
+
+| PETSCII | description                                         |
+|:-------:|:---------------------------------------------------:|
+| `$07`   | bell (C128 and C65 compatible), not implemented yet |
+| `$1B`   | `ESC` key (C128 and C65 compatible)                 |
+| `$84`   | `HELP` key (C128 and C65 compatible)                |
+| `$10`   | `F9` key (C65 compatible)                           |
+| `$15`   | `F10` key (C65 compatible)                          |
+| `$16`   | `F11` key (C65 compatible)                          |
+| `$17`   | `F12` key (C65 compatible)                          |
+| `$19`   | `F13` key (C65 compatible)                          |
+| `$1A`   | `F14` key (C65 compatible)                          |
+
+There is no official PETSCII code for `TAB` - we can't utilize the ones from C128 or C65 because it conflicts with some C64 codes.
+
+#### Bucky keys
+
+`SHFLAG` (`$028D`) variable is extended to support additional bucky keys on C128 and C65 keyboards:
+
+| bits 7-5 | bit 4       | bit 3 | bit 2  | bit 1    | bit 0   |
+|:--------:|:-----------:|:-----:|:-----: |:--------:|:-------:|
+| reserved | `CAPS LOCK` | `ALT` | `CTRL` | `VENDOR` | `SHIFT` |
+
+Bits 3 and 4 are extension to the original variable, compatible with the C128 ROMs API. There is no official way to retrieve `NO_SCRL` status as of yet. The `40/80` key status cannot be retrieved in C64 mode at all (C128 hardware limitation).
+
 
 ## Tinkering with OpenROMs
 
 Make sure to read the main [README](../README.md) first - although any help with the project is always welcome, you need to be aware of the possible legal problems we want to avoid.
+
+### Make targets
+
+List of the most important make targets:
+
+| target              | meaning                                                                        |
+|:-------------------:|:------------------------------------------------------------------------------:|
+| `all`               | builds all ROMs, places them in 'build' subdirectory                           |
+| `clean`             | removes all the compilation results and intermediate files                     |
+| `updatebin`         | upates ROMs in 'bin' subdirectory - with embedded version string, for release  |
+| `testsimilarity`    | launches the similarity tool, see [README](../README.md)                       |
+| `test`              | builds the 'custom' configuration, launches it using VICE emulator             |
+| `test_generic`      | builds the default ROMs, for generic C64/C128, launches using VICE             | 
+| `test_generic_x128` | as above, but launches C128 emulator instead                                   |
+| `test_mega65`       | builds the Mega65 ROM, launches it using XEMU emulator                         |
+| `test_ultimate64`   | builds the Ultimate 64 configuration, launches it using VICE emulator          |
+| `test_hybrid`       | builds a hybrid ROM (OpenROMs Kernal + original BASIC), launches it using VICE |
+| `test_testing`      | builds a rather odd testing configuration, launches it using VICE emulator     |
+
 
 ### Code segments and ROM layouts
 
@@ -42,7 +87,13 @@ To check for current ROM layout or code segment use KickAssembler preprocessor d
 
 ### Fixed location vs floating routines
 
-TODO - describe
+There are two types of routines (in this chapter routine = single source file):
+
+- fixed location - they are always placed in the location specified by developer; if it's not possible, an error is produced during the compilation
+- floating - their location in the ROM segment is determined during the compilation by our build segment tool; from the developer point of view it is random
+
+File name of the fixed location routine adheres to the scheme: `addr.name.s`, where `addr` is a 4-digit hexadecimal number. They should be accompanied with `*.interop` file, describing why the location got fixed - see [README](../README.md) for more information.
+
 
 ### Handling different ROM layouts
 
@@ -121,4 +172,4 @@ TODO
 
 ### Labels and VICE debugging
 
-TODO
+Make targets which launch the VICE emulator pass al the label to the built-in monitor. Problem can arise if we have multiple labels pointing the same address - in such case VICE monitor displays a warning, and just one of the labels is being recognized. To avoid this problem please select a single main label for the given memory location, and make sure all the others contain `__` - such labels will be filtered out from the symbol file for VICE.

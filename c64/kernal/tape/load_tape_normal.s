@@ -44,7 +44,7 @@ load_tape_normal:
 
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
-#if CONFIG_TAPE_TURBO && CONFIG_TAPE_AUTODETECT
+#if CONFIG_TAPE_AUTODETECT
 
 	// Prepare for sound effects in case of turbo takeover
 	jsr tape_clean_sid
@@ -55,7 +55,7 @@ load_tape_normal:
 	jsr tape_common_prepare_cia
 	jsr tape_ask_play
 
-#if CONFIG_TAPE_TURBO && CONFIG_TAPE_AUTODETECT
+#if CONFIG_TAPE_AUTODETECT
 
 	// FALLTROUGH
 

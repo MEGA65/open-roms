@@ -27,7 +27,7 @@ load_tape_turbo:
 
 	// FALLTROUGH
 
-#if CONFIG_TAPE_NORMAL && CONFIG_TAPE_AUTODETECT
+#if CONFIG_TAPE_AUTODETECT
 
 load_tape_turbo_takeover:             // entry point for turbo->normal takeover
 
@@ -51,6 +51,9 @@ load_tape_turbo_header:
 	// 16 bytes         - filename, padded with 0x20
 
 	jsr tape_turbo_sync_header
+#if CONFIG_TAPE_AUTODETECT
+	bcs_16 load_tape_normal_takeover   // failure, probably not a turbo tape file
+#endif
 	ldy #$00
 	sta (TAPE1), y                     // store header type
 	iny
@@ -106,8 +109,11 @@ load_tape_turbo_payload:
 	sta PRTY
 
 	// Read file payload
-
+!:
 	jsr tape_turbo_sync_payload
+#if CONFIG_TAPE_AUTODETECT
+	bcs !-
+#endif
 
 	// FALLTROUGH
 

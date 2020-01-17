@@ -31,6 +31,9 @@ tape_normal_pilot_common:
 
 tape_normal_pilot_common_restart:
 
+	lda #$0B
+	sta VIC_EXTCOL
+
 	lda FSBLK
 	sta ROPRTY
 

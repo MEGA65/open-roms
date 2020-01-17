@@ -24,10 +24,10 @@ tape_normal_get_data:
 	lda #$00
 	sta RIPRTY
 
-	// Read the pilot and sync of the block
+	// Read sync of the block
 	ldy #$89
 	jsr tape_normal_sync
-	bcs tape_normal_get_block_done     // XXX make it more error resistant
+	bcs tape_normal_get_block_done
 	jsr tape_normal_get_marker
 
 tape_normal_get_data_loop:
@@ -39,7 +39,7 @@ tape_normal_get_data_loop:
 
 	// Store byte, calculate checksum
 	lda INBIT
-	ldy #$00                           // XXX probably can be optimized out for 65C02
+	ldy #$00
 	sta (MEMUSS), y
 	eor RIPRTY
 	sta RIPRTY
@@ -60,7 +60,7 @@ tape_normal_get_data_loop:
 	sec
 	rts
 
-tape_normal_get_checksum: // XXX handle second copy, with pilot starting from $09
+tape_normal_get_checksum:        // XXX handle second copy, with pilot starting from $09
 
 	lda INBIT
 	eor RIPRTY

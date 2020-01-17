@@ -56,7 +56,7 @@
 
 #define CONFIG_TAPE_NORMAL
 #define CONFIG_TAPE_TURBO
-#define CONFIG_TAPE_AUTODETECT         // not fully done yet!
+#define CONFIG_TAPE_AUTODETECT         // mostly works, but not fullyy done yet!
 // #define CONFIG_TAPE_NO_KEY_SENSE
 // #define CONFIG_TAPE_NO_MOTOR_CONTROL
 

@@ -31,5 +31,29 @@ tape_turbo_get_bit:
 
 #endif
 
+	cmp SYNO                           // threshold
+	bcs !+
+
+	clc
+	ror
+	sta IRQTMP+0                       // store half of the last measurement result for short pulse
+
+	lda #$01
+	sta SID_SIGVOL
+	lda #$06
+	sta VIC_EXTCOL
+	sec
+	rts
+!:
+	clc
+	ror
+	sta IRQTMP+1                       // store half of the last measurement result for long pulse
+
+	lda #$00
+	sta SID_SIGVOL
+	sta VIC_EXTCOL
+	clc
+	rts
+
 
 #endif // CONFIG_TAPE_TURBO

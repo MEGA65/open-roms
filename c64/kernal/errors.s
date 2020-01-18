@@ -1,5 +1,9 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
-// Kernal error codes are described in 'Commodore 64 Programmer's Reference Guide', page 306
+
+// Kernal error codes are described in 'Commodore 64 Programmers Reference Guide', page 306
 
 kernalerror_ROUTINE_TERMINATED: // by a STOP key
 	lda #K_ERR_ROUTINE_TERMINATED
@@ -56,14 +60,15 @@ kernalerror_TOP_MEM_RS232:
 	sec
 	rts
 
-// Kernal status codes are described in 'Commodore 64 Programmer's Reference Guide', page 292
+
+// Kernal status codes are described in 'Commodore 64 Programmers Reference Guide', page 292
 
 kernalstatus_reset:
 	lda #$00
 	sta IOSTATUS
 	rts
 
-// The following two statuses are currentl not implemented - and most likely not really needed
+// The following two statuses are currently not implemented - and most likely not really needed
 
 // kernalstatus_TIMEOUT_WRITE:
 //	lda IOSTATUS

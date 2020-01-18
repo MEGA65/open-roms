@@ -1,15 +1,14 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tape (turbo) part of the LOAD routine
 //
 
-// Based on routine by enthusi/Onslaught, found here:
+// Initially based on routine by enthusi/Onslaught, found here:
 // - https://codebase64.pokefinder.org/doku.php?id=base:turbotape_loader_source
-
-
-// XXX use calibration bits to improve reading
-// XXX find out how to use B0 tape timing
-// XXX put header type into (TAPE1)
+// but heavily reworked since then. Still, original authors deserve credits!
 
 
 #if CONFIG_TAPE_TURBO
@@ -19,16 +18,23 @@ load_tape_turbo:
 
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
-	lda #$00
-	sta CIA2_TIMAHI // $DD05
-	lda #$FE                           // timer threshold for TurboTape
-	sta CIA2_TIMALO // $DD04
-
 	// Prepare for sound effects
 	jsr tape_clean_sid
 
 	// Start playing
+	jsr tape_common_prepare_cia
 	jsr tape_ask_play
+
+	// FALLTROUGH
+
+#if CONFIG_TAPE_AUTODETECT
+
+load_tape_turbo_takeover:             // entry point for turbo->normal takeover
+
+	jsr tape_common_autodetect
+	bcc_16 load_tape_normal_takeover
+
+#endif
 
 	// FALLTROUGH
 
@@ -45,6 +51,9 @@ load_tape_turbo_header:
 	// 16 bytes         - filename, padded with 0x20
 
 	jsr tape_turbo_sync_header
+#if CONFIG_TAPE_AUTODETECT
+	bcs_16 load_tape_normal_takeover   // failure, probably not a turbo tape file
+#endif
 	ldy #$00
 	sta (TAPE1), y                     // store header type
 	iny
@@ -75,7 +84,7 @@ load_tape_turbo_header_loop:
 	// Handle the header
 
 	jsr tape_clean_sid
-	jsr tape_handle_header             // XXX handle non-relocatable programs - any non-0 even header type
+	jsr tape_handle_header
 	bcs load_tape_turbo_header         // if name does not match, look for other header
 
 	// FALLTROUGH
@@ -100,8 +109,11 @@ load_tape_turbo_payload:
 	sta PRTY
 
 	// Read file payload
-
+!:
 	jsr tape_turbo_sync_payload
+#if CONFIG_TAPE_AUTODETECT
+	bcs !-
+#endif
 
 	// FALLTROUGH
 
@@ -131,7 +143,7 @@ load_tape_turbo_loop:
 
 	// Verify the checksum
 	cpx PRTY
-	beq_far tape_load_success
+	beq_16 tape_load_success
 	jmp tape_load_error
 
 

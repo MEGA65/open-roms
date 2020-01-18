@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // This routine prints messages that have been packed
 // using the make_error_tables program.
 // The general idea is to save space in the ROM.
@@ -30,22 +34,34 @@ packed_message_search:
 	sec
 	rts
 
-found_message_in_token_stream:
+found_message_in_token_stream: // XXX size-optimize this
 	// Now print each word in the message
 	phy_trash_a
 	lda packed_message_tokens,y
-	cmp #$ff
-	beq !+
+	cmp #$FF
+	beq found_message_in_token_stream_done
+
 	jsr print_packed_word
-	jsr print_space
 	ply_trash_a
 	iny
-	bne found_message_in_token_stream
+	beq found_message_in_token_stream_done
 !:
+	phy_trash_a
+	lda packed_message_tokens,y
+	cmp #$FF
+	beq found_message_in_token_stream_done
+
+	pha
+	jsr print_space
 	pla
-	// Rub out space at the end
-	lda #$14
-	jsr JCHROUT
+
+	jsr print_packed_word
+	ply_trash_a
+	iny
+	bne !-
+
+found_message_in_token_stream_done:
+	pla
 	rts
 
 print_packed_word:
@@ -93,7 +109,7 @@ packed_word_search:
 found_packed_word:
 
 	// Get pointer to start of packed word
-	// Make sure we don't wrap on a page boundary
+	// Make sure we do not wrap on a page boundary
 	tya
 	clc
 	adc FRESPC+0
@@ -136,15 +152,11 @@ next_packed_word_char:
 	lsr
 	tax
 
-	// Save Y so it doesn't get clobbered by CHROUT
-	phy_trash_a
-
 	// X=1-14 = first 14 chars, so subtract one
 	lda packed_message_chars-1,x
-	jsr JCHROUT
+	jsr JCHROUT                        // preserves .Y
 
 	// See if there is a char in the low nybl to print
-	ply_trash_a
 	lda (FRESPC),y
 	and #$0f
 	beq end_of_packed_word

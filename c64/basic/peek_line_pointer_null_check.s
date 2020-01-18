@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Return C=1 if a pointer in BASIC memory space is NULL, else C=0
 // X = ZP pointer to check
 

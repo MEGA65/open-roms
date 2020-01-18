@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // IEC part of the LOAD routine
@@ -29,7 +32,7 @@ load_iec:
 
 	// Check file name
 	lda FNLEN
-	beq_far kernalerror_FILE_NAME_MISSING
+	beq_16 kernalerror_FILE_NAME_MISSING
 
 	// Display SEARCHING FOR + filename
 	jsr lvs_display_searching_for
@@ -57,15 +60,17 @@ load_iec:
 	jsr TALK
 	bcs load_iec_error
 
+#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
+	jsr burst_advertise
+#endif
+
 	lda #$60 // open channel / data (p3) , required according to p13
 	sta TBTCNT
 	jsr iec_tx_command
 	bcs load_iec_error
 
 #if CONFIG_IEC_DOLPHINDOS
-
 	jsr dolphindos_detect
-
 #endif
 
 	// We are currently talker, so do the IEC turn around so that we
@@ -103,12 +108,12 @@ load_iec:
 
 #if CONFIG_IEC_JIFFYDOS
 	cmp #$01
-	beq_far jiffydos_load              // branch if JiffyDOS
+	beq_16 jiffydos_load               // branch if JiffyDOS
 #endif
 
 #if CONFIG_IEC_DOLPHINDOS
 	cmp #$02
-	beq_far dolphindos_load            // branch if DolphinDOS
+	beq_16 dolphindos_load             // branch if DolphinDOS
 #endif
 
 #endif
@@ -146,7 +151,7 @@ load_iec_loop:
 	phx_trash_a
 	jsr udtim_keyboard
 	jsr STOP
-	bcs_far load_break_error
+	bcs_16 load_break_error
 	plx_trash_a
 !:
 	// Check for EOI - if so, this was the last byte

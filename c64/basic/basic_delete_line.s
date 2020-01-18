@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Delete the current BASIC line, which is assumed to have already
 // been found with basic_find_line.
 // Really only consists of copying memory down.

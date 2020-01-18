@@ -1,10 +1,13 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Matrix for retrieving bucky key status on the C64 keyboard
 //
 // Values based on:
-// - [CM64]  Compute's Mapping the Commodore 64 - pages 58 (SHFLAG), 173 (matrix)
-// - [CM128] Compute's Mapping the Commodore 128 - pages 212 (SHFLAG), 290 (matrix)
+// - [CM64]  Computes Mapping the Commodore 64 - pages 58 (SHFLAG), 173 (matrix)
+// - [CM128] Computes Mapping the Commodore 128 - pages 212 (SHFLAG), 290 (matrix)
 // - https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt
 //
 

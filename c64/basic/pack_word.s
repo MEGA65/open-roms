@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Pack a word using the simple compression scheme.
 // This has to be the same implementation as in compress_text.c
 // because we compress input lines of BASIC to do the tokenisation.

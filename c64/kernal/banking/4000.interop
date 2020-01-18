@@ -1,0 +1,1 @@
+This particular address is not for interoperability - we had to choose some fixed location foor the extended ROM jumptable, beginning of the mapped memory block is just sane.

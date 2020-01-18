@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 // Pop key out of keyboard buffer
 // Disable interrupts while reading from keyboard buffer

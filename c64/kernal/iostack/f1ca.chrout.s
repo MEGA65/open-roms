@@ -1,9 +1,12 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 278/279
-// - [CM64] Compute's Mapping the Commodore 64 - page 228
+// - [RG64] C64 Programmers Reference Guide   - page 278/279
+// - [CM64] Computes Mapping the Commodore 64 - page 228
 //
 // CPU registers that has to be preserved (see [RG64]): .Y
 // Additionally we have to preserve .X for out CHRIN and implementation
@@ -15,7 +18,7 @@ CHROUT:
 
 	// Save X and Y values
 	// (Confirmed by writing a test program that X and Y
-	// don't get modified, in agreement with C64 PRG's
+	// do not get modified, in agreement with C64 PRG
 	// description of CHROUT)
 
 	phx_trash_a
@@ -27,16 +30,16 @@ CHROUT:
 	lda DFLTO
 
 	cmp #$03 // screen
-	beq_far chrout_screen
+	beq_16 chrout_screen
 
 #if HAS_RS232
 	cmp #$02 
-	beq_far chrout_rs232
+	beq_16 chrout_rs232
 #endif
 
 #if CONFIG_IEC
 	jsr iec_check_devnum_oc
-	bcc_far chrout_iec
+	bcc_16 chrout_iec
 #endif
 
 	// FALLTROUGH
@@ -66,6 +69,7 @@ chrout_done_unknown_device:
 chrout_done_success:
 	
 	plp
+	cli // needed for screen (checked calling the routine on original ROMs), XXX what about other devices?
 
 	// Restore X and Y
 	ply_trash_a

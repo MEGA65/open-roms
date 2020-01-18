@@ -1,3 +1,7 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 
 screen_code_to_petscii:
 	cmp #$1B

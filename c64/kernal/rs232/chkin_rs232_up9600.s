@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // RS-232 part of the CHKIN routine

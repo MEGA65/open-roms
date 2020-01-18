@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // CHROUT routine - screen support (character output)
@@ -29,12 +32,12 @@ chrout_screen:
 	bcc !+
 	
 	and #$7F
-	jmp output_literal_char // not high char
+	jmp chrout_screen_literal // not high char
 
 !:
 	// Range $20-$3F is unchanged
 	cmp #$40
-	bcc output_literal_char // not high char
+	bcc chrout_screen_literal // not high char
 
 	// Unshifted letters and symbols from $40-$5F
 	// all end up being -$40
@@ -49,63 +52,77 @@ chrout_screen:
 
 	// Fix shifted chars by adding $20 again
 	cmp #$20
-	bcc output_literal_char // not high char
+	bcc chrout_screen_literal // not high char
 	cmp #$40
-	bcs output_literal_char // not high char
+	bcs chrout_screen_literal // not high char
 	clc
 	adc #$20
 
-output_literal_char:
-	
+	// FALLTROUGH
+
+chrout_screen_literal:
+
 	// Write normal character on the screen
 
-	pha
-	
-	ldy PNTR
-	ora RVS    // Compute's Mapping the 64  p38
+	tax                                // store screen code, we need .A for calculations
+
+	// First we need offset from PNT in .Y, we can take it from PNTR
+
+	jsr screen_get_clipped_PNTR
+
+	// Put the character on the screen
+
+	txa
+	ora RVS                            // Computes Mapping the 64, page 38
 	sta (PNT),y
 
 	// Decrement number of chars waiting to be inserted
+
 	lda INSRT
 	beq !+
 	dec INSRT
 !:	
-	pla
-	cmp #$22
-	bne not_quote
+	// Toggle quote flag if required
 
-	//  Toggle quote flag if required
+	txa
+	cmp #$22
+	bne !+
+
 	lda QTSW
 	eor #$80
 	sta QTSW
+!:
+	// Set colour of the newly printed character
 
-not_quote:
-
-	// Set colour
 	lda COLOR
 	sta (USER),y
 
-	// Advance the column, and scroll screen down if we need
-	// to insert a 2nd line in this logical line.
-	// (eg Compute's Mapping the 64 p41)
-	ldx TBLX
+	// Advance the column
+
+	ldy PNTR
 	iny
 	sty PNTR
+
+	// Scroll down (extend logical line) if needed
+
 	cpy #40
 	bne !+
 	jsr screen_grow_logical_line
+	inc TBLX
 	ldy PNTR
 !:
-	cpy #80
-	bcc chrout_screen_done
-	lda #0
-	sta PNTR
-	jmp chrout_screen_advance_to_next_line
+	// If not the 80th character of the logical row, we are done
 
+	cpy #80
+	bcc chrout_screen_calc_lptr_done
+
+	// Advance to the next line
+
+	jmp screen_advance_to_next_line
 
 chrout_screen_calc_lptr_done:
 
-	jsr screen_calculate_line_pointer
+	jsr screen_calculate_pointers
 
 	// FALLTROUGH
 

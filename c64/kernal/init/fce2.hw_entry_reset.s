@@ -1,3 +1,7 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 // Resources describing the C64 reset sequence:
 // https://www.c64-wiki.com/wiki/Reset_(Process)
 

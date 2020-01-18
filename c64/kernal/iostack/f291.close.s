@@ -1,9 +1,12 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 281/282
-// - [CM64] Compute's Mapping the Commodore 64 - page 229/230
+// - [RG64] C64 Programmers Reference Guide   - page 281/282
+// - [CM64] Computes Mapping the Commodore 64 - page 229/230
 // - https://www.pagetable.com/?p=1031, https://github.com/mist64/cbmbus_doc (IEC command)
 //
 // CPU registers that has to be preserved (see [RG64]): none
@@ -24,12 +27,12 @@ CLOSE:
 
 #if HAS_RS232
 	cmp #$02
-	beq_far close_rs232
+	beq_16 close_rs232
 #endif
 
 #if CONFIG_IEC
 	jsr iec_check_devnum_oc
-	bcc_far close_iec
+	bcc_16 close_iec
 #endif
 
 	// FALLTROUGH
@@ -51,7 +54,7 @@ close_remove_from_table:
 	// Decrement the list size variable
 	dec LDTND
 
-	clc // report success - not sure if original CLOSE does this, but it's nevertheless a good practice
+	clc // report success - not sure if original CLOSE does this, but it is nevertheless a good practice
 
 close_end:
 	rts

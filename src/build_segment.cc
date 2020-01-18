@@ -36,6 +36,7 @@ std::string CMD_outFile   = "OUT.BIN";
 std::string CMD_outDir    = "./out";
 std::string CMD_segName   = "MAIN";
 std::string CMD_segInfo   = "(unnamed)";
+std::string CMD_romLayout = "STD";
 int         CMD_loAddress = 0xC000;
 int         CMD_hiAddress = 0xCFFF;
 
@@ -51,6 +52,7 @@ void printUsage()
         "usage: build_segment [-a <assembler jar file>] [-o <out file>] [-d <out dir>]" << "\n" <<
         "                     [-l <start/low address>] [-h <end/high address>]" << "\n" <<
         "                     [-s <segment name>] [-i <segment display info>]" << "\n" <<
+        "                     [-r <rom layout>]" << "\n" <<
         "                     <input dir/file list>" << "\n\n";
 }
 
@@ -77,9 +79,14 @@ class SourceFile
 public:
     SourceFile(const std::string &fileName, const std::string &dirName);
 
+    void preprocess();
+    bool preprocessLine(const std::string &line);
+    bool nameMatch(const std::string &token, const std::string &name);
+
     std::string fileName;
     std::string dirName;
 
+    bool ignore;
     bool floating;
     std::vector<char> content;
 
@@ -118,7 +125,7 @@ public:
 class Solver
 {
 public:
-    Solver(BinningProblem &problem) : problem(problem), logOutput(logFile, std::cout) {}
+    explicit Solver(BinningProblem &problem) : problem(problem), logOutput(logFile, std::cout) {}
 
     void run();
 
@@ -153,7 +160,7 @@ void parseCommandLine(int argc, char **argv)
 
     // Retrieve command line options
 
-    while ((opt = getopt(argc, argv, "a:o:d:s:i:l:h:")) != -1)
+    while ((opt = getopt(argc, argv, "a:o:d:s:i:r:l:h:")) != -1)
     {
         switch(opt)
         {
@@ -162,6 +169,7 @@ void parseCommandLine(int argc, char **argv)
             case 'd': CMD_outDir    = optarg; break;
             case 's': CMD_segName   = optarg; break;
             case 'i': CMD_segInfo   = optarg; break;
+            case 'r': CMD_romLayout = optarg; break;
             case 'l': CMD_loAddress = strtol(optarg, nullptr ,16); break;
             case 'h': CMD_hiAddress = strtol(optarg, nullptr ,16); break;
             default: printUsage(); ERROR();
@@ -193,7 +201,7 @@ void readSourceFiles()
             // This is a regular file
 
             char *tmp1  = strdup(objName.c_str());
-              char *tmp2 = strdup(objName.c_str());
+            char *tmp2 = strdup(objName.c_str());
 
             std::string dirName  = dirname(tmp1);
             std::string fileName = basename(tmp2);
@@ -231,6 +239,11 @@ void readSourceFiles()
 
         closedir(dirHandle);
     }
+
+    // Filter-out files marked as ignored
+
+    GLOBAL_sourceFiles.erase(std::remove_if(GLOBAL_sourceFiles.begin(), GLOBAL_sourceFiles.end(),
+        [](const SourceFile &sourceFile) -> bool { return sourceFile.ignore; }), GLOBAL_sourceFiles.end());
 
     if (GLOBAL_sourceFiles.empty()) ERROR("no source files found");
 
@@ -278,6 +291,7 @@ void calcRoutineSizes()
 
     outFile << "\n" << ".segment " << CMD_segName << " [start=$100, min=$100, max=$FFFF]" << "\n";
     outFile << "#define SEGMENT_" << CMD_segName << "\n";
+    outFile << "#define ROM_LAYOUT_" << CMD_romLayout << "\n";
 
     for (const auto &sourceFile : GLOBAL_sourceFiles)
     {
@@ -481,6 +495,7 @@ void compileSegment()
                ", outBin=\"" << CMD_outFile << "\", fill]" <<
                "\n";
     outFile << "#define SEGMENT_" << CMD_segName << "\n";
+    outFile << "#define ROM_LAYOUT_" << CMD_romLayout << "\n";
     outFile << ".namespace " << CMD_segName << " {" << "\n\n";
 
     // Write files which only contain definitions (no routines)
@@ -552,6 +567,7 @@ int main(int argc, char **argv)
 SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) :
     fileName(fileName),
     dirName(dirName),
+    ignore(false),
     floating(false),
     startAddr(-1),
     codeLength(-1),
@@ -602,12 +618,93 @@ SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) 
         startAddr = strtol(fileName.substr(0, 4).c_str(), nullptr ,16);
     }
 
+    // Preprocess the file (apply settings from the content)
+
+    preprocess();
+
     // Generate KickAss compatible label from the file name
 
     label = fileName.substr(0, fileName.length() - 2);
 
     std::replace(label.begin(), label.end(), '.', '_');
     std::replace(label.begin(), label.end(), ',', '_');
+}
+
+void SourceFile::preprocess()
+{
+    std::string contentStr(content.begin(), content.end());
+    std::istringstream stream(contentStr);
+    std::string line;
+
+    while (std::getline(stream, line))
+    {
+        if (line.empty()) continue;
+        std::replace(line.begin(), line.end(), '\t', ' ');
+        line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
+        if (!preprocessLine(line)) break;
+    }
+}
+
+bool SourceFile::preprocessLine(const std::string &line)
+{
+    // Split the line into tokens
+
+    std::list<std::string> tokens;
+
+    std::istringstream stream(line);
+    std::string token;
+    while(std::getline(stream, token, ' '))
+    {
+        if (token.empty()) continue;
+        tokens.push_back(token);
+    }
+    if (tokens.empty()) return true;
+
+    // Now preprocess line using the token list
+
+    auto iter = tokens.begin();
+
+    // Injest the comment token
+
+    if ((iter++)->compare("//") != 0 || iter == tokens.end()) return true;
+
+    // Check if supported directive
+
+    if ((iter++)->compare("#LAYOUT#") != 0) return true;
+
+    // Check if segment name and rom layout match
+
+    if (iter == tokens.end()) ERROR("syntax error, missing rom layout in '#LAYOUT#'");
+    if (!nameMatch(*(iter++), CMD_romLayout)) return true;
+
+    if (iter == tokens.end()) ERROR("syntax error, missing segment name in '#LAYOUT#'");
+    if (!nameMatch(*(iter++), CMD_segName)) return true;
+
+    // Retrieve and apply action
+
+    if (iter == tokens.end()) ERROR("syntax error, missing action in '#LAYOUT#'");
+
+    if (iter->compare("#IGNORE") == 0)
+    {
+        ignore = true;
+    }
+    else if (iter->compare("#TAKE-FLOAT") == 0)
+    {
+        floating = true;
+    }
+    else if (iter->compare("#TAKE") != 0)
+    {
+        ERROR(std::string("syntax error, unsupported action '") + token + "' in '#LAYOUT#'");
+    }
+
+    // Tell the caller to finish processing the file
+
+    return false;
+}
+
+bool SourceFile::nameMatch(const std::string &token, const std::string &name)
+{
+    return (token.compare("*") == 0) || (token.compare(name) == 0);
 }
 
 //
@@ -625,7 +722,7 @@ BinningProblem::BinningProblem(int loAddress, int hiAddress)
 
     gaps[loAddress] = hiAddress - loAddress + 1;
 
-	// Initial value of statistics
+    // Initial value of statistics
 
     statSize = gaps[loAddress];
     statFree = gaps[loAddress];
@@ -667,7 +764,7 @@ void BinningProblem::addToProblem(SourceFile *routine)
             // Put the routine into the gap, possibly removing it or splitting into two
 
             fixedRoutines[routine->startAddr] = routine;
-			statFree -= routine->codeLength;
+            statFree -= routine->codeLength;
 
             // Calculate possible new gap after the routine
 
@@ -694,7 +791,8 @@ void BinningProblem::addToProblem(SourceFile *routine)
 
         if (!gapFound)
         {
-            ERROR(std::string("start address of fixed address file '") + routine->fileName + "' already occupied");
+            ERROR(std::string("start address of fixed address file '") + \
+                  routine->fileName + "' already occupied or out of range");
         }
     }
 }

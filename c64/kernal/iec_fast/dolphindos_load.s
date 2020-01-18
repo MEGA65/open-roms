@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // DolphinDOS protocol support for IEC - optimized load loop

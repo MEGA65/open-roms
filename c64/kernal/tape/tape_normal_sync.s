@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tape (turbo) helper routine - synchronization handling
@@ -11,9 +14,14 @@
 
 tape_normal_sync:
 
+	lda #$06
+	sta VIC_EXTCOL
+
 	// Injest bytes of decreasing values
 
-	jsr tape_normal_get_marker         // XXX handle result
+	jsr tape_normal_get_marker
+	bcs tape_normal_sync_fail          // branch if end of data marker
+	
 	jsr tape_normal_get_byte
 	bcs tape_normal_sync_fail
 

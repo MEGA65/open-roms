@@ -1,5 +1,10 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+
 // LIST basic text.
-// XXX - Doesn't currently support line number ranges
+// XXX - Does not currently support line number ranges
 
 cmd_list:
 
@@ -125,7 +130,6 @@ list_not_quote:
 	bne list_not_rem
 	// REM command locks quote flag on until the end of the line, allowing
 	// funny characters in REM statements without problem.
-	inc $0427
 	sta QTSW    // Any value other than $00 or $FF will lock quote mode on, so the token value of REM is fine here
 	// FALL THROUGH
 list_not_rem:		
@@ -146,5 +150,3 @@ list_is_literal:
 list_end_of_line:
 	// Print end of line
 	jmp print_return
-
-

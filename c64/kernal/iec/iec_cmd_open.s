@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Kernal internal IEC routine
@@ -17,6 +20,12 @@ iec_cmd_open: // similar to TKSA, but without turnaround
 !:
 	ora #$F0
 
+#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
+	pha
+	jsr burst_advertise
+	pla
+#endif
+
 #if CONFIG_IEC_DOLPHINDOS
 
 	sta TBTCNT
@@ -24,6 +33,7 @@ iec_cmd_open: // similar to TKSA, but without turnaround
 	bcs !+ // branch if error
 
 	jsr dolphindos_detect
+
 	jmp iec_tx_command_finalize
 
 #else

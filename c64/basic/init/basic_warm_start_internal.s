@@ -1,3 +1,6 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 //
 // Continuation of the BASIC cold start routine

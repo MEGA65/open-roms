@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // IEC part of the CHKIN routine
@@ -13,18 +16,18 @@ chkin_iec:
 	
 	lda LAT, Y
 	cmp #$01
-	beq_far chkin_file_not_input
+	beq_16 chkin_file_not_input
 
 	// Send TALK + TKSA first
 	lda FAT,Y
 	
 	jsr TALK
-	bcs_far chkinout_device_not_present
+	bcs_16 chkinout_device_not_present
 
 	lda LAT, Y
 	ora #$60
 	jsr TKSA
-	bcs_far chkinout_device_not_present
+	bcs_16 chkinout_device_not_present
 
 	jmp chkin_set_device
 

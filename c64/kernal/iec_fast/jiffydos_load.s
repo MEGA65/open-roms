@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // JiffyDOS protocol support for IEC - optimized load loop
@@ -20,7 +23,7 @@ jiffydos_load:
 	// Timing is critical, do not allow interrupts
 	sei
 
-#if CONFIG_IEC_BLANK_SCREEN
+#if CONFIG_IEC_JIFFYDOS_BLANK
 
 	// Preserve register with screen status (blank/visibe)
 	lda VIC_SCROLY
@@ -57,7 +60,7 @@ jiffydos_load_loop:
 	lda CIA2_PRA
 	and #$FF - BIT_CIA2_PRA_DAT_OUT    // release
 
-#if CONFIG_IEC_BLANK_SCREEN
+#if CONFIG_IEC_JIFFYDOS_BLANK
 
 	// It seems JiffyDOS needs some time here; waste few cycles
 	nop
@@ -143,7 +146,7 @@ jiffydos_load_end:
 	lda #$01
 	sta IECPROTO
 
-#if CONFIG_IEC_BLANK_SCREEN
+#if CONFIG_IEC_JIFFYDOS_BLANK
 
 	// Restore screen state
 	lda TBTCNT

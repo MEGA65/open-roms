@@ -1,18 +1,30 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# M65 KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE-FLOAT
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 291
-// - [CM64] Compute's Mapping the Commodore 64 - page 237
+// - [RG64] C64 Programmers Reference Guide   - page 291
+// - [CM64] Computes Mapping the Commodore 64 - page 237
 //
 // CPU registers that has to be preserved (see [RG64]): none
 //
 
 RAMTAS:
 
-	// C64 Programmer's Reference guide p291:
+#if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
+	jsr map_KERNAL_1
+	jsr KERNAL_1__RAMTAS
+	jmp map_NORMAL
+
+#else
+
+	// C64 Programmers Reference guide p291:
 	// Clear $0000-$0101, $0200-$03ff
-	// PGS: $0000, $0001 are CPU IO ports, so shouldn't get written to
+	// PGS: $0000, $0001 are CPU IO ports, so should not get written to
 
 	// How many ways are there to efficiently erase these two pages
 	// of RAM? We would like to avoid any unnecessary byte similarity
@@ -26,7 +38,7 @@ RAMTAS:
 !:
 	sta $0300,Y
 	sta $0200,Y
-	sta $0002,Y // that's why we don't use .X for index, we do not want zeropage addressing here!
+	sta $0002,Y // that is why we do not use .X for index, we do not want zeropage addressing here!
 	iny
 	bne !-
 
@@ -81,3 +93,5 @@ ramtas_32k:
 
 	ldy #$80
 	bne !- // branch always
+
+#endif // ROM layout

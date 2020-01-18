@@ -4,15 +4,15 @@
 Here are the features of the Open ROMs not found in the original ROMs from the 80s (many of them are [configurable](CONFIG.md) during compilation):
 
 
-* improved keyboard scanning, resistant to ghosting and joystick interference (one variant even supports multi-keyy rollover), supports additional C128 keys
+* improved keyboard scanning, resistant to ghosting and joystick interference (one variant even supports multi-key rollover), supports additional C128 keys
 * joystick can be used to move text cursor
 * pre-defined function keys
 
-* JiffyDOS protocol support
-* partial DolphinDOS protocol support
+* JiffyDOS and DolphinDOS protocols support
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 
-* turbo tape load support (as device 7, or using `←L`), up to 250 blocks (can store bytes under I/O)
+* turbo tape load support (as device 7, or using `←L`), quite sophisticated: up to 250 blocks (can store bytes under I/O), automatically adjusts for tape speed differences
+* improved support for tape adapters (for using regular casette players and other audio devices instead of Datasette)
 
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
@@ -48,28 +48,29 @@ The following ROM features are currently missing:
 
 ## Keyboard
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| C64           | DONE     |                                                    |
-| C128          | DONE     |                                                    |
-| Mega65        | NOT DONE | code should be complete, but is not tested yet     |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| C64                | DONE     |                                                    |
+| C128               | DONE     |                                                    |
+| Mega65             | NOT DONE | code should be complete, but is not tested yet     |
 
 ## Screen
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| VIC-II        | PARTIAL  | 80 chars in logical line support is very buggy     |
-| VDC 80 col.   | NOT DONE |                                                    |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| VIC-II             | DONE     |                                                    |
+| 80 columns, VDC    | NOT DONE |                                                    |
+| 80 columns, Mega65 | NOT DONE |                                                    |
 
 ## Tape port (LOAD only!)
 
 * Tapuino
 * Datasette
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| normal        | PARTIAL  | no error correction, no tape speed calibratrion    |
-| turbo         | PARTIAL  | up to 250 blocks, no tape speed calibratrion yet   |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| normal             | PARTIAL  | no tape speed calibratrion, no error correction    |
+| turbo (250 blocks) | DONE     |                                                    |
 
 ## IEC bus
 
@@ -78,13 +79,13 @@ The following ROM features are currently missing:
 * most disk drives and printers
 * some hard drives
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| standard      | DONE     |                                                    |
-| JiffyDOS      | DONE     |                                                    |
-| DolphinDOS    | DONE     |                                                    |
-| CIA burst mod | NOT DONE |                                                    |
-| Mega65 burst  | NOT DONE | pure software implementation should be feasible    |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| standard           | DONE     |                                                    |
+| JiffyDOS           | DONE     |                                                    |
+| DolphinDOS         | DONE     |                                                    |
+| CIA burst mod      | NOT DONE |                                                    |
+| Mega65 burst       | NOT DONE |                                                    |
 
 ## IEEE-488 bus
 
@@ -92,20 +93,20 @@ The following ROM features are currently missing:
 * PET era disk drives and printers
 * various scientific equipment
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| CBM cartridge | NOT DONE |                                                    |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| CBM cartridge      | NOT DONE |                                                    |
 
 ## RS-232
 
 * modems (telephone, WiFi)
 * parallel port printers
 
-| Driver        | Status   |  Remarks                                           |
-| :-----------: | :------: | :------------------------------------------------: |
-| UP2400        | NOT DONE |                                                    |
-| UP9600        | NOT DONE | work started, not functional yet                   |
-| ACIA 6551     | NOT DONE |                                                    |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| UP2400             | NOT DONE |                                                    |
+| UP9600             | NOT DONE | work started, not functional yet                   |
+| ACIA 6551          | NOT DONE |                                                    |
 
 
 # API status
@@ -178,7 +179,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | :-------: | :--------: | :---------- | :------: | :--------------------------------------------------: |
 | `($028F)` |            | `KEYLOG`    | DONE     |                                                      |
 | `$FF81`   | `$FF5B`    | `CINT`      | DONE     |                                                      |
-| `$FF84`   | `$FDA3`    | `IOINIT`    | PARTIAL  | CIA initialization incomplete                        |
+| `$FF84`   | `$FDA3`    | `IOINIT`    | DONE     |                                                      |
 | `$FF87`   | `$FD50`    | `RAMTAS`    | DONE     |                                                      |
 | `$FF8A`   | `$FD15`    | `RESTOR`    | DONE     |                                                      |
 | `$FF8D`   | `$FD1A`    | `VECTOR`    | DONE     |                                                      |
@@ -219,7 +220,7 @@ NOTE: Even the 'DONE' routines won't support features described as missing in on
 | `$FFF0`   | `$E50A`    | `PLOT`      | DONE     |                                                      |
 | `$FFF3`   |            | `IOBASE`    | DONE     |                                                      |
 | `($FFFA)` |            | NMI vec     | PARTIAL  |                                                      |
-| `($FFFC)` | `$FCE2`    | RESET vec   | PARTIAL  | see IOINIT status                                    |
+| `($FFFC)` | `$FCE2`    | RESET vec   | DONE     |                                                      |
 | `($FFFE)` |            | IRQ/BRK vec | DONE     |                                                      |
 
 <br />
@@ -235,20 +236,22 @@ Not all of them - only these we want to have implemented.
 | `$E518`   | legacy part of CINT          | DONE     |                                                    |
 | `$E51B`   | init screen keyboard, no VIC | DONE     |                                                    |
 | `$E544`   | clear screen                 | DONE     |                                                    |
-| `$E50C`   | set cursor position          | PARTIAL  |                                                    |
-| `$E566`   | home cursor                  | NOT DONE |                                                    |
+| `$E50C`   | set cursor position          | DONE     |                                                    |
+| `$E566`   | home cursor                  | DONE     |                                                    |
+| `$E56C`   | set PNT and USER values      | DONE     |                                                    |
 | `$E5A0`   | setup VIC II & I/O           | DONE     |                                                    |
 | `$E6B6`   | advance cursor               | NOT DONE |                                                    |
 | `$E701`   | previous line                | NOT DONE |                                                    |
 | `$E716`   | screen CHROUT                | NOT DONE |                                                    |
 | `$E8DA`   | color code table             | DONE     |                                                    |
-| `$E8EA`   | scroll line                  | NOT DONE |                                                    |
+| `$E8EA`   | scroll logical line up       | DONE     |                                                    |
 | `$E96C`   | insert line on top           | NOT DONE |                                                    |
-| `$E9FF`   | clear line                   | NOT DONE |                                                    |
+| `$E9FF`   | clear line                   | DONE     |                                                    |
 | `$EA31`   | default IRQ                  | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below             | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI             | DONE     |                                                    |
 | `$F142`   | get key from buffer          | DONE     |                                                    |
+| `$F3F6`   | (unknown)                    | NOT DONE |                                                    |
 | `$F646`   | IEC close                    | NOT DONE |                                                    |
 | `$FD30`   | default vectors              | DONE     |                                                    |
 | `$FD90`   | (unknown)                    | NOT DONE |                                                    |

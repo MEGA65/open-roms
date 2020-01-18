@@ -1,3 +1,8 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+
 cmd_sys:
 	
 	jsr basic_end_of_statement_check

@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Advance OLDTXT by following the
 // link to the next line
 

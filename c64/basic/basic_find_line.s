@@ -1,3 +1,8 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+
 // Find the BASIC line with number LINNUM
 
 

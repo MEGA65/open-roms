@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Variables used:
@@ -28,9 +31,8 @@ cursor_blink:
 	// FALLTROUGH
 
 cursor_draw:
-	jsr screen_calculate_line_pointer // XXX try to make this call not needed
 
-	ldy PNTR
+	jsr screen_get_clipped_PNTR
 	lda (PNT),y
 	sta GDBLN
 	eor #$80
@@ -58,8 +60,8 @@ cursor_hide_if_visible:
 
 cursor_undraw:
 
+	jsr screen_get_clipped_PNTR
 	lda GDBLN
-	ldy PNTR
 	sta (PNT),y
 	lda GDCOL
 	sta (USER),y

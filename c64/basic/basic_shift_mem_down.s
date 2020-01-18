@@ -1,3 +1,8 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+
 basic_shift_mem_down_and_relink:
 	// Shift memory down to basic_current_line_pointer
 	// from X bytes further along.
@@ -168,4 +173,3 @@ relink_down_loop:
 
 	clc
 	rts
-	

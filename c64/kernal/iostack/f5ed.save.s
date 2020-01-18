@@ -1,9 +1,12 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 293/294
-// - [CM64] Compute's Mapping the Commodore 64 - page 231/232
+// - [RG64] C64 Programmers Reference Guide   - page 293/294
+// - [CM64] Computes Mapping the Commodore 64 - page 231/232
 // - IEC reference at http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 //
 // CPU registers that has to be preserved (see [RG64]): none
@@ -24,7 +27,7 @@ SAVE:
 
 #if CONFIG_IEC
 	jsr iec_check_devnum_lvs
-	bcc_far save_iec
+	bcc_16 save_iec
 #endif
 
 	jmp lvs_illegal_device_number 

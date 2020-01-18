@@ -1,0 +1,3 @@
+INY + LDA ($D1),Y + DEY + STA ($D1),Y + INY
+
+Part of the loop moving some memory content (pointed by a zeropage variable) by 1 byte. Not creative - not copyrightable.

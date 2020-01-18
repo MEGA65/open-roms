@@ -1,0 +1,3 @@
+LDX #$18 + JSR $E9FF
+
+Clear the last screen line by calling a well-known routine. Trivial - not copyrightable.

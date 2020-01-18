@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Jump back into the BASIC execute line loop
 // after first checking that we have a colon
 // or $00 char
@@ -87,7 +91,7 @@ basic_execute_statement:
 
 	cmp #$7f
 	bcc not_a_token
-	// It's a token: So get the jump table entry for it, push it on the stack
+	// It is a token: So get the jump table entry for it, push it on the stack
 	// and then RTS to start it.
 	asl
 	tax
@@ -112,7 +116,7 @@ not_a_token:
 	cmp #$3a
 	beq basic_skip_char
 	
-	// If all else fails, it's a syntax error
+	// If all else fails, it is a syntax error
 	jmp do_SYNTAX_error
 
 basic_skip_char:

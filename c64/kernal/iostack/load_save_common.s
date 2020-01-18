@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Helper functions for various LOAD/VERIFY/SAVE routine variants (IEC / U64 / etc.)
@@ -102,6 +105,7 @@ lvs_advance_MEMUSS:
 	rts
 
 #endif
+
 
 lvs_check_EAL:
 
@@ -223,7 +227,6 @@ lvs_display_saving:
 !:
 	rts
 
-
 lvs_error_end:
 
 	sec
@@ -231,7 +234,7 @@ lvs_error_end:
 
 lvs_return_last_address:
 
-	// Return last address - Compute's Mapping the 64 says without the '+1',
+	// Return last address - Computes Mapping the 64 says without the '+1',
 	// checked (short test program) on original ROMs that this is really the case
 	ldx EAL+0
 	ldy EAL+1
@@ -242,6 +245,8 @@ lvs_success_end:
 	clc
 	rts
 
+#endif
+
 lvs_device_not_found_error:
 
 	jsr kernalstatus_DEVICE_NOT_FOUND
@@ -251,6 +256,8 @@ lvs_illegal_device_number:
 
 	jsr kernalstatus_DEVICE_NOT_FOUND
 	jmp kernalerror_ILLEGAL_DEVICE_NUMBER
+
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
 
 lvs_load_verify_error:
 	// XXX should we really return BASIC error code here?
@@ -264,3 +271,5 @@ lvs_verify_error:
 	lda #B_ERR_VERIFY
 	sec
 	rts
+
+#endif

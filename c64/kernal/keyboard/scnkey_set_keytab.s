@@ -1,8 +1,11 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Well-known Kernal routine, described in:
 //
-// - [CM64] Compute's Mapping the Commodore 64 - pages 220, 221
+// - [CM64] Computes Mapping the Commodore 64 - pages 220, 221
 //
 
 

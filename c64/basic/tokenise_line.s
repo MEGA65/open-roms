@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Tokenise a line of BASIC
 // Stored at $0200
 // Length in __tokenise_work1
@@ -266,4 +270,3 @@ done_searching_for_token:
 	sec
 	lda #$00
 	rts
-

@@ -1,3 +1,6 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 //
 // !!! PROPOSAL ONLY !!! PROPOSAL ONLY !!! NOT FOR USING EXTERNALLY YET !!!
@@ -6,7 +9,7 @@
 // Do not change! Locations of the following data should be constant - now and forever!
 //
 // If you want to integrate Open ROMs support in your emulator, FPGA ccomputer, etc. - this
-// is the official way to recognize the ROM and it's revision.
+// is the official way to recognize the ROM and its revision.
 //
 
 

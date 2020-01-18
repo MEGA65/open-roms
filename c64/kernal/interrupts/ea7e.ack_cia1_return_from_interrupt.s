@@ -1,3 +1,8 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
+
 // https://csdb.dk/forums/index.php?roomid=11&topicid=5776
 // Clear the CIA1 interrupt flag, and then fall through to
 // the return from interrupt routine

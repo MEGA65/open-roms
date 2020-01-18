@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Multiply Floating Point Accumulator by 10
 // = 8x + 2x
 // Implement by shifting MAC left one bit,

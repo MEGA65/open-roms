@@ -1,9 +1,12 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 285
-// - [CM64] Compute's Mapping the Commodore 64 - page 238
+// - [RG64] C64 Programmers Reference Guide   - page 285
+// - [CM64] Computes Mapping the Commodore 64 - page 238
 //
 // CPU registers that has to be preserved (see [RG64]): none
 //
@@ -22,8 +25,8 @@ IOINIT:
 
 	ldx #$27
 	stx CPU_R6510
-	ldx #$EF
-	stx CPU_D6510  // [CM64] page 4
+	ldx #$2F                           // checked real ROM value
+	stx CPU_D6510
 
 	//
 	// Now prevent the CIAs from generating interrupts, who knows what damage they can do
@@ -110,12 +113,11 @@ IOINIT:
 	lda #$3F
 	sta CIA2_DDRA    // $DD02
 
-	// XXX detect TOD clock, see  https://codebase64.org/doku.php?id=base:efficient_tod_initialisation
-
-	// XXX how to initialize these timers???
-	// stx CIA1_CRB    // $DC0F
-	// stx CIA2_CRA    // $DD0E
-	// stx CIA2_CRB    // $DD0F
+	// Checked using VICE that original ROM initializes timers this way
+	ldx #$08
+	stx CIA1_CRB    // $DC0F
+	stx CIA2_CRA    // $DD0E
+	stx CIA2_CRB    // $DD0F
 
 	// Set VIC-II bank - at least the 'Operacja Proboszcz' game needs this within IOINIT
 	// Checked on original ROMs, that it sets bit #2 (RS-232 output) high
@@ -123,13 +125,8 @@ IOINIT:
 	ldx #%00000111 // XXX adapt this to IEC idle state, JMP at the end won't be needed
 	stx CIA2_PRA    // $DD00
 
-	// 
-
-	ldy #<16421
-	ldx #>16421
-
-	sty CIA1_TIMALO    // $DC04
-	stx CIA1_TIMAHI    // $DC05
+	// Put something sane in the IRQ timer
+	jsr setup_irq_timer
 
 	// Enable timer A to run continuously (http://codebase64.org/doku.php?id=base:timerinterrupts)
 	ldx #$11

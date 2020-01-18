@@ -1,9 +1,12 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 283
-// - [CM64] Compute's Mapping the Commodore 64 - page 227/228
+// - [RG64] C64 Programmers Reference Guide   - page 283
+// - [CM64] Computes Mapping the Commodore 64 - page 227/228
 //
 // CPU registers that has to be preserved (see [RG64]): for RS-232: .X, .Y
 //
@@ -15,13 +18,13 @@ getin_real:
 	lda DFLTN
 
 	// Try $00 - keyboard
-	beq_far getin_keyboard
+	beq_16 getin_keyboard
 
 #if HAS_RS232
 
 	// Try $02 - RS-232
 	cmp #$02
-	beq_far getin_rs232
+	beq_16 getin_rs232
 
 #endif // HAS_RS232
 

@@ -1,7 +1,11 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // SHIFT ON/OFF handling within CHROUT
 //
+
 
 chrout_screen_SHIFT_ON:
 

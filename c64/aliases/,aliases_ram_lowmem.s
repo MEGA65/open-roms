@@ -88,7 +88,7 @@
 	.label VERCKK    = $93  //          0 = LOAD, 1 = VERIFY
 	.label C3PO      = $94  //          flag - is BSOUR content valid
 	.label BSOUR     = $95  //          serial bus buffered output byte
-	.label SYNO      = $96  //          -- NOT IMPLEMENTED --
+	.label SYNO      = $96  //          temporary tape routines storage, [!] our usage differs
 	.label XSAV      = $97  //          temporary register storage for ASCII/tape related routines [!] usage details might differ
 	.label LDTND     = $98  //          number of entries in LAT / FAT / SAT tables
 	.label DFLTN     = $99  //          default input device
@@ -103,7 +103,7 @@
 	.label PTR1      = $9E  //          -- NOT IMPLEMENTED --
 	.label PTR2      = $9F  //          -- NOT IMPLEMENTED --
 	.label TIME      = $A0  // $A0-$A2  jiffy clock
-#if !CONFIG_IEC_JIFFYDOS && !CONFIG_IEC_DOLPHINDOS
+#if !CONFIG_IEC_JIFFYDOS && !CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC_BURST_CIA1 && !CONFIG_IEC_BURST_CIA2 && !CONFIG_IEC_BURST_SOFT
 	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage differs
 #else
 	.label IECPROTO  = $A3  //          -- WIP -- [!] 0 = normal, 1 = JiffyDOS, >= $80 for unknown
@@ -153,10 +153,10 @@
 	.label BLNON     = $CF  //          cursor visibility flag
 	.label CRSW      = $D0  //          whether to input from screen or keyboard
 	.label PNT       = $D1  // $D1-$D2  pointer to the current screen line
-	.label PNTR      = $D3  //          current screen X position
+	.label PNTR      = $D3  //          current screen X position (logical column), 0-79
 	.label QTSW      = $D4  //          quote mode flag
-	.label LNMX      = $D5  //          logical line length, [!] our usage probably differs in details
-	.label TBLX      = $D6  //          current screen Y position
+	.label LNMX      = $D5  //          logical line length, 39 or 79
+	.label TBLX      = $D6  //          current screen Y position (row), 0-24
 	.label SCHAR     = $D7  //          ASCII value of the last printed character
 	.label INSRT     = $D8  //          insert mode flag/counter
 	.label LDTBL     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
@@ -214,7 +214,7 @@
 	.label RIDBS     = $29C  //            -- WIP -- read pointer into RS-232 receive buffer
 	.label RODBS     = $29D  //            -- WIP -- read pointer into RS-232 send buffer
 	.label RODBE     = $29E  //            -- WIP -- write pointer into RS-232 send buffer
-	.label IRQTMP    = $29F  // $29F-$2A0  -- NOT IMPLEMENTED --
+	.label IRQTMP    = $29F  // $29F-$2A0  temporary IRQ vector storage [!] we use it for tape speed calibration instead
 	.label ENABL     = $2A1  //            -- NOT IMPLEMENTED --
 	.label TODSNS    = $2A2  //            -- NOT IMPLEMENTED --
 	.label TRDTMP    = $2A3  //            -- NOT IMPLEMENTED --

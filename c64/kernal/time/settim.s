@@ -1,9 +1,12 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 299/300
-// - [CM64] Compute's Mapping the Commodore 64 - page 232
+// - [RG64] C64 Programmers Reference Guide   - page 299/300
+// - [CM64] Computes Mapping the Commodore 64 - page 232
 //
 // CPU registers that has to be preserved (see [RG64]): .A, .X, .Y
 //
@@ -11,7 +14,7 @@
 SETTIM:
 
 	// Disable interrupts for the duration of the routine, to prevent
-	// jiffy clock update while changing it's values
+	// jiffy clock update while changing its values
 	sei
 
 	// Store the jiffy clock state
@@ -24,4 +27,3 @@ SETTIM:
 	// leaves IRQs enabled.
 	cli
 	rts
-

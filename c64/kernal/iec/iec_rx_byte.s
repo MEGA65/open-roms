@@ -1,3 +1,7 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 // Receive a byte from the IEC bus.
 // Implemented based on https://www.pagetable.com/?p=1135, https://github.com/mist64/cbmbus_doc,
 // http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf (page 11)
@@ -14,7 +18,7 @@ iec_rx_dispatch:
 
 	lda IECPROTO
 	cmp #$01
-	beq_far jiffydos_rx_byte
+	beq_16 jiffydos_rx_byte
 
 	// FALLTROUGH
 

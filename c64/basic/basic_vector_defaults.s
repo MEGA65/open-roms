@@ -1,9 +1,12 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 //
 // Default values for BASIC vectors - described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - pages 68-70
-// - [CM64] Compute's Mapping the Commodore 64 - page 318
+// - [RG64] C64 Programmers Reference Guide   - pages 68-70
+// - [CM64] Computes Mapping the Commodore 64 - page 318
 //
 
 basic_vector_defaults_1:

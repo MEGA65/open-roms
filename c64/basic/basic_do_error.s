@@ -1,4 +1,8 @@
-// Compute's Mapping the 64 p93
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+// Computes Mapping the 64 p93
 
 basic_do_error:
 	// Save error number

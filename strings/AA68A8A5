@@ -1,0 +1,3 @@
+TAX + PLA + TAY + LDA (zeropage address does not match)
+
+Some simple stack/register data transfer + loading accumulator from memory (address does not match) - trivial. Not copyrightable.

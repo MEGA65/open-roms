@@ -1,8 +1,12 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 286
-// - [CM64] Compute's Mapping the Commodore 64 - page 231
+// - [RG64] C64 Programmers Reference Guide   - page 286
+// - [CM64] Computes Mapping the Commodore 64 - page 231
 // - IEC reference at http://www.zimmers.net/anonftp/pub/cbm/programming/serial-bus.pdf
 //
 // CPU registers that has to be preserved (see [RG64]): none
@@ -41,17 +45,17 @@ LOAD:
 
 #if CONFIG_TAPE_NORMAL
 	cmp #$01
-	beq_far load_tape_normal
+	beq_16 load_tape_normal
 #endif
 
 #if CONFIG_TAPE_TURBO
 	cmp #$07
-	beq_far load_tape_turbo
+	beq_16 load_tape_turbo
 #endif
 
 #if CONFIG_IEC
 	jsr iec_check_devnum_lvs
-	bcc_far load_iec
+	bcc_16 load_iec
 #endif
 
 	jmp lvs_illegal_device_number

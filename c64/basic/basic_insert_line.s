@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Insert the tokenised line stored at $0200.
 // First work out where in the list to put it
 // (basic_find_line with the line number can be used to work

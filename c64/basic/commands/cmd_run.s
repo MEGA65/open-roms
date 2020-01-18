@@ -1,3 +1,8 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+
 cmd_run:
 	// RUN clears all variables
 	jsr basic_do_clr
@@ -15,7 +20,7 @@ cmd_goto:
 	jsr basic_parse_line_number
 	jsr basic_find_line
 	bcc !+
-	// Line doesn't exist, so report error
+	// Line does not exist, so report error
 	jmp do_UNDEFD_STATEMENT_error
 !:
 	// Run it!

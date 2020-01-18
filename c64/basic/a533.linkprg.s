@@ -1,8 +1,11 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 //
 // Well-known BASIC routine, described in:
 //
-// - [CM64] Compute's Mapping the Commodore 64 - page 95
+// - [CM64] Computes Mapping the Commodore 64 - page 95
 // - https://www.lemon64.com/forum/viewtopic.php?t=64721&sid=bc400a5a6d404f8f092e4d32a92f5de7
 //
 

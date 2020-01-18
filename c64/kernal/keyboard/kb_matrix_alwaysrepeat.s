@@ -1,9 +1,12 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Matrix ids of keys which should be repeated regardless of RPTFLG
 //
 // Values based on:
-// - [CM64] Compute's Mapping the Commodore 64 - page 58
+// - [CM64] Computes Mapping the Commodore 64 - page 58
 //
 
 

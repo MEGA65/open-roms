@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // IMPORTANT:
 // These routines lengths cannot be changed without changing
 // the aliases for peek_under_roms, poke_under_roms etc

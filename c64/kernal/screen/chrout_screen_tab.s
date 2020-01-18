@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tabulation keys handling within CHROUT
@@ -9,21 +12,27 @@
 
 chrout_screen_TAB_FW:
 
-	lda PNTR
+	jsr screen_get_clipped_PNTR
+	tya
 	ora #%00000111
-	sta PNTR
-	inc PNTR
+	tay
+	iny
+	cpy #40
+	bcc !+
+	ldy #39
+!:
+	sty PNTR
+	
 	jmp chrout_screen_calc_lptr_done
 
 
 chrout_screen_TAB_BW:
 
-	lda TBLX
-	ora PNTR
-	beq !+ // top-left corner, recalculating pointer is not necessary, but this is a very rare case nevertheless
+	jsr screen_get_clipped_PNTR
+	beq !+                             // column 0,  recalculating pointers is not necessary, but this is a rare case nevertheless
 
-	dec PNTR
-	lda PNTR
+	dey
+	tya
 	and #%11111000
 	sta PNTR
 !:

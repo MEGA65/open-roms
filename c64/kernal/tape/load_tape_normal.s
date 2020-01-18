@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tape (normal) part of the LOAD routine
@@ -31,6 +34,7 @@
 
 
 // XXX use pilot to calibrate reading speed
+// XXX add error correction
 
 
 #if CONFIG_TAPE_NORMAL
@@ -40,32 +44,34 @@ load_tape_normal:
 
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
-	// Setup CIA #2 timers
-	
-	ldx #$03                           // set timer A to 4 ticks
-	stx CIA2_TIMALO // $DD04
-	ldx #$00
-	stx CIA2_TIMAHI // $DD05
+#if CONFIG_TAPE_AUTODETECT
 
-	stx CIA2_TIMBHI // $DD07
-	dex                                // puts $FF - for running timer B as long as possible
-	stx CIA2_TIMBLO // $DD06
+	// Prepare for sound effects in case of turbo takeover
+	jsr tape_clean_sid
 
-	// Let timer A run continuously
+#endif
 
-	ldx #%00010001                     // start timer, force latch reload
-	stx CIA2_CRA    // $DD0E
-	
+	// Start playing
+	jsr tape_common_prepare_cia
+	jsr tape_ask_play
+
+#if CONFIG_TAPE_AUTODETECT
+
+	// FALLTROUGH
+
+load_tape_normal_takeover:             // entry point for turbo->normal takeover
+
+	jsr tape_common_autodetect
+	bcs_16 load_tape_turbo_takeover
+
+#endif
+
 	// Temporarily store MEMUSS in EAL
 
 	lda MEMUSS+1
 	sta EAL+1
 	lda MEMUSS+0
 	sta EAL+0
-
-	// Start playing
-
-	jsr tape_ask_play
 
 	// FALLTROUGH
 
@@ -91,7 +97,7 @@ load_tape_normal_header:
 	lda (TAPE1),y
 
 	cmp #$05
-	beq_far tape_load_error            // end of tape mark, nothing to load
+	beq_16 tape_load_error             // end of tape mark, nothing to load
 
 	cmp #$01
 	beq !+
@@ -124,10 +130,10 @@ load_tape_normal_payload:
 	jsr tape_normal_pilot_data
 	ldy #$00                           // no data size limit
 	jsr tape_normal_get_data
-	bcs_far tape_load_error
+	bcs_16 tape_load_error
 
 	jsr lvs_check_EAL
-	bne_far tape_load_error            // amount of data read does not match header info
+	bne_16 tape_load_error             // amount of data read does not match header info
 
 	jmp tape_load_success
 

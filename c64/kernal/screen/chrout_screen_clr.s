@@ -1,9 +1,13 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // CLR key handling within CHROUT
 //
 
+
 chrout_screen_CLR:
 
 	jsr clear_screen
-	jmp chrout_screen_done
+	jmp chrout_screen_calc_lptr_done

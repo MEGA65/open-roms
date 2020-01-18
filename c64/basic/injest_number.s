@@ -1,3 +1,8 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+
 // Parse a number from the input buffer at (TXTPTR)
 // Result is put into FAC1.
 // TXTPTR is updated with first position after the number.
@@ -5,7 +10,7 @@
 // XXX - Remember decimal position and exponent, and apply them
 // after to produce normalised floating point number.
 
-// XXX - Doesn't use routines to access memory under ROMs etc.
+// XXX - Does not use routines to access memory under ROMs etc.
 // This is important, because this routine operates on numbers in BASIC text.
 
 ij_not_a_digit:
@@ -127,7 +132,7 @@ ij_loop2:
 	// Carry set, so we have overflowed.
 	// We should shift everything right one digit, and increase
 	// the exponent by one.  The non-zero exponent tells us that we
-	// can't fit any more precision in.
+	// can not fit any more precision in.
 	jsr fac1_mantissa_div2
 !:
 
@@ -149,5 +154,3 @@ erase_fac1:
 	sta FACOV
 
 	rts
-	
-	

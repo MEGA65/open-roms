@@ -1,8 +1,11 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Extended keyboard matrix for Commodore 128 keyboards, based on
 //
-// - [CM128] Compute's Mapping the Commodore 128 - page 290
+// - [CM128] Computes Mapping the Commodore 128 - page 290
 // - http://commodore128.mirkosoft.sk/keyboard.html
 //
 

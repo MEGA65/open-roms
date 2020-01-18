@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tape (turbo) helper routine - handling the pilot
@@ -27,6 +30,9 @@ tape_normal_pilot_common:
 	// FALLTROUGH
 
 tape_normal_pilot_common_restart:
+
+	lda #$0B
+	sta VIC_EXTCOL
 
 	lda FSBLK
 	sta ROPRTY

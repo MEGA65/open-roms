@@ -33,6 +33,7 @@
 #define CONFIG_CPU_MOS_6502
 // #define CONFIG_CPU_WDC_65C02
 // #define CONFIG_CPU_CSG_65CE02
+// #define CONFIG_CPU_M65_45GS02
 // #define CONFIG_CPU_WDC_65816
 
 
@@ -45,16 +46,22 @@
 // I/O devices
 
 #define CONFIG_IEC
-#define CONFIG_IEC_BLANK_SCREEN
-#define CONFIG_IEC_DOLPHINDOS      // not finished yet, but LOAD works
+#define CONFIG_IEC_DOLPHINDOS
 #define CONFIG_IEC_DOLPHINDOS_FAST
 #define CONFIG_IEC_JIFFYDOS
+#define CONFIG_IEC_JIFFYDOS_BLANK
+// #define CONFIG_IEC_BURST_CIA1       // please keep disabled for now
+// #define CONFIG_IEC_BURST_CIA2       // please keep disabled for now
+// #define CONFIG_IEC_BURST_SOFT       // please keep disabled for now
 
 #define CONFIG_TAPE_NORMAL
 #define CONFIG_TAPE_TURBO
+#define CONFIG_TAPE_AUTODETECT         // mostly works, but not fullyy done yet!
+// #define CONFIG_TAPE_NO_KEY_SENSE
+// #define CONFIG_TAPE_NO_MOTOR_CONTROL
 
-// #define CONFIG_RS232_UP2400    // please keep disabled for now
-// #define CONFIG_RS232_UP9600    // please keep disabled for now
+// #define CONFIG_RS232_UP2400         // please keep disabled for now
+// #define CONFIG_RS232_UP9600         // please keep disabled for now
 
 
 // Multiple SID support

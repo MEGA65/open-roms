@@ -1,3 +1,8 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+
 basic_main_loop:
 
 	// XXX - Check if direct or program mode, and get next line of input
@@ -24,7 +29,7 @@ read_line_loop:
 	// Not carriage return, so try to append to line so far
 	cpx #80
 	bcc !+
-	// Report STRING TOO LONG error (Compute's Mapping the 64 p93)
+	// Report STRING TOO LONG error (Computes Mapping the 64 p93)
 	ldx #22
 	jmp basic_do_error
 !:
@@ -73,11 +78,11 @@ rsl_l1:
 
 #if CONFIG_DOS_WEDGE
 	cmp #$40 // '@'
-	beq_far wedge_dos
+	beq_16 wedge_dos
 #endif
 #if CONFIG_TAPE_WEDGE
 	cmp #$1F // left arrow
-	beq_far wedge_tape
+	beq_16 wedge_tape
 #endif
 
 #endif
@@ -168,7 +173,7 @@ not_a_line:
 
 	// Put invalid line number in current line number value,
 	// so that we know we are in direct mode
-	// (Compute's Mapping the 64 p19)
+	// (Computes Mapping the 64 p19)
 	lda #$FF
 	sta CURLIN+1
 

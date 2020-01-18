@@ -1,8 +1,11 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Keyboard scanning routine extension for C65 keyboards
 //
-// - [CM128] Compute's Mapping the Commodore 128 - pages 212 (SHFLAG)
+// - [CM128] Computes Mapping the Commodore 128 - pages 212 (SHFLAG)
 // - https://github.com/MEGA65/c65-specifications/blob/master/c65manualupdated.txt (matrix)
 //
 
@@ -59,7 +62,6 @@ scnkey_65_done:
 	stx C65_EXTKEYS_PR                 // connect C65 keys
 
 	rts
-
 
 
 #endif // CONFIG_KEYBOARD_C65 and no CONFIG_LEGACY_SCNKEY

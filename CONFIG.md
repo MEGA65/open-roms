@@ -74,6 +74,18 @@ Choose if your CPU supports the Commodore Semiconductor Group 65CE02 instruction
 
 It enables some speed/size code optimizations.
 
+### `CONFIG_CPU_CSG_4510`
+
+Choose if your CPU supports the Commodore Semiconductor Group 4510 instruction set, like:
+
+* CSG 4510 - microcontroller used in the Commodore 65 prototypes
+
+It enables some speed/size code optimizations and allows C65 memory mapping to work.
+
+### `CONFIG_CPU_M65_45GS02`
+
+Choose if you have a Mega65 FPGA board. It enables some speed/size code optimizations and allows Mega65 memory mapping to work.
+
 ### `CONFIG_CPU_WDC_65816`
 
 Choose if your CPU supports the 16-bit Western Design Center 65816 instruction set, like:
@@ -109,10 +121,6 @@ Adds support for the IEEC bus - for serial printers, disk drives, etc.
 
 Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
-### `CONFIG_IEC_BLANK_SCREEN`
-
-Causes screen blanking during some IEC operations (currently only JiffyDOS file loading) to increase the data transfer performance.
-
 ### `CONFIG_IEC_DOLPHINDOS`
 
 Adds support for DolphinDOS fast protocol to the IEC bus, using UserPort cable.
@@ -131,6 +139,10 @@ Adds support for JiffyDOS fast protocol to the IEC bus.
 
 Needs about 430 bytes in KERNAL segment. If unsure - enable.
 
+### `CONFIG_IEC_JIFFYDOS_BLANK`
+
+Causes screen blanking during JiffyDOS file loading to increase performance.
+
 ### `CONFIG_TAPE_NORMAL`
 
 Adds a minimal normal (standard Commodore format) tape support - just LOAD command.
@@ -139,9 +151,17 @@ Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, a
 
 ### `CONFIG_TAPE_TURBO`
 
-Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges)
+Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges), up to 250 blocks
 
-Needs about 650 bytes in KERNAL segment (if both normal and turbo are enabled, about 950 bytes are needed, as they share some code). If unsure - enable.
+Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, about 950 bytes are needed, as they share some code). If unsure - enable.
+
+### `CONFIG_TAPE_NO_KEY_SENSE`
+
+Enable this option if you are using a tape interface adapter with some audio signal source connected. These adapters lack key sense functionality, so the computer is unable to tell whether Play got pressed or not - with this option ROM will assume Play got pressed after imppulses start arriving from the tape.
+
+### `CONFIG_TAPE_NO_MOTOR_CONTROL`
+
+Enable this option if you are using a tape interface adapter lacking tape motor control (most likely every adapter currently being sold) - this will eliminate the need to quickly press space when the program header information gets displayed. Note: if you are using a cassette player with REM port, and your adapter is connected to this port too, than you do not need this option.
 
 ## Multiple SID support
 

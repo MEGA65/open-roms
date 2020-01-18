@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Variables used:
@@ -5,6 +8,7 @@
 // - BLNON (if cursor is visible)
 // - BLNCT (cursor blink countdown)
 //
+
 
 cursor_show_if_enabled:
 	lda BLNSW

@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 // Just a helper routine
 
@@ -20,4 +23,3 @@ find_fls_not_found:
 
 	sec
 	rts
-

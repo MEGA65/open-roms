@@ -1,0 +1,3 @@
+LDX #$18 + JSR $E9FF + DEX + BPL (go back to JSR) 
+
+Clear the whole screen by repeatedly calling a well-known routine to clear a single line. Not creative - not copyrightable.

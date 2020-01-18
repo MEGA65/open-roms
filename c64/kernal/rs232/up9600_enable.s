@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Enable UP9600 interface support
@@ -126,8 +129,6 @@ INSTERR
 	cli
 	sec
 	rts
-
-
 
 
 #endif // CONFIG_RS232_UP9600

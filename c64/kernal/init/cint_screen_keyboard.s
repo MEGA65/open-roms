@@ -1,10 +1,15 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // This is a part CINT which initializes screen and keyboard
 //
 // For more details see:
-// - [RG64] C64 Programmer's Reference Guide   - page 280
-// - [CM64] Compute's Mapping the Commodore 64 - page 242
+// - [RG64] C64 Programmers Reference Guide   - page 280
+// - [CM64] Computes Mapping the Commodore 64 - page 242
+//
+
 
 cint_screen_keyboard:
 
@@ -15,7 +20,7 @@ cint_screen_keyboard:
 	lda #>scnkey_set_keytab
 	sta KEYLOG+1
 
-	// Initialise cursor blink flags (Compute's Mapping the 64 p215)
+	// Initialise cursor blink flags (Computes Mapping the 64 p215)
 
 	lda #$01
 	sta BLNCT
@@ -30,7 +35,7 @@ cint_screen_keyboard:
 
 #endif
 
-	// Set keyboard decode vector  (Compute's Mapping the 64 p215)
+	// Set keyboard decode vector  (Computes Mapping the 64 p215)
 
 #if CONFIG_LEGACY_SCNKEY
 
@@ -42,10 +47,10 @@ cint_screen_keyboard:
 	bpl !-
 	sta BufferQuantity
 
-	// Set key repeat delay (Compute's Mapping the 64 p215)
+	// Set key repeat delay (Computes Mapping the 64 p215)
 	// Making some numbers up here: Repeat every ~1/10th sec
 	// But require key to be held for ~1/3sec before
-	// repeating (Compute's Mapping the 64 p58)
+	// repeating (Computes Mapping the 64 p58)
 
 	// Not needed for default keyboard scanning code
 
@@ -54,11 +59,11 @@ cint_screen_keyboard:
 	
 #endif
 
-	// Set current colour for text (Compute's Mapping the 64 p215)
+	// Set current colour for text (Computes Mapping the 64 p215)
 	ldx #$01     // default is light blue ($0E), but we use a different one
 	stx COLOR
 
-	// Set maximum keyboard buffer size (Compute's Mapping the 64 p215)
+	// Set maximum keyboard buffer size (Computes Mapping the 64 p215)
 	ldx #10
 	stx XMAX
 	
@@ -66,6 +71,6 @@ cint_screen_keyboard:
 	ldx #$00
 	stx MODE
 
-	// Fallthrough/jump to screen clear routine (Compute's Mapping the 64 p215)
+	// Fallthrough/jump to screen clear routine (Computes Mapping the 64 p215)
 
 	jmp clear_screen

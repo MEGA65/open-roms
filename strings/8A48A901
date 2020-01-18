@@ -1,0 +1,3 @@
+TXA + PHA + LDA #$01
+
+Store .X register on the stack (would be a single instruction on 65C02) + loading accumulator with 1. Trivial and not creative - not copyrightable.

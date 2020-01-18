@@ -1,3 +1,7 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 // printf()-like routine for simplifying debugging
 
 // Prints the literal zero-terminated string that follows,
@@ -140,4 +144,3 @@ printf_retreat:
 	rts
 
 #endif // CONFIG_DBG_PRINTF
-

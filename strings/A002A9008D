@@ -1,0 +1,3 @@
+LDY #$02 + LDA #$00 + STA (address does not match)
+
+Put $02 to Y register, put 0 into accumulator and store it somewhere (address does not match) - trivial, not copyrightable.

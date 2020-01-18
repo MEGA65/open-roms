@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Tape (turbo) helper routine - synchronization handling
@@ -10,24 +13,31 @@
 #if CONFIG_TAPE_TURBO
 
 
-tape_turbo_sync_common:
-
-	jsr tape_turbo_get_bit 
-	rol INBIT
-	lda INBIT
-	cmp #$02
-	bne tape_turbo_sync_common
-	rts
-
 tape_turbo_sync_header:
 
-	ldx #$FF
+	// Initial pulse threshold
+	lda #$BF                           // measured 128 bits '0' and 128 bits '1' under VICE, calculated average
+	sta SYNO
+
+	// Synchronize with start of sync sequence
+	jsr tape_turbo_sync_first
+#if CONFIG_TAPE_AUTODETECT
+	bcs tape_turbo_sync_done
+#endif
+
+	// Perform synchronization, double loop, total $C0 * $04 iterations
+	ldx #$C0
 !:
-	ldy #$03
+	ldy #$04
 !:
-	jsr tape_turbo_sync_common
+	stx XSAV
+	jsr tape_turbo_get_byte
+	cmp #$02
+	bne tape_turbo_sync_header         // branch if failure
+
 	dey
 	bne !-
+	ldx XSAV
 	dex
 	bne !--
 
@@ -35,7 +45,10 @@ tape_turbo_sync_header:
 
 tape_turbo_sync_payload:
 
-	jsr tape_turbo_sync_common
+	jsr tape_turbo_sync_first
+#if CONFIG_TAPE_AUTODETECT
+	bcs tape_turbo_sync_done           // this shopuld not happen
+#endif
 !:
 	ldx #$09                           // 9, 8, ...
 !:
@@ -50,7 +63,15 @@ tape_turbo_sync_payload:
 	dex
 	bne !-
 
-	rts 
+#if CONFIG_TAPE_AUTODETECT
+	clc
+#endif
+
+	// FALLTROUGH
+
+tape_turbo_sync_done:
+
+	rts
 
 
 #endif // CONFIG_TAPE_TURBO

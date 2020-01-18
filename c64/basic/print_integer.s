@@ -1,3 +1,7 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Works similar to $BDCD in original C64 BASIC
 // XXX Should eventually get replaced by a more flexible and optimal routine.
 // Temp result gets written to $0100-$0104

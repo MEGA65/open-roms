@@ -1,7 +1,13 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Helper routine to check for EOI while receiving byte from IEC
 //
+
+#if CONFIG_IEC
+
 
 iec_rx_check_eoi:
 
@@ -33,3 +39,6 @@ iec_rx_check_eoi_confirm:
 iec_rx_check_eoi_done:
 
 	rts
+
+
+#endif // CONFIG_IEC

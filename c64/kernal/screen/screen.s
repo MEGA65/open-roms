@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
@@ -7,6 +10,7 @@
 //
 // CPU registers that has to be preserved (see [RG64]): .A
 //
+
 
 SCREEN:
 

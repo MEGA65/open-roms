@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Jumptable for screen control codes support. To improve performance, should be sorted
@@ -90,6 +93,8 @@ chrout_screen_jumptable_hi:
 
 #else
 
+.if (mod(*, $2) == 1) { nop }          // align code so that vector never crosses page boundary
+
 chrout_screen_jumptable:
 
 	.word chrout_screen_CLR
@@ -114,5 +119,7 @@ chrout_screen_jumptable:
 	.word chrout_screen_INS
 	.word chrout_screen_DEL
 	.word chrout_screen_RETURN
+
+.if (mod(*, $2) == 0) { nop }          // make sure routine size is always the same, needed by build system
 
 #endif

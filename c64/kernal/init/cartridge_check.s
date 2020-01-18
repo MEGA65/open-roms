@@ -1,13 +1,22 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
+
 // c64 prg p263
 
 cartridge_check:
+
 	ldx #$05
-cartridge_check_l1:
+!:
 	lda CART_SIG-1,x
 	cmp cartridge_signature-1,x
-	bne no_cartridge
+	bne cartridge_check_end
 	dex
-	bne cartridge_check_l1
+	bne !-
+
 	// FALLTROUGH
-no_cartridge:
+
+cartridge_check_end:
+
 	rts

@@ -1,5 +1,9 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
 // Print string at $YYAA
-// Compute's Mapping the 64 p101
+// Computes Mapping the 64 p101
 
 // print string routine
 

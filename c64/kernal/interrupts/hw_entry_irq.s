@@ -1,3 +1,7 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
+
 
 hw_entry_irq:
 
@@ -5,11 +9,11 @@ hw_entry_irq:
 	// so we need to handle entry points that are commonly
 	// relied upon, including:
 	// $EA31 - Standard IRQ routine
-	// $EA61 - Check keyboard, but don't update timer? https://github.com/cc65/cc65/issues/324
+	// $EA61 - Check keyboard, but do not update timer? https://github.com/cc65/cc65/issues/324
 	// $EA81 - https://www.lemon64.com/forum/viewtopic.php?t=2112&sid=6ea01982b26da69783120a7923ca46fb
 	// Also the $0314 vector is widely used (e.g., https://www.lemon64.com/forum/viewtopic.php?t=2112&sid=6ea01982b26da69783120a7923ca46fb)
 
-	// Save registers, sequence according to Compute's Mapping the Commodore 64, page 73
+	// Save registers, sequence according to Computes Mapping the Commodore 64, page 73
 	pha
 	phx_trash_a
 	phy_trash_a

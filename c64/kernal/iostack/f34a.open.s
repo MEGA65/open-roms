@@ -1,9 +1,12 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Official Kernal routine, described in:
 //
-// - [RG64] C64 Programmer's Reference Guide   - page 289
-// - [CM64] Compute's Mapping the Commodore 64 - page 230/231
+// - [RG64] C64 Programmers Reference Guide   - page 289
+// - [CM64] Computes Mapping the Commodore 64 - page 230/231
 //
 // CPU registers that has to be preserved (see [RG64]): none
 //
@@ -42,7 +45,7 @@ open_has_space:
 	// Update the tables
 
 	// LAT / FAT / SAT support implemented according to
-	// 'Compute's Mapping the Commodore 64', page 52
+	// 'Computes Mapping the Commodore 64', page 52
 
 	lda LA
 	sta LAT, y
@@ -59,14 +62,14 @@ open_has_space:
 #if HAS_RS232
 
 	cmp #$02
-	beq_far open_rs232
+	beq_16 open_rs232
 
 #endif
 
 #if CONFIG_IEC
 
 	jsr iec_check_devnum_oc
-	bcc_far open_iec
+	bcc_16 open_iec
 
 #endif
 	

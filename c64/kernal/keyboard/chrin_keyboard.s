@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Keyboard part of the CHRIN routine
@@ -35,7 +38,7 @@ chrin_repeat:
 
 empty_line:
 	// For an empty line, just return the carriage return
-	// (and don't forget to actually print the carriage return, so that
+	// (and do not forget to actually print the carriage return, so that
 	// the cursor advances and screen scrolls as required)
 
 	ply_trash_a
@@ -81,7 +84,7 @@ chrin_enter:
 	// It was enter.
 	// Note that we have a line of input to return, and return the first byte thereof
 	// after computing and storing its length.
-	// (Compute's Mapping the 64, p96)
+	// (Computes Mapping the 64, p96)
 
 	// Set pointer to line of input
 	lda PNT+0
@@ -89,15 +92,34 @@ chrin_enter:
 	lda PNT+1
 	sta LXSP+1
 
+	// If the current line is a continuation of the previous one, decrease LXSP by 40
+	ldy TBLX
+	lda LDTBL, y
+	bmi chrin_enter_calc_length        // branch if not continuation
+	lda LXSP+0
+	sec
+	sbc #40
+	sta LXSP+0
+	bcs !+
+	dec LXSP+1
+!:
+	ldy #80
+	bne chrin_enter_loop               // branch always
+
+chrin_enter_calc_length:
+
 	// Calculate length
-	jsr screen_get_current_line_logical_length
-	tay
+	jsr screen_get_logical_line_end_ptr
 	iny
-!:	dey
+	
+chrin_enter_loop:
+
+	// Retrieve bytes
+	dey
 	bmi empty_line
-	lda (PNT),y
+	lda (LXSP),y
 	cmp #$20
-	beq !-
+	beq chrin_enter_loop
 	iny
 	sty INDX
 	lda #$01

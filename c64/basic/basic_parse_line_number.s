@@ -1,4 +1,8 @@
-	
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+
 basic_parse_line_number:	
 	
 	jsr injest_number

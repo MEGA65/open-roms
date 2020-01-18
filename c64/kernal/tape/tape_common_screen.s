@@ -1,3 +1,6 @@
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
 //
 // Handle screen (visible/blanked) + tape deck motor (on/off),
@@ -18,6 +21,15 @@ tape_screen_on_motor_off:
 	jmp screen_on
 
 tape_screen_off_motor_on:
+
+	// We do not want interrupts and CHROUT reenables them
+	sei
+
+	// Clear keyboard buffer
+	lda #$00
+	sta NDX	
+
+	// Set screen color
 	lda VIC_EXTCOL
 	sta COLSTORE
 

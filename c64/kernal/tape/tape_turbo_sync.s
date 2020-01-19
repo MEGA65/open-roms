@@ -17,7 +17,7 @@ tape_turbo_sync_header:
 
 	// Initial pulse threshold
 	lda #$BF                           // measured 128 bits '0' and 128 bits '1' under VICE, calculated average
-	sta SYNO
+	sta __pulse_threshold
 
 	// Synchronize with start of sync sequence
 	jsr tape_turbo_sync_first

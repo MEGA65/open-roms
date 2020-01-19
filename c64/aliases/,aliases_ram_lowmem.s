@@ -1,6 +1,6 @@
 //
 // Names of ZP and low memory locations:
-// - Compute's Mapping the Commodore 64
+// - Computes Mapping the Commodore 64
 // - https://www.c64-wiki.com/wiki/Zeropage
 // - http://unusedino.de/ec64/technical/project64/memory_maps.html
 //
@@ -83,8 +83,8 @@
 	//
 	
 	.label IOSTATUS  = $90
-	.label STKEY     = $91  //          Keys down clears bits. STOP - bit 7, C= - bit 6, SPACE - bit 4, CTRL - bit 2
-	.label SVXT      = $92  //          -- NOT IMPLEMENTED --
+	.label STKEY     = $91  //          keys down clears bits. STOP - bit 7, C= - bit 6, SPACE - bit 4, CTRL - bit 2
+	.label SVXT      = $92  //          tape reading constant [!] our tape routines use it differently
 	.label VERCKK    = $93  //          0 = LOAD, 1 = VERIFY
 	.label C3PO      = $94  //          flag - is BSOUR content valid
 	.label BSOUR     = $95  //          serial bus buffered output byte
@@ -118,8 +118,8 @@
 	.label RIDDATA   = $AA  //          -- NOT IMPLEMENTED --
 	.label RIPRTY    = $AB  //          -- WIP -- checksum while reading tape
 #endif
-	.label SAL       = $AC  // $AC-$AD  -- NOT IMPLEMENTED -- (implemented screen part)
-	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also by screen editor, for temporary color storage when scrolling
+	.label SAL       = $AC  // $AC-$AD  -- XXX: describe -- (implemented screen part)
+	.label EAL       = $AE  // $AE-$AF  -- XXX: describe -- [!] used also by screen editor, for temporary color storage when scrolling
 	.label CMP0      = $B0  // $B0-$B1  temporary tape storage, [!] here used for BRK instruction address
 	.label TAPE1     = $B2  // $B2-$B3  tape buffer pointer
 #if !CONFIG_LEGACY_SCNKEY
@@ -227,7 +227,7 @@
 #if CONFIG_MEMORY_MODEL_60K
 
 	// IRQs are disabled when doing such accesses, and a default NMI handler only increments
-	// a counter, so that if an NMI occurs, it doesn't crash the machine, but can be captured.
+	// a counter, so that if an NMI occurs, it does not crash the machine, but can be captured.
 
 	.label missed_nmi_flag  = $2A7
 	.label tiny_nmi_handler = $2A8
@@ -288,3 +288,21 @@
 #endif
 
 	//                 $3FC     $3FC-$3FF  -- UNUSED --          free for user software
+
+
+//
+// Definitions foor tape functionality
+//
+
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+
+	.label __normal_time_S       = IRQTMP+0           // duration of the short pulse
+	.label __normal_time_M       = IRQTMP+1           // duration of the medium pulse
+
+	.label __turbo_half_S        = IRQTMP+0           // half-duration of the short pulse
+	.label __turbo_half_L        = IRQTMP+1           // half-duration of the long pulse
+
+	.label __pulse_threshold     = SVXT               // pulse classification threshold
+	.label __pulse_threshold_ML  = SYNO               // M/L pulse classification threshold, for normal only
+
+#endif

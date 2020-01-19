@@ -33,36 +33,26 @@
 // (L,S) = end-of-data marker
 
 
-// XXX use pilot to calibrate reading speed
 // XXX add error correction
+// XXX implement proper takeover to turbo during sync/pilot
 
 
 #if CONFIG_TAPE_NORMAL
 
 
+#if !CONFIG_TAPE_AUTODETECT
+
 load_tape_normal:
 
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
-
-#if CONFIG_TAPE_AUTODETECT
-
-	// Prepare for sound effects in case of turbo takeover
-	jsr tape_clean_sid
-
-#endif
 
 	// Start playing
 	jsr tape_common_prepare_cia
 	jsr tape_ask_play
 
-#if CONFIG_TAPE_AUTODETECT
-
-	// FALLTROUGH
+#else
 
 load_tape_normal_takeover:             // entry point for turbo->normal takeover
-
-	jsr tape_common_autodetect
-	bcs_16 load_tape_turbo_takeover
 
 #endif
 
@@ -86,10 +76,10 @@ load_tape_normal_header:
 
 	// Retrieve the header
 
-	jsr tape_normal_pilot_header
+	jsr tape_normal_get_pilot_header
 	ldy #$C1                           // size limit (including checksum)
 	jsr tape_normal_get_data
-	bcs load_tape_normal_header        // unable to read block, try again
+	bcs load_tape_normal_header        // unable to read block, try again     XXX restore MEMUSS and jump to turbo detection
 
 	// Check header type
 
@@ -127,7 +117,7 @@ load_tape_normal_payload:
 
 	// Retrieve data
 
-	jsr tape_normal_pilot_data
+	jsr tape_normal_get_pilot_data
 	ldy #$00                           // no data size limit
 	jsr tape_normal_get_data
 	bcs_16 tape_load_error

@@ -16,17 +16,20 @@ tape_normal_get_bit:
 
 	// Fetch the first pulse
 
-	jsr tape_normal_get_pulse
+	jsr tape_common_get_pulse
 	bcc tape_normal_get_bit_1
 
 	// First impulse was short, second should be medium
 
-	jsr tape_normal_get_pulse
+	jsr tape_normal_calibrate_after_S
+
+	jsr tape_common_get_pulse
 	bcs tape_normal_get_bit_error
+
+	jsr tape_normal_calibrate_after_M
 
 	// We have a bit '0'
 
-	// Carry flag already clear
 	lda #$00
 
 	// FALLTROUGH
@@ -34,6 +37,7 @@ tape_normal_get_bit:
 tape_normal_get_bit_done:
 
 	sta VIC_EXTCOL
+	clc
 	rts
 
 
@@ -41,8 +45,12 @@ tape_normal_get_bit_1:
 
 	// First impulse was medium, second should be short
 
-	jsr tape_normal_get_pulse
+	jsr tape_normal_calibrate_after_M
+
+	jsr tape_common_get_pulse
 	bcc tape_normal_get_bit_error
+
+	jsr tape_normal_calibrate_after_S
 
 	// We have a bit '1'
 

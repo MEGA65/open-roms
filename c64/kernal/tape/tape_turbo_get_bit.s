@@ -14,29 +14,13 @@
 
 
 tape_turbo_get_bit:
-
-#if CONFIG_TAPE_NORMAL
 	
-	jsr tape_normal_get_pulse          // reuse routine from NORMAL system
-
-#else
-
-	lda #$10
-!:
-	bit CIA1_ICR    // $DC0D
-	beq !-                             // busy loop to detect signal, restart timer afterwards
-	lda CIA2_TIMBLO // $DD06
-	ldx #%01010001                     // start timer, force latch reload, count timer A underflows
-	stx CIA2_CRB    // $DD0F
-
-#endif
-
-	cmp SYNO                           // threshold
+	jsr tape_common_get_pulse
 	bcs !+
 
 	clc
 	ror
-	sta IRQTMP+0                       // store half of the last measurement result for short pulse
+	sta __turbo_half_S                 // store half of the last measurement result for short pulse
 
 	lda #$01
 	sta SID_SIGVOL
@@ -47,7 +31,7 @@ tape_turbo_get_bit:
 !:
 	clc
 	ror
-	sta IRQTMP+1                       // store half of the last measurement result for long pulse
+	sta __turbo_half_L                 // store half of the last measurement result for long pulse
 
 	lda #$00
 	sta SID_SIGVOL

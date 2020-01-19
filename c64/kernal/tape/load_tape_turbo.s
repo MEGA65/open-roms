@@ -14,7 +14,15 @@
 #if CONFIG_TAPE_TURBO
 
 
+#if !CONFIG_TAPE_AUTODETECT
+
 load_tape_turbo:
+
+#else
+
+load_tape_auto:
+
+#endif
 
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 

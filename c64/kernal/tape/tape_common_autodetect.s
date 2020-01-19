@@ -38,13 +38,13 @@ tape_common_autodetect_retry:
 	sta XSAV
 
 	ldy #$60                           // $60 pulses cover 12 bytes of turbo recording
-	jsr tape_normal_get_pulse          // first pulse might be a garbage, ignore it
+	jsr tape_common_get_pulse          // first pulse might be a garbage, ignore it
 
 	// FALLTROUGH
 
 tape_common_autodetect_loop:
 
-	jsr tape_normal_get_pulse          // read pulse for detection attempt
+	jsr tape_common_get_pulse          // read pulse for detection attempt
 	
 	// If garbage found, retry detection
 	cmp #$28

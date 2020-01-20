@@ -21,18 +21,14 @@
 tape_normal_get_pilot_header:          // entry point, reset calibration, require 128x $40 pulses
 
 	// Reading the pilot header is the first action performed,
-	// thus start by setting default timings, as measured during
-	// VICE test
+	// thus start by setting default thresholds
 
-	lda #$7D
-	sta __normal_time_M                // __normal_time_S will be set within the pilot
 	lda #$91
 	sta __pulse_threshold
 	lda #$67
 	sta __pulse_threshold_ML
 
 	lda #$80
-
 	skip_2_bytes_trash_nvz
 
 	// FALLTROUGH
@@ -40,7 +36,6 @@ tape_normal_get_pilot_header:          // entry point, reset calibration, requir
 tape_normal_get_pilot_data:            // entry point, require 4x $40 pulses
 
 	lda #$04
-
 	skip_2_bytes_trash_nvz
 
 	// FALLTROUGH

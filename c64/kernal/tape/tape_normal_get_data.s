@@ -17,33 +17,73 @@
 
 tape_normal_get_data:
 
-	// Store block size limit
-	sty XSAV
-
 	// Initialize checksum (RIPRTY, see http://sta.c64.org/cbm64mem.html)
+	// and pointers for error log and correction mechanism
 	lda #$00
 	sta RIPRTY
+	sta PTR1
+	sta PTR2
+
+	// FALLTROUGH
+
+tape_normal_get_data_block_1:
+
+	//
+	// Read the 1st copy of the block
+	//
 
 	// Read sync of the block
 	ldy #$89
 	jsr tape_normal_sync
-	bcs tape_normal_get_block_done
+	bcs tape_normal_get_data_fail
 	jsr tape_normal_get_marker
 
-tape_normal_get_data_loop:
+tape_normal_get_data_loop_1:
 
 	jsr tape_normal_get_byte
-	bcs tape_normal_get_block_done     // error reading byte - fatal for now
-	jsr tape_normal_get_marker
-	bcs tape_normal_get_checksum       // end of data for the block
+	bcc tape_normal_get_data_loop_1_byte_OK
+	
+	// Problem reading a byte, try to add it to the error log
 
+	tsx
+	cpx #$20                           // just to be on a safe side
+	bcc tape_normal_get_data_fail      // branch if no more space in error log
+
+	ldx PTR1
+	lda MEMUSS+0
+	sta STACK, x
+	inx
+	lda MEMUSS+1
+	sta STACK, x
+	inx
+	sta PTR1 
+
+	// Addres added to error log, check if this was a checksum
+	jsr tape_normal_get_marker
+	bcc tape_normal_get_data_loop_1_advance
+	bcs tape_normal_get_data_block_2
+
+
+tape_normal_get_data_loop_1_byte_OK:
+
+	jsr tape_normal_get_marker
+	bcc !+
+
+	// End of the block
+	jsr tape_normal_update_checksum
+	jmp tape_normal_get_data_block_2
+
+!:
 	// Store byte, calculate checksum
 	lda INBIT
 	ldy #$00
 	sta (MEMUSS), y
-	eor RIPRTY
-	sta RIPRTY
+	jsr tape_normal_update_checksum
 	
+	// FALLTROUGH
+
+tape_normal_get_data_loop_1_advance:
+
 	// Advance pointer
 #if !HAS_OPCODES_65CE02
 	jsr lvs_advance_MEMUSS
@@ -51,25 +91,58 @@ tape_normal_get_data_loop:
 	inw MEMUSS+0
 #endif
 
-	// Check block length limit
-	lda XSAV
-	beq tape_normal_get_data_loop      // no limit requested
-	dec XSAV
-	bne tape_normal_get_data_loop
+	jmp tape_normal_get_data_loop_1
 
-	sec
-	rts
 
-tape_normal_get_checksum:        // XXX handle second copy, with pilot starting from $09
+tape_normal_get_data_block_2:
 
-	lda INBIT
-	eor RIPRTY
+	//
+	// Read the 2nd copy of the block
+	//
+
+	// First check if there is a need to read anything
+
+	// XXX
+
+	// Read sync of the block
+	ldy #$09
+	jsr tape_normal_sync
+	bcs tape_normal_get_data_fail
+	jsr tape_normal_get_marker
+
+	// XXX implement the second pass
+
+
+	lda PTR1
+	beq tape_normal_get_data_checksum
+
+	jmp tape_normal_get_data_fail
+
+
+
+
+tape_normal_get_data_checksum:
+
+	lda RIPRTY
 	cmp #$01                           // sets Carry if checksum verification fails
 
 	// FALLTROUGH
 
-tape_normal_get_block_done:
+tape_normal_get_data_done:
 
+	rts
+
+tape_normal_get_data_fail:
+
+	sec
+	rts
+
+
+tape_normal_update_checksum:
+
+	lda INBIT
+	eor RIPRTY
+	sta RIPRTY
 	rts
 
 

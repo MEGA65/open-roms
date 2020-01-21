@@ -77,7 +77,6 @@ load_tape_normal_header:
 	// Retrieve the header
 
 	jsr tape_normal_get_pilot_header
-	ldy #$C1                           // size limit (including checksum)
 	jsr tape_normal_get_data
 	bcs load_tape_normal_header        // unable to read block, try again     XXX restore MEMUSS and jump to turbo detection
 
@@ -97,17 +96,9 @@ load_tape_normal_header:
 	lda #$01
 	sta SA                             // this file is non-relocatable; override secondary address with 1
 !:
-	// Handle the header
+	// Restore MEMUSS, handle header
 
-	// Restore MEMUSS
-
-	lda EAL+1
-	sta MEMUSS+1
-	lda EAL+0
-	sta MEMUSS+0
-
-	// Handle the header
-
+	jsr load_tape_normal_restore_MEMUSS
 	jsr tape_handle_header
 	bcs load_tape_normal_header        // if name does not match, look for other header
 
@@ -126,6 +117,16 @@ load_tape_normal_payload:
 	bne_16 tape_load_error             // amount of data read does not match header info
 
 	jmp tape_load_success
+
+
+load_tape_normal_restore_MEMUSS:
+
+	lda EAL+1
+	sta MEMUSS+1
+	lda EAL+0
+	sta MEMUSS+0
+
+	rts
 
 
 #endif

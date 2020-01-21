@@ -69,7 +69,7 @@ The following ROM features are currently missing:
 
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
-| normal             | PARTIAL  | no tape speed calibratrion, no error correction    |
+| normal             | PARTIAL  | no error correction (work in progress)             |
 | turbo (250 blocks) | DONE     |                                                    |
 
 ## IEC bus

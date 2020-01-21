@@ -100,8 +100,8 @@
     .label COLSTORE  = $9C  //          [!] screen border storage for tape routines 
 #endif
 	.label MSGFLG    = $9D  //          bit 6 = error messages, bit 7 = control message
-	.label PTR1      = $9E  //          -- NOT IMPLEMENTED --
-	.label PTR2      = $9F  //          -- NOT IMPLEMENTED --
+	.label PTR1      = $9E  //          for tape support, counter of errorneous bytes
+	.label PTR2      = $9F  //          for tape support, counter for errorneous bytes correction
 	.label TIME      = $A0  // $A0-$A2  jiffy clock
 #if !CONFIG_IEC_JIFFYDOS && !CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC_BURST_CIA1 && !CONFIG_IEC_BURST_CIA2 && !CONFIG_IEC_BURST_SOFT
 	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage differs

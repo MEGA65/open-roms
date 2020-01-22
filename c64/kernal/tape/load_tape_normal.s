@@ -56,18 +56,11 @@ load_tape_normal_takeover:             // entry point for turbo->normal takeover
 
 #endif
 
-	// Temporarily store MEMUSS in EAL
-
-	lda MEMUSS+1
-	sta EAL+1
-	lda MEMUSS+0
-	sta EAL+0
-
 	// FALLTROUGH
 
 load_tape_normal_header:
 
-	// Try to load header into tape buffer
+	// Try to load header into tape buffer (we will restore MEMUSS later)
 
 	lda TAPE1+1
 	sta MEMUSS+1
@@ -98,7 +91,7 @@ load_tape_normal_header:
 !:
 	// Restore MEMUSS, handle header
 
-	jsr load_tape_normal_restore_MEMUSS
+	jsr lvs_setup_MEMUSS
 	jsr tape_handle_header
 	bcs load_tape_normal_header        // if name does not match, look for other header
 
@@ -117,16 +110,6 @@ load_tape_normal_payload:
 	bne_16 tape_load_error             // amount of data read does not match header info
 
 	jmp tape_load_success
-
-
-load_tape_normal_restore_MEMUSS:
-
-	lda EAL+1
-	sta MEMUSS+1
-	lda EAL+0
-	sta MEMUSS+0
-
-	rts
 
 
 #endif

@@ -138,12 +138,4 @@ tape_normal_get_data_fail:
 	rts
 
 
-tape_normal_update_checksum:
-
-	lda INBIT
-	eor RIPRTY
-	sta RIPRTY
-	rts
-
-
 #endif

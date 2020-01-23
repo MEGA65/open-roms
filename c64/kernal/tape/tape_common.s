@@ -160,7 +160,7 @@ tape_handle_header:
 	sbc STAL+1
 	sta EAL+1
 	
-	// STAL = MEMUSS
+	// STAL = MEMUSS   XXX is it needed?
 
 	lda MEMUSS+0
 	sta STAL+0

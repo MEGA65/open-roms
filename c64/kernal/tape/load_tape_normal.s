@@ -62,16 +62,15 @@ load_tape_normal_header:
 
 	// Try to load header into tape buffer (we will restore MEMUSS later)
 
-	lda TAPE1+1
-	sta MEMUSS+1
-	lda TAPE1+0
-	sta MEMUSS+0
-
-	// Retrieve the header
-
 	jsr tape_normal_get_pilot_header
-	jsr tape_normal_get_data
-	bcs load_tape_normal_header        // unable to read block, try again     XXX restore MEMUSS and jump to turbo detection
+
+	jsr load_tape_normal_buf_MEMUSS
+	jsr tape_normal_get_data_1
+	bcs load_tape_normal_header        // unable to read block, try again     XXX jump to turbo detection
+
+	jsr load_tape_normal_buf_MEMUSS
+	jsr tape_normal_get_data_2
+	bcs load_tape_normal_header        // block load error, try again         XXX jump to turbo detection
 
 	// Check header type
 
@@ -103,13 +102,27 @@ load_tape_normal_payload:
 
 	jsr tape_normal_get_pilot_data
 	ldy #$00                           // no data size limit
-	jsr tape_normal_get_data
+	jsr tape_normal_get_data_1
 	bcs_16 tape_load_error
 
 	jsr lvs_check_EAL
 	bne_16 tape_load_error             // amount of data read does not match header info
 
+	// XXX setup MEMUSS once again
+	jsr tape_normal_get_data_2
+	bcs_16 tape_load_error
+
 	jmp tape_load_success
+
+
+load_tape_normal_buf_MEMUSS:           // set MEMUSS (start address) as tape buffer 
+
+	lda TAPE1+1
+	sta MEMUSS+1
+	lda TAPE1+0
+	sta MEMUSS+0
+
+	rts
 
 
 #endif

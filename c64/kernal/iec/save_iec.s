@@ -74,7 +74,7 @@ save_iec:
 	jsr iec_tx_byte
 #endif
 
-	jsr lvs_setup_MEMUSS
+	jsr lvs_STAL_to_MEMUSS
 	ldy #$00
 iec_save_loop:
 

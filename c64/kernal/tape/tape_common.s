@@ -160,7 +160,7 @@ tape_handle_header:
 	sbc STAL+1
 	sta EAL+1
 	
-	// STAL = MEMUSS   XXX is it needed?
+	// STAL = MEMUSS
 
 	lda MEMUSS+0
 	sta STAL+0
@@ -179,7 +179,7 @@ tape_handle_header:
 !:
 	// Setup MEMUSS (see Mapping the C64, page 36)
 
-	jsr lvs_setup_MEMUSS
+	jsr lvs_STAL_to_MEMUSS
 
 	// Print LOADING and start address
 

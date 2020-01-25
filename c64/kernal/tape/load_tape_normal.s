@@ -60,15 +60,17 @@ load_tape_normal_takeover:             // entry point for turbo->normal takeover
 
 load_tape_normal_header:
 
+	jsr load_MEMUSS_to_STAL
+
 	// Try to load header into tape buffer (we will restore MEMUSS later)
 
 	jsr tape_normal_get_pilot_header
 
-	jsr load_tape_normal_buf_MEMUSS
+	jsr load_TAPE1_to_MEMUSS
 	jsr tape_normal_get_data_1
 	bcs load_tape_normal_header        // unable to read block, try again     XXX jump to turbo detection
 
-	jsr load_tape_normal_buf_MEMUSS
+	jsr load_TAPE1_to_MEMUSS
 	jsr tape_normal_get_data_2
 	bcs load_tape_normal_header        // block load error, try again         XXX jump to turbo detection
 
@@ -90,7 +92,7 @@ load_tape_normal_header:
 !:
 	// Restore MEMUSS, handle header
 
-	jsr lvs_setup_MEMUSS
+	jsr lvs_STAL_to_MEMUSS
 	jsr tape_handle_header
 	bcs load_tape_normal_header        // if name does not match, look for other header
 
@@ -108,19 +110,29 @@ load_tape_normal_payload:
 	jsr lvs_check_EAL
 	bne_16 tape_load_error             // amount of data read does not match header info
 
-	// XXX setup MEMUSS once again
+	jsr lvs_STAL_to_MEMUSS
 	jsr tape_normal_get_data_2
 	bcs_16 tape_load_error
 
 	jmp tape_load_success
 
 
-load_tape_normal_buf_MEMUSS:           // set MEMUSS (start address) as tape buffer 
+
+load_TAPE1_to_MEMUSS:                   // set MEMUSS (start address) as tape buffer 
 
 	lda TAPE1+1
 	sta MEMUSS+1
 	lda TAPE1+0
 	sta MEMUSS+0
+
+	rts
+
+load_MEMUSS_to_STAL:                   // preserve MEMUSS
+
+	lda MEMUSS+1
+	sta STAL+1
+	lda MEMUSS+0
+	sta STAL+0
 
 	rts
 

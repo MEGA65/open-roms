@@ -120,6 +120,6 @@ chrout_screen_jumptable:
 	.word chrout_screen_DEL
 	.word chrout_screen_RETURN
 
-.if (mod(*, $2) == 0) { nop }          // make sure routine size is always the same, needed by build system
+.if (mod(*, $2) == 1) { nop }          // make sure routine size is always the same, needed by build system
 
 #endif

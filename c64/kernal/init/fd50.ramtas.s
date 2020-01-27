@@ -16,9 +16,9 @@ RAMTAS:
 
 #if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
-	jsr map_KERNAL_1
-	jsr KERNAL_1__RAMTAS
-	jmp map_NORMAL
+	jsr     map_KERNAL_1
+	jsr_ind VK1__RAMTAS
+	jmp     map_NORMAL
 
 #else
 

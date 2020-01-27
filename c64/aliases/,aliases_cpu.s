@@ -99,6 +99,14 @@
 	.byte $E3, arg
 }
 
+// additional addressing modes
+
+.pseudocommand jsr_ind addr
+{
+	.var arg = addr.getValue()
+	.byte $22, mod(arg, $100), floor(arg / $100)
+}
+
 #endif
 
 

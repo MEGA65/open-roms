@@ -16,8 +16,6 @@
 #if CONFIG_TAPE_NORMAL
 
 
-// XXX in tape_normal_get_pilot_header also try to detect turbo
-
 tape_normal_get_pilot_header:          // entry point, reset calibration, require 128x $40 pulses
 
 	// Reading the pilot header is the first action performed,
@@ -71,9 +69,14 @@ tape_normal_get_pilot_common_loop_outer:
 tape_normal_get_pilot_common_loop_inner:
 
 	jsr tape_common_get_pulse
-	// XXX check for short pulses of turbo here
 	bcc tape_normal_get_pilot_common_restart     // not a pilot - try again
-	
+
+#if CONFIG_TAPE_AUTODETECT
+	// Try to distinguish turbo by cheecking for short signals
+	cmp #$B9                                     // see comment in tape_common_autodetect.s
+	bcs !+
+#endif
+
 	jsr tape_normal_calibrate_during_pilot
 
 	dey
@@ -82,6 +85,8 @@ tape_normal_get_pilot_common_loop_inner:
 	dec ROPRTY
 	bne tape_normal_get_pilot_common_loop_outer
 
+	clc
+!:
 	rts
 
 

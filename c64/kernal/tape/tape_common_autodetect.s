@@ -8,9 +8,6 @@
 // Carry clear - normal, Carry set - turbo
 //
 
-// XXX implement fallback to autodetection in normal
-
-
 #if CONFIG_TAPE_AUTODETECT
 
 

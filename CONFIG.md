@@ -147,13 +147,19 @@ Causes screen blanking during JiffyDOS file loading to increase performance.
 
 Adds a minimal normal (standard Commodore format) tape support - just LOAD command.
 
-Needs about 850 bytes in KERNAL segment (if both normal and turbo are enabled, about 900 bytes are needed, as they share some code). If unsure - enable.
+Needs about 1050 bytes in KERNAL segment (if both normal and turbo are enabled, about 900 bytes are needed, as they share some code). If unsure - enable.
 
 ### `CONFIG_TAPE_TURBO`
 
 Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges), up to 250 blocks
 
-Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, about 1050 bytes are needed, as they share some code). If unsure - enable.
+Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, about 1300 bytes are needed, as they share some code). If unsure - enable.
+
+### `CONFIG_TAPE_AUTODETECT`
+
+Tape format (normal/turbo) is always autodetected.
+
+Needs about 100 more bytes in KERNAL segment.
 
 ### `CONFIG_TAPE_NO_KEY_SENSE`
 

@@ -37,7 +37,7 @@ load_tape_auto:
 
 #if CONFIG_TAPE_AUTODETECT
 
-load_tape_turbo_takeover:             // entry point for turbo->normal takeover
+load_tape_turbo_takeover:             // entry point for normal->turbo takeover
 
 	jsr tape_common_autodetect
 	bcc_16 load_tape_normal_takeover

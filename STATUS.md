@@ -13,6 +13,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 
 * turbo tape load support (as device 7, or using `←L`), quite sophisticated: up to 250 blocks (can store bytes under I/O), automatically adjusts for tape speed differences
 * normal tape load error log is limited by free stack space only (no artificial limitation like in original ROMs)
+* tape format autodetection; normal vs turbo is mostly transparent to user
 * improved support for tape adapters (for using regular casette players and other audio devices instead of Datasette) and emulators
 
 * extended `LOAD` command

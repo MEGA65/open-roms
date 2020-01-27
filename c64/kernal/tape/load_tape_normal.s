@@ -33,10 +33,6 @@
 // (L,S) = end-of-data marker
 
 
-// XXX add error correction
-// XXX implement proper takeover to turbo during sync/pilot
-
-
 #if CONFIG_TAPE_NORMAL
 
 
@@ -50,25 +46,36 @@ load_tape_normal:
 	jsr tape_common_prepare_cia
 	jsr tape_ask_play
 
+	// FALLTROUGH
+
+load_tape_normal_header:
+
 #else
 
 load_tape_normal_takeover:             // entry point for turbo->normal takeover
 
 #endif
 
-	// FALLTROUGH
-
-load_tape_normal_header:
-
 	jsr load_MEMUSS_to_STAL
 
 	// Try to load header into tape buffer (we will restore MEMUSS later)
 
 	jsr tape_normal_get_pilot_header
+#if CONFIG_TAPE_AUTODETECT
+	bcs load_tape_normal_switch_turbo  // failed, try turbo
+#endif
 
 	jsr load_TAPE1_to_MEMUSS
 	jsr tape_normal_get_data_1
-	bcs load_tape_normal_header        // unable to read block, try again     XXX jump to turbo detection
+#if !CONFIG_TAPE_AUTODETECT
+	bcs load_tape_normal_header        // unable to read block, try again
+#else
+	bcc !+
+load_tape_normal_switch_turbo:
+	jsr lvs_STAL_to_MEMUSS
+	jmp load_tape_turbo_takeover       // unable to read block, try turbo instead
+!:
+#endif
 
 #if CONFIG_TAPE_NO_ERROR_CORRECTION
 	lda RIPRTY
@@ -77,11 +84,15 @@ load_tape_normal_header:
 	jsr load_TAPE1_to_MEMUSS
 	jsr tape_normal_get_data_2
 #endif
-	bcs load_tape_normal_header        // block load error, try again         XXX jump to turbo detection
+#if !CONFIG_TAPE_AUTODETECT
+	bcs load_tape_normal_header        // block load error, try again
+#else
+	bcs load_tape_normal_switch_turbo  // block load error, try turbo instead
+#endif
 
 	// Check header type
 
-	ldy #$00                           // XXX probably can be optimized for 65C02
+	ldy #$00
 	lda (TAPE1),y
 
 	cmp #$05
@@ -90,7 +101,11 @@ load_tape_normal_header:
 	cmp #$01
 	beq !+
 	cmp #$03
+#if !CONFIG_TAPE_AUTODETECT
 	bne load_tape_normal_header        // header types 1 and 3 are loadable, see Mapping the C64, page 77
+#else
+	bne load_tape_normal_takeover
+#endif
 
 	lda #$01
 	sta SA                             // this file is non-relocatable; override secondary address with 1
@@ -99,7 +114,11 @@ load_tape_normal_header:
 
 	jsr lvs_STAL_to_MEMUSS
 	jsr tape_handle_header
+#if !CONFIG_TAPE_AUTODETECT
 	bcs load_tape_normal_header        // if name does not match, look for other header
+#else
+	bcs load_tape_normal_takeover
+#endif
 
 	// FALLTROUGH
 

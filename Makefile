@@ -35,13 +35,19 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  c64/kernal/tape \
                  c64/kernal/time
 
-
+SRC_BASIC  = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+SRC_KERNAL = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
 SRC_TOOLS  = $(wildcard src/tools/*.c,src/tools/*.cc)
 
 # Generated files
 
 GEN_BASIC  = build/,generated/packed_messages.s
 GEN_KERNAL =
+
+# Dependencies - helper variables
+
+DEP_BASIC  = $(SRC_BASIC)  $(SRCDIR_BASIC)  $(GEN_BASIC)
+DEP_KERNAL = $(SRC_KERNAL) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 # List of tools
 
@@ -123,46 +129,29 @@ build/chargen.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
 # Dependencies - BASIC and KERNAL
 
 build/target_custom/OUTB.BIN      build/target_custom/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC) $(SRCDIR_BASIC) \
-    c64/,,config_custom.s         build/target_custom/KERNAL_combined.sym \
-    $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) c64/,,config_custom.s      build/target_custom/KERNAL_combined.sym
 build/target_generic/OUTB.BIN     build/target_generic/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC) $(SRCDIR_BASIC) \
-    c64/,,config_generic.s     build/target_generic/KERNAL_combined.sym \
-    $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) c64/,,config_generic.s     build/target_generic/KERNAL_combined.sym
 build/target_testing/OUTB.BIN     build/target_testing/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC) $(SRCDIR_BASIC) \
-    c64/,,config_testing.s     build/target_testing/KERNAL_combined.sym \
-    $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) c64/,,config_testing.s     build/target_testing/KERNAL_combined.sym
 build/target_mega65/OUTB_0.BIN      build/target_mega65/BASIC_0_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC)  $(SRCDIR_BASIC) \
-    c64/,,config_mega65.s      build/target_mega65/KERNAL_0_combined.sym \
-    $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) c64/,,config_mega65.s      build/target_mega65/KERNAL_0_combined.sym
 build/target_ultimate64/OUTB.BIN  build/target_ultimate64/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_BASIC)  $(SRCDIR_BASIC) \
-    c64/,,config_ultimate64.s  build/target_ultimate64/KERNAL_combined.sym \
-    $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) c64/,,config_ultimate64.s  build/target_ultimate64/KERNAL_combined.sym
 
 build/target_custom/OUTK.BIN      build/target_custom/KERNAL_combined.vs      build/target_custom/KERNAL_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
-    c64/,,config_custom.s \
-    $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) c64/,,config_custom.s
 build/target_generic/OUTK.BIN     build/target_generic/KERNAL_combined.vs     build/target_generic/KERNAL_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
-    c64/,,config_generic.s \
-    $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) c64/,,config_generic.s
 build/target_testing/OUTK.BIN     build/target_testing/KERNAL_combined.vs     build/target_testing/KERNAL_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
-    c64/,,config_testing.s \
-    $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) c64/,,config_testing.s
 build/target_mega65/OUTK_0.BIN    build/target_mega65/KERNAL_0_combined.vs    build/target_mega65/KERNAL_0_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
-    c64/,,config_mega65.s \
-    $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) c64/,,config_mega65.s
 build/target_ultimate64/OUTK.BIN  build/target_ultimate64/KERNAL_combined.vs  build/target_ultimate64/KERNAL_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(GEN_KERNAL) $(SRCDIR_KERNAL) \
-    c64/,,config_ultimate64.s \
-    $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) c64/,,config_ultimate64.s
+
+build/target_mega65/kernal.seg_1 build/target_mega65/KERNAL_1_combined.vs build/target_mega65/KERNAL_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) c64/,,config_mega65.s
 
 build/target_custom/newrom:       build/target_custom/OUTB.BIN               build/target_custom/OUTK.BIN
 build/target_generic/newrom:      build/target_generic/OUTB.BIN              build/target_generic/OUTK.BIN
@@ -216,7 +205,7 @@ build/target_mega65/OUTK_0.BIN build/target_mega65/KERNAL_0_combined.vs build/ta
 	@rm -f $@* build/target_mega65/KERNAL_0*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_0 -i KERNAL_0-mega65 -o OUTK_0.BIN -d build/target_mega65 -l e4d3 -h ffff c64/,,config_mega65.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
-build/target_mega65/kernal.seg_1 build/target_mega65/KERNAL_1_combined.vs build/target_mega65/KERNAL_1_combined.sym: $(TOOL_BUILD_SEGMENT)
+build/target_mega65/kernal.seg_1 build/target_mega65/KERNAL_1_combined.vs build/target_mega65/KERNAL_1_combined.sym:
 	@mkdir -p build/target_mega65
 	@rm -f $@* build/target_mega65/kernal.seg_1 build/target_mega65/KERNAL_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_1 -i KERNAL_1-mega65 -o kernal.seg_1 -d build/target_mega65 -l 4000 -h 5fff c64/,,config_mega65.s $(SRCDIR_KERNAL) $(GEN_KERNAL)

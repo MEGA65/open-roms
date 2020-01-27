@@ -70,8 +70,13 @@ load_tape_normal_header:
 	jsr tape_normal_get_data_1
 	bcs load_tape_normal_header        // unable to read block, try again     XXX jump to turbo detection
 
+#if CONFIG_TAPE_NO_ERROR_CORRECTION
+	lda RIPRTY
+	cmp #$01                           // sets Carry if checksum verification fails
+#else
 	jsr load_TAPE1_to_MEMUSS
 	jsr tape_normal_get_data_2
+#endif
 	bcs load_tape_normal_header        // block load error, try again         XXX jump to turbo detection
 
 	// Check header type
@@ -110,8 +115,13 @@ load_tape_normal_payload:
 	jsr lvs_check_EAL
 	bne_16 tape_load_error             // amount of data read does not match header info
 
+#if CONFIG_TAPE_NO_ERROR_CORRECTION
+	lda RIPRTY
+	cmp #$01                           // sets Carry if checksum verification fails
+#else
 	jsr lvs_STAL_to_MEMUSS
 	jsr tape_normal_get_data_2
+#endif
 	bcs_16 tape_load_error
 
 	jmp tape_load_success

@@ -147,13 +147,13 @@ Causes screen blanking during JiffyDOS file loading to increase performance.
 
 Adds a minimal normal (standard Commodore format) tape support - just LOAD command.
 
-Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, about 900 bytes are needed, as they share some code). If unsure - enable.
+Needs about 850 bytes in KERNAL segment (if both normal and turbo are enabled, about 900 bytes are needed, as they share some code). If unsure - enable.
 
 ### `CONFIG_TAPE_TURBO`
 
 Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges), up to 250 blocks
 
-Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, about 950 bytes are needed, as they share some code). If unsure - enable.
+Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, about 1050 bytes are needed, as they share some code). If unsure - enable.
 
 ### `CONFIG_TAPE_NO_KEY_SENSE`
 
@@ -167,7 +167,7 @@ Enable this option if you are using a tape interface adapter lacking tape motor 
 
 Normal tape format contains two copies of each data block - in case some bytes from the first one are damaged, they can be corrected by reading them from the second copy. Enabling this option omits the core to read the second block.
 
-If using real magnetic tape - disable. Enable if only using Tapuino or other tape emulators.
+If used with `CONFIG_TAPE_NORMAL`, saves about 125 bytes in KERNAL segment. Not recommended when using real magnetic tapes.
 
 ## Multiple SID support
 

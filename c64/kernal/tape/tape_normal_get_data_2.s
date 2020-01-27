@@ -7,21 +7,7 @@
 //
 
 
-#if CONFIG_TAPE_NORMAL
-
-#if CONFIG_TAPE_NO_ERROR_CORRECTION
-
-
-tape_normal_get_data_2: // XXX implement under separate name
-
-	// Just validate the checksum
-
-	lda RIPRTY
-	cmp #$01
-	rts
-
-
-#else
+#if CONFIG_TAPE_NORMAL && !CONFIG_TAPE_NO_ERROR_CORRECTION
 
 
 tape_normal_get_data_2:
@@ -41,6 +27,11 @@ tape_normal_get_data_2:
 	// FALLTROUGH
 
 tape_normal_get_data_2_loop:
+
+	// Check if there are missing bytes to read
+	lda PTR1
+	cmp PTR2
+	beq tape_normal_get_data_2_log_checksum      // branch if no more errors to correct
 
 	// Read missing bytes
 
@@ -106,16 +97,8 @@ tape_normal_get_data_2_done:
 	rts
 
 
-
 load_cmp_log_MEMUSS:
 
-	lda PTR1 // XXX this comparison can be probably moved somewhere else
-	cmp PTR2
-	bne !+
-
-	lda #$01                                     // to clear Zero flag
-	rts
-!:
 	ldx PTR2
 	lda STACK+0, x
 	cmp MEMUSS+0
@@ -132,9 +115,6 @@ load_cmp_log_MEMUSS:
 	lda #$00                                     // to set Zero flag
 !:
 	rts
-
-
-#endif
 
 
 #endif

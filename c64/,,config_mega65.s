@@ -52,6 +52,7 @@
 // #define CONFIG_TAPE_TURBO
 // #define CONFIG_TAPE_NO_KEY_SENSE
 // #define CONFIG_TAPE_NO_MOTOR_CONTROL
+#define CONFIG_TAPE_NO_ERROR_CORRECTION
 
 
 // Multiple SID support

@@ -9,20 +9,27 @@
 
 #if CONFIG_TAPE_NORMAL
 
-tape_normal_get_data_2:
-	
+#if CONFIG_TAPE_NO_ERROR_CORRECTION
+
+
+tape_normal_get_data_2: // XXX implement under separate name
+
+	// Just validate the checksum
+
 	lda RIPRTY
 	cmp #$01
 	rts
 
-#elif XXX_DISABLED
+
+#else
+
 
 tape_normal_get_data_2:
 
 	// First check if there is a need to read anything
 
-	// XXX lda PTR1
-	// XXX beq tape_normal_get_data_2_checksum
+	lda PTR1
+	beq tape_normal_get_data_2_log_checksum
 
 	// Read sync of the block
 	
@@ -40,25 +47,21 @@ tape_normal_get_data_2_loop:
 	jsr tape_normal_get_byte
 	bcc tape_normal_get_data_2_loop_byte_OK
 
-	// Problem reading byte
+	// Problem reading a byte - just skip it
 
-	jsr load_cmp_log_MEMUSS
-	bne tape_normal_get_data_2_loop_advance
-
-	sec
-	rts
+	bcs tape_normal_get_data_2_loop_advance
 
 tape_normal_get_data_2_loop_byte_OK:
 
 	jsr load_cmp_log_MEMUSS
-	beq tape_normal_get_data_2_loop_byte_correct // branch if byte from the log
+	beq tape_normal_get_data_2_loop_from_log     // branch if byte from the log
 
 	jsr tape_normal_get_marker
 	bcs tape_normal_get_data_2_log_checksum      // branch if end of blocks
 	bcc tape_normal_get_data_2_loop_advance
 
 
-tape_normal_get_data_2_loop_byte_correct:
+tape_normal_get_data_2_loop_from_log:
 
 	// This is a byte from the log
 
@@ -129,6 +132,9 @@ load_cmp_log_MEMUSS:
 	lda #$00                                     // to set Zero flag
 !:
 	rts
+
+
+#endif
 
 
 #endif

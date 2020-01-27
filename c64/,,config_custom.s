@@ -50,18 +50,19 @@
 #define CONFIG_IEC_DOLPHINDOS_FAST
 #define CONFIG_IEC_JIFFYDOS
 #define CONFIG_IEC_JIFFYDOS_BLANK
-// #define CONFIG_IEC_BURST_CIA1       // please keep disabled for now
-// #define CONFIG_IEC_BURST_CIA2       // please keep disabled for now
-// #define CONFIG_IEC_BURST_SOFT       // please keep disabled for now
+// #define CONFIG_IEC_BURST_CIA1                 // please keep disabled for now
+// #define CONFIG_IEC_BURST_CIA2                 // please keep disabled for now
+// #define CONFIG_IEC_BURST_SOFT                 // please keep disabled for now
 
 #define CONFIG_TAPE_NORMAL
 #define CONFIG_TAPE_TURBO
-#define CONFIG_TAPE_AUTODETECT         // mostly works, but not fully done yet!
+#define CONFIG_TAPE_AUTODETECT                   // mostly works, but not fully done yet!
 // #define CONFIG_TAPE_NO_KEY_SENSE
 // #define CONFIG_TAPE_NO_MOTOR_CONTROL
+// #define CONFIG_TAPE_NO_ERROR_CORRECTION
 
-// #define CONFIG_RS232_UP2400         // please keep disabled for now
-// #define CONFIG_RS232_UP9600         // please keep disabled for now
+// #define CONFIG_RS232_UP2400                   // please keep disabled for now
+// #define CONFIG_RS232_UP9600                   // please keep disabled for now
 
 
 // Multiple SID support

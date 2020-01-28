@@ -50,13 +50,19 @@ The following ROM features are currently missing:
 
 ## Keyboard
 
+<br />
+
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
 | C64                | DONE     |                                                    |
 | C128               | DONE     |                                                    |
 | Mega65             | NOT DONE | code should be complete, but is not tested yet     |
 
+<br />
+
 ## Screen
+
+<br />
 
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
@@ -64,15 +70,21 @@ The following ROM features are currently missing:
 | 80 columns, VDC    | NOT DONE |                                                    |
 | 80 columns, Mega65 | NOT DONE |                                                    |
 
+<br />
+
 ## Tape port (LOAD only!)
 
 * Tapuino
 * Datasette
 
+<br />
+
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
-| normal             | DONE     |                                                    |
-| turbo (250 blocks) | DONE     |                                                    |
+| normal             | DONE     | up to 202 blocks, like original ROM                |
+| turbo              | DONE     | up to 250 blocks, like the best implementations    |
+
+<br />
 
 ## IEC bus
 
@@ -80,6 +92,8 @@ The following ROM features are currently missing:
 * Pi1541, Ultimate II
 * most disk drives and printers
 * some hard drives
+
+<br />
 
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
@@ -89,20 +103,28 @@ The following ROM features are currently missing:
 | CIA burst mod      | NOT DONE |                                                    |
 | Mega65 burst       | NOT DONE |                                                    |
 
+<br />
+
 ## IEEE-488 bus
 
 * petSD+
 * PET era disk drives and printers
 * various scientific equipment
 
+<br />
+
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
 | CBM cartridge      | NOT DONE |                                                    |
+
+<br />
 
 ## RS-232
 
 * modems (telephone, WiFi)
 * parallel port printers
+
+<br />
 
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
@@ -110,6 +132,7 @@ The following ROM features are currently missing:
 | UP9600             | NOT DONE | work started, not functional yet                   |
 | ACIA 6551          | NOT DONE |                                                    |
 
+<br />
 
 # API status
 
@@ -202,19 +225,19 @@ Not all of them - only these we want to have implemented.
 | Address   | Name         | Status   |  Remarks                                           |
 | :-------: | :----------- | :------: | :------------------------------------------------: |
 | `$A004`   | revision str | DONE     |                                                    |
-| `$A408`   | REASON       | NOT DONE |                                                    |
+| `$A408`   | `REASON`     | NOT DONE |                                                    |
 | `$A453`   | (unknown)    | NOT DONE |                                                    |
-| `$A533`   | LINKPRG      | DONE     |                                                    |
+| `$A533`   | `LINKPRG`    | DONE     |                                                    |
 | `$A644`   | new          | NOT DONE |                                                    |
 | `$A659`   | set txt ptr  | NOT DONE |                                                    |
-| `$A68E`   | RUNC         | DONE     |                                                    |
-| `$A7AE`   | NEWSTT       | PARTIAL  | redirected to RUN command                          |
-| `$AB1E`   | STROUT       | DONE     |                                                    |
-| `$AD9E`   | FRMEVL       | NOT DONE |                                                    |
-| `$BDCD`   | LINPRT       | DONE     | temporary implementation                           |
-| `$E3BF`   | INIT         | NOT DONE |                                                    |
-| `$E422`   | INITMSG      | DONE     |                                                    |
-| `$E453`   | RVECT        | NOT DONE |                                                    |
+| `$A68E`   | `RUNC`       | DONE     |                                                    |
+| `$A7AE`   | `NEWSTT`     | PARTIAL  | redirected to RUN command                          |
+| `$AB1E`   | `STROUT`     | DONE     |                                                    |
+| `$AD9E`   | `FRMEVL`     | NOT DONE |                                                    |
+| `$BDCD`   | `LINPRT`     | DONE     | temporary implementation                           |
+| `$E3BF`   | `INIT`       | NOT DONE |                                                    |
+| `$E422`   | `INITMSG`    | DONE     |                                                    |
+| `$E453`   | `RVECT`      | NOT DONE |                                                    |
 
 <br />
 

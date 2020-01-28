@@ -6,90 +6,78 @@
 // Kernal error codes are described in 'Commodore 64 Programmers Reference Guide', page 306
 
 kernalerror_ROUTINE_TERMINATED: // by a STOP key
+
 	lda #K_ERR_ROUTINE_TERMINATED
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_TOO_MANY_OPEN_FILES:
+
 	lda #K_ERR_TOO_MANY_OPEN_FILES
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_FILE_ALREADY_OPEN:
+
 	lda #K_ERR_FILE_ALREADY_OPEN
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_FILE_NOT_OPEN:
+
 	lda #K_ERR_FILE_NOT_OPEN
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_FILE_NOT_FOUND:
+
 	lda #K_ERR_FILE_NOT_FOUND
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_DEVICE_NOT_FOUND:
+
 	lda #K_ERR_DEVICE_NOT_FOUND
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_FILE_NOT_INPUT:
+
 	lda #K_ERR_FILE_NOT_INPUT
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_FILE_NOT_OUTPUT:
+
 	lda #K_ERR_FILE_NOT_OUTPUT
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_FILE_NAME_MISSING:
+
 	lda #K_ERR_FILE_NAME_MISSING
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_ILLEGAL_DEVICE_NUMBER:
+
 	lda #K_ERR_ILLEGAL_DEVICE_NUMBER
-	sec
-	rts
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 kernalerror_TOP_MEM_RS232:
+
 	lda #K_ERR_TOP_MEM_RS232
+
 	sec
-	rts
-
-
-// Kernal status codes are described in 'Commodore 64 Programmers Reference Guide', page 292
-
-kernalstatus_reset:
-	lda #$00
-	sta IOSTATUS
-	rts
-
-// The following two statuses are currently not implemented - and most likely not really needed
-
-// kernalstatus_TIMEOUT_WRITE:
-//	lda IOSTATUS
-//	ora #K_STS_TIMEOUT_WRITE
-//	sta IOSTATUS
-//	rts
-
-// kernalstatus_TIMEOUT_READ:
-//	lda IOSTATUS
-//	ora #K_STS_TIMEOUT_READ
-//	sta IOSTATUS
-//	rts
-
-kernalstatus_EOI:
-	lda IOSTATUS
-	ora #K_STS_EOI
-	sta IOSTATUS
-	rts
-
-kernalstatus_DEVICE_NOT_FOUND:
-	lda IOSTATUS
-	ora #K_STS_DEVICE_NOT_FOUND
-	sta IOSTATUS
 	rts

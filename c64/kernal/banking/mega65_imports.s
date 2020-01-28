@@ -9,9 +9,18 @@
 
 
 .label STOP                            = KERNAL_0.STOP
+.label clrchn_reset                    = KERNAL_0.clrchn_reset
 .label udtim_keyboard                  = KERNAL_0.udtim_keyboard
 
+.label setup_irq_timer                 = KERNAL_0.setup_irq_timer
 .label wait_x_bars                     = KERNAL_0.wait_x_bars
+
+
+#if CONFIG_IEC
+
+.label iec_set_idle                    = KERNAL_0.iec_set_idle
+
+#endif
 
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO

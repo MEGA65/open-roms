@@ -11,6 +11,7 @@ SRCDIR_COMMON  = c64/aliases
 SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  c64/basic \
                  c64/basic/,stubs \
+                 c64/basic/,stubs_math \
                  c64/basic/commands \
                  c64/basic/init \
                  c64/basic/rom_revision

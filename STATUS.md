@@ -144,7 +144,56 @@ For the current status of the low memory location implementation andd usage chec
 
 <br />
 
-### Unofficial BASIC routines/locations
+
+### Math package
+
+Floating point mathematical routines - not official, but well known and broadly used.
+
+<br />
+
+| Address   | Name         | Status   |  Remarks                                           |
+| :-------: | :----------- | :------: | :------------------------------------------------: |
+| `$B1AA`   | `FACINX`     | NOT DONE | XXX - no stub added yet                            |
+| `$B391`   | `GIVAYF`     | NOT DONE | XXX - no stub added yet                            |
+| `$B7B5`   | `STRVAL`     | NOT DONE | XXX - no stub added yet                            |
+| `$B850`   | `FSUB`       | NOT DONE | XXX - no stub added yet                            |
+| `$B853`   | `FSUBT`      | NOT DONE | XXX - no stub added yet                            |
+| `$B867`   | `FADD`       | NOT DONE | XXX - no stub added yet                            |
+| `$B86A`   | `FADDT`      | NOT DONE | XXX - no stub added yet                            |
+| `$B9EA`   | `LOG`        | NOT DONE | XXX - no stub added yet                            |
+| `$BA28`   | `FMULT`      | NOT DONE | XXX - no stub added yet                            |
+| `$BA8C`   | `CONUPK`     | NOT DONE | fetch FAC2 from RAM location                       |
+| `$BAE2`   | `MUL10`      | NOT DONE | XXX - no stub added yet                            |
+| `$BAFE`   | `DIV10`      | NOT DONE | XXX - no stub added yet                            |
+| `$BB0F`   | `FDIV`       | NOT DONE | XXX - no stub added yet                            |
+| `$BB12`   | `FDIVT`      | NOT DONE | XXX - no stub added yet                            |
+| `$BBA2`   | `MOVFM`      | NOT DONE | fetch FAC1 from RAM location                       |
+| `$BBD4`   | `MOVMF`      | NOT DONE | copy FAC1 to memory location, rounds if asked      |
+| `$BBFC`   | `MOVEF`      | NOT DONE | copy FAC2 to FAC1                                  |
+| `$BC0F`   | `MOVFA`      | NOT DONE | copy FAC1 to FAC2, skips rounding                  |
+| `$BC2B`   | `SIGN`       | NOT DONE | XXX - no stub added yet                            |
+| `$BC39`   | `SGN`        | NOT DONE | XXX - no stub added yet                            |
+| `$BC58`   | `ABS`        | NOT DONE | XXX - no stub added yet                            |
+| `$BC5B`   | `FCOMP`      | NOT DONE | XXX - no stub added yet                            |
+| `$BC9B`   | `QINT`       | NOT DONE | XXX - no stub added yet                            |
+| `$BCCC`   | `INT`        | NOT DONE | XXX - no stub added yet                            |
+| `$BCF3`   | `FIN`        | NOT DONE | XXX - no stub added yet                            |
+| `$BDDD`   | `FOUT`       | NOT DONE | XXX - no stub added yet                            |
+| `$BF71`   | `SQR`        | NOT DONE | XXX - no stub added yet                            |
+| `$BF78`   | `FPWR`       | NOT DONE | XXX - no stub added yet                            |
+| `$BF7B`   | `FPWRT`      | NOT DONE | XXX - no stub added yet                            |
+| `$BFB4`   | `NEGOP`      | NOT DONE | XXX - no stub added yet                            |
+| `$BFED`   | `EXP`        | NOT DONE | XXX - no stub added yet                            |
+| `$E043`   | `POLY1`      | NOT DONE | XXX - no stub added yet                            |
+| `$E059`   | `POLY2`      | NOT DONE | XXX - no stub added yet                            |
+| `$E264`   | `COS`        | NOT DONE | XXX - no stub added yet                            |
+| `$E26B`   | `SIN`        | NOT DONE | XXX - no stub added yet                            |
+| `$E2B4`   | `TAN`        | NOT DONE | XXX - no stub added yet                            |
+| `$E30E`   | `ATN`        | NOT DONE | XXX - no stub added yet                            |
+
+<br />
+
+### Other unofficial BASIC routines/locations
 
 Not all of them - only these we want to have implemented.
 

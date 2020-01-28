@@ -1,5 +1,5 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -16,7 +16,6 @@
 #if CONFIG_TAPE_TURBO
 
 
-.label __tape_turbo_bytestore         = STACK
 .label __tape_turbo_bytestore_defmap  = __tape_turbo_bytestore + 7
 .label __tape_turbo_bytestore_size    = __tape_turbo_bytestore_source_end - tape_turbo_bytestore_source
 

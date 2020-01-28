@@ -107,7 +107,7 @@
 // Screen editor
 
 #define CONFIG_EDIT_STOPQUOTE
-#define CONFIG_EDIT_TABULATORS
+// #define CONFIG_EDIT_TABULATORS
 
 
 // Software features

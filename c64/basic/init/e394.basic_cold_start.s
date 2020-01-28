@@ -8,6 +8,8 @@
 
 basic_cold_start:
 
+// #if !ROM_LAYOUT_M65 
+
 	// Before doing anything, check if we have a compatible BASIC/KERNAL pair
 
 	ldy #(__rom_revision_basic_end - rom_revision_basic - 1)
@@ -21,6 +23,8 @@ basic_cold_start:
 !:
 	dey
 	bpl !--
+
+// #endif
 
 	// Remaining part would not fit here
 

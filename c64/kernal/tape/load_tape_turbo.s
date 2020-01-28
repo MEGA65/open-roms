@@ -1,5 +1,5 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -128,7 +128,11 @@ load_tape_turbo_payload:
 load_tape_turbo_loop:
 
 	jsr tape_turbo_get_byte
+#if ROM_LAYOUT_M65
+	jsr tape_turbo_byte_store
+#else
 	jsr __tape_turbo_bytestore         // like 'sta (MEMUSS),y' - but under I/O
+#endif
 
 	eor PRTY                           // handle checksum
 	sta PRTY

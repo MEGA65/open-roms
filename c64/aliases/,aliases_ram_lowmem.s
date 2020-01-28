@@ -291,18 +291,24 @@
 
 
 //
-// Definitions foor tape functionality
+// Definitions for tape functionality
 //
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 
-	.label __normal_time_S       = IRQTMP+0           // duration of the short pulse
-	.label __normal_time_M       = IRQTMP+1           // duration of the medium pulse
+	.label __normal_time_S             = IRQTMP+0          // duration of the short pulse
+	.label __normal_time_M             = IRQTMP+1          // duration of the medium pulse
 
-	.label __turbo_half_S        = IRQTMP+0           // half-duration of the short pulse
-	.label __turbo_half_L        = IRQTMP+1           // half-duration of the long pulse
+	.label __turbo_half_S              = IRQTMP+0          // half-duration of the short pulse
+	.label __turbo_half_L              = IRQTMP+1          // half-duration of the long pulse
 
-	.label __pulse_threshold     = SVXT               // pulse classification threshold
-	.label __pulse_threshold_ML  = SYNO               // M/L pulse classification threshold, for normal only
+	.label __pulse_threshold           = SVXT              // pulse classification threshold
+	.label __pulse_threshold_ML        = SYNO              // M/L pulse classification threshold, for normal only
+
+#endif
+
+#if CONFIG_TAPE_TURBO
+
+	.label __tape_turbo_bytestore      = STACK             // location of byte storage helper routine
 
 #endif

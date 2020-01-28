@@ -1,5 +1,5 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -61,7 +61,11 @@ tape_normal_get_data_2_loop_from_log:
 
 	lda INBIT
 	ldy #$00
+#if ROM_LAYOUT_M65
+	jsr tape_normal_byte_store
+#else
 	sta (MEMUSS), y
+#endif
 !:
 	jsr tape_normal_update_checksum
 

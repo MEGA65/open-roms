@@ -8,7 +8,7 @@
 
 basic_cold_start:
 
-// #if !ROM_LAYOUT_M65 
+#if !ROM_LAYOUT_M65                    // can be safely skipped in Mega65 ROM layout
 
 	// Before doing anything, check if we have a compatible BASIC/KERNAL pair
 
@@ -24,7 +24,7 @@ basic_cold_start:
 	dey
 	bpl !--
 
-// #endif
+#endif
 
 	// Remaining part would not fit here
 

@@ -179,14 +179,15 @@ $(DIR_ULTIMATE64)/newrom:   $(DIR_ULTIMATE64)/OUTB.BIN           $(DIR_ULTIMATE6
 build/kernal_custom.rom:          $(DIR_CUSTOM)/newrom
 build/kernal_generic.rom:         $(DIR_GENERIC)/newrom
 build/kernal_testing.rom:         $(DIR_TESTING)/newrom
-build/kernal_mega65.rom_0:        $(DIR_MEGA65)/newrom_0
 build/kernal_ultimate64.rom:      $(DIR_ULTIMATE64)/newrom
 
 build/basic_custom.rom:           $(DIR_CUSTOM)/newrom
 build/basic_generic.rom:          $(DIR_GENERIC)/newrom
 build/basic_testing.rom:          $(DIR_TESTING)/newrom
-build/basic_mega65.rom_0:         $(DIR_MEGA65)/newrom_0
 build/basic_ultimate64.rom:       $(DIR_ULTIMATE64)/newrom
+
+$(DIR_MEGA65)/kernal.seg_0:       $(DIR_MEGA65)/newrom_0
+$(DIR_MEGA65)/basic.seg_0:        $(DIR_MEGA65)/newrom_0
 
 build/symbols_custom.vs:          $(DIR_CUSTOM)/BASIC_combined.vs      $(DIR_CUSTOM)/KERNAL_combined.vs
 build/symbols_generic.vs:         $(DIR_GENERIC)/BASIC_combined.vs     $(DIR_GENERIC)/KERNAL_combined.vs
@@ -246,10 +247,10 @@ build/symbols_%.vs:
 $(DIR_MEGA65)/newrom_0:
 	cat $(DIR_MEGA65)/OUTB_0.BIN $(DIR_MEGA65)/OUTK_0.BIN > $@
 
-build/kernal_mega65.rom_0:
+$(DIR_MEGA65)/kernal.seg_0:
 	dd if=$(DIR_MEGA65)/newrom_0 bs=8192 count=1 skip=2 of=$@
 
-build/basic_mega65.rom_0:
+$(DIR_MEGA65)/basic.seg_0:
 	dd if=$(DIR_MEGA65)/newrom_0 bs=8192 count=1 skip=0 of=$@
 
 build/kernal_hybrid.rom: kernal $(DIR_GENERIC)/OUTK.BIN
@@ -266,7 +267,7 @@ build/symbols_hybrid.vs: $(DIR_GENERIC)/KERNAL_combined.vs
 
 # Rules - platform 'Mega 65' specific
 
-build/mega65.rom: build/kernal_mega65.rom_0 $(DIR_MEGA65)/kernal.seg_1 build/basic_mega65.rom_0 build/chargen.rom
+build/mega65.rom: $(DIR_MEGA65)/basic.seg_0 $(DIR_MEGA65)/kernal.seg_0 $(DIR_MEGA65)/kernal.seg_1 build/chargen.rom
 	dd if=/dev/zero bs=8192 count=1 of=build/padding_8k
 	dd if=/dev/zero bs=8192 count=8 of=build/padding_64k
 	cat build/padding_8k                     > build/mega65.rom
@@ -274,9 +275,9 @@ build/mega65.rom: build/kernal_mega65.rom_0 $(DIR_MEGA65)/kernal.seg_1 build/bas
 	cat $(DIR_MEGA65)/kernal.seg_1    >> build/mega65.rom
 	cat build/padding_8k                    >> build/mega65.rom
 	cat build/padding_8k                    >> build/mega65.rom
-	cat build/basic_mega65.rom_0            >> build/mega65.rom
+	cat $(DIR_MEGA65)/basic.seg_0     >> build/mega65.rom
 	cat build/chargen.rom build/chargen.rom >> build/mega65.rom
-	cat build/kernal_mega65.rom_0           >> build/mega65.rom
+	cat $(DIR_MEGA65)/kernal.seg_0    >> build/mega65.rom
 	cat build/padding_64k                   >> build/mega65.rom
 	rm -f build/padding*
 

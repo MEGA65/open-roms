@@ -113,7 +113,7 @@ Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires s
 
 Comparing to standard memory model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
 
-## I/O devices
+## IEC devices
 
 ### `CONFIG_IEC`
 
@@ -142,6 +142,10 @@ Needs about 430 bytes in KERNAL segment. If unsure - enable.
 ### `CONFIG_IEC_JIFFYDOS_BLANK`
 
 Causes screen blanking during JiffyDOS file loading to increase performance.
+
+## Tape support
+
+Note: for Mega65 most of the tape support code is placed in it's extended ROM; very little of the (tiny) KERNAL segment is used.
 
 ### `CONFIG_TAPE_NORMAL`
 

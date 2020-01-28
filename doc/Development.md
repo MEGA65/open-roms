@@ -139,7 +139,7 @@ This is a very common one. For standard ROM layout just take the file. For non-s
 // #LAYOUT# *   *        #IGNORE
 ```
 
-This can be found in a private (internal) jumptable of `KERNAL_1` segmment of `M65` layout. For standard ROM part (`KERNAL_0` segment) take it as floating routine (for `KERNAL_0` segment the file provides only labels for the jumptable). For `KERNAL_1` segment of `M65` layout, take it as a fixed location-routine; in such case the file will provide a jumptable itself. For memory layout other than `M65`, just ignore the file. Yet another example:
+This can be found in a private (internal) vector table of `KERNAL_1` segment of `M65` layout. For standard ROM part (`KERNAL_0` segment) take it as floating routine (for `KERNAL_0` segment the file provides only labels for the vector table). For `KERNAL_1` segment of `M65` layout, take it as a fixed location-routine; in such case the file will provide a vector table itself. For memory layout other than `M65`, just ignore the file. Yet another example:
 
 ```
 // #LAYOUT# M65 KERNAL_0 #TAKE
@@ -155,16 +155,16 @@ This is used for memory mapping helper routines, which are only needed for Mega6
 // #LAYOUT# *   *        #IGNORE
 ```
 
-This is for the routine, that on Mega65 goes to `KERNAL_1` segment, but can still be transparently called using fixed location in `KERNAL_0` segement. The code might, for example, look this way:
+This is for the routine, that on Mega65 goes to `KERNAL_1` segment, but can still be transparently called using fixed location in `KERNAL_0` segment. The code might, for example, look this way:
 
 ```
 ROUTINE_NAME:
 
 #if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
-    jsr map_KERNAL_1
-    jsr KERNAL_1__ROUTINE_NAME    // execute routine from KERNAL_1 segment
-    jmp map_NORMAL
+    jsr     map_KERNAL_1
+    jsr_ind VK1__ROUTINE_NAME    // execute routine from KERNAL_1 segment
+    jmp     map_NORMAL
 
 #else
 

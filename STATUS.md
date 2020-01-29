@@ -176,42 +176,43 @@ Floating point mathematical routines - not official, but well known and broadly 
 
 | Address   | Name         | Status   |  Remarks                                           |
 | :-------: | :----------- | :------: | :------------------------------------------------: |
-| `$B1AA`   | `FACINX`     | NOT DONE | XXX - no stub added yet                            |
+| `$B1AA`   | `FACINX`     | NOT DONE | convert FAC1 to 16-bit signed integer              |
 | `$B391`   | `GIVAYF`     | NOT DONE | XXX - no stub added yet                            |
 | `$B7B5`   | `STRVAL`     | NOT DONE | XXX - no stub added yet                            |
-| `$B850`   | `FSUB`       | NOT DONE | XXX - no stub added yet                            |
-| `$B853`   | `FSUBT`      | NOT DONE | XXX - no stub added yet                            |
-| `$B867`   | `FADD`       | NOT DONE | XXX - no stub added yet                            |
-| `$B86A`   | `FADDT`      | NOT DONE | XXX - no stub added yet                            |
+| `$B850`   | `FSUB`       | NOT DONE | subtract FAC1 from RAM                             |
+| `$B853`   | `FSUBT`      | NOT DONE | subtract FAC1 from FAC2                            |
+| `$B867`   | `FADD`       | NOT DONE | add RAM to FAC1                                    |
+| `$B86A`   | `FADDT`      | NOT DONE | add FAC2 to FAC1                                   |
 | `$B9EA`   | `LOG`        | NOT DONE | XXX - no stub added yet                            |
-| `$BA28`   | `FMULT`      | NOT DONE | XXX - no stub added yet                            |
+| `$BA28`   | `FMUL`       | NOT DONE | multiplies FAC1 by RAM                             |
+| `$BA2B`   | `FMULT`      | NOT DONE | multiplies FAC1 by FAC2                            |
 | `$BA8C`   | `CONUPK`     | NOT DONE | fetch FAC2 from RAM location                       |
-| `$BAE2`   | `MUL10`      | NOT DONE | XXX - no stub added yet                            |
-| `$BAFE`   | `DIV10`      | NOT DONE | XXX - no stub added yet                            |
-| `$BB0F`   | `FDIV`       | NOT DONE | XXX - no stub added yet                            |
-| `$BB12`   | `FDIVT`      | NOT DONE | XXX - no stub added yet                            |
+| `$BAE2`   | `MUL10`      | NOT DONE | multiply FAC1 by 10                                |
+| `$BAFE`   | `DIV10`      | NOT DONE | divide FAC1 by 10, result is always positive       |
+| `$BB0F`   | `FDIV`       | NOT DONE | divide RAM by FAC1                                 |
+| `$BB12`   | `FDIVT`      | NOT DONE | divide FAC2 by FAC1, ignores sign                  |
 | `$BBA2`   | `MOVFM`      | NOT DONE | fetch FAC1 from RAM location                       |
 | `$BBD4`   | `MOVMF`      | NOT DONE | copy FAC1 to memory location, rounds if asked      |
 | `$BBFC`   | `MOVEF`      | NOT DONE | copy FAC2 to FAC1                                  |
 | `$BC0F`   | `MOVFA`      | NOT DONE | copy FAC1 to FAC2, skips rounding                  |
-| `$BC2B`   | `SIGN`       | NOT DONE | XXX - no stub added yet                            |
+| `$BC2B`   | `SIGN`       | NOT DONE | evaluate FAC1 sign                                 |
 | `$BC39`   | `SGN`        | NOT DONE | XXX - no stub added yet                            |
 | `$BC58`   | `ABS`        | NOT DONE | XXX - no stub added yet                            |
-| `$BC5B`   | `FCOMP`      | NOT DONE | XXX - no stub added yet                            |
+| `$BC5B`   | `FCOMP`      | NOT DONE | compare FAC1 with RAM location                     |
 | `$BC9B`   | `QINT`       | NOT DONE | XXX - no stub added yet                            |
 | `$BCCC`   | `INT`        | NOT DONE | XXX - no stub added yet                            |
 | `$BCF3`   | `FIN`        | NOT DONE | XXX - no stub added yet                            |
 | `$BDDD`   | `FOUT`       | NOT DONE | XXX - no stub added yet                            |
 | `$BF71`   | `SQR`        | NOT DONE | XXX - no stub added yet                            |
-| `$BF78`   | `FPWR`       | NOT DONE | XXX - no stub added yet                            |
-| `$BF7B`   | `FPWRT`      | NOT DONE | XXX - no stub added yet                            |
-| `$BFB4`   | `NEGOP`      | NOT DONE | XXX - no stub added yet                            |
+| `$BF78`   | `FPWR`       | NOT DONE | set FAC1 as RAM raised to the power of FAC1        |
+| `$BF7B`   | `FPWRT`      | NOT DONE | set FAC1 as FAC2 raised to the power of FAC1       |
+| `$BFB4`   | `NEGOP`      | NOT DONE | toggle FAC1 sign (if not 0)                        |
 | `$BFED`   | `EXP`        | NOT DONE | XXX - no stub added yet                            |
-| `$E043`   | `POLY1`      | NOT DONE | XXX - no stub added yet                            |
-| `$E059`   | `POLY2`      | NOT DONE | XXX - no stub added yet                            |
-| `$E264`   | `COS`        | NOT DONE | XXX - no stub added yet                            |
-| `$E26B`   | `SIN`        | NOT DONE | XXX - no stub added yet                            |
-| `$E2B4`   | `TAN`        | NOT DONE | XXX - no stub added yet                            |
+| `$E043`   | `POLY1`      | NOT DONE | evaluate polynomial with odd powers only           |
+| `$E059`   | `POLY2`      | NOT DONE | evaluate polynomial with odd and even powers       |
+| `$E264`   | `COS`        | NOT DONE | cosine of FAC1 in radians                          |
+| `$E26B`   | `SIN`        | NOT DONE | sine of FAC1 in radians                            |
+| `$E2B4`   | `TAN`        | NOT DONE | tangent of FAC1 in radians                         |
 | `$E30E`   | `ATN`        | NOT DONE | XXX - no stub added yet                            |
 
 <br />

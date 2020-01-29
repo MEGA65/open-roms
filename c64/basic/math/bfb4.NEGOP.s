@@ -10,7 +10,13 @@
 // - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 //
 
-// XXX provide implementation
-
 NEGOP:
-	STUB_IMPLEMENTATION()
+
+	lda FAC1_exponent
+	beq !+                             // do not toggle the sign if value is 0
+
+	lda FAC1_sign
+	eor #$FF
+	sta FAC1_sign
+!:
+	rts

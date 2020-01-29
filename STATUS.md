@@ -206,7 +206,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BF71`   | `SQR`        | NOT DONE | XXX - no stub added yet                            |
 | `$BF78`   | `FPWR`       | NOT DONE | set FAC1 as RAM raised to the power of FAC1        |
 | `$BF7B`   | `FPWRT`      | NOT DONE | set FAC1 as FAC2 raised to the power of FAC1       |
-| `$BFB4`   | `NEGOP`      | NOT DONE | toggle FAC1 sign (if not 0)                        |
+| `$BFB4`   | `NEGOP`      | DONE     |                                                    |
 | `$BFED`   | `EXP`        | NOT DONE | XXX - no stub added yet                            |
 | `$E043`   | `POLY1`      | NOT DONE | evaluate polynomial with odd powers only           |
 | `$E059`   | `POLY2`      | NOT DONE | evaluate polynomial with odd and even powers       |

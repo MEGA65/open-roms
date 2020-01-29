@@ -31,7 +31,7 @@
 	.label TEMPPT    = $16 //          -- NOT IMPLEMENTED --
 	.label LASTPT    = $17 // $17-$18  -- NOT IMPLEMENTED --
 	.label TEMPST    = $19 // $19-$21  -- NOT IMPLEMENTED --
-	.label INDEX     = $22 // $22-$25  -- NOT IMPLEMENTED -- temporary variables
+	.label INDEX     = $22 // $22-$25  temporary variables, [!] our usage might be different
 	.label RESHO     = $26 // $26-$2A  -- NOT IMPLEMENTED --
 	.label TXTTAB    = $2B // $2B-$2C  start of BASIC code
 	.label VARTAB    = $2D // $2D-$2E  end of BASIC code, start of variables

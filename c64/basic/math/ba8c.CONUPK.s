@@ -11,10 +11,10 @@
 //
 // Output:
 // - .A - FAC1 exponent (yes, really - Codebase64 is right)
-// - .Y - XXX 0?
+// - .Y - 0 (experimentation with original ROM)
 //
 // Preserves:
-// - .X - (experimentation with original routine)
+// - .X - (experimentation with original ROM)
 //
 // See also:
 // - [CM64] Computes Mapping the Commodore 64 - page 114
@@ -26,19 +26,17 @@
 
 CONUPK:
 
-	// Not sure which temporary variables are used for storage by the original ROMs,
-	// but $22/$23 (INDEX+0 and INDEX+1) seem to be good candidates, at least some
-	// math routines use them as pointer storage, see:
+	// Checked in the available documentation:
 	// - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 	// - https://www.lemon64.com/forum/viewtopic.php?t=67576&sid=d41e77cdddd28d6f9c9d52ce5b4e8dc3
+	// that $22/$23 (INDEX+0 and INDEX+1) are at least sometimes used for pointer storage.
+	// Confirmed by experimenting with original ROM that this is the case here too.
 
 	sty INDEX+1
 	sta INDEX+0
 
 	// Now copy the data from RAM to FAC2, for the format description see:
 	// - https://www.c64-wiki.com/wiki/Floating_point_arithmetic#Representation_in_the_C-64
-
-	ldy #$04
 
 	// Copy the mantissa - reverse byte order
 

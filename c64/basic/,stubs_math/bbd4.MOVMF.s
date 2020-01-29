@@ -3,17 +3,18 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Math package - fetch FAC1 from RAM location
+// Math package - copy FAC1 to memory location, rounds if asked
 //
 // Input:
-// - .A - address low byte
+// - .X - address low byte
 // - .Y - address high byte
+// - $70 - if MSB is set performs rouding
 //
 // Output:
-// - .A - FAC1 exponent, affects status flags
-// - .Y - always 0
+// - .A - FAC1 exponent
 //
 // See also:
+// - [CM64] Computes Mapping the Commodore 64 - page 114
 // - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //

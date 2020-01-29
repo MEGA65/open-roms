@@ -186,12 +186,12 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B9EA`   | `LOG`        | NOT DONE | XXX - no stub added yet                            |
 | `$BA28`   | `FMUL`       | PARTIAL  | needs `FMULT`                                      |
 | `$BA2B`   | `FMULT`      | NOT DONE | multiplies FAC1 by FAC2                            |
-| `$BA8C`   | `CONUPK`     | PARTIAL  | not tested yet                                     |
+| `$BA8C`   | `CONUPK`     | PARTIAL  | not fully tested yet                               |
 | `$BAE2`   | `MUL10`      | NOT DONE | multiply FAC1 by 10                                |
 | `$BAFE`   | `DIV10`      | NOT DONE | divide FAC1 by 10, result is always positive       |
 | `$BB0F`   | `FDIV`       | PARTIAL  | needs `FDIVT`                                      |
 | `$BB12`   | `FDIVT`      | NOT DONE | divide FAC2 by FAC1, ignores sign                  |
-| `$BBA2`   | `MOVFM`      | NOT DONE | fetch FAC1 from RAM location                       |
+| `$BBA2`   | `MOVFM`      | PARTIAL  | not fully tested yet                               |
 | `$BBD4`   | `MOVMF`      | NOT DONE | copy FAC1 to memory location, rounds if asked      |
 | `$BBFC`   | `MOVEF`      | NOT DONE | copy FAC2 to FAC1                                  |
 | `$BC0F`   | `MOVFA`      | NOT DONE | copy FAC1 to FAC2, skips rounding                  |

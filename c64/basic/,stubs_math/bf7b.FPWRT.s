@@ -9,7 +9,7 @@
 // - .A - must load FAC1 exponent ($61) beforehand to set the zero flag
 //
 // Note:
-// - load FAC2 after FAC1, or mimic the Kernals sign comparison
+// - load FAC2 after FAC1, or mimic the Kernals sign comparison (XXX do we need it?)
 // - uses exp(x*log(y)) formula to calculate y^x; slow and inaccurate
 //
 // See also:

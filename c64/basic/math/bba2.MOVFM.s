@@ -2,35 +2,32 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-//
-// Math package - fetch FAC2 from RAM location
+// Math package - fetch FAC1 from RAM location
 //
 // Input:
 // - .A - address low byte
 // - .Y - address high byte
 //
 // Output:
-// - .A - FAC1 exponent (yes, really - Codebase64 is right)
-// - .Y - 0 (tested with original ROMs)
+// - .A - FAC1 exponent, affects status flags
+// - .Y - always 0
 //
 // Preserves:
-// - .X (tested with original ROMs)
+// - .X - (experimentation with original ROM)
 //
 // See also:
-// - [CM64] Computes Mapping the Commodore 64 - page 114
 // - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
-//
 
 // XXX test this
 
-CONUPK:
+MOVMF:
 
-	// Noticed in the avilable materials:
+	// Checked in the available documentation:
 	// - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 	// - https://www.lemon64.com/forum/viewtopic.php?t=67576&sid=d41e77cdddd28d6f9c9d52ce5b4e8dc3
-	// that at least some math routines use $22/$23 (INDEX+0 and INDEX+1) for pointer storage,
-	// confirmed that this routine is not an exception
+	// that $22/$23 (INDEX+0 and INDEX+1) are at least sometimes used for pointer storage.
+	// Confirmed by experimenting with original ROM that this is the case here too.
 
 	sty INDEX+1
 	sta INDEX+0
@@ -38,26 +35,24 @@ CONUPK:
 	// Now copy the data from RAM to FAC2, for the format description see:
 	// - https://www.c64-wiki.com/wiki/Floating_point_arithmetic#Representation_in_the_C-64
 
-	ldy #$04
-
 	// Copy the mantissa - reverse byte order
 
 	ldy #$04
 	lda (INDEX), y
-	sta FAC2_mantissa+3
+	sta FAC1_mantissa+3
 
 	dey
 	lda (INDEX), y
-	sta FAC2_mantissa+2
+	sta FAC1_mantissa+2
 
 	dey
 	lda (INDEX), y
-	sta FAC2_mantissa+1
+	sta FAC1_mantissa+1
 
 	dey
 	lda (INDEX), y
 	ora #$80                           // clear the sign bit
-	sta FAC2_mantissa+0
+	sta FAC1_mantissa+0
 
 	// Copy the sign
 
@@ -68,13 +63,21 @@ CONUPK:
 !:
 	lda $00
 
-	sta FAC2_sign
+	sta FAC1_sign
 
 	// Copy the exponent
 
 	dey
 	lda (INDEX), y
-	sta FAC2_exponent
+	sta FAC1_exponent
+
+	// Set low order mantissa - to my surprise original ROM seems to put 0 to FACOW - XXX why???
+	// Since we do not know the original value (lost due to variable format having one byte shorter
+    // mantissa than FAC1), it is probably best to put some approximate value here; putting $80
+    // would be risky in case rouding is performed later, $7F seems to be sane choice
+
+	lda #$7F
+	sta FACOV
 
 	// Return the FAC1 exponent
 

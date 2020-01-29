@@ -9,7 +9,7 @@
 // - .A - must load FAC1 exponent ($61) beforehand to set the zero flag
 //
 // Note:
-// - load FAC2 after FAC1, or mimic the Kernals sign comparison
+// - load FAC2 after FAC1, or mimic the Kernals sign comparison (XXX do we need it?)
 //
 // See also:
 // - [CM64] Computes Mapping the Commodore 64 - page 112

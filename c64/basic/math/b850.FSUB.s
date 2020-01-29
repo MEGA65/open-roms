@@ -3,7 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Math package - add RAM to FAC1
+// Math package - subtract FAC1 from RAM
 //
 // Input:
 // - .A - address low byte
@@ -15,7 +15,8 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX provide implementation
+FSUB:
 
-FADD:
-	STUB_IMPLEMENTATION()
+	jsr CONUPK
+
+	// FALLTROUGH to FSUBT

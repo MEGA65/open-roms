@@ -3,10 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Math package - evaluate FAC1 sign, to .A
-//
-// Output:
-// - .A - 0 for FAC1 equal 0, 1 for FAC1 > 0, -1 for FAC1 < 0
+// Math package - absolute value
 //
 // See also:
 // - [CM64] Computes Mapping the Commodore 64 - page 115
@@ -16,5 +13,5 @@
 
 // XXX provide implementation
 
-SIGN:
+ABS:
 	STUB_IMPLEMENTATION()

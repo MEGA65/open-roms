@@ -3,18 +3,18 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Math package - evaluate FAC1 sign, to .A
+// Math package - square root of FAC1
 //
-// Output:
-// - .A - 0 for FAC1 equal 0, 1 for FAC1 > 0, -1 for FAC1 < 0
+// Note:
+// - transfers FAC1 to FAC2 and falls through to SQR2
 //
 // See also:
-// - [CM64] Computes Mapping the Commodore 64 - page 115
+// - [CM64] Computes Mapping the Commodore 64 - page 117
 // - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
 // XXX provide implementation
 
-SIGN:
+SQR:
 	STUB_IMPLEMENTATION()

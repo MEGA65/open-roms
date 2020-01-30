@@ -177,13 +177,14 @@ Floating point mathematical routines - not official, but well known and broadly 
 | Address   | Name         | Status   |  Remarks                                           |
 | :-------: | :----------- | :------: | :------------------------------------------------: |
 | `$B1AA`   | `FACINX`     | NOT DONE | convert FAC1 to 16-bit signed integer              |
-| `$B391`   | `GIVAYF`     | NOT DONE | XXX - no stub added yet                            |
-| `$B7B5`   | `STRVAL`     | NOT DONE | XXX - no stub added yet                            |
+| `$B391`   | `GIVAYF`     | NOT DONE | 16-bit signed integer to FAC1                      |
+| `$B7B5`   | `STRVAL`     | NOT DONE | imports string to FAC1                             |
 | `$B850`   | `FSUB`       | PARTIAL  | needs `FSUBT`                                      |
 | `$B853`   | `FSUBT`      | NOT DONE | subtract FAC1 from FAC2                            |
 | `$B867`   | `FADD`       | PARTIAL  | needs `FADDT`                                      |
 | `$B86A`   | `FADDT`      | NOT DONE | add FAC2 to FAC1                                   |
-| `$B9EA`   | `LOG`        | NOT DONE | XXX - no stub added yet                            |
+| `$B8FE`   | `NORMAL`     | PARTIAL  | not tested yet                                     |
+| `$B9EA`   | `LOG`        | NOT DONE | natural logarigthm                                 |
 | `$BA28`   | `FMUL`       | PARTIAL  | needs `FMULT`                                      |
 | `$BA2B`   | `FMULT`      | NOT DONE | multiplies FAC1 by FAC2                            |
 | `$BA8C`   | `CONUPK`     | PARTIAL  | not fully tested yet                               |
@@ -196,24 +197,25 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BBFC`   | `MOVEF`      | NOT DONE | copy FAC2 to FAC1                                  |
 | `$BC0F`   | `MOVFA`      | NOT DONE | copy FAC1 to FAC2, skips rounding                  |
 | `$BC2B`   | `SIGN`       | NOT DONE | evaluate FAC1 sign                                 |
-| `$BC39`   | `SGN`        | NOT DONE | XXX - no stub added yet                            |
-| `$BC58`   | `ABS`        | NOT DONE | XXX - no stub added yet                            |
+| `$BC39`   | `SGN`        | NOT DONE | evaluate FAC1 sign, to FAC1                        |
+| `$BC58`   | `ABS`        | NOT DONE | absolute value                                     |
 | `$BC5B`   | `FCOMP`      | NOT DONE | compare FAC1 with RAM location                     |
-| `$BC9B`   | `QINT`       | NOT DONE | XXX - no stub added yet                            |
-| `$BCCC`   | `INT`        | NOT DONE | XXX - no stub added yet                            |
-| `$BCF3`   | `FIN`        | NOT DONE | XXX - no stub added yet                            |
-| `$BDDD`   | `FOUT`       | NOT DONE | XXX - no stub added yet                            |
-| `$BF71`   | `SQR`        | NOT DONE | XXX - no stub added yet                            |
+| `$BC9B`   | `QINT`       | NOT DONE | convert FAC1 to 32 bit signed integer              |
+| `$BCCC`   | `INT`        | NOT DONE | rounds away the decimal to make an integer         |
+| `$BCF3`   | `FIN`        | NOT DONE | imports string to FAC1, ignores spaces             |
+| `$BDDD`   | `FOUT`       | NOT DONE | outputs FAC1 to string at $0100                    |
+| `$BF71`   | `SQR`        | NOT DONE | square root of FAC1                                |
+| `$BF74`   | `SQR2`       | NOT DONE | square root of FAC2                                |
 | `$BF78`   | `FPWR`       | NOT DONE | set FAC1 as RAM raised to the power of FAC1        |
 | `$BF7B`   | `FPWRT`      | NOT DONE | set FAC1 as FAC2 raised to the power of FAC1       |
 | `$BFB4`   | `NEGOP`      | DONE     |                                                    |
-| `$BFED`   | `EXP`        | NOT DONE | XXX - no stub added yet                            |
+| `$BFED`   | `EXP`        | NOT DONE | exponential function, e raised to FAC1 power       |
 | `$E043`   | `POLY1`      | NOT DONE | evaluate polynomial with odd powers only           |
 | `$E059`   | `POLY2`      | NOT DONE | evaluate polynomial with odd and even powers       |
 | `$E264`   | `COS`        | NOT DONE | cosine of FAC1 in radians                          |
 | `$E26B`   | `SIN`        | NOT DONE | sine of FAC1 in radians                            |
 | `$E2B4`   | `TAN`        | NOT DONE | tangent of FAC1 in radians                         |
-| `$E30E`   | `ATN`        | NOT DONE | XXX - no stub added yet                            |
+| `$E30E`   | `ATN`        | NOT DONE | arc tangent of FAC1                                |
 
 <br />
 

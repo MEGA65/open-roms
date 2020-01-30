@@ -71,13 +71,10 @@ MOVMF:
 	lda (INDEX), y
 	sta FAC1_exponent
 
-	// Set low order mantissa - to my surprise original ROM seems to put 0 to FACOW - XXX why???
-	// Since we do not know the original value (lost due to variable format having one byte shorter
-    // mantissa than FAC1), it is probably best to put some approximate value here; putting $80
-    // would be risky in case rouding is performed later, $7F seems to be sane choice
+	// Set low order mantissa to 0 - this should give the
+	// most precision while operating on integers
 
-	lda #$7F
-	sta FACOV
+	sty FACOV
 
 	// Return the FAC1 exponent
 

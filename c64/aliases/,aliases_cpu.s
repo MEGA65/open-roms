@@ -112,6 +112,21 @@
 
 
 //
+// Calculation shortcuts
+//
+
+.pseudocommand lda_zero                // WARNING: do not use within interrupts
+{
+#if HAS_OPCODES_65C02
+	tba
+#else
+	lda #$00
+#endif	
+}
+
+
+
+//
 // Stack manipulation - some CPUs will leave .A unchanged, some will use it as temporary storage, so consider .A trashed
 //
 

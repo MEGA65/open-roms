@@ -55,10 +55,3 @@
 .label tape_normal_byte_store          = KERNAL_0.tape_normal_byte_store
 
 #endif
-
-
-#if CONFIG_TAPE_TURBO
-
-.label tape_turbo_byte_store           = KERNAL_0.tape_turbo_byte_store
-
-#endif

@@ -44,10 +44,10 @@ normal_by_bit:
 
 	clc
 	rol FACOV
-	rol FAC1_mantissa+0
-	rol FAC1_mantissa+1
-	rol FAC1_mantissa+2
 	rol FAC1_mantissa+3
+	rol FAC1_mantissa+2
+	rol FAC1_mantissa+1
+	rol FAC1_mantissa+0
 	
 	bcc NORMAL                         // branch if next iteration needed
 	rts

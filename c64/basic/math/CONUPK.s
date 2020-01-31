@@ -38,7 +38,7 @@ CONUPK:
 	// Now copy the data from RAM to FAC2, for the format description see:
 	// - https://www.c64-wiki.com/wiki/Floating_point_arithmetic#Representation_in_the_C-64
 
-	// Copy the mantissa - reverse byte order
+	// Copy the mantissa
 
 	ldy #$04
 	lda (INDEX), y

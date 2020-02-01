@@ -43,7 +43,7 @@ ROUND:
 	inc FAC1_exponent
 	bne round_zero_FACOV
 
-	// If w are here, it means the exponent wrapped around to $00; put it back to $FF
+	// If we are here, it means the exponent wrapped around to $00; put it back to $FF
 
 	dec FAC1_exponent
 

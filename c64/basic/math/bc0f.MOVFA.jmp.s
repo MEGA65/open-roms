@@ -4,4 +4,4 @@
 
 // Just a compatibility jump - our routine is longer than original one
 
-	jmp MOVFM
+	jmp MOVFA

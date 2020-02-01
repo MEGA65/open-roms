@@ -14,12 +14,11 @@
 // - .A - FAC1 exponent
 //
 // See also:
-// - [CM64] Computes Mapping the Commodore 64 - page 114
 // - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
 // XXX provide implementation
 
-MOVFM:
+MOVFM2:
 	STUB_IMPLEMENTATION()

@@ -193,9 +193,10 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BB0F`   | `FDIV`       | PARTIAL  | needs `FDIVT`                                      |
 | `$BB12`   | `FDIVT`      | NOT DONE | divide FAC2 by FAC1, ignores sign                  |
 | `$BBA2`   | `MOVFM`      | PARTIAL  | not fully tested yet                               |
-| `$BBD4`   | `MOVMF`      | NOT DONE | copy FAC1 to memory location, rounds if asked      |
+| `$BBD4`   | `MOVFM2`     | NOT DONE | copy FAC1 to memory location, rounds if asked      |
 | `$BBFC`   | `MOVEF`      | NOT DONE | copy FAC2 to FAC1                                  |
-| `$BC0F`   | `MOVFA`      | NOT DONE | copy FAC1 to FAC2, skips rounding                  |
+| `$BC0C`   | `MOVAF`      | PARTIAL  | not fully tested                                   |
+| `$BC0F`   | `MOVFA`      | DONE     |                                                    |
 | `$BC1B`   | `ROUND`      | PARTIAL  | not tested                                         |
 | `$BC2B`   | `SIGN`       | NOT DONE | evaluate FAC1 sign                                 |
 | `$BC39`   | `SGN`        | NOT DONE | evaluate FAC1 sign, to FAC1                        |

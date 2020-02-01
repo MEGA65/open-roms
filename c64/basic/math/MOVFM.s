@@ -21,7 +21,7 @@
 
 // XXX test this
 
-MOVMF:
+MOVFM:
 
 	// Checked in the available documentation:
 	// - https://www.c64-wiki.com/wiki/Floating_point_arithmetic

@@ -170,54 +170,54 @@ For the current status of the low memory location implementation andd usage chec
 
 ### Math package
 
-Floating point mathematical routines - not official, but well known and broadly used.
+Floating point mathematical routines - not official, but well known and broadly used. Note: there is an awful mess regarding naming (sometimes same name references different routines in different sources), so a custom naming scheme was applied.
 
 <br />
 
-| Address   | Name         | Status   |  Remarks                                           |
-| :-------: | :----------- | :------: | :------------------------------------------------: |
-| `$B1AA`   | `FACINX`     | NOT DONE | convert FAC1 to 16-bit signed integer              |
-| `$B391`   | `GIVAYF`     | NOT DONE | 16-bit signed integer to FAC1                      |
-| `$B7B5`   | `STRVAL`     | NOT DONE | imports string to FAC1                             |
-| `$B850`   | `FSUB`       | PARTIAL  | needs `FSUBT`                                      |
-| `$B853`   | `FSUBT`      | NOT DONE | subtract FAC1 from FAC2                            |
-| `$B867`   | `FADD`       | PARTIAL  | needs `FADDT`                                      |
-| `$B86A`   | `FADDT`      | NOT DONE | add FAC2 to FAC1                                   |
-| `$B8FE`   | `NORMAL`     | PARTIAL  | not tested yet                                     |
-| `$B9EA`   | `LOG`        | NOT DONE | natural logarigthm                                 |
-| `$BA28`   | `FMUL`       | PARTIAL  | needs `FMULT`                                      |
-| `$BA2B`   | `FMULT`      | NOT DONE | multiplies FAC1 by FAC2                            |
-| `$BA8C`   | `CONUPK`     | PARTIAL  | not fully tested yet                               |
-| `$BAE2`   | `MUL10`      | NOT DONE | multiply FAC1 by 10                                |
-| `$BAFE`   | `DIV10`      | NOT DONE | divide FAC1 by 10, result is always positive       |
-| `$BB0F`   | `FDIV`       | PARTIAL  | needs `FDIVT`                                      |
-| `$BB12`   | `FDIVT`      | NOT DONE | divide FAC2 by FAC1, ignores sign                  |
-| `$BBA2`   | `MOVFM`      | PARTIAL  | not fully tested yet                               |
-| `$BBD4`   | `MOVFM2`     | NOT DONE | copy FAC1 to memory location, rounds if asked      |
-| `$BBFC`   | `MOVEF`      | NOT DONE | copy FAC2 to FAC1                                  |
-| `$BC0C`   | `MOVAF`      | PARTIAL  | not fully tested                                   |
-| `$BC0F`   | `MOVFA`      | DONE     |                                                    |
-| `$BC1B`   | `ROUND`      | PARTIAL  | not tested                                         |
-| `$BC2B`   | `SIGN`       | NOT DONE | evaluate FAC1 sign                                 |
-| `$BC39`   | `SGN`        | NOT DONE | evaluate FAC1 sign, to FAC1                        |
-| `$BC58`   | `ABS`        | NOT DONE | absolute value                                     |
-| `$BC5B`   | `FCOMP`      | NOT DONE | compare FAC1 with RAM location                     |
-| `$BC9B`   | `QINT`       | NOT DONE | convert FAC1 to 32 bit signed integer              |
-| `$BCCC`   | `INT`        | NOT DONE | rounds away the decimal to make an integer         |
-| `$BCF3`   | `FIN`        | NOT DONE | imports string to FAC1, ignores spaces             |
-| `$BDDD`   | `FOUT`       | NOT DONE | outputs FAC1 to string at $0100                    |
-| `$BF71`   | `SQR`        | NOT DONE | square root of FAC1                                |
-| `$BF74`   | `SQR2`       | NOT DONE | square root of FAC2                                |
-| `$BF78`   | `FPWR`       | NOT DONE | set FAC1 as RAM raised to the power of FAC1        |
-| `$BF7B`   | `FPWRT`      | NOT DONE | set FAC1 as FAC2 raised to the power of FAC1       |
-| `$BFB4`   | `NEGOP`      | DONE     |                                                    |
-| `$BFED`   | `EXP`        | NOT DONE | exponential function, e raised to FAC1 power       |
-| `$E043`   | `POLY1`      | NOT DONE | evaluate polynomial with odd powers only           |
-| `$E059`   | `POLY2`      | NOT DONE | evaluate polynomial with odd and even powers       |
-| `$E264`   | `COS`        | NOT DONE | cosine of FAC1 in radians                          |
-| `$E26B`   | `SIN`        | NOT DONE | sine of FAC1 in radians                            |
-| `$E2B4`   | `TAN`        | NOT DONE | tangent of FAC1 in radians                         |
-| `$E30E`   | `ATN`        | NOT DONE | arc tangent of FAC1                                |
+| Address   | Name               | Status   |  Remarks                                           |
+| :-------: | :----------------- | :------: | :------------------------------------------------: |
+| `$B1AA`   | `FACINX`           | NOT DONE | convert FAC1 to 16-bit signed integer              |
+| `$B391`   | `GIVAYF`           | NOT DONE | 16-bit signed integer to FAC1                      |
+| `$B7B5`   | `STRVAL`           | NOT DONE | imports string to FAC1                             |
+| `$B850`   | `sub_MEM_FAC1`     | PARTIAL  | needs `sub_FAC2_FAC1`                              |
+| `$B853`   | `sub_FAC2_FAC1`    | PARTIAL  | needs `add_FAC2_FAC1`                              |
+| `$B867`   | `add_MEM_FAC1`     | PARTIAL  | needs `add_FAC2_FAC1`                              |
+| `$B86A`   | `add_FAC2_FAC1`    | NOT DONE |                                                    |
+| `$B8FE`   | `normal_FAC1`      | PARTIAL  | not tested yet                                     |
+| `$B9EA`   | `log_FAC1`         | NOT DONE |                                                    |
+| `$BA28`   | `mul_MEM_FAC1`     | PARTIAL  | needs `mul_FAC2_FAC1`                              |
+| `$BA2B`   | `mul_FAC2_FAC1`    | NOT DONE |                                                    |
+| `$BA8C`   | `mov_MEM_FAC2`     | PARTIAL  | not fully tested yet                               |
+| `$BAE2`   | `mul10_FAC1`       | NOT DONE |                                                    |
+| `$BAFE`   | `div10_FAC1_p`     | NOT DONE |                                                    |
+| `$BB0F`   | `div_MEM_FAC1`     | PARTIAL  | needs `div_FAC2_FAC1`                              |
+| `$BB12`   | `div_FAC2_FAC1`    | NOT DONE |                                                    |
+| `$BBA2`   | `mov_MEM_FAC1`     | PARTIAL  | not fully tested yet                               |
+| `$BBD4`   | `MOVFM2`           | NOT DONE | copy FAC1 to memory location, rounds if asked      |
+| `$BBFC`   | `MOVEF`            | NOT DONE | copy FAC2 to FAC1                                  |
+| `$BC0C`   | `mov_r_FAC1_FAC2`  | PARTIAL  | not fully tested                                   |
+| `$BC0F`   | `mov_FAC1_FAC2`    | DONE     |                                                    |
+| `$BC1B`   | `round_FAC1`       | PARTIAL  | not tested                                         |
+| `$BC2B`   | `sgn_FAC1_A`       | NOT DONE |                                                    |
+| `$BC39`   | `sgn_FAC1`         | NOT DONE |                                                    |
+| `$BC58`   | `abs_FAC1`         | NOT DONE |                                                    |
+| `$BC5B`   | `FCOMP`            | NOT DONE | compare FAC1 with RAM location                     |
+| `$BC9B`   | `QINT`             | NOT DONE | convert FAC1 to 32 bit signed integer              |
+| `$BCCC`   | `int_FAC1`         | NOT DONE |                                                    |
+| `$BCF3`   | `FIN`              | NOT DONE | imports string to FAC1, ignores spaces             |
+| `$BDDD`   | `FOUT`             | NOT DONE | outputs FAC1 to string at $0100                    |
+| `$BF71`   | `sqr_FAC1`         | NOT DONE |                                                    |
+| `$BF74`   | `sqr_FAC2`         | NOT DONE |                                                    |
+| `$BF78`   | `FPWR`             | NOT DONE | set FAC1 as RAM raised to the power of FAC1        |
+| `$BF7B`   | `FPWRT`            | NOT DONE | set FAC1 as FAC2 raised to the power of FAC1       |
+| `$BFB4`   | `toggle_sign_FAC1` | DONE     |                                                    |
+| `$BFED`   | `exp_FAC1`         | NOT DONE |                                                    |
+| `$E043`   | `poly1_FAC1`       | NOT DONE |                                                    |
+| `$E059`   | `poly2_FAC1`       | NOT DONE |                                                    |
+| `$E264`   | `cos_FAC1`         | NOT DONE |                                                    |
+| `$E26B`   | `sin_FAC1`         | NOT DONE |                                                    |
+| `$E2B4`   | `tan_FAC1`         | NOT DONE |                                                    |
+| `$E30E`   | `atn_FAC1`         | NOT DONE |                                                    |
 
 <br />
 

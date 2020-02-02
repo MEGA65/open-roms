@@ -3,12 +3,11 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Math package - copy FAC1 to memory location, rounds if asked
+// Math package - copy FAC1 to memory location, do not round
 //
 // Input:
 // - .X - address low byte
 // - .Y - address high byte
-// - $70 - if MSB is set performs rouding
 //
 // Output:
 // - .A - FAC1 exponent
@@ -18,7 +17,9 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX provide implementation
+mov_r_FAC1_MEM:
+	
+	// Start by rounding FAC1
 
-MOVFM2:
-	STUB_IMPLEMENTATION()
+	jsr round_FAC1
+	jmp mov_FAC1_MEM

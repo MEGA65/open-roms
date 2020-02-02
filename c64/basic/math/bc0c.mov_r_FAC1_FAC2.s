@@ -14,7 +14,7 @@
 // - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 //
 
-movr_FAC1_FAC2:
+mov_r_FAC1_FAC2:
 
 	// First round FAC1
 	jsr round_FAC1

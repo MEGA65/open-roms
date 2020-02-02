@@ -179,7 +179,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B1AA`   | `FACINX`           | NOT DONE | convert FAC1 to 16-bit signed integer              |
 | `$B391`   | `GIVAYF`           | NOT DONE | 16-bit signed integer to FAC1                      |
 | `$B7B5`   | `STRVAL`           | NOT DONE | imports string to FAC1                             |
-| `$B850`   | `sub_MEM_FAC1`     | PARTIAL  | needs `sub_FAC2_FAC1`                              |
+| `$B850`   | `sub_MEM_FAC1`     | PARTIAL  | needs `add_FAC2_FAC1`                              |
 | `$B853`   | `sub_FAC2_FAC1`    | PARTIAL  | needs `add_FAC2_FAC1`                              |
 | `$B867`   | `add_MEM_FAC1`     | PARTIAL  | needs `add_FAC2_FAC1`                              |
 | `$B86A`   | `add_FAC2_FAC1`    | NOT DONE |                                                    |
@@ -193,11 +193,14 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BB0F`   | `div_MEM_FAC1`     | PARTIAL  | needs `div_FAC2_FAC1`                              |
 | `$BB12`   | `div_FAC2_FAC1`    | NOT DONE |                                                    |
 | `$BBA2`   | `mov_MEM_FAC1`     | PARTIAL  | not fully tested yet                               |
-| `$BBD4`   | `MOVFM2`           | NOT DONE | copy FAC1 to memory location, rounds if asked      |
-| `$BBFC`   | `MOVEF`            | NOT DONE | copy FAC2 to FAC1                                  |
-| `$BC0C`   | `mov_r_FAC1_FAC2`  | PARTIAL  | not fully tested                                   |
+| `$BBC7`   | `mov_r_FAC1_TMP2`  | PARTIAL  | not fully tested yet                               |
+| `$BBCA`   | `mov_r_FAC1_TMP1`  | PARTIAL  | not fully tested yet                               |
+| `$BBD0`   | `mov_r_FAC1_VAR`   | PARTIAL  | not fully tested yet                               |
+| `$BBD4`   | `mov_r_FAC1_MEM`   | PARTIAL  | not fully tested yet                               |
+| `$BBFC`   | `mov_FAC2_FAC1`    | PARTIAL  | not fully tested yet                               |
+| `$BC0C`   | `mov_r_FAC1_FAC2`  | PARTIAL  | not fully tested yet                               |
 | `$BC0F`   | `mov_FAC1_FAC2`    | DONE     |                                                    |
-| `$BC1B`   | `round_FAC1`       | PARTIAL  | not tested                                         |
+| `$BC1B`   | `round_FAC1`       | PARTIAL  | not fully tested yet                               |
 | `$BC2B`   | `sgn_FAC1_A`       | NOT DONE |                                                    |
 | `$BC39`   | `sgn_FAC1`         | NOT DONE |                                                    |
 | `$BC58`   | `abs_FAC1`         | NOT DONE |                                                    |

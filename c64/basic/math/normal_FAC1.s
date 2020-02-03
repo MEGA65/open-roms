@@ -16,30 +16,32 @@
 normal_FAC1:
 
 	lda FAC1_exponent
-	beq normal_FAC1_end                // branch if our float is 0
+	beq normal_FAC1_end                     // branch if our float is 0
 	
-	lda FAC1_mantissa+3
-	beq normal_FAC1_by_byte            // branch if we can move the whole byte
+	// FALLTROUGH
+
+normal_FAC1_check_mantissa_byte:
+
+	lda FAC1_mantissa+0
+	beq normal_FAC1_by_byte                 // branch if we can move the whole byte
 	
+	// FALLTROUGH
+
+normal_FAC1_check_mantissa_bit:
+
+	lda FAC1_mantissa+0                     // XXX optimize for 65CE02?
 	and #$80
-	bne normal_FAC1_end                // branch if already normalized
+	bne normal_FAC1_end                     // branch if already normalized
 	
 	// FALLTROUGH
 	
 normal_FAC1_by_bit:
 	
-	// First check the current exponent
+	// Decrement the exponent
 	
-	lda FAC1_exponent
-	cmp #$01
-	bne !+
-	
-	// Exponent is 1 - just mark the whole number as 0 and finish
-	
-	lda #$00
-	sta FAC1_exponent
-	rts
-!:
+	dec FAC1_exponent
+	beq normal_FAC1_end                     // exponent reached 0, nothing more to do
+
 	// Multiply the mantissa by 2
 
 	clc
@@ -49,7 +51,7 @@ normal_FAC1_by_bit:
 	rol FAC1_mantissa+1
 	rol FAC1_mantissa+0
 	
-	bcc normal_FAC1                     // branch if next iteration needed
+	bcc normal_FAC1_check_mantissa_bit      // branch if next iteration needed
 	rts
 	
 normal_FAC1_by_byte:
@@ -63,19 +65,19 @@ normal_FAC1_by_byte:
 	lda #$00
 !:
 	sta FAC1_exponent
-	beq normal_FAC1_end                 // branch if our float reached 0
+	beq normal_FAC1_end                      // branch if our float reached 0
 
 	// Now multiply the mantissa by 8 by moving the whole bytes
 	
-	lda FAC1_mantissa+2
-	sta FAC1_mantissa+3
 	lda FAC1_mantissa+1
-	sta FAC1_mantissa+2
-	lda FAC1_mantissa+0
+	sta FAC1_mantissa+0
+	lda FAC1_mantissa+2
 	sta FAC1_mantissa+1
+	lda FAC1_mantissa+3
+	sta FAC1_mantissa+2
 	
 	lda FACOV
-	sta FAC1_mantissa+0
+	sta FAC1_mantissa+3
 
 	lda #$00
 	sta FACOV
@@ -87,7 +89,7 @@ normal_FAC1_by_byte:
 	ora FAC1_mantissa+2
 	ora FAC1_mantissa+3
 	
-	bne normal_FAC1                     // not 0 - branch to next iteration
+	bne normal_FAC1_check_mantissa_byte     // not 0 - branch to next iteration
 
 	// Our mantissa reached 0 - mark exponent as 0 and finish
 	

@@ -19,11 +19,8 @@
 
 mov_FAC1_MEM:
 
-	// Checked in the available documentation:
-	// - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
-	// - https://www.lemon64.com/forum/viewtopic.php?t=67576&sid=d41e77cdddd28d6f9c9d52ce5b4e8dc3
-	// that $22/$23 (INDEX+0 and INDEX+1) are at least sometimes used for pointer storage.
-	// Confirmed by experimenting with original ROM that this is the case here too.
+	// Original routines use $22/$23 location for a vector too, see here:
+	// - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 
 	sty INDEX+1
 	stx INDEX+0

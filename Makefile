@@ -44,7 +44,7 @@ SRC_TOOLS  = $(wildcard src/tools/*.c,src/tools/*.cc)
 
 # Generated files
 
-GEN_BASIC  = build/,generated/packed_messages.s
+GEN_BASIC  = build/,generated/packed_messages.s build/,generated/float_constants.s
 GEN_KERNAL =
 
 # List of build directories
@@ -70,13 +70,14 @@ DEP_KERNAL = $(SRC_KERNAL) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 # List of tools
 
-TOOL_COLLECT_DATA   = build/tools/collect_data
-TOOL_COMPRESS_TEXT  = build/tools/compress_text
-TOOL_PNGPREPARE     = build/tools/pngprepare
-TOOL_BUILD_SEGMENT  = build/tools/build_segment
-TOOL_RELEASE        = build/tools/release
-TOOL_SIMILARITY     = build/tools/similarity
-TOOL_ASSEMBLER      = assembler/KickAss.jar
+TOOL_COLLECT_DATA       = build/tools/collect_data
+TOOL_COMPRESS_TEXT      = build/tools/compress_text
+TOOL_GENERATE_CONSTANTS = build/tools/generate_constants
+TOOL_PNGPREPARE         = build/tools/pngprepare
+TOOL_BUILD_SEGMENT      = build/tools/build_segment
+TOOL_RELEASE            = build/tools/release
+TOOL_SIMILARITY         = build/tools/similarity
+TOOL_ASSEMBLER          = assembler/KickAss.jar
 
 TOOLS_LIST = $(pathsubst src/tools/%,build/tools/%,$(basename $(SRC_TOOLS)))
 
@@ -211,6 +212,10 @@ build/symbols_ultimate64.vs:      $(DIR_ULTIMATE64)/BASIC_combined.vs  $(DIR_ULT
 build/,generated/packed_messages.s: $(TOOL_COMPRESS_TEXT)
 	@mkdir -p build/,generated
 	$(TOOL_COMPRESS_TEXT) > build/,generated/packed_messages.s
+
+build/,generated/float_constants.s: $(TOOL_GENERATE_CONSTANTS)
+	@mkdir -p build/,generated
+	$(TOOL_GENERATE_CONSTANTS) -o build/,generated/float_constants.s
 
 .PRECIOUS: build/target_%/OUTB_X.BIN build/target_%/BASIC_combined.vs
 build/target_%/OUTB_X.BIN build/target_%/BASIC_combined.vs:

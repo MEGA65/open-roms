@@ -16,6 +16,7 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  c64/basic/commands \
                  c64/basic/init \
                  c64/basic/math \
+                 c64/basic/math_consts \
                  c64/basic/rom_revision
 
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \

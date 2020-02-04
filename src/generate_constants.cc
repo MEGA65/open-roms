@@ -43,17 +43,17 @@ std::vector<ConstEntry> GLOBAL_constants =
 	// - https://www.c64-wiki.com/wiki/BASIC-ROM
 	// Computes Mapping the Commodore 64, pages 103, 105, 113, 114, 116
 
-	ConstEntry(         "HALF",      0.5             ),
-	ConstEntry(   "MINUS_HALF",     -0.5             ),
-	ConstEntry(            "1",      1.0             ),
-	ConstEntry(           "10",     10.0             ),
-	ConstEntry(       "N32768", -32768.0             ),
+	ConstEntry(      "HALF",      0.5             ),
+	ConstEntry(  "NEG_HALF",     -0.5             ),
+	ConstEntry(       "ONE",      1.0             ),
+	ConstEntry(       "TEN",     10.0             ),
+	ConstEntry( "NEG_32768", -32768.0             ),
 
-	ConstEntry(           "PI", M_PI                 ),
-	ConstEntry(        "SQR_2", std::sqrt(2.0)       ),
-	ConstEntry( "1_OVER_SQR_2", 1.0 / std::sqrt(2.0) ),
-	ConstEntry(        "LOG_2", std::log(2.0)        ),
-	ConstEntry( "1_OVER_LOG_2", 1.0 / std::log(2.0)  ),
+	ConstEntry(        "PI", M_PI                 ),
+	ConstEntry(     "SQR_2", std::sqrt(2.0)       ),
+	ConstEntry( "INV_SQR_2", 1.0 / std::sqrt(2.0) ),
+	ConstEntry(     "LOG_2", std::log(2.0)        ),
+	ConstEntry( "INV_LOG_2", 1.0 / std::log(2.0)  ),
 };
 
 //
@@ -189,7 +189,7 @@ std::string toAssemblerString(const std::string &constName, double constValue)
 		outFloat[4],
 		constValue);
 
-	std::string outDef = std::string("\n.macro putConst_") + constName + "()\n{\n\t.byte " + buf + "\n}\n";
+	std::string outDef = std::string("\n.macro put_const_") + constName + "()\n{\n\t.byte " + buf + "\n}\n";
 
 	return outDef;
 } 

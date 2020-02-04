@@ -225,6 +225,23 @@ Floating point mathematical routines - not official, but well known and broadly 
 
 <br />
 
+In addition to the routines, the following floating-number constants are available at their original locations:
+
+| Address   | Name                  | Status   |  Remarks                                           |
+| :-------: | :-------------------- | :------: | :------------------------------------------------: |
+| `$AEA8`   | `const_PI`            | DONE     | π                                                  |
+| `$B1A5`   | `const_NEG_32768`     | DONE     | -32768                                             |
+| `$B9BC`   | `const_ONE`           | DONE     | 1.0                                                |
+| `$B9D6`   | `const_INV_SQR_2`     | DONE     | 1 / sqr(2)                                         |
+| `$B9DB`   | `const_SQR_2`         | DONE     | sqr(2)                                             |
+| `$B9E0`   | `const_NEG_HALF`      | DONE     | -0.5                                               |
+| `$B9E5`   | `const_LOG_2`         | DONE     | log_e(2)                                           |
+| `$BAF9`   | `const_TEN`           | DONE     | 10.0                                               |      
+| `$BF11`   | `const_HALF`          | DONE     | 0.5                                                |
+| `$BFBF`   | `const_INV_LOG_2`     | DONE     | 1 / log_e(2)                                       |
+| `$BFE8`   | `const_ONE` duplicate | DONE     | 1.0                                                |
+
+
 ### Other unofficial BASIC routines/locations
 
 Not all of them - only these we want to have implemented.

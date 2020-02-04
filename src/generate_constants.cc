@@ -39,10 +39,21 @@ typedef struct ConstEntry
 
 std::vector<ConstEntry> GLOBAL_constants =
 {
-	ConstEntry(   "PI", M_PI ),
-	ConstEntry( "HALF",  0.5 ),
-	ConstEntry(    "1",  1.0 ),
-	ConstEntry(   "10", 10.0 ),
+	// Constants from:
+	// - https://www.c64-wiki.com/wiki/BASIC-ROM
+	// Computes Mapping the Commodore 64, pages 103, 105, 113, 114, 116
+
+	ConstEntry(         "HALF",      0.5             ),
+	ConstEntry(   "MINUS_HALF",     -0.5             ),
+	ConstEntry(            "1",      1.0             ),
+	ConstEntry(           "10",     10.0             ),
+	ConstEntry(       "N32768", -32768.0             ),
+
+	ConstEntry(           "PI", M_PI                 ),
+	ConstEntry(        "SQR_2", std::sqrt(2.0)       ),
+	ConstEntry( "1_OVER_SQR_2", 1.0 / std::sqrt(2.0) ),
+	ConstEntry(        "LOG_2", std::log(2.0)        ),
+	ConstEntry( "1_OVER_LOG_2", 1.0 / std::log(2.0)  ),
 };
 
 //
@@ -101,6 +112,26 @@ std::string toAssemblerString(const std::string &constName, double constValue)
 	int    exponent = -0x80;
 	double mantissa = frexp(std::abs(constValue), &exponent);
 	
+	// Round the mantissa to output format precission
+
+	const double coeff = 256.0 * 256.0 * 256.0 * 256.0;
+
+	double intPart;
+	if (modf(mantissa * coeff, &intPart) >= 0.5)
+	{
+		mantissa = (intPart + 1.0) / coeff;
+	}
+	else
+	{
+		mantissa = intPart / coeff;
+	}
+
+	if (mantissa >= 1.0)
+	{
+		mantissa = 0.5;
+		exponent++;
+	}
+
 	// Add a bias to exponent
 
 	exponent += 0x80;
@@ -137,6 +168,7 @@ std::string toAssemblerString(const std::string &constName, double constValue)
 		}
 	}
 
+	if (mantissa > 0.0)     ERROR(std::string("const '")  + constName + "' export error");
 	if (outFloat[1] < 0x80) ERROR(std::string("const '")  + constName + "' not normalized");
 
 	// Set output constant sign

@@ -43,13 +43,16 @@ std::vector<ConstEntry> GLOBAL_constants =
 	// - https://www.c64-wiki.com/wiki/BASIC-ROM
 	// Computes Mapping the Commodore 64, pages 103, 105, 113, 114, 116
 
+	ConstEntry(   "QUARTER",      0.25            ),
 	ConstEntry(      "HALF",      0.5             ),
 	ConstEntry(  "NEG_HALF",     -0.5             ),
 	ConstEntry(       "ONE",      1.0             ),
 	ConstEntry(       "TEN",     10.0             ),
 	ConstEntry( "NEG_32768", -32768.0             ),
 
+	ConstEntry(   "HALF_PI", M_PI / 2.0           ),
 	ConstEntry(        "PI", M_PI                 ),
+	ConstEntry( "DOUBLE_PI", M_PI * 2.0           ),
 	ConstEntry(     "SQR_2", std::sqrt(2.0)       ),
 	ConstEntry( "INV_SQR_2", 1.0 / std::sqrt(2.0) ),
 	ConstEntry(     "LOG_2", std::log(2.0)        ),

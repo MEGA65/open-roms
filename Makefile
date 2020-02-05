@@ -41,7 +41,7 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
 
 SRC_BASIC  = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
 SRC_KERNAL = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
-SRC_TOOLS  = $(wildcard src/tools/*.c,src/tools/*.cc)
+SRC_TOOLS  = $(wildcard tools/*.c,tools/*.cc)
 
 # Generated files
 
@@ -80,7 +80,7 @@ TOOL_RELEASE            = build/tools/release
 TOOL_SIMILARITY         = build/tools/similarity
 TOOL_ASSEMBLER          = assembler/KickAss.jar
 
-TOOLS_LIST = $(pathsubst src/tools/%,build/tools/%,$(basename $(SRC_TOOLS)))
+TOOLS_LIST = $(pathsubst tools/%,build/tools/%,$(basename $(SRC_TOOLS)))
 
 # List of targets
 
@@ -131,19 +131,19 @@ updatebin:
 
 # Rules - tools
 
-$(TOOL_PNGPREPARE): src/pngprepare.c
+$(TOOL_PNGPREPARE): tools/pngprepare.c
 	@mkdir -p build/tools
 	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
 
-$(TOOL_COMPRESS_TEXT): src/compress_text.c
+$(TOOL_COMPRESS_TEXT): tools/compress_text.c
 	@mkdir -p build/tools
 	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lm
 
-build/tools/%: src/%.c
+build/tools/%: tools/%.c
 	@mkdir -p build/tools
 	$(CC) -O2 -Wall -o $@ $<
 
-build/tools/%: src/%.cc src/common.h
+build/tools/%: tools/%.cc tools/common.h
 	@mkdir -p build/tools
 	$(CXX) -O2 -Wall -o $@ $<
 

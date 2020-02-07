@@ -14,6 +14,9 @@
 #if CONFIG_PLATFORM_COMMODORE_64
 	.eval selected++
 #endif
+#if CONFIG_PLATFORM_COMMANDER_X16
+	.eval selected++
+#endif
 
 	.if (selected != 1) .error "Please select exactly one CONFIG_PLATFORM_* option" 
 }

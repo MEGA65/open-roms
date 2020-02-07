@@ -1,6 +1,7 @@
 // #LAYOUT# STD *        #TAKE
 // #LAYOUT# M65 KERNAL_0 #TAKE
 // #LAYOUT# M65 KERNAL_1 #TAKE-FLOAT
+// #LAYOUT# X16 *        #IGNORE
 // #LAYOUT# *   *        #IGNORE
 
 //

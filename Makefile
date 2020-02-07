@@ -12,7 +12,8 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  c64/basic \
                  c64/basic/,stubs \
                  c64/basic/,stubs_math \
-                 c64/basic/banking \
+                 c64/basic/board_m65 \
+                 c64/basic/board_x16 \
                  c64/basic/commands \
                  c64/basic/init \
                  c64/basic/math \
@@ -23,7 +24,8 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  c64/kernal \
                  c64/kernal/,stubs \
                  c64/kernal/assets \
-                 c64/kernal/banking \
+                 c64/kernal/board_m65 \
+                 c64/kernal/board_x16 \
                  c64/kernal/iec \
                  c64/kernal/iec_fast \
                  c64/kernal/init \
@@ -50,19 +52,21 @@ GEN_KERNAL =
 
 # List of build directories
 
-DIR_CUSTOM     = build/target_custom
-DIR_GENERIC    = build/target_generic
-DIR_TESTING    = build/target_testing
-DIR_MEGA65     = build/target_mega65
-DIR_ULTIMATE64 = build/target_ultimate64
+DIR_CUS = build/target_custom
+DIR_GEN = build/target_generic
+DIR_TST = build/target_testing
+DIR_M65 = build/target_mega65
+DIR_U64 = build/target_ultimate64
+DIR_X16 = build/target_cx16
 
 # List of config files
 
-CFG_CUSTOM     = c64/,,config_custom.s 
-CFG_GENERIC    = c64/,,config_generic.s
-CFG_TESTING    = c64/,,config_testing.s
-CFG_MEGA65     = c64/,,config_mega65.s
-CFG_ULTIMATE64 = c64/,,config_ultimate64.s
+CFG_CUSTOM  = c64/,,config_custom.s 
+CFG_GEN     = c64/,,config_generic.s
+CFG_TESTING = c64/,,config_testing.s
+CFG_M65     = c64/,,config_mega65.s
+CFG_U64     = c64/,,config_ultimate64.s
+CFG_X16     = c64/,,config_cx16.s
 
 # Dependencies - helper variables
 
@@ -84,27 +88,43 @@ TOOLS_LIST = $(pathsubst tools/%,build/tools/%,$(basename $(SRC_TOOLS)))
 
 # List of targets
 
-STD_TARGET_LIST_CUSTOM     = build/kernal_custom.rom     build/basic_custom.rom
-STD_TARGET_LIST_GENERIC    = build/kernal_generic.rom    build/basic_generic.rom
-STD_TARGET_LIST_TESTING    = build/kernal_testing.rom    build/basic_testing.rom 
-STD_TARGET_LIST_ULTIMATE64 = build/kernal_ultimate64.rom build/basic_ultimate64.rom
-STD_TARGET_LIST_MEGA65     = build/mega65.rom
+TARGET_CUS_B    = build/kernal_custom.rom
+TARGET_GEN_B    = build/kernal_generic.rom
+TARGET_TST_B    = build/kernal_testing.rom
+TARGET_U64_B    = build/kernal_ultimate64.rom
 
-STD_TARGET_LIST = build/chargen.rom \
-                  $(STD_TARGET_LIST_CUSTOM) \
-                  $(STD_TARGET_LIST_GENERIC) \
-                  $(STD_TARGET_LIST_TESTING) \
-                  $(STD_TARGET_LIST_MEGA65) \
-                  $(STD_TARGET_LIST_ULTIMATE64)
+TARGET_CUS_K    = build/kernal_custom.rom
+TARGET_GEN_K    = build/kernal_generic.rom
+TARGET_TST_K    = build/kernal_testing.rom
+TARGET_U64_K    = build/kernal_ultimate64.rom
 
-EXT_TARGET_LIST = build/mega65.rom
+TARGET_M65_x    = build/mega65.rom
+TARGET_X16_x    = build/cx16-dummy.rom
 
-SEG_LIST_MEGA65 = $(DIR_MEGA65)/basic.seg_0 \
-                  $(DIR_MEGA65)/basic.seg_1 \
-				  $(DIR_MEGA65)/kernal.seg_0 \
-				  $(DIR_MEGA65)/kernal.seg_1
+TARGET_LIST_CUS = $(TARGET_CUS_B) $(TARGET_CUS_K)
+TARGET_LIST_GEN = $(TARGET_GEN_B) $(TARGET_GEN_K)
+TARGET_LIST_TST = $(TARGET_TST_B) $(TARGET_TST_K)
+TARGET_LIST_U64 = $(TARGET_U64_B) $(TARGET_U64_K)
 
-REL_TARGET_LIST = $(pathsubst build/%,bin/%, $(STD_TARGET_LIST))
+TARGET_LIST = build/chargen.rom \
+                  $(TARGET_LIST_CUS) \
+                  $(TARGET_LIST_GEN) \
+                  $(TARGET_LIST_TST) \
+                  $(TARGET_M65_x) \
+                  $(TARGET_LIST_U64) \
+                  $(TARGET_X16_x)
+
+SEG_LIST_M65 =    $(DIR_M65)/basic.seg_0  \
+                  $(DIR_M65)/basic.seg_1  \
+				  $(DIR_M65)/kernal.seg_0 \
+				  $(DIR_M65)/kernal.seg_1
+
+SEG_LIST_X16 =    $(DIR_X16)/basic.seg_0  \
+                  $(DIR_X16)/basic.seg_1  \
+				  $(DIR_X16)/kernal.seg_0 \
+				  $(DIR_X16)/kernal.seg_1
+
+REL_TARGET_LIST = $(TARGET_LIST_CUS) $(TARGET_LIST_GEN) $(TARGET_LIST_TST) $(TARGET_M65_x) $(TARGET_LIST_U64)
 
 # Misc strings
 
@@ -119,14 +139,14 @@ GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 .PHONY: all clean updatebin
 
 all:
-	$(MAKE) -j64 --output-sync=target $(STD_TARGET_LIST) $(EXT_TARGET_LIST)
+	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
 	@rm -rf build c64/basic/combined.s c64/kernal/combined.s
 
 updatebin:
-	$(MAKE) -j64 --output-sync=target $(STD_TARGET_LIST) $(EXT_TARGET_LIST) $(TOOL_RELEASE)
-	$(TOOL_RELEASE) -i ./build -o ./bin basic_generic.rom kernal_generic.rom basic_testing.rom kernal_testing.rom basic_ultimate64.rom kernal_ultimate64.rom mega65.rom
+	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(TOOL_RELEASE)
+	$(TOOL_RELEASE) -i ./build -o ./bin $(pathsubst build/%,./%, $(REL_TARGET_LIST))
 	cp build/chargen.rom bin/chargen.rom
 
 # Rules - tools
@@ -154,61 +174,67 @@ build/chargen.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
 
 # Dependencies - BASIC and KERNAL
 
-$(DIR_CUSTOM)/OUTB_X.BIN     $(DIR_CUSTOM)/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_CUSTOM)     $(DIR_CUSTOM)/KERNAL_combined.sym
-$(DIR_GENERIC)/OUTB_X.BIN    $(DIR_GENERIC)/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_GENERIC)    $(DIR_GENERIC)/KERNAL_combined.sym
-$(DIR_TESTING)/OUTB_X.BIN    $(DIR_TESTING)/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_TESTING)    $(DIR_TESTING)/KERNAL_combined.sym
-$(DIR_ULTIMATE64)/OUTB_X.BIN $(DIR_ULTIMATE64)/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_ULTIMATE64) $(DIR_ULTIMATE64)/KERNAL_combined.sym
+$(DIR_CUS)/OUTB_x.BIN $(DIR_CUS)/BASIC_combined.vs: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_CUS) $(DIR_CUS)/KERNAL_combined.sym
+$(DIR_GEN)/OUTB_x.BIN $(DIR_GEN)/BASIC_combined.vs: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_GEN) $(DIR_GEN)/KERNAL_combined.sym
+$(DIR_TST)/OUTB_x.BIN $(DIR_TST)/BASIC_combined.vs: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_TST) $(DIR_TST)/KERNAL_combined.sym
+$(DIR_U64)/OUTB_x.BIN $(DIR_U64)/BASIC_combined.vs: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_U64) $(DIR_U64)/KERNAL_combined.sym
 
-$(DIR_CUSTOM)/OUTK_X.BIN      $(DIR_CUSTOM)/KERNAL_combined.vs      $(DIR_CUSTOM)/KERNAL_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_CUSTOM)
-$(DIR_GENERIC)/OUTK_X.BIN     $(DIR_GENERIC)/KERNAL_combined.vs     $(DIR_GENERIC)/KERNAL_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_GENERIC)
-$(DIR_TESTING)/OUTK_X.BIN     $(DIR_TESTING)KERNAL_combined.vs      $(DIR_TESTING)/KERNAL_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_TESTING)
-$(DIR_ULTIMATE64)/OUTK_X.BIN  $(DIR_ULTIMATE64)/KERNAL_combined.vs  $(DIR_ULTIMATE64)/KERNAL_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_ULTIMATE64)
+$(DIR_CUS)/OUTK_x.BIN $(DIR_CUS)/KERNAL_combined.vs $(DIR_CUS)/KERNAL_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_CUS)
+$(DIR_GEN)/OUTK_x.BIN $(DIR_GEN)/KERNAL_combined.vs $(DIR_GEN)/KERNAL_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_GEN)
+$(DIR_TST)/OUTK_x.BIN $(DIR_TST)/KERNAL_combined.vs $(DIR_TST)/KERNAL_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_TST)
+$(DIR_U64)/OUTK_x.BIN $(DIR_U64)/KERNAL_combined.vs $(DIR_U64)/KERNAL_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_U64)
 
+$(DIR_M65)/OUTB_0.BIN $(DIR_M65)/BASIC_0_combined.vs  $(DIR_M65)/BASIC_0_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym
+$(DIR_M65)/OUTK_0.BIN $(DIR_M65)/KERNAL_0_combined.vs $(DIR_M65)/KERNAL_0_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65)
 
-$(DIR_MEGA65)/OUTB_0.BIN     $(DIR_MEGA65)/BASIC_0_combined.vs     $(DIR_MEGA65)/BASIC_0_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_MEGA65)     $(DIR_MEGA65)/KERNAL_0_combined.sym
-$(DIR_MEGA65)/OUTK_0.BIN     $(DIR_MEGA65)/KERNAL_0_combined.vs    $(DIR_MEGA65)/KERNAL_0_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_MEGA65)
+$(DIR_X16)/OUTB_0.BIN $(DIR_X16)/BASIC_0_combined.vs  $(DIR_X16)/BASIC_0_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_X16) $(DIR_X16)/KERNAL_0_combined.sym
+$(DIR_X16)/OUTK_0.BIN $(DIR_X16)/KERNAL_0_combined.vs $(DIR_X16)/KERNAL_0_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_X16)
 
-$(DIR_MEGA65)/basic.seg_1  $(DIR_MEGA65)/BASIC_1_combined.vs  $(DIR_MEGA65)/BASIC_1_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC)  $(CFG_MEGA65) $(DIR_MEGA65)/KERNAL_0_combined.sym $(DIR_MEGA65)/BASIC_0_combined.sym
-$(DIR_MEGA65)/kernal.seg_1 $(DIR_MEGA65)/KERNAL_1_combined.vs $(DIR_MEGA65)/KERNAL_1_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_MEGA65) $(DIR_MEGA65)/KERNAL_0_combined.sym
+$(DIR_M65)/basic.seg_1  $(DIR_M65)/BASIC_1_combined.vs  $(DIR_M65)/BASIC_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_M65)/BASIC_0_combined.sym
+$(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym
 
-$(DIR_CUSTOM)/OUTX_X.BIN:      $(DIR_CUSTOM)/OUTB_X.BIN      $(DIR_CUSTOM)/OUTK_X.BIN
-$(DIR_GENERIC)/OUTX_X.BIN:     $(DIR_GENERIC)/OUTB_X.BIN     $(DIR_GENERIC)/OUTK_X.BIN
-$(DIR_TESTING)/OUTX_X.BIN:     $(DIR_TESTING)/OUTB_X.BIN     $(DIR_TESTING)/OUTK_X.BIN
-$(DIR_MEGA65)/OUTX_0.BIN:      $(DIR_MEGA65)/OUTB_0.BIN      $(DIR_MEGA65)/OUTK_0.BIN
-$(DIR_ULTIMATE64)/OUTX_X.BIN:  $(DIR_ULTIMATE64)/OUTB_X.BIN  $(DIR_ULTIMATE64)/OUTK_X.BIN
+$(DIR_X16)/basic.seg_1  $(DIR_X16)/BASIC_1_combined.vs  $(DIR_X16)/BASIC_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_X16) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_X16)/BASIC_0_combined.sym
+$(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1_combined.vs $(DIR_X16)/KERNAL_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_X16) $(DIR_X16)/KERNAL_0_combined.sym
 
-build/kernal_custom.rom:          $(DIR_CUSTOM)/OUTX_X.BIN
-build/kernal_generic.rom:         $(DIR_GENERIC)/OUTX_X.BIN
-build/kernal_testing.rom:         $(DIR_TESTING)/OUTX_X.BIN
-build/kernal_ultimate64.rom:      $(DIR_ULTIMATE64)/OUTX_X.BIN
+$(DIR_CUS)/OUTx_x.BIN:  $(DIR_CUS)/OUTB_x.BIN  $(DIR_CUS)/OUTK_x.BIN
+$(DIR_GEN)/OUTx_x.BIN:  $(DIR_GEN)/OUTB_x.BIN  $(DIR_GEN)/OUTK_x.BIN
+$(DIR_TST)/OUTx_x.BIN:  $(DIR_TST)/OUTB_x.BIN  $(DIR_TST)/OUTK_x.BIN
+$(DIR_M65)/OUTx_0.BIN:  $(DIR_M65)/OUTB_0.BIN  $(DIR_M65)/OUTK_0.BIN
+$(DIR_U64)/OUTx_x.BIN:  $(DIR_U64)/OUTB_x.BIN  $(DIR_U64)/OUTK_x.BIN
+$(DIR_X16)/OUTx_0.BIN:  $(DIR_X16)/OUTB_0.BIN  $(DIR_X16)/OUTK_0.BIN
 
-build/basic_custom.rom:           $(DIR_CUSTOM)/OUTX_X.BIN
-build/basic_generic.rom:          $(DIR_GENERIC)/OUTX_X.BIN
-build/basic_testing.rom:          $(DIR_TESTING)/OUTX_X.BIN
-build/basic_ultimate64.rom:       $(DIR_ULTIMATE64)/OUTX_X.BIN
+$(TARGET_CUS_B):    $(DIR_CUS)/OUTx_x.BIN
+$(TARGET_GEN_B):    $(DIR_GEN)/OUTx_x.BIN
+$(TARGET_TST_B):    $(DIR_TST)/OUTx_x.BIN
+$(TARGET_U64_B):    $(DIR_U64)/OUTx_x.BIN
 
-$(DIR_MEGA65)/kernal.seg_0:       $(DIR_MEGA65)/OUTX_0.BIN
-$(DIR_MEGA65)/basic.seg_0:        $(DIR_MEGA65)/OUTX_0.BIN
+$(TARGET_CUS_K):    $(DIR_CUS)/OUTx_x.BIN
+$(TARGET_GEN_K):    $(DIR_GEN)/OUTx_x.BIN
+$(TARGET_TST_K):    $(DIR_TST)/OUTx_x.BIN
+$(TARGET_U64_K):    $(DIR_U64)/OUTx_x.BIN
 
-build/symbols_custom.vs:          $(DIR_CUSTOM)/BASIC_combined.vs      $(DIR_CUSTOM)/KERNAL_combined.vs
-build/symbols_generic.vs:         $(DIR_GENERIC)/BASIC_combined.vs     $(DIR_GENERIC)/KERNAL_combined.vs
-build/symbols_testing.vs:         $(DIR_TESTING)/BASIC_combined.vs     $(DIR_TESTING)/KERNAL_combined.vs
-build/symbols_mega65_0.vs:        $(DIR_MEGA65)/BASIC_0_combined.vs    $(DIR_MEGA65)/KERNAL_0_combined.vs
-build/symbols_ultimate64.vs:      $(DIR_ULTIMATE64)/BASIC_combined.vs  $(DIR_ULTIMATE64)/KERNAL_combined.vs
+build/symbols_custom.vs:          $(DIR_CUS)/BASIC_combined.vs    $(DIR_CUS)/KERNAL_combined.vs
+build/symbols_generic.vs:         $(DIR_GEN)/BASIC_combined.vs    $(DIR_GEN)/KERNAL_combined.vs
+build/symbols_testing.vs:         $(DIR_TST)/BASIC_combined.vs    $(DIR_TST)/KERNAL_combined.vs
+build/symbols_ultimate64.vs:      $(DIR_U64)/BASIC_combined.vs    $(DIR_U64)/KERNAL_combined.vs
 
-# Rules - BASIC and KERNAL
+# Rules - BASIC and KERNAL intermediate files
 
 build/,generated/packed_messages.s: $(TOOL_COMPRESS_TEXT)
 	@mkdir -p build/,generated
@@ -218,91 +244,138 @@ build/,generated/float_constants.s: $(TOOL_GENERATE_CONSTANTS)
 	@mkdir -p build/,generated
 	$(TOOL_GENERATE_CONSTANTS) -o build/,generated/float_constants.s
 
-.PRECIOUS: build/target_%/OUTB_X.BIN build/target_%/BASIC_combined.vs
-build/target_%/OUTB_X.BIN build/target_%/BASIC_combined.vs:
+.PRECIOUS: build/target_%/OUTB_x.BIN build/target_%/BASIC_combined.vs
+build/target_%/OUTB_x.BIN build/target_%/BASIC_combined.vs:
 	@mkdir -p build/target_$*
 	@rm -f $@* build/target_$*/BASIC*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r STD -s BASIC -i BASIC-$* -o OUTB_X.BIN -d build/target_$* -l a000 -h e4d2 c64/,,config_$*.s $(SRCDIR_BASIC) $(GEN_BASIC)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r STD -s BASIC -i BASIC-$* -o OUTB_x.BIN -d build/target_$* -l a000 -h e4d2 c64/,,config_$*.s $(SRCDIR_BASIC) $(GEN_BASIC)
 
-.PRECIOUS: build/target_%/OUTK_X.BIN build/target_%/KERNAL_combined.vs build/target_%/KERNAL_combined.sym
-build/target_%/OUTK_X.BIN build/target_%/KERNAL_combined.vs build/target_%/KERNAL_combined.sym:
+.PRECIOUS: build/target_%/OUTK_x.BIN build/target_%/KERNAL_combined.vs build/target_%/KERNAL_combined.sym
+build/target_%/OUTK_x.BIN build/target_%/KERNAL_combined.vs build/target_%/KERNAL_combined.sym:
 	@mkdir -p build/target_$*
 	@rm -f $@* build/target_$*/KERNAL*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r STD -s KERNAL -i KERNAL-$* -o OUTK_X.BIN -d build/target_$* -l e4d3 -h ffff c64/,,config_$*.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r STD -s KERNAL -i KERNAL-$* -o OUTK_x.BIN -d build/target_$* -l e4d3 -h ffff c64/,,config_$*.s $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
-$(DIR_MEGA65)/OUTB_0.BIN $(DIR_MEGA65)/BASIC_0_combined.vs $(DIR_MEGA65)/BASIC_0_combined.sym:
-	@mkdir -p $(DIR_MEGA65)
-	@rm -f $@* $(DIR_MEGA65)/BASIC_0*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_0 -i BASIC_0-mega65 -o OUTB_0.BIN -d $(DIR_MEGA65) -l a000 -h e4d2 $(CFG_MEGA65) $(SRCDIR_BASIC) $(GEN_BASIC)
+# Rules - BASIC and KERNAL intermediate files, for Mega65
 
-$(DIR_MEGA65)/OUTK_0.BIN $(DIR_MEGA65)/KERNAL_0_combined.vs $(DIR_MEGA65)/KERNAL_0_combined.sym:
-	@mkdir -p $(DIR_MEGA65)
-	@rm -f $@* $(DIR_MEGA65)/KERNAL_0*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_0 -i KERNAL_0-mega65 -o OUTK_0.BIN -d $(DIR_MEGA65) -l e4d3 -h ffff $(CFG_MEGA65) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+$(DIR_M65)/OUTB_0.BIN $(DIR_M65)/BASIC_0_combined.vs $(DIR_M65)/BASIC_0_combined.sym:
+	@mkdir -p $(DIR_M65)
+	@rm -f $@* $(DIR_M65)/BASIC_0*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_0 -i BASIC_0-mega65 -o OUTB_0.BIN -d $(DIR_M65) -l a000 -h e4d2 $(CFG_M65) $(SRCDIR_BASIC) $(GEN_BASIC)
 
-$(DIR_MEGA65)/basic.seg_1 $(DIR_MEGA65)/BASIC_1_combined.vs $(DIR_MEGA65)/BASIC_1_combined.sym:
-	@mkdir -p $(DIR_MEGA65)
-	@rm -f $@* $(DIR_MEGA65)/basic.seg_1 $(DIR_MEGA65)/BASIC_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_MEGA65) -l 4000 -h 5fff $(CFG_MEGA65) $(SRCDIR_BASIC) $(GEN_BASIC)
+$(DIR_M65)/OUTK_0.BIN $(DIR_M65)/KERNAL_0_combined.vs $(DIR_M65)/KERNAL_0_combined.sym:
+	@mkdir -p $(DIR_M65)
+	@rm -f $@* $(DIR_M65)/KERNAL_0*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_0 -i KERNAL_0-mega65 -o OUTK_0.BIN -d $(DIR_M65) -l e4d3 -h ffff $(CFG_M65) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
-$(DIR_MEGA65)/kernal.seg_1 $(DIR_MEGA65)/KERNAL_1_combined.vs $(DIR_MEGA65)/KERNAL_1_combined.sym:
-	@mkdir -p $(DIR_MEGA65)
-	@rm -f $@* $(DIR_MEGA65)/kernal.seg_1 $(DIR_MEGA65)/KERNAL_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_1 -i KERNAL_1-mega65 -o kernal.seg_1 -d $(DIR_MEGA65) -l 4000 -h 5fff $(CFG_MEGA65) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+$(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1_combined.vs $(DIR_M65)/BASIC_1_combined.sym:
+	@mkdir -p $(DIR_M65)
+	@rm -f $@* $(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_M65) -l 4000 -h 5fff $(CFG_M65) $(SRCDIR_BASIC) $(GEN_BASIC)
 
-.PRECIOUS: build/target_%/OUTX_X.BIN
-build/target_%/OUTX_X.BIN:
-	cat build/target_$*/OUTB_X.BIN build/target_$*/OUTK_X.BIN > $@
+$(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym:
+	@mkdir -p $(DIR_M65)
+	@rm -f $@* $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_1 -i KERNAL_1-mega65 -o kernal.seg_1 -d $(DIR_M65) -l 4000 -h 5fff $(CFG_M65) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+
+# Rules - BASIC and KERNAL intermediate files, for Commander X16
+
+$(DIR_X16)/OUTB_0.BIN $(DIR_X16)/BASIC_0_combined.vs $(DIR_X16)/BASIC_0_combined.sym:
+	@mkdir -p $(DIR_X16)
+	@rm -f $@* $(DIR_X16)/BASIC_0*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_0 -i BASIC_0-mega65 -o OUTB_0.BIN -d $(DIR_X16) -l c000 -h e4d2 $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
+
+$(DIR_X16)/OUTK_0.BIN $(DIR_X16)/KERNAL_0_combined.vs $(DIR_X16)/KERNAL_0_combined.sym:
+	@mkdir -p $(DIR_X16)
+	@rm -f $@* $(DIR_X16)/KERNAL_0*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_0 -i KERNAL_0-mega65 -o OUTK_0.BIN -d $(DIR_X16) -l e4d3 -h ffff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+
+$(DIR_X16)/basic.seg_1 $(DIR_X16)/BASIC_1_combined.vs $(DIR_X16)/BASIC_1_combined.sym:
+	@mkdir -p $(DIR_X16)
+	@rm -f $@* $(DIR_X16)/basic.seg_1 $(DIR_X16)/BASIC_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
+
+$(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1_combined.vs $(DIR_X16)/KERNAL_1_combined.sym:
+	@mkdir -p $(DIR_X16)
+	@rm -f $@* $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_1 -i KERNAL_1-mega65 -o kernal.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+
+# Rules - BASIC and KERNAL
+
+.PRECIOUS: build/target_%/OUTx_x.BIN
+build/target_%/OUTx_x.BIN:
+	cat build/target_$*/OUTB_x.BIN build/target_$*/OUTK_x.BIN > $@
 
 .PRECIOUS: build/kernal_%.rom
 build/kernal_%.rom:
-	dd if=build/target_$*/OUTX_X.BIN bs=8192 count=1 skip=2 of=$@
+	dd if=build/target_$*/OUTx_x.BIN bs=8192 count=1 skip=2 of=$@
 
 .PRECIOUS: build/basic_%.rom
 build/basic_%.rom:
-	dd if=build/target_$*/OUTX_X.BIN bs=8192 count=1 skip=0 of=$@
+	dd if=build/target_$*/OUTx_x.BIN bs=8192 count=1 skip=0 of=$@
 
 .PRECIOUS: build/symbols_%.vs
 build/symbols_%.vs:
 	sort build/target_$*/BASIC_combined.vs build/target_$*/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
-$(DIR_MEGA65)/OUTX_0.BIN:
-	cat $(DIR_MEGA65)/OUTB_0.BIN $(DIR_MEGA65)/OUTK_0.BIN > $@
+$(DIR_M65)/OUTx_0.BIN:
+	cat $(DIR_M65)/OUTB_0.BIN $(DIR_M65)/OUTK_0.BIN > $@
 
-$(DIR_MEGA65)/kernal.seg_0:
-	dd if=$(DIR_MEGA65)/OUTX_0.BIN bs=8192 count=1 skip=2 of=$@
+$(DIR_M65)/kernal.seg_0: $(DIR_M65)/OUTx_0.BIN
+	dd if=$(DIR_M65)/OUTx_0.BIN bs=8192 count=1 skip=2 of=$@
 
-$(DIR_MEGA65)/basic.seg_0:
-	dd if=$(DIR_MEGA65)/OUTX_0.BIN bs=8192 count=1 skip=0 of=$@
+$(DIR_M65)/basic.seg_0: $(DIR_M65)/OUTx_0.BIN
+	dd if=$(DIR_M65)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@
 
-build/kernal_hybrid.rom: kernal $(DIR_GENERIC)/OUTK_X.BIN
+$(DIR_X16)/OUTx_0.BIN:
+	cat $(DIR_X16)/OUTB_0.BIN $(DIR_X16)/OUTK_0.BIN > $@
+
+$(DIR_X16)/kernal.seg_0: $(DIR_X16)/OUTx_0.BIN
+	dd if=$(DIR_X16)/OUTx_0.BIN bs=8192 count=1 skip=1 of=$@
+
+$(DIR_X16)/basic.seg_0: $(DIR_X16)/OUTx_0.BIN
+	dd if=$(DIR_X16)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@
+
+build/kernal_hybrid.rom: kernal $(DIR_GEN)/OUTK_x.BIN
 	@echo
 	@echo $(HYBRID_WARNING)
 	@echo
 	(dd if=kernal bs=1140 count=1 skip=0        ; \
 	echo "    > HYBRID ROM, DON'T DISTRIBUTE <" ; \
 	dd if=kernal bs=1 count=58 skip=1176        ; \
-	cat $(DIR_GENERIC)/OUTK_X.BIN) > $@
+	cat $(DIR_GEN)/OUTK_x.BIN) > $@
 
-build/symbols_hybrid.vs: $(DIR_GENERIC)/KERNAL_combined.vs
-	sort $(DIR_GENERIC)/KERNAL_combined.vs | uniq | grep -v "__" > $@
+build/symbols_hybrid.vs: $(DIR_GEN)/KERNAL_combined.vs
+	sort $(DIR_GEN)/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
-# Rules - platform 'Mega 65' specific
+# Rules - platform 'Mega65' specific
 
-build/mega65.rom: $(SEG_LIST_MEGA65) build/chargen.rom
-	dd if=/dev/zero bs=8192 count=1 of=build/padding___08_KB
-	dd if=/dev/zero bs=8192 count=8 of=build/padding___64_KB
-	cat build/padding___08_KB                > build/mega65.rom
-	cat build/padding___08_KB               >> build/mega65.rom
-	cat $(DIR_MEGA65)/kernal.seg_1    >> build/mega65.rom
-	cat $(DIR_MEGA65)/basic.seg_1     >> build/mega65.rom
-	cat build/padding___08_KB               >> build/mega65.rom
-	cat $(DIR_MEGA65)/basic.seg_0     >> build/mega65.rom
-	cat build/chargen.rom                   >> build/mega65.rom
-	cat build/chargen.rom                   >> build/mega65.rom
-	cat $(DIR_MEGA65)/kernal.seg_0    >> build/mega65.rom
-	cat build/padding___64_KB               >> build/mega65.rom
-	rm -f build/padding___*
+$(TARGET_M65_x): $(SEG_LIST_M65) build/chargen.rom
+	dd if=/dev/zero bs=8192 count=1 of=build/m65_padding_08_KB
+	dd if=/dev/zero bs=8192 count=8 of=build/m65_padding_64_KB
+	cat build/m65_padding_08_KB              > $(TARGET_M65_x)
+	cat build/m65_padding_08_KB             >> $(TARGET_M65_x)
+	cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x)
+	cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x)
+	cat build/m65_padding_08_KB             >> $(TARGET_M65_x)
+	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x)
+	cat build/chargen.rom                   >> $(TARGET_M65_x)
+	cat build/chargen.rom                   >> $(TARGET_M65_x)
+	cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x)
+	cat build/m65_padding_64_KB             >> $(TARGET_M65_x)
+	rm -f build/m65_padding_*
+
+# Rules - platform 'Commander X16' specific
+
+$(TARGET_X16_x): $(SEG_LIST_X16) build/chargen.rom
+	dd if=/dev/zero bs=8192 count=1 of=build/x16_padding_08_KB
+	dd if=/dev/zero bs=8192 count=8 of=build/x16_padding_64_KB
+	cat $(DIR_X16)/basic.seg_0      > $(TARGET_X16_x)
+	cat $(DIR_X16)/kernal.seg_0    >> $(TARGET_X16_x)
+	cat build/chargen.rom                   >> $(TARGET_X16_x)
+	cat $(DIR_X16)/basic.seg_1     >> $(TARGET_X16_x)
+	cat $(DIR_X16)/kernal.seg_1    >> $(TARGET_X16_x)
+	rm -f build/x16_padding_*
 
 # Rules - tests
 
@@ -325,8 +398,8 @@ test_generic_x128: build/kernal_generic.rom build/basic_generic.rom build/symbol
 test_testing: build/kernal_testing.rom build/basic_testing.rom build/symbols_testing.vs
 	x64 -kernal build/kernal_testing.rom -basic build/basic_testing.rom -moncommands build/symbols_testing.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_mega65: build/mega65.rom
-	../xemu/build/bin/xmega65.native -dmarev 2 -forcerom -loadrom build/mega65.rom
+test_mega65: $(TARGET_M65_x)
+	../xemu/build/bin/xmega65.native -dmarev 2 -forcerom -loadrom $(TARGET_M65_x)
 
 test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/symbols_ultimate64.vs
 	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
@@ -346,6 +419,6 @@ test_m65: build/mega65.rom
 testremote: build/kernal_custom.rom build/basic_custom.rom build/symbols_custom.vs
 	x64 -kernal build/kernal_custom.rom -basic build/basic_custom.rom -moncommands build/symbols_custom.vs -remotemonitor
 
-testsimilarity: $(TOOL_SIMILARITY) $(DIR_GENERIC)/OUTX_X.BIN kernal basic
-	$(TOOL_SIMILARITY) kernal $(DIR_GENERIC)/OUTX_X.BIN
-	$(TOOL_SIMILARITY) basic  $(DIR_GENERIC)/OUTX_X.BIN
+testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN kernal basic
+	$(TOOL_SIMILARITY) kernal $(DIR_GEN)/OUTx_x.BIN
+	$(TOOL_SIMILARITY) basic  $(DIR_GEN)/OUTx_x.BIN

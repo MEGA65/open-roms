@@ -85,10 +85,11 @@ List of the most important make targets:
 
 ### Code segments and ROM layouts
 
-Currently there are 2 ROM layouts defined:
+Currently there are 3 ROM layouts defined:
 
 - `STD` - with 2 code segments: `BASIC` (`$A000-$E4D2`, where `$C000-$DFFF` is a skip-gap for RAM and I/O area) and `KERNAL` (`$E4D3 - $FFFF`)
 - `M65` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, additional segments might be added to the build system in the future; at the moment of writing this document additional 8KB of ROM is defined as `BASIC_1` segment and additional 8KB of ROM is defined as `KERNAL_1` segment
+- `X16` - memory layout for the Commander X16 machine
 
 To check for current ROM layout or code segment use KickAssembler preprocessor defines, like `ROM_LAYOUT_STD`, `ROM_LAYOUT_M65`, `SEGMENT_BASIC`, `SEGMENT_KERNAL_1`.
 
@@ -107,7 +108,7 @@ File name of the fixed location routine adheres to the scheme: `addr.name.s`, wh
 For handling different ROM layouts, our build tool provides support for pragma-like comments, in the form:
 
 ```
-// #LAYOUT# <rom-layout> <code-segment> <action>
+// #LAYOUT# <rom-layout> <code-segment> <action> <parameters>
 ```
 
 where:
@@ -117,11 +118,12 @@ where:
 - `<code-segment>` - `KERNAL`, `BASIC`, `KERNAL_0`, `KERNAL_1`, etc., asterisk symbol can be used to match any segment
 - `<action>` - what to do when layout and segment match:
 
-| action        | description                                   |
-| :------------ | :-------------------------------------------- |
-| `#IGNORE`     | ignore the file completely                    |
-| `#TAKE`       | compile the file normally                     |
-| `#TAKE-FLOAT` | compile the file, but force it to be floating |
+| action         | description                                                        |
+| :------------- | :----------------------------------------------------------------- |
+| `#IGNORE`      | ignore the file completely                                         |
+| `#TAKE`        | compile the file normally                                          |
+| `#TAKE-FLOAT`  | compile the file, but force it to be floating                      |
+| `#TAKE-OFFSET` | shifts the fixed-location address by hex offset given as parameter |
 
 The first match counts, all the remaining ones are dropped. Examples:
 

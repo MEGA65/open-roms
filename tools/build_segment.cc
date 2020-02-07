@@ -91,8 +91,8 @@ public:
     std::vector<char> content;
 
     std::string label;
-    int  startAddr;    // for fixed (non-floating) routines only
-    int  codeLength;   // for both fixed and floating routines
+    int startAddr;     // for fixed (non-floating) routines only
+    int codeLength;    // for both fixed and floating routines
 
     int testAddrStart; // start address during test run
     int testAddrEnd;   // end address during test run
@@ -170,8 +170,8 @@ void parseCommandLine(int argc, char **argv)
             case 's': CMD_segName   = optarg; break;
             case 'i': CMD_segInfo   = optarg; break;
             case 'r': CMD_romLayout = optarg; break;
-            case 'l': CMD_loAddress = strtol(optarg, nullptr ,16); break;
-            case 'h': CMD_hiAddress = strtol(optarg, nullptr ,16); break;
+            case 'l': CMD_loAddress = strtol(optarg, nullptr, 16); break;
+            case 'h': CMD_hiAddress = strtol(optarg, nullptr, 16); break;
             default: printUsage(); ERROR();
         }
     }
@@ -692,6 +692,11 @@ bool SourceFile::preprocessLine(const std::string &line)
     {
         floating = true;
     }
+    else if (iter->compare("#TAKE-OFFSET") == 0)
+    {
+        if (++iter == tokens.end()) ERROR("syntax error, missing parameter for '#TAKE-OFFSET'");
+        startAddr += strtol(iter->c_str(), nullptr, 16);
+    }
     else if (iter->compare("#TAKE") != 0)
     {
         ERROR(std::string("syntax error, unsupported action '") + token + "' in '#LAYOUT#'");
@@ -791,8 +796,9 @@ void BinningProblem::addToProblem(SourceFile *routine)
 
         if (!gapFound)
         {
-            ERROR(std::string("start address of fixed address file '") + \
-                  routine->fileName + "' already occupied or out of range");
+            ERROR(std::string("start address of fixed address file '") +
+                  routine->fileName + "' (" + std::to_string(routine->startAddr) +
+                  ") already occupied or out of range");
         }
     }
 }

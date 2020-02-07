@@ -34,7 +34,7 @@
 .pseudocommand panic code
 {
 	// If case no panic screen is used, we can skip providing error codes within Kernal
-#if CONFIG_PANIC_SCREEN || !SEGMENT_KERNAL
+#if CONFIG_PANIC_SCREEN
 	lda code
 #endif
 	jmp ($E4B7)
@@ -117,7 +117,7 @@
 
 .pseudocommand lda_zero                // WARNING: do not use within interrupts
 {
-#if HAS_OPCODES_65C02
+#if HAS_OPCODES_65CE02
 	tba
 #else
 	lda #$00

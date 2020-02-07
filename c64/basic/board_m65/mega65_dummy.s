@@ -2,6 +2,6 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-// Dummy, just to have anyything in segment 1
+// Dummy, just to have anything in segment 1
 
 	brk

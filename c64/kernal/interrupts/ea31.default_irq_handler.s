@@ -44,5 +44,13 @@ default_irq_handler_end_tape:
 #endif // CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 
 
+#if CONFIG_PLATFORM_COMMODORE_64
+
 	// Acknowledge CIA interrupt and return
 	jmp clear_cia1_interrupt_flag_and_return_from_interrupt
+
+#else
+
+	jmp return_from_interrupt
+
+#endif

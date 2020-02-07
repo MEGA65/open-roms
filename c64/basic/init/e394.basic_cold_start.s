@@ -8,7 +8,7 @@
 
 basic_cold_start:
 
-#if !ROM_LAYOUT_M65                    // can be safely skipped in Mega65 ROM layout
+#if ROM_LAYOUT_STD // skip on non-sgtandard ROM layouts - they produce single image nevertheless
 
 	// Before doing anything, check if we have a compatible BASIC/KERNAL pair
 

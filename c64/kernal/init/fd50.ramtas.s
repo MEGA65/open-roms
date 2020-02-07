@@ -49,6 +49,8 @@ RAMTAS:
 	ldx #>$033C
 	stx TAPE1+1
 
+#if CONFIG_PLATFORM_COMMODORE_64
+
 	// Set screen address pointer ("Compute's Mapping the 64" p238)
 	// This is obvious boiler plate containing no creative input, but to avoid
 	// unnecessarily similarity to the C64 KERNAL, we use X instead of A to do this,
@@ -94,5 +96,20 @@ ramtas_32k:
 
 	ldy #$80
 	bne !- // branch always
+
+#elif CONFIG_PLATFORM_COMMANDER_X16
+
+	ldx #>$0800
+	stx MEMSTR+1
+
+	ldy #$9F
+	sty MEMSIZK+1
+
+#else
+
+	.error "Please fill-in RAMTAS"
+
+#endif // platform
+
 
 #endif // ROM layout

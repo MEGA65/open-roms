@@ -17,10 +17,15 @@ default_nmi_handler:
 
 	// XXX confirm NMIs from CIA, or no other NMI will arrive!
 
+#if CONFIG_PLATFORM_COMMODORE_64
+
 	jsr cartridge_check
 	bne !+
 	jmp (ICART_WARM_START)
 !:
+
+#endif
+
 	// According to C64 Wiki, if STOP key is pressed, the routine assumes warm start request
 
 	// XXX is it right? how to check that IRQ was caused by RESTORE?

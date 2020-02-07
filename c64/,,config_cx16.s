@@ -24,7 +24,7 @@
 // #define CONFIG_BRAND_MEGA_65
 // #define CONFIG_BRAND_ULTIMATE_64
 
-.const CONFIG_CUSTOM_BRAND = @"COMMANDER X16"
+.const CONFIG_CUSTOM_BRAND = @"FOR COMMANDER X16"
 
 
 // Processor instruction set

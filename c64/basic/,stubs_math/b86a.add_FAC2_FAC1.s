@@ -21,4 +21,37 @@
 // XXX provide implementation
 
 add_FAC2_FAC1:
+
+	// Check if FAC2 is 0; if so, leave FAC1 without changes
+
+	lda FAC2_exponent
+	beq add_FAC2_FAC1_done
+
+	// If FAC1 is 0, just copy FAC2 to FAC1
+
+	lda FAC1_exponent
+	beq_16 mov_FAC2_FAC1
+
+	// Make sure the exponents are aligned
+
+	jsr add_align_exponents
+
+	// Check whether signs are the same
+
+	lda FAC1_sign
+	eor FAC2_sign
+
+	bmi add_FAC2_FAC1_sub              // branch if signs are opposite
+
+
+
+
+
+add_FAC2_FAC1_sub:
+
 	STUB_IMPLEMENTATION()
+
+
+add_FAC2_FAC1_done:
+
+	rts

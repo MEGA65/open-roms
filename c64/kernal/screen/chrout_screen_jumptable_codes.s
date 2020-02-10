@@ -23,6 +23,7 @@ chrout_screen_jumptable_codes:
 	.byte KEY_CRSR_LEFT
 	.byte KEY_CRSR_DOWN
 	.byte KEY_CRSR_UP
+	.byte KEY_INS
 
 __chrout_screen_jumptable_quote_guard:
 
@@ -33,7 +34,6 @@ __chrout_screen_jumptable_quote_guard:
 	.byte KEY_TAB_BW
 	.byte KEY_TAB_FW
 #endif
-	.byte KEY_INS
 	.byte KEY_DEL
 	.byte KEY_RETURN
 
@@ -56,6 +56,7 @@ chrout_screen_jumptable_lo:
 	.byte <(chrout_screen_CRSR_LEFT  - 1)
 	.byte <(chrout_screen_CRSR_DOWN  - 1)
 	.byte <(chrout_screen_CRSR_UP    - 1)
+	.byte <(chrout_screen_INS        - 1)
 #if CONFIG_EDIT_STOPQUOTE
 	.byte <(chrout_screen_STOP       - 1)
 #endif
@@ -63,7 +64,6 @@ chrout_screen_jumptable_lo:
 	.byte <(chrout_screen_TAB_BW     - 1)
 	.byte <(chrout_screen_TAB_FW     - 1)
 #endif
-	.byte <(chrout_screen_INS        - 1)
 	.byte <(chrout_screen_DEL        - 1)
 	.byte <(chrout_screen_RETURN     - 1)
 
@@ -81,6 +81,7 @@ chrout_screen_jumptable_hi:
 	.byte >(chrout_screen_CRSR_LEFT  - 1)
 	.byte >(chrout_screen_CRSR_DOWN  - 1)
 	.byte >(chrout_screen_CRSR_UP    - 1)
+	.byte >(chrout_screen_INS        - 1)
 #if CONFIG_EDIT_STOPQUOTE
 	.byte >(chrout_screen_STOP       - 1)
 #endif
@@ -88,7 +89,6 @@ chrout_screen_jumptable_hi:
 	.byte >(chrout_screen_TAB_BW     - 1)
 	.byte >(chrout_screen_TAB_FW     - 1)
 #endif
-	.byte >(chrout_screen_INS        - 1)
 	.byte >(chrout_screen_DEL        - 1)
 	.byte >(chrout_screen_RETURN     - 1)
 
@@ -110,6 +110,7 @@ chrout_screen_jumptable:
 	.word chrout_screen_CRSR_LEFT
 	.word chrout_screen_CRSR_DOWN
 	.word chrout_screen_CRSR_UP
+	.word chrout_screen_INS
 #if CONFIG_EDIT_STOPQUOTE
 	.word chrout_screen_STOP
 #endif
@@ -117,7 +118,6 @@ chrout_screen_jumptable:
 	.word chrout_screen_TAB_BW
 	.word chrout_screen_TAB_FW
 #endif
-	.word chrout_screen_INS
 	.word chrout_screen_DEL
 	.word chrout_screen_RETURN
 

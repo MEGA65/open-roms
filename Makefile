@@ -88,10 +88,10 @@ TOOLS_LIST = $(pathsubst tools/%,build/tools/%,$(basename $(SRC_TOOLS)))
 
 # List of targets
 
-TARGET_CUS_B    = build/kernal_custom.rom
-TARGET_GEN_B    = build/kernal_generic.rom
-TARGET_TST_B    = build/kernal_testing.rom
-TARGET_U64_B    = build/kernal_ultimate64.rom
+TARGET_CUS_B    = build/basic_custom.rom
+TARGET_GEN_B    = build/basic_generic.rom
+TARGET_TST_B    = build/basic_testing.rom
+TARGET_U64_B    = build/basic_ultimate64.rom
 
 TARGET_CUS_K    = build/kernal_custom.rom
 TARGET_GEN_K    = build/kernal_generic.rom
@@ -124,7 +124,7 @@ SEG_LIST_X16 =    $(DIR_X16)/basic.seg_0  \
 				  $(DIR_X16)/kernal.seg_0 \
 				  $(DIR_X16)/kernal.seg_1
 
-REL_TARGET_LIST = $(TARGET_LIST_CUS) $(TARGET_LIST_GEN) $(TARGET_LIST_TST) $(TARGET_M65_x) $(TARGET_LIST_U64)
+REL_TARGET_LIST = $(TARGET_LIST_GEN) $(TARGET_LIST_TST) $(TARGET_M65_x) $(TARGET_LIST_U64)
 
 # Misc strings
 
@@ -146,7 +146,7 @@ clean:
 
 updatebin:
 	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(TOOL_RELEASE)
-	$(TOOL_RELEASE) -i ./build -o ./bin $(pathsubst build/%,./%, $(REL_TARGET_LIST))
+	$(TOOL_RELEASE) -i ./build -o ./bin $(patsubst build/%,%,$(REL_TARGET_LIST))
 	cp build/chargen.rom bin/chargen.rom
 
 # Rules - tools

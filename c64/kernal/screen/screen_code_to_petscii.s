@@ -4,6 +4,9 @@
 // #LAYOUT# *   *        #IGNORE
 
 
+// XXX - conversion should depend on QTSW too
+
+
 screen_code_to_petscii:
 	cmp #$1B
 	bcc s2p_adc_40

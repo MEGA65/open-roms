@@ -31,9 +31,10 @@ chrin_repeat:
 	cmp INDX
 	bne not_end_of_input
 
-	// Return carriage return and clear pending input flag
+	// Return carriage return and clear pending input and quote flags
 	lda #$00
 	sta CRSW
+	sta QTSW
 
 	// FALLTROUGH
 
@@ -54,8 +55,10 @@ not_end_of_input:
 
 	// Return next byte of waiting
 	tay
+
 chrin_keyboard_return_byte:
 	lda (LXSP),y
+	jsr screen_check_toggle_quote
 	tax
 	ply_trash_a
 	txa
@@ -112,7 +115,7 @@ chrin_enter_calc_length:
 	// Calculate length
 	jsr screen_get_logical_line_end_ptr
 	iny
-	
+
 chrin_enter_loop:
 
 	// Retrieve bytes
@@ -123,12 +126,17 @@ chrin_enter_loop:
 	beq chrin_enter_loop
 	iny
 	sty INDX
-	lda #$01
-	sta CRSW
+
+	// Set mark informing that we are returning a line
+	ldy #$01
+	sty CRSW
+
+	// Clear quote mode mark
+	dey                                // set .Y to 0
+	sty QTSW
 
 	// Return first char of line
-	ldy #$00
-	beq chrin_keyboard_return_byte // branch always
+	beq chrin_keyboard_return_byte     // branch always
 
 not_enter:
 

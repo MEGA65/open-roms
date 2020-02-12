@@ -11,9 +11,6 @@
 //
 
 
-// XXX - part below might depend on QTSW too
-
-
 screen_code_to_petscii:
 
 	cmp #$20

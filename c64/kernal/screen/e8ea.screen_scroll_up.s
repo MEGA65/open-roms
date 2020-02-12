@@ -47,18 +47,18 @@ screen_scroll_up:
 
 screen_scroll_up_delay_done: // entry point for cursor move control codes
 
-	// Scroll the LDTBL (line link table)
+	// Scroll the LDTB1 (line link table)
 
 	ldy #$00
 !:
-	lda LDTBL+1, y
-	sta LDTBL+0, y
+	lda LDTB1+1, y
+	sta LDTB1+0, y
 	iny
 	cpy #24
 	bne !-
 
 	lda #$80
-	sta LDTBL+24
+	sta LDTB1+24
 
 	// Preserve SAL and EAL, prepare initial SAL/EAL/PNT/USER values
 
@@ -126,7 +126,7 @@ screen_scroll_up_loop_done:
 
 	// If the first line is linked, scroll once more
 
-	bit LDTBL+0
+	bit LDTB1+0
 	bpl screen_scroll_up
 
  	// Recalculate PNT and USER

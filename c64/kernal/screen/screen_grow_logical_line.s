@@ -26,7 +26,7 @@ screen_grow_logical_line:
 
 	// Do not grow line if previus one is grown
 	ldy TBLX
-	lda LDTBL+0, y
+	lda LDTB1+0, y
 	bpl screen_grow_logical_line_done_scroll
 
 	// If last line, scroll the screen up
@@ -34,22 +34,22 @@ screen_grow_logical_line:
 	beq screen_grow_logical_line_screen_up
 
 	// Do not grow line if already grown
-	lda LDTBL+1, y
+	lda LDTB1+1, y
 	bpl screen_grow_logical_line_done
 	
 	// Preserve SAL and EAL
 
 	jsr screen_preserve_sal_eal
 
-	// Scroll LDTBL down (start from the end)
+	// Scroll LDTB1 down (start from the end)
 	ldy #23
 !:
 	cpy TBLX
 	beq !+
 	bcc !+
 
-	lda LDTBL+0, y
-	sta LDTBL+1, y
+	lda LDTB1+0, y
+	sta LDTB1+1, y
 
 	dey
 	bne !-
@@ -57,7 +57,7 @@ screen_grow_logical_line:
 	// Mark current line as grown
 	ldy TBLX
 	lda #$00
-	sta LDTBL+1, y
+	sta LDTB1+1, y
 
 	// Now we have to scroll lines downwards to make space. We start from the end,
 	// and work backwards. We cannot be as simple and efficient here as we are

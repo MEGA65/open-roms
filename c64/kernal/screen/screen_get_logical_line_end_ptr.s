@@ -10,10 +10,10 @@ screen_get_logical_line_end_ptr:
 	cpy #24
 	bcs screen_get_logical_line_end_39 // last line of the screen
 
-	lda LDTBL+0, y
+	lda LDTB1+0, y
 	bpl screen_get_logical_line_end_39 // current line continues previous one
 
-	lda LDTBL+1, y
+	lda LDTB1+1, y
 	bmi screen_get_logical_line_end_39 // current line is not continued
 
 	// FALLTROUGH

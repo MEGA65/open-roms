@@ -25,7 +25,7 @@ chrin_repeat:
 	lda CRSW
 	beq read_from_keyboard
 
-	// Yes, we have input waiting at (LXSP)+CRSW
+	// Yes, we have input waiting at (LSXP)+CRSW
 	// When CRSW = INDX, then we return a carriage return
 	// and clear the flag
 	cmp INDX
@@ -57,7 +57,7 @@ not_end_of_input:
 	tay
 
 chrin_keyboard_return_byte:
-	lda (LXSP),y
+	lda (LSXP),y
 	jsr screen_check_toggle_quote
 	tax
 	ply_trash_a
@@ -92,20 +92,20 @@ chrin_enter:
 
 	// Set pointer to line of input
 	lda PNT+0
-	sta LXSP+0
+	sta LSXP+0
 	lda PNT+1
-	sta LXSP+1
+	sta LSXP+1
 
-	// If the current line is a continuation of the previous one, decrease LXSP by 40
+	// If the current line is a continuation of the previous one, decrease LSXP by 40
 	ldy TBLX
-	lda LDTBL, y
+	lda LDTB1, y
 	bmi chrin_enter_calc_length        // branch if not continuation
-	lda LXSP+0
+	lda LSXP+0
 	sec
 	sbc #40
-	sta LXSP+0
+	sta LSXP+0
 	bcs !+
-	dec LXSP+1
+	dec LSXP+1
 !:
 	ldy #80
 	bne chrin_enter_loop               // branch always
@@ -121,7 +121,7 @@ chrin_enter_loop:
 	// Retrieve bytes
 	dey
 	bmi empty_line
-	lda (LXSP),y
+	lda (LSXP),y
 	cmp #$20
 	beq chrin_enter_loop
 	iny

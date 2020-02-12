@@ -145,7 +145,7 @@
 	.label NDX       = $C6  //          number of chars in keyboard buffer
 	.label RVS       = $C7  //          flag, whether to print reversed characters
 	.label INDX      = $C8  //          end of logical line (column, 0-79)
-	.label LXSP      = $C9  // $C9-$CA  start of input, X/Y position
+	.label LSXP      = $C9  // $C9-$CA  start of input, X/Y position (typo in Mapping the C64, fixed in Mapping the C128)
 	.label SFDX      = $CB  //          -- NOT IMPLEMENTED --
 	.label BLNSW     = $CC  //          cursor blink disable flag
 	.label BLNCT     = $CD  //          cursor blink countdown
@@ -159,7 +159,7 @@
 	.label TBLX      = $D6  //          current screen Y position (row), 0-24
 	.label SCHAR     = $D7  //          ASCII value of the last printed character
 	.label INSRT     = $D8  //          insert mode flag/counter
-	.label LDTBL     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
+	.label LDTB1     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
 	.label USER      = $F3  // $F3-$F4  pointer to current color RAM location
 	.label KEYTAB    = $F5  // $F5-$F6  pointer to keyboard lookup table
 	.label RIBUF     = $F7  // $F7-$F8  -- WIP -- RS-232 receive buffer pointer

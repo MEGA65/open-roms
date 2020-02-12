@@ -17,9 +17,9 @@ clear_screen:
 	// continuation of the previous one
 
 	lda #$80
-	ldy #24	
+	ldy #24
 !:
-	sta LDTBL,y
+	sta LDTB1,y
 	dey
 	bpl !-
 

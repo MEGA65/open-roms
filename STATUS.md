@@ -193,7 +193,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B853`   | `sub_FAC2_FAC1`        | PARTIAL  | needs `add_FAC2_FAC1`                              |
 | `$B862`   | `add_align_exponents`  | PARTIAL  | not tested yet                                     |
 | `$B867`   | `add_MEM_FAC1`         | PARTIAL  | needs `add_FAC2_FAC1`                              |
-| `$B86A`   | `add_FAC2_FAC1`        | NOT DONE |                                                    |
+| `$B86A`   | `add_FAC2_FAC1`        | PARTIAL  | not tested yet                                     |
 | `$B8FE`   | `normal_FAC1`          | PARTIAL  | not tested yet                                     |
 | `$B947`   | `inv_FAC1_mantissa`    | NOT DONE |                                                    |
 | `$B983`   | `MULSHF`               | NOT DONE |                                                    |

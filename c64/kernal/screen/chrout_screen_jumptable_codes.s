@@ -94,6 +94,8 @@ chrout_screen_jumptable_hi:
 
 #else
 
+__before_chrout_screen_jumptable:
+
 .if (mod(*, $2) == 1) { brk }          // align code so that vector never crosses page boundary
 
 chrout_screen_jumptable:
@@ -121,6 +123,8 @@ chrout_screen_jumptable:
 	.word chrout_screen_DEL
 	.word chrout_screen_RETURN
 
-.if (mod(*, $2) == 0) { brk }          // make sure routine size is always the same, needed by build system
+	// Make sure routine size is always the same - build system limitation
+
+.if (__before_chrout_screen_jumptable == chrout_screen_jumptable) { brk }
 
 #endif

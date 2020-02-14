@@ -41,7 +41,7 @@ add_FAC2_FAC1:
 	lda FAC1_sign
 	eor FAC2_sign
 
-	bmi add_FAC2_FAC1_sub              // branch if signs are opposite
+	bmi_16 add_FAC2_FAC1_sub           // branch if signs are opposite
 
 	// Perform the addition
 	
@@ -66,8 +66,6 @@ add_FAC2_FAC1:
 
 	inc FAC1_exponent
 	bne add_FAC2_FAC1_normalize        // end if no overflow
-
-	// Overflow - XXX shouldnt we mark it somewhere in memory?
 	
 	lda #$FF
 	sta FAC1_exponent
@@ -82,33 +80,6 @@ add_FAC2_FAC1_done:
 
 	rts
 
-add_FAC2_FAC1_sub:
-
-	// Perform the subtration
-
-	sec
-	lda FAC1_mantissa+3
-	sbc FAC2_mantissa+3
-	sta FAC1_mantissa+3
-
-	lda FAC1_mantissa+2
-	sbc FAC2_mantissa+2
-	sta FAC1_mantissa+2
-	
-	lda FAC1_mantissa+1
-	sbc FAC2_mantissa+1
-	sta FAC1_mantissa+1	
-
-	lda FAC1_mantissa+0
-	sbc FAC2_mantissa+0
-	sta FAC1_mantissa+0	
-	
-	bcs add_FAC2_FAC1_normalize          // end if no need to adapt the exponent
-
-	dec FAC1_exponent
-	
-	// FALLTROUGH
-	
 add_FAC2_FAC1_normalize:
 	
 	jmp normal_FAC1

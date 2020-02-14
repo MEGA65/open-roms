@@ -16,6 +16,10 @@ toggle_sign_FAC1:
 	lda FAC1_exponent
 	beq !+                             // do not toggle the sign if value is 0
 
+	// FALLTROUGH
+
+toggle_sign_FAC1_skipcheck:            // entry for other routines
+
 	lda FAC1_sign
 	eor #$FF
 	sta FAC1_sign

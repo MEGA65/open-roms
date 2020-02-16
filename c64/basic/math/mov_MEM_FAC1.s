@@ -22,7 +22,7 @@
 // XXX test this
 
 mov_MEM_FAC1:
-
+.break
 	// Original routines use $22/$23 location for a vector too, see here:
 	// - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 
@@ -58,7 +58,7 @@ mov_MEM_FAC1:
 	lda #$FF
 	skip_2_bytes_trash_nvz
 !:
-	lda $00
+	lda #$00
 
 	sta FAC1_sign
 

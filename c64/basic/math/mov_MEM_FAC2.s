@@ -61,7 +61,7 @@ mov_MEM_FAC2:
 	lda #$FF
 	skip_2_bytes_trash_nvz
 !:
-	lda $00
+	lda #$00
 
 	sta FAC2_sign
 

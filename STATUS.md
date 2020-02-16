@@ -191,22 +191,22 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B849`   | `add_HALF_FAC1`        | NOT DONE |                                                    |
 | `$B850`   | `sub_MEM_FAC1`         | PARTIAL  | needs `add_FAC2_FAC1`                              |
 | `$B853`   | `sub_FAC2_FAC1`        | PARTIAL  | needs `add_FAC2_FAC1`                              |
-| `$B862`   | `add_align_exponents`  | PARTIAL  | not tested yet                                     |
+| `$B862`   | `add_align_exponents`  | DONE     |                                                    |
 | `$B867`   | `add_MEM_FAC1`         | PARTIAL  | needs `add_FAC2_FAC1`                              |
-| `$B86A`   | `add_FAC2_FAC1`        | PARTIAL  | not tested yet                                     |
-| `$B8FE`   | `normal_FAC1`          | PARTIAL  | not tested yet                                     |
+| `$B86A`   | `add_FAC2_FAC1`        | PARTIAL  | aubstration not tested yet                         |
+| `$B8FE`   | `normal_FAC1`          | PARTIAL  | not fully tested yet                               |
 | `$B947`   | `inv_FAC1_mantissa`    | NOT DONE |                                                    |
 | `$B983`   | `MULSHF`               | NOT DONE |                                                    |
 | `$B9EA`   | `log_FAC1`             | NOT DONE |                                                    |
 | `$BA28`   | `mul_MEM_FAC1`         | PARTIAL  | needs `mul_FAC2_FAC1`                              |
 | `$BA2B`   | `mul_FAC2_FAC1`        | NOT DONE |                                                    |
 | `$BA59`   | `MLTPLY`               | NOT DONE |                                                    |
-| `$BA8C`   | `mov_MEM_FAC2`         | PARTIAL  | not fully tested yet                               |
+| `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
 | `$BAE2`   | `mul10_FAC1`           | NOT DONE |                                                    |
 | `$BAFE`   | `div10_FAC1_p`         | NOT DONE |                                                    |
 | `$BB0F`   | `div_MEM_FAC1`         | PARTIAL  | needs `div_FAC2_FAC1`                              |
 | `$BB12`   | `div_FAC2_FAC1`        | NOT DONE |                                                    |
-| `$BBA2`   | `mov_MEM_FAC1`         | PARTIAL  | not fully tested yet                               |
+| `$BBA2`   | `mov_MEM_FAC1`         | DONE     |                                                    |
 | `$BBC7`   | `mov_r_FAC1_TMP2`      | PARTIAL  | not fully tested yet                               |
 | `$BBCA`   | `mov_r_FAC1_TMP1`      | PARTIAL  | not fully tested yet                               |
 | `$BBD0`   | `mov_r_FAC1_VAR`       | PARTIAL  | not fully tested yet                               |

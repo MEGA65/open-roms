@@ -62,10 +62,10 @@ add_FAC2_FAC1:
 	adc FAC1_mantissa+0
 	sta FAC1_mantissa+0	
 	
-	bcc add_FAC2_FAC1_normalize        // end if no need to adapt the exponent
+	bcc_16 normal_FAC1                 // end if no need to adapt the exponent
 
 	inc FAC1_exponent
-	bne add_FAC2_FAC1_normalize        // end if no overflow
+	bne add_FAC2_FAC1_adapt_mantissa   // end if no overflow
 	
 	lda #$FF
 	sta FAC1_exponent
@@ -80,6 +80,13 @@ add_FAC2_FAC1_done:
 
 	rts
 
-add_FAC2_FAC1_normalize:
+add_FAC2_FAC1_adapt_mantissa:
+
+	sec
+	ror FAC1_mantissa+0
+	ror FAC1_mantissa+1
+	ror FAC1_mantissa+2
+	ror FAC1_mantissa+3
+	ror FACOV
 	
-	jmp normal_FAC1
+	rts

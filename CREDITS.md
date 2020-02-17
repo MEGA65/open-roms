@@ -1,21 +1,13 @@
 
 # CREDITS to people whose work was of great help to us
 
-<br />
-
-## For source code we reused
-
-<br />
+## for source code we reused
 
 * TWW/CTR - for his keyboard handling code
 * Graham - for his PAL/NTSC detection routine
 * enthusi/Onslaught - for his example Turbo Tape 64 compatible loader
 
-<br />
-
-## For documentation
-
-<br />
+## for documentation
 
 * Frantic - for [Codebase 64](https://codebase64.org)
 * Joe Forster/STA - for the official/unofficial ROM API description at [sta.c64.org](http://sta.c64.org)

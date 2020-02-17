@@ -189,12 +189,12 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B7B5`   | `STRVAL`               | NOT DONE | imports string to FAC1                             |
 | `$B7F7`   | `convert_FAC1_to_ADDR` | NOT DONE |                                                    |
 | `$B849`   | `add_HALF_FAC1`        | NOT DONE |                                                    |
-| `$B850`   | `sub_MEM_FAC1`         | PARTIAL  | needs `add_FAC2_FAC1`                              |
-| `$B853`   | `sub_FAC2_FAC1`        | PARTIAL  | needs `add_FAC2_FAC1`                              |
+| `$B850`   | `sub_MEM_FAC1`         | DONE     |                                                    |
+| `$B853`   | `sub_FAC2_FAC1`        | DONE     |                                                    |
 | `$B862`   | `add_align_exponents`  | DONE     |                                                    |
-| `$B867`   | `add_MEM_FAC1`         | PARTIAL  | needs `add_FAC2_FAC1`                              |
-| `$B86A`   | `add_FAC2_FAC1`        | PARTIAL  | aubstration not tested yet                         |
-| `$B8FE`   | `normal_FAC1`          | PARTIAL  | not fully tested yet                               |
+| `$B867`   | `add_MEM_FAC1`         | DONE     |                                                    |
+| `$B86A`   | `add_FAC2_FAC1`        | DONE     |                                                    |
+| `$B8FE`   | `normal_FAC1`          | DONE     |                                                    |
 | `$B947`   | `inv_FAC1_mantissa`    | NOT DONE |                                                    |
 | `$B983`   | `MULSHF`               | NOT DONE |                                                    |
 | `$B9EA`   | `log_FAC1`             | NOT DONE |                                                    |

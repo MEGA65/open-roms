@@ -12,7 +12,7 @@
 add_FAC2_FAC1_sub:
 
 	// First verify that |FAC1| > |FAC2|, branch to proper variant if it is not
-	// Note, that exponents are laready equalized
+	// We ignore FACOV here. Note, that exponents are already equalized
 
 	lda FAC1_mantissa+0
 	cmp FAC2_mantissa+0
@@ -59,9 +59,7 @@ add_FAC2_FAC1_sub:
 	sbc FAC2_mantissa+0
 	sta FAC1_mantissa+0	
 	
-	bcs add_FAC2_FAC1_sub_normalize    // end if no need to adapt the exponent
-
-	dec FAC1_exponent
+	// Exponent should never need adaptation here
 	
 	jmp normal_FAC1
 
@@ -94,14 +92,6 @@ add_FAC2_FAC1_sub_rev:
 	sbc FAC1_mantissa+0
 	sta FAC1_mantissa+0
 	
-	bcs add_FAC2_FAC1_sub_normalize    // end if no need to adapt the exponent
-	
-	lda FAC2_exponent
-	sta FAC1_exponent
-	dec FAC1_exponent
-	
-	// FALLTROUGH
-
-add_FAC2_FAC1_sub_normalize:
+	// Exponent should never need adaptation here
 
 	jmp normal_FAC1

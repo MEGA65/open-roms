@@ -199,7 +199,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B983`   | `MULSHF`               | NOT DONE |                                                    |
 | `$B9EA`   | `log_FAC1`             | NOT DONE |                                                    |
 | `$BA28`   | `mul_MEM_FAC1`         | PARTIAL  | needs `mul_FAC2_FAC1`                              |
-| `$BA2B`   | `mul_FAC2_FAC1`        | NOT DONE |                                                    |
+| `$BA2B`   | `mul_FAC2_FAC1`        | NOT DONE | some work started                                  |
 | `$BA59`   | `MLTPLY`               | NOT DONE |                                                    |
 | `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
 | `$BAE2`   | `mul10_FAC1`           | NOT DONE |                                                    |

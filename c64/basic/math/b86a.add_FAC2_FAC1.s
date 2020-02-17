@@ -67,6 +67,10 @@ add_FAC2_FAC1:
 	inc FAC1_exponent
 	bne add_FAC2_FAC1_adapt_mantissa   // end if no overflow
 	
+	// FALLTROUGH
+
+set_FAC1_max:                          // entry used by other routines too
+
 	lda #$FF
 	sta FAC1_exponent
 	sta FAC1_mantissa+3

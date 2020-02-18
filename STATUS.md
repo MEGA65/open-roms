@@ -183,6 +183,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$AF87`   | not named yet          | NOT DONE |                                                    |
 | `$AF9A`   | `compute_ST`           | NOT DONE |                                                    |
 | `$B1AA`   | `FACINX`               | NOT DONE | convert FAC1 to 16-bit signed integer              |
+| `$B1BF`   | `convert_FAC1_to_s16`  | NOT DONE |                                                    |
 | `$B391`   | `GIVAYF`               | NOT DONE | 16-bit signed integer to FAC1                      |
 | `$B3A2`   | `convert_Y_to_FAC1`    | NOT DONE |                                                    |
 | `$B794`   | `convert_A_to_FAC1`    | NOT DONE |                                                    |
@@ -202,11 +203,13 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BA2B`   | `mul_FAC2_FAC1`        | NOT DONE | some work started                                  |
 | `$BA59`   | `MLTPLY`               | NOT DONE |                                                    |
 | `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
+| `$BA90`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
 | `$BAE2`   | `mul10_FAC1`           | NOT DONE |                                                    |
 | `$BAFE`   | `div10_FAC1_p`         | NOT DONE |                                                    |
 | `$BB0F`   | `div_MEM_FAC1`         | PARTIAL  | needs `div_FAC2_FAC1`                              |
 | `$BB12`   | `div_FAC2_FAC1`        | NOT DONE |                                                    |
 | `$BBA2`   | `mov_MEM_FAC1`         | DONE     |                                                    |
+| `$BBA6`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
 | `$BBC7`   | `mov_r_FAC1_TMP2`      | PARTIAL  | not fully tested yet                               |
 | `$BBCA`   | `mov_r_FAC1_TMP1`      | PARTIAL  | not fully tested yet                               |
 | `$BBD0`   | `mov_r_FAC1_VAR`       | PARTIAL  | not fully tested yet                               |

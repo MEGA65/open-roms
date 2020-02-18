@@ -237,6 +237,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BFED`   | `exp_FAC1`             | NOT DONE |                                                    |
 | `$E043`   | `poly1_FAC1`           | NOT DONE |                                                    |
 | `$E059`   | `poly2_FAC1`           | NOT DONE |                                                    |
+| `$E09A`   | `rnd_A`                | DONE     |                                                    |
 | `$E0BE`   | `rnd_generate`         | DONE     |                                                    |
 | `$E264`   | `cos_FAC1`             | NOT DONE |                                                    |
 | `$E26B`   | `sin_FAC1`             | NOT DONE |                                                    |

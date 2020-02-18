@@ -76,7 +76,7 @@
 	.label FBUFPT    = $71 // $71-$72  -- NOT IMPLEMENTED --
 	.label CHRGET    = $73 // $73-$8A  -- NOT IMPLEMENTED --
 	.label TXTPTR    = $7A // $7A-$7B  current BASIC statement pointer
-	.label RNDX      = $8B // $8B-$8F  -- NOT IMPLEMENTED --
+	.label RNDX      = $8B // $8B-$8F  random number seed
 
 	//
 	// Page 0 - Kernal area ($90-$FF)

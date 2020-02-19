@@ -372,7 +372,7 @@ $(TARGET_X16_x): $(SEG_LIST_X16) build/chargen.rom
 	dd if=/dev/zero bs=8192 count=8 of=build/x16_padding_64_KB
 	cat $(DIR_X16)/basic.seg_0      > $(TARGET_X16_x)
 	cat $(DIR_X16)/kernal.seg_0    >> $(TARGET_X16_x)
-	cat build/chargen.rom                   >> $(TARGET_X16_x)
+	cat build/chargen.rom                 >> $(TARGET_X16_x)
 	cat $(DIR_X16)/basic.seg_1     >> $(TARGET_X16_x)
 	cat $(DIR_X16)/kernal.seg_1    >> $(TARGET_X16_x)
 	rm -f build/x16_padding_*

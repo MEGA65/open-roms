@@ -38,6 +38,8 @@ rnd_generate:
 	eor #$04
 	sta RNDX+4
 
+	sec                                // make sure Carry is always set, for adc
+
 	// FALLTROUGH
 
 rnd_generate_copy:
@@ -45,7 +47,7 @@ rnd_generate_copy:
 	// Copy the generated number to FAC1, mangle it a little
 
 	lda RNDX+3
-	eor #$62
+	adc #$C6
 	sta FAC1_mantissa+0
 
 	lda RNDX+1
@@ -53,10 +55,12 @@ rnd_generate_copy:
 	sta FAC1_mantissa+1
 
 	lda RNDX+4
-	eor #$97
+	eor #$62
 	sta FAC1_mantissa+2
 
 	lda RNDX+2
+	bit RNDX+2
+	rol
 	sta FAC1_mantissa+3
 
 	// FALLTROUGH

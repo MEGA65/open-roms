@@ -22,8 +22,8 @@ tape_normal_get_data_1:
 	lda #$00
 	sta RIPRTY
 #if !CONFIG_TAPE_NO_ERROR_CORRECTION
-	sta PTR1
 	sta PTR2
+	sta PTR1
 #endif
 
 	// FALLTROUGH

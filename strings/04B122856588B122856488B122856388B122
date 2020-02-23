@@ -1,0 +1,3 @@
+$04 + LDA ($22),Y + STA $65 + DEY + LDA ($22),Y + STA $64 + DEY + LDA ($22),Y + STA $64 + DEY + LDA ($22),Y
+
+Unrolled loop to copy values from memory location to a fixed zeropage location. Trivial - not copyrightable.

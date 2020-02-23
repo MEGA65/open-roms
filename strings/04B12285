@@ -1,0 +1,3 @@
+$04 + LDA ($22),Y + STA (zeropage address does not match)
+
+Instruction + some parts. Trivial, not copyrightable.

@@ -1,0 +1,3 @@
+$F7 + INY + STY $C8 + LDY (immediate value does not match)
+
+Small piece of code manipulating screen-related variable. Similarity is very limited, there is nothing creative here - not copyrightable.

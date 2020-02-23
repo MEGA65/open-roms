@@ -1,0 +1,3 @@
+$22 + BNE (offset matches) + LDA $D4 + EOR (immediate value does not match)
+
+Small piece of code manipulating screen-related variable. Since EOR argument does not match, it's clear that the code does something different. The similar part is trivial - not copyrightable.

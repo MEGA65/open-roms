@@ -1,0 +1,3 @@
+$66 + EOR #$FF + STA $66
+
+Part of ccode reversing sign oof floating point variable. Trivial - not copyrightable.

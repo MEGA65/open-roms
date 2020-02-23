@@ -1,0 +1,3 @@
+LDA $6E + STA $66
+
+Copy value from one zeropage location to another - trivial, not copyrightable.

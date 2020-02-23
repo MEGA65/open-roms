@@ -1,0 +1,3 @@
+$22 + STA $61 + STY $70
+
+Small piece of floating point values manipulation code. Trivial - not copyrightable.

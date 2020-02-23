@@ -1,0 +1,3 @@
+$2C (BIT) + LDA #$04 + $2C (BIT) + LDA (value does not match)
+
+A common trick using BIT opcode to load different values (depending on a condition) to .A and continue execution. Here the values does not even fully match. Trivial - not copyrghtable.

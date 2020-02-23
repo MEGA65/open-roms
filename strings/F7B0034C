@@ -1,0 +1,3 @@
+$F7 + BCS (skip the JMP) + JMP (address does not match)
+
+Instruction + some parts. Trivial, not copyrightable.

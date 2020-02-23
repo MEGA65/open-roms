@@ -1,0 +1,3 @@
+LDA $6A + SBC $62 + STA (zeropage address does not match)
+
+Small piece of code subtracting one floating point mantissa from another - this is a common technique to subtract numbers over 8 bits size on 6502. Not creative - not copyrightable.

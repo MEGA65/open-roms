@@ -1,0 +1,3 @@
+$66 + EOR $6E + STA (zeropage address does not match)
+
+Small piece of floating point values manipulation code (single instruction and some parts). Trivial - not copyrightable.

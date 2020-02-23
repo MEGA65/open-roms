@@ -1,0 +1,3 @@
+$6D + STA $65 + LDA $64
+
+Small piece of code manipulating copying bytes of a well-known location (floating point accumulator) - trivial, not copyrightable.

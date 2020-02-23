@@ -1,0 +1,3 @@
+LDX $D8 + BEQ (offset matches)
+
+Decision based whether well-known zeropage loacation is 0 or not. Trivial - not copyrightable.

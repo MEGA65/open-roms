@@ -1,0 +1,3 @@
+LDY #$00 + STY $70
+
+Store 0 in a zeropage location, using .Y register. Trivial - not copyrightable.

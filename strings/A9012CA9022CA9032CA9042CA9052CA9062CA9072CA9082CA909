@@ -1,0 +1,3 @@
+LDA #$01 + $2C + LDA #$02 + $2C + LDA #$03 + ...
+
+Common size optimization to set different values to a variable depending on a jump address, using BIT instruction ($2C) to skip unnecessary instruction, this time a relatively long one. Well-known technique, not creative - thus not copyrightable.

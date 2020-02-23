@@ -1,0 +1,3 @@
+$00 + LDA ($7A),Y + BNE (offset does not match)
+
+Instruction + some parts. Trivial, not copyrightable.

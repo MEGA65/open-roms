@@ -1,0 +1,3 @@
+LDA $6D + SBC $65 + STA (address does not match)
+
+Calculate diiff between two zeropage values, store result in another location - trivial, not copyrightable.

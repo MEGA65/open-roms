@@ -1,0 +1,3 @@
+$00 + RTS + JSR $xx17
+
+Instruction and some parts. Trivial - not copyrightable.

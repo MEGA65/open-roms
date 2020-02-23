@@ -1,0 +1,3 @@
+$2C (BIT) + LDA #$00 + STA (zeropage address does not match)
+
+A common trick using BIT opcode to load (or not) value into to .A and continue execution. Trivial - not copyrightable.

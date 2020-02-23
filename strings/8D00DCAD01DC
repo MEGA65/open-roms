@@ -1,0 +1,3 @@
+STA $DC00 + LDA $DC01
+
+Small part of the routine manipulating I/O registers (store value in one register, fetch from another). Trivial - not copyrightable.

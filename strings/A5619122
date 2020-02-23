@@ -1,0 +1,3 @@
+LDA $61 + STA ($22),Y
+
+Copy value from zeropage to some memory location pointed by a general-purpose vector. Trivial - noot copyrightable.

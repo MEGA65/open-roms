@@ -44,8 +44,7 @@ normal_FAC1_by_bit:
 
 	// Multiply the mantissa by 2
 
-	clc
-	rol FACOV
+	asl FACOV
 	rol FAC1_mantissa+3
 	rol FAC1_mantissa+2
 	rol FAC1_mantissa+1

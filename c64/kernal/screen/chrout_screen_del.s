@@ -1,4 +1,5 @@
 // #LAYOUT# STD *        #TAKE
+// #LAYOUT# X16 *        #IGNORE
 // #LAYOUT# *   KERNAL_0 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
@@ -12,6 +13,7 @@ chrout_screen_DEL:
 	// In insert mode it embeds control character
 	ldx INSRT
 	beq !+
+	lda #KEY_DEL
 	jmp chrout_screen_quote
 !:
 	ldy PNTR

@@ -81,7 +81,7 @@ rsl_l1:
 	beq_16 wedge_dos
 #endif
 #if CONFIG_TAPE_WEDGE
-	cmp #$1F // left arrow
+	cmp #$5F // left arrow
 	beq_16 wedge_tape
 #endif
 

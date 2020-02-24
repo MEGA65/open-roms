@@ -12,7 +12,9 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 
 * turbo tape load support (as device 7, or using `←L`), quite sophisticated: up to 250 blocks (can store bytes under I/O), automatically adjusts for tape speed differences
-* improved support for tape adapters (for using regular casette players and other audio devices instead of Datasette)
+* normal tape load error log is limited by free stack space only (no artificial limitation like in original ROMs)
+* tape format autodetection; normal vs turbo is mostly transparent to user
+* improved support for tape adapters (for using regular casette players and other audio devices instead of Datasette) and emulators
 
 * extended `LOAD` command
     * start/end addresses are displayed, in the Final cartridge style
@@ -48,13 +50,19 @@ The following ROM features are currently missing:
 
 ## Keyboard
 
+<br />
+
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
 | C64                | DONE     |                                                    |
 | C128               | DONE     |                                                    |
 | Mega65             | NOT DONE | code should be complete, but is not tested yet     |
 
+<br />
+
 ## Screen
+
+<br />
 
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
@@ -62,15 +70,21 @@ The following ROM features are currently missing:
 | 80 columns, VDC    | NOT DONE |                                                    |
 | 80 columns, Mega65 | NOT DONE |                                                    |
 
+<br />
+
 ## Tape port (LOAD only!)
 
 * Tapuino
 * Datasette
 
+<br />
+
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
-| normal             | PARTIAL  | no tape speed calibratrion, no error correction    |
-| turbo (250 blocks) | DONE     |                                                    |
+| normal             | DONE     | up to 202 blocks, like original ROM                |
+| turbo              | DONE     | up to 250 blocks, like the best implementations    |
+
+<br />
 
 ## IEC bus
 
@@ -78,6 +92,8 @@ The following ROM features are currently missing:
 * Pi1541, Ultimate II
 * most disk drives and printers
 * some hard drives
+
+<br />
 
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
@@ -87,20 +103,28 @@ The following ROM features are currently missing:
 | CIA burst mod      | NOT DONE |                                                    |
 | Mega65 burst       | NOT DONE |                                                    |
 
+<br />
+
 ## IEEE-488 bus
 
 * petSD+
 * PET era disk drives and printers
 * various scientific equipment
 
+<br />
+
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
 | CBM cartridge      | NOT DONE |                                                    |
+
+<br />
 
 ## RS-232
 
 * modems (telephone, WiFi)
 * parallel port printers
+
+<br />
 
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
@@ -108,6 +132,7 @@ The following ROM features are currently missing:
 | UP9600             | NOT DONE | work started, not functional yet                   |
 | ACIA 6551          | NOT DONE |                                                    |
 
+<br />
 
 # API status
 
@@ -142,7 +167,107 @@ For the current status of the low memory location implementation andd usage chec
 
 <br />
 
-### Unofficial BASIC routines/locations
+
+### Math package
+
+Floating point mathematical routines - not official, but well known and broadly used. Note: there is an awful mess regarding naming (sometimes same name references different routines in different sources), so a custom naming scheme was applied.
+
+<br />
+
+| Address   | Name                   | Status   |  Remarks                                           |
+| :-------: | :--------------------- | :------: | :------------------------------------------------: |
+| `$A9C4`   | `convert_FAC1_to_INT`  | NOT DONE |                                                    |
+| `$AABC`   | `print_FAC1`           | NOT DONE |                                                    |
+| `$AF7B`   | `compute_TI`           | NOT DONE |                                                    |
+| `$AF7E`   | not named yet          | NOT DONE |                                                    |
+| `$AF87`   | not named yet          | NOT DONE |                                                    |
+| `$AF9A`   | `compute_ST`           | NOT DONE |                                                    |
+| `$B1AA`   | `FACINX`               | NOT DONE | convert FAC1 to 16-bit signed integer              |
+| `$B1BF`   | `convert_FAC1_to_s16`  | NOT DONE |                                                    |
+| `$B391`   | `GIVAYF`               | NOT DONE | 16-bit signed integer to FAC1                      |
+| `$B3A2`   | `convert_Y_to_FAC1`    | NOT DONE |                                                    |
+| `$B794`   | `convert_A_to_FAC1`    | NOT DONE |                                                    |
+| `$B7B5`   | `STRVAL`               | NOT DONE | imports string to FAC1                             |
+| `$B7F7`   | `convert_FAC1_to_ADDR` | NOT DONE |                                                    |
+| `$B849`   | `add_HALF_FAC1`        | NOT DONE |                                                    |
+| `$B850`   | `sub_MEM_FAC1`         | DONE     |                                                    |
+| `$B853`   | `sub_FAC2_FAC1`        | DONE     |                                                    |
+| `$B862`   | `add_align_exponents`  | DONE     |                                                    |
+| `$B867`   | `add_MEM_FAC1`         | DONE     |                                                    |
+| `$B86A`   | `add_FAC2_FAC1`        | DONE     |                                                    |
+| `$B8FE`   | `normal_FAC1`          | DONE     |                                                    |
+| `$B947`   | `inv_FAC1_mantissa`    | NOT DONE |                                                    |
+| `$B983`   | `MULSHF`               | NOT DONE |                                                    |
+| `$B9EA`   | `log_FAC1`             | NOT DONE |                                                    |
+| `$BA28`   | `mul_MEM_FAC1`         | PARTIAL  | needs `mul_FAC2_FAC1`                              |
+| `$BA2B`   | `mul_FAC2_FAC1`        | NOT DONE | some work started                                  |
+| `$BA59`   | `MLTPLY`               | NOT DONE |                                                    |
+| `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
+| `$BA90`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
+| `$BAE2`   | `mul10_FAC1`           | NOT DONE |                                                    |
+| `$BAFE`   | `div10_FAC1_p`         | NOT DONE |                                                    |
+| `$BB0F`   | `div_MEM_FAC1`         | PARTIAL  | needs `div_FAC2_FAC1`                              |
+| `$BB12`   | `div_FAC2_FAC1`        | NOT DONE |                                                    |
+| `$BBA2`   | `mov_MEM_FAC1`         | DONE     |                                                    |
+| `$BBA6`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
+| `$BBC7`   | `mov_r_FAC1_TMP2`      | PARTIAL  | not fully tested yet                               |
+| `$BBCA`   | `mov_r_FAC1_TMP1`      | PARTIAL  | not fully tested yet                               |
+| `$BBD0`   | `mov_r_FAC1_VAR`       | PARTIAL  | not fully tested yet                               |
+| `$BBD4`   | `mov_r_FAC1_MEM`       | PARTIAL  | not fully tested yet                               |
+| `$BBFC`   | `mov_FAC2_FAC1`        | PARTIAL  | not fully tested yet                               |
+| `$BC0C`   | `mov_r_FAC1_FAC2`      | PARTIAL  | not fully tested yet                               |
+| `$BC0F`   | `mov_FAC1_FAC2`        | DONE     |                                                    |
+| `$BC1B`   | `round_FAC1`           | PARTIAL  | not fully tested yet                               |
+| `$BC2B`   | `sgn_FAC1_A`           | NOT DONE |                                                    |
+| `$BC39`   | `sgn_FAC1`             | NOT DONE |                                                    |
+| `$BC3C`   | `convert_A_to_FAC1`    | NOT DONE |                                                    |
+| `$BC44`   | `convert_i16_to_FAC1`  | NOT DONE |                                                    |
+| `$BC58`   | `abs_FAC1`             | NOT DONE |                                                    |
+| `$BC5B`   | `FCOMP`                | NOT DONE | compare FAC1 with RAM location                     |
+| `$BC9B`   | `QINT`                 | NOT DONE | convert FAC1 to 32 bit signed integer              |
+| `$BCCC`   | `int_FAC1`             | NOT DONE |                                                    |
+| `$BCF3`   | `FIN`                  | NOT DONE | imports string to FAC1, ignores spaces             |
+| `$BD7E`   | `FINLOG`               | NOT DONE |                                                    |
+| `$BDDD`   | `FOUT`                 | NOT DONE | outputs FAC1 to string at $0100                    |
+| `$BF71`   | `sqr_FAC1`             | NOT DONE |                                                    |
+| `$BF74`   | `sqr_FAC2`             | NOT DONE |                                                    |
+| `$BF78`   | `FPWR`                 | NOT DONE | set FAC1 as RAM raised to the power of FAC1        |
+| `$BF7B`   | `FPWRT`                | NOT DONE | set FAC1 as FAC2 raised to the power of FAC1       |
+| `$BFB4`   | `toggle_sign_FAC1`     | DONE     |                                                    |
+| `$BFED`   | `exp_FAC1`             | NOT DONE |                                                    |
+| `$E043`   | `poly1_FAC1`           | NOT DONE |                                                    |
+| `$E059`   | `poly2_FAC1`           | NOT DONE |                                                    |
+| `$E097`   | `rnd_FAC1`             | PARTIAL  | requires `sgn_FAC1_A`                              |
+| `$E09A`   | `rnd_A`                | DONE     |                                                    |
+| `$E0BE`   | `rnd_generate`         | DONE     |                                                    |
+| `$E264`   | `cos_FAC1`             | NOT DONE |                                                    |
+| `$E26B`   | `sin_FAC1`             | NOT DONE |                                                    |
+| `$E2B4`   | `tan_FAC1`             | NOT DONE |                                                    |
+| `$E30E`   | `atn_FAC1`             | NOT DONE |                                                    |
+
+<br />
+
+In addition to the routines, the following floating-number constants are available at their original locations:
+
+| Address   | Name                        | Status   |  Remarks                                      |
+| :-------: | :-------------------------- | :------: | :-------------------------------------------: |
+| `$AEA8`   | `const_PI`                  | DONE     | π                                             |
+| `$B1A5`   | `const_NEG_32768`           | DONE     | -32768                                        |
+| `$B9BC`   | `const_ONE`                 | DONE     | 1.0                                           |
+| `$B9D6`   | `const_INV_SQR_2`           | DONE     | 1.0 / sqr(2.0)                                |
+| `$B9DB`   | `const_SQR_2`               | DONE     | sqr(2.0)                                      |
+| `$B9E0`   | `const_NEG_HALF`            | DONE     | -0.5                                          |
+| `$B9E5`   | `const_LOG_2`               | DONE     | log_e(2.0)                                    |
+| `$BAF9`   | `const_TEN`                 | DONE     | 10.0                                          |      
+| `$BF11`   | `const_HALF`                | DONE     | 0.5                                           |
+| `$BFBF`   | `const_INV_LOG_2`           | DONE     | 1.0 / log_e(2.0)                              |
+| `$BFE8`   | `const_ONE` duplicate       | DONE     | 1.0                                           |
+| `$E2E0`   | `const_HALF_PI`             | DONE     | PI / 2.0                                      |
+| `$E2E5`   | `const_DOUBLE_PI`           | DONE     | PI * 2.0                                      |
+| `$E2EA`   | `const_QUARTER`             | DONE     | 0.25                                          |
+| `$E309`   | `const_DOUBLE_PI` duplicate | DONE     | PI * 2.0                                      |
+
+### Other unofficial BASIC routines/locations
 
 Not all of them - only these we want to have implemented.
 
@@ -151,19 +276,19 @@ Not all of them - only these we want to have implemented.
 | Address   | Name         | Status   |  Remarks                                           |
 | :-------: | :----------- | :------: | :------------------------------------------------: |
 | `$A004`   | revision str | DONE     |                                                    |
-| `$A408`   | REASON       | NOT DONE |                                                    |
+| `$A408`   | `REASON`     | NOT DONE |                                                    |
 | `$A453`   | (unknown)    | NOT DONE |                                                    |
-| `$A533`   | LINKPRG      | DONE     |                                                    |
+| `$A533`   | `LINKPRG`    | DONE     |                                                    |
 | `$A644`   | new          | NOT DONE |                                                    |
 | `$A659`   | set txt ptr  | NOT DONE |                                                    |
-| `$A68E`   | RUNC         | DONE     |                                                    |
-| `$A7AE`   | NEWSTT       | PARTIAL  | redirected to RUN command                          |
-| `$AB1E`   | STROUT       | DONE     |                                                    |
-| `$AD9E`   | FRMEVL       | NOT DONE |                                                    |
-| `$BDCD`   | LINPRT       | DONE     | temporary implementation                           |
-| `$E3BF`   | INIT         | NOT DONE |                                                    |
-| `$E422`   | INITMSG      | DONE     |                                                    |
-| `$E453`   | RVECT        | NOT DONE |                                                    |
+| `$A68E`   | `RUNC`       | DONE     |                                                    |
+| `$A7AE`   | `NEWSTT`     | PARTIAL  | redirected to RUN command                          |
+| `$AB1E`   | `STROUT`     | DONE     |                                                    |
+| `$AD9E`   | `FRMEVL`     | NOT DONE |                                                    |
+| `$BDCD`   | `LINPRT`     | DONE     | temporary implementation                           |
+| `$E3BF`   | `INIT`       | NOT DONE |                                                    |
+| `$E422`   | `INITMSG`    | DONE     |                                                    |
+| `$E453`   | `RVECT`      | NOT DONE |                                                    |
 
 <br />
 

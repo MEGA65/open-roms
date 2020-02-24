@@ -1,0 +1,3 @@
+DEY + LDA ($22),Y + STA (zeropage address does not match)
+
+Part of the loop reading data via general purpose vector variable. Not creative and fairy trivial- not copyrightable.

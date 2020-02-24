@@ -1,5 +1,5 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -28,28 +28,28 @@ tape_turbo_get_byte:
 
 	// Compensate for tape speed variations
 
-	lda IRQTMP+0                       // half of the last value for bit '0'
+	lda __turbo_half_S                 // half of the last value for bit '0'
 	clc
-	adc IRQTMP+1                       // half of the last value for bit '1'
+	adc __turbo_half_L                 // half of the last value for bit '1'
 	
 	sec
-	sbc SYNO                           // now we have a diff between current threshold and calculated one
+	sbc __pulse_threshold              // now we have a diff between current threshold and calculated one
 	beq tape_turbo_get_byte_done       // branch if threshold correction not needed
 
 	bpl !+
 
-	lda SYNO
+	lda __pulse_threshold
 	cmp #($BF - 10)
 	beq tape_turbo_get_byte_done       // do not decrease threshold too far no matter what
 
-	dec SYNO
+	dec __pulse_threshold
 	bne tape_turbo_get_byte_done       // branch always
 !:
-	lda SYNO
+	lda __pulse_threshold
 	cmp #($BF + 10)
 	beq tape_turbo_get_byte_done       // do not increase threshold too far no matter what
 
-	inc SYNO
+	inc __pulse_threshold
 
 tape_turbo_get_byte_done:
 

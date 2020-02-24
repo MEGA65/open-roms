@@ -1,0 +1,3 @@
+STA $62 + BCS (offset matches)
+
+Small piece of floating point values manipulation code. Trivial - not copyrightable.

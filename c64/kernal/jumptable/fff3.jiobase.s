@@ -16,6 +16,21 @@
 // As there is nothing between here and $FFFA, we can just hard code this in place.
 
 // iobase: - commented out to prevent label naming conflict
+
+#if CONFIG_PLATFORM_COMMODORE_64
+
     ldy #$DC
     ldx #$00
+
+#elif CONFIG_PLATFORM_COMMANDER_X16
+
+    ldy #$9F
+    ldx #$60
+
+#else
+
+	.error "Please fill-in IOBASE"
+
+#endif
+
     rts

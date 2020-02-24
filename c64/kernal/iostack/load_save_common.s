@@ -80,7 +80,7 @@ lvs_handle_byte_verify:
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO || CONFIG_IEC
 
-lvs_setup_MEMUSS:
+lvs_STAL_to_MEMUSS:
 
 	lda STAL+0
 	sta MEMUSS+0

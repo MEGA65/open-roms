@@ -1,4 +1,5 @@
 // #LAYOUT# STD *        #TAKE
+// #LAYOUT# X16 *        #IGNORE
 // #LAYOUT# *   KERNAL_0 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
@@ -23,7 +24,7 @@ chrout_screen_RETURN:
 	cpy #24
 	beq !+                             // last line on screen - no need for a double line skip
 
-	lda LDTBL+1, y
+	lda LDTB1+1, y
 	bmi !+                             // current line is not continued
 
 	inc TBLX

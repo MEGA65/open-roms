@@ -1,0 +1,3 @@
+$70 + ROL $65 + ROL $64 + ROL $63 + ROL $62
+
+Code for  multiplaying multi-byte integer by 2 (this time a floating point mantissa), common technique for 6502 assembler. Not creative - not copyrightable.

@@ -1,0 +1,3 @@
+$F3 + DEY + BPL (offset matches)
+
+Small part of the loop indexeed by .Y, counting down. Trivial - not copyrightable.

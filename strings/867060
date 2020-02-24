@@ -1,0 +1,3 @@
+STX $70 (FACOV) + RTS
+
+Storing .X register in a welll-known memory location, followed by end of subroutine. Trivial - not copyrightable.

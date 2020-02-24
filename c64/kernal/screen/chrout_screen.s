@@ -1,4 +1,5 @@
 // #LAYOUT# STD *        #TAKE
+// #LAYOUT# X16 *        #IGNORE
 // #LAYOUT# *   KERNAL_0 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
@@ -85,13 +86,8 @@ chrout_screen_literal:
 	// Toggle quote flag if required
 
 	txa
-	cmp #$22
-	bne !+
+	jsr screen_check_toggle_quote
 
-	lda QTSW
-	eor #$80
-	sta QTSW
-!:
 	// Set colour of the newly printed character
 
 	lda COLOR

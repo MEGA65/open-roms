@@ -1,0 +1,4 @@
+This is an important floating point math routine, documented in many places.
+
+It's a part oof the ACME assembler SDK, see:
+- https://sourceforge.net/p/acme-crossass/code-0/38/tree/trunk/ACME_Lib/cbm/c64/float.a?force=True

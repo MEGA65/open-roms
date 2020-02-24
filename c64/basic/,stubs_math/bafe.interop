@@ -1,0 +1,5 @@
+This is an important floating point math routine, documented in many places.
+
+Example code utilizing this routine:
+- https://github.com/irmen/prog8/blob/master/compiler/res/prog8lib/c64flt.p8
+

@@ -1,0 +1,3 @@
+ROR $62 + ROR $63 + ROR $64 + ROR $65 + ROR $70 + RTS
+
+Code for dividing multi-byte integer by 2 (this time a floating point mantissa), common technique for 6502 assembler. Not creative - not copyrightable.

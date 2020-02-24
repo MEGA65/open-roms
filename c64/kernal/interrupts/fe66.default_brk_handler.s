@@ -9,8 +9,12 @@ default_brk_handler:
 
 	sei // disable IRQs, to be sure they wont interfere
 
+#if CONFIG_PLATFORM_COMMODORE_64
+
 	ldx #$00
 	sta VIC_SCROLX // turn the display off - we want as little screen artifacts as possible
+
+#endif
 
 	cld // make sure this dangerous flag is disabled
 

@@ -1,5 +1,7 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE-FLOAT
+// #LAYOUT# X16 *        #IGNORE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -13,6 +15,14 @@
 
 
 IOINIT:
+
+#if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+
+	jsr     map_KERNAL_1
+	jsr_ind VK1__IOINIT
+	jmp     map_NORMAL
+
+#else
 
 	//
 	// First initialize the CPU port, to make sure we have correct memory map
@@ -146,3 +156,6 @@ IOINIT:
 	rts
 
 #endif
+
+
+#endif // ROM layout

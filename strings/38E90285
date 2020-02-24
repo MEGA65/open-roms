@@ -1,0 +1,3 @@
+SEC + SBC #$02 + STA (zeropage address does not match)
+
+Subtract 2 from accumulator, store result somewhere (location does not match) - trivial, not copyrightable.

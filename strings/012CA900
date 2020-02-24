@@ -1,0 +1,3 @@
+$01 + $2C (BIT) + LDA #$00
+
+Instruction + part of the common BIT trick to save some memory. Trivial - not copyrightable.

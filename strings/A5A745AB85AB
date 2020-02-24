@@ -1,0 +1,3 @@
+LDA $A7 + EOR $AB + STA $AB
+
+Small part of a routine reading from tape, calculates XOR checksum of the stream. Trivial - not copyrightable.

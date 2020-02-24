@@ -1,0 +1,3 @@
+LDA $66 + EOR #$FF
+
+Load a floating point value sign and reverse it - trivial, not copyrightable.

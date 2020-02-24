@@ -1,0 +1,4 @@
+INC $9F + INC $9F
+
+Increase value of zeropage variable (which counts the number of vectors) by 2. Trivial - not copyrightable.
+

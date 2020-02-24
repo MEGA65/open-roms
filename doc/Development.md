@@ -85,10 +85,11 @@ List of the most important make targets:
 
 ### Code segments and ROM layouts
 
-Currently there are 2 ROM layouts defined:
+Currently there are 3 ROM layouts defined:
 
 - `STD` - with 2 code segments: `BASIC` (`$A000-$E4D2`, where `$C000-$DFFF` is a skip-gap for RAM and I/O area) and `KERNAL` (`$E4D3 - $FFFF`)
-- `M65` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, additional segments might be added to the build system in the future; at the moment of writing this document additional 8KB of ROM is defined as `KERNAL_1` segment
+- `M65` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, additional segments might be added to the build system in the future; at the moment of writing this document additional 8KB of ROM is defined as `BASIC_1` segment and additional 8KB of ROM is defined as `KERNAL_1` segment
+- `X16` - memory layout for the Commander X16 machine
 
 To check for current ROM layout or code segment use KickAssembler preprocessor defines, like `ROM_LAYOUT_STD`, `ROM_LAYOUT_M65`, `SEGMENT_BASIC`, `SEGMENT_KERNAL_1`.
 
@@ -107,7 +108,7 @@ File name of the fixed location routine adheres to the scheme: `addr.name.s`, wh
 For handling different ROM layouts, our build tool provides support for pragma-like comments, in the form:
 
 ```
-// #LAYOUT# <rom-layout> <code-segment> <action>
+// #LAYOUT# <rom-layout> <code-segment> <action> <parameters>
 ```
 
 where:
@@ -117,11 +118,12 @@ where:
 - `<code-segment>` - `KERNAL`, `BASIC`, `KERNAL_0`, `KERNAL_1`, etc., asterisk symbol can be used to match any segment
 - `<action>` - what to do when layout and segment match:
 
-| action        | description                                   |
-| :------------ | :-------------------------------------------- |
-| `#IGNORE`     | ignore the file completely                    |
-| `#TAKE`       | compile the file normally                     |
-| `#TAKE-FLOAT` | compile the file, but force it to be floating |
+| action         | description                                                        |
+| :------------- | :----------------------------------------------------------------- |
+| `#IGNORE`      | ignore the file completely                                         |
+| `#TAKE`        | compile the file normally                                          |
+| `#TAKE-FLOAT`  | compile the file, but force it to be floating                      |
+| `#TAKE-OFFSET` | shifts the fixed-location address by hex offset given as parameter |
 
 The first match counts, all the remaining ones are dropped. Examples:
 
@@ -139,7 +141,7 @@ This is a very common one. For standard ROM layout just take the file. For non-s
 // #LAYOUT# *   *        #IGNORE
 ```
 
-This can be found in a private (internal) jumptable of `KERNAL_1` segmment of `M65` layout. For standard ROM part (`KERNAL_0` segment) take it as floating routine (for `KERNAL_0` segment the file provides only labels for the jumptable). For `KERNAL_1` segment of `M65` layout, take it as a fixed location-routine; in such case the file will provide a jumptable itself. For memory layout other than `M65`, just ignore the file. Yet another example:
+This can be found in a private (internal) vector table of `KERNAL_1` segment of `M65` layout. For standard ROM part (`KERNAL_0` segment) take it as floating routine (for `KERNAL_0` segment the file provides only labels for the vector table). For `KERNAL_1` segment of `M65` layout, take it as a fixed location-routine; in such case the file will provide a vector table itself. For memory layout other than `M65`, just ignore the file. Yet another example:
 
 ```
 // #LAYOUT# M65 KERNAL_0 #TAKE
@@ -155,16 +157,16 @@ This is used for memory mapping helper routines, which are only needed for Mega6
 // #LAYOUT# *   *        #IGNORE
 ```
 
-This is for the routine, that on Mega65 goes to `KERNAL_1` segment, but can still be transparently called using fixed location in `KERNAL_0` segement. The code might, for example, look this way:
+This is for the routine, that on Mega65 goes to `KERNAL_1` segment, but can still be transparently called using fixed location in `KERNAL_0` segment. The code might, for example, look this way:
 
 ```
 ROUTINE_NAME:
 
 #if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
-    jsr map_KERNAL_1
-    jsr KERNAL_1__ROUTINE_NAME    // execute routine from KERNAL_1 segment
-    jmp map_NORMAL
+    jsr     map_KERNAL_1
+    jsr_ind VK1__ROUTINE_NAME    // execute routine from KERNAL_1 segment
+    jmp     map_NORMAL
 
 #else
 

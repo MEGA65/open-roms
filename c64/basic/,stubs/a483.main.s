@@ -1,4 +1,7 @@
-#if ROM_LAYOUT_STD || (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
+// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
 
 //
 // Official BASIC routine, described in:
@@ -9,9 +12,5 @@
 // CPU registers that has to be preserved (see [RG64]): XXX
 //
 
-
 MAIN:
 	STUB_IMPLEMENTATION()
-
-
-#endif // ROM layout

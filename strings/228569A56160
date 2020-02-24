@@ -1,0 +1,3 @@
+$22 + STA $69 + LDA $61 + RTS
+
+Small part of code manipulating bytes of a well-known floating point pseudo-register. Trivial - not copyrightable.

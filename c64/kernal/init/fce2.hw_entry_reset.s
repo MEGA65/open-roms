@@ -19,6 +19,8 @@ hw_entry_reset:
 	ldx #$FF
 	txs
 
+#if CONFIG_PLATFORM_COMMODORE_64
+
 	// The following routine is based on reading the public KERNAL jumptable routine
 	// list, and making unimaginative assumptions about what should be done on reset.
 	// Also, https://codebase64.org/doku.php?id=base:assembling_your_own_cart_rom_image was used
@@ -29,9 +31,12 @@ hw_entry_reset:
 	bne !+
 	jmp (ICART_COLD_START)
 !:
+
 	// Disable the screen (and set 40 columns) to prevent visual glitches later
 	ldx #$28
 	stx VIC_SCROLX
+
+#endif
 
 	// Initialising IO is obviously required. Also indicated by c64 prg p269.
 	jsr JIOINIT

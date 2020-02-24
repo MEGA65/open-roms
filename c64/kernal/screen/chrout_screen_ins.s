@@ -1,4 +1,5 @@
 // #LAYOUT# STD *        #TAKE
+// #LAYOUT# X16 *        #IGNORE
 // #LAYOUT# *   KERNAL_0 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
@@ -25,7 +26,7 @@ chrout_screen_ins_possible:
 
 	// Special handling for cursor in second line
 	ldx TBLX
-	lda LDTBL+0, x
+	lda LDTB1+0, x
 	bpl chrout_screen_ins_second_line
 
 	// Perform character copy

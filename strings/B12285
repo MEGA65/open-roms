@@ -1,0 +1,4 @@
+LDA ($22),Y + STA (zeropage address does not match)
+
+Instruction (accessing data via general purpose vector) + some part. Trivial, not copyyrightable.
+

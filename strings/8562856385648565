@@ -1,0 +1,3 @@
+STA $62 + STA $63 + STA $64 + STA $65
+
+Piece of code filling the floating point mantissa bytes with constant variable - trivial, not copyrightable.

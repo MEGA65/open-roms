@@ -1,0 +1,3 @@
+$6A + STA $62 + JMP (addres does not match)
+
+Instruction + some parts. Trivial, not copyrightable.

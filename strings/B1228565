@@ -1,0 +1,3 @@
+LDA ($22),Y + STA $65
+
+Small part of a routine copying memory variable to floating point accumulator (copies 1 byte) - trivial, not copyrightable.

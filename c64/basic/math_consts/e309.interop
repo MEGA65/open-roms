@@ -1,0 +1,1 @@
+A well-known floating-point constant, has to be at the same place or we risk hard to debug improper calculation results.

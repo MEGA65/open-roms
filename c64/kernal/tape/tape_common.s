@@ -1,5 +1,5 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -179,7 +179,7 @@ tape_handle_header:
 !:
 	// Setup MEMUSS (see Mapping the C64, page 36)
 
-	jsr lvs_setup_MEMUSS
+	jsr lvs_STAL_to_MEMUSS
 
 	// Print LOADING and start address
 

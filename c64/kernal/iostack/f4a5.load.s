@@ -43,19 +43,32 @@ LOAD:
 	// Check whether we support the requested device
 	lda FA
 
+
+#if !CONFIG_TAPE_AUTODETECT
+
 #if CONFIG_TAPE_NORMAL
 	cmp #$01
 	beq_16 load_tape_normal
 #endif
-
 #if CONFIG_TAPE_TURBO
 	cmp #$07
 	beq_16 load_tape_turbo
 #endif
 
+#else // CONFIG_TAPE_AUTODETECT
+
+	cmp #$01
+	beq_16 load_tape_auto
+	cmp #$07
+	beq_16 load_tape_auto
+
+#endif
+
+
 #if CONFIG_IEC
 	jsr iec_check_devnum_lvs
 	bcc_16 load_iec
 #endif
+
 
 	jmp lvs_illegal_device_number

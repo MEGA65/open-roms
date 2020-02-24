@@ -1,5 +1,5 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -7,7 +7,7 @@
 //
 
 //
-// Checked under VICE, PAL, average of 256 pulses:  XXX retry measurements for NORMAL, something is probably wrong
+// Checked under VICE, PAL, average of 256 pulses:
 //
 //     normal - short  - timer goes down to $A5
 //     normal - medium - timer goes down to $7D

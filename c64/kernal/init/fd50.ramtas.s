@@ -1,6 +1,7 @@
 // #LAYOUT# STD *        #TAKE
 // #LAYOUT# M65 KERNAL_0 #TAKE
 // #LAYOUT# M65 KERNAL_1 #TAKE-FLOAT
+// #LAYOUT# X16 KERNAL_0 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -16,9 +17,9 @@ RAMTAS:
 
 #if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
-	jsr map_KERNAL_1
-	jsr KERNAL_1__RAMTAS
-	jmp map_NORMAL
+	jsr     map_KERNAL_1
+	jsr_ind VK1__RAMTAS
+	jmp     map_NORMAL
 
 #else
 
@@ -47,6 +48,8 @@ RAMTAS:
 	stx TAPE1+0
 	ldx #>$033C
 	stx TAPE1+1
+
+#if CONFIG_PLATFORM_COMMODORE_64
 
 	// Set screen address pointer ("Compute's Mapping the 64" p238)
 	// This is obvious boiler plate containing no creative input, but to avoid
@@ -93,5 +96,20 @@ ramtas_32k:
 
 	ldy #$80
 	bne !- // branch always
+
+#elif CONFIG_PLATFORM_COMMANDER_X16
+
+	ldx #>$0800
+	stx MEMSTR+1
+
+	ldy #$9F
+	sty MEMSIZK+1
+
+#else
+
+	.error "Please fill-in RAMTAS"
+
+#endif // platform
+
 
 #endif // ROM layout

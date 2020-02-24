@@ -1,5 +1,5 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -19,7 +19,7 @@ tape_normal_sync:
 
 	// Injest bytes of decreasing values
 
-	jsr tape_normal_get_marker
+	jsr tape_normal_get_marker_while_sync
 	bcs tape_normal_sync_fail          // branch if end of data marker
 	
 	jsr tape_normal_get_byte

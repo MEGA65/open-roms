@@ -1,5 +1,5 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -14,7 +14,15 @@
 #if CONFIG_TAPE_TURBO
 
 
+#if !CONFIG_TAPE_AUTODETECT
+
 load_tape_turbo:
+
+#else
+
+load_tape_auto:
+
+#endif
 
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
@@ -29,7 +37,7 @@ load_tape_turbo:
 
 #if CONFIG_TAPE_AUTODETECT
 
-load_tape_turbo_takeover:             // entry point for turbo->normal takeover
+load_tape_turbo_takeover:             // entry point for normal->turbo takeover
 
 	jsr tape_common_autodetect
 	bcc_16 load_tape_normal_takeover

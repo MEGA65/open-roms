@@ -1,5 +1,5 @@
 // #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
@@ -33,67 +33,66 @@
 // (L,S) = end-of-data marker
 
 
-// XXX use pilot to calibrate reading speed
-// XXX add error correction
-
-
 #if CONFIG_TAPE_NORMAL
 
+
+#if !CONFIG_TAPE_AUTODETECT
 
 load_tape_normal:
 
 	jsr tape_ditch_verify              // only LOAD is supported, no VERIFY
 
-#if CONFIG_TAPE_AUTODETECT
-
-	// Prepare for sound effects in case of turbo takeover
-	jsr tape_clean_sid
-
-#endif
-
 	// Start playing
 	jsr tape_common_prepare_cia
 	jsr tape_ask_play
-
-#if CONFIG_TAPE_AUTODETECT
-
-	// FALLTROUGH
-
-load_tape_normal_takeover:             // entry point for turbo->normal takeover
-
-	jsr tape_common_autodetect
-	bcs_16 load_tape_turbo_takeover
-
-#endif
-
-	// Temporarily store MEMUSS in EAL
-
-	lda MEMUSS+1
-	sta EAL+1
-	lda MEMUSS+0
-	sta EAL+0
 
 	// FALLTROUGH
 
 load_tape_normal_header:
 
-	// Try to load header into tape buffer
+#else
 
-	lda TAPE1+1
-	sta MEMUSS+1
-	lda TAPE1+0
-	sta MEMUSS+0
+load_tape_normal_takeover:             // entry point for turbo->normal takeover
 
-	// Retrieve the header
+#endif
 
-	jsr tape_normal_pilot_header
-	ldy #$C1                           // size limit (including checksum)
-	jsr tape_normal_get_data
+	jsr load_MEMUSS_to_STAL
+
+	// Try to load header into tape buffer (we will restore MEMUSS later)
+
+	jsr tape_normal_get_pilot_header
+#if CONFIG_TAPE_AUTODETECT
+	bcs load_tape_normal_switch_turbo  // failed, try turbo
+#endif
+
+	jsr load_TAPE1_to_MEMUSS
+	jsr tape_normal_get_data_1
+#if !CONFIG_TAPE_AUTODETECT
 	bcs load_tape_normal_header        // unable to read block, try again
+#else
+	bcc !+
+load_tape_normal_switch_turbo:
+	jsr lvs_STAL_to_MEMUSS
+	jmp load_tape_turbo_takeover       // unable to read block, try turbo instead
+!:
+#endif
+
+#if CONFIG_TAPE_NO_ERROR_CORRECTION
+	lda RIPRTY
+	cmp #$01                           // sets Carry if checksum verification fails
+#else
+	jsr load_TAPE1_to_MEMUSS
+	jsr tape_normal_get_data_2
+#endif
+#if !CONFIG_TAPE_AUTODETECT
+	bcs load_tape_normal_header        // block load error, try again
+#else
+	bcs load_tape_normal_switch_turbo  // block load error, try turbo instead
+#endif
 
 	// Check header type
 
-	ldy #$00                           // XXX probably can be optimized for 65C02
+	ldy #$00
 	lda (TAPE1),y
 
 	cmp #$05
@@ -102,24 +101,24 @@ load_tape_normal_header:
 	cmp #$01
 	beq !+
 	cmp #$03
+#if !CONFIG_TAPE_AUTODETECT
 	bne load_tape_normal_header        // header types 1 and 3 are loadable, see Mapping the C64, page 77
+#else
+	bne load_tape_normal_takeover
+#endif
 
 	lda #$01
 	sta SA                             // this file is non-relocatable; override secondary address with 1
 !:
-	// Handle the header
+	// Restore MEMUSS, handle header
 
-	// Restore MEMUSS
-
-	lda EAL+1
-	sta MEMUSS+1
-	lda EAL+0
-	sta MEMUSS+0
-
-	// Handle the header
-
+	jsr lvs_STAL_to_MEMUSS
 	jsr tape_handle_header
+#if !CONFIG_TAPE_AUTODETECT
 	bcs load_tape_normal_header        // if name does not match, look for other header
+#else
+	bcs load_tape_normal_takeover
+#endif
 
 	// FALLTROUGH
 
@@ -127,15 +126,44 @@ load_tape_normal_payload:
 
 	// Retrieve data
 
-	jsr tape_normal_pilot_data
+	jsr tape_normal_get_pilot_data
 	ldy #$00                           // no data size limit
-	jsr tape_normal_get_data
+	jsr tape_normal_get_data_1
 	bcs_16 tape_load_error
 
 	jsr lvs_check_EAL
 	bne_16 tape_load_error             // amount of data read does not match header info
 
+#if CONFIG_TAPE_NO_ERROR_CORRECTION
+	lda RIPRTY
+	cmp #$01                           // sets Carry if checksum verification fails
+#else
+	jsr lvs_STAL_to_MEMUSS
+	jsr tape_normal_get_data_2
+#endif
+	bcs_16 tape_load_error
+
 	jmp tape_load_success
+
+
+
+load_TAPE1_to_MEMUSS:                   // set MEMUSS (start address) as tape buffer 
+
+	lda TAPE1+1
+	sta MEMUSS+1
+	lda TAPE1+0
+	sta MEMUSS+0
+
+	rts
+
+load_MEMUSS_to_STAL:                   // preserve MEMUSS
+
+	lda MEMUSS+1
+	sta STAL+1
+	lda MEMUSS+0
+	sta STAL+0
+
+	rts
 
 
 #endif

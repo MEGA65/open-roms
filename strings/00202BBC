@@ -1,0 +1,3 @@
+$00 + JSR $BC2B
+
+Instruction (call of well-known subroutine) + some part. Trivial, not copyrightable.

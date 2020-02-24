@@ -1,6 +1,6 @@
 //
 // Names of ZP and low memory locations:
-// - Compute's Mapping the Commodore 64
+// - Computes Mapping the Commodore 64
 // - https://www.c64-wiki.com/wiki/Zeropage
 // - http://unusedino.de/ec64/technical/project64/memory_maps.html
 //
@@ -31,7 +31,7 @@
 	.label TEMPPT    = $16 //          -- NOT IMPLEMENTED --
 	.label LASTPT    = $17 // $17-$18  -- NOT IMPLEMENTED --
 	.label TEMPST    = $19 // $19-$21  -- NOT IMPLEMENTED --
-	.label INDEX     = $22 // $22-$25  -- NOT IMPLEMENTED -- temporary variables
+	.label INDEX     = $22 // $22-$25  temporary variables, [!] our usage might be different
 	.label RESHO     = $26 // $26-$2A  -- NOT IMPLEMENTED --
 	.label TXTTAB    = $2B // $2B-$2C  start of BASIC code
 	.label VARTAB    = $2D // $2D-$2E  end of BASIC code, start of variables
@@ -76,15 +76,15 @@
 	.label FBUFPT    = $71 // $71-$72  -- NOT IMPLEMENTED --
 	.label CHRGET    = $73 // $73-$8A  -- NOT IMPLEMENTED --
 	.label TXTPTR    = $7A // $7A-$7B  current BASIC statement pointer
-	.label RNDX      = $8B // $8B-$8F  -- NOT IMPLEMENTED --
+	.label RNDX      = $8B // $8B-$8F  random number seed
 
 	//
 	// Page 0 - Kernal area ($90-$FF)
 	//
 	
 	.label IOSTATUS  = $90
-	.label STKEY     = $91  //          Keys down clears bits. STOP - bit 7, C= - bit 6, SPACE - bit 4, CTRL - bit 2
-	.label SVXT      = $92  //          -- NOT IMPLEMENTED --
+	.label STKEY     = $91  //          keys down clears bits. STOP - bit 7, C= - bit 6, SPACE - bit 4, CTRL - bit 2
+	.label SVXT      = $92  //          tape reading constant [!] our tape routines use it differently
 	.label VERCKK    = $93  //          0 = LOAD, 1 = VERIFY
 	.label C3PO      = $94  //          flag - is BSOUR content valid
 	.label BSOUR     = $95  //          serial bus buffered output byte
@@ -100,8 +100,8 @@
     .label COLSTORE  = $9C  //          [!] screen border storage for tape routines 
 #endif
 	.label MSGFLG    = $9D  //          bit 6 = error messages, bit 7 = control message
-	.label PTR1      = $9E  //          -- NOT IMPLEMENTED --
-	.label PTR2      = $9F  //          -- NOT IMPLEMENTED --
+	.label PTR1      = $9E  //          for tape support, counter of errorneous bytes
+	.label PTR2      = $9F  //          for tape support, counter for errorneous bytes correction
 	.label TIME      = $A0  // $A0-$A2  jiffy clock
 #if !CONFIG_IEC_JIFFYDOS && !CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC_BURST_CIA1 && !CONFIG_IEC_BURST_CIA2 && !CONFIG_IEC_BURST_SOFT
 	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage differs
@@ -118,8 +118,8 @@
 	.label RIDDATA   = $AA  //          -- NOT IMPLEMENTED --
 	.label RIPRTY    = $AB  //          -- WIP -- checksum while reading tape
 #endif
-	.label SAL       = $AC  // $AC-$AD  -- NOT IMPLEMENTED -- (implemented screen part)
-	.label EAL       = $AE  // $AE-$AF  -- NOT IMPLEMENTED -- [!] used also by screen editor, for temporary color storage when scrolling
+	.label SAL       = $AC  // $AC-$AD  -- XXX: describe -- (implemented screen part)
+	.label EAL       = $AE  // $AE-$AF  -- XXX: describe -- [!] used also by screen editor, for temporary color storage when scrolling
 	.label CMP0      = $B0  // $B0-$B1  temporary tape storage, [!] here used for BRK instruction address
 	.label TAPE1     = $B2  // $B2-$B3  tape buffer pointer
 #if !CONFIG_LEGACY_SCNKEY
@@ -145,7 +145,7 @@
 	.label NDX       = $C6  //          number of chars in keyboard buffer
 	.label RVS       = $C7  //          flag, whether to print reversed characters
 	.label INDX      = $C8  //          end of logical line (column, 0-79)
-	.label LXSP      = $C9  // $C9-$CA  start of input, X/Y position
+	.label LSXP      = $C9  // $C9-$CA  start of input, X/Y position (typo in Mapping the C64, fixed in Mapping the C128)
 	.label SFDX      = $CB  //          -- NOT IMPLEMENTED --
 	.label BLNSW     = $CC  //          cursor blink disable flag
 	.label BLNCT     = $CD  //          cursor blink countdown
@@ -159,7 +159,7 @@
 	.label TBLX      = $D6  //          current screen Y position (row), 0-24
 	.label SCHAR     = $D7  //          ASCII value of the last printed character
 	.label INSRT     = $D8  //          insert mode flag/counter
-	.label LDTBL     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
+	.label LDTB1     = $D9  // $D9-$F2  screen line link table, [!] our usage is different  XXX give more details
 	.label USER      = $F3  // $F3-$F4  pointer to current color RAM location
 	.label KEYTAB    = $F5  // $F5-$F6  pointer to keyboard lookup table
 	.label RIBUF     = $F7  // $F7-$F8  -- WIP -- RS-232 receive buffer pointer
@@ -227,7 +227,7 @@
 #if CONFIG_MEMORY_MODEL_60K
 
 	// IRQs are disabled when doing such accesses, and a default NMI handler only increments
-	// a counter, so that if an NMI occurs, it doesn't crash the machine, but can be captured.
+	// a counter, so that if an NMI occurs, it does not crash the machine, but can be captured.
 
 	.label missed_nmi_flag  = $2A7
 	.label tiny_nmi_handler = $2A8
@@ -288,3 +288,27 @@
 #endif
 
 	//                 $3FC     $3FC-$3FF  -- UNUSED --          free for user software
+
+
+//
+// Definitions for tape functionality
+//
+
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+
+	.label __normal_time_S             = IRQTMP+0          // duration of the short pulse
+	.label __normal_time_M             = IRQTMP+1          // duration of the medium pulse
+
+	.label __turbo_half_S              = IRQTMP+0          // half-duration of the short pulse
+	.label __turbo_half_L              = IRQTMP+1          // half-duration of the long pulse
+
+	.label __pulse_threshold           = SVXT              // pulse classification threshold
+	.label __pulse_threshold_ML        = SYNO              // M/L pulse classification threshold, for normal only
+
+#endif
+
+#if CONFIG_TAPE_TURBO
+
+	.label __tape_turbo_bytestore      = STACK             // location of byte storage helper routine
+
+#endif

@@ -17,7 +17,11 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX provide implementation
+// XXX test this code
+
+mul_FAC2_FAC1_done:
+
+	rts
 
 mul_FAC2_FAC1:
 
@@ -79,72 +83,208 @@ mul_FAC2_FAC1_sub_exp_bias:
 	sbc #$80                           // bias
 	sta FAC1_exponent
 	
+	// Multiply the mantissas - first clear the RESHO temporary area
+
+	lda #$00
+	sta RESHO+0
+	sta RESHO+1
+	sta RESHO+2
+	sta RESHO+3
+	sta RESHO+4
+
 	// Multiply the mantissas
-	
-	// XXX
 
-	STUB_IMPLEMENTATION()
+	// XXX maybe we should preserve .X on stack? this will not cost us too much
 
-mul_FAC2_FAC1_done:
+	lda FACOV
+	jsr mul_by_A
+	jsr mul_shift_RESHO
+	bcc !+
+	inc RESHO+0
+!:
+	lda FAC1_mantissa+3
+	jsr mul_by_A
+	jsr mul_shift_RESHO
+	bcc !+
+	inc RESHO+0
+!:
+	lda FAC1_mantissa+2
+	jsr mul_by_A
+	jsr mul_shift_RESHO
+	bcc !+
+	inc RESHO+0
+!:
+	lda FAC1_mantissa+1
+	jsr mul_by_A
+	jsr mul_shift_RESHO
+	bcc !+
+	inc RESHO+0
+!:
+	lda FAC1_mantissa+0
+	jsr mul_by_A
+	jsr mul_shift_RESHO
+	bcc !+
+	inc RESHO+0
+!:
+	// Copy RESHO to FAC1 mantissa
+
+	lda RESHO+4
+	sta FACOV
+	lda RESHO+3
+	sta FAC1_mantissa+3
+	lda RESHO+2
+	sta FAC1_mantissa+2
+	lda RESHO+1
+	sta FAC1_mantissa+1
+	lda RESHO+0
+	sta FAC1_mantissa+0
+
+	// XXX correction is probably needed
+
+	jmp normal_FAC1
+
+
+
+
+mul_by_A: // XXX we should probably move this subroutine to a separate file
+
+	sta INDEX+3
+
+	// Multiply FAC2_mantissa+3
+
+	lda FAC2_mantissa+3
+	jsr mul_8x8
+
+	adc RESHO+4
+	sta RESHO+4
+	txa
+	adc RESHO+3
+	sta RESHO+3
+	bcc !+
+	inc RESHO+2
+	bcc !+
+	inc RESHO+1
+	bcc !+
+	inc RESHO+0
+!:
+	// Multiply FAC2_mantissa+2
+
+	lda FAC2_mantissa+2
+	jsr mul_8x8
+
+	adc RESHO+3
+	sta RESHO+3
+	txa
+	adc RESHO+2
+	sta RESHO+2
+	bcc !+
+	inc RESHO+1
+	bcc !+
+	inc RESHO+0
+!:
+	// Multiply FAC2_mantissa+1
+
+	lda FAC2_mantissa+1
+	jsr mul_8x8
+
+	adc RESHO+2
+	sta RESHO+2
+	txa
+	adc RESHO+1
+	sta RESHO+1
+	bcc !+
+	inc RESHO+0
+!:
+	// Multiply FAC2_mantissa+0
+
+	lda FAC2_mantissa+0
+	jsr mul_8x8
+	adc RESHO+1
+	sta RESHO+1
+	txa
+	adc RESHO+0
+	sta RESHO+0
 
 	rts
 
 
-mul_8x8: // XXX we should probably move this subroutine to separate file
+
+mul_shift_RESHO: // XXX we should probably move this subroutine to a separate file
+
+	// Shift RESHO by one byte
+
+	lda RESHO+3
+	sta RESHO+4
+	lda RESHO+2
+	sta RESHO+3
+	lda RESHO+1
+	sta RESHO+2
+	lda RESHO+0
+	sta RESHO+1
+	lda #$00
+	sta RESHO+0
+
+	rts
+
+
+mul_8x8: // XXX we should probably move this subroutine to a separate file
+
+	sta INDEX+2
 
 	// Routine based on code by djmips, taken from:
 	// - https://codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables
 	//
-	// input: mul1, mul2
-	// optput: .A (high byte), mul1 (low byte)
-
-.label mul1 = INDEX+2
-.label mul2 = INDEX+3
+	// input: INDEX+2, INDEX+3
+	// output: .X (high byte), .A and INDEX+2 (low byte), carry always clear
 
 	lda #$00
 
-	dec mul2	// decrement because we will be adding with carry set for speed (an extra one)
-	ror mul1
+	dec INDEX+3	// decrement because we will be adding with carry set for speed (an extra one)
+	ror INDEX+2
 	bcc !+
-	adc mul2
+	adc INDEX+3
 !:
 	ror
-	ror mul1
+	ror INDEX+2
 	bcc !+
-	adc mul2
+	adc INDEX+3
 !:
 	ror
-	ror mul1
+	ror INDEX+2
 	bcc !+
-	adc mul2
+	adc INDEX+3
 !:
 	ror
-	ror mul1
+	ror INDEX+2
 	bcc !+
-	adc mul2
+	adc INDEX+3
 !:
 	ror
-	ror mul1
+	ror INDEX+2
 	bcc !+
-	adc mul2
+	adc INDEX+3
 !:
 	ror
-	ror mul1
+	ror INDEX+2
 	bcc !+
-	adc mul2
+	adc INDEX+3
 !:
 	ror
-	ror mul1
+	ror INDEX+2
 	bcc !+
-	adc mul2
+	adc INDEX+3
 !:
 	ror
-	ror mul1
+	ror INDEX+2
 	bcc !+
-	adc mul2
+	adc INDEX+3
 !:
 	ror
-	ror mul1
-	inc mul2
+	ror INDEX+2
+	inc INDEX+3
+
+	tax
+	lda INDEX+2
+	clc
 
 	rts

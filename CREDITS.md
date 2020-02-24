@@ -6,6 +6,7 @@
 * TWW/CTR - for his keyboard handling code
 * Graham - for his PAL/NTSC detection routine
 * enthusi/Onslaught - for his example Turbo Tape 64 compatible loader
+* djmips - for fast 8x8 multiplication routine
 
 ## for documentation
 

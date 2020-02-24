@@ -88,3 +88,63 @@ mul_FAC2_FAC1_sub_exp_bias:
 mul_FAC2_FAC1_done:
 
 	rts
+
+
+mul_8x8: // XXX we should probably move this subroutine to separate file
+
+	// Routine based on code by djmips, taken from:
+	// - https://codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables
+	//
+	// input: mul1, mul2
+	// optput: .A (high byte), mul1 (low byte)
+
+.label mul1 = INDEX+2
+.label mul2 = INDEX+3
+
+	lda #$00
+
+	dec mul2	// decrement because we will be adding with carry set for speed (an extra one)
+	ror mul1
+	bcc !+
+	adc mul2
+!:
+	ror
+	ror mul1
+	bcc !+
+	adc mul2
+!:
+	ror
+	ror mul1
+	bcc !+
+	adc mul2
+!:
+	ror
+	ror mul1
+	bcc !+
+	adc mul2
+!:
+	ror
+	ror mul1
+	bcc !+
+	adc mul2
+!:
+	ror
+	ror mul1
+	bcc !+
+	adc mul2
+!:
+	ror
+	ror mul1
+	bcc !+
+	adc mul2
+!:
+	ror
+	ror mul1
+	bcc !+
+	adc mul2
+!:
+	ror
+	ror mul1
+	inc mul2
+
+	rts

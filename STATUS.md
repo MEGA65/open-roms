@@ -197,11 +197,9 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B86A`   | `add_FAC2_FAC1`        | DONE     |                                                    |
 | `$B8FE`   | `normal_FAC1`          | DONE     |                                                    |
 | `$B947`   | `inv_FAC1_mantissa`    | NOT DONE |                                                    |
-| `$B983`   | `MULSHF`               | NOT DONE |                                                    |
 | `$B9EA`   | `log_FAC1`             | NOT DONE |                                                    |
 | `$BA28`   | `mul_MEM_FAC1`         | PARTIAL  | needs `mul_FAC2_FAC1`                              |
 | `$BA2B`   | `mul_FAC2_FAC1`        | NOT DONE | some work started                                  |
-| `$BA59`   | `MLTPLY`               | NOT DONE |                                                    |
 | `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
 | `$BA90`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
 | `$BAE2`   | `mul10_FAC1`           | NOT DONE |                                                    |

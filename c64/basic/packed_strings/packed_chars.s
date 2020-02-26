@@ -2,8 +2,6 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
+packed_message_chars:
 
-ready_message:
-
-	ldx #29
-	jmp print_packed_message
+	put_packed_chars()

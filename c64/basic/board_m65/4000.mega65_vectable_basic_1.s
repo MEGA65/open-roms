@@ -12,11 +12,13 @@
 	// Label definitions
 
 	.label VB1__INITMSG                = $4000 + 2 * 0
+	.label VB1__list_single_line       = $4000 + 2 * 1
 
 #else
 
 	// Vector table (OpenROMs private!)
 
 	.word INITMSG
+	.word list_single_line
 
 #endif

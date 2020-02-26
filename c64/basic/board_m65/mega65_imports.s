@@ -8,13 +8,17 @@
 #import "BASIC_0_combined.sym"
 
 
+.label peek_under_roms                 = BASIC_0.proxy_B1_peek_under_roms
 .label JCHROUT                         = BASIC_0.proxy_B1_JCHROUT
 .label plot_set                        = KERNAL_0.plot_set
-
 .label basic_do_new                    = BASIC_0.proxy_B1_basic_do_new
+.label packed_keywords                 = BASIC_0.packed_keywords
+.label packed_word_search              = BASIC_0.packed_word_search
 .label rom_revision_basic_string       = BASIC_0.rom_revision_basic_string
 .label print_integer                   = BASIC_0.proxy_B1_print_integer
 .label print_packed_message            = BASIC_0.proxy_B1_print_packed_message
+.label print_return                    = BASIC_0.proxy_B1_print_return
+.label print_space                     = BASIC_0.proxy_B1_print_space
 #if CONFIG_SHOW_PAL_NTSC
 .label print_pal_ntsc                  = BASIC_0.proxy_B1_print_pal_ntsc
 #endif

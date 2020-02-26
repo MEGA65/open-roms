@@ -12,13 +12,14 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  c64/basic \
                  c64/basic/,stubs \
                  c64/basic/,stubs_math \
+                 c64/basic/assets \
                  c64/basic/board_m65 \
                  c64/basic/board_x16 \
                  c64/basic/commands \
                  c64/basic/init \
                  c64/basic/math \
                  c64/basic/math_consts \
-                 c64/basic/packed_strings \
+                 c64/basic/print \
                  c64/basic/rom_revision
 
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \

@@ -6,6 +6,17 @@
 //
 
 
+proxy_B1_peek_under_roms:
+
+	jsr map_NORMAL
+#if CONFIG_MEMORY_MODEL_60K
+	jsr peek_under_roms
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+	jmp map_BASIC_1
+
+
 proxy_B1_JCHROUT:
 
 	jsr map_NORMAL
@@ -32,6 +43,21 @@ proxy_B1_print_packed_message:
 	jsr map_NORMAL
 	jsr print_packed_message
 	jmp map_BASIC_1
+
+
+proxy_B1_print_return:
+
+	jsr map_NORMAL
+	jsr print_return
+	jmp map_BASIC_1
+
+
+proxy_B1_print_space:
+
+	jsr map_NORMAL
+	jsr print_space
+	jmp map_BASIC_1
+
 
 #if CONFIG_SHOW_PAL_NTSC
 

@@ -1,0 +1,54 @@
+// #LAYOUT# M65 BASIC_0 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+//
+// Proxies for calling Mega65 segment BASIC_0 and KERNAL_0 routines from BASIC_1
+//
+
+
+proxy_B1_JCHROUT:
+
+	jsr map_NORMAL
+	jsr JCHROUT
+	jmp map_BASIC_1
+
+
+proxy_B1_basic_do_new:
+
+	jsr map_NORMAL
+	jsr basic_do_new
+	jmp map_BASIC_1
+
+
+proxy_B1_print_integer:
+
+	jsr map_NORMAL
+	jsr print_integer
+	jmp map_BASIC_1
+
+
+proxy_B1_print_packed_message:
+
+	jsr map_NORMAL
+	jsr print_packed_message
+	jmp map_BASIC_1
+
+#if CONFIG_SHOW_PAL_NTSC
+
+proxy_B1_print_pal_ntsc:
+
+	jsr map_NORMAL
+	jsr print_pal_ntsc
+	jmp map_BASIC_1
+
+#endif
+
+#if CONFIG_SHOW_FEATURES
+
+proxy_B1_print_features:
+
+	jsr map_NORMAL
+	jsr print_features
+	jmp map_BASIC_1
+
+#endif

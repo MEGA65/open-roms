@@ -11,4 +11,15 @@
 //
 
 INITMSG:
+
+#if ROM_LAYOUT_M65
+
+	jsr map_BASIC_1
+	jsr_ind VB1__INITMSG
+	jmp map_NORMAL
+
+#else
+
 	jmp initmsg_real
+
+#endif

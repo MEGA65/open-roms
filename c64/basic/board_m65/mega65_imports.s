@@ -1,0 +1,23 @@
+// #LAYOUT# M65 BASIC_1 #TAKE
+// #LAYOUT# *   *       #IGNORE
+
+//
+// Definitions for calling Mega65 segments BASIC_0 and KERNAL_0 routines from BASIC_1
+//
+
+#import "BASIC_0_combined.sym"
+
+
+.label JCHROUT                         = BASIC_0.proxy_B1_JCHROUT
+.label plot_set                        = KERNAL_0.plot_set
+
+.label basic_do_new                    = BASIC_0.proxy_B1_basic_do_new
+.label rom_revision_basic_string       = BASIC_0.rom_revision_basic_string
+.label print_integer                   = BASIC_0.proxy_B1_print_integer
+.label print_packed_message            = BASIC_0.proxy_B1_print_packed_message
+#if CONFIG_SHOW_PAL_NTSC
+.label print_pal_ntsc                  = BASIC_0.proxy_B1_print_pal_ntsc
+#endif
+#if CONFIG_SHOW_FEATURES
+.label print_features                  = BASIC_0.proxy_B1_print_features
+#endif

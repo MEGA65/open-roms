@@ -2,7 +2,7 @@
 // #LAYOUT# *   *        #IGNORE
 
 //
-// Tape (normal) helper routine - byte storage when ban changing is needed
+// Tape (normal) helper routine - byte storage when banking change is needed
 //
 
 

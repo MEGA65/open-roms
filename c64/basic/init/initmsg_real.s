@@ -1,12 +1,21 @@
 // #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# M65 BASIC_1 #TAKE
+// #LAYOUT# X16 BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
 
 // Routine is too long to fit in the original location
 
 
+#if ROM_LAYOUT_M65
+
+INITMSG:
+
+#else
+
 initmsg_real:
+
+#endif
 
 	// Clear the screen first, some cartridges (like IEEE-488) leeave a mess on the screen
 	lda #147

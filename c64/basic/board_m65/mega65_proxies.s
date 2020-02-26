@@ -38,13 +38,6 @@ proxy_B1_print_integer:
 	jmp map_BASIC_1
 
 
-proxy_B1_print_packed_message:
-
-	jsr map_NORMAL
-	jsr print_packed_message
-	jmp map_BASIC_1
-
-
 proxy_B1_print_return:
 
 	jsr map_NORMAL

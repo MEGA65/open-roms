@@ -1,5 +1,6 @@
 // #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# M65 *       #TAKE
+// #LAYOUT# X16 BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
 // Tokenise a line of BASIC
@@ -7,6 +8,14 @@
 // Length in __tokenise_work1
 
 tokenise_line:
+
+#if (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+	jsr     map_BASIC_1
+	jsr_ind VB1__tokenise_line
+	jmp     map_NORMAL
+
+#else
 
 	// We need to consider each offset in the string to see if it matches
 	// a token.  No BASIC keyword is > 7 bytes, so we need to start with that
@@ -270,3 +279,5 @@ done_searching_for_token:
 	sec
 	lda #$00
 	rts
+
+#endif // ROM layout

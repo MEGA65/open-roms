@@ -5,8 +5,14 @@
 // Computes Mapping the 64 p93
 
 basic_do_error:
+
 	// Save error number
 	phx_trash_a
+
+#if ROM_LAYOUT_M65
+	// Restore normal memory map
+	jsr map_NORMAL
+#endif
 
 	// Print ? at start
 	jsr print_return

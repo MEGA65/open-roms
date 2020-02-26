@@ -24,13 +24,6 @@ proxy_B1_JCHROUT:
 	jmp map_BASIC_1
 
 
-proxy_B1_basic_do_new:
-
-	jsr map_NORMAL
-	jsr basic_do_new
-	jmp map_BASIC_1
-
-
 proxy_B1_print_integer:
 
 	jsr map_NORMAL

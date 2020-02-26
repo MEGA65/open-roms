@@ -15,6 +15,8 @@
 	.label VB1__tokenise_line          = $4000 + 2 * 1
 	.label VB1__list_single_line       = $4000 + 2 * 2
 	.label VB1__print_packed_message   = $4000 + 2 * 3
+	.label VB1__basic_do_clr           = $4000 + 2 * 4
+	.label VB1__basic_do_new           = $4000 + 2 * 5
 
 #else
 
@@ -24,5 +26,7 @@
 	.word tokenise_line
 	.word list_single_line
 	.word print_packed_message
+	.word basic_do_clr
+	.word basic_do_new
 
 #endif

@@ -10,8 +10,8 @@
 
 .label peek_under_roms                 = BASIC_0.proxy_B1_peek_under_roms
 .label JCHROUT                         = BASIC_0.proxy_B1_JCHROUT
+.label JMEMTOP                         = KERNAL_0.JMEMTOP
 .label plot_set                        = KERNAL_0.plot_set
-.label basic_do_new                    = BASIC_0.proxy_B1_basic_do_new
 .label rom_revision_basic_string       = BASIC_0.rom_revision_basic_string
 .label print_integer                   = BASIC_0.proxy_B1_print_integer
 .label print_return                    = BASIC_0.proxy_B1_print_return

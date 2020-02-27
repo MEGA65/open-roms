@@ -17,8 +17,6 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX the code here is very imprecise, find out why
-
 mul_FAC2_FAC1_done:
 
 	rts
@@ -98,31 +96,31 @@ mul_FAC2_FAC1_sub_exp_bias:
 
 	lda FACOV
 	jsr mul_FAC2_FAC1_by_A
-	jsr mul_FAC2_FAC1_shift_RESHO
+	jsr mul_FAC2_FAC1_shift
 	bcc !+
 	inc RESHO+0
 !:
 	lda FAC1_mantissa+3
 	jsr mul_FAC2_FAC1_by_A
-	jsr mul_FAC2_FAC1_shift_RESHO
+	jsr mul_FAC2_FAC1_shift
 	bcc !+
 	inc RESHO+0
 !:
 	lda FAC1_mantissa+2
 	jsr mul_FAC2_FAC1_by_A
-	jsr mul_FAC2_FAC1_shift_RESHO
+	jsr mul_FAC2_FAC1_shift
 	bcc !+
 	inc RESHO+0
 !:
 	lda FAC1_mantissa+1
 	jsr mul_FAC2_FAC1_by_A
-	jsr mul_FAC2_FAC1_shift_RESHO
+	jsr mul_FAC2_FAC1_shift
 	bcc !+
 	inc RESHO+0
 !:
 	lda FAC1_mantissa+0
 	jsr mul_FAC2_FAC1_by_A
-	jsr mul_FAC2_FAC1_shift_RESHO
+	jsr mul_FAC2_FAC1_shift
 	bcc !+
 	inc RESHO+0
 !:
@@ -212,25 +210,5 @@ mul_FAC2_FAC1_by_A:
 	// FALLTROUGH
 
 mul_FAC2_FAC1_by_A_done:
-
-	rts
-
-
-
-
-mul_FAC2_FAC1_shift_RESHO: // XXX we should probably move this subroutine to a separate file
-
-	// Shift RESHO by one byte
-
-	lda RESHO+3
-	sta RESHO+4
-	lda RESHO+2
-	sta RESHO+3
-	lda RESHO+1
-	sta RESHO+2
-	lda RESHO+0
-	sta RESHO+1
-	lda #$00
-	sta RESHO+0
 
 	rts

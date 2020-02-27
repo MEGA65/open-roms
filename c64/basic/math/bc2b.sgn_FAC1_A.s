@@ -4,19 +4,23 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Math package - set FAC1 as RAM raised to the power of FAC1
+// Math package - evaluate FAC1 sign, to .A
 //
-// Input:
-// - .A - address low byte
-// - .Y - address high byte
+// Output:
+// - .A - 0 for FAC1 equal 0, 1 for FAC1 > 0, -1 for FAC1 < 0
 //
 // See also:
-// - [CM64] Computes Mapping the Commodore 64 - page 117 (FPWRT)
+// - [CM64] Computes Mapping the Commodore 64 - page 115
 // - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX provide implementation
+sgn_FAC1_A:
 
-FPWR:
-	STUB_IMPLEMENTATION()
+	lda FAC1_exponent
+	beq !+
+	lda FAC1_sign
+	bne !+
+	lda #$01
+!:
+	rts

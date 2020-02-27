@@ -16,7 +16,14 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX provide implementation
+// XXX test this
 
 div10_FAC1_p:
-	STUB_IMPLEMENTATION()
+
+	lda #$00
+	sta FAC1_sign
+
+	ldy #>const_TEN
+	lda #<const_TEN
+
+	jmp div_MEM_FAC1

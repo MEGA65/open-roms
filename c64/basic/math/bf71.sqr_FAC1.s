@@ -15,7 +15,8 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX provide implementation
-
 sqr_FAC1:
-	STUB_IMPLEMENTATION()
+
+	jsr mov_FAC1_FAC2
+	
+	// FALLLTROUGH to sqr_FAC2

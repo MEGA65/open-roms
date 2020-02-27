@@ -189,7 +189,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B794`   | `convert_A_to_FAC1`    | NOT DONE |                                                    |
 | `$B7B5`   | `STRVAL`               | NOT DONE | imports string to FAC1                             |
 | `$B7F7`   | `convert_FAC1_to_ADDR` | NOT DONE |                                                    |
-| `$B849`   | `add_HALF_FAC1`        | NOT DONE |                                                    |
+| `$B849`   | `add_HALF_FAC1`        | DONE     |                                                    |
 | `$B850`   | `sub_MEM_FAC1`         | DONE     |                                                    |
 | `$B853`   | `sub_FAC2_FAC1`        | DONE     |                                                    |
 | `$B862`   | `add_align_exponents`  | DONE     |                                                    |
@@ -203,7 +203,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
 | `$BA90`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
 | `$BAE2`   | `mul10_FAC1`           | NOT DONE |                                                    |
-| `$BAFE`   | `div10_FAC1_p`         | NOT DONE |                                                    |
+| `$BAFE`   | `div10_FAC1_p`         | PARTIAL  | needs `div_FAC2_FAC1`                              |
 | `$BB0F`   | `div_MEM_FAC1`         | PARTIAL  | needs `div_FAC2_FAC1`                              |
 | `$BB12`   | `div_FAC2_FAC1`        | NOT DONE | some work already started                          |
 | `$BBA2`   | `mov_MEM_FAC1`         | DONE     |                                                    |
@@ -216,7 +216,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC0C`   | `mov_r_FAC1_FAC2`      | PARTIAL  | not fully tested yet                               |
 | `$BC0F`   | `mov_FAC1_FAC2`        | DONE     |                                                    |
 | `$BC1B`   | `round_FAC1`           | PARTIAL  | not fully tested yet                               |
-| `$BC2B`   | `sgn_FAC1_A`           | NOT DONE |                                                    |
+| `$BC2B`   | `sgn_FAC1_A`           | DONE     |                                                    |
 | `$BC39`   | `sgn_FAC1`             | NOT DONE |                                                    |
 | `$BC3C`   | `convert_A_to_FAC1`    | NOT DONE |                                                    |
 | `$BC44`   | `convert_i16_to_FAC1`  | NOT DONE |                                                    |
@@ -227,15 +227,15 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BCF3`   | `FIN`                  | NOT DONE | imports string to FAC1, ignores spaces             |
 | `$BD7E`   | `FINLOG`               | NOT DONE |                                                    |
 | `$BDDD`   | `FOUT`                 | NOT DONE | outputs FAC1 to string at $0100                    |
-| `$BF71`   | `sqr_FAC1`             | NOT DONE |                                                    |
+| `$BF71`   | `sqr_FAC1`             | PARTIAL  | needs `sqr_FAC2`                                   |
 | `$BF74`   | `sqr_FAC2`             | NOT DONE |                                                    |
-| `$BF78`   | `FPWR`                 | NOT DONE | set FAC1 as RAM raised to the power of FAC1        |
-| `$BF7B`   | `FPWRT`                | NOT DONE | set FAC1 as FAC2 raised to the power of FAC1       |
+| `$BF78`   | `pwr_FAC2_MEM`         | PARTIAL  | needs `pwr_FAC2_FAC1`                              |
+| `$BF7B`   | `pwr_FAC2_FAC1`        | NOT DONE |                                                    |
 | `$BFB4`   | `toggle_sign_FAC1`     | DONE     |                                                    |
 | `$BFED`   | `exp_FAC1`             | NOT DONE |                                                    |
 | `$E043`   | `poly1_FAC1`           | NOT DONE |                                                    |
 | `$E059`   | `poly2_FAC1`           | NOT DONE |                                                    |
-| `$E097`   | `rnd_FAC1`             | PARTIAL  | requires `sgn_FAC1_A`                              |
+| `$E097`   | `rnd_FAC1`             | DONE     |                                                    |
 | `$E09A`   | `rnd_A`                | DONE     |                                                    |
 | `$E0BE`   | `rnd_generate`         | DONE     |                                                    |
 | `$E264`   | `cos_FAC1`             | NOT DONE |                                                    |

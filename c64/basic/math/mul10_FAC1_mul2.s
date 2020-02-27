@@ -11,6 +11,6 @@ mul10_FAC1_mul2:
 	// Increment the exponent
 
 	inc FAC1_exponent
-	bcs_16 set_FAC1_max
+	beq_16 set_FAC1_max
 
 	rts

@@ -12,8 +12,6 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX test this
-
 mul10_FAC1:
 
 	// Handle special case of FAC1 equal 0

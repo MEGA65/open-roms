@@ -17,7 +17,7 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX test this code
+// XXX the code here is very imprecise, find out why
 
 mul_FAC2_FAC1_done:
 
@@ -139,7 +139,13 @@ mul_FAC2_FAC1_sub_exp_bias:
 	lda RESHO+0
 	sta FAC1_mantissa+0
 
-	// XXX correction is probably needed
+	// Correct the exponent
+
+	lda FAC1_exponent
+	clc
+	adc #$08
+	bcs_16 set_FAC1_max                // branch if overflow
+	sta FAC1_exponent
 
 	jmp normal_FAC1
 
@@ -153,7 +159,7 @@ mul_by_A: // XXX we should probably move this subroutine to a separate file
 	// Multiply FAC2_mantissa+3
 
 	lda FAC2_mantissa+3
-	jsr mul_8x8
+	jsr mul_FAC2_FAC1_8x8
 
 	adc RESHO+4
 	sta RESHO+4
@@ -170,7 +176,7 @@ mul_by_A: // XXX we should probably move this subroutine to a separate file
 	// Multiply FAC2_mantissa+2
 
 	lda FAC2_mantissa+2
-	jsr mul_8x8
+	jsr mul_FAC2_FAC1_8x8
 
 	adc RESHO+3
 	sta RESHO+3
@@ -185,7 +191,7 @@ mul_by_A: // XXX we should probably move this subroutine to a separate file
 	// Multiply FAC2_mantissa+1
 
 	lda FAC2_mantissa+1
-	jsr mul_8x8
+	jsr mul_FAC2_FAC1_8x8
 
 	adc RESHO+2
 	sta RESHO+2
@@ -198,7 +204,7 @@ mul_by_A: // XXX we should probably move this subroutine to a separate file
 	// Multiply FAC2_mantissa+0
 
 	lda FAC2_mantissa+0
-	jsr mul_8x8
+	jsr mul_FAC2_FAC1_8x8
 	adc RESHO+1
 	sta RESHO+1
 	txa
@@ -223,68 +229,5 @@ mul_shift_RESHO: // XXX we should probably move this subroutine to a separate fi
 	sta RESHO+1
 	lda #$00
 	sta RESHO+0
-
-	rts
-
-
-mul_8x8: // XXX we should probably move this subroutine to a separate file
-
-	sta INDEX+2
-
-	// Routine based on code by djmips, taken from:
-	// - https://codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables
-	//
-	// input: INDEX+2, INDEX+3
-	// output: .X (high byte), .A and INDEX+2 (low byte), carry always clear
-
-	lda #$00
-
-	dec INDEX+3	// decrement because we will be adding with carry set for speed (an extra one)
-	ror INDEX+2
-	bcc !+
-	adc INDEX+3
-!:
-	ror
-	ror INDEX+2
-	bcc !+
-	adc INDEX+3
-!:
-	ror
-	ror INDEX+2
-	bcc !+
-	adc INDEX+3
-!:
-	ror
-	ror INDEX+2
-	bcc !+
-	adc INDEX+3
-!:
-	ror
-	ror INDEX+2
-	bcc !+
-	adc INDEX+3
-!:
-	ror
-	ror INDEX+2
-	bcc !+
-	adc INDEX+3
-!:
-	ror
-	ror INDEX+2
-	bcc !+
-	adc INDEX+3
-!:
-	ror
-	ror INDEX+2
-	bcc !+
-	adc INDEX+3
-!:
-	ror
-	ror INDEX+2
-	inc INDEX+3
-
-	tax
-	lda INDEX+2
-	clc
 
 	rts

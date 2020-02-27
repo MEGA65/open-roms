@@ -97,32 +97,32 @@ mul_FAC2_FAC1_sub_exp_bias:
 	// XXX maybe we should preserve .X on stack? this will not cost us too much
 
 	lda FACOV
-	jsr mul_by_A
-	jsr mul_shift_RESHO
+	jsr mul_FAC2_FAC1_by_A
+	jsr mul_FAC2_FAC1_shift_RESHO
 	bcc !+
 	inc RESHO+0
 !:
 	lda FAC1_mantissa+3
-	jsr mul_by_A
-	jsr mul_shift_RESHO
+	jsr mul_FAC2_FAC1_by_A
+	jsr mul_FAC2_FAC1_shift_RESHO
 	bcc !+
 	inc RESHO+0
 !:
 	lda FAC1_mantissa+2
-	jsr mul_by_A
-	jsr mul_shift_RESHO
+	jsr mul_FAC2_FAC1_by_A
+	jsr mul_FAC2_FAC1_shift_RESHO
 	bcc !+
 	inc RESHO+0
 !:
 	lda FAC1_mantissa+1
-	jsr mul_by_A
-	jsr mul_shift_RESHO
+	jsr mul_FAC2_FAC1_by_A
+	jsr mul_FAC2_FAC1_shift_RESHO
 	bcc !+
 	inc RESHO+0
 !:
 	lda FAC1_mantissa+0
-	jsr mul_by_A
-	jsr mul_shift_RESHO
+	jsr mul_FAC2_FAC1_by_A
+	jsr mul_FAC2_FAC1_shift_RESHO
 	bcc !+
 	inc RESHO+0
 !:
@@ -149,11 +149,9 @@ mul_FAC2_FAC1_sub_exp_bias:
 
 	jmp normal_FAC1
 
+mul_FAC2_FAC1_by_A:
 
-
-
-mul_by_A: // XXX we should probably move this subroutine to a separate file
-
+	beq mul_FAC2_FAC1_by_A_done
 	sta INDEX+3
 
 	// Multiply FAC2_mantissa+3
@@ -168,9 +166,9 @@ mul_by_A: // XXX we should probably move this subroutine to a separate file
 	sta RESHO+3
 	bcc !+
 	inc RESHO+2
-	bcc !+
+	bne !+
 	inc RESHO+1
-	bcc !+
+	bne !+
 	inc RESHO+0
 !:
 	// Multiply FAC2_mantissa+2
@@ -185,7 +183,7 @@ mul_by_A: // XXX we should probably move this subroutine to a separate file
 	sta RESHO+2
 	bcc !+
 	inc RESHO+1
-	bcc !+
+	bne !+
 	inc RESHO+0
 !:
 	// Multiply FAC2_mantissa+1
@@ -211,11 +209,16 @@ mul_by_A: // XXX we should probably move this subroutine to a separate file
 	adc RESHO+0
 	sta RESHO+0
 
+	// FALLTROUGH
+
+mul_FAC2_FAC1_by_A_done:
+
 	rts
 
 
 
-mul_shift_RESHO: // XXX we should probably move this subroutine to a separate file
+
+mul_FAC2_FAC1_shift_RESHO: // XXX we should probably move this subroutine to a separate file
 
 	// Shift RESHO by one byte
 

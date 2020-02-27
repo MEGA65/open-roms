@@ -7,12 +7,19 @@
 // - https://codebase64.org/doku.php?id=base:8bit_multiplication_16bit_product_fast_no_tables
 //
 // input: .A, INDEX+3
-// output: .X (high byte), .A and INDEX+2 (low byte), carry always clear
+// output: .X (high byte), .A (low byte), carry always clear
 //
 
 mul_FAC2_FAC1_8x8:
 
 	sta INDEX+2
+
+	// Special case (optimization) - handle 0
+
+	lda INDEX+2
+	beq mul_FAC2_FAC1_8x8_zero
+	lda INDEX+3
+	beq mul_FAC2_FAC1_8x8_zero
 
 	lda #$00
 
@@ -62,6 +69,14 @@ mul_FAC2_FAC1_8x8:
 
 	tax
 	lda INDEX+2
-	clc
 
+	clc
+	rts
+
+mul_FAC2_FAC1_8x8_zero:
+
+	lda #$00
+	tax
+
+	clc
 	rts

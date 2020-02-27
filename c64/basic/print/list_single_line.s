@@ -16,7 +16,9 @@ list_single_line:
 	// Print line number
 	ldy #3
 
-#if ROM_LAYOUT_M65 || CONFIG_MEMORY_MODEL_60K
+#if ROM_LAYOUT_M65
+	jsr peek_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 #else
 	lda (OLDTXT),y
@@ -25,7 +27,9 @@ list_single_line:
 	pha
 	dey
 
-#if ROM_LAYOUT_M65 || CONFIG_MEMORY_MODEL_60K
+#if ROM_LAYOUT_M65
+	jsr peek_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 #else
 	lda (OLDTXT),y
@@ -42,9 +46,12 @@ list_single_line:
 	sta QTSW
 	
 	ldy #4
+
 list_print_loop:
 
-#if ROM_LAYOUT_M65 || CONFIG_MEMORY_MODEL_60K
+#if ROM_LAYOUT_M65
+	jsr peek_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT
 	jsr peek_under_roms
 	cmp #$00

@@ -8,10 +8,12 @@
 #import "BASIC_0_combined.sym"
 
 
-.label peek_under_roms                 = BASIC_0.proxy_B1_peek_under_roms
+.label peek_via_OLDTXT                 = BASIC_0.proxy_B1_peek_via_OLDTXT
+.label poke_via_OLDTXT                 = BASIC_0.proxy_B1_poke_via_OLDTXT
 .label JCHROUT                         = BASIC_0.proxy_B1_JCHROUT
 .label JMEMTOP                         = KERNAL_0.JMEMTOP
 .label plot_set                        = KERNAL_0.plot_set
+.label init_oldtxt                     = BASIC_0.init_oldtxt
 .label rom_revision_basic_string       = BASIC_0.rom_revision_basic_string
 .label print_integer                   = BASIC_0.proxy_B1_print_integer
 .label print_return                    = BASIC_0.proxy_B1_print_return

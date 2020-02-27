@@ -6,13 +6,23 @@
 //
 
 
-proxy_B1_peek_under_roms:
+proxy_B1_peek_via_OLDTXT:
 
 	jsr map_NORMAL
 #if CONFIG_MEMORY_MODEL_60K
-	jsr peek_under_roms
+	.error "not implemented"
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
+#endif
+	jmp map_BASIC_1
+
+proxy_B1_poke_via_OLDTXT:
+
+	jsr map_NORMAL
+#if CONFIG_MEMORY_MODEL_60K
+	.error "not implemented"
+#else // CONFIG_MEMORY_MODEL_38K
+	sta (OLDTXT),y
 #endif
 	jmp map_BASIC_1
 

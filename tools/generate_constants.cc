@@ -58,7 +58,7 @@ std::vector<ConstEntry> GLOBAL_constants =
 	ConstEntry(     "LOG_2", std::log(2.0)        ),
 	ConstEntry( "INV_LOG_2", 1.0 / std::log(2.0)  ),
 
-	// Constants for sine approximation, minimized abs. error, degree 11, from:
+	// Constants for sine approximation, minimized abs. error, degree 11, for [0, pi/2], from:
 	// - https://publik-void.github.io/sin-cos-approximations/
 
 	ConstEntry( "POLY_SIN_1", -2.3794713545277060334805162803882547e-8   ),

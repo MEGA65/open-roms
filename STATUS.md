@@ -199,7 +199,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B947`   | `inv_FAC1_mantissa`    | NOT DONE |                                                    |
 | `$B9EA`   | `log_FAC1`             | NOT DONE |                                                    |
 | `$BA28`   | `mul_MEM_FAC1`         | DONE     |                                                    |
-| `$BA2B`   | `mul_FAC2_FAC1`        | DONE     |                                                    |
+| `$BA2B`   | `mul_FAC2_FAC1`        | PARTIAL  | needs retest after rework                          |
 | `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
 | `$BA90`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
 | `$BAE2`   | `mul10_FAC1`           | DONE     |                                                    |

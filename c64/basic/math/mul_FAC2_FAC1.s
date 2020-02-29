@@ -17,6 +17,11 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
+set_FAC1_zero:
+
+	lda #$00
+	sta FAC1_exponent
+
 mul_FAC2_FAC1_done:
 
 	rts
@@ -39,58 +44,34 @@ mul_FAC2_FAC1:
 	eor FAC2_sign
 	sta FAC1_sign
 	
-	// Check if exponents can be added without overflow/underflow
-	
-	lda FAC1_exponent
-	and #$80
-	eor FAC2_exponent
-	
-	bmi mul_FAC2_FAC1_add_exponents    // exponent signs are opposite, we can add them safely
-	
-	// Both exponents are either negative (below $80), or both are non-negative ($80 or above),
-	// try to add them
-	
-	lda FAC1_exponent
-	clc
-	adc FAC2_exponent
-	bpl mul_FAC2_FAC1_sub_exp_bias     // branch if we can add values
-	
-	// We cannot add them, result would over/underflow; set result as
-	// either 0 or maximum possible float
-	
-	lda FAC1_exponent
-	bmi_16 set_FAC1_max
+	// Add the exponents (subtract the bias)  XXX subroutines should be common with DIV
 
-	lda #$00
-	sta FAC1_exponent
-	rts
-	
-mul_FAC2_FAC1_add_exponents:
-	
-	// Add the exponents
-	
-	lda FAC1_exponent
-	clc
-	adc FAC2_exponent
-	
-	// FALLTROUGH
-	
-mul_FAC2_FAC1_sub_exp_bias:
-	
-	sec
-	sbc #$80                           // bias
-	sta FAC1_exponent
-	
-	// Multiply the mantissas - first clear the RESHO temporary area
+	jsr muldiv_RESHO_set_0
 
-	lda #$00
+	lda FAC1_exponent
+	jsr muldiv_RESHO_01_add_A
+
+	lda FAC2_exponent
+	jsr muldiv_RESHO_01_add_A
+
+	lda RESHO+0
+	sbc #($80 - $08)                   // we need to correct double BIAS and shifted mantissa
 	sta RESHO+0
+	bcs !+
+	lda RESHO+1
+	sbc #$00
+	bcs set_FAC1_zero
 	sta RESHO+1
-	sta RESHO+2
-	sta RESHO+3
-	sta RESHO+4
+!:
+	lda RESHO+1
+	bne_16 set_FAC1_max                // overflow
+
+	lda RESHO+0
+	sta FAC1_exponent
 
 	// Multiply the mantissas
+
+	jsr muldiv_RESHO_set_0
 
 	// XXX maybe we should preserve .X on stack? this will not cost us too much
 

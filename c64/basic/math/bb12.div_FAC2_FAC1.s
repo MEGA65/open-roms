@@ -66,6 +66,7 @@ div_FAC2_FAC1:
 
 	// Divide the mantissas
 
+	jsr div_FAC1_denorm
 	jsr muldiv_RESHO_set_0
 
 	// XXX
@@ -74,8 +75,3 @@ div_FAC2_FAC1:
 
 
 	STUB_IMPLEMENTATION()
-
-
-
-
-// XXX use 8-bit divide from here: https://codebase64.org/doku.php?id=base:8bit_divide_8bit_product

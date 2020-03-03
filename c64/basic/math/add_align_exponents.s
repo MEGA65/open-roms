@@ -9,8 +9,6 @@
 // - [CM64] Computes Mapping the Commodore 64 - page 115
 // - https://www.c64-wiki.com/wiki/BASIC-ROM
 
-// XXX finish and test this
-
 add_align_exponents:
 
 	// XXX assume here none of the exponents is 0, check if this is true for orignal ROMs

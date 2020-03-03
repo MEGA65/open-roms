@@ -22,7 +22,7 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX finish the implementation
+// XXX test this code
 
 div_FAC2_FAC1:
 
@@ -68,10 +68,22 @@ div_FAC2_FAC1:
 
 	jsr div_FAC1_denorm
 	jsr muldiv_RESHO_set_0
+	jsr div_mantissas
 
-	// XXX
+	// Copy the result to FAC1 - XXX we probably already have similar code somewhere...
 
+	lda FAC2_mantissa+3
+	sta FAC1_mantissa+3
+	lda FAC2_mantissa+2
+	sta FAC1_mantissa+2
+	lda FAC2_mantissa+1
+	sta FAC1_mantissa+1
+	lda FAC2_mantissa+0
+	sta FAC1_mantissa+0
 
+	lda #$00
+	sta FACOV
 
-
-	STUB_IMPLEMENTATION()
+	// Normalize and quit
+	
+	jmp normal_FAC1

@@ -135,6 +135,20 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
+#if ROM_LAYOUT_M65
+
+	// XXX make it different for future Mega65 native mode
+
+	ldx #$02
+	ldy #$21
+	jsr plot_set
+
+	lda #<text_mode_64
+	ldy #>text_mode_64
+	jsr STROUT
+
+#endif
+
 	ldx #$05
 	ldy #$00
 	jsr plot_set

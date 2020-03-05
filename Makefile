@@ -80,6 +80,7 @@ DEP_KERNAL = $(SRC_KERNAL) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 TOOL_COLLECT_DATA       = build/tools/collect_data
 TOOL_COMPRESS_TEXT      = build/tools/compress_text
 TOOL_GENERATE_CONSTANTS = build/tools/generate_constants
+TOOL_PATCH_CHARGEN      = build/tools/patch_chargen
 TOOL_PNGPREPARE         = build/tools/pngprepare
 TOOL_BUILD_SEGMENT      = build/tools/build_segment
 TOOL_RELEASE            = build/tools/release
@@ -172,7 +173,10 @@ build/tools/%: tools/%.cc tools/common.h
 # Rules - CHARGEN
 
 build/chargen.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
-	$(TOOL_PNGPREPARE) charrom assets/8x8font.png build/chargen.rom
+	$(TOOL_PNGPREPARE) charrom assets/8x8font.png $@
+
+build/chargen-patched.rom: $(TOOL_PATCH_CHARGEN) build/chargen.rom
+	$(TOOL_PATCH_CHARGEN) -i build/chargen.rom -o $@ -n 7px-OpenROMs
 
 # Dependencies - BASIC and KERNAL
 
@@ -352,7 +356,7 @@ build/symbols_hybrid.vs: $(DIR_GEN)/KERNAL_combined.vs
 
 # Rules - platform 'Mega65' specific
 
-$(TARGET_M65_x): $(SEG_LIST_M65) build/chargen.rom
+$(TARGET_M65_x): $(SEG_LIST_M65) build/chargen.rom build/chargen-patched.rom
 	dd if=/dev/zero bs=8192 count=1 of=build/m65_padding_08_KB
 	dd if=/dev/zero bs=8192 count=8 of=build/m65_padding_64_KB
 	cat build/m65_padding_08_KB              > $(TARGET_M65_x)
@@ -362,7 +366,7 @@ $(TARGET_M65_x): $(SEG_LIST_M65) build/chargen.rom
 	cat build/m65_padding_08_KB             >> $(TARGET_M65_x)
 	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x)
 	cat build/chargen.rom                   >> $(TARGET_M65_x)
-	cat build/chargen.rom                   >> $(TARGET_M65_x)
+	cat build/chargen-patched.rom           >> $(TARGET_M65_x)
 	cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x)
 	cat build/m65_padding_64_KB             >> $(TARGET_M65_x)
 	rm -f build/m65_padding_*

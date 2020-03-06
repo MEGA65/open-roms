@@ -1,8 +1,9 @@
 
 # CREDITS to people whose work was of great help to us
 
-## for source code we reused
+## for source code/assets we reused
 
+* Retrofan - for his Mega65 banner artwork and PXLfont
 * TWW/CTR - for his keyboard handling code
 * Graham - for his PAL/NTSC detection routine
 * enthusi/Onslaught - for his example Turbo Tape 64 compatible loader

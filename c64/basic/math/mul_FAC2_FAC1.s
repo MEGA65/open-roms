@@ -60,7 +60,7 @@ mul_FAC2_FAC1:
 	bcs !+
 	lda RESHO+1
 	sbc #$00
-	bcs set_FAC1_zero
+	bcc set_FAC1_zero
 	sta RESHO+1
 !:
 	lda RESHO+1
@@ -72,6 +72,7 @@ mul_FAC2_FAC1:
 	// Multiply the mantissas
 
 	jsr muldiv_RESHO_set_0
+	clc
 
 	// XXX maybe we should preserve .X on stack? this will not cost us too much
 

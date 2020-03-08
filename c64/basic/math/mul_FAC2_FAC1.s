@@ -44,7 +44,7 @@ mul_FAC2_FAC1:
 	eor FAC2_sign
 	sta FAC1_sign
 	
-	// Add the exponents (subtract the bias)  XXX subroutines should be common with DIV
+	// Add the exponents (subtract the bias) - XXX can this be optimized somehow?
 
 	jsr muldiv_RESHO_set_0
 
@@ -55,7 +55,7 @@ mul_FAC2_FAC1:
 	jsr muldiv_RESHO_01_add_A
 
 	lda RESHO+0
-	sbc #($80 - $08)                   // we need to correct double BIAS and shifted mantissa
+	sbc #$80                           // we need to correct double BIAS
 	sta RESHO+0
 	bcs !+
 	lda RESHO+1
@@ -126,7 +126,6 @@ mul_FAC2_FAC1:
 	adc #$08
 	bcs_16 set_FAC1_max                // branch if overflow
 	sta FAC1_exponent
-
 	jmp normal_FAC1
 
 mul_FAC2_FAC1_by_A:

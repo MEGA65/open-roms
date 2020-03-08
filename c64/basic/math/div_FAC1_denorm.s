@@ -63,7 +63,7 @@ div_FAC1_denorm_by_bit:
 	ror FAC1_mantissa+3
 	ror FACOV
 
-	bcc div_FAC1_denorm_done           // branch always
+	bcc div_FAC1_denorm_by_bit         // branch always
 
 div_FAC1_denorm_done:
 

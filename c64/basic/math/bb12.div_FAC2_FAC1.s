@@ -44,7 +44,7 @@ div_FAC2_FAC1:
 
 	// Subtract the exponents
 
-	lda #($80 + $08)                   // correction for bias and shifted mantissa
+	lda #$80                            // correction for bias
 	sta RESHO+0
 	lda #$00
 	sta RESHO+1
@@ -55,14 +55,18 @@ div_FAC2_FAC1:
 	lda RESHO+0
 	sec
 	sbc FAC1_exponent
+	sta RESHO+0
 	bcs !+
 
 	lda RESHO+1
 	sbc #$00
+	sta RESHO+1
 	bcc_16 set_FAC1_zero               // result too low, set 0 and quit
 !:
-	lda RESHO+1
-	bcc_16 set_FAC1_max                // overflow
+	bne_16 set_FAC1_max                // overflow
+
+	lda RESHO+0
+	sta FAC1_exponent
 
 	// Divide the mantissas
 
@@ -72,13 +76,13 @@ div_FAC2_FAC1:
 
 	// Copy the result to FAC1 - XXX we probably already have similar code somewhere...
 
-	lda FAC2_mantissa+3
+	lda RESHO+3
 	sta FAC1_mantissa+3
-	lda FAC2_mantissa+2
+	lda RESHO+2
 	sta FAC1_mantissa+2
-	lda FAC2_mantissa+1
+	lda RESHO+1
 	sta FAC1_mantissa+1
-	lda FAC2_mantissa+0
+	lda RESHO+0
 	sta FAC1_mantissa+0
 
 	lda #$00

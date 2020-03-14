@@ -101,6 +101,11 @@ void processFont()
 		fileContent[0x65 * 8 + 2048 + idx] = 0b10000000; // upper/lower case
         fileContent[0xE5 * 8 +    0 + idx] = 0b01111111; // inversed
         fileContent[0xE5 * 8 + 2048 + idx] = 0b01111111; // upper/lower case, inversed
+
+        // PI character restoration for upper/lower case set
+
+        fileContent[0x5E * 8 + 2048 + idx] = fileContent[0x5E * 8 + idx];
+        fileContent[0xDE * 8 + 2048 + idx] = fileContent[0xDE * 8 + idx];
 	}
 	
     // Remove old file

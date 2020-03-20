@@ -76,13 +76,13 @@ div_FAC2_FAC1:
 
 	// Copy the result to FAC1 - XXX we probably already have similar code somewhere...
 
-	sta FAC2_mantissa+3
+	lda FAC2_mantissa+3
 	sta FAC1_mantissa+3
-	sta FAC2_mantissa+2
+	lda FAC2_mantissa+2
 	sta FAC1_mantissa+2
-	sta FAC2_mantissa+1
+	lda FAC2_mantissa+1
 	sta FAC1_mantissa+1
-	sta FAC2_mantissa+0
+	lda FAC2_mantissa+0
 	sta FAC1_mantissa+0
 
 	lda #$00

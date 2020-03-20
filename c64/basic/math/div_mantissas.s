@@ -5,7 +5,7 @@
 // Math package - mantissa division, based on code by Verz
 //
 // divident: FAC2_mantissa, divisor: FAC1_mantissa, result: FAC2_mantissa, remainder: RESHO
-// temporary storage: INDEX+0, INDEX+1, INDEX+2, INDEX+3
+// temporary storage: INDEX+0, INDEX+1, INDEX+2, INDEX+3, .Y
 //
 // RESHO (remainder) should be set to 0 before
 //
@@ -36,38 +36,51 @@ div_mantissas_loop:
 	rol RESHO+1
 	rol RESHO+0
 
-	// Subtract divisor to see if it fits in
+	// Subtract divisor from the remainder, result to INDEX and .Y
 
-	lda RESHO+4
 	sec
+	lda RESHO+4
+	sbc FACOV
+	tay
+
+	lda RESHO+3
 	sbc FAC1_mantissa+3
 	sta INDEX+3
 
-	lda RESHO+3
+	lda RESHO+2
 	sbc FAC1_mantissa+2
 	sta INDEX+2
 
-	lda RESHO+2
+	lda RESHO+1
 	sbc FAC1_mantissa+1
 	sta INDEX+1
 
-	lda RESHO+1
+	lda RESHO+0
 	sbc FAC1_mantissa+0
+
+	bcc div_mantissas_skip             // if Carry is not set then divisor did not fit in remainder yet
 	sta INDEX+0
 
-	lda RESHO+0
-	sbc #$00
-	bcc div_mantissas_skip             // if Carry is not set then divisor did not fit in yet
+	// Save subtraction result as new remainder
 
-	sta RESHO+0                        // else save substraction result as new remainder,
-	lda INDEX+0
-	sta RESHO+1
-	lda INDEX+1
-	sta RESHO+2
-	lda INDEX+3
+	tya
 	sta RESHO+4
 
-	inc FAC2_mantissa+3                // and INCrement result cause divisor fit in 1 times
+	lda INDEX+3
+	sta RESHO+3
+
+	lda INDEX+2
+	sta RESHO+2
+
+	lda INDEX+1
+	sta RESHO+1
+
+	lda INDEX+0
+	sta RESHO+0
+
+	// Increment result cause divisor fit in 1 times
+
+	inc FAC2_mantissa+3
 
 	// FALLTROUGH
 

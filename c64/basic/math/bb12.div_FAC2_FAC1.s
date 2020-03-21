@@ -37,7 +37,7 @@ div_FAC2_FAC1:
 	beq_16 set_FAC1_zero
 
 	// Multiply signs
-	
+
 	lda FAC1_sign
 	eor FAC2_sign
 	sta FAC1_sign
@@ -84,9 +84,6 @@ div_FAC2_FAC1:
 	sta FAC1_mantissa+1
 	lda FAC2_mantissa+0
 	sta FAC1_mantissa+0
-
-	lda #$00
-	sta FACOV
 
 	// Normalize and quit
 	

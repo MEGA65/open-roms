@@ -2,10 +2,10 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-// Math package - mantissa division, based on code by Verz
+// Math package - 32-bit mantissa division, based on code by Verz
 //
-// divident: FAC2_mantissa, divisor: FAC1_mantissa, result: FAC2_mantissa, remainder: RESHO
-// temporary storage: INDEX+0, INDEX+1, INDEX+2, INDEX+3, .Y
+// divident: FAC2_mantissa, divisor: FAC1_mantissa (without FACOV), result: FAC2_mantissa, remainder: RESHO
+// temporary storage: INDEX+0, INDEX+1, INDEX+2, INDEX+3
 //
 // RESHO (remainder) should be set to 0 before
 //
@@ -15,7 +15,7 @@
 
 div_mantissas:
 
-	ldx #40                            // repeat for each bit
+	ldx #32                            // repeat for each bit
 
 	// FALLTROUGH
 
@@ -24,13 +24,12 @@ div_mantissas_loop:
 	// Multiply divident by 2, msb -> Carry
 
 	asl FAC2_mantissa+3
-	rol FAC2_mantissa+2	
+	rol FAC2_mantissa+2
 	rol FAC2_mantissa+1
 	rol FAC2_mantissa+0
 
 	// Multiply remainder by 2, lsb <- Carry
 
-	rol RESHO+4
 	rol RESHO+3
 	rol RESHO+2
 	rol RESHO+1
@@ -39,10 +38,6 @@ div_mantissas_loop:
 	// Subtract divisor from the remainder, result to INDEX and .Y
 
 	sec
-	lda RESHO+4
-	sbc FACOV
-	tay
-
 	lda RESHO+3
 	sbc FAC1_mantissa+3
 	sta INDEX+3
@@ -62,9 +57,6 @@ div_mantissas_loop:
 	sta INDEX+0
 
 	// Save subtraction result as new remainder
-
-	tya
-	sta RESHO+4
 
 	lda INDEX+3
 	sta RESHO+3

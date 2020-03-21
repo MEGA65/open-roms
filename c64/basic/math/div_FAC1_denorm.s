@@ -17,12 +17,12 @@ div_FAC1_denorm:
 	bne div_FAC1_denorm_by_bit         // branch if last byte of mantissa is non-zero
 
 	lda FAC1_exponent
-	cmp #$09
-	bcc div_FAC1_denorm_by_bit         // branch if not suitable to decrement exponent by 8
+	cmp #$F8
+	bcs div_FAC1_denorm_by_bit         // branch if not suitable to increment exponent by 8
 
-	// Decrement exponent
+	// Increment exponent
 
-	sbc #$08                           // Carry already set here
+	adc #$08                           // Carry already clear
 	sta FAC1_exponent
 
 	// Move mantissa bytes
@@ -47,12 +47,12 @@ div_FAC1_denorm_by_bit:
 	bne div_FAC1_denorm_done           // branch if lowest bit of mantissa is already 1
 
 	lda FAC1_exponent
-	cmp #$02
-	bcc div_FAC1_denorm_done           // branch if not suitable to decrement exponent
+	cmp #$FF
+	beq div_FAC1_denorm_done           // branch if not suitable to decrement exponent
 
 	// Decrement exponent
 
-	dec FAC1_exponent
+	inc FAC1_exponent
 
 	// Move mantissa bits
 

@@ -203,9 +203,9 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
 | `$BA90`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
 | `$BAE2`   | `mul10_FAC1`           | DONE     |                                                    |
-| `$BAFE`   | `div10_FAC1_p`         | PARTIAL  | needs `div_FAC2_FAC1`                              |
-| `$BB0F`   | `div_MEM_FAC1`         | PARTIAL  | needs `div_FAC2_FAC1`                              |
-| `$BB12`   | `div_FAC2_FAC1`        | PARTIAL  | not tested yet                                     |
+| `$BAFE`   | `div10_FAC1_p`         | DONE     |                                                    |
+| `$BB0F`   | `div_MEM_FAC1`         | DONE     |                                                    |
+| `$BB12`   | `div_FAC2_FAC1`        | DONE     |                                                    |
 | `$BBA2`   | `mov_MEM_FAC1`         | DONE     |                                                    |
 | `$BBA6`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
 | `$BBC7`   | `mov_r_FAC1_TMP2`      | PARTIAL  | not fully tested yet                               |

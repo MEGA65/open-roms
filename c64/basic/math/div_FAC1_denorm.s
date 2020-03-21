@@ -3,10 +3,8 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Math package - denormalize FAC1 mantissa and adapt its exponent accordingly
+// Math package - denormalize FAC1 mantissa and adapt its exponent accordingly for division
 //
-
-// XXX test this
 
 div_FAC1_denorm:
 
@@ -21,12 +19,12 @@ div_FAC1_denorm:
 	bne div_FAC1_denorm_by_bit         // branch if last byte of mantissa is non-zero
 
 	lda FAC1_exponent
-	cmp #$F8
-	bcs div_FAC1_denorm_by_bit         // branch if not suitable to increment exponent by 8
+	cmp #$08
+	bcc div_FAC1_denorm_by_bit         // branch if not suitable to increment exponent by 8
 
 	// Increment exponent
 
-	adc #$08                           // Carry already clear
+	sbc #$08                           // Carry already sec
 	sta FAC1_exponent
 
 	// Move mantissa bytes
@@ -49,12 +47,11 @@ div_FAC1_denorm_by_bit:
 	bne div_FAC1_denorm_done           // branch if lowest bit of mantissa is already 1
 
 	lda FAC1_exponent
-	cmp #$FF
 	beq div_FAC1_denorm_done           // branch if not suitable to decrement exponent
 
 	// Decrement exponent
 
-	inc FAC1_exponent
+	dec FAC1_exponent
 
 	// Move mantissa bits
 

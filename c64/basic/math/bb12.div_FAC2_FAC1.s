@@ -22,8 +22,6 @@
 // - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 //
 
-// XXX test this code
-
 div_FAC2_FAC1:
 
 	// 'Pamiętaj, cholero - nie dziel przez zero!' - ancient polish proverb
@@ -44,7 +42,7 @@ div_FAC2_FAC1:
 
 	// Subtract the exponents
 
-	lda #$62                            // correction for bias and FAC2 digits
+	lda #$A0                            // correction for bias and FAC2 digits
 	sta RESHO+0
 	lda #$00
 	sta RESHO+1
@@ -67,9 +65,7 @@ div_FAC2_FAC1:
 	sta FAC1_exponent
 
 	// Divide the mantissas
-
 	jsr div_FAC1_denorm
-
 	jsr muldiv_RESHO_set_0
 	jsr div_mantissas
 

@@ -44,26 +44,24 @@ div_FAC2_FAC1:
 
 	// Subtract the exponents
 
-	lda #$80                            // correction for bias
+	lda #$62                            // correction for bias and FAC2 digits
 	sta RESHO+0
 	lda #$00
 	sta RESHO+1
 
-	lda FAC2_exponent
+	lda FAC2_exponent                   // add FAC2 exponent to temporary variable 
 	jsr muldiv_RESHO_01_add_A
 
-	lda RESHO+0
-	sec
-	sbc FAC1_exponent
-	sta RESHO+0
-	bcs !+
+    lda RESHO+0                         // subtract FAC1 exponent from temporary variable
+    sec
+    sbc FAC1_exponent
+    sta RESHO+0
+    bcs !+
+    dec RESHO+1
+ !:
 
-	lda RESHO+1
-	sbc #$00
-	sta RESHO+1
-	bcc_16 set_FAC1_zero               // result too low, set 0 and quit
-!:
-	bne_16 set_FAC1_max                // overflow
+    lda RESHO+1
+    bmi_16 set_FAC1_zero                // result too low, set 0 and quit
 
 	lda RESHO+0
 	sta FAC1_exponent
@@ -71,6 +69,7 @@ div_FAC2_FAC1:
 	// Divide the mantissas
 
 	jsr div_FAC1_denorm
+
 	jsr muldiv_RESHO_set_0
 	jsr div_mantissas
 

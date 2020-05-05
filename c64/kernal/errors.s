@@ -75,6 +75,17 @@ kernalerror_ILLEGAL_DEVICE_NUMBER:
 
 	// FALLTROUGH
 
+#if CONFIG_IEC_JIFFYDOS
+
+kernalerror_IEC_TIMEOUT_READ:
+
+    lda #K_STS_TIMEOUT_READ
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
+
+#endif // CONFIG_IEC_JIFFYDOS
+
 kernalerror_TOP_MEM_RS232:
 
 	lda #K_ERR_TOP_MEM_RS232

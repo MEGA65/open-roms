@@ -58,7 +58,7 @@
 
 // Multiple SID support
 
-#define CONFIG_SID_2ND
+// #define CONFIG_SID_2ND
 .const CONFIG_SID_2ND_ADDRESS = $D440
 
 // #define CONFIG_SID_3RD

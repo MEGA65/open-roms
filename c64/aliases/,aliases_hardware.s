@@ -83,6 +83,15 @@
 
 	.label __SID_BASE   = $D400  // base address of the chip
 
+#if CONFIG_MB_MEGA_65
+
+	.label __SID_R1_OFFSET = $00 // right SID 1, $D400
+	.label __SID_R2_OFFSET = $20 // right SID 2, $D420
+	.label __SID_L1_OFFSET = $40 // left  SID 1, $D440
+	.label __SID_L2_OFFSET = $60 // left  SID 2, $D460
+
+#endif
+
 	.label SID_FRELO1   = $D400
 	.label SID_FREHI1   = $D401
 	.label SID_PWLO1    = $D402

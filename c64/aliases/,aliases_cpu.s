@@ -69,6 +69,11 @@
 
 #if HAS_OPCODES_65CE02
 
+// CPU flags support
+
+.pseudocommand cle { .byte $02 }
+.pseudocommand see { .byte $03 }
+
 // .B register support
 
 .pseudocommand tab { .byte $5B }

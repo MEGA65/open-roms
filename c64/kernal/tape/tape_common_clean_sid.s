@@ -16,7 +16,7 @@ tape_clean_sid:
 	ldy #$1C
 !:
 
-#if CONFIG_MB_MEGA65
+#if CONFIG_MB_MEGA_65
 
 	// It should be safer than cleaning whole $D400-D47C range
 

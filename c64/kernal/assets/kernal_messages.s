@@ -84,8 +84,10 @@ __msg_kernalfound:
 #if CONFIG_MB_MEGA_65
 
 __msg_kernaloksearching:
-	.text "OK, SEARCHING"
-	.byte $80 + $0D // end of string mark + return
+	.text "OK"
+	.byte $0D, $0D
+	.text "SEARCHIN"
+	.byte $80 + $47 // end of string mark + 'G'
 
 #endif
 

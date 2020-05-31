@@ -186,6 +186,8 @@
 	.const C65_EXTKEYS_PR  = $D607
 	.const C65_EXTKEYS_DDR = $D608
 
+	.const M65_BADL_SLI    = $D710
+
 #endif
 
 

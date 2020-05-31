@@ -112,9 +112,9 @@
 #if ROM_LAYOUT_M65 && !CONFIG_CPU_M65_45GS02
 	.error "Mega65 ROM layout requires CONFIG_CPU_M65_45GS02"
 #endif
-//#if ROM_LAYOUT_M65 && !CONFIG_MB_MEGA_65
-//	.error "Mega65 ROM layout requires CONFIG_MB_MEGA_65"
-//#endif
+#if ROM_LAYOUT_M65 && !CONFIG_MB_MEGA_65
+	.error "Mega65 ROM layout requires CONFIG_MB_MEGA_65"
+#endif
 
 	.var selected = 0;
 

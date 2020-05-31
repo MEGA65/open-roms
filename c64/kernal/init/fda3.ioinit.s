@@ -61,7 +61,7 @@ IOINIT:
 
 	lda #$00
 
-#if !CONFIG_MB_MEGA65
+#if !CONFIG_MB_MEGA_65
 
 	// First the standard chip (skip if it is covered by whole $D4XX range)
 
@@ -111,7 +111,7 @@ IOINIT:
 	sta SID_SIGVOL + __SID_L1_OFFSET
 	sta SID_SIGVOL + __SID_L2_OFFSET
 
-#endif // CONFIG_MB_MEGA65
+#endif // CONFIG_MB_MEGA_65
 
 	//
 	// Now continue the CIAs initialization

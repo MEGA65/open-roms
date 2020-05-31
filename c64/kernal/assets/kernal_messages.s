@@ -21,6 +21,9 @@
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 .label __MSG_KERNAL_PRESS_PLAY         = __msg_kernalplay               - __msg_kernal_first
 .label __MSG_KERNAL_FOUND              = __msg_kernalfound              - __msg_kernal_first
+#if CONFIG_MB_MEGA_65
+.label __MSG_KERNAL_OK_SEARCHING       = __msg_kernaloksearching        - __msg_kernal_first
+#endif
 #endif
 
 #if CONFIG_SHOW_PAL_NTSC
@@ -77,6 +80,14 @@ __msg_kernalplay:
 __msg_kernalfound:
 	.text "FOUND"
 	.byte $80 + $20 // end of string mark + space
+
+#if CONFIG_MB_MEGA_65
+
+__msg_kernaloksearching:
+	.text "OK, SEARCHING"
+	.byte $80 + $0D // end of string mark + return
+
+#endif
 
 #endif
 

@@ -45,6 +45,7 @@
 .label print_return                    = KERNAL_0.proxy_K1_print_return
 
 .label __MSG_KERNAL_PRESS_PLAY         = KERNAL_0.__MSG_KERNAL_PRESS_PLAY
+.label __MSG_KERNAL_OK_SEARCHING       = KERNAL_0.__MSG_KERNAL_OK_SEARCHING
 .label __MSG_KERNAL_FOUND              = KERNAL_0.__MSG_KERNAL_FOUND
 
 #endif

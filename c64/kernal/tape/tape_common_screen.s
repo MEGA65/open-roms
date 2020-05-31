@@ -11,6 +11,9 @@
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 
 
+// XXX for Mega65 do not disable screen, just disable badline emulation
+
+
 tape_screen_on_motor_off:
 
 	jsr tape_motor_off

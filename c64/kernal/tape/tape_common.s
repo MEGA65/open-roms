@@ -75,6 +75,15 @@ tape_wait_play_loop:
 
 #endif
 
+#if CONFIG_MB_MEGA_65
+
+	// Display confirmation
+
+	ldx #__MSG_KERNAL_OK_SEARCHING
+	jsr print_kernal_message
+
+#endif
+
 	// FALLTROUGH
 
 tape_wait_play_done:

@@ -167,7 +167,7 @@ Needs about 100 more bytes in KERNAL segment.
 
 ### `CONFIG_TAPE_NO_KEY_SENSE`
 
-Enable this option if you are using a tape interface adapter with some audio signal source connected. These adapters lack key sense functionality, so the computer is unable to tell whether Play got pressed or not - with this option ROM will assume Play got pressed after impulses start arriving from the tape.
+Enable this option if you are using a tape interface adapter with some audio signal source connected. These adapters lack key sense functionality, so the computer is unable to tell whether Play got pressed or not - this option changes the ROM behaviour, so that it can detect Play pressed when impulses start arriving from the tape.
 
 ### `CONFIG_TAPE_NO_MOTOR_CONTROL`
 

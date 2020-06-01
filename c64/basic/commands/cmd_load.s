@@ -40,10 +40,17 @@ cmd_load:
 
 #else
 
-	// Without tape support, LOAD must have a filename
-	// (This also skips any leading spaces)
+	// Without tape support, try to load the first file from disk
 
-	jmp do_MISSING_FILENAME_error
+	lda #$01                           // name length
+	ldx #<cmd_load_default_filename
+	ldy #>cmd_load_default_filename
+	jsr JSETNAM
+	jmp got_filename
+
+cmd_load_default_filename:
+
+	.text "*"
 
 #endif
 

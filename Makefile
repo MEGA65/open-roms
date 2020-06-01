@@ -140,11 +140,14 @@ HYBRID_WARNING = "*** WARNING *** Distributing kernal_hybrid.rom violates both o
 
 GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 
-# Rules - main
+# Rules - main   XXX fast build does not always succeed, not yet clear, why
 
-.PHONY: all clean updatebin
+.PHONY: all fast clean updatebin
 
 all:
+	$(MAKE) $(TARGET_LIST) $(EXT_TARGET_LIST)
+
+fast:
 	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
@@ -223,7 +226,7 @@ $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_comb
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym
 
 $(DIR_X16)/basic.seg_1  $(DIR_X16)/BASIC_1_combined.vs  $(DIR_X16)/BASIC_1_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_X16) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_X16)/BASIC_0_combined.sym
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_X16) $(DIR_X16)/KERNAL_0_combined.sym $(DIR_X16)/BASIC_0_combined.sym
 $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1_combined.vs $(DIR_X16)/KERNAL_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_X16) $(DIR_X16)/KERNAL_0_combined.sym
 
@@ -298,22 +301,22 @@ $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_comb
 $(DIR_X16)/OUTB_0.BIN $(DIR_X16)/BASIC_0_combined.vs $(DIR_X16)/BASIC_0_combined.sym:
 	@mkdir -p $(DIR_X16)
 	@rm -f $@* $(DIR_X16)/BASIC_0*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_0 -i BASIC_0-mega65 -o OUTB_0.BIN -d $(DIR_X16) -l c000 -h e4d2 $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_0 -i BASIC_0-x16 -o OUTB_0.BIN -d $(DIR_X16) -l c000 -h e4d2 $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
 
 $(DIR_X16)/OUTK_0.BIN $(DIR_X16)/KERNAL_0_combined.vs $(DIR_X16)/KERNAL_0_combined.sym:
 	@mkdir -p $(DIR_X16)
 	@rm -f $@* $(DIR_X16)/KERNAL_0*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_0 -i KERNAL_0-mega65 -o OUTK_0.BIN -d $(DIR_X16) -l e4d3 -h ffff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_0 -i KERNAL_0-x16 -o OUTK_0.BIN -d $(DIR_X16) -l e4d3 -h ffff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 $(DIR_X16)/basic.seg_1 $(DIR_X16)/BASIC_1_combined.vs $(DIR_X16)/BASIC_1_combined.sym:
 	@mkdir -p $(DIR_X16)
 	@rm -f $@* $(DIR_X16)/basic.seg_1 $(DIR_X16)/BASIC_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_1 -i BASIC_1-x16 -o basic.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
 
 $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1_combined.vs $(DIR_X16)/KERNAL_1_combined.sym:
 	@mkdir -p $(DIR_X16)
 	@rm -f $@* $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_1 -i KERNAL_1-mega65 -o kernal.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_1 -i KERNAL_1-x16 -o kernal.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 # Rules - BASIC and KERNAL
 

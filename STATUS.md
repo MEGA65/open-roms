@@ -98,7 +98,7 @@ The following ROM features are currently missing:
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
 | standard           | DONE     |                                                    |
-| JiffyDOS           | DONE     |                                                    |
+| JiffyDOS           | PARTIAL  | LOAD needs improvement for better performance      |
 | DolphinDOS         | DONE     |                                                    |
 | CIA burst mod      | NOT DONE |                                                    |
 | Mega65 burst       | NOT DONE |                                                    |

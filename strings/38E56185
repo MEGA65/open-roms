@@ -1,0 +1,3 @@
+SEC + SBC $61 + STA (zeropage address does not match)
+
+Small piece of code subtracting two values. Trivial -not copyrightable.

@@ -1,0 +1,3 @@
+ASL $6D + ROL $6C + ROL $6B + ROL $6A
+
+Arithmetic shift left of 32-bit value. Trivial - not copyrightable.

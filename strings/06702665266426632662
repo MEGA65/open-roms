@@ -1,0 +1,3 @@
+ASL $70 + ROL $65 + ROL $64 + ROL $63 + ROL $62 
+
+Arithmetic shift left of 40-bit value. Trivial - not copyrightable.

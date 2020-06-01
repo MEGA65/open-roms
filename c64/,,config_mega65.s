@@ -83,7 +83,7 @@
 
 #define CONFIG_PROGRAMMABLE_KEYS
 
-.const CONFIG_KEYCMD_RUN  = @"LOAD\"*\""
+.const CONFIG_KEYCMD_RUN  = @"\$5FL"
 
 .const CONFIG_KEYCMD_F1   = @"@"
 .const CONFIG_KEYCMD_F2   = @""

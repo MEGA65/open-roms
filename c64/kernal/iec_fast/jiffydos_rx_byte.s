@@ -86,8 +86,11 @@ jiffydos_rx_byte:
 	// If CLK line active - success
 	bvc jiffydos_rx_byte_end
 
-	// XXX the DATA line can probably be used to distinguish between file not found error and normal stream EOI
+	// EOI or error, released DATA (highest byte set to 1) means error - see protocol analysis by Michael Steil, step R7a
+	lda CIA2_PRA
+	bmi jiffydos_rx_byte_error
 
+	// EOI - no error
 	jsr kernalstatus_EOI
 
 	// FALLTROUGH
@@ -108,6 +111,11 @@ jiffydos_rx_byte_end:
 
 	// End byte reception
 	jmp iec_rx_end
+
+jiffydos_rx_byte_error:
+
+	jsr kernalerror_IEC_TIMEOUT_READ
+	bcs jiffydos_rx_byte_end           // branch always
 
 
 #endif // CONFIG_IEC_JIFFYDOS

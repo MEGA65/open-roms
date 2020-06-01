@@ -1,0 +1,3 @@
+$61 + BEQ (offset matches) + LDA $66
+
+Conditional jump + retrieving zeropage variable + part of one more instruction. Trivial - not copyrightable.

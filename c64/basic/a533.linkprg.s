@@ -1,6 +1,7 @@
 // #LAYOUT# STD *       #TAKE
+// #LAYOUT# M65 BASIC_0 #TAKE
+// #LAYOUT# M65 BASIC_1 #TAKE-FLOAT
 // #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
-// #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
 //
@@ -12,6 +13,14 @@
 
 LINKPRG:
 
+#if (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+	jsr     map_BASIC_1
+	jsr_ind VB1__LINKPRG
+	jmp     map_NORMAL
+
+#else
+
 	// Start by getting pointer to the first line
 	jsr init_oldtxt
 
@@ -19,11 +28,13 @@ linkprg_loop:
 	// Is the pointer to the end of the program
 	ldy #1
 
-#if CONFIG_MEMORY_MODEL_60K
+#if ROM_LAYOUT_M65
+	jsr peek_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr peek_under_roms
 	cmp #$00
-#else // CONFIG_MEMORY_MODEL_38K
+#else
 	lda (OLDTXT),y
 #endif
 
@@ -38,10 +49,12 @@ linkprg_loop:
 
 linkprg_end_of_line_search:
 
-#if CONFIG_MEMORY_MODEL_60K
+#if ROM_LAYOUT_M65
+	jsr peek_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+#else
 	lda (OLDTXT),y
 #endif
 
@@ -70,10 +83,12 @@ linkprg_end_of_line_search:
 	php
 	ldy #0
 
-#if CONFIG_MEMORY_MODEL_60K
+#if ROM_LAYOUT_M65
+	jsr poke_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+#else
 	sta (OLDTXT),y
 #endif
 
@@ -82,9 +97,11 @@ linkprg_end_of_line_search:
 	adc #0
 	ldy #1
 
-#if CONFIG_MEMORY_MODEL_60K
+#if ROM_LAYOUT_M65
+	jsr poke_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+#else
 	sta (OLDTXT),y
 #endif
 
@@ -93,3 +110,6 @@ linkprg_end_of_line_search:
 	sta OLDTXT+0
 
 	jmp linkprg_loop
+
+
+#endif // ROM layout

@@ -12,11 +12,17 @@ default_brk_handler:
 #if CONFIG_PLATFORM_COMMODORE_64
 
 	ldx #$00
-	sta VIC_SCROLX // turn the display off - we want as little screen artifacts as possible
+	sta VIC_SCROLX           // turn the display off - we want as little screen artifacts as possible
 
 #endif
 
-	cld // make sure this dangerous flag is disabled
+	cld                      // make sure this dangerous flag is disabled
+
+#if HAS_OPCODES_65CE02
+
+	see                      // disable extended stack
+
+#endif
 
 	jsr JRESTOR
 	jsr JIOINIT

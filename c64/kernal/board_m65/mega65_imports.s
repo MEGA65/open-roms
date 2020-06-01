@@ -25,8 +25,7 @@
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 
-.label screen_on                       = KERNAL_0.screen_on
-.label screen_off                      = KERNAL_0.screen_off
+.label mega65_unhide                   = KERNAL_0.mega65_unhide
 .label tape_motor_on                   = KERNAL_0.tape_motor_on
 .label tape_motor_off                  = KERNAL_0.tape_motor_off
 
@@ -45,6 +44,7 @@
 .label print_return                    = KERNAL_0.proxy_K1_print_return
 
 .label __MSG_KERNAL_PRESS_PLAY         = KERNAL_0.__MSG_KERNAL_PRESS_PLAY
+.label __MSG_KERNAL_OK_SEARCHING       = KERNAL_0.__MSG_KERNAL_OK_SEARCHING
 .label __MSG_KERNAL_FOUND              = KERNAL_0.__MSG_KERNAL_FOUND
 
 #endif

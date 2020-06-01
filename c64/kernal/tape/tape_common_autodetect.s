@@ -17,7 +17,12 @@ tape_common_autodetect:
 	lda #$0B
 	sta VIC_EXTCOL
 	lda #$00
+#if CONFIG_MB_MEGA_65
+	sta SID_SIGVOL + __SID_R1_OFFSET
+	sta SID_SIGVOL + __SID_L1_OFFSET
+#else
 	sta SID_SIGVOL
+#endif
 
 	// FALLTROUGH
 

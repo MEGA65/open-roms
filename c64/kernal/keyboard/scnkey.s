@@ -48,14 +48,10 @@ SCNKEY:
 	// mode when done. This is not ideal, but as MEGA65s start C65 mode with VIC-IV IO mode
 	// selected anyway, it should not be a big problem in practice.
 
-	lda #$A5
-	sta VIC_KEY
-	lda #$96
-	sta VIC_KEY
-
+	jsr mega65_unhide
 	jsr scnkey_viciv_mode
 
-	sta VIC_KEY
+	sta VIC_KEY                        // hide Mega65 registers
 	rts
 
 scnkey_viciv_mode:

@@ -6,7 +6,6 @@
 // JiffyDOS protocol support for IEC - optimized load loop
 //
 
-
 #if CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K
 
 
@@ -20,12 +19,15 @@
 
 jiffydos_load:
 
+	// XXX implement JiffyDOS optimized LOAD protocol, this one is ineffective
+
+
 	// Timing is critical, do not allow interrupts
 	sei
 
 #if CONFIG_IEC_JIFFYDOS_BLANK
 
-	// Preserve register with screen status (blank/visibe)
+	// Preserve register with screen status (blank/visible)
 	lda VIC_SCROLY
 	sta TBTCNT
 

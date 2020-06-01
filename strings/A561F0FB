@@ -1,0 +1,3 @@
+LDA $61 + BEQ (offset matches)
+
+Jump depending whether zeropage variable is 0 or not. Trivial - not copyrightable.

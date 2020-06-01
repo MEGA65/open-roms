@@ -69,6 +69,11 @@
 
 #if HAS_OPCODES_65CE02
 
+// CPU flags support
+
+.pseudocommand cle { .byte $02 }
+.pseudocommand see { .byte $03 }
+
 // .B register support
 
 .pseudocommand tab { .byte $5B }
@@ -99,7 +104,121 @@
 	.byte $E3, arg
 }
 
-// additional addressing modes
+// Zero page bit handling
+
+.pseudocommand rmb0 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "RMB0 requires zeropage address"
+	.byte $07, arg
+}
+
+.pseudocommand rmb1 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "RMB1 requires zeropage address"
+	.byte $17, arg
+}
+
+.pseudocommand rmb2 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "RMB2 requires zeropage address"
+	.byte $27, arg
+}
+
+.pseudocommand rmb3 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "RMB3 requires zeropage address"
+	.byte $37, arg
+}
+
+.pseudocommand rmb4 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "RMB4 requires zeropage address"
+	.byte $47, arg
+}
+
+.pseudocommand rmb5 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "RMB5 requires zeropage address"
+	.byte $57, arg
+}
+
+.pseudocommand rmb6 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "RMB6 requires zeropage address"
+	.byte $67, arg
+}
+
+.pseudocommand rmb7 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "RMB7 requires zeropage address"
+	.byte $77, arg
+}
+
+.pseudocommand smb0 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "SMB0 requires zeropage address"
+	.byte $87, arg
+}
+
+.pseudocommand smb1 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "SMB1 requires zeropage address"
+	.byte $97, arg
+}
+
+.pseudocommand smb2 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "SMB2 requires zeropage address"
+	.byte $A7, arg
+}
+
+.pseudocommand smb3 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "SMB3 requires zeropage address"
+	.byte $B7, arg
+}
+
+.pseudocommand smb4 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "SMB4 requires zeropage address"
+	.byte $C7, arg
+}
+
+.pseudocommand smb5 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "SMB5 requires zeropage address"
+	.byte $D7, arg
+}
+
+.pseudocommand smb6 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "SMB6 requires zeropage address"
+	.byte $E7, arg
+}
+
+.pseudocommand smb7 addr
+{
+	.var arg = addr.getValue()
+	.if (arg > $FF) .error "SMB7 requires zeropage address"
+	.byte $F7, arg
+}
+
+// Additional addressing modes
 
 .pseudocommand jsr_ind addr
 {

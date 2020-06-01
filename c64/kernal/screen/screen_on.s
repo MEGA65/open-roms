@@ -8,7 +8,7 @@
 //
 
 
-#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+#if (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO) && !CONFIG_MB_MEGA_65
 
 
 screen_on:
@@ -18,5 +18,6 @@ screen_on:
 	sta VIC_SCROLY
 
 	rts
+
 
 #endif

@@ -1,0 +1,3 @@
+LDA $29 + STA $65
+
+Part of code copying one floating point value to anotheer one. Trivial - not copyrightable.

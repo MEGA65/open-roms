@@ -1,6 +1,7 @@
 // #LAYOUT# STD *       #TAKE
 // #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
 // #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# M65 BASIC_1 #TAKE-FLOAT
 // #LAYOUT# *   *       #IGNORE
 
 // Print string at $YYAA

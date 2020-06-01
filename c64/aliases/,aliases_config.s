@@ -42,6 +42,10 @@
 #if !CONFIG_PLATFORM_COMMODORE_64 && CONFIG_BRAND_ULTIMATE_64 &&
 	.error "CONFIG_BRAND_ULTIMATE_64 can only be used with CONFIG_PLATFORM_COMMODORE_64"
 #endif
+
+#if CONFIG_MB_MEGA_65 && (CONFIG_SID_2ND || CONFIG_SID_3RD || CONFIG_SID_D4XX || CONFIG_SID_D5XX)
+	.error "CONFIG_MB_MEGA_65 cannot be used with CONFIG_SID_*"
+#endif
 }
 
 
@@ -108,9 +112,9 @@
 #if ROM_LAYOUT_M65 && !CONFIG_CPU_M65_45GS02
 	.error "Mega65 ROM layout requires CONFIG_CPU_M65_45GS02"
 #endif
-//#if ROM_LAYOUT_M65 && !CONFIG_MB_MEGA_65
-//	.error "Mega65 ROM layout requires CONFIG_MB_MEGA_65"
-//#endif
+#if ROM_LAYOUT_M65 && !CONFIG_MB_MEGA_65
+	.error "Mega65 ROM layout requires CONFIG_MB_MEGA_65"
+#endif
 
 	.var selected = 0;
 

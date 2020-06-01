@@ -12,12 +12,15 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  c64/basic \
                  c64/basic/,stubs \
                  c64/basic/,stubs_math \
+                 c64/basic/assets \
                  c64/basic/board_m65 \
                  c64/basic/board_x16 \
                  c64/basic/commands \
                  c64/basic/init \
                  c64/basic/math \
                  c64/basic/math_consts \
+                 c64/basic/math_mov \
+                 c64/basic/print \
                  c64/basic/rom_revision
 
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
@@ -78,6 +81,7 @@ DEP_KERNAL = $(SRC_KERNAL) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 TOOL_COLLECT_DATA       = build/tools/collect_data
 TOOL_COMPRESS_TEXT      = build/tools/compress_text
 TOOL_GENERATE_CONSTANTS = build/tools/generate_constants
+TOOL_PATCH_CHARGEN      = build/tools/patch_chargen
 TOOL_PNGPREPARE         = build/tools/pngprepare
 TOOL_BUILD_SEGMENT      = build/tools/build_segment
 TOOL_RELEASE            = build/tools/release
@@ -88,29 +92,31 @@ TOOLS_LIST = $(pathsubst tools/%,build/tools/%,$(basename $(SRC_TOOLS)))
 
 # List of targets
 
-TARGET_CUS_B    = build/basic_custom.rom
-TARGET_GEN_B    = build/basic_generic.rom
-TARGET_TST_B    = build/basic_testing.rom
-TARGET_U64_B    = build/basic_ultimate64.rom
+TARGET_CUS_B     = build/basic_custom.rom
+TARGET_GEN_B     = build/basic_generic.rom
+TARGET_TST_B     = build/basic_testing.rom
+TARGET_U64_B     = build/basic_ultimate64.rom
 
-TARGET_CUS_K    = build/kernal_custom.rom
-TARGET_GEN_K    = build/kernal_generic.rom
-TARGET_TST_K    = build/kernal_testing.rom
-TARGET_U64_K    = build/kernal_ultimate64.rom
+TARGET_CUS_K     = build/kernal_custom.rom
+TARGET_GEN_K     = build/kernal_generic.rom
+TARGET_TST_K     = build/kernal_testing.rom
+TARGET_U64_K     = build/kernal_ultimate64.rom
 
-TARGET_M65_x    = build/mega65.rom
-TARGET_X16_x    = build/cx16-dummy.rom
+TARGET_M65_x     = build/mega65.rom
+TARGET_M65_x_PXL = build/mega65_pxlfont.rom
+TARGET_X16_x     = build/cx16-dummy.rom
 
-TARGET_LIST_CUS = $(TARGET_CUS_B) $(TARGET_CUS_K)
-TARGET_LIST_GEN = $(TARGET_GEN_B) $(TARGET_GEN_K)
-TARGET_LIST_TST = $(TARGET_TST_B) $(TARGET_TST_K)
-TARGET_LIST_U64 = $(TARGET_U64_B) $(TARGET_U64_K)
+TARGET_LIST_CUS  = $(TARGET_CUS_B) $(TARGET_CUS_K)
+TARGET_LIST_GEN  = $(TARGET_GEN_B) $(TARGET_GEN_K)
+TARGET_LIST_TST  = $(TARGET_TST_B) $(TARGET_TST_K)
+TARGET_LIST_U64  = $(TARGET_U64_B) $(TARGET_U64_K)
 
-TARGET_LIST = build/chargen.rom \
+TARGET_LIST = build/chargen_openroms.rom \
                   $(TARGET_LIST_CUS) \
                   $(TARGET_LIST_GEN) \
                   $(TARGET_LIST_TST) \
                   $(TARGET_M65_x) \
+                  $(TARGET_M65_x_PXL) \
                   $(TARGET_LIST_U64) \
                   $(TARGET_X16_x)
 
@@ -124,7 +130,7 @@ SEG_LIST_X16 =    $(DIR_X16)/basic.seg_0  \
 				  $(DIR_X16)/kernal.seg_0 \
 				  $(DIR_X16)/kernal.seg_1
 
-REL_TARGET_LIST = $(TARGET_LIST_GEN) $(TARGET_LIST_TST) $(TARGET_M65_x) $(TARGET_LIST_U64)
+REL_TARGET_LIST = $(TARGET_LIST_GEN) $(TARGET_LIST_TST) $(TARGET_M65_x) $(TARGET_M65_x_PXL) $(TARGET_LIST_U64)
 
 # Misc strings
 
@@ -134,11 +140,14 @@ HYBRID_WARNING = "*** WARNING *** Distributing kernal_hybrid.rom violates both o
 
 GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 
-# Rules - main
+# Rules - main   XXX fast build does not always succeed, not yet clear, why
 
-.PHONY: all clean updatebin
+.PHONY: all fast clean updatebin
 
 all:
+	$(MAKE) $(TARGET_LIST) $(EXT_TARGET_LIST)
+
+fast:
 	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
@@ -147,7 +156,7 @@ clean:
 updatebin:
 	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(TOOL_RELEASE)
 	$(TOOL_RELEASE) -i ./build -o ./bin $(patsubst build/%,%,$(REL_TARGET_LIST))
-	cp build/chargen.rom bin/chargen.rom
+	cp build/chargen_openroms.rom bin/chargen_openroms.rom
 
 # Rules - tools
 
@@ -169,8 +178,17 @@ build/tools/%: tools/%.cc tools/common.h
 
 # Rules - CHARGEN
 
-build/chargen.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
-	$(TOOL_PNGPREPARE) charrom assets/8x8font.png build/chargen.rom
+build/chargen_openroms.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
+	$(TOOL_PNGPREPARE) charrom assets/8x8font.png $@
+
+build/chargen_pxlfont.rom: bin/chargen_pxlfont_2.3.rom
+	cp $< $@
+
+build/chargen_openroms.patched: $(TOOL_PATCH_CHARGEN) build/chargen_openroms.rom
+	$(TOOL_PATCH_CHARGEN) -i build/chargen_openroms.rom -o $@ -n 7px-OpenROMs
+
+build/chargen_pxlfont.patched: $(TOOL_PATCH_CHARGEN) build/chargen_pxlfont.rom
+	$(TOOL_PATCH_CHARGEN) -i build/chargen_pxlfont.rom -o $@ -n 6px-PXLfont
 
 # Dependencies - BASIC and KERNAL
 
@@ -208,7 +226,7 @@ $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_comb
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym
 
 $(DIR_X16)/basic.seg_1  $(DIR_X16)/BASIC_1_combined.vs  $(DIR_X16)/BASIC_1_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_X16) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_X16)/BASIC_0_combined.sym
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_X16) $(DIR_X16)/KERNAL_0_combined.sym $(DIR_X16)/BASIC_0_combined.sym
 $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1_combined.vs $(DIR_X16)/KERNAL_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_X16) $(DIR_X16)/KERNAL_0_combined.sym
 
@@ -283,22 +301,22 @@ $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_comb
 $(DIR_X16)/OUTB_0.BIN $(DIR_X16)/BASIC_0_combined.vs $(DIR_X16)/BASIC_0_combined.sym:
 	@mkdir -p $(DIR_X16)
 	@rm -f $@* $(DIR_X16)/BASIC_0*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_0 -i BASIC_0-mega65 -o OUTB_0.BIN -d $(DIR_X16) -l c000 -h e4d2 $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_0 -i BASIC_0-x16 -o OUTB_0.BIN -d $(DIR_X16) -l c000 -h e4d2 $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
 
 $(DIR_X16)/OUTK_0.BIN $(DIR_X16)/KERNAL_0_combined.vs $(DIR_X16)/KERNAL_0_combined.sym:
 	@mkdir -p $(DIR_X16)
 	@rm -f $@* $(DIR_X16)/KERNAL_0*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_0 -i KERNAL_0-mega65 -o OUTK_0.BIN -d $(DIR_X16) -l e4d3 -h ffff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_0 -i KERNAL_0-x16 -o OUTK_0.BIN -d $(DIR_X16) -l e4d3 -h ffff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 $(DIR_X16)/basic.seg_1 $(DIR_X16)/BASIC_1_combined.vs $(DIR_X16)/BASIC_1_combined.sym:
 	@mkdir -p $(DIR_X16)
 	@rm -f $@* $(DIR_X16)/basic.seg_1 $(DIR_X16)/BASIC_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s BASIC_1 -i BASIC_1-x16 -o basic.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_BASIC) $(GEN_BASIC)
 
 $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1_combined.vs $(DIR_X16)/KERNAL_1_combined.sym:
 	@mkdir -p $(DIR_X16)
 	@rm -f $@* $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_1 -i KERNAL_1-mega65 -o kernal.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r X16 -s KERNAL_1 -i KERNAL_1-x16 -o kernal.seg_1 -d $(DIR_X16) -l a000 -h bfff $(CFG_X16) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 # Rules - BASIC and KERNAL
 
@@ -350,32 +368,49 @@ build/symbols_hybrid.vs: $(DIR_GEN)/KERNAL_combined.vs
 
 # Rules - platform 'Mega65' specific
 
-$(TARGET_M65_x): $(SEG_LIST_M65) build/chargen.rom
+$(TARGET_M65_x) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/chargen_openroms.rom build/chargen_openroms.patched build/chargen_pxlfont.rom build/chargen_pxlfont.patched
 	dd if=/dev/zero bs=8192 count=1 of=build/m65_padding_08_KB
 	dd if=/dev/zero bs=8192 count=8 of=build/m65_padding_64_KB
+	@echo
 	cat build/m65_padding_08_KB              > $(TARGET_M65_x)
 	cat build/m65_padding_08_KB             >> $(TARGET_M65_x)
 	cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x)
 	cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x)
 	cat build/m65_padding_08_KB             >> $(TARGET_M65_x)
 	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x)
-	cat build/chargen.rom                   >> $(TARGET_M65_x)
-	cat build/chargen.rom                   >> $(TARGET_M65_x)
+	cat build/chargen_openroms.rom          >> $(TARGET_M65_x)
+	cat build/chargen_openroms.patched      >> $(TARGET_M65_x)
 	cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x)
 	cat build/m65_padding_64_KB             >> $(TARGET_M65_x)
+	@echo
+	cat build/m65_padding_08_KB              > $(TARGET_M65_x_PXL)
+	cat build/m65_padding_08_KB             >> $(TARGET_M65_x_PXL)
+	cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x_PXL)
+	cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x_PXL)
+	cat build/m65_padding_08_KB             >> $(TARGET_M65_x_PXL)
+	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x_PXL)
+	cat build/chargen_pxlfont.rom           >> $(TARGET_M65_x_PXL)
+	cat build/chargen_pxlfont.patched       >> $(TARGET_M65_x_PXL)
+	cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x_PXL)
+	cat build/m65_padding_64_KB             >> $(TARGET_M65_x_PXL)
+	@echo
 	rm -f build/m65_padding_*
+	@echo
 
 # Rules - platform 'Commander X16' specific
 
-$(TARGET_X16_x): $(SEG_LIST_X16) build/chargen.rom
+$(TARGET_X16_x): $(SEG_LIST_X16) build/chargen_openroms.rom
 	dd if=/dev/zero bs=8192 count=1 of=build/x16_padding_08_KB
 	dd if=/dev/zero bs=8192 count=8 of=build/x16_padding_64_KB
+	@echo
 	cat $(DIR_X16)/basic.seg_0      > $(TARGET_X16_x)
 	cat $(DIR_X16)/kernal.seg_0    >> $(TARGET_X16_x)
-	cat build/chargen.rom                 >> $(TARGET_X16_x)
+	cat build/chargen_openroms.rom        >> $(TARGET_X16_x)
 	cat $(DIR_X16)/basic.seg_1     >> $(TARGET_X16_x)
 	cat $(DIR_X16)/kernal.seg_1    >> $(TARGET_X16_x)
+	@echo
 	rm -f build/x16_padding_*
+	@echo
 
 # Rules - tests
 
@@ -401,7 +436,7 @@ test_testing: build/kernal_testing.rom build/basic_testing.rom build/symbols_tes
 test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/symbols_ultimate64.vs
 	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_mega65: $(TARGET_M65_x)
+test_mega65: $(TARGET_M65_x) $(TARGET_M65_PXL)
 	../xemu/build/bin/xmega65.native -dmarev 2 -forcerom -loadrom $(TARGET_M65_x)
 
 test_cx16: $(TARGET_X16_x)

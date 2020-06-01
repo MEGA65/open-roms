@@ -1,5 +1,6 @@
 // #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# M65 *       #TAKE
+// #LAYOUT# X16 BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
 // This routine prints messages that have been packed
@@ -16,6 +17,14 @@
 
 print_packed_message:
 	// .X = message number
+
+#if (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+	jsr     map_BASIC_1
+	jsr_ind VB1__print_packed_message
+	jmp     map_NORMAL
+
+#else
 
 	lda #$ff
 	ldy #$ff
@@ -230,3 +239,6 @@ is_uncommon_char:
 	phy_trash_a
 
 	jmp has_nybl
+
+
+#endif // ROM layout

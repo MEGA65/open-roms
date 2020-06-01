@@ -1,3 +1,8 @@
+// #LAYOUT# STD *       #TAKE
+// #LAYOUT# M65 BASIC_0 #TAKE
+// #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
+// #LAYOUT# *   *       #IGNORE
+
 
 // Routines imported from Kernal - our private API
 
@@ -17,6 +22,11 @@
 #endif
 }
 
+
+#if ROM_LAYOUT_M65
+.label map_end             = KERNAL().map_end
+.label map_NORMAL          = KERNAL().map_NORMAL
+#endif
 
 #if CONFIG_PANIC_SCREEN
 .label panic               = KERNAL().panic

@@ -436,15 +436,16 @@ int main(void)
     exit(-1);
   }
   
-  printf("packed_message_chars:\n");
+  printf(".macro put_packed_chars()\n{\n");
   for(int i=0;i<char_max;i++) {
     printf("\t.byte $%02X // '%c' ",char_freqs[i].c,char_freqs[i].c != 0xD ? char_freqs[i].c : 127);
     if (i<14) printf(" = $%x (nybl)\n",i+1);
     else if (i<(14+13)) printf(" = $F%x / $xF $%02X\n",i-14+1,char_freqs[i].c);
     else printf(" = $FE/F + $%02X\n",char_freqs[i].c);
   }
+  printf("}\n");
 
-  printf("packed_message_tokens:\n");
+  printf(".macro put_packed_tokens()\n{\n");
   for(int i=0;i<token_count;i++)
     {
       if ((token_count-i)>=8) {
@@ -455,8 +456,9 @@ int main(void)
       } else
 	printf("\t.byte $%02x\n",message_tokens[i]);
     }
-  
-  printf("packed_message_words:\n");
+  printf("}\n");
+
+  printf(".macro put_packed_words()\n{\n");
   for(int i=0;i<packed_len;i++)
     {
       if ((packed_len-i)>=8) {
@@ -467,8 +469,9 @@ int main(void)
       } else
 	printf("\t.byte $%02x\n",packed_words[i]);
     }
+ printf("}\n");
 
-  printf("packed_keywords:\n");
+  printf(".macro put_packed_keywords()\n{\n");
   for(int i=0;i<packedkey_len;i++)
     {
       if ((packedkey_len-i)>=8) {
@@ -479,7 +482,9 @@ int main(void)
       } else
 	printf("\t.byte $%02x\n",packed_keywords[i]);
     }
-  printf("\t.label packed_keyword_table_len = $%X\n",packedkey_len);
+  printf("}\n");
+
+  printf(".label packed_keyword_table_len = $%X\n",packedkey_len);
   
   fprintf(stderr,"Error list takes %d bytes raw.\n",raw_size);
   fprintf(stderr,"%d token bytes used to encode all messages.\n",token_count);

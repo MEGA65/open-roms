@@ -1,0 +1,3 @@
+$E2 + JSR $FFC0 + BCS (offset does not match)
+
+Call of a documented routine + some parts. Trivial - not copyrightable.

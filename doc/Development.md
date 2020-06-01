@@ -59,6 +59,11 @@ There is no official PETSCII code for `TAB` - we can't utilize the ones from C12
 
 Bits 3 and 4 are extension to the original variable, compatible with the C128 ROMs API. There is no official way to retrieve `NO_SCRL` status as of yet. The `40/80` key status cannot be retrieved in C64 mode at all (C128 hardware limitation).
 
+#### Mega65 native mode
+
+Mega65 build starts in legacy mode, which is intended to be reasonably compatible with the C64 ROMs. However, a native Mega65 mode is planned too, to make it easier to utilise extra features of this machine. Soo far the following has been done:
+
+- Slightly different chargen. On C64 machines pressing C= + G or C= + M key combinations produces the same visual result as C= + H or C= + N, respectively - despite keycap printing suggests they should produce tinner bars. This was intentional change in the C64 ROMs (compared to VIC-20), to prevent colour problems on 80s era TVs. Screen font used in the legacy mode duplicates this change, but the font intended for native mode has this change reverted back. Additionally, the π sign is available for lower/upper case set too.
 
 ## Tinkering with OpenROMs
 

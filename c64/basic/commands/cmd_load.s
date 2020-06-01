@@ -20,11 +20,40 @@ cmd_load:
 	lda #$00
 	sta FNLEN
 
-	// Without tape support, LOAD must have a filename
-	// (This also skips any leading spaces)
+	// Check for the file name
 	jsr basic_end_of_statement_check
 	bcc !+
-	jmp do_MISSING_FILENAME_error
+
+#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+
+	// No file name given, just load the first file from tape
+
+	ldx #$00
+	stx SA                             // secondary address
+#if CONFIG_TAPE_NORMAL
+	inx                                // 1 - for normal tape format
+#else
+	ldx #$07                           // 7 - for turbo tape format
+#endif
+	stx FA                             // device number
+	bne cmd_load_got_secondaryaddress  // branch always
+
+#else
+
+	// Without tape support, try to load the first file from disk
+
+	lda #$01                           // name length
+	ldx #<cmd_load_default_filename
+	ldy #>cmd_load_default_filename
+	jsr JSETNAM
+	jmp got_filename
+
+cmd_load_default_filename:
+
+	.text "*"
+
+#endif
+
 !:
 	jsr basic_fetch_and_consume_character
 	cmp #$22

@@ -1,0 +1,3 @@
+$26 + STA $62 + LDA (zeropage address does not match)
+
+Instruction + some parts. Trivial - not copyrightable.

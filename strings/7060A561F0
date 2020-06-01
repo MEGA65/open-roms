@@ -1,0 +1,3 @@
+$70 + RTS + LDA $61 + BEQ (offset does not match)
+
+Jump  depending whether zeropage variable is 0 or not + some small part (return + a byte) of previous routine. Trivial - not copyrightable.

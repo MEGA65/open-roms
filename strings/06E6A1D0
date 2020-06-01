@@ -1,0 +1,3 @@
+$06 + INC $A1 + BNE (offset does not match)
+
+Instruction + some parts. Trivial - not copyrightable.

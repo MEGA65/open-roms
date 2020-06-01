@@ -23,7 +23,12 @@ tape_turbo_get_bit:
 	sta __turbo_half_S                 // store half of the last measurement result for short pulse
 
 	lda #$01
+#if CONFIG_MB_MEGA_65
+	sta SID_SIGVOL + __SID_R1_OFFSET
+	sta SID_SIGVOL + __SID_L1_OFFSET
+#else
 	sta SID_SIGVOL
+#endif
 	lda #$06
 	sta VIC_EXTCOL
 	sec
@@ -34,7 +39,12 @@ tape_turbo_get_bit:
 	sta __turbo_half_L                 // store half of the last measurement result for long pulse
 
 	lda #$00
+#if CONFIG_MB_MEGA_65
+	sta SID_SIGVOL + __SID_R1_OFFSET
+	sta SID_SIGVOL + __SID_L1_OFFSET
+#else
 	sta SID_SIGVOL
+#endif
 	sta VIC_EXTCOL
 	clc
 	rts

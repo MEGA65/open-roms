@@ -21,5 +21,5 @@
 
 // XXX provide implementation
 
-FPWRT:
+pwr_FAC2_FAC1:
 	STUB_IMPLEMENTATION()

@@ -59,9 +59,11 @@ IOINIT:
 	// Now silence the SID chip(s), depending on the configuration - we want them silent ASAP
 	//
 
-	// First the standard chip (skip if it is covered by whole $D4XX range)
-
 	lda #$00
+
+#if !CONFIG_MB_MEGA_65
+
+	// First the standard chip (skip if it is covered by whole $D4XX range)
 
 #if !CONFIG_SID_D4XX
 	sta SID_SIGVOL
@@ -99,6 +101,17 @@ IOINIT:
 	bne !-
 
 #endif // CONFIG_SID_D4XX || CONFIG_SID_D5XX
+
+#else
+
+	// Mega65 specific handling - it contains 4 SIDs
+
+	sta SID_SIGVOL + __SID_R1_OFFSET
+	sta SID_SIGVOL + __SID_R2_OFFSET
+	sta SID_SIGVOL + __SID_L1_OFFSET
+	sta SID_SIGVOL + __SID_L2_OFFSET
+
+#endif // CONFIG_MB_MEGA_65
 
 	//
 	// Now continue the CIAs initialization

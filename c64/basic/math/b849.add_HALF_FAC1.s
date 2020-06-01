@@ -9,8 +9,9 @@
 // See also:
 // - [CM64] Computes Mapping the Commodore 64 - page 112
 
-// XXX implement
-
 add_HALF_FAC1:
 
-	STUB_IMPLEMENTATION()
+	ldy #>const_HALF
+	lda #<const_HALF
+
+	jmp add_MEM_FAC1

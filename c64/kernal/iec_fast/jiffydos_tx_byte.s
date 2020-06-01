@@ -100,6 +100,11 @@ jiffydos_tx_byte_wait_eoi:
 	sta CIA2_PRA
 	jsr iec_wait20us
 	lda C3PO
+	
+	// According to protocol analysis by Michael Steil (step S8) we should pull the DATA here
+	// to signal there was no error; but DATA pulled by the controller is a normal state
+	// (which should be stored in C3PO), so there is nothing to do here.
+
 	jmp jiffydos_tx_byte_finalize
 
 

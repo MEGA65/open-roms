@@ -17,6 +17,7 @@
 	.label VK1__load_tape_normal       = $4000 + 2 * 3
 	.label VK1__load_tape_turbo        = $4000 + 2 * 4
 	.label VK1__load_tape_auto         = $4000 + 2 * 5
+	.label VK1__tape_head_align        = $4000 + 2 * 6
 
 #else
 
@@ -44,5 +45,10 @@
 	.word $0000
 #endif
 
+#if CONFIG_TAPE_HEAD_ALIGN
+	.word tape_head_align
+#else
+	.word $0000
+#endif
 
 #endif

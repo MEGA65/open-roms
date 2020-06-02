@@ -50,7 +50,7 @@ screen_calculate_USER:
 	sec
 	sbc HIBASE
 	clc
-	adc #>$d800
+	adc #>COLOR_RAM
 	sta USER+1
 
 	rts

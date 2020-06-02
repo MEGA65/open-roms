@@ -22,25 +22,9 @@ cmd_load:
 
 	// Check for the file name
 	jsr basic_end_of_statement_check
-	bcc !+
+	bcc cmd_load_fetch_filename
 
-#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
-
-	// No file name given, just load the first file from tape
-
-	ldx #$00
-	stx SA                             // secondary address
-#if CONFIG_TAPE_NORMAL
-	inx                                // 1 - for normal tape format
-#else
-	ldx #$07                           // 7 - for turbo tape format
-#endif
-	stx FA                             // device number
-	bne cmd_load_got_secondaryaddress  // branch always
-
-#else
-
-	// Without tape support, try to load the first file from disk
+	// Try to load the first file from disk
 
 	lda #$01                           // name length
 	ldx #<cmd_load_default_filename
@@ -52,9 +36,8 @@ cmd_load_default_filename:
 
 	.text "*"
 
-#endif
+cmd_load_fetch_filename:
 
-!:
 	jsr basic_fetch_and_consume_character
 	cmp #$22
 	beq !+

@@ -2,7 +2,7 @@
 // #LAYOUT# *   *        #IGNORE
 
 //
-// ROM routine call redirect for tape loading
+// ROM routine call redirect for tape routines
 //
 
 
@@ -34,6 +34,17 @@ load_tape_auto:
 
 	jsr     map_KERNAL_1
 	jsr_ind VK1__load_tape_auto
+	jmp     map_NORMAL
+
+#endif
+
+
+#if CONFIG_TAPE_HEAD_ALIGN
+
+tape_head_align:
+
+	jsr     map_KERNAL_1
+	jsr_ind VK1__tape_head_align
 	jmp     map_NORMAL
 
 #endif

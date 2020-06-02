@@ -50,3 +50,7 @@
 #if CONFIG_SHOW_PAL_NTSC
 .label print_pal_ntsc      = KERNAL().print_pal_ntsc
 #endif
+
+#if CONFIG_TAPE_HEAD_ALIGN
+.label tape_head_align     = KERNAL().tape_head_align
+#endif

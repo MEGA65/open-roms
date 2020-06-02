@@ -125,6 +125,10 @@
 	.label SID_RANDOM   = $D41B
 	.label SID_ENV3     = $D41C
 
+	// Color COLOR_RAM
+
+	.label COLOR_RAM    = $D800
+
 	// CIA #1 registers
 
 	.label __CIA1_BASE  = $DC00  // base address of the chip

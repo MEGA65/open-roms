@@ -68,7 +68,7 @@ screen_scroll_up_delay_done: // entry point for cursor move control codes
 	sta SAL+1
 	sta EAL+1
 
-	lda #>$D800
+	lda #>COLOR_RAM
 	sta PNT+1
 	sta USER+1
 

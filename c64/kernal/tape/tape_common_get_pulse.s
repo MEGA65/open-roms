@@ -26,7 +26,7 @@ tape_common_get_pulse:
 	ldx #%01010001                     // start timer, force latch reload, count timer A underflows
 	stx CIA2_CRB    // $DD0F
 
-	cmp __pulse_threshold              // sdefault pulse check
+	cmp __pulse_threshold              // default pulse check
 	rts
 
 

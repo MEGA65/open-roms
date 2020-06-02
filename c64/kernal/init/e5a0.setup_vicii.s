@@ -60,19 +60,9 @@ setup_vicii:
 	// We use a different colour scheme of white text on all blue by default,
 	// but brand-specific color scheme can also be enabled
 
-#if CONFIG_COLORS_BRAND && CONFIG_BRAND_ULTIMATE_64
-
-	lda #$00
+	lda #CONFIG_COLOR_BG
 	sta VIC_EXTCOL
 	sta VIC_BGCOL0
-
-#else
-
-	lda #$06
-	sta VIC_EXTCOL
-	sta VIC_BGCOL0
-
-#endif
 
 	// Setup default I/O devices
 

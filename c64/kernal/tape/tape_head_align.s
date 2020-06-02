@@ -1,11 +1,10 @@
 // #LAYOUT# STD *        #TAKE
+// #LAYOUT# M65 KERNAL_0 #TAKE
 // #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
-// Tape (normal) helper routine - reading speed calibration
-//
-// Needs pulse length in .A
+// Tape head alignemnt tool
 //
 
 
@@ -13,6 +12,7 @@
 
 
 .label __ha_start     = 3              // starting row of the chart
+.label __ha_rows      = 20             // number of rows for scrolling
 
 // Helper tables
 
@@ -21,7 +21,13 @@
 
 // Helper variables
 
-.label __ha_counter   = $1200;        // 3 bytes
+.label __ha_lda_addr  = $1200;        // 2 bytes, for code generator
+.label __ha_sta_addr  = $1202;        // 2 bytes, for code generator
+.label __ha_counter   = $1204;        // 3 bytes
+
+// Generated code location
+
+.label __ha_scroll    = $1300;
 
 
 tape_head_align:
@@ -34,24 +40,23 @@ tape_head_align:
 
 #else
 
-	// Start by asking for playback
-
-	// XXX jsr tape_ask_play
-
 	// Disable interrupts, set proper I/O values
 
 	sei
+	jsr CLALL
 	jsr IOINIT
 	jsr cint_legacy
-	jsr tape_motor_on
+
 	ldx #$02                  // set timer A to 3 ticks
 	jsr tape_common_prepare_cia_by_x
+
+	jsr tape_motor_on
 
 	// Clear color data ($0800)
 
 	ldy #$00
 !:
-	lda #($01 * $10 + $06)    // XXX synchronize colors with setup_vicii
+	lda #(CONFIG_COLOR_TXT * $10 + CONFIG_COLOR_BG)
 
 	sta $0800, y
 	sta $0900, y
@@ -61,9 +66,9 @@ tape_head_align:
 	iny
 	bne !-
 
-	// Make sure the row where the chart is created is not visible
+	// Make sure the row where the chart is being created is not visible
 
-	lda #($06 * $10 + $06)    // XXX synchronize colors with setup_vicii
+	lda #(CONFIG_COLOR_BG * $10 + CONFIG_COLOR_BG)
 	ldy #$28
 !:
 	sta $0800 + __ha_start * 40 - 1, y
@@ -88,7 +93,7 @@ tape_head_align:
 
 	// Set graphics mode
 
-	lda #$28                           // graphic memory start at $2000, color at $0800
+	lda #$28                           // graphics start at $2000, color at $0800
 	sta VIC_YMCSB
 
 	lda #$3B                           // set bit 5 to enable graphic mode
@@ -123,6 +128,10 @@ tape_head_align:
 	inx
 	bne !--
 
+	// Generate helpercode for screen scrolling
+
+	jsr tape_head_align_gen_code
+
 tape_head_align_loop_1:
 
 	// XXX check for STOP key, possibly terminate
@@ -131,7 +140,7 @@ tape_head_align_loop_1:
 
 	ldx #$00
 !:
-	jsr tape_head_align_scroll_column
+	jsr __ha_scroll                    // scroll one column down, using fast generated code
 
 	txa
 	clc
@@ -191,270 +200,6 @@ tape_head_align_quit:
 
 	cli
 	rts // XXX perform new after quit
-
-tape_head_align_get_pulse:
-
-	// This routine differs a lot from the one used to read pulse during tape reading:
-	// - it is not as precise
-	// - it terminates when timer reaches $FF
-	// - it updates
-
-	lda #$10
-!:
-	// Loop to detect signal
-
-	ldy CIA2_TIMBLO // $DD06
-	bit CIA1_ICR    // $DC0D
-	bne !+
-
-	cpy #$FF
-	bne !-
-!:
-	// Start timer again, force latch reload, count timer A underflows
-
-	ldx #%01010001
-	stx CIA2_CRB    // $DD0F
-
-	// Update time counter
-
-	tya
-	clc
-	adc __ha_counter + 0
-	sta __ha_counter + 0
-	bcc !+
-	inc __ha_counter + 1
-	bne !+
-	inc __ha_counter + 2
-!:
-	// Return with time elapsed
-
-	tya
-	rts
-
-tape_head_align_scroll_column:
-
-	// XXX autogenerate this code somewhere
-
-	lda __ha_chart + 9 * (8 * 40) + 6, x
-	sta __ha_chart + 9 * (8 * 40) + 7, x
-
-	lda __ha_chart + 9 * (8 * 40) + 5, x
-	sta __ha_chart + 9 * (8 * 40) + 6, x
-
-	lda __ha_chart + 9 * (8 * 40) + 4, x
-	sta __ha_chart + 9 * (8 * 40) + 5, x
-
-	lda __ha_chart + 9 * (8 * 40) + 3, x
-	sta __ha_chart + 9 * (8 * 40) + 4, x
-
-	lda __ha_chart + 9 * (8 * 40) + 2, x
-	sta __ha_chart + 9 * (8 * 40) + 3, x
-
-	lda __ha_chart + 9 * (8 * 40) + 1, x
-	sta __ha_chart + 9 * (8 * 40) + 2, x
-
-	lda __ha_chart + 9 * (8 * 40) + 0, x
-	sta __ha_chart + 9 * (8 * 40) + 1, x
-
-	lda __ha_chart + 8 * (8 * 40) + 7, x
-	sta __ha_chart + 9 * (8 * 40) + 0, x
-
-	lda __ha_chart + 8 * (8 * 40) + 6, x
-	sta __ha_chart + 8 * (8 * 40) + 7, x
-
-	lda __ha_chart + 8 * (8 * 40) + 5, x
-	sta __ha_chart + 8 * (8 * 40) + 6, x
-
-	lda __ha_chart + 8 * (8 * 40) + 4, x
-	sta __ha_chart + 8 * (8 * 40) + 5, x
-
-	lda __ha_chart + 8 * (8 * 40) + 3, x
-	sta __ha_chart + 8 * (8 * 40) + 4, x
-
-	lda __ha_chart + 8 * (8 * 40) + 2, x
-	sta __ha_chart + 8 * (8 * 40) + 3, x
-
-	lda __ha_chart + 8 * (8 * 40) + 1, x
-	sta __ha_chart + 8 * (8 * 40) + 2, x
-
-	lda __ha_chart + 8 * (8 * 40) + 0, x
-	sta __ha_chart + 8 * (8 * 40) + 1, x
-
-	lda __ha_chart + 7 * (8 * 40) + 7, x
-	sta __ha_chart + 8 * (8 * 40) + 0, x
-
-	lda __ha_chart + 7 * (8 * 40) + 6, x
-	sta __ha_chart + 7 * (8 * 40) + 7, x
-
-	lda __ha_chart + 7 * (8 * 40) + 5, x
-	sta __ha_chart + 7 * (8 * 40) + 6, x
-
-	lda __ha_chart + 7 * (8 * 40) + 4, x
-	sta __ha_chart + 7 * (8 * 40) + 5, x
-
-	lda __ha_chart + 7 * (8 * 40) + 3, x
-	sta __ha_chart + 7 * (8 * 40) + 4, x
-
-	lda __ha_chart + 7 * (8 * 40) + 2, x
-	sta __ha_chart + 7 * (8 * 40) + 3, x
-
-	lda __ha_chart + 7 * (8 * 40) + 1, x
-	sta __ha_chart + 7 * (8 * 40) + 2, x
-
-	lda __ha_chart + 7 * (8 * 40) + 0, x
-	sta __ha_chart + 7 * (8 * 40) + 1, x
-
-	lda __ha_chart + 6 * (8 * 40) + 7, x
-	sta __ha_chart + 7 * (8 * 40) + 0, x
-
-	lda __ha_chart + 6 * (8 * 40) + 6, x
-	sta __ha_chart + 6 * (8 * 40) + 7, x
-
-	lda __ha_chart + 6 * (8 * 40) + 5, x
-	sta __ha_chart + 6 * (8 * 40) + 6, x
-
-	lda __ha_chart + 6 * (8 * 40) + 4, x
-	sta __ha_chart + 6 * (8 * 40) + 5, x
-
-	lda __ha_chart + 6 * (8 * 40) + 3, x
-	sta __ha_chart + 6 * (8 * 40) + 4, x
-
-	lda __ha_chart + 6 * (8 * 40) + 2, x
-	sta __ha_chart + 6 * (8 * 40) + 3, x
-
-	lda __ha_chart + 6 * (8 * 40) + 1, x
-	sta __ha_chart + 6 * (8 * 40) + 2, x
-
-	lda __ha_chart + 6 * (8 * 40) + 0, x
-	sta __ha_chart + 6 * (8 * 40) + 1, x
-
-	lda __ha_chart + 5 * (8 * 40) + 7, x
-	sta __ha_chart + 6 * (8 * 40) + 0, x
-
-	lda __ha_chart + 5 * (8 * 40) + 6, x
-	sta __ha_chart + 5 * (8 * 40) + 7, x
-
-	lda __ha_chart + 5 * (8 * 40) + 5, x
-	sta __ha_chart + 5 * (8 * 40) + 6, x
-
-	lda __ha_chart + 5 * (8 * 40) + 4, x
-	sta __ha_chart + 5 * (8 * 40) + 5, x
-
-	lda __ha_chart + 5 * (8 * 40) + 3, x
-	sta __ha_chart + 5 * (8 * 40) + 4, x
-
-	lda __ha_chart + 5 * (8 * 40) + 2, x
-	sta __ha_chart + 5 * (8 * 40) + 3, x
-
-	lda __ha_chart + 5 * (8 * 40) + 1, x
-	sta __ha_chart + 5 * (8 * 40) + 2, x
-
-	lda __ha_chart + 5 * (8 * 40) + 0, x
-	sta __ha_chart + 5 * (8 * 40) + 1, x
-
-	lda __ha_chart + 4 * (8 * 40) + 7, x
-	sta __ha_chart + 5 * (8 * 40) + 0, x
-
-	lda __ha_chart + 4 * (8 * 40) + 6, x
-	sta __ha_chart + 4 * (8 * 40) + 7, x
-
-	lda __ha_chart + 4 * (8 * 40) + 5, x
-	sta __ha_chart + 4 * (8 * 40) + 6, x
-
-	lda __ha_chart + 4 * (8 * 40) + 4, x
-	sta __ha_chart + 4 * (8 * 40) + 5, x
-
-	lda __ha_chart + 4 * (8 * 40) + 3, x
-	sta __ha_chart + 4 * (8 * 40) + 4, x
-
-	lda __ha_chart + 4 * (8 * 40) + 2, x
-	sta __ha_chart + 4 * (8 * 40) + 3, x
-
-	lda __ha_chart + 4 * (8 * 40) + 1, x
-	sta __ha_chart + 4 * (8 * 40) + 2, x
-
-	lda __ha_chart + 4 * (8 * 40) + 0, x
-	sta __ha_chart + 4 * (8 * 40) + 1, x
-
-	lda __ha_chart + 3 * (8 * 40) + 7, x
-	sta __ha_chart + 4 * (8 * 40) + 0, x
-
-	lda __ha_chart + 3 * (8 * 40) + 6, x
-	sta __ha_chart + 3 * (8 * 40) + 7, x
-
-	lda __ha_chart + 3 * (8 * 40) + 5, x
-	sta __ha_chart + 3 * (8 * 40) + 6, x
-
-	lda __ha_chart + 3 * (8 * 40) + 4, x
-	sta __ha_chart + 3 * (8 * 40) + 5, x
-
-	lda __ha_chart + 3 * (8 * 40) + 3, x
-	sta __ha_chart + 3 * (8 * 40) + 4, x
-
-	lda __ha_chart + 3 * (8 * 40) + 2, x
-	sta __ha_chart + 3 * (8 * 40) + 3, x
-
-	lda __ha_chart + 3 * (8 * 40) + 1, x
-	sta __ha_chart + 3 * (8 * 40) + 2, x
-
-	lda __ha_chart + 3 * (8 * 40) + 0, x
-	sta __ha_chart + 3 * (8 * 40) + 1, x
-
-	lda __ha_chart + 2 * (8 * 40) + 7, x
-	sta __ha_chart + 3 * (8 * 40) + 0, x
-
-	lda __ha_chart + 2 * (8 * 40) + 6, x
-	sta __ha_chart + 2 * (8 * 40) + 7, x
-
-	lda __ha_chart + 2 * (8 * 40) + 5, x
-	sta __ha_chart + 2 * (8 * 40) + 6, x
-
-	lda __ha_chart + 2 * (8 * 40) + 4, x
-	sta __ha_chart + 2 * (8 * 40) + 5, x
-
-	lda __ha_chart + 2 * (8 * 40) + 3, x
-	sta __ha_chart + 2 * (8 * 40) + 4, x
-
-	lda __ha_chart + 2 * (8 * 40) + 2, x
-	sta __ha_chart + 2 * (8 * 40) + 3, x
-
-	lda __ha_chart + 2 * (8 * 40) + 1, x
-	sta __ha_chart + 2 * (8 * 40) + 2, x
-
-	lda __ha_chart + 2 * (8 * 40) + 0, x
-	sta __ha_chart + 2 * (8 * 40) + 1, x
-
-	lda __ha_chart + 1 * (8 * 40) + 7, x
-	sta __ha_chart + 2 * (8 * 40) + 0, x
-
-	lda __ha_chart + 1 * (8 * 40) + 6, x
-	sta __ha_chart + 1 * (8 * 40) + 7, x
-
-	lda __ha_chart + 1 * (8 * 40) + 5, x
-	sta __ha_chart + 1 * (8 * 40) + 6, x
-
-	lda __ha_chart + 1 * (8 * 40) + 4, x
-	sta __ha_chart + 1 * (8 * 40) + 5, x
-
-	lda __ha_chart + 1 * (8 * 40) + 3, x
-	sta __ha_chart + 1 * (8 * 40) + 4, x
-
-	lda __ha_chart + 1 * (8 * 40) + 2, x
-	sta __ha_chart + 1 * (8 * 40) + 3, x
-
-	lda __ha_chart + 1 * (8 * 40) + 1, x
-	sta __ha_chart + 1 * (8 * 40) + 2, x
-
-	lda __ha_chart + 1 * (8 * 40) + 0, x
-	sta __ha_chart + 1 * (8 * 40) + 1, x
-
-	lda __ha_chart + 0 * (8 * 40) + 7, x
-	sta __ha_chart + 1 * (8 * 40) + 0, x
-
-	lda #$00
-	sta __ha_chart + 0 * (8 * 40) + 7, x
-
-	rts
 
 #endif // ROM layout
 

@@ -54,3 +54,5 @@
 #if CONFIG_TAPE_HEAD_ALIGN
 .label tape_head_align     = KERNAL().tape_head_align
 #endif
+
+.label filename_any        = KERNAL().filename_any

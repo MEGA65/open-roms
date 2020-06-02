@@ -27,14 +27,10 @@ cmd_load:
 	// Try to load the first file from disk
 
 	lda #$01                           // name length
-	ldx #<cmd_load_default_filename
-	ldy #>cmd_load_default_filename
+	ldx #<filename_any
+	ldy #>filename_any
 	jsr JSETNAM
 	jmp got_filename
-
-cmd_load_default_filename:
-
-	.text "*"
 
 cmd_load_fetch_filename:
 

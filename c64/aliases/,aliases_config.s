@@ -344,6 +344,22 @@
 }
 
 
+
+// Setup colors
+
+#if CONFIG_COLORS_BRAND && CONFIG_BRAND_ULTIMATE_64
+
+	.const CONFIG_COLOR_BG  = $00
+	.const CONFIG_COLOR_TXT = $01
+
+#else
+
+	.const CONFIG_COLOR_BG  = $06
+	.const CONFIG_COLOR_TXT = $01
+
+#endif
+
+
 // Function for printing out build features
 
 .var feature_new_line = false

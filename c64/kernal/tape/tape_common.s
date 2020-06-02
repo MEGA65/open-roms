@@ -104,15 +104,6 @@ tape_wait_first_pulse:
 
 tape_wait_play_done:
 
-	rts
-
-
-//
-// Prepare screen / tape motor for reading
-//
-
-tape_prepare_reading:
-
 #if CONFIG_MB_MEGA_65
 
 	// Display confirmation

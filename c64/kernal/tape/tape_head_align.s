@@ -11,8 +11,8 @@
 #if CONFIG_TAPE_HEAD_ALIGN
 
 
-.label __ha_start     = 3              // starting row of the chart
-.label __ha_rows      = 20             // number of rows for scrolling
+.label __ha_start     = 12             // starting row of the chart
+.label __ha_rows      = 10             // number of rows for scrolling
 
 // Helper tables
 
@@ -23,7 +23,7 @@
 
 .label __ha_lda_addr  = $1200;        // 2 bytes, for code generator
 .label __ha_sta_addr  = $1202;        // 2 bytes, for code generator
-.label __ha_counter   = $1204;        // 3 bytes
+.label __ha_gfxflag   = $1204;
 
 // Generated code location
 
@@ -50,6 +50,10 @@ tape_head_align:
 	ldx #$02                  // set timer A to 3 ticks
 	jsr tape_common_prepare_cia_by_x
 
+	ldx #$FF                  // timer to control scroll speed
+	stx CIA1_TIMBLO // $DC06
+	stx CIA1_TIMBHI // $DC07
+
 	jsr tape_motor_on
 
 	// Clear color data ($0800)
@@ -69,9 +73,10 @@ tape_head_align:
 	// Make sure the row where the chart is being created is not visible
 
 	lda #(CONFIG_COLOR_BG * $10 + CONFIG_COLOR_BG)
-	ldy #$28
+	ldy #$22
 !:
-	sta $0800 + __ha_start * 40 - 1, y
+	sta $0800 + __ha_start * 40 + 2, y
+	// sta $0800 + __ha_start * 40 + 2 + (__ha_rows + 1) * 40, y
 	dey
 	bne !-
 
@@ -128,13 +133,33 @@ tape_head_align:
 	inx
 	bne !--
 
-	// Generate helpercode for screen scrolling
+	// Initialize flag for additional GFX effects
+
+	stx __ha_gfxflag
+
+	// Generate helper code for screen scrolling
 
 	jsr tape_head_align_gen_code
+
+	// Scroll several times to fill-in the screen
+
+	ldx #(__ha_rows * 8)
+!:
+	phx_trash_a
+	jsr tape_head_align_scroll_gfx
+	plx_trash_a
+
+	dex
+	bne !-
 
 tape_head_align_loop_1:
 
 	// XXX check for STOP key, possibly terminate
+
+	// Launch the timer
+
+	ldx #%00011001                     // start timer, one-shot force latch reload, count system ticks
+	stx CIA1_CRB    // $DC0F
 
 	// Scroll the whole chart one line down
 
@@ -148,15 +173,9 @@ tape_head_align_loop_1:
 	tax
 	bne !-
 
-	// XXX draw helper lines
+	// Draw helpers and decorators
 
-	// Initialize counter
-
-	lda #$80
-	sta __ha_counter + 1
-	lda #$00
-	sta __ha_counter + 0
-	sta __ha_counter + 2
+	jsr tape_head_align_apply_gfx
 
 	// Skip 2 pulses, these measurements will be too imprecise
 
@@ -186,9 +205,12 @@ tape_head_align_loop_2:
 
 tape_head_align_drawn:
 
-	lda __ha_counter + 2
-	beq tape_head_align_loop_2
-	bne tape_head_align_loop_1
+	lda CIA1_TIMBLO
+	and CIA1_TIMBHI
+	eor #$FF
+
+	bne tape_head_align_loop_2
+	beq tape_head_align_loop_1
 
 tape_head_align_quit:
 
@@ -200,6 +222,85 @@ tape_head_align_quit:
 
 	cli
 	rts // XXX perform new after quit
+
+
+
+
+// XXX size-optimize code below
+
+tape_head_align_scroll_gfx:
+
+	ldx #(8 * 0)
+	jsr __ha_scroll
+	ldx #(8 * 1)
+	jsr __ha_scroll
+	ldx #(8 * 6)
+	jsr __ha_scroll
+	ldx #(8 * 13)
+	jsr __ha_scroll
+	ldx #(8 * 21)
+	jsr __ha_scroll
+	ldx #(8 * 30)
+	jsr __ha_scroll
+	ldx #(8 * 31)
+	jsr __ha_scroll
+
+	// FALLTROUGH
+
+tape_head_align_apply_gfx:
+
+	// Apply GFX effects XXX improve it
+
+	lda __ha_gfxflag
+	inc __ha_gfxflag
+	and #%00001100
+	bne !+
+	ldy #%11110001
+	lda #%10001111
+	bne !++
+!:
+	ldy #%00000001
+	lda #%10000000
+!:
+	ora __ha_chart + 7 + 8 * 0
+	sta __ha_chart + 7 + 8 * 0
+
+	tya
+	ora __ha_chart + 7 + 8 * 31
+	sta __ha_chart + 7 + 8 * 31
+
+	// Draw helper lines
+
+	lda __ha_gfxflag
+	and #%00000010
+	beq !+
+
+	lda #%00010000
+	ora __ha_chart + 7 + 8 * 1
+	sta __ha_chart + 7 + 8 * 1
+
+	lda #%00001000
+	ora __ha_chart + 7 + 8 * 30
+	sta __ha_chart + 7 + 8 * 30
+
+	// For normal  XXX check values
+
+	lda #%00000100
+	ora __ha_chart + 7 + 8 * 6
+	sta __ha_chart + 7 + 8 * 6
+
+	lda #%00010000
+	ora __ha_chart + 7 + 8 * 13
+	sta __ha_chart + 7 + 8 * 13
+
+	// For turbo   XXX check values
+
+	lda #%01000000
+	ora __ha_chart + 7 + 8 * 21
+	sta __ha_chart + 7 + 8 * 21
+!:
+	rts
+
 
 #endif // ROM layout
 

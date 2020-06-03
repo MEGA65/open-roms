@@ -12,10 +12,9 @@
 
 tape_head_align_get_pulse:
 
-	// This routine differs a lot from the one used to read pulse during tape reading:
+	// This routine differs from the one used to read pulse during tape reading:
 	// - it is not as precise
 	// - it terminates when timer reaches $FF
-	// - it updates
 
 	lda #$10
 !:
@@ -33,17 +32,6 @@ tape_head_align_get_pulse:
 	ldx #%01010001
 	stx CIA2_CRB    // $DD0F
 
-	// Update time counter
-
-	tya
-	clc
-	adc __ha_counter + 0
-	sta __ha_counter + 0
-	bcc !+
-	inc __ha_counter + 1
-	bne !+
-	inc __ha_counter + 2
-!:
 	// Return with time elapsed
 
 	tya

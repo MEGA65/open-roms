@@ -11,7 +11,7 @@
 #if CONFIG_TAPE_HEAD_ALIGN
 
 
-.label __ha_start     = 12             // starting row of the chart
+.label __ha_start     = 11             // starting row of the chart
 .label __ha_rows      = 10             // number of rows for scrolling
 
 // Helper tables
@@ -72,11 +72,11 @@ tape_head_align:
 
 	// Make sure the row where the chart is being created is not visible
 
-	lda #(CONFIG_COLOR_BG * $10 + CONFIG_COLOR_BG)
-	ldy #$22
+	lda #(CONFIG_COLOR_TXT * $10 + CONFIG_COLOR_TXT)
+	ldy #$24
 !:
-	sta $0800 + __ha_start * 40 + 2, y
-	// sta $0800 + __ha_start * 40 + 2 + (__ha_rows + 1) * 40, y
+	sta $0800 + __ha_start * 40 + 1, y
+	sta $0800 + __ha_start * 40 + 1 + (__ha_rows + 1) * 40, y
 	dey
 	bne !-
 
@@ -141,20 +141,13 @@ tape_head_align:
 
 	jsr tape_head_align_gen_code
 
-	// Scroll several times to fill-in the screen
-
-	ldx #(__ha_rows * 8)
-!:
-	phx_trash_a
-	jsr tape_head_align_scroll_gfx
-	plx_trash_a
-
-	dex
-	bne !-
-
 tape_head_align_loop_1:
 
-	// XXX check for STOP key, possibly terminate
+	jsr udtim_keyboard
+	jsr STOP
+	bcs tape_head_align_quit
+
+	// XXX check for STOP, go to tape_head_align_quit
 
 	// Launch the timer
 
@@ -212,40 +205,24 @@ tape_head_align_drawn:
 	bne tape_head_align_loop_2
 	beq tape_head_align_loop_1
 
+
+
 tape_head_align_quit:
 
-	// Clear screen, restore old display settings
+	// It makes no sense to return to system, as we already destroyed
+	// a lot of memory; fust clear initial BASIC text area to prevent
+	// data recovery attempts, and reset
 
-	jsr cint_legacy
+	ldx #$00
+	txa
+!:
+	sta $0800, x
+	inx
+	bne !-
 
-	// XXX restore COLOR, VIC_EXTCOL, VIC_BGCOL0, CIA2_PRA
-
-	cli
-	rts // XXX perform new after quit
+	jmp hw_entry_reset
 
 
-
-
-// XXX size-optimize code below
-
-tape_head_align_scroll_gfx:
-
-	ldx #(8 * 0)
-	jsr __ha_scroll
-	ldx #(8 * 1)
-	jsr __ha_scroll
-	ldx #(8 * 6)
-	jsr __ha_scroll
-	ldx #(8 * 13)
-	jsr __ha_scroll
-	ldx #(8 * 21)
-	jsr __ha_scroll
-	ldx #(8 * 30)
-	jsr __ha_scroll
-	ldx #(8 * 31)
-	jsr __ha_scroll
-
-	// FALLTROUGH
 
 tape_head_align_apply_gfx:
 
@@ -253,6 +230,8 @@ tape_head_align_apply_gfx:
 
 	lda __ha_gfxflag
 	inc __ha_gfxflag
+	clc
+	adc #$08
 	and #%00001100
 	bne !+
 	ldy #%11110001

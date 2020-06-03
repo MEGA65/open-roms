@@ -10,20 +10,25 @@
 
 #if CONFIG_TAPE_HEAD_ALIGN
 
+// XXX for Mega65 it can be done more easily, by just disabling the badlines
 
-.label __ha_start     = 11             // starting row of the chart
-.label __ha_rows      = 10             // number of rows for scrolling
+
+.label __ha_start       = 11             // starting row of the chart
+.label __ha_rows        = 10             // number of rows for scrolling
 
 // Helper tables
 
-.label __ha_offsets   = $1000;
-.label __ha_masks     = $1100;
+.label __ha_offsets     = $1000;
+.label __ha_masks       = $1100;
 
 // Helper variables
 
-.label __ha_lda_addr  = $1200;        // 2 bytes, for code generator
-.label __ha_sta_addr  = $1202;        // 2 bytes, for code generator
-.label __ha_gfxflag   = $1204;
+.label __ha_lda_addr    = $1200;        // 2 bytes, for code generator
+.label __ha_sta_addr    = $1202;        // 2 bytes, for code generator
+.label __ha_pulses      = $1204;        // 16 bytes
+.label __ha_gfxflag     = $1214;        // 1 byte
+.label __ha_loopcnt     = $1215;        // 1 byte
+
 
 // Generated code location
 
@@ -42,8 +47,8 @@ tape_head_align:
 
 	// Disable interrupts, set proper I/O values
 
-	sei
 	jsr CLALL
+	sei
 	jsr IOINIT
 	jsr cint_legacy
 
@@ -133,21 +138,48 @@ tape_head_align:
 	inx
 	bne !--
 
-	// Initialize flag for additional GFX effects
+	// Initialize flag for additional GFX effects and the pulse lengths
 
-	stx __ha_gfxflag
+	lda #$00
+	ldx #$10
+!:
+	sta __ha_pulses, x
+	dex
+	bpl !-
 
 	// Generate helper code for screen scrolling
 
 	jsr tape_head_align_gen_code
 
+	// Provide new IRQ routine address
+
+	lda #<tape_head_align_irq
+	sta CINV+0
+	lda #>tape_head_align_irq
+	sta CINV+1
+
+	// Setup raster interrupt routine - see https://www.c64-wiki.com/wiki/Raster_interrupt
+
+	lda #%01111111                     // prevent CIA from generating interrupts
+	sta CIA1_ICR   // $DC0D
+
+ 	and VIC_SCROLY                     // clear the highest bit of RASTER 
+	sta VIC_SCROLY // $D011
+
+ 	lda #$FF                           // setup interrupt on line 255, near no-badline area
+	sta VIC_RASTER
+
+ 	lda #%00000001                     // enable raster interrupts
+	sta VIC_IRQMSK // $D01A
+	cli
+
 tape_head_align_loop_1:
+
+	// Check for STOP key
 
 	jsr udtim_keyboard
 	jsr STOP
 	bcs tape_head_align_quit
-
-	// XXX check for STOP, go to tape_head_align_quit
 
 	// Launch the timer
 
@@ -175,24 +207,26 @@ tape_head_align_loop_1:
 	jsr tape_head_align_get_pulse
 	jsr tape_head_align_get_pulse
 
+	// FALLTROUGH
+
 tape_head_align_loop_2:
 
-	// Retrieve actual pulse length
+	// Draw pulses
 
-	jsr tape_head_align_get_pulse
+	ldx #$00
+!:
+	stx __ha_loopcnt
+
+	lda __ha_pulses, x
 	cmp #$FF
-	beq tape_head_align_drawn          // skip drawing for too long pulses
+	beq tape_head_align_drawn          // $FF - end of pulses to draw
 
-	// Put pulse on the screen; center the chart horizontaly, with some margin from top
+	jsr tape_head_align_draw_pulse
 
-	.label __ha_chart = $2000 + 8 * (40 * __ha_start + 4)
-
-	tax
-	lda __ha_offsets, x
-	tay
-	lda __ha_masks, x
-	ora __ha_chart + 7, y
-	sta __ha_chart + 7, y
+	ldx __ha_loopcnt
+	inx
+	cpx #$10
+	bne !-
 
 	// FALLTROUGH
 
@@ -224,9 +258,27 @@ tape_head_align_quit:
 
 
 
+
+tape_head_align_draw_pulse:
+
+	// Put pulse on the screen; center the chart horizontaly, with some margin from top
+
+	.label __ha_chart = $2000 + 8 * (40 * __ha_start + 4)
+
+	tax
+	lda __ha_offsets, x
+	tay
+	lda __ha_masks, x
+	ora __ha_chart + 7, y
+	sta __ha_chart + 7, y
+!:
+	rts
+
+
+
 tape_head_align_apply_gfx:
 
-	// Apply GFX effects XXX improve it
+	// Apply GFX effects
 
 	lda __ha_gfxflag
 	inc __ha_gfxflag

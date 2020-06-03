@@ -15,6 +15,7 @@ tape_head_align_get_pulse:
 	// This routine differs from the one used to read pulse during tape reading:
 	// - it is not as precise
 	// - it terminates when timer reaches $FF
+	// - ir returns value in .Y
 
 	lda #$10
 !:
@@ -27,14 +28,18 @@ tape_head_align_get_pulse:
 	cpy #$FF
 	bne !-
 !:
+	// FALLTROUGH
+
+tape_head_align_get_pulse_start_timer:
+
 	// Start timer again, force latch reload, count timer A underflows
 
-	ldx #%01010001
-	stx CIA2_CRB    // $DD0F
+	lda #%01010001
+	sta CIA2_CRB    // $DD0F
 
-	// Return with time elapsed
+	// Return with time elapsed in .Y
 
-	tya
 	rts
+
 
 #endif // CONFIG_TAPE_HEAD_ALIGN

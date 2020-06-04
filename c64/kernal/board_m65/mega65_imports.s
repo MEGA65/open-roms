@@ -8,7 +8,11 @@
 #import "KERNAL_0_combined.sym"
 
 
+.label CLALL                           = KERNAL_0.CLALL
 .label STOP                            = KERNAL_0.STOP
+
+.label hw_entry_reset                  = KERNAL_0.hw_entry_reset
+.label return_from_interrupt           = KERNAL_0.return_from_interrupt
 .label clrchn_reset                    = KERNAL_0.clrchn_reset
 .label udtim_keyboard                  = KERNAL_0.udtim_keyboard
 
@@ -53,5 +57,12 @@
 #if CONFIG_TAPE_NORMAL
 
 .label tape_normal_byte_store          = KERNAL_0.tape_normal_byte_store
+
+#endif
+
+
+#if CONFIG_TAPE_HEAD_ALIGN
+
+.label nmi_lock                        = KERNAL_0.nmi_lock
 
 #endif

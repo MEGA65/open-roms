@@ -13,14 +13,13 @@
 // XXX for Mega65 it can be done more easily, by just disabling the badlines
 
 // XXX consider "PRESS PLAY ON TAPE" before start, with option to stop
-// XXX add some text explaining what tool it is ('head align chart', or something similar)
 // XXX make tape wedge (and this tool) available also without tape turbo support
 // XXX create separate configuration for tape users
 // XXX block NMIs
 // XXX fix Mega65 build compilation issues
 
 
-.label __ha_start       = 11             // starting row of the chart
+.label __ha_start       = 12             // starting row of the chart
 .label __ha_rows        = 10             // number of rows for scrolling
 
 // Helper tables
@@ -34,7 +33,7 @@
 .label __ha_sta_addr    = $1202;        // 2 bytes, for code generator
 .label __ha_pulses      = $1204;        // 64 bytes
 .label __ha_gfxflag     = $1244;        // 1 byte
-.label __ha_loopcnt     = $1245;        // 1 byte
+.label __ha_storage     = $1245;        // 1 byte
 
 
 // Generated code location
@@ -97,6 +96,10 @@ tape_head_align:
 	ldx SAL+1
 	cpx #$40
 	bne !-
+
+	// Print help message
+
+	jsr tape_head_align_print_help
 
 	// Make sure the row where the chart is being created is not visible
 
@@ -225,7 +228,7 @@ tape_head_align_loop_2:
 
 	ldx #$00
 !:
-	stx __ha_loopcnt
+	stx __ha_storage
 
 	lda __ha_pulses, x
 	cmp #$FF
@@ -233,7 +236,7 @@ tape_head_align_loop_2:
 
 	jsr tape_head_align_draw_pulse
 
-	ldx __ha_loopcnt
+	ldx __ha_storage
 	inx
 	cpx #$40
 	bne !-

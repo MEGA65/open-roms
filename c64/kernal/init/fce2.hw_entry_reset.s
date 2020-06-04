@@ -25,6 +25,12 @@ hw_entry_reset:
 	ldx #$FF
 	txs
 
+#if ROM_LAYOUT_M65
+
+	jsr map_NORMAL           // we want normal memory mapping
+
+#endif
+
 #if CONFIG_PLATFORM_COMMODORE_64
 
 	// The following routine is based on reading the public KERNAL jumptable routine

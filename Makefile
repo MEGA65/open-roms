@@ -436,8 +436,8 @@ test_testing: build/kernal_testing.rom build/basic_testing.rom build/symbols_tes
 test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/symbols_ultimate64.vs
 	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_mega65: $(TARGET_M65_x) $(TARGET_M65_PXL)
-	../xemu/build/bin/xmega65.native -dmarev 2 -forcerom -loadrom $(TARGET_M65_x)
+test_mega65: $(TARGET_M65_x) $(TARGET_M65_x_PXL)
+	../xemu/build/bin/xmega65.native -dmarev 2 -forcerom -loadrom $(TARGET_M65_x_PXL)
 
 test_cx16: $(TARGET_X16_x)
 	../x16-emulator/x16emu -rom $(TARGET_X16_x)

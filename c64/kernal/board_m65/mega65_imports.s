@@ -8,7 +8,6 @@
 #import "KERNAL_0_combined.sym"
 
 
-.label CLALL                           = KERNAL_0.CLALL
 .label STOP                            = KERNAL_0.STOP
 
 .label hw_entry_reset                  = KERNAL_0.hw_entry_reset
@@ -63,6 +62,7 @@
 
 #if CONFIG_TAPE_HEAD_ALIGN
 
+.label CLALL                           = KERNAL_0.proxy_K1_CLALL
 .label nmi_lock                        = KERNAL_0.nmi_lock
 
 #endif

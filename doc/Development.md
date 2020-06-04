@@ -59,6 +59,10 @@ There is no official PETSCII code for `TAB` - we can't utilize the ones from C12
 
 Bits 3 and 4 are extension to the original variable, compatible with the C128 ROMs API. There is no official way to retrieve `NO_SCRL` status as of yet. The `40/80` key status cannot be retrieved in C64 mode at all (C128 hardware limitation).
 
+#### NMI vector modification
+
+Before modifying NMI vector, set it's high byte to 0. The ROM routine considers such address invalid and won't try to call the custom code, thus preventing a crash if interrupt happens in the worst possible moment.
+
 #### Mega65 native mode
 
 Mega65 build starts in legacy mode, which is intended to be reasonably compatible with the C64 ROMs. However, a native Mega65 mode is planned too, to make it easier to utilise extra features of this machine. Soo far the following has been done:

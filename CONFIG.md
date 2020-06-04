@@ -287,6 +287,12 @@ If enabled, a simple DOS wedge is available from the direct mode for tape loadin
 
 Feature needs few bytes in BASIC segment. If unsure - enable.
 
+### `CONFIG_TAPE_HEAD_ALIGN`
+
+If enabled, embeds a tape head align tool into the ROM, it can be started with `←H`. Requires `CONFIG_TAPE_WEDGE`.
+
+Feature needs nearly 1 KB bytes in KERNAL segment. Only recomended for machines with extended ROM, like Mega65.
+
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 
 On the most widespread CPUs the D flag is not cleared upon entering interrupts. Since the original Kernal does not clear it either, it's not safe to use BCD processor mode without disabling the interrupts first. This option makes sure the D flag is disabled at the start of the interrupt - this allows some optimizations in the code.

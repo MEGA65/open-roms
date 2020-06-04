@@ -3,7 +3,7 @@
 // #LAYOUT# *   *        #IGNORE
 
 //
-// Tape head alignemnt tool - helper routine for reading pulses
+// Tape head alignemnt tool - reading pulses from tape
 //
 
 
@@ -15,7 +15,7 @@ tape_head_align_get_pulse:
 	// This routine differs from the one used to read pulse during tape reading:
 	// - it is not as precise
 	// - it terminates when timer reaches $FF
-	// - ir returns value in .Y
+	// - it returns value in .Y
 
 	lda #$10
 !:

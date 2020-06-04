@@ -12,8 +12,6 @@
 
 tape_head_align_irq:
 
-	// inc $d020 // XXX for debug only
-
 	// Acknowledge interrupt
 
 	asl VIC_IRQ
@@ -21,7 +19,7 @@ tape_head_align_irq:
 	// Clear table of pulses stored
 
 	lda #$FF
-	ldy #$0F
+	ldy #$3F
 !:
 	sta __ha_pulses, y
 	dey
@@ -32,21 +30,35 @@ tape_head_align_irq:
 	jsr tape_head_align_get_pulse
 	jsr tape_head_align_get_pulse
 
-	// Now, we can retrieve a pulse for real
+	// Now, we can retrieve a pulse for the charts
 
 	ldx #$00
 !:
 	jsr tape_head_align_get_pulse
+
+	// If we approached badlines again - we cannot use this measurement anymore
+
+	lda VIC_SCROLY
+	bmi !+                             // branch if lower border
+
+	lda VIC_RASTER
+	cmp #$33                           // first line where badline can occur
+	bcs tape_head_align_irq_end
+!:
+	// Store measurement
+
 	tya
 	sta __ha_pulses, x
 
-	// XXX terminate ion case VIC_RASTER went too far
+	// Next iteration
 
 	inx
-	cpx #$10
-	bne !- 
+	cpx #$40
+	bne !--
 
-	// dec $d020 // XXX for debug only
+	// FALLTROUGH
+
+tape_head_align_irq_end:
 
 	jmp return_from_interrupt
 

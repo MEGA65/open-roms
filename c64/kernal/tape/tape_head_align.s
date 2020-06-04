@@ -12,6 +12,13 @@
 
 // XXX for Mega65 it can be done more easily, by just disabling the badlines
 
+// XXX consider "PRESS PLAY ON TAPE" before start, with option to stop
+// XXX add some text explaining what tool it is ('head align chart', or something similar)
+// XXX make tape wedge (and this tool) available also without tape turbo support
+// XXX create separate configuration for tape users
+// XXX block NMIs
+// XXX fix Mega65 build compilation issues
+
 
 .label __ha_start       = 11             // starting row of the chart
 .label __ha_rows        = 10             // number of rows for scrolling
@@ -25,9 +32,9 @@
 
 .label __ha_lda_addr    = $1200;        // 2 bytes, for code generator
 .label __ha_sta_addr    = $1202;        // 2 bytes, for code generator
-.label __ha_pulses      = $1204;        // 16 bytes
-.label __ha_gfxflag     = $1214;        // 1 byte
-.label __ha_loopcnt     = $1215;        // 1 byte
+.label __ha_pulses      = $1204;        // 64 bytes
+.label __ha_gfxflag     = $1244;        // 1 byte
+.label __ha_loopcnt     = $1245;        // 1 byte
 
 
 // Generated code location
@@ -75,16 +82,6 @@ tape_head_align:
 	iny
 	bne !-
 
-	// Make sure the row where the chart is being created is not visible
-
-	lda #(CONFIG_COLOR_TXT * $10 + CONFIG_COLOR_TXT)
-	ldy #$24
-!:
-	sta $0800 + __ha_start * 40 + 1, y
-	sta $0800 + __ha_start * 40 + 1 + (__ha_rows + 1) * 40, y
-	dey
-	bne !-
-
 	// Clear bitmap data ($2000)
 
 	lda #$20
@@ -100,6 +97,19 @@ tape_head_align:
 	ldx SAL+1
 	cpx #$40
 	bne !-
+
+	// Make sure the row where the chart is being created is not visible
+
+	lda #(CONFIG_COLOR_TXT * $10 + CONFIG_COLOR_TXT)
+	ldy #$24
+!:
+	sta $0800 + __ha_start * 40 + 1, y
+	sta $0800 + __ha_start * 40 + 1 + (__ha_rows + 1) * 40, y
+	
+	dey
+	bne !-
+
+
 
 	// Set graphics mode
 
@@ -141,7 +151,7 @@ tape_head_align:
 	// Initialize flag for additional GFX effects and the pulse lengths
 
 	lda #$00
-	ldx #$10
+	ldx #$40
 !:
 	sta __ha_pulses, x
 	dex
@@ -166,7 +176,7 @@ tape_head_align:
  	and VIC_SCROLY                     // clear the highest bit of RASTER 
 	sta VIC_SCROLY // $D011
 
- 	lda #$FF                           // setup interrupt on line 255, near no-badline area
+ 	lda #$F3                           // the last raster where badline can occur, this is 100% safe start
 	sta VIC_RASTER
 
  	lda #%00000001                     // enable raster interrupts
@@ -225,7 +235,7 @@ tape_head_align_loop_2:
 
 	ldx __ha_loopcnt
 	inx
-	cpx #$10
+	cpx #$40
 	bne !-
 
 	// FALLTROUGH
@@ -255,82 +265,6 @@ tape_head_align_quit:
 	bne !-
 
 	jmp hw_entry_reset
-
-
-
-
-tape_head_align_draw_pulse:
-
-	// Put pulse on the screen; center the chart horizontaly, with some margin from top
-
-	.label __ha_chart = $2000 + 8 * (40 * __ha_start + 4)
-
-	tax
-	lda __ha_offsets, x
-	tay
-	lda __ha_masks, x
-	ora __ha_chart + 7, y
-	sta __ha_chart + 7, y
-!:
-	rts
-
-
-
-tape_head_align_apply_gfx:
-
-	// Apply GFX effects
-
-	lda __ha_gfxflag
-	inc __ha_gfxflag
-	clc
-	adc #$08
-	and #%00001100
-	bne !+
-	ldy #%11110001
-	lda #%10001111
-	bne !++
-!:
-	ldy #%00000001
-	lda #%10000000
-!:
-	ora __ha_chart + 7 + 8 * 0
-	sta __ha_chart + 7 + 8 * 0
-
-	tya
-	ora __ha_chart + 7 + 8 * 31
-	sta __ha_chart + 7 + 8 * 31
-
-	// Draw helper lines
-
-	lda __ha_gfxflag
-	and #%00000010
-	beq !+
-
-	lda #%00010000
-	ora __ha_chart + 7 + 8 * 1
-	sta __ha_chart + 7 + 8 * 1
-
-	lda #%00001000
-	ora __ha_chart + 7 + 8 * 30
-	sta __ha_chart + 7 + 8 * 30
-
-	// For normal  XXX check values
-
-	lda #%00000100
-	ora __ha_chart + 7 + 8 * 6
-	sta __ha_chart + 7 + 8 * 6
-
-	lda #%00010000
-	ora __ha_chart + 7 + 8 * 13
-	sta __ha_chart + 7 + 8 * 13
-
-	// For turbo   XXX check values
-
-	lda #%01000000
-	ora __ha_chart + 7 + 8 * 21
-	sta __ha_chart + 7 + 8 * 21
-!:
-	rts
 
 
 #endif // ROM layout

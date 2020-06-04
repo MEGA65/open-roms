@@ -12,9 +12,7 @@
 
 // XXX for Mega65 it can be done more easily, by just disabling the badlines
 
-// XXX consider "PRESS PLAY ON TAPE" before start, with option to stop
 // XXX document CONFIG_TAPE_HEAD_ALIGN option
-// XXX block NMIs
 // XXX fix Mega65 build compilation issues
 
 
@@ -50,12 +48,22 @@ tape_head_align:
 
 #else
 
+	// Make sure user really wants to launch the tool
+
+	jsr tape_ask_play
+
 	// Disable interrupts, set proper I/O values
 
 	jsr CLALL
+
 	sei
+
 	jsr IOINIT
-	jsr cint_legacy
+	jsr CINT
+
+	jsr nmi_lock
+
+	// Prepare CIA timers
 
 	ldx #$02                  // set timer A to 3 ticks
 	jsr tape_common_prepare_cia_by_x
@@ -110,8 +118,6 @@ tape_head_align:
 	
 	dey
 	bne !-
-
-
 
 	// Set graphics mode
 
@@ -250,7 +256,6 @@ tape_head_align_drawn:
 
 	bne tape_head_align_loop_2
 	beq tape_head_align_loop_1
-
 
 
 tape_head_align_quit:

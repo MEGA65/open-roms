@@ -20,4 +20,8 @@ return_from_interrupt:
 	plx_trash_a
 	pla
 
+	// FALLTROUGH
+
+return_from_interrupt_rti:
+
 	rti

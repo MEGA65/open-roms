@@ -45,6 +45,9 @@ load_tape_normal:
 	// Start playing
 	jsr tape_common_prepare_cia
 	jsr tape_ask_play
+#if CONFIG_TAPE_HEAD_ALIGN
+	jsr tape_prepare_reading
+#endif
 
 	// FALLTROUGH
 

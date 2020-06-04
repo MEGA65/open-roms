@@ -22,11 +22,18 @@ panic:
 	jsr setup_vicii
 	jsr clear_screen
 
-	// Disable NMIs - our routine checks for NULL vector
+	// Disable NMIs
+
+#if CONFIG_TAPE_HEAD_ALIGN
+
+	jsr nmi_lock
+
+#else
 
 	lda #$00
-	sta NMINV+0
-	sta NMINV+1
+	sta NMINV + 1            // our routine does not allow zeropage vectors
+
+#endif
 
 	// Display KERNAL PANIC message
 

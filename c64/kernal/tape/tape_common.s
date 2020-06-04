@@ -104,6 +104,17 @@ tape_wait_first_pulse:
 
 tape_wait_play_done:
 
+	lda #$01
+	sta CAS1                           // set the interlock
+
+#if CONFIG_TAPE_HEAD_ALIGN
+
+	rts
+
+tape_prepare_reading:
+
+#endif // CONFIG_TAPE_HEAD_ALIGN
+
 #if CONFIG_MB_MEGA_65
 
 	// Display confirmation
@@ -114,9 +125,6 @@ tape_wait_play_done:
 #endif
 
 	// Prepare for reading
-
-	lda #$01
-	sta CAS1                           // set the interlock
 
 	jsr print_return
 	jmp tape_screen_off_motor_on

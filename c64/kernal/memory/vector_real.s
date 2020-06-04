@@ -23,6 +23,9 @@ vector_real:
 	sty MEMUSS + 1
 	stx MEMUSS + 0
 	
+	lda #$00
+	sta NMINV + 1            // our routine considers this a disabled interrupt 
+
 	// Select routine variant - store or restore vectors
 	ldy #$1F
 	bcc vector_restore
@@ -30,7 +33,7 @@ vector_real:
 	lda CINV, y
 	sta (MEMUSS), y
 
-	bcs vector_end_loop // branch always
+	bcs vector_end_loop      // branch always
 	
 vector_restore:
 	lda (MEMUSS), y

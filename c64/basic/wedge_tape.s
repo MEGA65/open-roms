@@ -38,7 +38,12 @@ wedge_arrow_L:
 	sta FNLEN
 
 	ldy #$01
+#if CONFIG_TAPE_TURBO
 	ldx #$07                           // turbo tape device
+#else
+	tdx #$01                           // normal tape device
+#endif
+
 	jsr JSETFLS
 
 	ldy TXTTAB+1

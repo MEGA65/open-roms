@@ -13,8 +13,7 @@
 // XXX for Mega65 it can be done more easily, by just disabling the badlines
 
 // XXX consider "PRESS PLAY ON TAPE" before start, with option to stop
-// XXX make tape wedge (and this tool) available also without tape turbo support
-// XXX create separate configuration for tape users
+// XXX document CONFIG_TAPE_HEAD_ALIGN option
 // XXX block NMIs
 // XXX fix Mega65 build compilation issues
 

@@ -40,15 +40,7 @@ tape_head_align_apply_gfx:
 	and #%00000010
 	beq !+
 
-	lda #%00010000
-	ora __ha_chart + 7 + 8 * 1
-	sta __ha_chart + 7 + 8 * 1
-
-	lda #%00001000
-	ora __ha_chart + 7 + 8 * 30
-	sta __ha_chart + 7 + 8 * 30
-
-	// For normal
+	// For 'normal'
 
 	lda #%00000001
 	ora __ha_chart + 7 + 8 * 6
@@ -58,7 +50,7 @@ tape_head_align_apply_gfx:
 	ora __ha_chart + 7 + 8 * 13
 	sta __ha_chart + 7 + 8 * 13
 
-	// For turbo
+	// For 'turbo'
 
 	lda #%00010000
 	ora __ha_chart + 7 + 8 * 21

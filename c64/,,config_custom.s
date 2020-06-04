@@ -124,7 +124,7 @@
 #define CONFIG_PANIC_SCREEN
 #define CONFIG_DOS_WEDGE
 #define CONFIG_TAPE_WEDGE
-#define CONFIG_TAPE_HEAD_ALIGN        // XXX work in progress
+#define CONFIG_TAPE_HEAD_ALIGN
 #define CONFIG_BCD_SAFE_INTERRUPTS
 
 

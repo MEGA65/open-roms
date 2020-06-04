@@ -111,23 +111,32 @@ tape_head_align_print_char:
 
 tape_head_align_help_text:
 
-	.word $2000 + (40 * 8) * 0 + 8 * 2
-	.text "ADJUST HEAD FOR MINIMUM SIGNAL NOISE"
+	// Each string consists of:
+	// - destination (start byte) address
+	// - text in screencodes
+	/ - $FF to mark end
+
+	.word $2000 + (40 * 8) * 0 + 8 * 1
+	.text "COMPUTER HAS TO TELL THE SIGNALS APART"
 	.byte $FF
 
-	.word $2000 + (40 * 8) * 4 + 8 * 2
+	.word $2000 + (40 * 8) * 3 + 8 * 6
+	.text "ALIGN HEAD FOR MINIMUM NOISE"
+	.byte $FF
+
+	.word $2000 + (40 * 8) * 6 + 8 * 2
 	.text "IF THE DECK HAS A PITCH (TAPE SPEED)"
 	.byte $FF
 
-	.word $2000 + (40 * 8) * 5 + 8 * 1
-	.text "CONTROL - USE IT TO PLACE DOTTED LINES"
+	.word $2000 + (40 * 8) * 7 + 8 * 1
+	.text "CONTROL, TWEAK IT SO THAT DOTTED LINES"
 	.byte $FF
 
-	.word $2000 + (40 * 8) * 6 + 8 * 3
-	.text "EXACTLY HALF A WAY BETWEEN SIGNALS"
+	.word $2000 + (40 * 8) * 8 + 8 * 5
+	.text "ARE HALF A WAY BETWEEN SIGNALS"
 	.byte $FF
 
-	.byte $FF
+	.byte $FF                          // end of strings
 
 
 #endif

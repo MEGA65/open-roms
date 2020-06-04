@@ -46,10 +46,10 @@
 // I/O devices
 
 #define CONFIG_IEC
-//#define CONFIG_IEC_DOLPHINDOS
-//#define CONFIG_IEC_DOLPHINDOS_FAST
-//#define CONFIG_IEC_JIFFYDOS
-//#define CONFIG_IEC_JIFFYDOS_BLANK
+// #define CONFIG_IEC_DOLPHINDOS
+// #define CONFIG_IEC_DOLPHINDOS_FAST
+// #define CONFIG_IEC_JIFFYDOS
+// #define CONFIG_IEC_JIFFYDOS_BLANK
 // #define CONFIG_IEC_BURST_CIA1                 // please keep disabled for now
 // #define CONFIG_IEC_BURST_CIA2                 // please keep disabled for now
 // #define CONFIG_IEC_BURST_SOFT                 // please keep disabled for now
@@ -87,8 +87,8 @@
 // #define CONFIG_KEY_REPEAT_DEFAULT
 // #define CONFIG_KEY_REPEAT_ALWAYS
 #define CONFIG_KEY_FAST_SCAN
-#define CONFIG_JOY1_CURSOR
-#define CONFIG_JOY2_CURSOR
+// #define CONFIG_JOY1_CURSOR
+// #define CONFIG_JOY2_CURSOR
 
 #define CONFIG_PROGRAMMABLE_KEYS
 

@@ -41,7 +41,7 @@ wedge_arrow_L:
 #if CONFIG_TAPE_TURBO
 	ldx #$07                           // turbo tape device
 #else
-	tdx #$01                           // normal tape device
+	ldx #$01                           // normal tape device
 #endif
 
 	jsr JSETFLS

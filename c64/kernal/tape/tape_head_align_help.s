@@ -114,7 +114,7 @@ tape_head_align_help_text:
 	// Each string consists of:
 	// - destination (start byte) address
 	// - text in screencodes
-	/ - $FF to mark end
+	// - $FF to mark end
 
 	.word $2000 + (40 * 8) * 0 + 8 * 1
 	.text "COMPUTER HAS TO TELL THE SIGNALS APART"

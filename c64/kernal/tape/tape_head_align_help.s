@@ -111,19 +111,19 @@ tape_head_align_print_char:
 
 tape_head_align_help_text:
 
-	.word $2000 + (40 * 8) * 1 + 8 * 2
+	.word $2000 + (40 * 8) * 0 + 8 * 2
 	.text "ADJUST HEAD FOR MINIMUM SIGNAL NOISE"
 	.byte $FF
 
-	.word $2000 + (40 * 8) * 5 + 8 * 2
-	.text "IF THE DECK HAS A PITCH (SPEED) KNOB"
+	.word $2000 + (40 * 8) * 4 + 8 * 2
+	.text "IF THE DECK HAS A PITCH (TAPE SPEED)"
 	.byte $FF
 
-	.word $2000 + (40 * 8) * 6 + 8 * 6
-	.text "USE IT TO PLACE DOTTED LINES"
+	.word $2000 + (40 * 8) * 5 + 8 * 1
+	.text "CONTROL - USE IT TO PLACE DOTTED LINES"
 	.byte $FF
 
-	.word $2000 + (40 * 8) * 7 + 8 * 3
+	.word $2000 + (40 * 8) * 6 + 8 * 3
 	.text "EXACTLY HALF A WAY BETWEEN SIGNALS"
 	.byte $FF
 

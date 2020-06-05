@@ -9,14 +9,14 @@
 
 injest_comma:
 
-	jsr basic_fetch_and_consume_character
+	jsr fetch_character
 	cmp #$2C                           // comma character
 	beq injest_comma_found
 	cmp #$20                           // space, can always be skipped
 	beq injest_comma
 	
 	// Not found
-	jsr basic_unconsume_character
+	jsr unconsume_character
 
 	sec
 	rts

@@ -73,7 +73,7 @@ basic_execute_statement:
 	pha
 
 	// Now consume the character
-	jsr basic_consume_character
+	jsr consume_character
 	
 	rts
 
@@ -92,38 +92,11 @@ not_a_token:
 	jmp do_SYNTAX_error
 
 basic_skip_char:
-	jsr basic_consume_character
+	jsr consume_character
 	jmp basic_execute_statement
 
-basic_fetch_and_consume_character:
-	ldy #0
 
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<TXTPTR
-	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (TXTPTR),y
-#endif
 
-	// FALL THROUGH
-	
-basic_consume_character:
-	// Advance basic text pointer
-	inc TXTPTR+0
-	bne !+
-	inc TXTPTR+1
-!:
-	rts
-
-basic_unconsume_character:
-	lda TXTPTR+0
-	sec
-	sbc #1
-	sta TXTPTR+0
-	lda TXTPTR+1
-	sbc #0
-	sta TXTPTR+1
-	rts
 	
 basic_end_of_line:
 

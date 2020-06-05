@@ -12,11 +12,11 @@ fetch_filename:
 	// Check if end of statement
 
 	jsr end_of_statement_check
-	bcs fetch_filename_rts
+	bcs fetch_filename_done
 
 	// Search for opening quote
 
-	jsr basic_fetch_and_consume_character
+	jsr fetch_character
 	cmp #$22
 	bne_16 do_SYNTAX_error
 
@@ -33,9 +33,9 @@ fetch_filename:
 	lda #$00
 	sta FNLEN
 !:
-	jsr basic_fetch_and_consume_character
+	jsr fetch_character
 	cmp #$22
-	beq fetch_filename_done
+	beq fetch_filename_fail
 	cmp #$00
 	beq !+
 
@@ -43,16 +43,16 @@ fetch_filename:
 	bne !-
 
 !:
-	jsr basic_unconsume_character
+	jsr unconsume_character
 
 	// FALLTROUGH
 
-fetch_filename_done:
+fetch_filename_fail:
 
 	clc
 
 	// FALLTROUGH
 
-fetch_filename_rts:
+fetch_filename_done:
 
 	rts

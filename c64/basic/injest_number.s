@@ -68,7 +68,7 @@ injest_number:
 	sta FAC1_sign
 
 	// Skip over the minus sign
-	jsr basic_consume_character
+	jsr consume_character
 
 ij_loop1:
 	ldy #$00
@@ -138,7 +138,7 @@ ij_loop2:
 
 ij_consider_next_digit:	
 	// Consider next digit
-	jsr basic_consume_character
+	jsr consume_character
 	jmp ij_loop1
 	
 	rts

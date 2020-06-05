@@ -14,6 +14,7 @@ fetch_device_secondary:
 	jsr injest_comma
 	bcs fetch_secondary
 
+	jsr injest_spaces
 	jsr basic_parse_line_number
 	lda LINNUM+1
 	bne_16 do_ILLEGAL_QUANTITY_error
@@ -30,6 +31,7 @@ fetch_secondary:
 	jsr injest_comma
 	bcs fetch_device_secondary_done
 
+	jsr injest_spaces
 	jsr basic_parse_line_number
 	lda LINNUM+1
 	bne_16 do_ILLEGAL_QUANTITY_error

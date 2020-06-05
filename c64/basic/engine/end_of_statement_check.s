@@ -22,7 +22,7 @@ end_of_statement_check:
 
 	cmp #$20
 	bne !+
-	jsr basic_consume_character
+	jsr consume_character
 	jmp end_of_statement_check
 !:
 	cmp #$00

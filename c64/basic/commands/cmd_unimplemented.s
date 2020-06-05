@@ -39,10 +39,6 @@ cmd_on:
 	nop
 cmd_wait:
 	nop
-cmd_save:
-	nop
-cmd_verify:
-	nop
 cmd_def:
 	nop
 cmd_poke:

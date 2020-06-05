@@ -49,7 +49,7 @@ wedge_arrow_L:
 	ldy TXTTAB+1
 	ldx TXTTAB+0
 
-	jmp cmd_load_got_secondaryaddress
+	jmp cmd_load_got_params
 
 #if CONFIG_TAPE_HEAD_ALIGN
 

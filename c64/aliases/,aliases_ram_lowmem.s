@@ -17,7 +17,7 @@
 	.label CHARAC    = $07 //          [!] our implementation might be different  XXX give more details
 	.label ENDCHR    = $08 //          [!] our implementation might be different  XXX give more details
 	.label TRMPOS    = $09 //          -- NOT IMPLEMENTED --
-	.label VERCKB    = $0A //          -- NOT IMPLEMENTED --
+	.label VERCKB    = $0A //          flag used by BASIC, 0 - LOAD, 1 - VERIFY
 	.label COUNT     = $0B //          [!] our implementation might be different  XXX give more details
 	.label DIMFLG    = $0C //          [!] our implementation might be different  XXX give more details
 	.label VALTYP    = $0D //          -- NOT IMPLEMENTED --

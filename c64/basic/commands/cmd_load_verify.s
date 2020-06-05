@@ -27,18 +27,14 @@ cmd_load:
 	ldy #$00                           // secondary address
 	jsr JSETFLS
 
-	// Check if file name is supplied
-
-	jsr basic_end_of_statement_check
-	bcs cmd_load_no_filename
-
 	// Fetch the file name
 
-	jsr cmd_load_fetch_filename
+	jsr fetch_filename
+	bcs cmd_load_no_filename
 
 	// Try to fetch secondary address
 
-	jsr cmd_load_fetch_dev_secondary
+	jsr fetch_device_secondary
 	jmp cmd_load_got_params
 
 cmd_load_no_filename:
@@ -108,84 +104,3 @@ cmd_load_no_error:
 
 
 // XXX move functions below to separate files, change names to neuytral
-
-
-
-
-cmd_load_fetch_filename:
-
-	// Search for opening quote
-
-	jsr basic_fetch_and_consume_character
-	cmp #$22
-	bne_16 do_SYNTAX_error
-!:
-	// Filename starts here so set pointer
-
-	lda TXTPTR+0
-	sta FNADDR+0
-	lda TXTPTR+1
-	sta FNADDR+1
-
-	// Now search for end of line or closing quote
-	// so that we know the length of the filename
-
-	lda #$00
-	sta FNLEN
-!:
-	jsr basic_fetch_and_consume_character
-	cmp #$22
-	beq cmd_load_fetch_filename_done
-	cmp #$00
-	beq !+
-
-	inc FNLEN
-	bne !-
-
-!:
-	jsr basic_unconsume_character
-
-	// FALLTROUGH
-
-cmd_load_fetch_filename_done:
-
-	rts
-
-
-
-
-cmd_load_fetch_dev_secondary:
-
-	// Fetch the device number
-
-	jsr injest_comma
-	bcs cmd_load_fetch_dev_secondary
-
-	jsr basic_parse_line_number
-	lda LINNUM+1
-	bne_16 do_ILLEGAL_QUANTITY_error
-
-	lda LINNUM+0
-	sta FA
-
-	// FALLTROUGH
-
-cmd_load_fetch_secondary:
-
-	// Fetch secondary address
-
-	jsr injest_comma
-	bcs cmd_load_fetch_dev_secondary_done
-
-	jsr basic_parse_line_number
-	lda LINNUM+1
-	bne_16 do_ILLEGAL_QUANTITY_error
-
-	lda LINNUM+0
-	sta SA
-
-	// FALLTROUGH
-
-cmd_load_fetch_dev_secondary_done:
-
-	rts

@@ -5,7 +5,7 @@
 
 cmd_sys:
 	
-	jsr basic_end_of_statement_check
+	jsr end_of_statement_check
 	bcc !+
 
 	// SYS requires an argument

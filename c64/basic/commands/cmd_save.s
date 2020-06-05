@@ -11,14 +11,10 @@ cmd_save:
 	ldy #$00                           // secondary address
 	jsr JSETFLS
 
-	// Check if file name is supplied
-
-	jsr basic_end_of_statement_check
-	bcs_16 do_MISSING_FILENAME_error
-
 	// Fetch the file name
 
-	jsr cmd_load_fetch_filename
+	jsr fetch_filename
+	bcs_16 do_MISSING_FILENAME_error
 
 
 

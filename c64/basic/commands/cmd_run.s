@@ -14,7 +14,7 @@ cmd_goto:
 	// Reset line pointer to first line of program.
 	jsr init_oldtxt
 
-	jsr basic_end_of_statement_check
+	jsr end_of_statement_check
 	bcs !+
 
 	jsr basic_parse_line_number

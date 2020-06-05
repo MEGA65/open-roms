@@ -63,19 +63,30 @@ basic_execute_statement:
 
 	cmp #$7f
 	bcc not_a_token
-	// It is a token: So get the jump table entry for it, push it on the stack
-	// and then RTS to start it.
-	asl
-	tax
-	lda command_jumptable+1,x
-	pha
-	lda command_jumptable+0,x
-	pha
 
-	// Now consume the character
+	// It is a token - consume this character
+
 	jsr consume_character
+
+#if !HAS_OPCODES_65C02
+
+	// Get the jump table entry for it, push it on the stack, and then RTS to start it.
+
+	tax
+	lda command_jumptable_hi - $80, x
+	pha
+	lda command_jumptable_lo - $80, x
+	pha
 	
 	rts
+
+#else // HAS_OPCODES_65C02
+
+	asl
+	tax
+	jmp (command_jumptable, x)
+
+#endif
 
 not_a_token:
 	// Space, which we can also just ignore

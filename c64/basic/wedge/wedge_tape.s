@@ -35,7 +35,8 @@ wedge_arrow_L:
 	// Execute 'arrow + L'
 	
 	lda #$00
-	sta FNLEN
+	sta FNLEN                          // default file name is empty
+	sta VERCKB                         // operation is LOAD, not VERIFY
 
 	ldy #$01
 #if CONFIG_TAPE_TURBO
@@ -46,8 +47,7 @@ wedge_arrow_L:
 
 	jsr JSETFLS
 
-	ldy TXTTAB+1
-	ldx TXTTAB+0
+	// Perform loading
 
 	jmp cmd_load_got_params
 

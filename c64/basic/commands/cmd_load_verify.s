@@ -17,10 +17,6 @@ cmd_load:
 	lda #$00                           // mark operation as LOAD
 	sta VERCKB
 
-	// C64 BASIC apparently does not clear variables after a LOAD in the
-	// middle of a program. For safety, we do.
-	jsr basic_do_clr
-
 	// Set default device and secondary address; channel is not important now
 
 	jsr select_device
@@ -83,6 +79,10 @@ cmd_load_no_error:
 	stx VARTAB+0
 	sty VARTAB+1
 
+	// C64 BASIC apparently does not clear variables after a LOAD in the
+	// middle of a program. For safety, we do.
+	jsr basic_do_clr
+
 	// Now relink the loaded program, as we cannot trust the line
 	// links supplied. For example, the VICE virtual drive emulation
 	// always supplies $0101 as the address of the next line
@@ -97,10 +97,3 @@ cmd_load_no_error:
 
 	// XXX - should run program if LOAD was used in program mode
 	jmp basic_main_loop
-
-
-
-
-
-
-// XXX move functions below to separate files, change names to neuytral

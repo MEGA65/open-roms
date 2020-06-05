@@ -9,7 +9,7 @@
 
 end_of_statement_check:
 
-	ldy #0
+	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<TXTPTR
@@ -27,7 +27,7 @@ end_of_statement_check:
 !:
 	cmp #$00
 	beq !+
-	cmp #$3a
+	cmp #$3A
 	beq !+
 
 	// Not end of statement

@@ -43,6 +43,43 @@
 
 
 //
+// Macros for generating jumptables
+//
+
+
+#if !HAS_OPCODES_65C02
+
+.macro put_jumptable_lo(list)
+{
+	.for (var i = 0; i < list.size(); i++)
+	{
+		.byte mod((list.get(i) - 1), $100)
+	}
+}
+
+.macro put_jumptable_hi(list)
+{
+	.for (var i = 0; i < list.size(); i++)
+	{
+		.byte floor((list.get(i) - 1) / $100)
+	}
+}
+
+#else // HAS_OPCODES_65C02
+
+.macro put_jumptable(list)
+{
+	.for (var i = 0; i < list.size(); i++)
+	{
+		.word list.get(i)
+	}
+}
+
+#endif
+
+
+
+//
 // Trick to skip a 2-byte instruction
 //
 

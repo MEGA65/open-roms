@@ -45,8 +45,6 @@ cmd_poke:
 	nop
 cmd_printhash:
 	nop
-cmd_print:
-	nop
 cmd_cont:
 	nop
 cmd_cmd:

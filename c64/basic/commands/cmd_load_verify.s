@@ -28,7 +28,7 @@ cmd_load:
 	jsr fetch_filename
 	bcs cmd_load_no_filename
 
-	// Try to fetch secondary address
+	// Try to fetch device and secondary address
 
 	jsr fetch_device_secondary
 	jmp cmd_load_got_params
@@ -53,15 +53,7 @@ cmd_load_got_params:                   // input for tape wedge
 	lda VERCKB    // LOAD or VERIFY
 
 	jsr JLOAD
-
-	// Handle result
-
-	php
-	pha
-	jsr print_return
-	pla
-	plp
-	bcs_16 do_kernal_error
+	jsr cmd_load_save_handle_result
 	
 cmd_load_no_error:
 
@@ -97,9 +89,24 @@ cmd_load_no_error:
 	inx
 	beq cmd_load_end                   // branch if direct mode
 
-	// XXX
 	jmp basic_execute_from_current_line
 
 cmd_load_end:
 
 	jmp basic_main_loop
+
+
+//
+// Handle result from Kernal - common for LOAD/VERIFY/SAVE
+//
+
+cmd_load_save_handle_result:
+
+	php
+	pha
+	jsr print_return
+	pla
+	plp
+	bcs_16 do_kernal_error
+
+	rts

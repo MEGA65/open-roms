@@ -14,40 +14,24 @@ fetch_filename:
 	jsr end_of_statement_check
 	bcs fetch_filename_done
 
-	// Search for opening quote
+	// Call the expression parser, make sure it returned a string
 
-	jsr fetch_character
-	cmp #$22
-	bne_16 do_SYNTAX_error
+	jsr FRMEVL
 
-	// Filename starts here so set pointer
+	lda VALTYP
+	bpl_16 do_SYNTAX_error
 
-	lda TXTPTR+0
+	// Set the filename address and pointer
+
+	lda __FAC1+0
+	sta FNLEN
+
+	lda __FAC1+1
 	sta FNADDR+0
-	lda TXTPTR+1
+	lda __FAC1+2
 	sta FNADDR+1
 
-	// Now search for end of line or closing quote
-	// so that we know the length of the filename
-
-	lda #$00
-	sta FNLEN
-!:
-	jsr fetch_character
-	cmp #$22
-	beq fetch_filename_fail
-	cmp #$00
-	beq !+
-
-	inc FNLEN
-	bne !-
-
-!:
-	jsr unconsume_character
-
-	// FALLTROUGH
-
-fetch_filename_fail:
+	// Mark success
 
 	clc
 

@@ -61,16 +61,7 @@ cmd_load_got_params:                   // input for tape wedge
 	jsr print_return
 	pla
 	plp
-	bcc cmd_load_no_error
-
-	// .A = KERNAL error code, also almost matches BASIC error codes
-
-	tax
-	dex
-	bpl !+
-	ldx #B_ERR_BREAK
-!:
-	jmp do_basic_error
+	bcs_16 do_kernal_error
 	
 cmd_load_no_error:
 

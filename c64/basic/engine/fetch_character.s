@@ -28,8 +28,17 @@ consume_character:
 
 	// Advance basic text pointer
 
+#if !HAS_OPCODES_65CE02
+
 	inc TXTPTR+0
 	bne !+
 	inc TXTPTR+1
 !:
+
+#else // HAS_OPCODES_65CE02
+
+	inw TXTPTR
+
+#endif
+
 	rts

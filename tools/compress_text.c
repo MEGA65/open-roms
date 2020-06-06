@@ -162,7 +162,7 @@ char *error_list[]={
   "BREAK", // #30
   " IN ", // #31
   "BRK AT $", // #32
-  "ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+  " ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
   " BASIC BYTES FREE", // #34 // https://github.com/stefanhaustein/expressionparser
   "MEMORY CORRUPT", // #35
   "NOT IMPLEMENTED", // #36

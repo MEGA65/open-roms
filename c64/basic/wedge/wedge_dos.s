@@ -241,9 +241,8 @@ wedge_dos_clean_exit:
 wedge_dos_basic_error:
 	pha
 	jsr JCLALL
-	plx_trash_a
-	dex
-	jmp do_basic_error
+	pla
+	jmp do_kernal_error
 
 wedge_dos_setnam:
 	// Now determine the length of the 'file' name

@@ -58,8 +58,7 @@ wedge_arrow_H:
 	jsr tape_head_align
 
 	jsr print_return
-	ldx #B_ERR_BREAK
-	jmp do_basic_error
+	jmp do_BREAK_error
 
 #endif
 

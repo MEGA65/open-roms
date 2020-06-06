@@ -31,7 +31,7 @@ read_line_loop:
 	bcc !+
 	// Report STRING TOO LONG error (Computes Mapping the 64 p93)
 	ldx #22
-	jmp basic_do_error
+	jmp do_basic_error
 !:
 	sta BUF,x
 	inx

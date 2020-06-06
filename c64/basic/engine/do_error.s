@@ -32,6 +32,22 @@
 // message.  This compares favourably to the 3 bytes per error
 // message that the $2C method would result in.
 
+
+do_kernal_error:                       // .A = KERNAL error code, also almost matches BASIC error codes
+	
+	// Convert to BASIC error code
+
+	tax
+	dex
+	bpl do_basic_error
+
+	// FALLTROUGN
+
+do_BREAK_error:
+
+	ldx #B_ERR_BREAK
+	bpl do_basic_error                 // branch always
+
 do_NOT_IMPLEMENTED_error:
 	.byte $E6
 do_MEMORY_CORRUPT_error:
@@ -107,7 +123,8 @@ do_FILE_OPEN_error:
 do_TO_MANY_FILES_error:
 	.byte $EA
 
-	// Now get the error # and restore $E6 to its correct value
+	// Now get the error id and restore $E6 to its correct value
+	
 	lda $E6
 	pha
 	and #$80
@@ -121,39 +138,39 @@ do_TO_MANY_FILES_error:
 
 	// Restore $EA to correct value in case the NOP above is used
 	// as an argument to the preceeding INC $nn (opcode $E6).
+	
 	lda $EA
 	and #$80
 	sta $EA
 
-	// FALL THROUGH
+	// FALLTHROUGH
 
-	// Error # in X
+do_basic_error:                        // error code in .X
 
-do_basic_error:
 	// "?"
 	txa
 	pha
 	jsr print_return
-	lda #$3f
+	lda #$3F
 	jsr JCHROUT
 	pla
 	tax
 
-	// Error message text
+	// Error message text + " ERROR"
+
 	jsr print_packed_message
 
-	// A space between error name and word error
-	jsr print_space
-
-	// "ERROR"
 	ldx #33
 	jsr print_packed_message
 
+	// Check if direct mode
+
 	lda CURLIN+1
-	cmp #$ff
+	cmp #$FF
 	beq !+
 
 	// We were in a program, so show IN <line>
+
 	ldx #31
 	jsr print_packed_message
 
@@ -162,10 +179,14 @@ do_basic_error:
 	jsr print_integer
 !:
 	// New lines
+
 	jsr print_return
 	lda #$00
 	jsr JCHROUT
 
-	// XXX - Restore stack depth first?
+	// Reset stack, and go back to main loop
+
+	ldx #$FE
+	txs
 
 	jmp basic_main_loop

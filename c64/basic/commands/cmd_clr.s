@@ -7,6 +7,6 @@ cmd_clr:
 
 	jsr basic_do_clr
 
-	// CLR command does not stop execution
-	// (Cconfirmed on a c64)
-	jmp basic_execute_statement
+	// CLR command does not stop execution (confirmed on a C64)
+
+	jmp execute_statements

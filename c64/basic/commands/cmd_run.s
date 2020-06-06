@@ -24,4 +24,4 @@ cmd_goto:
 	jmp do_UNDEFD_STATEMENT_error
 !:
 	// Run it!
-	jmp basic_execute_from_current_line
+	jmp execute_line

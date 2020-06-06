@@ -98,7 +98,7 @@ wedge_dos_change_drive:
 !:
 	sta FA
 	jsr print_return
-	jmp basic_end_of_line
+	jmp basic_main_loop
 
 wedge_dos_status_get:
 

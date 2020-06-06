@@ -5,10 +5,6 @@
 
 basic_main_loop:
 
-	// XXX - Check if direct or program mode, and get next line of input
-	// the appropriate way.
-	// XXX - For now, it is hard coded to direct mode
-
 	// Tell user we are ready
 	jsr ready_message
 
@@ -177,4 +173,4 @@ not_a_line:
 	lda #$FF
 	sta CURLIN+1
 
-	jmp basic_execute_statement
+	jmp execute_statements

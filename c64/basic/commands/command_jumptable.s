@@ -7,6 +7,9 @@
 //
 
 
+// XXX use separate jumptables for commands and functions
+
+
 .const command_list = List().add(
 
 	// $80 - $8F

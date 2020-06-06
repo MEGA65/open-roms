@@ -7,6 +7,6 @@ cmd_new:
 
 	jsr basic_do_new
 
-	// NEW command terminates execution
-	// (Confirmed on a C64)
+	// NEW command terminates execution (confirmed on a C64)
+
 	jmp basic_main_loop

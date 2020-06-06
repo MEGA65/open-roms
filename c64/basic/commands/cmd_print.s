@@ -85,4 +85,4 @@ cmd_print_new_line_done:
 
 cmd_print_done:
 
-	jmp basic_execute_statement
+	jmp execute_statements

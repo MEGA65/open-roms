@@ -19,22 +19,53 @@
 
 FRMEVL:
 
-	// XXX for now we just report dummy string
+	// Check if end of statement
 
-	lda #$FF
-	sta VALTYP
+	jsr end_of_statement_check
+	bcs_16 do_SYNTAX_error
 
-	lda #$0B
-	sta __FAC1 + 0
+	// Search for opening quote
 
-	lda #<dummy_text
-	sta __FAC1 + 1
+	jsr fetch_character
+	cmp #$22
+	bne FRMEVL_fetch_float
 
-	lda #>dummy_text
-	sta __FAC1 + 2
+	// FALLTROUGH
+
+FRMEVL_fetch_string:
+
+	// Mark return value as a string, set initial length as 0
+
+	ldx #$FF
+	stx VALTYP
+
+	inx
+	stx __FAC1 + 0
+
+	// Set pointer to start of the string
+
+	ldx TXTPTR + 0
+	stx __FAC1 + 1
+	ldx TXTPTR + 1
+	stx __FAC1 + 2
+!:
+	// Search for closing quote
+
+	jsr fetch_character
+	cmp #$22
+	beq FRMEVL_done
+
+	inc __FAC1 + 0
+	bne !-
+
+	jmp do_STRING_TOO_LONG_error
+
+FRMEVL_fetch_float:
+
+	// XXX implement this
+
+	jmp do_SYNTAX_error
+
+FRMEVL_done:
 
 	rts
-
-dummy_text:
-
-	.text "LOREM IPSUM"

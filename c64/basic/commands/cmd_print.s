@@ -11,6 +11,7 @@ cmd_print:
 	jsr end_of_statement_check
 	bcs cmd_print_new_line
 
+	jsr fetch_character
 	cmp #$3B                           // semicolon
 	beq cmd_print_done
 
@@ -45,7 +46,7 @@ cmd_print_string:
 cmd_print_float:
 
 	// XXX probably we should also check INTFLG here
-	// XXX
+	// XXX provide implementation
 
 	// FALLTROUGH
 
@@ -74,4 +75,4 @@ cmd_print_new_line:
 
 cmd_print_done:
 
-	jmp basic_main_loop
+	jmp basic_execute_statement

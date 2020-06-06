@@ -36,4 +36,4 @@ cmd_save:
 
 	// The end
 
-	jmp basic_main_loop
+	jmp basic_execute_statement

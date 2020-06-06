@@ -20,7 +20,7 @@
 	.label VERCKB    = $0A //          flag used by BASIC, 0 - LOAD, 1 - VERIFY
 	.label COUNT     = $0B //          [!] our implementation might be different  XXX give more details
 	.label DIMFLG    = $0C //          [!] our implementation might be different  XXX give more details
-	.label VALTYP    = $0D //          -- NOT IMPLEMENTED --
+	.label VALTYP    = $0D //          expression eveluation result; $00 - float, $FF - string
 	.label INTFLG    = $0E //          -- NOT IMPLEMENTED --
 	.label GARBFL    = $0F //          [!] our implementation might be different  XXX give more details
 	.label SUBFLG    = $10 //          -- NOT IMPLEMENTED --

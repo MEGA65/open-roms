@@ -291,7 +291,7 @@ Feature needs few bytes in BASIC segment. If unsure - enable.
 
 If enabled, embeds a tape head align tool into the ROM, it can be started with `←H`. Requires `CONFIG_TAPE_WEDGE`.
 
-Feature needs nearly 1 KB bytes in KERNAL segment. Only recomended for machines with extended ROM, like Mega65.
+Feature needs about 800 bytes in KERNAL segment. Only recomended for machines with extended ROM, like Mega65.
 
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 

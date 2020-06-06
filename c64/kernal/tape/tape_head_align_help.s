@@ -10,6 +10,11 @@
 #if CONFIG_TAPE_HEAD_ALIGN
 
 
+// Helper variable - reuse BASIC numeric work area on zero page
+
+.label __ha_storage = TEMPF1;          // 1 byte
+
+
 tape_head_align_print_help:
 
 	// Make screen font visible

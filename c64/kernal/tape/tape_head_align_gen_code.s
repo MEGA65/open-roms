@@ -10,6 +10,12 @@
 #if CONFIG_TAPE_HEAD_ALIGN
 
 
+// Helper variables - reuse BASIC numeric work area on zero page
+
+.label __ha_lda_addr = TEMPF1 + 0;     // 2 bytes, for code generator
+.label __ha_sta_addr = TEMPF1 + 2;     // 2 bytes, for code generator
+
+
 tape_head_align_gen_code:
 
 	// Setup generated code start address

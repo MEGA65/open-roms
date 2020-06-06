@@ -12,26 +12,21 @@
 // XXX for Mega65 it can be done more easily, by just disabling the badlines
 
 
-.label __ha_start       = 12             // starting row of the chart
-.label __ha_rows        = 11             // number of rows for scrolling
+.label __ha_start       = 12           // starting row of the chart
+.label __ha_rows        = 11           // number of rows for scrolling
 
 // Helper tables
 
 .label __ha_offsets     = $1000;
 .label __ha_masks       = $1100;
 
-// Helper variables
-
-.label __ha_lda_addr    = $1200;        // 2 bytes, for code generator
-.label __ha_sta_addr    = $1202;        // 2 bytes, for code generator
-.label __ha_pulses      = $1204;        // 64 bytes
-.label __ha_gfxflag     = $1244;        // 1 byte
-.label __ha_storage     = $1245;        // 1 byte
-
-
 // Generated code location
 
-.label __ha_scroll    = $1300;
+.label __ha_scroll      = $1300;
+
+// Flag for GFX effects
+
+.label __ha_gfxflag     = $1200;       // 1 byte
 
 
 tape_head_align:
@@ -144,14 +139,9 @@ tape_head_align:
 	inx
 	bne !--
 
-	// Initialize flag for additional GFX effects and the pulse lengths
+	// Initialize flag for additional GFX effects
 
-	lda #$00
-	ldx #$40
-!:
-	sta __ha_pulses, x
-	dex
-	bpl !-
+	stx __ha_gfxflag                   // .X is 0 at this moment
 
 	// Generate helper code for screen scrolling
 
@@ -172,7 +162,7 @@ tape_head_align:
  	and VIC_SCROLY                     // clear the highest bit of RASTER 
 	sta VIC_SCROLY // $D011
 
- 	lda #$F3                           // the last raster where badline can occur, this is 100% safe start
+ 	lda #$FB                           // we want no badlines during the interrupt, this raster is 100% safe
 	sta VIC_RASTER
 
  	lda #%00000001                     // enable raster interrupts
@@ -208,35 +198,9 @@ tape_head_align_loop_1:
 
 	jsr tape_head_align_apply_gfx
 
-	// Skip 2 pulses, these measurements will be too imprecise
-
-	jsr tape_head_align_get_pulse
-	jsr tape_head_align_get_pulse
-
 	// FALLTROUGH
 
 tape_head_align_loop_2:
-
-	// Draw pulses
-
-	ldx #$00
-!:
-	stx __ha_storage
-
-	lda __ha_pulses, x
-	cmp #$FF
-	beq tape_head_align_drawn          // $FF - end of pulses to draw
-
-	jsr tape_head_align_draw_pulse
-
-	ldx __ha_storage
-	inx
-	cpx #$40
-	bne !-
-
-	// FALLTROUGH
-
-tape_head_align_drawn:
 
 	lda CIA1_TIMBLO
 	and CIA1_TIMBHI

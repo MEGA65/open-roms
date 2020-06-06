@@ -16,24 +16,19 @@ tape_head_align_irq:
 
 	asl VIC_IRQ
 
-	// Clear table of pulses stored
-
-	lda #$FF
-	ldy #$3F
-!:
-	sta __ha_pulses, y
-	dey
-	bpl !-
-
 	// Ignore 2 first pulses, they can be garbage
 
 	jsr tape_head_align_get_pulse
 	jsr tape_head_align_get_pulse
 
-	// Now, we can retrieve a pulse for the charts
+	// Now, we can retrieve pulses for the chart
 
 	ldx #$00
-!:
+
+	// FALLTROUGH
+
+tape_head_align_irq_loop:
+
 	jsr tape_head_align_get_pulse
 
 	// If we approached badlines again - we cannot use this measurement anymore
@@ -45,16 +40,20 @@ tape_head_align_irq:
 	cmp #$33                           // first line where badline can occur
 	bcs tape_head_align_irq_end
 !:
-	// Store measurement
+	// Draw pulse
 
+	cpy #$FF
+	beq !+
+	phx_trash_a
 	tya
-	sta __ha_pulses, x
-
+	jsr tape_head_align_draw_pulse
+	plx_trash_a
+!:
 	// Next iteration
 
 	inx
 	cpx #$40
-	bne !--
+	bne tape_head_align_irq_loop
 
 	// FALLTROUGH
 

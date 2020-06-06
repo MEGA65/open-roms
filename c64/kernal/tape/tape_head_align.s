@@ -9,8 +9,6 @@
 
 #if CONFIG_TAPE_HEAD_ALIGN
 
-// XXX for Mega65 it can be done more easily, by just disabling the badlines
-
 
 .label __ha_start       = 12           // starting row of the chart
 .label __ha_rows        = 11           // number of rows for scrolling

@@ -40,13 +40,23 @@ tape_head_align_irq_loop:
 	cmp #$33                           // first line where badline can occur
 	bcs tape_head_align_irq_end
 !:
-	// Draw pulse
+	// Draw pulse on the screen
 
 	cpy #$FF
 	beq !+
+
+	// Center the chart horizontaly, with some margin from top
+
+	.label __ha_chart = $2000 + 8 * (40 * __ha_start + 4)
+
 	phx_trash_a
-	tya
-	jsr tape_head_align_draw_pulse
+
+	lda __ha_offsets, y
+	tax
+	lda __ha_masks, y
+	ora __ha_chart + 7, x
+	sta __ha_chart + 7, x
+
 	plx_trash_a
 !:
 	// Next iteration

@@ -33,6 +33,19 @@
 // message that the $2C method would result in.
 
 
+// XXX consider reworking the two errors below to reuse '$E6' mechanism
+
+
+do_NOT_IMPLEMENTED_error:
+
+	ldx #36
+	bpl do_basic_error                 // branch always
+
+do_MEMORY_CORRUPT_error:
+
+	ldx #35
+	bpl do_basic_error                 // branch always
+
 do_kernal_error:                       // .A = KERNAL error code, also almost matches BASIC error codes
 	
 	// Convert to BASIC error code
@@ -44,26 +57,7 @@ do_kernal_error:                       // .A = KERNAL error code, also almost ma
 	// FALLTROUGN
 
 do_BREAK_error:
-
-	ldx #B_ERR_BREAK
-	bpl do_basic_error                 // branch always
-
-do_NOT_IMPLEMENTED_error:
 	.byte $E6
-do_MEMORY_CORRUPT_error:
-	.byte $E6
-	// the message "BYTES FREE"
-	.byte $E6
-	// the word ERROR
-	.byte $E6
-	// The word "SAVING"
-	.byte $E6
-	// The word "VERIFYING"
-	.byte $E6
-	// The word "LOADING"
-	.byte $E6
-	// The word "READY."
-	.byte $E6	
 do_LOAD_error:
 	.byte $E6
 do_VERIFY_error:
@@ -148,13 +142,12 @@ do_TO_MANY_FILES_error:
 do_basic_error:                        // error code in .X
 
 	// "?"
-	txa
+	phx_trash_a
 	pha
 	jsr print_return
 	lda #$3F
 	jsr JCHROUT
-	pla
-	tax
+	plx_trash_a
 
 	// Error message text + " ERROR"
 

@@ -157,9 +157,9 @@ char *error_list[]={
   "UNDEF\'D FUNCTION",     // https://www.saatchiart.com/print/Painting-Undef-d-Function-3495/16167/3829193/view
   "VERIFY",                // https://forums.openvpn.net/viewtopic.php?t=22040
   "LOAD",                  // https://www.discogs.com/Gimmik-Load-Error/release/482462
+  "BREAK", // #29
   // Non-error messages
-  "READY.\r", // #29       // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
-  "BREAK", // #30
+  "READY.\r", // #30       // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
   " IN ", // #31
   "BRK AT $", // #32
   " ERROR", // #33            // Simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html

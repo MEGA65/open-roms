@@ -5,5 +5,5 @@
 
 ready_message:
 
-	ldx #29
+	ldx #30
 	jmp print_packed_message

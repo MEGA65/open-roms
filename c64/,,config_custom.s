@@ -48,7 +48,7 @@
 #define CONFIG_IEC
 // #define CONFIG_IEC_DOLPHINDOS
 // #define CONFIG_IEC_DOLPHINDOS_FAST
-// #define CONFIG_IEC_JIFFYDOS
+#define CONFIG_IEC_JIFFYDOS
 // #define CONFIG_IEC_JIFFYDOS_BLANK
 // #define CONFIG_IEC_BURST_CIA1                 // please keep disabled for now
 // #define CONFIG_IEC_BURST_CIA2                 // please keep disabled for now

@@ -70,6 +70,11 @@ cmd_load_no_error:
 	stx VARTAB+0
 	sty VARTAB+1
 
+	// For VERIFY - this is it
+
+	lda VERCKB
+	bne cmd_load_end
+
 	// C64 BASIC apparently does not clear variables after a LOAD in the
 	// middle of a program. For safety, we do.
 	jsr basic_do_clr
@@ -86,5 +91,15 @@ cmd_load_no_error:
 	// Reset to start of program
 	jsr init_oldtxt
 
-	// XXX - should run program if LOAD was used in program mode
+	// If loading was done when running a program - run it
+
+	ldx CURLIN+1
+	inx
+	beq cmd_load_end                   // branch if direct mode
+
+	// XXX
+	jmp basic_execute_from_current_line
+
+cmd_load_end:
+
 	jmp basic_main_loop

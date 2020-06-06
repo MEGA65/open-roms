@@ -2,62 +2,39 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-// Jump back into the BASIC execute line loop
-// after first checking that we have a colon
-// or $00 char
+//
+// Tries to execute the statement, and all the subsequent ones
+//
 
 
 basic_execute_statement:
 
 	// Check for RUN/STOP
+
 	lda STKEY
-	bmi !+
-	jmp cmd_stop
+	bpl_16 cmd_stop
+
+	// Skip over any white spaces and colons (':')
 !:
-	// Skip over any white space and :
-	ldy #0
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<TXTPTR
-	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (TXTPTR),y
-#endif
-
-	jsr end_of_statement_check
-	bcs basic_end_of_line
+	jsr fetch_character
+	cmp #$20                           // space, can be skipped
+	beq !-
+	cmp #$3A                           // colon, can be skipped
+	beq !-
 	
-	// jsr printf
-	// .text "LINE PTR = $"
-	// .byte $f1,<OLDTXT,>OLDTXT
-	// .byte $f0,<OLDTXT,>OLDTXT
-	// .text ", STATEMENT PTR = $"
-	// .byte $f1,<TXTPTR,>TXTPTR
-	// .byte $f0,<TXTPTR,>TXTPTR
-	// .byte $d,0
-		
-	// Go through the line until its end is reached.
-	// If we reach the end are in direct mode, then
-	// go back to reading input, else look for the
-	// next line, and advance to that, or else
-	// return to READY prompt because we have run out
-	// of program.
-	
-	// Get next char of program text, even if it is hiding under a ROM or the
-	// IO area.
+	// Check if end of the line
 
-	ldy #0
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<TXTPTR
-	jsr peek_under_roms
 	cmp #$00
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (TXTPTR),y
-#endif
-
 	beq basic_end_of_line
-	
+
+	// Not end of the line - we actually have something to execute	
+
+	// XXX continue rework from here
+
+	pha
+	jsr unconsume_character
+	pla
+
 	// The checks should be done in order of frequency, so that we are as
 	// fast as possible.
 
@@ -110,6 +87,12 @@ basic_skip_char:
 
 	
 basic_end_of_line:
+
+	// If we reach the end are in direct mode, then
+	// go back to reading input, else look for the
+	// next line, and advance to that, or else
+	// return to READY prompt because we have run out
+	// of program.
 
 	// XXX - If not in direct mode, then advance to next line, if there is
 	// one.

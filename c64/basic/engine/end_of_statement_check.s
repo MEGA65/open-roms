@@ -9,6 +9,8 @@
 
 end_of_statement_check:
 
+	// XXX this can probably be size-optimized
+
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K

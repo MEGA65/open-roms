@@ -15,7 +15,8 @@
 // - for float: FAC1
 // - for string: __FAC1 + 0 = length, __FAC1 + 1 = pointer to string
 
-// XXX provide documentation and implementation
+// XXX finish the implementation
+
 
 FRMEVL:
 

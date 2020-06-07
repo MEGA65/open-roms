@@ -70,7 +70,30 @@ tokenise_char_loop:
 	ldx $0110
 	lda $0200,x
 	cmp #$22
-	bne tk_not_quote
+	beq tk_quote
+	cmp #$DE
+	beq tk_pi
+	cmp #$3F
+	bne tk_not_special
+
+	// FALLTROUGH
+
+tk_question_mark:
+
+	lda #$99
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
+
+tk_pi:
+
+	lda #$FF
+	ldx $0110
+	sta $0200,x
+
+	jmp tk_literal_char
+
+tk_quote:
 
 	// Quote
 	lda QTSW
@@ -78,7 +101,7 @@ tokenise_char_loop:
 	sta QTSW
 	jmp tk_literal_char
 	
-tk_not_quote:
+tk_not_special:
 	// Check for literal characters in various ranges
 	// (This just speeds the tokeniser up, by avoiding the packed token search
 	//  for such characters).

@@ -39,4 +39,4 @@ oper_add_strings:
 
 	// XXX merge strings here
 
-	rts
+	jmp FRMEVL_continue

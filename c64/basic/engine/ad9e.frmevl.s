@@ -34,7 +34,7 @@ FRMEVL:
 
 	// XXX we also need TEMMPPT, LASTPT and TEMPST
 
-	// Put the sentinel to the stack
+	// Push the sentinel to the stack
 
 	lda #$00
 	pha
@@ -123,7 +123,7 @@ FRMEVL_fetch_string:
 FRMEVL_got_value:
 
 	jsr end_of_statement_check
-	bcs FRMEVL_calculate
+	bcs FRMEVL_continue                // calculate the stack if expression ended
 
 	// FALLTROUGH
 
@@ -133,47 +133,23 @@ FRMEVL_fetch_operator:
 	// there is an operator waiting to be served
 
 	jsr fetch_operator
-	bcs FRMEVL_calculate               // branch if operator not recognized
+	bcs FRMEVL_continue                // if operator not recognized, calculate what we have
+	                                   // on stack and quit
 
-	// We have a two-argument operator - check if there is enough stack space
-	// XXX this can probably be checked later
+	// XXX check the priorities - possibly execute the current stack first
 
+	// FALLTROUGH
+
+FRMEVL_push_value_operator:
+
+	// Ccheck if there is enough stack space
 	tsx
 	cpx #$40                           // XXX is this a safe threshold?
 	bcc_16 do_FORMULA_TOO_COMPLEX_error
 
-	// XXX check the priorities - either push to stack, or execute it immediately
-
-	bcs FRMEVL_push_value_operator     // branch always
-
-FRMEVL_calculate:                      // this is the exit point for the operators
-
-	// Now, we have to calculate all the operations; at this point we
-	// should have a value in FAC1 and (possibly) operator on the top of the stack
-
-	pla
-	beq FRMEVL_done                    // branch if sentinel
-
-	// Priority does not matter at this point - just jump to the operator
-
-	// FALLTROUGH
-
-FRMEVL_done:
-
-	rts
-
-FRMEVL_push_value_operator:
-
 	// Move the operator ID in .Y
 
 	tay
-
-	// Push the return address
-
-	lda #>(FRMEVL_calculate - 1)
-	pha
-	lda #<(FRMEVL_calculate - 1)
-	pha
 
 	// Push the value from FAC1
 
@@ -199,6 +175,8 @@ FRMEVL_push_string:
 	txa
 	pha
 
+	// FALLTROUGH
+
 FRMEVL_push_operator_address:
 
 	// Push the operator address to stack, in a form
@@ -219,3 +197,12 @@ FRMEVL_push_operator_address:
 	// Continue
 
 	jmp FRMEVL_loop
+
+
+FRMEVL_continue:                       // this is the exit point for the operators
+
+	// Now, we have to calculate all the operations; at this point we
+	// should have a value in FAC1 and (possibly) operator on the top of the stack
+
+	pla                                // priority does not matter here, get rid of it
+	rts                                // this either jumps to operator, or quits FRMEVL

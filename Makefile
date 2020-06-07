@@ -21,6 +21,7 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  c64/basic/math \
                  c64/basic/math_consts \
                  c64/basic/math_mov \
+                 c64/basic/operators \
                  c64/basic/print \
                  c64/basic/rom_revision \
                  c64/basic/wedge

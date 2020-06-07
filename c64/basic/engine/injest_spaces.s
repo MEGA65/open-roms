@@ -3,10 +3,10 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Injests all spaces.
+// Injests all spaces
 //
 
-// XXX get rid of this when proper number parsing is completed
+// XXX get rid of this when proper number parsing is implemented
 
 
 injest_spaces:

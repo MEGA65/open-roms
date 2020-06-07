@@ -129,26 +129,22 @@ FRMEVL_got_value:
 
 FRMEVL_fetch_operator:
 
-	// We have a value, but this is not the end of expression. We expect
-	// a two argument operator here. First make sure we have enough space
-	// on a stack - we will surely need it
+	// We have a value, but this is not the end of expression. Check if
+	// there is an operator waiting to be served
+
+	jsr fetch_operator
+	bcs FRMEVL_calculate               // branch if operator not recognized
+
+	// We have a two-argument operator - check if there is enough stack space
+	// XXX this can probably be checked later
 
 	tsx
 	cpx #$40                           // XXX is this a safe threshold?
 	bcc_16 do_FORMULA_TOO_COMPLEX_error
 
-	// Now look for an operator
-	// XXX for now only addition operator is implemented
+	// XXX check the priorities - either push to stack, or execute it immediately
 
-	jsr fetch_character
-	cmp #$AA                           // check for a plus operator 
-	beq FRMEVL_push_value_operator
-
-	// Something unknown - consider this the end of expression
-
-	jsr unconsume_character
-
-	// FALTROUGH
+	bcs FRMEVL_push_value_operator     // branch always
 
 FRMEVL_calculate:                      // this is the exit point for the operators
 
@@ -168,7 +164,11 @@ FRMEVL_done:
 
 FRMEVL_push_value_operator:
 
-	// First push the return address
+	// Move the operator ID in .Y
+
+	tay
+
+	// Push the return address
 
 	lda #>(FRMEVL_calculate - 1)
 	pha
@@ -204,16 +204,16 @@ FRMEVL_push_operator_address:
 	// Push the operator address to stack, in a form
 	// suitable for RTS
 
-	// XXX add support for other operators
+	// XXX add support for other operators, use .Y
 
-	lda #>(oper_add - 1)
+	lda operator_jumptable_hi - 1, y
 	pha
-	lda #<(oper_add - 1)
+	lda operator_jumptable_lo - 1, y
 	pha
 
 	// Push operator priority
 
-	lda #$01                           // XXX add support for other operators
+	lda operator_priorities - 1, y
 	pha
 
 	// Continue

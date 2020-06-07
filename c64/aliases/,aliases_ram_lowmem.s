@@ -49,7 +49,7 @@
 	.label VARNAM    = $45 // $45-$46  -- NOT IMPLEMENTED --
 	.label VARPNT    = $47 // $47-$48  -- NOT IMPLEMENTED --
 	.label FORPNT    = $49 // $49-$4A  -- NOT IMPLEMENTED --
-	.label OPPTR     = $4B // $4B-$4C  -- NOT IMPLEMENTED --
+	.label OPPTR     = $4B // $4B-$4C  helper variable for expression computation, [!] our usage details are different
 	.label OPMASK    = $4D //          -- NOT IMPLEMENTED --
 	.label DEFPNT    = $4E // $4E-$4F  -- NOT IMPLEMENTED --
 	.label DSCPNT    = $50 // $50-$52  -- NOT IMPLEMENTED --

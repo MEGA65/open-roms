@@ -193,13 +193,13 @@ FRMEVL_fetch_string:
 //   value (which is mandatory)
 //   small catch: if the priority of the new operator is not higher than priority of the last
 //   operator on the stack (sentinel is considered as the lowest priority operator) we first
-//   calculate what currently is present on the stack - this enforces proper operator precedence
+//   compute what currently is present on the stack - this enforces proper operator precedence
 //
 
 FRMEVL_got_value:
 
 	jsr end_of_statement_check
-	bcs FRMEVL_continue                // calculate the stack if expression ended
+	bcs FRMEVL_compute_all             // compute the stack if expression ended
 
 	// FALLTROUGH
 
@@ -209,7 +209,7 @@ FRMEVL_fetch_operator:
 	// there is an operator waiting to be served
 
 	jsr fetch_operator
-	bcs FRMEVL_continue                // if operator not recognized, calculate what we have
+	bcs FRMEVL_compute_all             // if operator not recognized, compute what we have
 	                                   // on stack and quit
 
 	// Move the new operator ID to .Y
@@ -222,18 +222,25 @@ FRMEVL_fetch_operator:
 	pha
 
 	cmp operator_priorities, y 
-	bcs !+
+	bcc FRMEVL_push_value_operator
 
-	// Here the priority is not higher - so calculate what we already have on stack
-	// and restore the sentinel
+	// Here the priority is not higher - so compute what we already have on stack
+	// but do not finish proccessing
 
-	// XXX implement this
-	// XXX main problem: we need to go back here at the end; it seems we can use OPPTR (2 bytes) for this purpose
-
-	// jmp FRMEVL_continue
-	// lda #$00
-	// pha
+	sty OPPTR+1                        // store .Y, we want to preserve it
+	lda #$FF                           // mark that we want to return here
+	sta OPPTR+0
 !:
+	jmp FRMEVL_compute_partial
+
+FRMEVL_compute_partial_return:
+
+	pla
+	pha
+	bne !-
+
+	ldy OPPTR+1
+
 	// FALLTROUGH
 
 FRMEVL_push_value_operator:
@@ -291,15 +298,29 @@ FRMEVL_push_operator_address:
 	jmp FRMEVL_loop
 
 //
-// This subroutine serves two purposes:
+// This part serves two purposes:
 // - it is an exit point for the concrete operator implementations
-// - it causes calculation of everything which is stored on the stack 
+// - it causes computation of everything which is stored on the stack 
 //
+
+FRMEVL_compute_all:
+
+	lda #$00
+	sta OPPTR+0
+
+	// FALLTROUGH
 
 FRMEVL_continue:
 
-	// Now, we have to calculate all the operations; at this point we
-	// should have a value in FAC1 and (possibly) operator on the top of the stack
+	lda OPPTR+0
+	bne FRMEVL_compute_partial_return
+
+	// FALLTROUGH
+
+FRMEVL_compute_partial:
+
+	// Now, we have to compute operation; at this point we should have a value
+	// in FAC1 and (most likely) operator on a stack
 
 	pla                                // priority does not matter here, get rid of it
 	rts                                // this either jumps to operator, or quits FRMEVL

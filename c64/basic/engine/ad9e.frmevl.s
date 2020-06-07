@@ -206,14 +206,14 @@ FRMEVL_push_operator_address:
 
 	// XXX add support for other operators, use .Y
 
-	lda operator_jumptable_hi - 1, y
+	lda operator_jumptable_hi, y
 	pha
-	lda operator_jumptable_lo - 1, y
+	lda operator_jumptable_lo, y
 	pha
 
 	// Push operator priority
 
-	lda operator_priorities - 1, y
+	lda operator_priorities, y
 	pha
 
 	// Continue

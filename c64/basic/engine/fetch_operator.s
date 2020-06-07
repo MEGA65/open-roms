@@ -18,19 +18,18 @@ fetch_operator: // XXX change the operator code to start from 0
 	// Check if within range
 
 	sec
-	sbc #$A9
+	sbc #$AA
 	bcc fetch_operator_failed             // branch if below 0
-	beq fetch_operator_failed             // branch 0
 
-	cmp #$0B
-	bcs fetch_operator_failed             // branch if $0B or greater
+	cmp #$0A
+	bcs fetch_operator_failed             // branch if $0A or greater
 
 	// Now we have to recognize '>=', '<=' and '<>' operators
 
-	cmp #$08
+	cmp #$07
 	beq fetch_operator_try_gteq
 
-	cmp #$0A
+	cmp #$09
 	beq fetch_operator_try_lteq_neq
 
 	// FALLTROUGH
@@ -57,12 +56,12 @@ fetch_operator_try_gteq:
 	// This is a '>'
 
 	jsr unconsume_character
-	lda #$08
+	lda #$07
 	bne fetch_operator_success         // branch always
 !:
 	// This is a '>='
 
-	lda #$0B
+	lda #$0A
 	bne fetch_operator_success         // branch always
 
 
@@ -79,15 +78,15 @@ fetch_operator_try_lteq_neq:
 	// This is a '<'
 
 	jsr unconsume_character
-	lda #$0A
+	lda #$09
 	bne fetch_operator_success         // branch always
 !:
 	// This is a '<='
 
-	lda #$0C
+	lda #$0B
 	bne fetch_operator_success         // branch always
 !:
 	// This is a '<>'
 
-	lda #$0D
+	lda #$0C
 	bne fetch_operator_success         // branch always

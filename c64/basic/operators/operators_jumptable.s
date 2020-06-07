@@ -11,30 +11,30 @@
 
 	// Tokens $AA-$B0
 
-	oper_add,                          // ID: $01
-	oper_sub,                          // ID: $02
-	oper_mul,                          // ID: $03
-	oper_div,                          // ID: $04
-	oper_pow,                          // ID: $05
-	oper_and,                          // ID: $06
-	oper_or,                           // ID: $07
+	oper_add,                          // ID: $00
+	oper_sub,                          // ID: $01
+	oper_mul,                          // ID: $02
+	oper_div,                          // ID: $03
+	oper_pow,                          // ID: $04
+	oper_and,                          // ID: $05
+	oper_or,                           // ID: $06
 
 	// Tokens $B1-$B3
 
-	oper_cmp_gt,                       // ID: $08
-	oper_cmp_eq,                       // ID: $09
-	oper_cmp_lt,                       // ID: $0A
+	oper_cmp_gt,                       // ID: $07
+	oper_cmp_eq,                       // ID: $08
+	oper_cmp_lt,                       // ID: $09
 
 	// Combined two tokens
 
-	oper_cmp_gteq,                     // ID: $0B
-	oper_cmp_lteq,                     // ID: $0C
-	oper_cmp_neq,                      // ID: $0D
+	oper_cmp_gteq,                     // ID: $0A
+	oper_cmp_lteq,                     // ID: $0B
+	oper_cmp_neq,                      // ID: $0C
 
 	// Unary operators
 
-	oper_unary_minus,                  // ID: $0E
-	oper_unary_not                     // ID: $0F
+	oper_unary_minus,                  // ID: $0D
+	oper_unary_not                     // ID: $0E
 )
 
 

@@ -212,20 +212,31 @@ FRMEVL_fetch_operator:
 	bcs FRMEVL_continue                // if operator not recognized, calculate what we have
 	                                   // on stack and quit
 
-	// XXX check the priorities - possibly execute the current stack first
+	// Move the new operator ID to .Y
 
+	tay
+
+	// Compare the priority of the last operator with the new one
+
+	pla
+	pha
+
+	cmp operator_priorities, y 
+	bcs !+
+
+	// Here the priority is not higher - so calculate what we already have on stack
+	// and restore the sentinel
+
+	// XXX implement this
+	// XXX main problem: we need to go back here at the end; it seems we can use OPPTR (2 bytes) for this purpose
+
+	// jmp FRMEVL_continue
+	// lda #$00
+	// pha
+!:
 	// FALLTROUGH
 
 FRMEVL_push_value_operator:
-
-	// Check if there is enough stack space
-	tsx
-	cpx #$40                           // XXX is this a safe threshold?
-	bcc_16 do_FORMULA_TOO_COMPLEX_error
-
-	// Move the operator ID in .Y
-
-	tay
 
 	// Push the value from FAC1
 
@@ -254,6 +265,13 @@ FRMEVL_push_string:
 	// FALLTROUGH
 
 FRMEVL_push_operator_address:
+
+	// Check if there is enough stack space; this could not have been done earlier,
+	// as this is the place where unary operator support calls
+
+	tsx
+	cpx #$40                           // XXX is this a safe threshold?
+	bcc_16 do_FORMULA_TOO_COMPLEX_error
 
 	// Push the operator address to stack, in a form
 	// suitable for RTS

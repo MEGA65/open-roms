@@ -25,11 +25,6 @@ oper_add_floats:
 
 oper_add_strings:
 
-	// Pull string length
-
-	pla
-	sta __FAC2+0
-
 	// Retrieve string address
 
 	pla
@@ -37,6 +32,41 @@ oper_add_strings:
 	pla
 	sta __FAC2+1
 
-	// XXX merge strings here
+	// Pull string length
+
+	pla
+	sta __FAC2+0
+	beq oper_add_strings_end           // if string 2 is empty, we have nothing to do
+
+	// If string 1 is empty, just copy the metadata
+
+	lda __FAC1+0
+	bne !+
+
+	lda __FAC2+0
+	sta __FAC1+0
+	lda __FAC2+1
+	sta __FAC1+1
+	lda __FAC2+2
+	sta __FAC1+2
+
+	jmp FRMEVL_continue
+!:
+	// Allocate memory for concatenated string
+
+	clc
+	adc __FAC2+0
+	bcs_16 do_STRING_TOO_LONG_error
+
+	jsr alloc_temp_string
+
+.break
+
+
+
+	// XXX finish the implementation
+
+
+oper_add_strings_end:
 
 	jmp FRMEVL_continue

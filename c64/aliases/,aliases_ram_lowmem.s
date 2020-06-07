@@ -28,9 +28,9 @@
 	.label TANSGN    = $12 //          -- NOT IMPLEMENTED --
 	.label CHANNL    = $13 //          -- NOT IMPLEMENTED --
 	.label LINNUM    = $14 // $14-$15  BASIC line number, [!] also used by DOS Wedge
-	.label TEMPPT    = $16 //          -- NOT IMPLEMENTED --
-	.label LASTPT    = $17 // $17-$18  -- NOT IMPLEMENTED --
-	.label TEMPST    = $19 // $19-$21  -- NOT IMPLEMENTED --
+	.label TEMPPT    = $16 //          pointer to the first available slot in the temporary string descriptor stack
+	.label LASTPT    = $17 // $17-$18  pointer to the last used slot in the temporary string descriptor
+	.label TEMPST    = $19 // $19-$21  temporary string stack descriptors
 	.label INDEX     = $22 // $22-$25  temporary variables, [!] our usage might be different
 	.label RESHO     = $26 // $26-$2A  -- NOT IMPLEMENTED --
 	.label TXTTAB    = $2B // $2B-$2C  start of BASIC code

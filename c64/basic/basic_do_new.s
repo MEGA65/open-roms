@@ -73,11 +73,14 @@ basic_do_clr:
 	sta MEMSIZ+0
 	sta FRETOP+0
 
-	// FALL THROUGH
+	// FALLTHROUGH
 
 basic_do_clr:
 
+	// XXX shouldnt FRETOP go here?
+
 	// Clear variables, arrays and strings
+
 	lda VARTAB+0
 	sta ARYTAB+0
 	sta STREND+0
@@ -86,5 +89,6 @@ basic_do_clr:
 	sta STREND+1
 
 	rts
+
 
 #endif // ROM layout

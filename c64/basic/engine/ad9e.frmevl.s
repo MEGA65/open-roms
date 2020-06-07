@@ -11,7 +11,6 @@
 //
 // Output:
 // - VALTYP - $00 = floating number, $FF = string
-// - INTFLG (XXX float/integer, probably)
 // - for float: FAC1
 // - for string: __FAC1 + 0 = length, __FAC1 + 1 = pointer to string
 //
@@ -20,19 +19,10 @@
 //   in a correct order
 //
 
-// XXX finish the implementation
+// XXX finish the implementation: invoking functions, fetcching PI, fetching float, fetching variables
 
 
 FRMEVL:
-
-	// XXX we neeed FRETOP for string concatenation
-
-	// lda VARTAB+0
-	// sta FRETOP+0
-	// lda VARTAB+1
-	// sta FRETOP+1
-
-	// XXX we also need TEMMPPT, LASTPT and TEMPST
 
 	// Push the sentinel to the stack
 
@@ -72,7 +62,7 @@ FRMEVL_loop:
 	// Check for the PI
 
 	cmp #$FF                           // check for PI
-	beq_16 FRMEVL_fetch_PI             // XXX
+	beq_16 FRMEVL_fetch_PI
 
 	// If not a PI and not an unary operator, than everything above
 	// $7F has to be a function
@@ -256,14 +246,14 @@ FRMEVL_push_value_operator:
 
 FRMEVL_push_string:
 
-	// Push string - address, length, type
+	// Push string - length, address, type
+
+	lda __FAC1+0
+	pha
 
 	lda __FAC1+1
 	pha
 	lda __FAC1+2
-	pha
-
-	lda __FAC1+0
 	pha
 
 	txa

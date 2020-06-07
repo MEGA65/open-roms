@@ -43,36 +43,80 @@ FRMEVL:
 
 FRMEVL_loop:
 
-	// Check if end of statement
+	// At this point there are 4 valid possibilities:
+	// - a string, a float, pi, or a variable (in short: a value to fetch)
+	// - a token (whichj means function to execute)
+	// - an unary operator
+	// - an opening bracket
+
+	// Check if end of statement, fetch the character
 
 	jsr end_of_statement_check
 	bcs_16 do_SYNTAX_error
-
-	// There are 4 basic possibilities: a string, a float, an opening bracket, or a token
-
 	jsr fetch_character
+
+	// Check for a string or opening bracket
+
 	cmp #$22                           // check for opening quote
 	beq FRMEVL_fetch_string
 	cmp #$28                           // check for opening bracket
 	beq FRMEVL_handle_bracket
-	cmp #$7F                           // check for a token
-	bcc FRMEVL_fetch_float
 
-	// Search for a value or unary operator, starting from the most probable
-	// XXX check all other operators
+	// Check for unary operators
 
 	cmp #$AB                           // check for unary minus
-	beq_16 do_NOT_IMPLEMENTED_error    // XXX
+	beq_16 FRMEVL_unary_minus
 	cmp #$A8                           // check for NOT
-	beq_16 do_NOT_IMPLEMENTED_error    // XXX
+	beq_16 FRMEVL_unary_not
+
+	// Check for the PI
+
 	cmp #$FF                           // check for PI
-	beq_16 do_NOT_IMPLEMENTED_error    // XXX
-	cmp #$AA                           // check for unary plus (ignore this one)    
-	beq FRMEVL_loop
+	beq_16 FRMEVL_fetch_PI             // XXX
+
+	// If not a PI and not an unary operator, than everything above
+	// $7F has to be a function
+
+	cmp #$80                           // check for a token
+	bcc FRMEVL_execute_function
+
+	// There are 2 possibilities left - a floating point value or a variable
+
+
+	// XXX implement this part
+
 
 	// Nothing recognized
 
 	jmp do_SYNTAX_error
+
+//
+// This subroutine handles the situation when we have to execute a BASIC function
+// in place when parser normally expects a value
+//
+
+FRMEVL_execute_function:
+
+	// XXX implement this
+
+	jmp do_NOT_IMPLEMENTED_error
+
+//
+// These two subroutines handles the situation when we got an unary operator
+// in place when parser normally expects a value
+//
+
+FRMEVL_unary_not:
+
+	ldy #$0D                           // our code for unary NOT
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
+
+FRMEVL_unary_minus:
+
+	ldy #$0E                           // our code for unary NOT
+	jmp FRMEVL_push_operator_address
 
 //
 // This subroutine handle brackets - it just calls FRMEVL recursively
@@ -87,6 +131,16 @@ FRMEVL_handle_bracket:
 	beq FRMEVL_got_value
 
 	jmp do_SYNTAX_error
+
+//
+// This subroutine handles the situation when our value to fetch is PI
+//
+
+FRMEVL_fetch_PI:
+
+	// XXX implement this
+
+	jmp do_NOT_IMPLEMENTED_error
 
 //
 // This subroutine fetches the floating point value from the 'outside world'
@@ -203,8 +257,6 @@ FRMEVL_push_operator_address:
 
 	// Push the operator address to stack, in a form
 	// suitable for RTS
-
-	// XXX add support for other operators, use .Y
 
 	lda operator_jumptable_hi, y
 	pha

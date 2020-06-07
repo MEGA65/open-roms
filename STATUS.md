@@ -283,7 +283,7 @@ Not all of them - only these we want to have implemented.
 | `$A68E`   | `RUNC`       | DONE     |                                                    |
 | `$A7AE`   | `NEWSTT`     | PARTIAL  | redirected to RUN command                          |
 | `$AB1E`   | `STROUT`     | DONE     |                                                    |
-| `$AD9E`   | `FRMEVL`     | NOT DONE |                                                    |
+| `$AD9E`   | `FRMEVL`     | PARTIAL  |                                                    |
 | `$BDCD`   | `LINPRT`     | DONE     | temporary implementation                           |
 | `$E3BF`   | `INIT`       | NOT DONE |                                                    |
 | `$E422`   | `INITMSG`    | DONE     |                                                    |

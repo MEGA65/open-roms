@@ -74,10 +74,12 @@ FRMEVL_loop:
 
 	jmp do_SYNTAX_error
 
-FRMEVL_handle_bracket:
+//
+// This subroutine handle brackets - it just calls FRMEVL recursively
+// and consumes the closing bracket afterwards
+//
 
-	// Brackets are easy to handle - just call FRMEVL recursively
-	// and consume the closing bracket afterwards
+FRMEVL_handle_bracket:
 
 	jsr FRMEVL
 	jsr fetch_character
@@ -86,11 +88,19 @@ FRMEVL_handle_bracket:
 
 	jmp do_SYNTAX_error
 
+//
+// This subroutine fetches the floating point value from the 'outside world'
+//
+
 FRMEVL_fetch_float:
 
 	// XXX implement this
 
-	jmp do_SYNTAX_error
+	jmp do_NOT_IMPLEMENTED_error
+
+//
+// This subroutine fetches the string value from the 'outside world'
+//
 
 FRMEVL_fetch_string:
 
@@ -120,6 +130,18 @@ FRMEVL_fetch_string:
 
 	jmp do_STRING_TOO_LONG_error
 
+
+//
+// This subroutine handles the situation after fetching the value from 'outside world':
+// - either there is nothing sane remaining there; if so, this value is or final result
+// - or there is an operator following the value; in such case we have much more work to do;
+//   we push the current value and the operator to the stack and we proceed to fetch the next
+//   value (which is mandatory)
+//   small catch: if the priority of the new operator is not higher than priority of the last
+//   operator on the stack (sentinel is considered as the lowest priority operator) we first
+//   calculate what currently is present on the stack - this enforces proper operator precedence
+//
+
 FRMEVL_got_value:
 
 	jsr end_of_statement_check
@@ -142,7 +164,7 @@ FRMEVL_fetch_operator:
 
 FRMEVL_push_value_operator:
 
-	// Ccheck if there is enough stack space
+	// Check if there is enough stack space
 	tsx
 	cpx #$40                           // XXX is this a safe threshold?
 	bcc_16 do_FORMULA_TOO_COMPLEX_error
@@ -198,8 +220,13 @@ FRMEVL_push_operator_address:
 
 	jmp FRMEVL_loop
 
+//
+// This subroutine serves two purposes:
+// - it is an exit point for the concrete operator implementations
+// - it causes calculation of everything which is stored on the stack 
+//
 
-FRMEVL_continue:                       // this is the exit point for the operators
+FRMEVL_continue:
 
 	// Now, we have to calculate all the operations; at this point we
 	// should have a value in FAC1 and (possibly) operator on the top of the stack

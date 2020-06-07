@@ -25,6 +25,15 @@
 
 FRMEVL:
 
+	// XXX we neeed FRETOP for string concatenation
+
+	// lda VARTAB+0
+	// sta FRETOP+0
+	// lda VARTAB+1
+	// sta FRETOP+1
+
+	// XXX we also need TEMMPPT, LASTPT and TEMPST
+
 	// Put the sentinel to the stack
 
 	lda #$00
@@ -50,7 +59,7 @@ FRMEVL_loop:
 	bcc FRMEVL_fetch_float
 
 	// Search for a value or unary operator, starting from the most probable
-	// XXX check for BASIC functions here, too
+	// XXX check all other operators
 
 	cmp #$AB                           // check for unary minus
 	beq_16 do_NOT_IMPLEMENTED_error    // XXX
@@ -129,7 +138,7 @@ FRMEVL_fetch_operator:
 	bcc_16 do_FORMULA_TOO_COMPLEX_error
 
 	// Now look for an operator
-	// XXX for now only plus operator is implemented
+	// XXX for now only addition operator is implemented
 
 	jsr fetch_character
 	cmp #$AA                           // check for a plus operator 
@@ -197,9 +206,9 @@ FRMEVL_push_operator_address:
 
 	// XXX add support for other operators
 
-	lda #>(oper_plus - 1)
+	lda #>(oper_add - 1)
 	pha
-	lda #<(oper_plus - 1)
+	lda #<(oper_add - 1)
 	pha
 
 	// Push operator priority

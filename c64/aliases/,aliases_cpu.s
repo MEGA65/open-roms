@@ -47,8 +47,6 @@
 //
 
 
-#if !HAS_OPCODES_65C02
-
 .macro put_jumptable_lo(list)
 {
 	.for (var i = 0; i < list.size(); i++)
@@ -65,7 +63,7 @@
 	}
 }
 
-#else // HAS_OPCODES_65C02
+#if HAS_OPCODES_65C02
 
 .macro put_jumptable(list)
 {

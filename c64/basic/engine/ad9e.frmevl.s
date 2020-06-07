@@ -45,7 +45,7 @@ FRMEVL_loop:
 	cmp #$22                           // check for opening quote
 	beq FRMEVL_fetch_string
 	cmp #$28                           // check for opening bracket
-	beq_16 FRMEVL_handle_bracket
+	beq FRMEVL_handle_bracket
 	cmp #$7F                           // check for a token
 	bcc FRMEVL_fetch_float
 
@@ -133,7 +133,7 @@ FRMEVL_fetch_operator:
 
 	jsr fetch_character
 	cmp #$AA                           // check for a plus operator 
-	beq_16 FRMEVL_push_value_operator
+	beq FRMEVL_push_value_operator
 
 	// Something unknown - consider this the end of expression
 
@@ -144,12 +144,12 @@ FRMEVL_fetch_operator:
 FRMEVL_calculate:                      // this is the exit point for the operators
 
 	// Now, we have to calculate all the operations; at this point we
-	// should have a value in FAC1 and (possibly) operator on the stack
+	// should have a value in FAC1 and (possibly) operator on the top of the stack
 
 	pla
 	beq FRMEVL_done                    // branch if sentinel
 
-	// Priority can be ignored now - just jump to the operator
+	// Priority does not matter at this point - just jump to the operator
 
 	// FALLTROUGH
 
@@ -166,7 +166,7 @@ FRMEVL_push_value_operator:
 	lda #<(FRMEVL_calculate - 1)
 	pha
 
-	// Push the value in FAC1/ARG1
+	// Push the value from FAC1
 
 	ldx VALTYP
 	bmi FRMEVL_push_string

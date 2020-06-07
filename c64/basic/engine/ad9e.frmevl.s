@@ -45,7 +45,7 @@ FRMEVL_loop:
 	cmp #$22                           // check for opening quote
 	beq FRMEVL_fetch_string
 	cmp #$28                           // check for opening bracket
-	beq_16 do_NOT_IMPLEMENTED_error    // XXX
+	beq_16 FRMEVL_handle_bracket
 	cmp #$7F                           // check for a token
 	bcc FRMEVL_fetch_float
 
@@ -62,6 +62,18 @@ FRMEVL_loop:
 	beq FRMEVL_loop
 
 	// Nothing recognized
+
+	jmp do_SYNTAX_error
+
+FRMEVL_handle_bracket:
+
+	// Brackets are easy to handle - just call FRMEVL recursively
+	// and consume the closing bracket afterwards
+
+	jsr FRMEVL
+	jsr fetch_character
+	cmp #$29                           // closing bracket
+	beq FRMEVL_got_value
 
 	jmp do_SYNTAX_error
 
@@ -125,6 +137,8 @@ FRMEVL_fetch_operator:
 
 	// Something unknown - consider this the end of expression
 
+	jsr unconsume_character
+
 	// FALTROUGH
 
 FRMEVL_calculate:                      // this is the exit point for the operators
@@ -145,7 +159,14 @@ FRMEVL_done:
 
 FRMEVL_push_value_operator:
 
-	// First push the value in FAC1/ARG1
+	// First push the return address
+
+	lda #>(FRMEVL_calculate - 1)
+	pha
+	lda #<(FRMEVL_calculate - 1)
+	pha
+
+	// Push the value in FAC1/ARG1
 
 	ldx VALTYP
 	bmi FRMEVL_push_string

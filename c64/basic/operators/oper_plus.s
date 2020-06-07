@@ -39,4 +39,4 @@ oper_plus_strings:
 
 	// XXX merge strings here
 
-	jmp FRMEVL_calculate
+	rts

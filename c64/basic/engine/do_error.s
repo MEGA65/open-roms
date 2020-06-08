@@ -47,7 +47,7 @@ do_MEMORY_CORRUPT_error:
 	bpl do_basic_error                 // branch always
 
 do_kernal_error:                       // .A = KERNAL error code, also almost matches BASIC error codes
-	
+
 	// Convert to BASIC error code
 
 	tax
@@ -142,12 +142,12 @@ do_TO_MANY_FILES_error:
 do_basic_error:                        // error code in .X
 
 	// "?"
+	
 	phx_trash_a
-	pha
 	jsr print_return
 	lda #$3F
 	jsr JCHROUT
-	plx_trash_a
+	pla
 
 	// Error message text + " ERROR"
 

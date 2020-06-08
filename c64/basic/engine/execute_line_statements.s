@@ -32,7 +32,7 @@ execute_statements:
 	cmp #$7F
 	bcc_16 do_SYNTAX_error             // branch if not a token    XXX here we should handle variable assignments
 
-	cmp #$A9
+	cmp #$A6
 	bcs execute_statements_extended
 
 execute_statements_run_token:
@@ -73,9 +73,9 @@ execute_statements_extended:
 	cmp #$CB                                     
 	bne !+
 
-	// 'GO' command has a strande token, after functions
+	// 'GO' command has a strange token, after function tokens
 
-	lda #$A9
+	lda #$A7
 	bne execute_statements_run_token
 !:
 	// XXX here is the place for possible extended BASIC command set

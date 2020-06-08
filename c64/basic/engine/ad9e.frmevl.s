@@ -87,7 +87,7 @@ FRMEVL_loop:
 
 FRMEVL_execute_function:
 
-	// XXX implement this
+	// XXX implement this - use function_jumptable*
 
 	jmp do_NOT_IMPLEMENTED_error
 

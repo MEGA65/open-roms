@@ -3,11 +3,8 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Jumptable for all known BASIC commands and functions
+// Jumptable for all known BASIC commands
 //
-
-
-// XXX use separate jumptables for commands and functions
 
 
 .const command_list = List().add(
@@ -50,59 +47,23 @@
 	cmd_sys,
 	cmd_open,
 
-	// $A0-$A9
+	// $A0-$A6
 
 	cmd_close,
 	cmd_get,
 	cmd_new,
-	cmd_tab,
-	cmd_to,
-	cmd_fn,
-	cmd_spc,
-	cmd_then,
-	cmd_not,
-	cmd_step,
+	cmd_tab,                           // XXX this token probably does not belong here
+	do_SYNTAX_error,                   // 'TO' is not a standalone command
+	do_SYNTAX_error,                   // 'FN' is not a standalone command
+	cmd_spc,                           // XXX this token probably does not belong here
+	
+	// 'THEN' ($A7) and 'STEP' ($A9) are not standalone commands
+	// 'NOT' ($A8) is an operator, not a command
 
-	// $CB, but remapped to $A9
+	// $CB, but remapped to $A7
 
 	cmd_go
 )
-
-/*
-	XXX we need a separate function dispatch table for the following ones:
-
-
-	// $B4-$BF
-
-	cmd_sgn,
-	cmd_int,
-	cmd_abs,
-	cmd_usr,
-	cmd_fre,
-	cmd_pos,
-	cmd_sqr,
-	cmd_rnd,
-	cmd_log,
-	cmd_exp,
-	cmd_cos,
-	cmd_sin,
-
-	// $C0-$CA
-
-	cmd_tan,
-	cmd_atn,
-	cmd_peek,
-	cmd_len,
-	cmd_str,
-	cmd_val,
-	cmd_asc,
-	cmd_chr,
-	cmd_left,
-	cmd_right,
-	cmd_mid
-*/
-
-
 
 
 #if !HAS_OPCODES_65C02

@@ -168,11 +168,19 @@ FRMEVL_fetch_string:
 	jsr fetch_character
 	cmp #$22
 	beq FRMEVL_got_value
+	cmp #$00
+	beq !+
 
 	inc __FAC1 + 0
 	bne !-
 
 	jmp do_STRING_TOO_LONG_error
+!:
+	// No closing quote, but end of the data
+
+	jsr unconsume_character
+
+	// FALLTROUGH
 
 
 //

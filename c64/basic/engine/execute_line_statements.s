@@ -32,6 +32,11 @@ execute_statements:
 	cmp #$7F
 	bcc_16 do_SYNTAX_error             // branch if not a token    XXX here we should handle variable assignments
 
+	cmp #$A9
+	bcs execute_statements_extended
+
+execute_statements_run_token:
+
 	// Initialize temporary string stack - just about any statement might need it
 	// XXX original C64 ROM initializes this during the startup too - not sure where to put this
 
@@ -61,6 +66,21 @@ execute_statements:
 	jmp (command_jumptable, x)
 
 #endif
+
+
+execute_statements_extended:
+
+	cmp #$CB                                     
+	bne !+
+
+	// 'GO' command has a strande token, after functions
+
+	lda #$A9
+	bne execute_statements_run_token
+!:
+	// XXX here is the place for possible extended BASIC command set
+
+	jmp do_SYNTAX_error
 
 
 execute_statements_end_of_line:

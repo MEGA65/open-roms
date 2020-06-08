@@ -50,7 +50,7 @@
 	cmd_sys,
 	cmd_open,
 
-	// $A0-$AF
+	// $A0-$A9
 
 	cmd_close,
 	cmd_get,
@@ -62,19 +62,18 @@
 	cmd_then,
 	cmd_not,
 	cmd_step,
-	cmd_plus,
-	cmd_minus,
-	cmd_mult,
-	cmd_div,
-	cmd_exponent,
-	cmd_and,
 
-	// $B0-$BF
+	// $CB, but remapped to $A9
 
-	cmd_or,
-	cmd_greater,
-	cmd_equal,
-	cmd_less,
+	cmd_go
+)
+
+/*
+	XXX we need a separate function dispatch table for the following ones:
+
+
+	// $B4-$BF
+
 	cmd_sgn,
 	cmd_int,
 	cmd_abs,
@@ -88,7 +87,7 @@
 	cmd_cos,
 	cmd_sin,
 
-	// $C0-$CF
+	// $C0-$CA
 
 	cmd_tan,
 	cmd_atn,
@@ -100,70 +99,9 @@
 	cmd_chr,
 	cmd_left,
 	cmd_right,
-	cmd_mid,
-	cmd_go,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
+	cmd_mid
+*/
 
-	// $D0-$DF
-
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-
-	// $E0-$EF
-
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-
-	// $F0-$FF
-
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented,
-	cmd_unimplemented
-)
 
 
 

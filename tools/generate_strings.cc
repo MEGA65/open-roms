@@ -306,6 +306,7 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
 const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
 {
 	// STD    M65    X16   --- misc strings as on CBM machines
+	{ true,  true,  true,  "STR_RET_QM",  "\r?"                 }, 
 	{ true,  true,  true,  "STR_BYTES",   " BASIC BYTES FREE"   }, // https://github.com/stefanhaustein/expressionparser
 	{ true,  true,  true,  "STR_READY",   "\rREADY.\r"          }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
 	{ true,  true,  true,  "STR_ERROR",   " ERROR"              }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html

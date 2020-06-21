@@ -38,12 +38,12 @@
 
 do_NOT_IMPLEMENTED_error:
 
-	ldx #36
+	ldx #IDX__EV7_28
 	bpl do_basic_error                 // branch always
 
 do_MEMORY_CORRUPT_error:
 
-	ldx #35
+	ldx #IDX__EOR_2A
 	bpl do_basic_error                 // branch always
 
 do_kernal_error:                       // .A = KERNAL error code, also almost matches BASIC error codes
@@ -144,10 +144,9 @@ do_basic_error:                        // error code in .X
 	// "?"
 	
 	phx_trash_a
-	jsr print_return
-	lda #$3F
-	jsr JCHROUT
-	pla
+	ldx #IDX__STR_RET_QM
+	jsr print_packed_misc_str
+	plx_trash_a
 
 	// Error message text + " ERROR"
 

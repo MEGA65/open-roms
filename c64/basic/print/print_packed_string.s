@@ -21,12 +21,6 @@ print_packed_misc_str:
 	jsr_ind VB1__print_packed_misc_str
 	jmp     map_NORMAL
 
-print_packed_keyword_V2:
-
-	jsr     map_BASIC_1
-	jsr_ind VB1__print_packed_keyword_V2
-	jmp     map_NORMAL
-
 #else
 
 print_packed_error:                    // .X - error string index
@@ -39,6 +33,18 @@ print_packed_misc_str:                 // .X - misc string index
 
 	lda #<packed_str_misc
 	ldy #>packed_str_misc
+	bne print_freq_packed_string       // branch always
+
+print_packed_keyword_CC:               // .X - token number
+
+	lda #<packed_str_keywords_CC
+	ldy #>packed_str_keywords_CC
+	bne print_freq_packed_string       // branch always
+
+print_packed_keyword_CD:               // .X - token number
+
+	lda #<packed_str_keywords_CD
+	ldy #>packed_str_keywords_CD
 	bne print_freq_packed_string       // branch always
 
 print_packed_keyword_V2:               // .X - token number

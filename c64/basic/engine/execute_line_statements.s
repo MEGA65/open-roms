@@ -59,7 +59,7 @@ execute_statements:
 
 #else // HAS_OPCODES_65C02
 
-	// Use jumptable to go to the token
+	// Use jumptable to go to the command routine
 
 	asl
 	tax
@@ -70,12 +70,91 @@ execute_statements:
 
 execute_statements_extended:
 
-	// XXX here is the place for possible extended BASIC command set
+	// Support for extended BASIC commands
+
+	cmp #$CC
+	beq execute_statements_CC
+	cmp #$CD
+	beq execute_statements_CD
+
+	// 'GO' command has a strange token, it is placed after function tokens
 
 	cmp #$CB                                     
-	beq_16 cmd_go // 'GO' command has a strange token, it is placed after function tokens
+	beq_16 cmd_go
 
 	jmp do_SYNTAX_error
+
+
+execute_statements_CC:
+
+	// Get the sub-token, check that it is valid
+
+	jsr fetch_character
+	cmp #$00
+	beq_16 do_SYNTAX_error
+
+	cmp #(TK__MAXTOKEN_keywords_CC+1)
+	bcs_16 do_SYNTAX_error
+
+	// Execute command
+
+#if !HAS_OPCODES_65C02
+
+	// Get the jump table entry for it, push it on the stack, and then RTS to start it.
+
+	tax
+	lda command_CC_jumptable_hi - 1, x
+	pha
+	lda command_CC_jumptable_lo - 1, x
+	pha
+	
+	rts
+
+#else // HAS_OPCODES_65C02
+
+	// Use jumptable to go to the command routine
+
+	asl
+	tax
+	jmp (command_CC_jumptable - 2, x)
+
+#endif
+
+
+execute_statements_CD:
+
+	// Get the sub-token, check that it is valid
+
+	jsr fetch_character
+	cmp #$00
+	beq_16 do_SYNTAX_error
+
+	cmp #(TK__MAXTOKEN_keywords_CD+1)
+	bcs_16 do_SYNTAX_error
+
+	// Execute command
+
+#if !HAS_OPCODES_65C02
+
+	// Get the jump table entry for it, push it on the stack, and then RTS to start it.
+
+	tax
+	lda command_CD_jumptable_hi - 1, x
+	pha
+	lda command_CD_jumptable_lo - 1, x
+	pha
+	
+	rts
+
+#else // HAS_OPCODES_65C02
+
+	// Use jumptable to go to the command routine
+
+	asl
+	tax
+	jmp (command_CD_jumptable - 2, x)
+
+#endif
 
 
 execute_statements_end_of_line:

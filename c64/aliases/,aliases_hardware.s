@@ -187,10 +187,17 @@
 
 #if CONFIG_MB_MEGA_65
 
-	.const C65_EXTKEYS_PR  = $D607
-	.const C65_EXTKEYS_DDR = $D608
+	.label C65_EXTKEYS_PR  = $D607
+	.label C65_EXTKEYS_DDR = $D608
 
-	.const M65_BADL_SLI    = $D710
+	.label M65_BADL_SLI    = $D710
+
+#else
+
+	// SuperCPU registers
+
+	.label SCPU_SPEED_NORMAL = $D07A
+	.label SCPU_SPEED_TURBO  = $D07B
 
 #endif
 

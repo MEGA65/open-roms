@@ -826,6 +826,14 @@ void DataSet::prepareOutput()
 			}
 		}
 
+		// For the token list - put the number of tokens available
+
+		if (stringEntryList.type == ListType::KEYWORDS)
+		{
+			stream << std::endl << ".label TK__MAXTOKEN_" << stringEntryList.name << " = " <<
+			          std::dec << stringEncodedList.size() << std::endl;
+		}
+
 		stream << std::endl << ".macro put_freq_packed_" << stringEntryList.name << "()" << std::endl << "{" << std::endl;
 
 		enum LastStr { NONE, SKIPPED, WRITTEN } lastStr = LastStr::NONE;
@@ -867,7 +875,7 @@ void DataSet::prepareOutput()
 			}
 		}
 
-		// For the token list - pu the 'end of keywords' mark
+		// For the token list - put the 'end of keywords' mark
 
 		if (stringEntryList.type == ListType::KEYWORDS)
 		{

@@ -82,11 +82,82 @@ list_not_quote:
 
 	// Display a token
 
+list_display_token_CC:
+
+	cmp #$CC
+	bne list_display_token_CD
+
+	// Fetch the sub-token
+
+	iny
+#if ROM_LAYOUT_M65
+	jsr peek_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT
+	jsr peek_under_roms
+	cmp #$00
+#else
+	lda (OLDTXT),y
+#endif
+
 	// Save registers
 	tax
 	pha
 	phy_trash_a
 
+	// Subtract $1 from token to get offset in token list
+	dex
+
+	// Now ask for it to be printed
+	jsr print_packed_keyword_CC
+
+#if HAS_OPCODES_65C02
+	bra list_token_displayed
+#else
+	jmp list_token_displayed
+#endif
+
+list_display_token_CD:
+
+	cmp #$CD
+	bne list_display_token_V2
+	
+	// Fetch the sub-token
+
+	iny
+#if ROM_LAYOUT_M65
+	jsr peek_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT
+	jsr peek_under_roms
+	cmp #$00
+#else
+	lda (OLDTXT),y
+#endif
+	
+	// Save registers
+	tax
+	pha
+	phy_trash_a
+
+	// Subtract $1 from token to get offset in token list
+	dex
+
+	// Now ask for it to be printed
+	jsr print_packed_keyword_CD
+
+#if HAS_OPCODES_65C02
+	bra list_token_displayed
+#else
+	jmp list_token_displayed
+#endif
+
+list_display_token_V2:
+
+	// Save registers
+	tax
+	pha
+	phy_trash_a
 
 	// Subtract $80 from token to get offset in token list
 	txa
@@ -95,6 +166,10 @@ list_not_quote:
 
 	// Now ask for it to be printed
 	jsr print_packed_keyword_V2
+
+	// FALLTROUGH
+
+list_token_displayed:
 
 	// Restore registers
 	ply_trash_a

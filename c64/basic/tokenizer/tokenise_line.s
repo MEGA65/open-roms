@@ -70,6 +70,8 @@ tokenise_line_loop:
 	lda tk__len_unpacked
 	beq tokenise_line_char                       // branch if attempt to tokenise failed
 
+	// Check for BASIC V2 tokens
+
 	lda #<packed_str_keywords_V2
 	sta FRESPC+0
 	lda #>packed_str_keywords_V2
@@ -78,7 +80,23 @@ tokenise_line_loop:
 	jsr tk_search
 	bcc tokenise_line_keyword_V2                 // branch if keyword identified
 
-	// XXX add support for additional keyword lists here
+	// Check for extended tokens
+
+	lda #<packed_str_keywords_CC
+	sta FRESPC+0
+	lda #>packed_str_keywords_CC
+	sta FRESPC+1
+
+	jsr tk_search
+	bcc tokenise_line_keyword_CC                 // branch if keyword identified
+
+	lda #<packed_str_keywords_CD
+	sta FRESPC+0
+	lda #>packed_str_keywords_CD
+	sta FRESPC+1
+
+	jsr tk_search
+	bcc tokenise_line_keyword_CD                 // branch if keyword identified
 
 	// Shorten packed keyword candidate and try again
 
@@ -106,28 +124,13 @@ tokenise_line_keyword_V2:
 
 	// Cut away unnecessary bytes
 
-	inc tk__offset
-	ldx tk__offset
+	jsr tk_cut_away
 
-	dec tk__len_unpacked                         // keyword length, afterwards number of bytes to cut away
-	lda tk__len_unpacked
-	clc
-	adc tk__offset
-	tay
-!:
-	lda BUF, y
-	sta BUF, x
-	beq !+
-
-	inx
-	iny
-	bne !-	
-!:
 	// Special handling for REM command - after this one nothing more should be tokenised
 
 	pla
 	cmp #$0F                                     // REM token index
-	bne tokenise_line_loop
+	jmp tokenise_line_loop
 
 	// FALLTROUGH
 
@@ -171,6 +174,43 @@ tokenise_line_question_mark:
 tokenise_line_char:
 
 	inc tk__offset
+	jmp tokenise_line_loop
+
+
+// Support for extended keyword lists
+
+tokenise_line_keyword_CC:
+
+	// Store the token list index
+
+	lda #$CC
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
+
+tokenise_line_keyword_CD:
+
+	// Store the token list index
+
+	lda #$CD
+
+	ldy tk__offset
+	sta BUF, y
+
+	// Store the sub-token itself
+
+	inx
+	txa
+	iny
+	sty tk__offset
+	sta BUF, y
+
+	// Cut away unnecessary bytes
+
+	inc tk__offset
+	dec tk__len_unpacked
+
+	jsr tk_cut_away
 	jmp tokenise_line_loop
 
 #endif // ROM layout

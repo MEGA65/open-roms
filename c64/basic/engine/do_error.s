@@ -40,6 +40,8 @@ do_kernal_error:                       // .A = KERNAL error code, also almost ma
 	// Convert to BASIC error code
 
 	tax
+	beq do_BREAK_error                 // XXX is 0 really a proper error code?
+
 	dex
 	bpl do_basic_error                 // branch always
 

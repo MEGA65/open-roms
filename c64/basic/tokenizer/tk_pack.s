@@ -221,7 +221,6 @@ tk_pack_3n_new_byte:
 
 	// Adjust remaining counters / flags
 
-	iny
 	sty tk__byte_offset
 	dec tk__nibble_flag                // $00 -> $FF
 

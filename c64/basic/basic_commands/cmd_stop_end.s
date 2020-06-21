@@ -4,8 +4,8 @@
 
 
 cmd_stop:
-	ldx #30 // "BREAK"
-	jsr print_packed_message
+	ldx #IDX__EV2_1E // "BREAK"
+	jsr print_packed_error
 
 	// Are we in direct mode
 	lda CURLIN+1
@@ -13,8 +13,8 @@ cmd_stop:
 	beq !+
 
 	// Not direct mode
-	ldx #31
-	jsr print_packed_message
+	ldx #IDX__STR_IN
+	jsr print_packed_misc_str
 
 	lda CURLIN+1
 	ldx CURLIN+0

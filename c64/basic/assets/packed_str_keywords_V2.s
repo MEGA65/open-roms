@@ -3,6 +3,7 @@
 // #LAYOUT# X16 BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-packed_keywords:
 
-	put_packed_keywords()
+packed_str_keywords_V2:
+
+	put_freq_packed_keywords_V2()

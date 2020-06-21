@@ -3,6 +3,7 @@
 // #LAYOUT# X16 BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-packed_message_words:
 
-	put_packed_words()
+packed_str_errors:
+
+	put_freq_packed_errors()

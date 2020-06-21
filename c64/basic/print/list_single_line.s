@@ -86,22 +86,16 @@ list_not_quote:
 	pha
 	phy_trash_a
 
-	// Get pointer to compressed keyword list
-	lda #<packed_keywords
-	sta FRESPC+0
-	lda #>packed_keywords
-	sta FRESPC+1
-	
-	// Subtract $80 from token to get offset in word
-	// list
+
+	// Subtract $80 from token to get offset in token list
 	txa
 	and #$7f
 	tax
 
 	// Now ask for it to be printed
-	ldy #$ff
-	jsr packed_word_search
+	jsr print_packed_keyword_V2
 
+	// Restore registers
 	ply_trash_a
 	pla
 

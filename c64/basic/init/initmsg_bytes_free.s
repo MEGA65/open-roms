@@ -21,5 +21,5 @@ initmsg_bytes_free:
 	jsr print_integer
 
 	// Print rest of the start up message
-	ldx #34
-	jmp print_packed_message
+	ldx #IDX__STR_BYTES
+	jmp print_packed_misc_str

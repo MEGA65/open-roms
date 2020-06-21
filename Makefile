@@ -25,6 +25,7 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  c64/basic/math_mov \
                  c64/basic/print \
                  c64/basic/rom_revision \
+                 c64/basic/tokenizer \
                  c64/basic/wedge
 
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
@@ -54,7 +55,7 @@ SRC_TOOLS  = $(wildcard tools/*.c,tools/*.cc)
 
 # Generated files
 
-GEN_BASIC  = build/,generated/packed_messages.s build/,generated/float_constants.s
+GEN_BASIC  = build/,generated/packed_strings.s build/,generated/float_constants.s
 GEN_KERNAL =
 
 # List of build directories
@@ -68,12 +69,12 @@ DIR_X16 = build/target_cx16
 
 # List of config files
 
-CFG_CUS    = c64/,,config_custom.s 
-CFG_GEN    = c64/,,config_generic.s
-CFG_TST    = c64/,,config_testing.s
-CFG_M65    = c64/,,config_mega65.s
-CFG_U64    = c64/,,config_ultimate64.s
-CFG_X16    = c64/,,config_cx16.s
+CFG_CUS = c64/,,config_custom.s 
+CFG_GEN = c64/,,config_generic.s
+CFG_TST = c64/,,config_testing.s
+CFG_M65 = c64/,,config_mega65.s
+CFG_U64 = c64/,,config_ultimate64.s
+CFG_X16 = c64/,,config_cx16.s
 
 # Dependencies - helper variables
 
@@ -83,8 +84,8 @@ DEP_KERNAL = $(SRC_KERNAL) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 # List of tools
 
 TOOL_COLLECT_DATA       = build/tools/collect_data
-TOOL_COMPRESS_TEXT      = build/tools/compress_text
 TOOL_GENERATE_CONSTANTS = build/tools/generate_constants
+TOOL_GENERATE_STRINGS   = build/tools/generate_strings
 TOOL_PATCH_CHARGEN      = build/tools/patch_chargen
 TOOL_PNGPREPARE         = build/tools/pngprepare
 TOOL_BUILD_SEGMENT      = build/tools/build_segment
@@ -166,19 +167,15 @@ updatebin:
 
 $(TOOL_PNGPREPARE): tools/pngprepare.c
 	@mkdir -p build/tools
-	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
-
-$(TOOL_COMPRESS_TEXT): tools/compress_text.c
-	@mkdir -p build/tools
-	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lm
+	$(CC) -O2 -g -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
 
 build/tools/%: tools/%.c
 	@mkdir -p build/tools
-	$(CC) -O2 -Wall -o $@ $<
+	$(CC) -O2 -g -Wall -o $@ $<
 
 build/tools/%: tools/%.cc tools/common.h
 	@mkdir -p build/tools
-	$(CXX) -O2 -Wall -o $@ $<
+	$(CXX) -O2 -g -Wall -o $@ $<
 
 # Rules - CHARGEN
 
@@ -258,9 +255,9 @@ build/symbols_ultimate64.vs:      $(DIR_U64)/BASIC_combined.vs    $(DIR_U64)/KER
 
 # Rules - BASIC and KERNAL intermediate files
 
-build/,generated/packed_messages.s: $(TOOL_COMPRESS_TEXT)
+build/,generated/packed_strings.s: $(TOOL_GENERATE_STRINGS)
 	@mkdir -p build/,generated
-	$(TOOL_COMPRESS_TEXT) > build/,generated/packed_messages.s
+	$(TOOL_GENERATE_STRINGS) -o build/,generated/packed_strings.s
 
 build/,generated/float_constants.s: $(TOOL_GENERATE_CONSTANTS)
 	@mkdir -p build/,generated
@@ -441,7 +438,7 @@ test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/sy
 	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_mega65: $(TARGET_M65_x) $(TARGET_M65_x_PXL)
-	../xemu/build/bin/xmega65.native -dmarev 2 -forcerom -loadrom $(TARGET_M65_x_PXL)
+	../xemu/build/bin/xmega65.native -dmarev 2 -besure -fontrefresh -forcerom -loadrom $(TARGET_M65_x_PXL)
 
 test_cx16: $(TARGET_X16_x)
 	../x16-emulator/x16emu -rom $(TARGET_X16_x)

@@ -46,8 +46,8 @@
 // I/O devices
 
 #define CONFIG_IEC
-// #define CONFIG_IEC_DOLPHINDOS
-// #define CONFIG_IEC_DOLPHINDOS_FAST
+#define CONFIG_IEC_DOLPHINDOS
+#define CONFIG_IEC_DOLPHINDOS_FAST
 #define CONFIG_IEC_JIFFYDOS
 // #define CONFIG_IEC_JIFFYDOS_BLANK
 // #define CONFIG_IEC_BURST_CIA1                 // please keep disabled for now
@@ -124,7 +124,7 @@
 #define CONFIG_PANIC_SCREEN
 #define CONFIG_DOS_WEDGE
 #define CONFIG_TAPE_WEDGE
-#define CONFIG_TAPE_HEAD_ALIGN
+// #define CONFIG_TAPE_HEAD_ALIGN
 #define CONFIG_BCD_SAFE_INTERRUPTS
 
 

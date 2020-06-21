@@ -3,6 +3,7 @@
 // #LAYOUT# X16 BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-packed_message_chars:
 
-	put_packed_chars()
+packed_as_1n:
+
+	put_packed_as_1n()

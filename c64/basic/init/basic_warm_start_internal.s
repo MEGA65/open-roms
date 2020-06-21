@@ -19,8 +19,8 @@ basic_warm_start_real:
 	ora CMP0+1
 	beq !+
 
-	ldx #32
-	jsr print_packed_message
+	ldx #IDX__STR_BRK_AT
+	jsr print_packed_misc_str
 
 	lda CMP0+1
 	jsr print_hex_byte

@@ -151,10 +151,10 @@ do_basic_error:                        // error code in .X
 
 	// Error message text + " ERROR"
 
-	jsr print_packed_message
+	jsr print_packed_error
 
-	ldx #33
-	jsr print_packed_message
+	ldx #IDX__STR_ERROR
+	jsr print_packed_misc_str
 
 	// Check if direct mode
 
@@ -164,8 +164,8 @@ do_basic_error:                        // error code in .X
 
 	// We were in a program, so show IN <line>
 
-	ldx #31
-	jsr print_packed_message
+	ldx #IDX__STR_IN
+	jsr print_packed_misc_str
 
 	lda CURLIN+1
 	ldx CURLIN+0

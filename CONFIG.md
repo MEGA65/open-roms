@@ -313,15 +313,9 @@ Richer banners need more BASIC segment, varies between brands.
 
 ### `CONFIG_SHOW_FEATURES`
 
-If enabled, shows the most important compiled-in features on the startup screen.
+If enabled, shows the most important compiled-in features on the startup screen. Also shows the video system (PAL/NTSC).
 
 It is recommended to keep it enabled for informational purposes.
-
-### `CONFIG_BANNER_PAL_NTSC`
-
-If enabled, prints video system on startup banner. Eye candy only.
-
-Feature needs few bytes in BASIC and about 25 bytes in KERNAL segment.
 
 ## Debug options
 

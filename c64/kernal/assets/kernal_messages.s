@@ -26,11 +26,6 @@
 #endif
 #endif
 
-#if CONFIG_SHOW_PAL_NTSC
-.label __MSG_KERNAL_PAL                = __msg_kernalpal                - __msg_kernal_first
-.label __MSG_KERNAL_NTSC               = __msg_kernalntsc               - __msg_kernal_first
-#endif
-
 #if CONFIG_PANIC_SCREEN
 .label __MSG_KERNAL_PANIC              = __msg_kernalpanic              - __msg_kernal_first
 .label __MSG_KERNAL_PANIC_ROM_MISMATCH = __msg_kernalpanic_rom_mismatch - __msg_kernal_first
@@ -92,18 +87,6 @@ __msg_kernaloksearching:
 #endif
 
 #endif
-
-#if CONFIG_SHOW_PAL_NTSC
-
-__msg_kernalpal:
-	.text "PAL"
-	.byte $80 + $0D // end of string mark + return
-
-__msg_kernalntsc:
-	.text "NTSC"
-	.byte $80 + $0D // end of string mark + return
-
-#endif // CONFIG_SHOW_PAL_NTSC
 
 #if CONFIG_PANIC_SCREEN
 

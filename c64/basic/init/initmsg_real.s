@@ -17,7 +17,7 @@ initmsg_real:
 
 #endif
 
-	// Clear the screen first, some cartridges (like IEEE-488) leeave a mess on the screen
+	// Clear the screen first, some cartridges (like IEEE-488) are leaving a mess on the screen
 	lda #147
 	jsr JCHROUT
 
@@ -55,16 +55,10 @@ initmsg_real:
 	ldx #$05
 #endif
 	ldy #$00
-#if CONFIG_SHOW_PAL_NTSC && CONFIG_SHOW_FEATURES
+#if CONFIG_SHOW_FEATURES
 	jsr plot_set
 	jsr print_features
 	jmp print_pal_ntsc
-#elif CONFIG_SHOW_PAL_NTSC
-	jsr plot_set
-	jmp print_pal_ntsc
-#elif CONFIG_SHOW_FEATURES
-	jsr plot_set
-	jmp print_features
 #else
 	jmp plot_set
 #endif
@@ -115,16 +109,10 @@ initmsg_real:
 	ldx #$05
 #endif
 	ldy #$00
-#if CONFIG_SHOW_PAL_NTSC && CONFIG_SHOW_FEATURES
+#if CONFIG_SHOW_FEATURES
 	jsr plot_set
 	jsr print_features
 	jmp print_pal_ntsc
-#elif CONFIG_SHOW_PAL_NTSC
-	jsr plot_set
-	jmp print_pal_ntsc
-#elif CONFIG_SHOW_FEATURES
-	jsr plot_set
-	jmp print_features
 #else
 	jmp plot_set
 #endif

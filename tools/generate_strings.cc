@@ -313,6 +313,8 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
 	{ true,  true,  true,  "STR_ERROR",   " ERROR"              }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
 	{ true,  true,  true,  "STR_IN",      " IN "                },
 	// STD    M65    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
+	{ true,  true,  true,  "STR_PAL",     "PAL\r"               },
+	{ true,  true,  true,  "STR_NTSC",    "NTSC\r"              },
 	{ true,  true,  true,  "STR_BRK_AT",  "\rBRK AT $"          },
 } };
 

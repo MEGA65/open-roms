@@ -3,7 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Jumptable for all known BASIC commands
+// Jumptable for BASIC V2 dialect commands
 //
 
 

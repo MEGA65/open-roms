@@ -3,7 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Jumptable for all known BASIC functions
+// Jumptable for BASIC V2 dialect functions
 //
 
 

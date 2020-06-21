@@ -33,18 +33,7 @@
 // message that the $2C method would result in.
 
 
-// XXX consider reworking the two errors below to reuse '$E6' mechanism
-
-
-do_NOT_IMPLEMENTED_error:
-
-	ldx #IDX__EV7_28
-	bpl do_basic_error                 // branch always
-
-do_MEMORY_CORRUPT_error:
-
-	ldx #IDX__EOR_2A
-	bpl do_basic_error                 // branch always
+	// Error messages reported by KERNAL
 
 do_kernal_error:                       // .A = KERNAL error code, also almost matches BASIC error codes
 
@@ -52,9 +41,39 @@ do_kernal_error:                       // .A = KERNAL error code, also almost ma
 
 	tax
 	dex
-	bpl do_basic_error
+	bpl do_basic_error                 // branch always
 
-	// FALLTROUGN
+	// Error messages specific to OpenROMs BASIC dialect
+
+do_MEMORY_CORRUPT_error:
+	.byte $E6
+
+	// Error messages compatible with CBM BASIC V7 dialect
+
+do_FILE_READ_error:
+	.byte $E6
+do_NOT_IMPLEMENTED_error:
+	.byte $E6
+do_UNRESOLVED_REFERENCE_error:
+	.byte $E6
+do_LINE_NUMBER_TOO_LARGE_error:
+	.byte $E6
+do_BEND_NOT_FOUND_error:
+	.byte $E6
+do_BAD_DISK_error:
+	.byte $E6
+do_NO_GRAPHICS_AREA_error:
+	.byte $E6
+do_DIRECT_MODE_ONLY_error:
+	.byte $E6
+do_LOOP_WITHOUT_DO_error:
+	.byte $E6
+do_LOOP_NOT_FOUND_error:
+	.byte $E6
+do_CANT_RESUME_error:
+	.byte $E6
+
+	// Error messages compatible with CBM BASIC V2 dialect
 
 do_BREAK_error:
 	.byte $E6

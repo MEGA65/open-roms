@@ -14,6 +14,8 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  c64/basic/,stubs_math \
                  c64/basic/assets \
                  c64/basic/basic_commands \
+                 c64/basic/basic_commands_CC \
+                 c64/basic/basic_commands_CD \
                  c64/basic/basic_operators \
                  c64/basic/basic_functions \
                  c64/basic/board_m65 \

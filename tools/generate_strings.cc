@@ -180,10 +180,11 @@ const StringEntryList GLOBAL_Keywords_V2 = { ListType::KEYWORDS, "keywords_V2",
 
 const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
 {
-    // STD    M65    X16 
-	{ false, false, false, "KCC_01",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
-	{ false, false, false, "KCC_02",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
-	{ false, false, false, "KCC_03",   "BVERIFY",      },
+    // STD    M65    X16
+	{ true,  true,  true,  "KCC_01",   "MERGE",        }, // OpenROMs specific, not present in CBM BASIC dialects
+	{ true,  true,  true,  "KCC_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
+	{ true,  true,  true,  "KCC_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
+	{ true,  true,  true,  "KCC_04",   "BVERIFY",      },
 } };
 
 // extended BASIC keywords - reserved for BASIC commands likely making sense on most C64-compatible machines
@@ -191,8 +192,8 @@ const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
 const StringEntryList GLOBAL_Keywords_CD =  { ListType::KEYWORDS, "keywords_CD",
 {
     // STD    M65    X16 
-	{ false, false, false, "KCD_01",   "SLOW",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
-	{ false, false, false, "KCD_02",   "FAST",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
+	{ true,  true,  true,  "KCD_01",   "SLOW",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
+	{ true,  true,  true,  "KCD_02",   "FAST",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
 } };
 
 // extended BASIC keywords - reserved for board-specific BASIC commands
@@ -289,13 +290,13 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
 	{ false, false, false, "EV7_1F", "CAN'T RESUME"             }, // not used for now
 	{ false, false, false, "EV7_20", "LOOP NOT FOUND"           }, // not used for now
 	{ false, false, false, "EV7_21", "LOOP WITHOUT DO"          }, // not used for now
-	{ false, false, false, "EV7_22", "DIRECT MODE ONLY"         }, // not used for now
+	{ true,  true,  true,  "EV7_22", "DIRECT MODE ONLY"         },
 	{ false, false, false, "EV7_23", "NO GRAPHICS AREA"         }, // not used for now
 	{ false, false, false, "EV7_24", "BAD DISK"                 }, // not used for now
 	{ false, false, false, "EV7_25", "BEND NOT FOUND"           }, // not used for now
 	{ false, false, false, "EV7_26", "LINE NUMBER TOO LARGE"    }, // not used for now
 	{ false, false, false, "EV7_27", "UNRESOLVED REFERENCE"     }, // not used for now
-	{ true,   true,  true, "EV7_28", "NOT IMPLEMENTED"          }, // this message actually differs rom CBM one
+	{ true,   true,  true, "EV7_28", "NOT IMPLEMENTED"          }, // this message actually differs from the CBM one
 	{ false, false, false, "EV7_29", "FILE READ"                }, // not used for now
 	// STD    M65    X16   --- error strings specific to OpenROMs, not present in CBM BASIC dialects
 	{ true,  true,  true,  "EOR_2A", "MEMORY CORRUPT"           },	
@@ -926,14 +927,20 @@ void writeStrings()
 	// Add input data to computation objects
 
 	dataSetSTD.addStrings(GLOBAL_Keywords_V2);
+	dataSetSTD.addStrings(GLOBAL_Keywords_CC);
+	dataSetSTD.addStrings(GLOBAL_Keywords_CD);
 	dataSetSTD.addStrings(GLOBAL_Errors);
 	dataSetSTD.addStrings(GLOBAL_MiscStrings);
 
 	dataSetM65.addStrings(GLOBAL_Keywords_V2);
+	dataSetM65.addStrings(GLOBAL_Keywords_CC);
+	dataSetM65.addStrings(GLOBAL_Keywords_CD);
 	dataSetM65.addStrings(GLOBAL_Errors);
 	dataSetM65.addStrings(GLOBAL_MiscStrings);
 
 	dataSetX16.addStrings(GLOBAL_Keywords_V2);
+	dataSetX16.addStrings(GLOBAL_Keywords_CC);
+	dataSetX16.addStrings(GLOBAL_Keywords_CD);
 	dataSetX16.addStrings(GLOBAL_Errors);
 	dataSetX16.addStrings(GLOBAL_MiscStrings);
 

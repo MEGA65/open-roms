@@ -372,6 +372,7 @@ build/symbols_hybrid.vs: $(DIR_GEN)/KERNAL_combined.vs
 # Rules - platform 'Mega65' specific
 
 $(TARGET_M65_x) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/chargen_openroms.rom build/chargen_openroms.patched build/chargen_pxlfont.rom build/chargen_pxlfont.patched
+	rm -f $(TARGET_M65_x) $(TARGET_M65_x_PXL)
 	dd if=/dev/zero bs=8192 count=1 of=build/m65_padding_08_KB
 	dd if=/dev/zero bs=8192 count=8 of=build/m65_padding_64_KB
 	@echo

@@ -5,8 +5,6 @@
 
 cmd_slow:
 
-	.break
-
 #if CONFIG_MB_MEGA_65
 
 	// Command implementation for Mega65

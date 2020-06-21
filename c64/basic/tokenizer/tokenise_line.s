@@ -124,7 +124,7 @@ tokenise_line_keyword_V2:
 
 	// Cut away unnecessary bytes
 
-	jsr tk_cut_away
+	jsr tk_cut_away_1
 
 	// Special handling for REM command - after this one nothing more should be tokenised
 
@@ -207,10 +207,7 @@ tokenise_line_keyword_CD:
 
 	// Cut away unnecessary bytes
 
-	inc tk__offset
-	dec tk__len_unpacked
-
-	jsr tk_cut_away
+	jsr tk_cut_away_2
 	jmp tokenise_line_loop
 
 #endif // ROM layout

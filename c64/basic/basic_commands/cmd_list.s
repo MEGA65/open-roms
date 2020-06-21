@@ -11,9 +11,6 @@ cmd_list:
 	// Set current line pointer to start of memory
 	jsr init_oldtxt
 
-	// Always start with empty line, for readability
-	jsr print_return
-
 list_loop:
 
 	ldy #1

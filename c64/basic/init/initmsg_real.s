@@ -167,10 +167,9 @@ initmsg_real:
 	ldx #$08
 	ldy #$00
 	jsr plot_set
-	jsr print_features
-	jmp print_return
+	jmp print_features
 #else
-	ldx #$08
+	ldx #$07
 	ldy #$00
 	jmp plot_set
 #endif

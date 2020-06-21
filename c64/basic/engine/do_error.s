@@ -171,12 +171,6 @@ do_basic_error:                        // error code in .X
 	ldx CURLIN+0
 	jsr print_integer
 !:
-	// New lines
-
-	jsr print_return
-	lda #$00
-	jsr JCHROUT
-
 	// Reset stack, and go back to main loop
 
 	ldx #$FE

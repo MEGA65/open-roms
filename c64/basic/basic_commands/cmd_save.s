@@ -32,7 +32,7 @@ cmd_save:
 	// Perform saving
 
 	jsr JSAVE
-	jsr cmd_load_save_handle_result
+	bcs_16 do_kernal_error
 
 	// The end
 

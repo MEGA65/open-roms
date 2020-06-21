@@ -70,7 +70,6 @@ wedge_dos_command:
 !:
 	// Retrieve status, print it if not OK
 	jsr JCLALL
-	jsr print_return
 	jsr wedge_dos_status_get
 	lda BUF+0
 	cmp #$30 // '0'
@@ -97,10 +96,13 @@ wedge_dos_change_drive:
 	jmp do_ILLEGAL_DEVICE_NUMBER_error
 !:
 	sta FA
-	jsr print_return
 	jmp basic_main_loop
 
 wedge_dos_status_get:
+
+	// New line - separate status from current display
+
+	jsr print_return
 
 	// Here the flow is mostly the same as in the example from
 	// https://codebase64.org/doku.php?id=base:reading_the_error_channel_of_a_disk_drive
@@ -131,17 +133,20 @@ wedge_dos_status_get:
 	jsr JCHRIN
 	bcc wedge_dos_x1
 	jmp wedge_dos_basic_error // XXX try to optimize this
+
 wedge_dos_x1:
 	sta BUF, y
 	iny
 	jmp !-
 !:
+	// Strip ending RETURN
+
+	dey
 	rts
 
 wedge_dos_status:
 
 	jsr wedge_dos_status_get
-	jsr print_return
 	// FALLTROUGH
 
 wedge_dos_status_print:
@@ -185,9 +190,6 @@ wedge_dos_directory:
 	bcs wedge_dos_basic_error
 	jsr JCHRIN
 	bcs wedge_dos_basic_error
-
-	// Print new line
-	jsr print_return
 
 wedge_dos_directory_line:
 

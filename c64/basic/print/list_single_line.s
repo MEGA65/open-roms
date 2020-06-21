@@ -13,7 +13,8 @@ list_single_line:
 
 #else
 
-	// Print line number
+	// Print line number - in a new line
+	jsr print_return
 	ldy #3
 
 #if ROM_LAYOUT_M65
@@ -121,8 +122,8 @@ list_is_literal:
 	bne list_print_loop
 	
 list_end_of_line:
-	// Print end of line
-	jmp print_return
+	
+	rts
 
 
 #endif // ROM layout

@@ -97,12 +97,10 @@ __msg_kernaloksearching:
 
 __msg_kernalpal:
 	.text "PAL"
-	.byte $0D
 	.byte $80 + $0D // end of string mark + return
 
 __msg_kernalntsc:
 	.text "NTSC"
-	.byte $0D
 	.byte $80 + $0D // end of string mark + return
 
 #endif // CONFIG_SHOW_PAL_NTSC

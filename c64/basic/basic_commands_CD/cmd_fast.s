@@ -9,7 +9,8 @@ cmd_fast:
 
 	// Command implementation for Mega65
 
-	// XXX provide better implementation
+	lda #$41
+	sta CPU_D6510
 
 	jmp execute_statements
 

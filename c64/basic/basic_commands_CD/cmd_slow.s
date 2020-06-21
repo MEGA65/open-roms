@@ -9,9 +9,10 @@ cmd_slow:
 
 	// Command implementation for Mega65
 
-	// XXX provide implementation
+	lda #$40
+	sta CPU_D6510
 
-	jmp do_NOT_IMPLEMENTED_error
+	jmp execute_statements
 
 #elif CONFIG_MB_ULTIMATE_64
 

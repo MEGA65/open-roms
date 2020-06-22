@@ -7,12 +7,12 @@
 //
 
 
-fetch_filename:
+helper_load_fetch_filename:
 
 	// Check if end of statement
 
 	jsr end_of_statement_check
-	bcs fetch_filename_done
+	bcs !+
 
 	// Call the expression parser, make sure it returned a string
 
@@ -37,6 +37,5 @@ fetch_filename:
 
 	// FALLTROUGH
 
-fetch_filename_done:
-
+!:
 	rts

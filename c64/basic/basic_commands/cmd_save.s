@@ -13,7 +13,7 @@ cmd_save:
 
 	// Fetch the file name
 
-	jsr fetch_filename
+	jsr helper_load_fetch_filename
 	bcs_16 do_MISSING_FILENAME_error
 
 	// Try to fetch device

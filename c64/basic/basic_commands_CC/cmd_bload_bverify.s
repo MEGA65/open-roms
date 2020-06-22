@@ -14,17 +14,11 @@ cmd_bverify:
 cmd_bload:
 
 	lda #$00                           // mark operation as LOAD
-	sta VERCKB
-
-	// Set default device and secondary address; channel is not important now
-
-	jsr select_device
-	ldy #$00                           // secondary address 0 - it has to be loaded precisely where we want
-	jsr JSETFLS
+	jsr helper_load_init_params
 
 	// Fetch the file name
 
-	jsr fetch_filename
+	jsr helper_load_fetch_filename
 	bcc !+
 
 	// No filename supplied - this should only be allowed for tape (device number below 8)

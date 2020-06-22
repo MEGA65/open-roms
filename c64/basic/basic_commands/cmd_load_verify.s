@@ -14,18 +14,12 @@ cmd_verify:
 
 cmd_load:
 
-	lda #$00                           // mark operation as LOAD
-	sta VERCKB
-
-	// Set default device and secondary address; channel is not important now
-
-	jsr select_device
-	ldy #$00                           // secondary address
-	jsr JSETFLS
+	lda #$00                           // mark operation as LOAD	
+	jsr helper_load_init_params
 
 	// Fetch the file name
 
-	jsr fetch_filename
+	jsr helper_load_fetch_filename
 	bcs cmd_load_no_filename
 
 	// Try to fetch device and secondary address

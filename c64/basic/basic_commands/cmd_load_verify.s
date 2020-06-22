@@ -50,6 +50,9 @@ cmd_load_got_params:                   // input for tape wedge
 
 	ldy TXTTAB+1
 	ldx TXTTAB+0
+
+cmd_load_loadmerge:                    // entry point for 'cmd_merge'
+
 	lda VERCKB    // LOAD or VERIFY
 
 	jsr JLOAD

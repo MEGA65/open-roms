@@ -3,7 +3,15 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-cmd_merge:
+cmd_bverify:
+
+	// LOAD and VERIFY are very similar, from BASIC perspective there is almost no difference;
+	// just different parameter passed to Kernal and different error message in case of failure
+
+	lda #$01                           // mark operation as VERIFY
+	skip_2_bytes_trash_nvz
+
+cmd_bload:
 
 	lda #$00                           // mark operation as LOAD
 	sta VERCKB
@@ -28,23 +36,6 @@ cmd_merge:
 	lda #$00
 	sta FNLEN
 !:
-	// Fetch device number
+	// XXX finish the implementation
 
-	jsr fetch_device_secondary_uint8
-	bcs !+
-
-	sta FA
-!:
-	// Perform loading - just for a different address
-
-	sec
-	lda VARTAB+0
-	sbc #$02
-	sta VARTAB+0
-	tax
-	bcs !+
-	dec VARTAB+1
-!:
-	ldy VARTAB+1
-
-	jmp cmd_load_loadmerge                    // XXX check variable handling (VARTAB) after failure to load
+	jmp do_NOT_IMPLEMENTED_error

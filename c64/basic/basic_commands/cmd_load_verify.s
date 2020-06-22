@@ -41,7 +41,6 @@ cmd_load_got_params:                   // input for tape wedge
 cmd_load_loadmerge:                    // entry point for 'cmd_merge'
 
 	lda VERCKB    // LOAD or VERIFY
-
 	jsr JLOAD
 	bcs_16 do_kernal_error
 	

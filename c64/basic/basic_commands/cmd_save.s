@@ -39,5 +39,5 @@ cmd_save_do: // entry point for BSAVE
 	bcs_16 do_kernal_error
 
 	// The end
-.break
+
 	jmp execute_statements

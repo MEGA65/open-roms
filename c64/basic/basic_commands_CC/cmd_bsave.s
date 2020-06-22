@@ -16,8 +16,6 @@ cmd_bsave:
 
 	// Fetch device number
 
-	jsr injest_comma
-	bcs_16 do_SYNTAX_error
 	jsr helper_load_fetch_devnum
 	bcs_16 do_SYNTAX_error
 

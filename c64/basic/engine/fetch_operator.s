@@ -41,6 +41,8 @@ fetch_operator_success:
 
 fetch_operator_failed:
 
+	jsr unconsume_character
+
 	sec
 	rts
 

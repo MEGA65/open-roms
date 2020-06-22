@@ -2,7 +2,7 @@
 // Utility to generate compressed messages and BASIC tokens
 //
 
-// XXX parse the config file to select the string set (STD, M65, X16) and generate feature string
+// XXX print somewhere configuration file used to generate strings
 // XXX use DualStream class for logging
 // XXX use dictionary compression by finding the set of non-overlapping strings that can be concatenated
 //     to produce full set of strings; some idea for the algorithm (not sure if proper one) is available here
@@ -16,6 +16,7 @@
 #include <algorithm>
 #include <fstream>
 #include <iomanip>
+#include <regex>
 #include <sstream>
 #include <map>
 #include <vector>
@@ -25,6 +26,7 @@
 //
 
 std::string CMD_outFile = "out.s";
+std::string CMD_cnfFile = "";
 
 //
 // Type definition for text/tokens to generate
@@ -313,9 +315,8 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
 	{ true,  true,  true,  "STR_ERROR",   " ERROR"              }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
 	{ true,  true,  true,  "STR_IN",      " IN "                },
 	// STD    M65    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
-	{ true,  true,  true,  "STR_PAL",     "PAL\r"               },
-	{ true,  true,  true,  "STR_NTSC",    "NTSC\r"              },
 	{ true,  true,  true,  "STR_BRK_AT",  "\rBRK AT $"          },
+	// Note: depending on configuration, additional strings will be added here
 } };
 
 
@@ -448,6 +449,8 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
 	"HIGHLIGHT"   // $FE $3D                
 */
 
+std::map<std::string, bool> GLOBAL_ConfigOptions;
+
 //
 // Work class definitions
 //
@@ -464,6 +467,7 @@ private:
 
 	void process();
 
+	void generateConfigDepStrings();
 	void calculateFrequencies();
 	void encodeStrings();
 
@@ -539,6 +543,7 @@ void DataSet::process()
 {
 	std::cout << "Processing layout '" << layoutName() << "'" << std::endl;
 
+	generateConfigDepStrings();
 	calculateFrequencies();
 	encodeStrings();
 	prepareOutput();
@@ -552,6 +557,101 @@ const std::string &DataSet::getOutput()
 	}
 
 	return outFileContent;
+}
+
+void DataSet::generateConfigDepStrings()
+{
+	// Generate string to show the build features
+	
+	std::string featureStr;
+	
+	// Tape support features
+	
+	if (GLOBAL_ConfigOptions["CONFIG_TAPE_NORMAL"] && GLOBAL_ConfigOptions["CONFIG_TAPE_TURBO"])
+	{
+		featureStr = "TAPE LOAD NORMAL TURBO\r";
+	}
+	else if (GLOBAL_ConfigOptions["CONFIG_TAPE_NORMAL"])
+	{
+		featureStr = "TAPE LOAD NORMAL\r";
+	}
+	else if (GLOBAL_ConfigOptions["CONFIG_TAPE_TURBO"])
+	{
+		featureStr = "TAPE LOAD TURBO\r";
+	}
+	
+	// IEC support features
+	
+	if (GLOBAL_ConfigOptions["CONFIG_IEC"])
+	{
+		featureStr += "IEC";
+		
+		bool extendedIEC = false;
+		
+		if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_CIA1"])
+		{
+			featureStr += " BURST1";
+			extendedIEC = true;
+		}
+		if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_CIA2"])
+		{
+			featureStr += " BURST2";
+			extendedIEC = true;
+		}
+		if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_MEGA65"])
+		{
+			featureStr += " BURST";
+			extendedIEC = true;
+		}
+		
+		if (GLOBAL_ConfigOptions["CONFIG_IEC_DOLPHINDOS"])
+		{
+			featureStr += " DOLPHIN";
+			extendedIEC = true;
+		}
+		
+		if (GLOBAL_ConfigOptions["CONFIG_IEC_JIFFYDOS"])
+		{
+			featureStr += " JIFFY";
+			extendedIEC = true;
+		}
+		
+		if (!extendedIEC) featureStr += " NORMAL";
+		
+		featureStr += "\r";
+	}
+	
+	// RS-232 support features
+	
+	if (GLOBAL_ConfigOptions["CONFIG_RS232_UP2400"]) featureStr += "UP2400\r";
+	if (GLOBAL_ConfigOptions["CONFIG_RS232_UP9600"]) featureStr += "UP9600\r";
+	
+	// Keyboard support features
+	
+	if (GLOBAL_ConfigOptions["CONFIG_KEYBOARD_C128"]) featureStr += "KBD 128\r";
+	if (GLOBAL_ConfigOptions["CONFIG_KEYBOARD_C65"])  featureStr += "KBD 65\r";
+
+	// Add strings to appropriate list
+	
+	for (auto &stringEntryList : stringEntryLists)
+	{
+		if (stringEntryList.name != std::string("misc")) continue;
+
+		// List found
+
+		if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"])
+		{
+			StringEntry newEntry1 = { true, true, true, "STR_PAL",      "PAL\r"    };
+			StringEntry newEntry2 = { true, true, true, "STR_NTSC",     "NTSC\r"   };
+			StringEntry newEntry3 = { true, true, true, "STR_FEATURES", featureStr };
+
+			stringEntryList.list.push_back(newEntry1);
+			stringEntryList.list.push_back(newEntry2);
+			stringEntryList.list.push_back(newEntry3);
+
+			break;
+		}
+	}
 }
 
 void DataSet::calculateFrequencies()
@@ -899,10 +999,59 @@ void DataSet::prepareOutput()
 // Common helper functions
 //
 
+void parseConfigFile()
+{
+	GLOBAL_ConfigOptions.clear();
+	
+	// Open the configuration file
+	
+    std::ifstream cnfFile;
+    cnfFile.open(CMD_cnfFile);
+    if (!cnfFile.good()) ERROR("unable to open config file");
+	
+	// Parse the file
+	
+    size_t lineNum = 0;
+	while (!cnfFile.eof())
+	{
+		lineNum++;
+		std::string workStr;
+		
+		// Read a single line, remove leading spaces and tabs
+
+		std::getline(cnfFile, workStr); // XXX check for errors here
+		workStr = std::regex_replace(workStr, std::regex("^[ \t]+"), "");
+		
+		// Skip lines which are not preprocessor definitions
+		
+		if (workStr.empty() || workStr[0] != '#') continue;
+		
+		// Make sure this is '#define '
+		
+		if (!std::regex_match(workStr, std::regex("^#define[ \t].*")))
+		{
+			ERROR(std::string("only '#define' preprocessor directives allowed in config files - line ") + std::to_string(lineNum));
+		}
+
+		// Get rid of the directive and trailing spaces/comments
+	
+		workStr = std::regex_replace(workStr, std::regex("^#define[ \t]+"), "");
+		workStr = std::regex_replace(workStr, std::regex("[ \t]+.*"), "");
+
+	    // Add definitin to config option map
+
+		if (workStr.empty()) ERROR(std::string("error parsing config file - line ") + std::to_string(lineNum));
+
+		GLOBAL_ConfigOptions[workStr] = true;
+	}
+	
+	cnfFile.close();
+}
+
 void printUsage()
 {
     std::cout << "\n" <<
-        "usage: generate_strings [-o <out file>]" << "\n\n";
+        "usage: generate_strings [-o <out file>] [-c <configuration file>]" << "\n\n";
 }
 
 void printBanner()
@@ -918,11 +1067,12 @@ void parseCommandLine(int argc, char **argv)
 
     // Retrieve command line options
 
-    while ((opt = getopt(argc, argv, "o:")) != -1)
+    while ((opt = getopt(argc, argv, "o:c:")) != -1)
     {
         switch(opt)
         {
             case 'o': CMD_outFile   = optarg; break;
+			case 'c': CMD_cnfFile   = optarg; break;
             default: printUsage(); ERROR();
         }
     }
@@ -930,36 +1080,61 @@ void parseCommandLine(int argc, char **argv)
 
 void writeStrings()
 {
-	DataSetSTD dataSetSTD;
-	DataSetM65 dataSetM65;
-	DataSetX16 dataSetX16;
+	std::string outputString;
+	
+	if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMANDER_X16"])
+	{
+		DataSetX16 dataSetX16;
 
-	// Add input data to computation objects
+		// Add input data to computation objects
+		
+		dataSetX16.addStrings(GLOBAL_Keywords_V2);
+		dataSetX16.addStrings(GLOBAL_Keywords_CC);
+		dataSetX16.addStrings(GLOBAL_Keywords_CD);
+		dataSetX16.addStrings(GLOBAL_Errors);
+		dataSetX16.addStrings(GLOBAL_MiscStrings);
 
-	dataSetSTD.addStrings(GLOBAL_Keywords_V2);
-	dataSetSTD.addStrings(GLOBAL_Keywords_CC);
-	dataSetSTD.addStrings(GLOBAL_Keywords_CD);
-	dataSetSTD.addStrings(GLOBAL_Errors);
-	dataSetSTD.addStrings(GLOBAL_MiscStrings);
+		// Retrieve the results
+		
+		outputString = dataSetX16.getOutput();
+	}
+	else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+	{
+		DataSetM65 dataSetM65;
 
-	dataSetM65.addStrings(GLOBAL_Keywords_V2);
-	dataSetM65.addStrings(GLOBAL_Keywords_CC);
-	dataSetM65.addStrings(GLOBAL_Keywords_CD);
-	dataSetM65.addStrings(GLOBAL_Errors);
-	dataSetM65.addStrings(GLOBAL_MiscStrings);
+		// Add input data to computation objects
 
-	dataSetX16.addStrings(GLOBAL_Keywords_V2);
-	dataSetX16.addStrings(GLOBAL_Keywords_CC);
-	dataSetX16.addStrings(GLOBAL_Keywords_CD);
-	dataSetX16.addStrings(GLOBAL_Errors);
-	dataSetX16.addStrings(GLOBAL_MiscStrings);
+		dataSetM65.addStrings(GLOBAL_Keywords_V2);
+		dataSetM65.addStrings(GLOBAL_Keywords_CC);
+		dataSetM65.addStrings(GLOBAL_Keywords_CD);
+		dataSetM65.addStrings(GLOBAL_Errors);
+		dataSetM65.addStrings(GLOBAL_MiscStrings);
+		
+		// Retrieve the results
+		
+		outputString = dataSetM65.getOutput();
+	}
+	else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"])
+	{
+		DataSetSTD dataSetSTD;
 
-	// Retrieve the results
+		// Add input data to computation objects
 
-	std::string outputSTD = dataSetSTD.getOutput();
-	std::string outputM65 = dataSetM65.getOutput();
-	std::string outputX16 = dataSetX16.getOutput();
+		dataSetSTD.addStrings(GLOBAL_Keywords_V2);
+		dataSetSTD.addStrings(GLOBAL_Keywords_CC);
+		dataSetSTD.addStrings(GLOBAL_Keywords_CD);
+		dataSetSTD.addStrings(GLOBAL_Errors);
+		dataSetSTD.addStrings(GLOBAL_MiscStrings);
 
+		// Retrieve the results
+
+		outputString = dataSetSTD.getOutput();	
+	}
+	else
+	{
+		ERROR("unable to determine string set");
+	}
+	
     // Remove old file
 
     unlink(CMD_outFile.c_str());
@@ -976,11 +1151,7 @@ void writeStrings()
     // Write packed strings
 
     outFile << std::endl << std::endl;
-    outFile << outputSTD;
-    outFile << std::endl << std::endl;
-	outFile << outputM65;
-    outFile << std::endl << std::endl;    
-    outFile << outputX16;  
+    outFile << outputString;
     outFile << std::endl << std::endl;
 
     // Close the file
@@ -998,6 +1169,8 @@ int main(int argc, char **argv)
 {
     printBanner();
     parseCommandLine(argc, argv);
+
+	parseConfigFile();
 
     writeStrings();
 

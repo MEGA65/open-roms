@@ -43,10 +43,6 @@
 .label print_return        = KERNAL().print_return
 .label print_space         = KERNAL().print_space
 
-#if CONFIG_SHOW_FEATURES
-.label print_features      = KERNAL().print_features
-#endif
-
 #if CONFIG_TAPE_HEAD_ALIGN
 .label tape_head_align     = KERNAL().tape_head_align
 #endif

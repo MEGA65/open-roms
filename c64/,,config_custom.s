@@ -52,7 +52,7 @@
 // #define CONFIG_IEC_JIFFYDOS_BLANK
 // #define CONFIG_IEC_BURST_CIA1                 // please keep disabled for now
 // #define CONFIG_IEC_BURST_CIA2                 // please keep disabled for now
-// #define CONFIG_IEC_BURST_SOFT                 // please keep disabled for now
+// #define CONFIG_IEC_BURST_MEGA_65              // please keep disabled for now
 
 #define CONFIG_TAPE_NORMAL
 #define CONFIG_TAPE_TURBO
@@ -135,7 +135,6 @@
 #define CONFIG_BANNER_FANCY
 // #define CONFIG_BANNER_BRAND
 #define CONFIG_SHOW_FEATURES
-#define CONFIG_SHOW_PAL_NTSC
 
 
 // Debug options

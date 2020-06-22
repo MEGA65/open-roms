@@ -148,12 +148,12 @@
 	.error "CONFIG_IEC_DOLPHINDOS_FAST requires CONFIG_IEC_DOLPHINDOS"
 #endif
 
-#if (CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_SOFT) && !CONFIG_IEC
+#if (CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_MEGA_65) && !CONFIG_IEC
 	.error "CONFIG_IEC_BURST_* requires CONFIG_IEC"
 #endif
 
-#if CONFIG_IEC_BURST_SOFT && !CONFIG_MB_MEGA_65
-	.error "CONFIG_IEC_BURST_SOFT requires CONFIG_MB_MEGA_65"
+#if CONFIG_IEC_BURST_MEGA_65 && !CONFIG_MB_MEGA_65
+	.error "CONFIG_IEC_BURST_MEGA_65 requires CONFIG_MB_MEGA_65"
 #endif
 
 	.var selected_iec_burst = 0;
@@ -164,7 +164,7 @@
 #if CONFIG_IEC_BURST_CIA2
 	.eval selected_iec_burst++
 #endif
-#if CONFIG_IEC_BURST_SOFT
+#if CONFIG_IEC_BURST_MEGA_65
 	.eval selected_iec_burst++
 #endif
 
@@ -358,86 +358,3 @@
 	.const CONFIG_COLOR_TXT = $01
 
 #endif
-
-
-// Function for printing out build features
-
-.var feature_new_line = false
-
-.function ADD_FEATURE(current_features, new_feature)
-{
-	.var features_str = current_features
-
-	.if (!feature_new_line && features_str.size() > 0)
-	{
-		.eval features_str = features_str + ", "
-	}
-
-	.if (feature_new_line)
-	{
-		.eval feature_new_line = false
-		.eval features_str = features_str + @"\r"
-	}
-
-	.return features_str + new_feature
-}
-
-.function BUILD_FEATURES_STR()
-{
-	.var features_str = ""
-
-#if CONFIG_TAPE_NORMAL && !CONFIG_TAPE_TURBO
-	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL")
-#endif
-#if !CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
-	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD TURBO")
-#endif
-#if CONFIG_TAPE_NORMAL && CONFIG_TAPE_TURBO
-	.eval features_str = ADD_FEATURE(features_str, "TAPE LOAD NORMAL TURBO")
-#endif
-
-	.eval feature_new_line = true
-
-#if CONFIG_IEC
-	.var iec_features_str = "IEC"
-#if CONFIG_IEC_BURST_CIA1
-	.eval iec_features_str = iec_features_str + " BURST1"
-#endif
-#if CONFIG_IEC_BURST_CIA2
-	.eval iec_features_str = iec_features_str + " BURST2"
-#endif
-#if CONFIG_IEC_BURST_SOFT
-	.eval iec_features_str = iec_features_str + " BURST"
-#endif
-#if CONFIG_IEC_DOLPHINDOS
-	.eval iec_features_str = iec_features_str + " DOLPHIN"
-#endif
-#if CONFIG_IEC_JIFFYDOS
-	.eval iec_features_str = iec_features_str + " JIFFY"
-#endif
-#if !CONFIG_IEC_BURST_CIA1 && !CONFIG_IEC_BURST_CIA2 && !CONFIG_IEC_BURST_SOFT && !CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC_JIFFYDOS
-	.eval iec_features_str = iec_features_str + " NORMAL"
-#endif
-	.eval features_str = ADD_FEATURE(features_str, iec_features_str)
-#endif
-
-	.eval feature_new_line = true
-
-#if CONFIG_RS232_UP2400
-	.eval features_str = ADD_FEATURE(features_str, "UP2400")
-#endif
-
-#if CONFIG_RS232_UP2400
-	.eval features_str = ADD_FEATURE(features_str, "UP9600")
-#endif
-
-#if CONFIG_KEYBOARD_C128
-	.eval features_str = ADD_FEATURE(features_str, "KBD 128")
-#endif
-
-#if CONFIG_KEYBOARD_C65
-	.eval features_str = ADD_FEATURE(features_str, "KBD 65")
-#endif
-
-	.return features_str
-}

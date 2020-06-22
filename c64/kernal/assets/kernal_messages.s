@@ -31,9 +31,6 @@
 .label __MSG_KERNAL_PANIC_ROM_MISMATCH = __msg_kernalpanic_rom_mismatch - __msg_kernal_first
 #endif
 
-#if CONFIG_SHOW_FEATURES
-.label __MSG_KERNAL_FEATURES           = __msg_kernalfeatures           - __msg_kernal_first
-#endif
 
 __msg_kernal_first:
 
@@ -99,11 +96,3 @@ __msg_kernalpanic_rom_mismatch:
 	.byte $80 + $48 // end of string mark + 'H'
 
 #endif // CONFIG_PANIC_SCREEN
-
-#if CONFIG_SHOW_FEATURES
-
-__msg_kernalfeatures:
-	.text BUILD_FEATURES_STR()
-	.byte $80 + $0D // end of string mark + return
-
-#endif // CONFIG_SHOW_FEATURES

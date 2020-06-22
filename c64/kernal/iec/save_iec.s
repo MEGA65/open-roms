@@ -42,7 +42,7 @@ save_iec:
 	jsr LISTEN
 	bcs save_iec_dev_not_found
 
-#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
+#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_MEGA_65
 	jsr burst_advertise
 #endif
 

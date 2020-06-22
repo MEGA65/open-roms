@@ -60,7 +60,7 @@ load_iec:
 	jsr TALK
 	bcs load_iec_error
 
-#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
+#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_MEGA_65
 	jsr burst_advertise
 #endif
 

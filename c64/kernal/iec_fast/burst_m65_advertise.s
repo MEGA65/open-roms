@@ -7,7 +7,7 @@
 //
 
 
-#if CONFIG_IEC_BURST_SOFT
+#if CONFIG_IEC_BURST_MEGA_65
 
 
 burst_advertise:

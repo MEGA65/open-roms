@@ -57,8 +57,7 @@ initmsg_real:
 	ldy #$00
 #if CONFIG_SHOW_FEATURES
 	jsr plot_set
-	jsr print_features
-	jmp print_pal_ntsc
+	jmp print_features
 #else
 	jmp plot_set
 #endif
@@ -111,8 +110,7 @@ initmsg_real:
 	ldy #$00
 #if CONFIG_SHOW_FEATURES
 	jsr plot_set
-	jsr print_features
-	jmp print_pal_ntsc
+	jmp print_features
 #else
 	jmp plot_set
 #endif

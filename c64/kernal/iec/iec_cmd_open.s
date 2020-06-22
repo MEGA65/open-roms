@@ -20,7 +20,7 @@ iec_cmd_open: // similar to TKSA, but without turnaround
 !:
 	ora #$F0
 
-#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_SOFT
+#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_MEGA_65
 	pha
 	jsr burst_advertise
 	pla

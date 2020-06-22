@@ -45,7 +45,8 @@ typedef struct StringEntry
 enum class ListType
 {
 	KEYWORDS,
-	STRINGS_BASIC
+	STRINGS_BASIC,
+	DICTIONARY                  // for internal use only
 };
 
 typedef struct StringEntryList
@@ -55,8 +56,14 @@ typedef struct StringEntryList
 	std::vector<StringEntry> list;
 } StringEntryList;
 
-typedef std::vector<uint8_t>       StringEncoded;
-typedef std::vector<StringEncoded> StringEncodedList;
+typedef std::vector<uint8_t>           StringFreqEncoded;
+typedef std::vector<uint32_t>          StringDictEncoded;
+
+typedef struct StringEncodedList
+{
+	std::vector<StringFreqEncoded> byFreq;
+	std::vector<StringDictEncoded> byDict;
+} StringEncodedList;
 
 // http://www.classic-games.com/commodore64/cbmtoken.html
 // https://www.c64-wiki.com/wiki/BASIC_token
@@ -471,7 +478,7 @@ private:
 	void calculateFrequencies();
 	void encodeStrings();
 
-	void encodeByFreq(const std::string &plain, StringEncoded &encoded) const;
+	void encodeByFreq(const std::string &plain, StringFreqEncoded &encoded) const;
 
 	void prepareOutput();
 
@@ -756,7 +763,7 @@ void DataSet::calculateFrequencies()
 	}
 }
 
-void DataSet::encodeByFreq(const std::string &plain, StringEncoded &encoded) const
+void DataSet::encodeByFreq(const std::string &plain, StringFreqEncoded &encoded) const
 {
 	bool fullByte = true;
 
@@ -828,8 +835,8 @@ void DataSet::encodeStrings()
 
 		for (const auto &stringEntry : stringEntryList.list)
 		{
-			stringEncodedList.emplace_back();
-			auto &stringEncoded = stringEncodedList.back();
+			stringEncodedList.byFreq.emplace_back();
+			auto &stringEncoded = stringEncodedList.byFreq.back();
 
 			if (isRelevant(stringEntry))
 			{
@@ -912,16 +919,16 @@ void DataSet::prepareOutput()
 
 	for (uint8_t idxList = 0; idxList < stringEntryLists.size(); idxList++)
 	{
-		const auto &stringEntryList   = stringEntryLists[idxList];
-		const auto &stringEncodedList = stringEncodedLists[idxList];
+		const auto &stringEntryList       = stringEntryLists[idxList];
+		const auto &stringFreqEncodedList = stringEncodedLists[idxList].byFreq;
 
 		stream << std::endl;
-		for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
+		for (uint8_t idxString = 0; idxString < stringFreqEncodedList.size(); idxString++)
 		{
-			const auto &stringEntry   = stringEntryList.list[idxString];
-			const auto &stringEncoded = stringEncodedList[idxString];
+			const auto &stringEntry       = stringEntryList.list[idxString];
+			const auto &stringFreqEncoded = stringFreqEncodedList[idxString];
 
-			if (!stringEncoded.empty())
+			if (!stringFreqEncoded.empty())
 			{
 				stream << ".label IDX__" << stringEntry.alias << std::string(maxAliasLen - stringEntry.alias.length(), ' ') << 
 				          " = $" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idxString << std::endl;
@@ -933,18 +940,18 @@ void DataSet::prepareOutput()
 		if (stringEntryList.type == ListType::KEYWORDS)
 		{
 			stream << std::endl << ".label TK__MAXTOKEN_" << stringEntryList.name << " = " <<
-			          std::dec << stringEncodedList.size() << std::endl;
+			          std::dec << stringFreqEncodedList.size() << std::endl;
 		}
 
 		stream << std::endl << ".macro put_freq_packed_" << stringEntryList.name << "()" << std::endl << "{" << std::endl;
 
 		enum LastStr { NONE, SKIPPED, WRITTEN } lastStr = LastStr::NONE;
-		for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
+		for (uint8_t idxString = 0; idxString < stringFreqEncodedList.size(); idxString++)
 		{
-			const auto &stringEntry   = stringEntryList.list[idxString];
-			const auto &stringEncoded = stringEncodedList[idxString];
+			const auto &stringEntry       = stringEntryList.list[idxString];
+			const auto &stringFreqEncoded = stringFreqEncodedList[idxString];
 
-			if (stringEncoded.empty())
+			if (stringFreqEncoded.empty())
 			{
 				if (lastStr == LastStr::WRITTEN) stream << std::endl;
 				stream << "\t.byte $00    // skipped " << stringEntry.alias << std::endl;
@@ -958,7 +965,7 @@ void DataSet::prepareOutput()
 				stream << "\t.byte ";
 
 				bool first = true;
-				for (const auto &charEncoded : stringEncoded)
+				for (const auto &charEncoded : stringFreqEncoded)
 				{
 					if (first)
 					{

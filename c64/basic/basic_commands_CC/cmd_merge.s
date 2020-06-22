@@ -24,11 +24,8 @@ cmd_merge:
 !:
 	// Fetch device number
 
-	jsr fetch_coma_uint8
-	bcs !+
+	jsr helper_load_fetch_devnum
 
-	sta FA
-!:
 	// Perform loading - just for a different address
 
 	sec

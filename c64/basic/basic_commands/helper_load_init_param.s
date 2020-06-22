@@ -16,6 +16,10 @@ helper_load_init_params:
 
 	sta VERCKB
 
+	// FALLTROUGH
+
+helper_load_init_params_no_VERCKB:
+
 	// Set default device, set secondary address to 0
 
 	jsr select_device

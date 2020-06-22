@@ -5,22 +5,22 @@
 
 cmd_save:
 
-	// Set default device and secondary address; channel is not important now
+	// Set default device and secondary address
 
-	jsr select_device
-	ldy #$00
-	jsr JSETFLS
+	jsr helper_load_init_params_no_VERCKB
 
 	// Fetch the file name
 
 	jsr helper_load_fetch_filename
 	bcs_16 do_MISSING_FILENAME_error
 
-	// Try to fetch device
+	// Try to fetch device number and secondary address
 
-	jsr fetch_device_secondary
-
-	// Setup the start and end addresses
+	jsr helper_load_fetch_devnum
+	bcs !+
+	jsr helper_load_fetch_secondary
+!:
+	// Setup the start address
 
 	lda #TXTTAB
 
@@ -28,6 +28,10 @@ cmd_save:
 
 	ldx VARTAB+0
 	ldy VARTAB+1
+
+	// FALLTROUGH
+
+cmd_save_do: // entry point for BSAVE
 
 	// Perform saving
 

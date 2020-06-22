@@ -16,26 +16,19 @@ cmd_load:
 
 	lda #$00                           // mark operation as LOAD	
 	jsr helper_load_init_params
+	jsr helper_load_setnam_any         // if no file name found, use "*"
 
 	// Fetch the file name
 
 	jsr helper_load_fetch_filename
-	bcs cmd_load_no_filename
+	bcs !+
 
-	// Try to fetch device and secondary address
+	// Try to fetch device number and secondary address
 
-	jsr fetch_device_secondary
-	jmp cmd_load_got_params
-
-cmd_load_no_filename:
-
-	// If no file name is supplied, try to load first file from disc
-
-	lda #$01                           // name length
-	ldx #<filename_any
-	ldy #>filename_any
-	jsr JSETNAM
-
+	jsr helper_load_fetch_devnum
+	bcs !+
+	jsr helper_load_fetch_secondary
+!:
 	// FALLTROUGH
 
 cmd_load_got_params:                   // input for tape wedge

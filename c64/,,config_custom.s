@@ -126,7 +126,7 @@
 #define CONFIG_TAPE_WEDGE
 // #define CONFIG_TAPE_HEAD_ALIGN
 #define CONFIG_BCD_SAFE_INTERRUPTS
-
+// #define CONFIG_COMPRESSION_LVL_2         // work-in-progress
 
 // Eye candy
 

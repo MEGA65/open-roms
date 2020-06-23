@@ -4,10 +4,6 @@
 
 // XXX print somewhere configuration file used to generate strings
 // XXX use DualStream class for logging
-// XXX use dictionary compression by finding the set of non-overlapping strings that can be concatenated
-//     to produce full set of strings; some idea for the algorithm (not sure if proper one) is available here
-//     https://stackoverflow.com/questions/9195676/finding-the-smallest-number-of-substrings-to-represent-a-set-of-strings
-//     needs some investigation...
 
 #include "common.h"
 
@@ -56,8 +52,8 @@ typedef struct StringEntryList
 	std::vector<StringEntry> list;
 } StringEntryList;
 
-typedef std::vector<uint8_t>           StringFreqEncoded;
-typedef std::vector<uint32_t>          StringDictEncoded;
+typedef std::vector<uint8_t>          StringFreqEncoded;
+typedef std::vector<uint8_t>          StringDictEncoded;
 
 typedef struct StringEncodedList
 {
@@ -462,6 +458,22 @@ std::map<std::string, bool> GLOBAL_ConfigOptions;
 // Work class definitions
 //
 
+class DictEncoder
+{
+public:
+
+	void addString(const std::string &inString, StringDictEncoded *outPtr);
+
+	void process(StringEntryList &outDictionary);
+
+private:
+
+	bool optimizeSplit();
+
+	std::vector<StringDictEncoded *> encodings;
+	std::vector<std::string>         dictionary;
+};
+
 class DataSet
 {
 public:
@@ -475,14 +487,18 @@ private:
 	void process();
 
 	void generateConfigDepStrings();
+	void validateLists();
 	void calculateFrequencies();
-	void encodeStrings();
+	void encodeStringsDict();
+	void encodeStringsFreq();
 
 	void encodeByFreq(const std::string &plain, StringFreqEncoded &encoded) const;
 
 	void prepareOutput();
 
 	void putCharEncoding(std::ostringstream &stream, uint8_t idx, char character, bool is3n);
+
+	bool isCompressionLvl2(const StringEntryList &list) const;
 
 	virtual bool isRelevant(const StringEntry &entry) const = 0;
 	virtual std::string layoutName() const = 0;
@@ -496,7 +512,7 @@ private:
 	uint8_t                               tk__packed_as_3n    = 0;
 	uint8_t                               tk__max_keyword_len = 0;
 
-	size_t                                maxAliasLen      = 0;
+	size_t                                maxAliasLen          = 0;
 	std::string                           outFileContent;
 };
 
@@ -522,11 +538,70 @@ class DataSetX16 : public DataSet
 // Work class implementation
 //
 
+void DictEncoder::addString(const std::string &inString, StringDictEncoded *outPtr)
+{
+	// Store the pointer to encoding
+
+	encodings.push_back(outPtr);
+
+	// Check if string is already present in the dictionary
+
+	auto pos = std::find(dictionary.begin(), dictionary.end(), inString);
+
+	// Create initial encoding
+
+	if (pos != dictionary.end())
+	{
+		encodings.back()->push_back(pos - dictionary.begin());
+	}
+	else
+	{
+		if (dictionary.size() > 255)
+		{
+			ERROR("max 255 strings for dictionary compression");
+		}
+
+		dictionary.push_back(inString);
+		encodings.back()->push_back(dictionary.size() - 1);
+	}
+}
+
+bool DictEncoder::optimizeSplit()
+{
+	// XXX
+
+	return false;
+}
+
+void DictEncoder::process(StringEntryList &outDictionary)
+{
+	// Optimize as long as it brings any improvement
+
+	while (optimizeSplit()) ;
+
+	// Export the dictionary to external format
+
+	outDictionary.type = ListType::DICTIONARY;
+	outDictionary.name = "DICTIONARY";
+
+	for (const auto &dictionaryStr : dictionary)
+	{
+		StringEntry newEntry = { true, true, true, "", dictionaryStr };
+		outDictionary.list.push_back(newEntry);
+	}
+}
+
+bool DataSet::isCompressionLvl2(const StringEntryList &list) const
+{
+	return (GLOBAL_ConfigOptions["CONFIG_COMPRESSION_LVL_2"] && list.type == ListType::STRINGS_BASIC);
+}
+
 void DataSet::addStrings(const StringEntryList &stringList)
 {
 	// Import the new list of strings
 
 	stringEntryLists.push_back(stringList);
+	stringEncodedLists.emplace_back();
 
 	// Clear strings not relevant for the current configuration
 	
@@ -551,8 +626,10 @@ void DataSet::process()
 	std::cout << "Processing layout '" << layoutName() << "'" << std::endl;
 
 	generateConfigDepStrings();
+	validateLists();
+	encodeStringsDict();
 	calculateFrequencies();
-	encodeStrings();
+	encodeStringsFreq();
 	prepareOutput();
 }
 
@@ -661,22 +738,12 @@ void DataSet::generateConfigDepStrings()
 	}
 }
 
-void DataSet::calculateFrequencies()
+void DataSet::validateLists()
 {
-	as1n.clear();
-	as3n.clear();
-	
-	std::map<char, uint16_t> freqMapGeneral;  // general character frequency map
-	std::map<char, uint16_t> freqMapKeywords; // frequency map for keywords
-
-	// Calculate frequencies of characters in the strings
-
 	for (const auto &stringEntryList : stringEntryLists)
 	{
 		for (const auto &stringEntry : stringEntryList.list)
 		{
-			if (!isRelevant(stringEntry)) continue;
-
 			// Check for maximum allowed string length
 			if (stringEntry.string.length() > 255) ERROR("string cannot be longer than 255 characters");
 
@@ -696,7 +763,62 @@ void DataSet::calculateFrequencies()
 				{
 					ERROR(std::string("character above 0x80 in string '") + stringEntry.string + "'");
 				}
-				
+			}			
+		}
+	}
+}
+
+void DataSet::encodeStringsDict()
+{
+	DictEncoder dictEncoder;
+
+	// Add strings for dictionary compresssion
+
+	for (uint8_t idx = 0; idx < stringEntryLists.size(); idx++)
+	{
+		const auto &stringEntryList = stringEntryLists[idx];
+		auto &stringEncodedList = stringEncodedLists[idx];
+
+		// Skip lists not to be encoded using the dictionary
+		if (!isCompressionLvl2(stringEntryList)) continue;
+
+		stringEncodedList.byDict.resize(stringEntryList.list.size());
+		for (uint8_t idxEntry = 0; idxEntry < stringEntryList.list.size(); idxEntry++)
+		{
+			dictEncoder.addString(stringEntryList.list[idxEntry].string,
+				                  &stringEncodedList.byDict[idxEntry]);
+		}
+	}
+
+	// Perform the compression
+
+	stringEntryLists.emplace_back();
+	stringEncodedLists.emplace_back();
+
+	dictEncoder.process(stringEntryLists.back());
+}
+
+void DataSet::calculateFrequencies()
+{
+	as1n.clear();
+	as3n.clear();
+	
+	std::map<char, uint16_t> freqMapGeneral;  // general character frequency map
+	std::map<char, uint16_t> freqMapKeywords; // frequency map for keywords
+
+	// Calculate frequencies of characters in the strings
+
+	for (const auto &stringEntryList : stringEntryLists)
+	{
+		// Skip lists encoded by the dictionary
+		if (isCompressionLvl2(stringEntryList)) continue;
+
+		for (const auto &stringEntry : stringEntryList.list)
+		{
+			if (!isRelevant(stringEntry)) continue;
+
+			for (const auto &character : stringEntry.string)
+			{				
 				freqMapGeneral[character]++;
 				if (stringEntryList.type == ListType::KEYWORDS) freqMapKeywords[character]++;
 			}
@@ -822,16 +944,21 @@ void DataSet::encodeByFreq(const std::string &plain, StringFreqEncoded &encoded)
 	if (encoded.size() == 0 || encoded.back() != 0) encoded.push_back(0);
 }
 
-void DataSet::encodeStrings()
+void DataSet::encodeStringsFreq()
 {
 	stringEncodedLists.clear();
 
 	// Encode every relevant string from every list - by character frequency
 
-	for (const auto &stringEntryList : stringEntryLists)
+	for (uint8_t idx = 0; idx < stringEntryLists.size(); idx++)
 	{
-		stringEncodedLists.emplace_back();
-		auto &stringEncodedList = stringEncodedLists.back();
+		const auto &stringEntryList = stringEntryLists[idx];
+		auto &stringEncodedList = stringEncodedLists[idx];
+
+		// Skip lists encoded by the dictionary
+		if (isCompressionLvl2(stringEntryList)) continue;
+
+		// Perform encoding of the list
 
 		for (const auto &stringEntry : stringEntryList.list)
 		{

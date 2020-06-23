@@ -491,6 +491,13 @@ private:
 	void encodeByFreq(const std::string &plain, StringEncoded &encoded) const;
 
 	void prepareOutput();
+	void prepareOutput_1n_3n(std::ostringstream &stream);
+	void prepareOutput_labels(std::ostringstream &stream,
+		                      const StringEntryList &stringEntryList,
+		                      const StringEncodedList &stringEncodedList);
+	void prepareOutput_packed(std::ostringstream &stream,
+		                      const StringEntryList &stringEntryList,
+		                      const StringEncodedList &stringEncodedList);
 
 	void putCharEncoding(std::ostringstream &stream, uint8_t idx, char character, bool is3n);
 
@@ -796,6 +803,7 @@ void DictEncoder::optimizeOrder()
 
 void DictEncoder::process(StringEntryList &outDictionary)
 {
+	if (dictionary.empty()) return;
 	// Optimize as long as it brings any improvement
 
 	while (optimizeSplit() || optimizeJoin()) ;
@@ -1231,13 +1239,8 @@ void DataSet::putCharEncoding(std::ostringstream &stream, uint8_t idx, char char
 	stream << petscii << std::endl;
 }
 
-void DataSet::prepareOutput()
+void DataSet::prepareOutput_1n_3n(std::ostringstream &stream)
 {
-	// Convert our encoded strings to a KickAssembler source
-
-	std::ostringstream stream;
-	stream << std::endl << "#if ROM_LAYOUT_" << layoutName() << std::endl;
-
 	uint8_t idx;
 
 	// Export all nibble-encoded characters
@@ -1266,6 +1269,108 @@ void DataSet::prepareOutput()
 	} 
 
 	stream << "}" << std::endl;
+}
+
+void DataSet::prepareOutput_labels(std::ostringstream &stream,
+	                               const StringEntryList &stringEntryList,
+	                               const StringEncodedList &stringEncodedList)
+{
+	// For the dictionary we do not have any labels
+	if (stringEntryList.type == ListType::DICTIONARY) return;
+
+	stream << std::endl;
+	for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
+	{
+		const auto &stringEntry   = stringEntryList.list[idxString];
+		const auto &stringEncoded = stringEncodedList[idxString];
+
+		if (!stringEncoded.empty())
+		{
+			stream << ".label IDX__" << stringEntry.alias << std::string(maxAliasLen - stringEntry.alias.length(), ' ') << 
+			          " = $" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idxString << std::endl;
+		}
+	}
+}
+
+void DataSet::prepareOutput_packed(std::ostringstream &stream,
+	                               const StringEntryList &stringEntryList,
+	                               const StringEncodedList &stringEncodedList)
+{
+	if (isCompressionLvl2(stringEntryList))
+	{
+		stream << std::endl << ".macro put_packed_dict_";
+	}
+	else
+	{
+		stream << std::endl << ".macro put_packed_freq_";			
+	}
+
+	stream << stringEntryList.name << "()" << std::endl << "{" << std::endl;
+
+	enum LastStr { NONE, SKIPPED, WRITTEN } lastStr = LastStr::NONE;
+	for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
+	{
+		const auto &stringEncoded = stringEncodedList[idxString];
+
+		if (stringEncoded.empty())
+		{
+			if (stringEntryList.type == ListType::DICTIONARY) ERROR("internal error"); // should never happen
+
+			if (lastStr == LastStr::WRITTEN) stream << std::endl;
+			stream << "\t.byte $00    // skipped " << stringEntryList.list[idxString].alias << std::endl;
+			lastStr = LastStr::SKIPPED;
+		}
+		else
+		{
+			if (lastStr != LastStr::NONE) stream << std::endl;
+
+			if (stringEntryList.type != ListType::DICTIONARY)
+			{
+				stream << "\t// IDX__" << stringEntryList.list[idxString].alias << std::endl;
+			}
+			stream << "\t.byte ";
+
+			bool first = true;
+			for (const auto &charEncoded : stringEncoded)
+			{
+				if (first)
+				{
+					first = false;
+				}
+				else
+				{
+					stream << ", ";
+				}
+
+				stream << "$" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +charEncoded;
+			}
+
+			stream << std::endl;
+			lastStr = LastStr::WRITTEN;
+		}
+	}
+
+	// For the token list - put the 'end of keywords' mark
+
+	if (stringEntryList.type == ListType::KEYWORDS)
+	{
+		stream << std::endl << "\t// Marker - end of the keyword list" << std::endl;
+		stream << "\t.byte $FF, $FF" << std::endl;
+	}
+
+	stream << "}" << std::endl;
+}
+
+void DataSet::prepareOutput()
+{
+	// Convert our encoded strings to a KickAssembler source
+
+	std::ostringstream stream;
+	stream << std::endl << "#if ROM_LAYOUT_" << layoutName() << std::endl;
+
+	// Export 1-nibble and 3-nibble encoding data
+
+	prepareOutput_1n_3n(stream);
 
 	// Export additional data for the tokenizer
 
@@ -1274,26 +1379,14 @@ void DataSet::prepareOutput()
 
 	// Export encoded strings
 
-	for (uint8_t idxList = 0; idxList < stringEntryLists.size(); idxList++)
+	for (uint8_t idx = 0; idx < stringEntryLists.size(); idx++)
 	{
-		const auto &stringEntryList   = stringEntryLists[idxList];
-		const auto &stringEncodedList = stringEncodedLists[idxList];
+		const auto &stringEntryList   = stringEntryLists[idx];
+		const auto &stringEncodedList = stringEncodedLists[idx];
 
-		if (stringEntryList.type != ListType::DICTIONARY)
-		{
-			stream << std::endl;
-			for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
-			{
-				const auto &stringEntry   = stringEntryList.list[idxString];
-				const auto &stringEncoded = stringEncodedList[idxString];
+		// Export labels for the current list
 
-				if (!stringEncoded.empty())
-				{
-					stream << ".label IDX__" << stringEntry.alias << std::string(maxAliasLen - stringEntry.alias.length(), ' ') << 
-					          " = $" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idxString << std::endl;
-				}
-			}
-		}
+		prepareOutput_labels(stream, stringEntryList, stringEncodedList);
 
 		// For the token list - put the number of tokens available
 
@@ -1303,69 +1396,9 @@ void DataSet::prepareOutput()
 			          std::dec << stringEncodedList.size() << std::endl;
 		}
 
-		if (isCompressionLvl2(stringEntryList))
-		{
-			stream << std::endl << ".macro put_packed_dict_";
-		}
-		else
-		{
-			stream << std::endl << ".macro put_packed_freq_";			
-		}
+		// Export the packed data
 
-		stream << stringEntryList.name << "()" << std::endl << "{" << std::endl;
-
-		enum LastStr { NONE, SKIPPED, WRITTEN } lastStr = LastStr::NONE;
-		for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
-		{
-			const auto &stringEncoded = stringEncodedList[idxString];
-
-			if (stringEncoded.empty())
-			{
-				if (stringEntryList.type == ListType::DICTIONARY) ERROR("internal error"); // should never happen
-
-				if (lastStr == LastStr::WRITTEN) stream << std::endl;
-				stream << "\t.byte $00    // skipped " << stringEntryList.list[idxString].alias << std::endl;
-				lastStr = LastStr::SKIPPED;
-			}
-			else
-			{
-				if (lastStr != LastStr::NONE) stream << std::endl;
-
-				if (stringEntryList.type != ListType::DICTIONARY)
-				{
-					stream << "\t// IDX__" << stringEntryList.list[idxString].alias << std::endl;
-				}
-				stream << "\t.byte ";
-
-				bool first = true;
-				for (const auto &charEncoded : stringEncoded)
-				{
-					if (first)
-					{
-						first = false;
-					}
-					else
-					{
-						stream << ", ";
-					}
-
-					stream << "$" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +charEncoded;
-				}
-
-				stream << std::endl;
-				lastStr = LastStr::WRITTEN;
-			}
-		}
-
-		// For the token list - put the 'end of keywords' mark
-
-		if (stringEntryList.type == ListType::KEYWORDS)
-		{
-			stream << std::endl << "\t// Marker - end of the keyword list" << std::endl;
-			stream << "\t.byte $FF, $FF" << std::endl;
-		}
-
-		stream << "}" << std::endl;
+		prepareOutput_packed(stream, stringEntryList, stringEncodedList);
 	}
 
 	// Finalize the file stream

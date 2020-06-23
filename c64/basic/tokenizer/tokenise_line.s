@@ -72,9 +72,9 @@ tokenise_line_loop:
 
 	// Check for BASIC V2 tokens
 
-	lda #<packed_str_keywords_V2
+	lda #<packed_freq_keywords_V2
 	sta FRESPC+0
-	lda #>packed_str_keywords_V2
+	lda #>packed_freq_keywords_V2
 	sta FRESPC+1
 
 	jsr tk_search
@@ -82,17 +82,17 @@ tokenise_line_loop:
 
 	// Check for extended tokens
 
-	lda #<packed_str_keywords_CC
+	lda #<packed_freq_keywords_CC
 	sta FRESPC+0
-	lda #>packed_str_keywords_CC
+	lda #>packed_freq_keywords_CC
 	sta FRESPC+1
 
 	jsr tk_search
 	bcc tokenise_line_keyword_CC                 // branch if keyword identified
 
-	lda #<packed_str_keywords_CD
+	lda #<packed_freq_keywords_CD
 	sta FRESPC+0
-	lda #>packed_str_keywords_CD
+	lda #>packed_freq_keywords_CD
 	sta FRESPC+1
 
 	jsr tk_search

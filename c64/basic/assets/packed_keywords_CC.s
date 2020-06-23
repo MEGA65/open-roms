@@ -4,6 +4,6 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-packed_str_errors:
+packed_freq_keywords_CC:
 
-	put_freq_packed_errors()
+	put_packed_freq_keywords_CC()

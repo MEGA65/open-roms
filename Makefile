@@ -178,15 +178,15 @@ updatebin:
 
 $(TOOL_PNGPREPARE): tools/pngprepare.c
 	@mkdir -p build/tools
-	$(CC) -O2 -g -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
+	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
 
 build/tools/%: tools/%.c
 	@mkdir -p build/tools
-	$(CC) -O2 -g -Wall -o $@ $<
+	$(CC) -O2 -Wall -o $@ $<
 
 build/tools/%: tools/%.cc tools/common.h
 	@mkdir -p build/tools
-	$(CXX) -O2 -g -Wall -o $@ $<
+	$(CXX) -O0 -g -Wall -o $@ $<
 
 # Rules - CHARGEN
 

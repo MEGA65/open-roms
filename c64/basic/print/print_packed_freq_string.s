@@ -23,69 +23,46 @@ print_packed_misc_str:
 
 #else
 
+#if !CONFIG_COMPRESSION_LVL_2
+
 print_packed_error:                    // .X - error string index
 
-	lda #<packed_str_errors
-	ldy #>packed_str_errors
+	lda #<packed_freq_errors
+	ldy #>packed_freq_errors
 	bne print_freq_packed_string       // branch always
 
 print_packed_misc_str:                 // .X - misc string index
 
-	lda #<packed_str_misc
-	ldy #>packed_str_misc
+	lda #<packed_freq_misc
+	ldy #>packed_freq_misc
 	bne print_freq_packed_string       // branch always
+
+#endif
 
 print_packed_keyword_CC:               // .X - token number
 
-	lda #<packed_str_keywords_CC
-	ldy #>packed_str_keywords_CC
+	lda #<packed_freq_keywords_CC
+	ldy #>packed_freq_keywords_CC
 	bne print_freq_packed_string       // branch always
 
 print_packed_keyword_CD:               // .X - token number
 
-	lda #<packed_str_keywords_CD
-	ldy #>packed_str_keywords_CD
+	lda #<packed_freq_keywords_CD
+	ldy #>packed_freq_keywords_CD
 	bne print_freq_packed_string       // branch always
 
 print_packed_keyword_V2:               // .X - token number
 
-	lda #<packed_str_keywords_V2
-	ldy #>packed_str_keywords_V2
+	lda #<packed_freq_keywords_V2
+	ldy #>packed_freq_keywords_V2
 
 	// FALLTROUGH
 
 print_freq_packed_string:              // not to be used directly   XXX rename to print_packed_string
 
-	// First store the initial address of the packed strings list
+	// Search for the packed string on the list
 
-	sta FRESPC+0
-	sty FRESPC+1
-
-	// Now find the address of the string to print out
-	// The implementation assumes no packed string is longer than 255 bytes, including trailing zero
-!:
-	cpx #$00
-	beq print_freq_packed_string_found // branch if no need to advance anymore
-	dex
-
-	ldy #$00
-!:
-	lda (FRESPC), y
-	iny
-	cmp #$00
-	bne !-                             // branch if not the end of packed string
-
-	clc                                // advance FREESPC pointer
-	tya
-	adc FRESPC+0
-	sta FRESPC+0
-	lda #$00
-	adc FRESPC+1
-	sta FRESPC+1
-
-	jmp !--
-
-print_freq_packed_string_found:
+	jsr print_packed_search
 
 	// At this point FRESPC contains a pointer to the string to display
 	// and we should start from the lower nibble

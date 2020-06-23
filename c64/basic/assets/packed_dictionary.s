@@ -4,6 +4,10 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-packed_str_keywords_V2:
+#if CONFIG_COMPRESSION_LVL_2
 
-	put_freq_packed_keywords_V2()
+packed_dictionary:
+
+	put_packed_freq_DICTIONARY()
+
+#endif

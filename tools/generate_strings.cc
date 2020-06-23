@@ -1279,16 +1279,19 @@ void DataSet::prepareOutput()
 		const auto &stringEntryList   = stringEntryLists[idxList];
 		const auto &stringEncodedList = stringEncodedLists[idxList];
 
-		stream << std::endl;
-		for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
+		if (stringEntryList.type != ListType::DICTIONARY)
 		{
-			const auto &stringEntry   = stringEntryList.list[idxString];
-			const auto &stringEncoded = stringEncodedList[idxString];
-
-			if (!stringEncoded.empty())
+			stream << std::endl;
+			for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
 			{
-				stream << ".label IDX__" << stringEntry.alias << std::string(maxAliasLen - stringEntry.alias.length(), ' ') << 
-				          " = $" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idxString << std::endl;
+				const auto &stringEntry   = stringEntryList.list[idxString];
+				const auto &stringEncoded = stringEncodedList[idxString];
+
+				if (!stringEncoded.empty())
+				{
+					stream << ".label IDX__" << stringEntry.alias << std::string(maxAliasLen - stringEntry.alias.length(), ' ') << 
+					          " = $" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idxString << std::endl;
+				}
 			}
 		}
 
@@ -1302,11 +1305,11 @@ void DataSet::prepareOutput()
 
 		if (isCompressionLvl2(stringEntryList))
 		{
-			stream << std::endl << ".macro put_dict_packed_";
+			stream << std::endl << ".macro put_packed_dict_";
 		}
 		else
 		{
-			stream << std::endl << ".macro put_freq_packed_";			
+			stream << std::endl << ".macro put_packed_freq_";			
 		}
 
 		stream << stringEntryList.name << "()" << std::endl << "{" << std::endl;
@@ -1314,20 +1317,24 @@ void DataSet::prepareOutput()
 		enum LastStr { NONE, SKIPPED, WRITTEN } lastStr = LastStr::NONE;
 		for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
 		{
-			const auto &stringEntry   = stringEntryList.list[idxString];
 			const auto &stringEncoded = stringEncodedList[idxString];
 
 			if (stringEncoded.empty())
 			{
+				if (stringEntryList.type == ListType::DICTIONARY) ERROR("internal error"); // should never happen
+
 				if (lastStr == LastStr::WRITTEN) stream << std::endl;
-				stream << "\t.byte $00    // skipped " << stringEntry.alias << std::endl;
+				stream << "\t.byte $00    // skipped " << stringEntryList.list[idxString].alias << std::endl;
 				lastStr = LastStr::SKIPPED;
 			}
 			else
 			{
 				if (lastStr != LastStr::NONE) stream << std::endl;
 
-				stream << "\t// IDX__" << stringEntry.alias << std::endl;
+				if (stringEntryList.type != ListType::DICTIONARY)
+				{
+					stream << "\t// IDX__" << stringEntryList.list[idxString].alias << std::endl;
+				}
 				stream << "\t.byte ";
 
 				bool first = true;

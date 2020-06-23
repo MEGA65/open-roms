@@ -2,9 +2,6 @@
 // Utility to generate compressed messages and BASIC tokens
 //
 
-// XXX print somewhere configuration file used to generate strings
-// XXX use DualStream class for logging
-
 #include "common.h"
 
 #include <unistd.h>
@@ -52,14 +49,8 @@ typedef struct StringEntryList
 	std::vector<StringEntry> list;
 } StringEntryList;
 
-typedef std::vector<uint8_t>          StringFreqEncoded;
-typedef std::vector<uint8_t>          StringDictEncoded;
-
-typedef struct StringEncodedList
-{
-	std::vector<StringFreqEncoded> byFreq;
-	std::vector<StringDictEncoded> byDict;
-} StringEncodedList;
+typedef std::vector<uint8_t>       StringEncoded;
+typedef std::vector<StringEncoded> StringEncodedList;
 
 // http://www.classic-games.com/commodore64/cbmtoken.html
 // https://www.c64-wiki.com/wiki/BASIC_token
@@ -462,16 +453,21 @@ class DictEncoder
 {
 public:
 
-	void addString(const std::string &inString, StringDictEncoded *outPtr);
+	void addString(const std::string &inString, StringEncoded *outPtr);
 
 	void process(StringEntryList &outDictionary);
 
 private:
 
 	bool optimizeSplit();
+	bool optimizeJoin();
+	void optimizeOrder();
 
-	std::vector<StringDictEncoded *> encodings;
-	std::vector<std::string>         dictionary;
+	void extractWords(std::vector<std::string> &candidateList);
+	int32_t evaluateCandidate(std::string &candidate);
+
+	std::vector<StringEncoded *> encodings;
+	std::vector<std::string>     dictionary;
 };
 
 class DataSet
@@ -492,7 +488,7 @@ private:
 	void encodeStringsDict();
 	void encodeStringsFreq();
 
-	void encodeByFreq(const std::string &plain, StringFreqEncoded &encoded) const;
+	void encodeByFreq(const std::string &plain, StringEncoded &encoded) const;
 
 	void prepareOutput();
 
@@ -538,7 +534,7 @@ class DataSetX16 : public DataSet
 // Work class implementation
 //
 
-void DictEncoder::addString(const std::string &inString, StringDictEncoded *outPtr)
+void DictEncoder::addString(const std::string &inString, StringEncoded *outPtr)
 {
 	// Store the pointer to encoding
 
@@ -566,18 +562,244 @@ void DictEncoder::addString(const std::string &inString, StringDictEncoded *outP
 	}
 }
 
+
+void DictEncoder::extractWords(std::vector<std::string> &candidateList)
+{
+	for (const auto &dictionaryEntry : dictionary)
+	{
+		// Split the dictionary entry into words
+		
+		std::istringstream entryStream(dictionaryEntry);
+		while (entryStream)
+		{
+			// XXX probably not the best way
+			std::string word_1;
+			entryStream >> word_1;
+			
+			// Create possible variants with spaces
+
+			std::string word_2 = " " + word_1;
+			std::string word_3 = word_1 + " ";
+			std::string word_4 = word_2 + " ";
+
+			// If necessary, add the word to candidate list
+			
+			auto addToList = [&dictionaryEntry, &candidateList](std::string &word)
+			{
+				// Before dding, make sure the word variant exists in the string,
+				// is not already on the list, and is long enough it makes sense to try
+
+				if (word.size() < 1) return;
+				if (dictionaryEntry.find(word) == std::string::npos) return;
+				if (std::find(candidateList.begin(), candidateList.end(), word) == candidateList.end()) return; 
+				
+				candidateList.push_back(word);
+			};
+			
+			addToList(word_1);
+			addToList(word_2);
+			addToList(word_3);
+			addToList(word_4);
+		}
+	}
+}
+
+int32_t DictEncoder::evaluateCandidate(std::string &candidate)
+{
+	// Build the score - find how much bytes can be spared by extracting this particular candidate
+	// Limited size of the dictionary is taken into consideration
+	
+	int32_t  score      = -(candidate.size() + 1);
+	uint32_t targetSize = dictionary.size() + 1;
+
+	// First check for situation when the candidate equals the currently existing dictionary entry
+
+	for (const auto &dictionaryEntry : dictionary)
+	{	
+		if (dictionaryEntry == candidate)
+		{
+			// Candidate equals the string
+
+			score += candidate.size() + 1;
+			targetSize--;
+			continue;
+		}
+	}
+
+	// Now check the remaining cases
+
+	for (const auto &dictionaryEntry : dictionary)
+	{	
+		if (dictionaryEntry == candidate) continue; // already handled
+
+		// Find all the occurences of the candidate in the current string
+
+		std::vector<uint8_t> occurences;
+		for (auto iter = dictionaryEntry.begin(); iter < (dictionaryEntry.end() - candidate.size() + 1); iter++)
+		{
+			if (candidate != std::string(iter, iter + candidate.size())) continue;
+			
+			occurences.push_back(iter - dictionaryEntry.begin());
+			iter += candidate.size() - 1; // to make sure we have no occurence overlapping
+		}
+		
+		if (occurences.empty()) continue;
+		
+		// Now summarize what we are going to gain when doing replacement
+		
+		if (occurences[0] != 0)
+		{
+			// For the substring before the first occurence we need to create a separate entry
+			// in the dictionary - unless it is already there, it brings some additional cost
+
+			// XXX, targetSize
+		}
+		
+		for (auto iter = occurences.begin(); iter < occurences.end(); iter++)
+		{
+			// With a replacement, we should gain some bytes
+			score += candidate.size() - 1;
+			
+			// If the occurence ends with the last byte of dictionary string - nothing more to do
+			if (*iter + candidate.size() == dictionaryEntry.size()) break;
+
+			// If next occurence starts immediately after this one - next iteration
+			if (iter + 1 != occurences.end() && (*(iter + 1) - *iter) == (uint8_t) candidate.size()) continue;
+
+			// For the substring between this occurence and the next one (or the end of the string)
+			// we need to create a separate entry in the dictionary - unless it is already there,
+			// it brings some additional cost
+			
+			// XXX, targetSize
+		}
+		
+		// We crossed the maximum number of strings, do not consider this candidate
+		// XXX improve the behaviour, maybe only some substrings can be replaced
+		
+		if (targetSize > 255) return -1;
+	}
+	
+	return score;
+}
+
 bool DictEncoder::optimizeSplit()
 {
+	if (dictionary.size() >= 255) return false; // up to 255 entries in the dictionary are possible
+	
+	// First select words, which can potentially be extracted to new substrings
+	
+	std::vector<std::string> candidateList;
+	extractWords(candidateList);
+	
+	// XXX find a couple of largest common substrings and add them as candidates too
+	
+	// Now find the best word to be extracted
+	
+	auto bestCandidate         = candidateList.end();
+	int32_t bestCandidateScore = 0;
+	
+	for (auto iter = candidateList.begin(); iter < candidateList.end(); iter++)
+	{
+		int32_t candidateScore = evaluateCandidate(*iter);
+		if (candidateScore > bestCandidateScore)
+		{
+			bestCandidate = iter;
+			bestCandidateScore = bestCandidateScore;
+		}
+	}
+	
+	if (bestCandidateScore < 1) return false;
+	
+	// Perform the extraction
+	
 	// XXX
 
 	return false;
+}
+
+bool DictEncoder::optimizeJoin()
+{
+	// Try to optimize by joining two substrings
+	
+	// XXX
+	
+	return false;
+}
+
+void DictEncoder::optimizeOrder()
+{
+	// Try to optimize order of strings in the dictionary for fastest display
+	// - put the shorter substrings first
+	// - for strings with roughly the same length put more frequently used first
+	
+	typedef struct Entry
+	{
+		uint32_t    penalty;
+		std::string word;
+	} Entry;
+	
+	// Create copy of the dictionary with optimization info
+	
+	std::vector<Entry> optimizedOrder;
+	for (auto iter = dictionary.begin(); iter < dictionary.end(); iter++)
+	{
+		const auto &dictionaryStr = *iter;
+	
+		uint8_t  sizePenalty = dictionaryStr.size() / 3;
+		uint16_t freqPenalty = 65535;
+		
+		// Calculate penalty for low occurence frequency
+		
+		for (auto &encoding : encodings)
+		{
+			for (auto &byte : *encoding)
+			{
+				if (byte == (iter - dictionary.begin())) freqPenalty--;
+			}
+		}
+
+		// Create new entry
+		
+		Entry newEntry;
+		newEntry.word    = dictionaryStr;
+		newEntry.penalty = sizePenalty * 65536 + freqPenalty;
+
+		optimizedOrder.push_back(newEntry);
+	}
+	
+	// Determine ordering - sort from smallest penalty to largest
+	
+	std::sort(optimizedOrder.begin(), optimizedOrder.end(),
+	          [](const Entry &e1, const Entry &e2) { return e1.penalty < e2.penalty; });
+
+	// Create helper table for reordering
+	
+	std::vector<uint8_t> reorderTable;
+	
+	for (uint8_t idx1 = 0; idx1 < dictionary.size(); idx1++)
+	{
+		uint8_t idx2 = 0;
+		while (dictionary[idx1] != optimizedOrder[idx2].word) idx2++;
+		
+		reorderTable.push_back(idx2);		
+	}
+
+	// Perform the reordering
+	
+	for (auto &encoding : encodings)
+	{
+		for (auto &byte : *encoding) byte = reorderTable[byte];
+	}
+	
+	for (uint8_t idx = 0; idx < dictionary.size(); idx++) dictionary[idx] = optimizedOrder[idx].word;
 }
 
 void DictEncoder::process(StringEntryList &outDictionary)
 {
 	// Optimize as long as it brings any improvement
 
-	while (optimizeSplit()) ;
+	while (optimizeSplit() || optimizeJoin()) ;
+	optimizeOrder();
 
 	// Export the dictionary to external format
 
@@ -588,6 +810,14 @@ void DictEncoder::process(StringEntryList &outDictionary)
 	{
 		StringEntry newEntry = { true, true, true, "", dictionaryStr };
 		outDictionary.list.push_back(newEntry);
+	}
+
+	// Adapt the encoding to external format (0 = end of string)
+
+	for (auto &encoding : encodings)
+	{
+		for (auto &byte : *encoding) byte++;
+		encoding->push_back(0);
 	}
 }
 
@@ -623,7 +853,7 @@ void DataSet::addStrings(const StringEntryList &stringList)
 
 void DataSet::process()
 {
-	std::cout << "Processing layout '" << layoutName() << "'" << std::endl;
+	std::cout << "Processing file '" << CMD_cnfFile << "', layout '" << layoutName() << "'" << std::endl;
 
 	generateConfigDepStrings();
 	validateLists();
@@ -782,11 +1012,11 @@ void DataSet::encodeStringsDict()
 		// Skip lists not to be encoded using the dictionary
 		if (!isCompressionLvl2(stringEntryList)) continue;
 
-		stringEncodedList.byDict.resize(stringEntryList.list.size());
+		stringEncodedList.resize(stringEntryList.list.size());
 		for (uint8_t idxEntry = 0; idxEntry < stringEntryList.list.size(); idxEntry++)
 		{
 			dictEncoder.addString(stringEntryList.list[idxEntry].string,
-				                  &stringEncodedList.byDict[idxEntry]);
+				                  &stringEncodedList[idxEntry]);
 		}
 	}
 
@@ -885,7 +1115,7 @@ void DataSet::calculateFrequencies()
 	}
 }
 
-void DataSet::encodeByFreq(const std::string &plain, StringFreqEncoded &encoded) const
+void DataSet::encodeByFreq(const std::string &plain, StringEncoded &encoded) const
 {
 	bool fullByte = true;
 
@@ -958,12 +1188,12 @@ void DataSet::encodeStringsFreq()
 		// Skip lists encoded by the dictionary
 		if (isCompressionLvl2(stringEntryList)) continue;
 
-		// Perform encoding of the list
+		// Perform frequency encoding of the list
 
 		for (const auto &stringEntry : stringEntryList.list)
 		{
-			stringEncodedList.byFreq.emplace_back();
-			auto &stringEncoded = stringEncodedList.byFreq.back();
+			stringEncodedList.emplace_back();
+			auto &stringEncoded = stringEncodedList.back();
 
 			if (isRelevant(stringEntry))
 			{
@@ -1042,20 +1272,20 @@ void DataSet::prepareOutput()
 	stream << std::endl << ".label TK__PACKED_AS_3N    = $" << std::hex << +tk__packed_as_3n <<
               std::endl << ".label TK__MAX_KEYWORD_LEN = "  << std::dec << +tk__max_keyword_len << std::endl;
 
-	// Export frequency-encoded strings
+	// Export encoded strings
 
 	for (uint8_t idxList = 0; idxList < stringEntryLists.size(); idxList++)
 	{
-		const auto &stringEntryList       = stringEntryLists[idxList];
-		const auto &stringFreqEncodedList = stringEncodedLists[idxList].byFreq;
+		const auto &stringEntryList   = stringEntryLists[idxList];
+		const auto &stringEncodedList = stringEncodedLists[idxList];
 
 		stream << std::endl;
-		for (uint8_t idxString = 0; idxString < stringFreqEncodedList.size(); idxString++)
+		for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
 		{
-			const auto &stringEntry       = stringEntryList.list[idxString];
-			const auto &stringFreqEncoded = stringFreqEncodedList[idxString];
+			const auto &stringEntry   = stringEntryList.list[idxString];
+			const auto &stringEncoded = stringEncodedList[idxString];
 
-			if (!stringFreqEncoded.empty())
+			if (!stringEncoded.empty())
 			{
 				stream << ".label IDX__" << stringEntry.alias << std::string(maxAliasLen - stringEntry.alias.length(), ' ') << 
 				          " = $" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idxString << std::endl;
@@ -1067,18 +1297,27 @@ void DataSet::prepareOutput()
 		if (stringEntryList.type == ListType::KEYWORDS)
 		{
 			stream << std::endl << ".label TK__MAXTOKEN_" << stringEntryList.name << " = " <<
-			          std::dec << stringFreqEncodedList.size() << std::endl;
+			          std::dec << stringEncodedList.size() << std::endl;
 		}
 
-		stream << std::endl << ".macro put_freq_packed_" << stringEntryList.name << "()" << std::endl << "{" << std::endl;
+		if (isCompressionLvl2(stringEntryList))
+		{
+			stream << std::endl << ".macro put_dict_packed_";
+		}
+		else
+		{
+			stream << std::endl << ".macro put_freq_packed_";			
+		}
+
+		stream << stringEntryList.name << "()" << std::endl << "{" << std::endl;
 
 		enum LastStr { NONE, SKIPPED, WRITTEN } lastStr = LastStr::NONE;
-		for (uint8_t idxString = 0; idxString < stringFreqEncodedList.size(); idxString++)
+		for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
 		{
-			const auto &stringEntry       = stringEntryList.list[idxString];
-			const auto &stringFreqEncoded = stringFreqEncodedList[idxString];
+			const auto &stringEntry   = stringEntryList.list[idxString];
+			const auto &stringEncoded = stringEncodedList[idxString];
 
-			if (stringFreqEncoded.empty())
+			if (stringEncoded.empty())
 			{
 				if (lastStr == LastStr::WRITTEN) stream << std::endl;
 				stream << "\t.byte $00    // skipped " << stringEntry.alias << std::endl;
@@ -1092,7 +1331,7 @@ void DataSet::prepareOutput()
 				stream << "\t.byte ";
 
 				bool first = true;
-				for (const auto &charEncoded : stringFreqEncoded)
+				for (const auto &charEncoded : stringEncoded)
 				{
 					if (first)
 					{
@@ -1191,7 +1430,7 @@ void printUsage()
 void printBanner()
 {
     printBannerLineTop();
-    std::cout << "// Generating compressed messages and BASIC tokens" << "\n";
+    std::cout << "// Generating compressed messages and BASIC tokens\n";
     printBannerLineBottom();
 }
 

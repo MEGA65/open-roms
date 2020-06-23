@@ -867,7 +867,7 @@ void DataSet::process()
 	validateLists();
 	encodeStringsDict();
 	calculateFrequencies();
-	encodeStringsFreq();
+	encodeStringsFreq();	
 	prepareOutput();
 }
 
@@ -1015,7 +1015,7 @@ void DataSet::encodeStringsDict()
 	for (uint8_t idx = 0; idx < stringEntryLists.size(); idx++)
 	{
 		const auto &stringEntryList = stringEntryLists[idx];
-		auto &stringEncodedList = stringEncodedLists[idx];
+		auto &stringEncodedList     = stringEncodedLists[idx];
 
 		// Skip lists not to be encoded using the dictionary
 		if (!isCompressionLvl2(stringEntryList)) continue;
@@ -1030,10 +1030,13 @@ void DataSet::encodeStringsDict()
 
 	// Perform the compression
 
-	stringEntryLists.emplace_back();
-	stringEncodedLists.emplace_back();
+	StringEntryList dictionary;
+	dictEncoder.process(dictionary);
 
-	dictEncoder.process(stringEntryLists.back());
+	// Add new lists
+
+	stringEntryLists.push_back(dictionary);
+	stringEncodedLists.emplace_back();
 }
 
 void DataSet::calculateFrequencies()
@@ -1184,8 +1187,6 @@ void DataSet::encodeByFreq(const std::string &plain, StringEncoded &encoded) con
 
 void DataSet::encodeStringsFreq()
 {
-	stringEncodedLists.clear();
-
 	// Encode every relevant string from every list - by character frequency
 
 	for (uint8_t idx = 0; idx < stringEntryLists.size(); idx++)
@@ -1279,15 +1280,16 @@ void DataSet::prepareOutput_labels(std::ostringstream &stream,
 	if (stringEntryList.type == ListType::DICTIONARY) return;
 
 	stream << std::endl;
-	for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
+	for (uint8_t idx = 0; idx < stringEncodedList.size(); idx++)
 	{
-		const auto &stringEntry   = stringEntryList.list[idxString];
-		const auto &stringEncoded = stringEncodedList[idxString];
+		const auto &stringEntry   = stringEntryList.list[idx];
+		const auto &stringEncoded = stringEncodedList[idx];
 
 		if (!stringEncoded.empty())
 		{
-			stream << ".label IDX__" << stringEntry.alias << std::string(maxAliasLen - stringEntry.alias.length(), ' ') << 
-			          " = $" << std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idxString << std::endl;
+			stream << ".label IDX__" << stringEntry.alias <<
+			          std::string(maxAliasLen - stringEntry.alias.length(), ' ') << " = $" <<
+			          std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idx << std::endl;
 		}
 	}
 }

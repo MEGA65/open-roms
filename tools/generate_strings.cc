@@ -710,8 +710,8 @@ bool DictEncoder::optimizeSplit()
 		int32_t candidateScore = evaluateCandidate(*iter);
 		if (candidateScore > bestCandidateScore)
 		{
-			bestCandidate = iter;
-			bestCandidateScore = bestCandidateScore;
+			bestCandidate      = iter;
+			bestCandidateScore = candidateScore;
 		}
 	}
 	
@@ -997,7 +997,7 @@ void DataSet::validateLists()
 
 			for (const auto &character : stringEntry.string)
 			{
-				if (character >= 0x80)
+				if ((unsigned char) character >= 0x80)
 				{
 					ERROR(std::string("character above 0x80 in string '") + stringEntry.string + "'");
 				}

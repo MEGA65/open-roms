@@ -126,7 +126,6 @@
 #define CONFIG_TAPE_WEDGE
 // #define CONFIG_TAPE_HEAD_ALIGN
 #define CONFIG_BCD_SAFE_INTERRUPTS
-// #define CONFIG_COMPRESSION_LVL_2         // work-in-progress
 
 // Eye candy
 
@@ -141,3 +140,7 @@
 
 // #define CONFIG_DBG_STUBS_BRK
 // #define CONFIG_DBG_PRINTF
+
+// Other
+
+#define CONFIG_COMPRESSION_LVL_2         // work on this option stopped - it would not give any improvement

@@ -579,9 +579,10 @@ void DictEncoder::extractWords(std::vector<std::string> &candidateList)
 		std::istringstream entryStream(dictionaryEntry);
 		while (entryStream)
 		{
-			// XXX probably not the best way
 			std::string word_1;
 			entryStream >> word_1;
+
+			if (word_1.empty()) continue;
 			
 			// Create possible variants with spaces
 
@@ -598,8 +599,8 @@ void DictEncoder::extractWords(std::vector<std::string> &candidateList)
 
 				if (word.size() < 1) return;
 				if (dictionaryEntry.find(word) == std::string::npos) return;
-				if (std::find(candidateList.begin(), candidateList.end(), word) == candidateList.end()) return; 
-				
+				if (std::find(candidateList.begin(), candidateList.end(), word) != candidateList.end()) return;
+
 				candidateList.push_back(word);
 			};
 			
@@ -659,7 +660,19 @@ int32_t DictEncoder::evaluateCandidate(std::string &candidate)
 			// For the substring before the first occurence we need to create a separate entry
 			// in the dictionary - unless it is already there, it brings some additional cost
 
-			// XXX, targetSize
+			std::string otherStr = std::string(dictionaryEntry.begin(), dictionaryEntry.end() + occurences[0]);
+
+			if (std::find(dictionary.begin(), dictionary.end(), otherStr) != dictionary.end())
+			{
+				// This extra string is already in the dictionary - that gives extra saving
+				score += otherStr.size() - 1;
+			}
+			else
+			{
+				// This extra string is not in the dictionary, it has to be added
+				score -= 2;
+				targetSize++;
+			}
 		}
 		
 		for (auto iter = occurences.begin(); iter < occurences.end(); iter++)
@@ -676,12 +689,33 @@ int32_t DictEncoder::evaluateCandidate(std::string &candidate)
 			// For the substring between this occurence and the next one (or the end of the string)
 			// we need to create a separate entry in the dictionary - unless it is already there,
 			// it brings some additional cost
-			
-			// XXX, targetSize
+
+			std::string otherStr;
+			if (iter + 1 == occurences.end())
+			{
+				otherStr = std::string(dictionaryEntry.begin() + *iter + candidate.size(),
+					                   dictionaryEntry.end());
+			}
+			else
+			{
+				otherStr = std::string(dictionaryEntry.begin() + *iter + candidate.size(),
+					                   dictionaryEntry.begin() + *(iter + 1));
+			}
+
+			if (std::find(dictionary.begin(), dictionary.end(), otherStr) != dictionary.end())
+			{
+				// This extra string is already in the dictionary - that gives extra saving
+				score += otherStr.size() - 1;
+			}
+			else
+			{
+				// This extra string is not in the dictionary, it has to be added
+				score -= 2;
+				targetSize++;
+			}			
 		}
 		
 		// We crossed the maximum number of strings, do not consider this candidate
-		// XXX improve the behaviour, maybe only some substrings can be replaced
 		
 		if (targetSize > 255) return -1;
 	}
@@ -697,8 +731,8 @@ bool DictEncoder::optimizeSplit()
 	
 	std::vector<std::string> candidateList;
 	extractWords(candidateList);
-	
-	// XXX find a couple of largest common substrings and add them as candidates too
+
+	// XXX possible future improvement: find a couple of largest common substrings and add them as candidates too
 	
 	// Now find the best word to be extracted
 	
@@ -708,6 +742,9 @@ bool DictEncoder::optimizeSplit()
 	for (auto iter = candidateList.begin(); iter < candidateList.end(); iter++)
 	{
 		int32_t candidateScore = evaluateCandidate(*iter);
+
+		std::cout << "XXX candidate '" << *iter << "' score: " << candidateScore << std::endl;
+
 		if (candidateScore > bestCandidateScore)
 		{
 			bestCandidate      = iter;
@@ -717,9 +754,18 @@ bool DictEncoder::optimizeSplit()
 	
 	if (bestCandidateScore < 1) return false;
 	
-	// Perform the extraction
+	// Extract the best candidate to a separate string
 	
+	std::cout << "XXX best is '" << *bestCandidate << "' score: " << bestCandidateScore << std::endl;
+
 	// XXX
+
+	std::cout << std::endl << "NOTE: 'CONFIG_COMPRESSION_LVL_2' support is not finished - as of writing" <<
+	             std::endl << "      this text, it would not give any space improvement, so I've decided" <<
+	             std::endl << "      to stop working on it for now." << std::endl <<
+	             std::endl << "      Please disable this option in your configuration file." << std::endl << std::endl;
+
+	exit(1);
 
 	return false;
 }
@@ -728,7 +774,7 @@ bool DictEncoder::optimizeJoin()
 {
 	// Try to optimize by joining two substrings
 	
-	// XXX
+	// XXX - possible future improvement
 	
 	return false;
 }
@@ -1434,7 +1480,8 @@ void parseConfigFile()
 		
 		// Read a single line, remove leading spaces and tabs
 
-		std::getline(cnfFile, workStr); // XXX check for errors here
+		std::getline(cnfFile, workStr);
+		if (cnfFile.bad()) ERROR("error reading configuration file");
 		workStr = std::regex_replace(workStr, std::regex("^[ \t]+"), "");
 		
 		// Skip lines which are not preprocessor definitions

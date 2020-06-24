@@ -3,9 +3,6 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-// XXX review this code - for memory models below 60k this can probably be simplified
-
-
 basic_shift_mem_up_and_relink:
 	// Shift memory up from OLDTXT
 	// X bytes.

@@ -3,7 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-select_device: // XXX check usage, probably more can be put into this common section
+select_device:
 
 	// Take last device number, make sure it is a drive - 8 or above. Above 30,
 	// although illegal for IEC we also consider a drive, as they exists

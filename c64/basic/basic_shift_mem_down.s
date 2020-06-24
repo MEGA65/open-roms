@@ -3,9 +3,6 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-// XXX review this code - for memory models below 60k this can probably be simplified
-
-
 basic_shift_mem_down_and_relink:
 	// Shift memory down to basic_current_line_pointer
 	// from X bytes further along.

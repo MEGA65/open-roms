@@ -20,7 +20,8 @@ tk_shorten:
 
 	// Now check if the last character was encoded as 1 nibble or 3 nibbles
 
-	asl tk__nibble_flag
+	asl tk__shorten_bits+1
+	rol tk__shorten_bits+0
 	bcs tk_shorten_3n
 
 	// FALLTROUGH

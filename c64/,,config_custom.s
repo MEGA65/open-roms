@@ -143,4 +143,4 @@
 
 // Other
 
-#define CONFIG_COMPRESSION_LVL_2         // work on this option stopped - it would not give any improvement
+// #define CONFIG_COMPRESSION_LVL_2         // work on this option stopped - it would not give any improvement

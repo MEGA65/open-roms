@@ -1034,7 +1034,7 @@ void DataSet::validateLists()
 			// Check mor maximum keyword length
 			if (stringEntryList.type == ListType::KEYWORDS)
 			{
-				if (stringEntry.string.length() > 8) ERROR("keyword cannot be longer than 8 characters");
+				if (stringEntry.string.length() > 16) ERROR("keyword cannot be longer than 16 characters");
 				tk__max_keyword_len = std::max(tk__max_keyword_len, (uint8_t) stringEntry.string.length());
 			}
 

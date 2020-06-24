@@ -48,6 +48,6 @@ cmd_merge_no_error:
 
 	jsr LINKPRG
 
-	// Continue execution
+	// XXX when number parsing is done, change to continue execution
 
-	jmp execute_statements
+	jmp basic_main_loop

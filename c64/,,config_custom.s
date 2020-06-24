@@ -40,6 +40,8 @@
 // Memory model
 
 #define CONFIG_MEMORY_MODEL_38K
+// #define CONFIG_MEMORY_MODEL_46K               // please keep disabled for now
+// #define CONFIG_MEMORY_MODEL_50K               // please keep disabled for now
 // #define CONFIG_MEMORY_MODEL_60K
 
 

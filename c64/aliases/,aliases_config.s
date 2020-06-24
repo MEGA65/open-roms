@@ -121,6 +121,12 @@
 #if CONFIG_MEMORY_MODEL_38K
 	.eval selected++
 #endif
+#if CONFIG_MEMORY_MODEL_46K
+	.eval selected++
+#endif
+#if CONFIG_MEMORY_MODEL_50K
+	.eval selected++
+#endif
 #if CONFIG_MEMORY_MODEL_60K
 	.eval selected++
 #endif

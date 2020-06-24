@@ -20,6 +20,8 @@ iec_send_file_name_loop:
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<FNADDR+0
 	jsr peek_under_roms
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_FNADDR
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (FNADDR),y
 #endif

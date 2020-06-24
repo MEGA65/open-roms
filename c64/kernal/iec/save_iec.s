@@ -83,7 +83,7 @@ iec_save_loop:
 	ldx #<MEMUSS+0
 	jsr peek_under_roms
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_MEMUSS
+	jsr peek_under_roms_via_MEMUSS
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (MEMUSS),y
 #endif

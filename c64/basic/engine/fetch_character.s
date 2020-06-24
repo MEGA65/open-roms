@@ -16,6 +16,10 @@ fetch_character:
 	ldx #<TXTPTR
 	jsr peek_under_roms
 
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+
+	jsr peek_under_roms_via_TXTPTR
+
 #else // CONFIG_MEMORY_MODEL_38K
 
 	lda (TXTPTR),y

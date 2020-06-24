@@ -3,6 +3,9 @@
 // #LAYOUT# *   *       #IGNORE
 
 
+// XXX review this code - for memory models below 60k this can probably be simplified
+
+
 basic_shift_mem_up_and_relink:
 	// Shift memory up from OLDTXT
 	// X bytes.
@@ -114,7 +117,7 @@ basic_shift_mem_up_and_relink:
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (OLDTXT),y
 #endif
 
@@ -137,6 +140,8 @@ relink_up_next_line:
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr peek_under_roms
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
@@ -151,6 +156,8 @@ relink_up_next_line:
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
 	cmp #$00
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif

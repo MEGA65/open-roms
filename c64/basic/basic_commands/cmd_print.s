@@ -47,6 +47,10 @@ cmd_print_string:
 	ldx #<(__FAC1 + 1)
 	jsr peek_under_roms
 
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+
+	jsr peek_under_roms_via_FAC1_PLUS_1
+
 #else // CONFIG_MEMORY_MODEL_38K
 
 	lda (__FAC1 + 1), y

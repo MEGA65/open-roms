@@ -14,9 +14,6 @@
 	.error "CONFIG_MEMORY_MODEL_60K is not compatible with RS-232 memory allocation code"
 #endif
 
-#if CONFIG_MEMORY_MODEL_46K ||CONFIG_MEMORY_MODEL_50K
-	.error "TODO: add compatibility with these memory models"
-#endif
 
 open_rs232:
 

@@ -53,22 +53,27 @@ basic_do_clr:
 	beq !+
 #if CONFIG_MEMORY_MODEL_60K
 	lda #>$F7FF
+#elif CONFIG_MEMORY_MODEL_50K
+	lda #>$D000	
+#elif CONFIG_MEMORY_MODEL_46K
+	lda #>$C000
 #else // CONFIG_MEMORY_MODEL_38K
 	lda #>$A000
 #endif
-	.byte $2C
+	skip_2_bytes_trash_nvz
 !:	
-#if CONFIG_MEMORY_MODEL_60K
-	lda #>$F7FF
-#else // CONFIG_MEMORY_MODEL_38K
-	lda #>$A000
-#endif
+	lda #>$8000
 	sta MEMSIZ+1
 	sta FRETOP+1
 #if CONFIG_MEMORY_MODEL_60K
-	lda #<$F7FF
-#else // CONFIG_MEMORY_MODEL_38K
-	lda #<$A000
+	cpx #$80
+	beq !+
+	lda #$FF
+	skip_2_bytes_trash_nvz
+!:
+	lda #<$00
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	lda #<$00
 #endif
 	sta MEMSIZ+0
 	sta FRETOP+0

@@ -18,9 +18,6 @@
 .label print_integer                   = BASIC_0.proxy_B1_print_integer
 .label print_return                    = BASIC_0.proxy_B1_print_return
 .label print_space                     = BASIC_0.proxy_B1_print_space
-#if CONFIG_SHOW_PAL_NTSC
-.label print_pal_ntsc                  = BASIC_0.proxy_B1_print_pal_ntsc
-#endif
 #if CONFIG_SHOW_FEATURES
 .label print_features                  = BASIC_0.proxy_B1_print_features
 #endif

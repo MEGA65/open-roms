@@ -21,7 +21,9 @@ list_single_line:
 	jsr peek_via_OLDTXT
 #elif CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
-#else
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+#else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
 
@@ -32,7 +34,9 @@ list_single_line:
 	jsr peek_via_OLDTXT
 #elif CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
-#else
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+#else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
 
@@ -56,7 +60,10 @@ list_print_loop:
 	ldx #<OLDTXT
 	jsr peek_under_roms
 	cmp #$00
-#else
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
 
@@ -96,7 +103,10 @@ list_display_token_CC:
 	ldx #<OLDTXT
 	jsr peek_under_roms
 	cmp #$00
-#else
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
 
@@ -131,7 +141,10 @@ list_display_token_CD:
 	ldx #<OLDTXT
 	jsr peek_under_roms
 	cmp #$00
-#else
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
 	

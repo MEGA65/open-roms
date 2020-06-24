@@ -3,6 +3,9 @@
 // #LAYOUT# *   *       #IGNORE
 
 
+// XXX review this code - for memory models below 60k this can probably be simplified
+
+
 basic_shift_mem_down_and_relink:
 	// Shift memory down to basic_current_line_pointer
 	// from X bytes further along.
@@ -123,6 +126,8 @@ relink_down_next_line:
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr peek_under_roms
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
@@ -134,6 +139,8 @@ relink_down_next_line:
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
@@ -147,7 +154,7 @@ relink_down_next_line:
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (OLDTXT),y
 #endif
 
@@ -156,7 +163,7 @@ relink_down_next_line:
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (OLDTXT),y
 #endif
 

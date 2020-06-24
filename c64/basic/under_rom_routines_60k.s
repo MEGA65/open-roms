@@ -2,13 +2,13 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-// IMPORTANT:
-// These routines lengths cannot be changed without changing
-// the aliases for peek_under_roms, poke_under_roms etc
-// in ,aliases.s.
-// Thus those addresses are expressed using formulae.
 
 #if CONFIG_MEMORY_MODEL_60K
+
+// IMPORTANT:
+// These routines lengths cannot be changed without changing
+// the aliases for peek_under_roms, poke_under_roms, etc.
+// Thus those addresses are expressed using formulae.
 
 install_ram_routines:
 	// Copy routines into place

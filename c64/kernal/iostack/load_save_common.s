@@ -68,8 +68,14 @@ lvs_handle_byte_verify:
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
+	// Store byte for comparing
+	sta TBTCNT
+
 	ldy #0
-	jsr peek_under_roms_EAL
+	jsr peek_under_roms_via_EAL
+
+	// Compare with stored byte
+	cmp TBTCNT
 
 #else // CONFIG_MEMORY_MODEL_38K
 
@@ -140,7 +146,7 @@ lvs_display_searching_for:
 	ldx #<FNADDR+0
 	jsr peek_under_roms
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_FNADDR
+	jsr peek_under_roms_via_FNADDR
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (FNADDR),y
 #endif

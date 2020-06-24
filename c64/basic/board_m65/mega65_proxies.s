@@ -11,6 +11,9 @@ proxy_B1_peek_via_OLDTXT:
 	jsr map_NORMAL
 #if CONFIG_MEMORY_MODEL_60K
 	.error "not implemented"
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+	cmp #$00
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
@@ -21,7 +24,7 @@ proxy_B1_poke_via_OLDTXT:
 	jsr map_NORMAL
 #if CONFIG_MEMORY_MODEL_60K
 	.error "not implemented"
-#else // CONFIG_MEMORY_MODEL_38K
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (OLDTXT),y
 #endif
 	jmp map_BASIC_1
@@ -53,17 +56,6 @@ proxy_B1_print_space:
 	jsr map_NORMAL
 	jsr print_space
 	jmp map_BASIC_1
-
-
-#if CONFIG_SHOW_PAL_NTSC
-
-proxy_B1_print_pal_ntsc:
-
-	jsr map_NORMAL
-	jsr print_pal_ntsc
-	jmp map_BASIC_1
-
-#endif
 
 #if CONFIG_SHOW_FEATURES
 

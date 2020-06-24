@@ -33,12 +33,12 @@ tk_pack:
 	.label tk__nibble_flag  = $106 // $00 = start from new byte, $FF = start from high nibble
 	.label tk__byte_offset  = $107 // offset of the current byte (to place new data) in tk__packed
 
-	.label tk__packed       = $108 // packed candidate, 13 bytes is enough for worst case - 8 byte keyword
+	.label tk__packed       = $108 // packed candidate, 25 bytes is enough for worst case - a 16 byte keyword
 
 	// Initialize variables
 
 	lda #$00
-	ldy #(tk__packed - tk__len_unpacked + 14)    // XXX maybe do not clear that much, just put 0 at the end while compressing
+	ldy #($04 + 25)                    // initialize 5 bytes of data + 25 bytes of space for packing
 !:
 	sta tk__len_unpacked, y
 	dey
@@ -142,8 +142,8 @@ tk_pack_loop_next:
 
 	lda tk__len_unpacked
 	cmp #TK__MAX_KEYWORD_LEN
-
 	bne tk_pack_loop
+
 	rts
 
 tk_pack_1n_new_byte:

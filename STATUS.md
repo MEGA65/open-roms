@@ -22,7 +22,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
     * command without parameters tries to load first file from drive chosen as above
 
-* uses RAM under ROM and I/O: 61438 bytes free
+* uses RAM under ROM and I/O: 51199 bytes free (up to `$CFFF`) by default, but 61438 is also possible
 * cold/warm start silences multiple SID chips
 * warm start due to BRK prints out the instruction address
 
@@ -41,8 +41,8 @@ The following ROM features are currently missing:
 
 * most BASIC commands
 * BASIC variables
-* BASIC expression parsing
-* floating point routines
+* BASIC expression handling
+* most floating point routines
 * RS-232 support
 * NMI handling is incomplete
 

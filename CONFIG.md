@@ -105,11 +105,13 @@ Memory model the original machine uses - memory available for BASIC ends at `$9F
 
 ### `CONFIG_MEMORY_MODEL_46K` and `CONFIG_MEMORY_MODEL_50K`
 
-Planned for the future - not available yet.
+These models additionaly use RAM under BASIC, and the 50K additionally takes over `$C000`-`$CFFF` range. They should still be highly compatible (no additional RAM for helper routines is needed), and the performance penalty should be much lower than 60K model.
 
 ### `CONFIG_MEMORY_MODEL_60K`
 
 Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires special helper routines installed in `$2A7`-`$2FF` area (normally unused and free for the user). Gives the most free memory for BASIC programs, but it's the slowest (for example, forces disabling optimized LOAD loop for JiffyDOS) and the least compatible model.
+
+It is currently not compatible with Mega65 extended ROMs.
 
 Comparing to standard memory model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
 

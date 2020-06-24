@@ -43,7 +43,7 @@ peek_under_roms_via_OLDTXT:
 
 	// Retrieve value from under ROMs
 
-	lda (TXTPTR), y
+	lda (OLDTXT), y
 
 #if HAS_OPCODES_65C02
 	bra peek_under_roms_finalize

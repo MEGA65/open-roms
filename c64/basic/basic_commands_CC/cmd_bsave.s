@@ -21,27 +21,14 @@ cmd_bsave:
 
 	// Fetch memory area start address
 
-	jsr injest_comma
-	bcs_16 do_SYNTAX_error
+	jsr helper_bload_fetch_address
 
-	jsr basic_parse_line_number                  // XXX detect errors here
-
-	lda LINNUM+0
-	pha
-	lda LINNUM+1
-	pha
+	phx_trash_a
+	phy_trash_a
 
 	// Fetch memory area end address
 
-	jsr injest_comma
-	bcs_16 do_SYNTAX_error
-
-	jsr basic_parse_line_number                  // XXX detect errors here
-
-	// Setup start/end addresses
-
-	ldx LINNUM+0
-	ldy LINNUM+1
+	jsr helper_bload_fetch_address
 
 	pla
 	sta LINNUM+1

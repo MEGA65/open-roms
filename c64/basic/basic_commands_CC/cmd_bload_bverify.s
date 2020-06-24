@@ -18,18 +18,25 @@ cmd_bload:
 
 	// Fetch the file name
 
-	jsr helper_load_fetch_filename
-	bcc !+
+	jsr helper_bload_fetch_filename
 
-	// No filename supplied - this should only be allowed for tape (device number below 8)
+	// Fetch device number
 
-	lda FA
-	and #%11111000
-	bne_16 do_MISSING_FILENAME_error
+	jsr fetch_coma_uint8
+	bcs_16 do_SYNTAX_error
 
-	lda #$00
-	sta FNLEN
-!:
-	// XXX finish the implementation
+	sta FA
 
-	jmp do_NOT_IMPLEMENTED_error
+	// Fetch the start address
+
+	jsr helper_bload_fetch_address
+
+	// Perform loading
+
+	lda VERCKB                         // LOAD or VERIFY
+	jsr JLOAD
+	bcs_16 do_kernal_error
+
+	// That is it - continue execution
+
+	jmp execute_line

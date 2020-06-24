@@ -10,23 +10,15 @@ cmd_merge:
 
 	// Fetch the file name
 
-	jsr helper_load_fetch_filename
-	bcc !+
+	jsr helper_bload_fetch_filename
 
-	// No filename supplied - this should only be allowed for tape (device number below 8)
-
-	lda FA
-	and #%11111000
-	bne_16 do_MISSING_FILENAME_error
-
-	lda #$00
-	sta FNLEN
-!:
 	// Fetch device number
 
 	jsr helper_load_fetch_devnum
 
 	// Perform loading - just for a different address
+
+	// XXX sometimes works, sometimes does not - probably improper handling of VARTAB somewhere
 
 	sec
 	lda VARTAB+0
@@ -38,4 +30,24 @@ cmd_merge:
 !:
 	ldy VARTAB+1
 
-	jmp cmd_load_loadmerge                    // XXX check variable handling (VARTAB) after failure to load
+	lda VERCKB    // LOAD or VERIFY
+	jsr JLOAD
+	bcs_16 do_kernal_error
+
+cmd_merge_no_error:
+
+	// Store last loaded address
+
+	stx VARTAB+0
+	sty VARTAB+1
+
+	// Clear the variables
+	jsr basic_do_clr
+
+	// Now relink the loaded program, line links supplied are almost certainly wrong
+
+	jsr LINKPRG
+
+	// Continue execution
+
+	jmp execute_statements

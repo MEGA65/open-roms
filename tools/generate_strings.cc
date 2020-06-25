@@ -1550,6 +1550,28 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 			{
 				stream << "\t// IDX__" << stringEntryList.list[idxString].alias << std::endl;
 			}
+
+			if (!isCompressionLvl2(stringEntryList))
+			{
+				stream << "\t// '";
+				for (auto &character : stringEntryList.list[idxString].string)
+				{
+					if (character >= 32 && character <= 132 && character != 39 && character != 34)
+					{
+						stream << character;
+					}
+					else if (character == 13)
+					{
+						stream << "<return>";
+					}
+					else
+					{
+						stream << "_";
+					}
+				}
+				stream << "'" << std::endl;
+			}
+
 			stream << "\t.byte ";
 
 			bool first = true;

@@ -186,7 +186,7 @@ build/tools/%: tools/%.c
 
 build/tools/%: tools/%.cc tools/common.h
 	@mkdir -p build/tools
-	$(CXX) -O0 -g -Wall -o $@ $<
+	$(CXX) -O2 -Wall -o $@ $<
 
 # Rules - CHARGEN
 

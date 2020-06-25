@@ -463,6 +463,8 @@ private:
 	bool optimizeJoin();
 	void optimizeOrder();
 
+	void cleanupDictionary();
+
 	void extractWords(std::vector<std::string> &candidateList);
 	int32_t evaluateCandidate(std::string &candidate);
 
@@ -561,7 +563,7 @@ void DictEncoder::addString(const std::string &inString, StringEncoded *outPtr)
 	{
 		if (dictionary.size() > 255)
 		{
-			ERROR("max 255 strings for dictionary compression");
+			ERROR("max 255 strings allowed for dictionary compression");
 		}
 
 		dictionary.push_back(inString);
@@ -679,7 +681,7 @@ int32_t DictEncoder::evaluateCandidate(std::string &candidate)
 		{
 			// With a replacement, we should gain some bytes
 			score += candidate.size() - 1;
-			
+
 			// If the occurence ends with the last byte of dictionary string - nothing more to do
 			if (*iter + candidate.size() == dictionaryEntry.size()) break;
 
@@ -715,16 +717,54 @@ int32_t DictEncoder::evaluateCandidate(std::string &candidate)
 			}			
 		}
 		
-		// We crossed the maximum number of strings, do not consider this candidate
+		// We crossed the maximum number of strings (leave one free for the work buffer),
+		// do not consider this candidate
 		
-		if (targetSize > 255) return -1;
+		if (targetSize > 254) return -1;
 	}
 	
 	return score;
 }
 
+void DictEncoder::cleanupDictionary()
+{
+	// Get rid of dictionary entries which are not needed anymore
+	
+	bool isClean = false;
+	
+	while (!isClean)
+	{
+		isClean = true;
+		
+		for (auto iter = dictionary.begin(); iter < dictionary.end(); iter++)
+		{
+			if (!iter->empty()) continue;
+			
+			// Found an empty string in the dictionary - remove it and adapt encoding
+			
+			isClean = false;
+			uint8_t obsoleteStrIdx = iter - dictionary.begin();
+			
+			dictionary.erase(iter);
+			
+			for (auto &encoding : encodings) for (auto &byte : *encoding)
+			{
+				if (byte >= obsoleteStrIdx) byte--;
+			}
+			
+			break;
+		}
+	}
+}
+
 bool DictEncoder::optimizeSplit()
 {
+	// XXX - The code here is not the best one - redesign and algorithm improvements
+	// (like - consider optimizing as a game and apply alpha-beta scheme to select the best
+	// candidate, incorporate frequency encoding into candidate evaluation) could result in
+	// a slightly better compression. But currently we have very few strings, and the dictionary
+	// compression is disabled by default - so right now this is not worth the effort.
+	
 	if (dictionary.size() >= 255) return false; // up to 255 entries in the dictionary are possible
 	
 	// First select words, which can potentially be extracted to new substrings
@@ -743,8 +783,6 @@ bool DictEncoder::optimizeSplit()
 	{
 		int32_t candidateScore = evaluateCandidate(*iter);
 
-		std::cout << "XXX candidate '" << *iter << "' score: " << candidateScore << std::endl;
-
 		if (candidateScore > bestCandidateScore)
 		{
 			bestCandidate      = iter;
@@ -752,22 +790,157 @@ bool DictEncoder::optimizeSplit()
 		}
 	}
 	
+	// Only allow for replacements that brings some size benefit
+	
 	if (bestCandidateScore < 1) return false;
 	
 	// Extract the best candidate to a separate string
 	
-	std::cout << "XXX best is '" << *bestCandidate << "' score: " << bestCandidateScore << std::endl;
+	// First add our selected candidate to the dictionary and replace all strings which are equal to it
+	
+	auto    &selectedStr   = *bestCandidate;
+	uint8_t selectedStrIdx = dictionary.size();
+	
+	dictionary.push_back(selectedStr);
 
-	// XXX
+	for (auto iter = dictionary.begin(); iter < dictionary.end(); iter++)
+	{
+		uint8_t currentStrIdx = iter - dictionary.begin();
+		
+		if (*iter != selectedStr || selectedStrIdx == currentStrIdx) continue;
+		
+		// Replace the current string with the new one
+		
+		for (auto &encoding : encodings) for (auto &byte : *encoding)
+		{
+			if (byte == currentStrIdx) byte = selectedStrIdx;
+		}
+		
+		// Mark obsolete dictionary entry as free for removal
+		
+		iter->clear();
+	}
 
-	std::cout << std::endl << "NOTE: 'CONFIG_COMPRESSION_LVL_2' support is not finished - as of writing" <<
-	             std::endl << "      this text, it would not give any space improvement, so I've decided" <<
-	             std::endl << "      to stop working on it for now." << std::endl <<
-	             std::endl << "      Please disable this option in your configuration file." << std::endl << std::endl;
+	cleanupDictionary();
 
-	exit(1);
+	// Now handle normal cases, when the string needs to be split
+	// XXX - this is not time-effective, optimize this in the future
 
-	return false;
+	bool optimizeAgain = true;
+	bool nexIteration  = true;
+	while (nexIteration)
+	{
+		nexIteration = false;
+
+		for (auto iter = dictionary.begin(); iter < dictionary.end(); iter++)
+		{
+			auto    &currentStr     = *iter;
+			uint8_t currentStrIdx   = iter - dictionary.begin();	
+			auto    selectedStrIter = std::find(dictionary.begin(), dictionary.end(), selectedStr);
+			selectedStrIdx          = selectedStrIter - dictionary.begin();
+
+			if (currentStrIdx == selectedStrIdx) continue;
+	
+			// Check if the current string contains the selected string
+			
+			auto pos = currentStr.find(selectedStr);
+			if (pos == std::string::npos) continue;
+				
+			nexIteration  = true;
+			optimizeAgain = true;
+	
+			// Prepare replacement sequence for 'selectedStrIdx'
+				
+			std::vector<uint8_t> replacement;
+			
+			if (pos == 0)
+			{
+				// The current dictionary string starts with our selected substring
+				
+				replacement.push_back(selectedStrIdx);
+				currentStr = currentStr.substr(selectedStr.size(), currentStr.size() - selectedStr.size());
+				
+				if (!currentStr.empty())
+				{
+					// Check if the remaining string is present somewhere else in the dictionary; if so, reuse it
+				
+					uint8_t pos2 = currentStrIdx;
+					for (auto iter2 = dictionary.begin(); iter2 < dictionary.end(); iter2++)
+					{
+						if (iter2 == iter) continue;
+						if (currentStr == *iter2)
+						{
+							dictionary[pos2].clear();
+							pos2 = iter2 - dictionary.begin();
+							break;
+						}
+					}
+					
+					replacement.push_back(pos2);
+				}
+			}
+			else
+			{
+				// The current dictionary string does not start with our selected substring
+				
+				std::string newStr = currentStr.substr(0, pos);
+				currentStr         = currentStr.substr(pos, currentStr.size() - pos);
+				
+				// Check if the newStr is present somewhere else in the dictionary; if so, reuse it
+				
+				bool    found = false;
+				uint8_t pos2  = 0;
+				for (auto iter2 = dictionary.begin(); iter2 < dictionary.end(); iter2++)
+				{
+					if (*iter2 == newStr)
+					{
+						found = true;
+						pos2  = iter2 - dictionary.begin();
+
+						break;
+					}
+				}
+			
+				if (found)
+				{
+					replacement.push_back(pos2);					
+				}
+				else
+				{
+					dictionary.push_back(newStr);
+					replacement.push_back(dictionary.size() - 1);					
+				}
+
+				replacement.push_back(currentStrIdx);
+			}
+
+			// Now replace all the occurences of 'selectedStrIdx' with a 'replacement' vector
+
+			for (auto &encoding : encodings)
+			{
+				for (uint8_t idx = 0; idx < encoding->size(); idx++)
+				{
+					if ((*encoding)[idx] != currentStrIdx) continue;
+					
+					// Perform replacement
+					
+					encoding->erase(encoding->begin() + idx);
+					
+					for (const auto replacementIdx : replacement)
+					{
+						encoding->insert(encoding->begin() + idx, replacementIdx);
+						idx++;
+					}
+					
+					idx--;
+				}
+			}
+			
+			cleanupDictionary();
+		}
+	}
+
+	return optimizeAgain;
 }
 
 bool DictEncoder::optimizeJoin()
@@ -820,6 +993,7 @@ void DictEncoder::optimizeOrder()
 		optimizedOrder.push_back(newEntry);
 	}
 	
+
 	// Determine ordering - sort from smallest penalty to largest
 	
 	std::sort(optimizedOrder.begin(), optimizedOrder.end(),
@@ -839,9 +1013,9 @@ void DictEncoder::optimizeOrder()
 
 	// Perform the reordering
 	
-	for (auto &encoding : encodings)
+	for (auto &encoding : encodings) for (auto &byte : *encoding)
 	{
-		for (auto &byte : *encoding) byte = reorderTable[byte];
+		byte = reorderTable[byte];
 	}
 	
 	for (uint8_t idx = 0; idx < dictionary.size(); idx++) dictionary[idx] = optimizedOrder[idx].word;

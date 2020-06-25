@@ -954,6 +954,8 @@ bool DictEncoder::optimizeJoin()
 
 void DictEncoder::optimizeOrder()
 {
+	// XXX - it would be better to do this after the dictionary is compressed
+
 	// Try to optimize order of strings in the dictionary for fastest display
 	// - put the shorter substrings first
 	// - for strings with roughly the same length put more frequently used first

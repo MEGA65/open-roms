@@ -330,3 +330,9 @@ Replaces `RTS` stubbed routines implementation with one causing a break.
 ### `CONFIG_DBG_PRINTF`
 
 Makes `printf` routine available.
+
+## Other options
+
+### `CONFIG_COMPRESSION_LVL_2`
+
+Adds additional step in compressing BASIC interpreter strings - a dictionary compression. Not tested extensively - and for now it won't bring any improvement (it will even increase the code/data size) as we do not have enough strings yet to make this method useful. Do not use!

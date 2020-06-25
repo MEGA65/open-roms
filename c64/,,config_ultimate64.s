@@ -134,3 +134,7 @@
 
 // #define CONFIG_DBG_STUBS_BRK
 // #define CONFIG_DBG_PRINTF
+
+// Other
+
+// #define CONFIG_COMPRESSION_LVL_2

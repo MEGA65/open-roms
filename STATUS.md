@@ -10,6 +10,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 
 * JiffyDOS and DolphinDOS protocols support
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
+* BASIC extensions, see the [documentation](doc/Extended-BASIC.md) 
 
 * turbo tape load support (as device 7, or using `←L`), quite sophisticated: up to 250 blocks (can store bytes under I/O), automatically adjusts for tape speed differences
 * normal tape load error log is limited by free stack space only (no artificial limitation like in original ROMs)

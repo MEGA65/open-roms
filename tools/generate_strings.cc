@@ -616,6 +616,8 @@ void DictEncoder::extractWords(std::vector<std::string> &candidateList)
 
 int32_t DictEncoder::evaluateCandidate(std::string &candidate)
 {
+	// XXX it looks like this is not 100% right - debug the algorithm if dictionary compression is reintroduced
+
 	// Build the score - find how much bytes can be spared by extracting this particular candidate
 	// Limited size of the dictionary is taken into consideration
 	
@@ -1548,31 +1550,34 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 		{
 			if (lastStr != LastStr::NONE) stream << std::endl;
 
+			// Output the label - as a comment
+
 			if (stringEntryList.type != ListType::DICTIONARY)
 			{
 				stream << "\t// IDX__" << stringEntryList.list[idxString].alias << std::endl;
 			}
 
-			if (!isCompressionLvl2(stringEntryList))
+			// Output the source string - as a comment
+
+			stream << "\t// '";
+			for (auto &character : stringEntryList.list[idxString].string)
 			{
-				stream << "\t// '";
-				for (auto &character : stringEntryList.list[idxString].string)
+				if (character >= 32 && character <= 132 && character != 39 && character != 34)
 				{
-					if (character >= 32 && character <= 132 && character != 39 && character != 34)
-					{
-						stream << character;
-					}
-					else if (character == 13)
-					{
-						stream << "<return>";
-					}
-					else
-					{
-						stream << "_";
-					}
+					stream << character;
 				}
-				stream << "'" << std::endl;
+				else if (character == 13)
+				{
+					stream << "<return>";
+				}
+				else
+				{
+					stream << "_";
+				}
 			}
+			stream << "'" << std::endl;
+
+			// Output the encoding
 
 			stream << "\t.byte ";
 
@@ -1629,6 +1634,8 @@ void DataSet::prepareOutput()
 	{
 		const auto &stringEntryList   = stringEntryLists[idx];
 		const auto &stringEncodedList = stringEncodedLists[idx];
+
+		if (stringEncodedList.empty()) continue;
 
 		// Export labels for the current list
 

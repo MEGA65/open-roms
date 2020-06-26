@@ -1,9 +1,8 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
+// #LAYOUT# STD *       #TAKE-HIGH
+// #LAYOUT# *   BASIC_0 #TAKE-HIGH
 // #LAYOUT# *   *       #IGNORE
 
-// XXX This can be any address - but definitely $E000 or above
-// XXX TODO: extend build_segment tool to allow to specify placement range
+// This has to go $E000 or above - as the routines below bank out the main BASIC ROM!
 
 
 #if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K

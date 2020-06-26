@@ -132,6 +132,7 @@ where:
 | `#IGNORE`      | ignore the file completely                                         |
 | `#TAKE`        | compile the file normally                                          |
 | `#TAKE-FLOAT`  | compile the file, but force it to be floating                      |
+| `#TAKE-HIGH`   | as above, but always place routine at `$E000` or above             |
 | `#TAKE-OFFSET` | shifts the fixed-location address by hex offset given as parameter |
 
 The first match counts, all the remaining ones are dropped. Examples:
@@ -183,6 +184,8 @@ ROUTINE_NAME:
 
 #endif
 ```
+
+Last, but not least - the `#TAKE-HIGH` is intended to be used for BASIC routines, which should still be available after the main BASIC ROM is banked out.
 
 ### CPU-specific optimizations
 

@@ -145,7 +145,7 @@ Status of the various APIs and variables from the original ROMs
 ## Low memory locations (pages 0 - 3)
 
 
-For the current status of the low memory location implementation andd usage check [this file](c64/aliases/,aliases_ram_lowmem.s). NOTE: available vector to certain routine does not mean that this routine is fully implemented!
+For the current status of the low memory location implementation andd usage check [this file](src/aliases/,aliases_ram_lowmem.s). NOTE: available vector to certain routine does not mean that this routine is fully implemented!
 
 
 ## BASIC

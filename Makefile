@@ -6,51 +6,51 @@ TESTTAPE = testsuite/testtape-c64-pal-turbo.tap
 
 # Source files
 
-SRCDIR_COMMON  = c64/aliases
+SRCDIR_COMMON  = src/aliases
 
 SRCDIR_BASIC   = $(SRCDIR_COMMON) \
-                 c64/basic \
-                 c64/basic/,stubs \
-                 c64/basic/,stubs_math \
-                 c64/basic/assets \
-                 c64/basic/basic_commands \
-                 c64/basic/basic_commands_CC \
-                 c64/basic/basic_commands_CD \
-                 c64/basic/basic_operators \
-                 c64/basic/basic_functions \
-                 c64/basic/board_m65 \
-                 c64/basic/board_x16 \
-                 c64/basic/engine \
-                 c64/basic/init \
-                 c64/basic/math \
-                 c64/basic/math_consts \
-                 c64/basic/math_mov \
-                 c64/basic/memory \
-                 c64/basic/print \
-                 c64/basic/rom_revision \
-                 c64/basic/tokenizer \
-                 c64/basic/wedge
+                 src/basic \
+                 src/basic/,stubs \
+                 src/basic/,stubs_math \
+                 src/basic/assets \
+                 src/basic/basic_commands \
+                 src/basic/basic_commands_CC \
+                 src/basic/basic_commands_CD \
+                 src/basic/basic_operators \
+                 src/basic/basic_functions \
+                 src/basic/board_m65 \
+                 src/basic/board_x16 \
+                 src/basic/engine \
+                 src/basic/init \
+                 src/basic/math \
+                 src/basic/math_consts \
+                 src/basic/math_mov \
+                 src/basic/memory \
+                 src/basic/print \
+                 src/basic/rom_revision \
+                 src/basic/tokenizer \
+                 src/basic/wedge
 
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
-                 c64/kernal \
-                 c64/kernal/,stubs \
-                 c64/kernal/assets \
-                 c64/kernal/board_m65 \
-                 c64/kernal/board_x16 \
-                 c64/kernal/iec \
-                 c64/kernal/iec_fast \
-                 c64/kernal/init \
-                 c64/kernal/interrupts \
-                 c64/kernal/iostack \
-                 c64/kernal/jumptable \
-                 c64/kernal/keyboard \
-                 c64/kernal/memory \
-                 c64/kernal/print \
-                 c64/kernal/rom_revision \
-                 c64/kernal/rs232 \
-                 c64/kernal/screen \
-                 c64/kernal/tape \
-                 c64/kernal/time
+                 src/kernal \
+                 src/kernal/,stubs \
+                 src/kernal/assets \
+                 src/kernal/board_m65 \
+                 src/kernal/board_x16 \
+                 src/kernal/iec \
+                 src/kernal/iec_fast \
+                 src/kernal/init \
+                 src/kernal/interrupts \
+                 src/kernal/iostack \
+                 src/kernal/jumptable \
+                 src/kernal/keyboard \
+                 src/kernal/memory \
+                 src/kernal/print \
+                 src/kernal/rom_revision \
+                 src/kernal/rs232 \
+                 src/kernal/screen \
+                 src/kernal/tape \
+                 src/kernal/time
 
 SRC_BASIC  = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
 SRC_KERNAL = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
@@ -72,12 +72,12 @@ DIR_X16 = build/target_cx16
 
 # List of config files
 
-CFG_CUS = c64/,,config_custom.s 
-CFG_GEN = c64/,,config_generic.s
-CFG_TST = c64/,,config_testing.s
-CFG_M65 = c64/,,config_mega65.s
-CFG_U64 = c64/,,config_ultimate64.s
-CFG_X16 = c64/,,config_cx16.s
+CFG_CUS = src/,,config_custom.s 
+CFG_GEN = src/,,config_generic.s
+CFG_TST = src/,,config_testing.s
+CFG_M65 = src/,,config_mega65.s
+CFG_U64 = src/,,config_ultimate64.s
+CFG_X16 = src/,,config_cx16.s
 
 # List of files with generated strings
 
@@ -168,7 +168,7 @@ fast:
 	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
-	@rm -rf build c64/basic/combined.s c64/kernal/combined.s
+	@rm -rf build src/basic/combined.s src/kernal/combined.s
 
 updatebin:
 	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(TOOL_RELEASE)
@@ -306,13 +306,13 @@ GEN_STR_cx16       = $(GEN_STR_X16)
 build/target_%/OUTB_x.BIN build/target_%/BASIC_combined.vs:
 	@mkdir -p build/target_$*
 	@rm -f $@* build/target_$*/BASIC*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r STD -s BASIC -i BASIC-$* -o OUTB_x.BIN -d build/target_$* -l a000 -h e4d2 c64/,,config_$*.s $(SRCDIR_BASIC) $(GEN_BASIC) $(GEN_STR_$*)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r STD -s BASIC -i BASIC-$* -o OUTB_x.BIN -d build/target_$* -l a000 -h e4d2 src/,,config_$*.s $(SRCDIR_BASIC) $(GEN_BASIC) $(GEN_STR_$*)
 
 .PRECIOUS: build/target_%/OUTK_x.BIN build/target_%/KERNAL_combined.vs build/target_%/KERNAL_combined.sym
 build/target_%/OUTK_x.BIN build/target_%/KERNAL_combined.vs build/target_%/KERNAL_combined.sym:
 	@mkdir -p build/target_$*
 	@rm -f $@* build/target_$*/KERNAL*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r STD -s KERNAL -i KERNAL-$* -o OUTK_x.BIN -d build/target_$* -l e4d3 -h ffff c64/,,config_$*.s $(SRCDIR_KERNAL) $(GEN_KERNAL) $(GEN_STR_$*)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r STD -s KERNAL -i KERNAL-$* -o OUTK_x.BIN -d build/target_$* -l e4d3 -h ffff src/,,config_$*.s $(SRCDIR_KERNAL) $(GEN_KERNAL) $(GEN_STR_$*)
 
 # Rules - BASIC and KERNAL intermediate files, for Mega65
 

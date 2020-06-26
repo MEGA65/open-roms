@@ -3,11 +3,11 @@
 
 It's not possible to provide ROM builds that suit everyone needs - therefore configuration files were introduced, few predefined configurations are provided with sane defaults:
 
-* [`c64/,,config_custom.s`](c64/,,config_custom.s)
-* [`c64/,,config_generic.s`](c64/,,config_generic.s)
-* [`c64/,,config_mega65.s`](c64/,,config_mega65.s)
-* [`c64/,,config_ultimate64.s`](c64/,,config_ultimate64.s)
-* [`c64/,,config_testing.s`](c64/,,config_testing.s)
+* [`src/,,config_custom.s`](src/,,config_custom.s)
+* [`src/,,config_generic.s`](src/,,config_generic.s)
+* [`src/,,config_mega65.s`](src/,,config_mega65.s)
+* [`src/,,config_ultimate64.s`](src/,,config_ultimate64.s)
+* [`src/,,config_testing.s`](src/,,config_testing.s)
 
 Just edit them and recompile the project. To enable particular option - uncomment it by removing leading `//` from before `#define` directive (as you probably guessed, commenting out disables it). Some options are followed by constants - you can change them too to further fine-tune the build.
 

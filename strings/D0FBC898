@@ -1,0 +1,3 @@
+BNE (offset matches) + INY + TYA
+
+Check for zero in some variable (or CPU register - similarity does not cover this part) + simple register manipulation. Not creative (too small fragment, this can be a piece of various routines) - not copyrightable.

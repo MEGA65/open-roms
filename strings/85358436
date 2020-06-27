@@ -1,0 +1,3 @@
+STA $35 + STY $36
+
+Store two CPU registers in a 16-bit zeropage variable (FRESPC). Trivial - not copyrightable.

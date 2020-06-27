@@ -1,0 +1,3 @@
+$F9 + BEQ (offset matches) + JSR (address does not match)
+
+Instruction + some parts - trivial, not copyrightable.

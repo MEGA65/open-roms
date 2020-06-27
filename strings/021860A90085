@@ -1,0 +1,5 @@
+$18 + CLC + RTS + LDA #$00 + STA (zeropage address does not match)
+
+End of a routine reporting a success (by clearing Carry) followed by start of another routine, starting from putting 0 into .A register - plus some parts. Trivial - not copyrightable.
+
+BTW, most of the time the routines are placed in the order determined by algorithm, using a specialized tool (without human intervention), and this order can undergo major changes after a small code modification - and this similarity is most likely caused by the currently determined ROM layout.

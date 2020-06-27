@@ -1,0 +1,3 @@
+$30 + BCC (offset matches) + CMP #$3C + BCC (offset does not match) 
+
+Part of code checking whether the valu is within the given range. Not creative - not copyrightable.

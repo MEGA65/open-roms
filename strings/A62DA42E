@@ -1,0 +1,3 @@
+LDX $2D + LDY $2E
+
+2 instructions to fetch zeropage variable (VARTAB) for usage by Kernal documented API. Trivial - not copyrightable.

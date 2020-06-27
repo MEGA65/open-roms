@@ -1,0 +1,4 @@
+LDA $62 + PHA + LDA (zeropage address does not match)
+
+Store zeropage variable on stack + some part - trivial, not copyrightable.
+

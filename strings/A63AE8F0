@@ -1,0 +1,3 @@
+LDX $3A + INX + BEQ (offset does not match)
+
+Check whether a zeropage variable contains $FF. Trivial - not copyrightable.

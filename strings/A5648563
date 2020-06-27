@@ -1,0 +1,3 @@
+LDA $64 + STA $63
+
+Small part (2 instructions) of code manipulating a floating code mantissa. Trivial - not copyrightable.

@@ -1,0 +1,3 @@
+JSR $AD9E (CHRGOT) + JSR (address does not match)
+
+Call of a well-known subroutine + some part of other instruction. Trivial - not copyrightable.

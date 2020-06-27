@@ -1,0 +1,3 @@
+ORA #$80 + STA $6A
+
+Part of the code setting highest bit in a zeropage variable. Trivial - not copyrightable.

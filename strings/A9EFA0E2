@@ -1,0 +1,3 @@
+LDA #$EF + LDY #$E2
+
+2 instructions fetching known zeropage variables. Trivial - not copyrightable.

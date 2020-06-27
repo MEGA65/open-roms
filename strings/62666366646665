@@ -1,0 +1,3 @@
+$62 + ROR $63 + ROR $64 + ROR $65
+
+Right-rotate on a multibyte variable (typical 6502 code) - trivial, not copyrightable.

@@ -1,0 +1,3 @@
+$AE + JSR $AD9E (FRMEVL) + JSR (address does not match)
+
+Instruction (calls a well-known routine) + some parts. Trivial - not copyrightable.

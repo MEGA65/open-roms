@@ -1,0 +1,3 @@
+$61 + LDA $65 + STA (zeropage addres does not match)
+
+Instruction (accessing well-known zeropage location) + some parts. Trivial - not copyrightable.

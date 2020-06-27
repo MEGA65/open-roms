@@ -1,0 +1,3 @@
+LDY #$04 + LDA ($22),Y + STA (address does not match)
+
+Small part of the code (only 2 instructions fully match) fetching multi-byte value via zeropage pointer - trivial, not copyrightable.

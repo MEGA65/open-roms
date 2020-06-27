@@ -1,0 +1,3 @@
+RTS + CMP #$22 + BNE (offset does not match)
+
+Routine starting by comparing accumulator to a predefined value - trivial, not copyrightable.

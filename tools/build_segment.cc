@@ -88,6 +88,7 @@ public:
 
     bool ignore;
     bool floating;
+    bool high;
     std::vector<char> content;
 
     std::string label;
@@ -109,6 +110,7 @@ public:
 
     void addToProblem(SourceFile *routine);
     void fillGap(DualStream &logOutput, int gapAddress, const std::list<SourceFile *> &routines);
+    void placeHighRoutines(DualStream &logOutput);
     void performObviousSteps(DualStream &logOutput);
     void removeUselessGaps(DualStream &logOutput);
     void sortFloatingRoutinesBySize();
@@ -416,9 +418,22 @@ void prepareBinningProblem()
     {
         std::string spacing;
         spacing.resize(GLOBAL_maxFileNameLen + 4 - sourceFile.fileName.length(), ' ');
-        std::string floating = sourceFile.floating ? "(floating)    " : "              ";
+        std::string floating_high;
 
-        logOutput << "file:    " << floating << sourceFile.fileName << spacing << "size: " << std::to_string(sourceFile.codeLength) << "\n";
+        if (sourceFile.high)
+        {
+            floating_high = "(floating, high)  ";
+        }
+        else if (sourceFile.floating)
+        {
+            floating_high = "(floating)        ";
+        }
+        else
+        {
+            floating_high = "                  ";
+        }
+
+        logOutput << "file:    " << floating_high << sourceFile.fileName << spacing << "size: " << std::to_string(sourceFile.codeLength) << "\n";
     }
 
     // Create the binning problem
@@ -569,6 +584,7 @@ SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) 
     dirName(dirName),
     ignore(false),
     floating(false),
+    high(false),
     startAddr(-1),
     codeLength(-1),
     testAddrStart(-1),
@@ -686,11 +702,16 @@ bool SourceFile::preprocessLine(const std::string &line)
 
     if (iter->compare("#IGNORE") == 0)
     {
-        ignore = true;
+        ignore   = true;
     }
     else if (iter->compare("#TAKE-FLOAT") == 0)
     {
         floating = true;
+    }
+    else if (iter->compare("#TAKE-HIGH") == 0)
+    {
+        floating = true;
+        high     = true;
     }
     else if (iter->compare("#TAKE-OFFSET") == 0)
     {
@@ -844,10 +865,71 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
     gaps.erase(gapAddress);
 }
 
+void BinningProblem::placeHighRoutines(DualStream &logOutput)
+{
+    // Place routines which has to be stored in the high ROM area
+    // It is expected there will be very few of them, so no complicated algorithms here
+
+    std::string spacing;
+
+    while (!floatingRoutines.empty())
+    {
+        // Try to find any high routine
+
+        auto iterRoutine = floatingRoutines.begin();
+        while (iterRoutine != floatingRoutines.end() && !(*iterRoutine)->high) iterRoutine++;
+
+        if (iterRoutine == floatingRoutines.end()) break;
+
+        // Now we need to find a space to put it - just take the largest gap available,
+        // which is located in the high ROM area
+
+        int routineSize = (*iterRoutine)->codeLength;
+        int gapAddress  = -1;
+
+        for (auto &gap : gaps)
+        {
+            if (gap.second < routineSize || gap.first < 0xE000) continue;
+
+            if (gap.second == routineSize)
+            {
+                gapAddress = gap.first;
+                break;
+            }
+
+            if (gapAddress < 0 || gap.second > gaps[gapAddress])
+            {
+                gapAddress = gap.first;
+            }
+        }
+
+        if (gapAddress < 0) ERROR("no suitable space for a high routine");
+
+        // Place routine in the gap found
+
+        gaps[gapAddress] -= routineSize;
+
+        int targetAddr = gapAddress + gaps[gapAddress];
+        fixedRoutines[targetAddr] = *iterRoutine;
+        statFree   -= routineSize;
+
+        logOutput << "reducing gap $" << std::hex << gapAddress << std::dec <<
+                    " to size " << gaps[gapAddress] << "\n";
+
+        spacing.resize(GLOBAL_maxFileNameLen + 4 - (*iterRoutine)->fileName.length(), ' ');
+        logOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
+                     (*iterRoutine)->fileName << spacing << "size: " <<
+                     (*iterRoutine)->codeLength << "\n";
+
+        floatingRoutines.erase(iterRoutine);
+        if (gaps[gapAddress] == 0) gaps.erase(gapAddress);
+    }
+}
+
 void BinningProblem::performObviousSteps(DualStream &logOutput)
 {
     // Get the size of the biggest routine; if there is just one gap which
-    // can handle it - put the roputine exactly there
+    // can handle it - put the routine exactly there
 
     std::string spacing;
 
@@ -953,6 +1035,10 @@ void Solver::run()
     // Sort the floating routines, just to be extra sure
 
     problem.sortFloatingRoutinesBySize();
+
+    // Place routines which should be stored in high-ROM
+
+    problem.placeHighRoutines(logOutput);
 
     // Run the solver until all is done
 

@@ -1,0 +1,3 @@
+$01 + BIT + LDA #$02 + BIT + LDA #$03 + ... + LDA #$09
+
+Ledder of LDA's and BIT's - a common 6502 space-saving trick to set the CPU register value depending on the jump address and perform common action. Not creative - not copyrightable.

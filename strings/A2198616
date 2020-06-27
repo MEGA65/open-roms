@@ -1,0 +1,3 @@
+LDX #$19 + STX $16
+
+Store predefined value in a well-known zeropage location. Trivial - not copyrightable.

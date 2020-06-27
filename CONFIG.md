@@ -3,11 +3,11 @@
 
 It's not possible to provide ROM builds that suit everyone needs - therefore configuration files were introduced, few predefined configurations are provided with sane defaults:
 
-* [`c64/,,config_custom.s`](c64/,,config_custom.s)
-* [`c64/,,config_generic.s`](c64/,,config_generic.s)
-* [`c64/,,config_mega65.s`](c64/,,config_mega65.s)
-* [`c64/,,config_ultimate64.s`](c64/,,config_ultimate64.s)
-* [`c64/,,config_testing.s`](c64/,,config_testing.s)
+* [`src/,,config_custom.s`](src/,,config_custom.s)
+* [`src/,,config_generic.s`](src/,,config_generic.s)
+* [`src/,,config_mega65.s`](src/,,config_mega65.s)
+* [`src/,,config_ultimate64.s`](src/,,config_ultimate64.s)
+* [`src/,,config_testing.s`](src/,,config_testing.s)
 
 Just edit them and recompile the project. To enable particular option - uncomment it by removing leading `//` from before `#define` directive (as you probably guessed, commenting out disables it). Some options are followed by constants - you can change them too to further fine-tune the build.
 
@@ -105,11 +105,13 @@ Memory model the original machine uses - memory available for BASIC ends at `$9F
 
 ### `CONFIG_MEMORY_MODEL_46K` and `CONFIG_MEMORY_MODEL_50K`
 
-Planned for the future - not available yet.
+These models additionaly use RAM under BASIC, and the 50K additionally takes over `$C000`-`$CFFF` range. They should still be highly compatible (no additional RAM for helper routines is needed), and the performance penalty should be much lower than 60K model.
 
 ### `CONFIG_MEMORY_MODEL_60K`
 
 Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires special helper routines installed in `$2A7`-`$2FF` area (normally unused and free for the user). Gives the most free memory for BASIC programs, but it's the slowest (for example, forces disabling optimized LOAD loop for JiffyDOS) and the least compatible model.
+
+It is currently not compatible with Mega65 extended ROMs.
 
 Comparing to standard memory model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
 
@@ -283,9 +285,15 @@ Feature needs about 330 bytes in BASIC segment. If unsure - enable.
 
 ### `CONFIG_TAPE_WEDGE`
 
-If enabled, a simple DOS wedge is available from the direct mode for turbo tape loading - supports `←L` only
+If enabled, a simple DOS wedge is available from the direct mode for tape loading - supports `←L` only.
 
-Feature needs about 5 bytes in BASIC segment. If unsure - enable.
+Feature needs few bytes in BASIC segment. If unsure - enable.
+
+### `CONFIG_TAPE_HEAD_ALIGN`
+
+If enabled, embeds a tape head align tool into the ROM, it can be started with `←H`. Requires `CONFIG_TAPE_WEDGE`.
+
+Feature needs about 800 bytes in KERNAL segment. Only recomended for machines with extended ROM, like Mega65.
 
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 
@@ -307,15 +315,9 @@ Richer banners need more BASIC segment, varies between brands.
 
 ### `CONFIG_SHOW_FEATURES`
 
-If enabled, shows the most important compiled-in features on the startup screen.
+If enabled, shows the most important compiled-in features on the startup screen. Also shows the video system (PAL/NTSC).
 
 It is recommended to keep it enabled for informational purposes.
-
-### `CONFIG_BANNER_PAL_NTSC`
-
-If enabled, prints video system on startup banner. Eye candy only.
-
-Feature needs few bytes in BASIC and about 25 bytes in KERNAL segment.
 
 ## Debug options
 
@@ -328,3 +330,9 @@ Replaces `RTS` stubbed routines implementation with one causing a break.
 ### `CONFIG_DBG_PRINTF`
 
 Makes `printf` routine available.
+
+## Other options
+
+### `CONFIG_COMPRESSION_LVL_2`
+
+Adds additional step in compressing BASIC interpreter strings - a dictionary compression. Not tested extensively - and for now it won't bring any improvement (it will even increase the code/data size) as we do not have enough strings yet to make this method useful. Do not use!

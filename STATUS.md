@@ -10,19 +10,21 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 
 * JiffyDOS and DolphinDOS protocols support
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
+* BASIC extensions, see the [documentation](doc/Extended-BASIC.md) 
 
 * turbo tape load support (as device 7, or using `←L`), quite sophisticated: up to 250 blocks (can store bytes under I/O), automatically adjusts for tape speed differences
 * normal tape load error log is limited by free stack space only (no artificial limitation like in original ROMs)
 * tape format autodetection; normal vs turbo is mostly transparent to user
 * improved support for tape adapters (for using regular casette players and other audio devices instead of Datasette) and emulators
+* built-in tape head align tool (only feasible to use on machines with extended memory, like Mega65)
 
-* extended `LOAD` command
+* extended / tweaked `LOAD` / `VERIFY` commands
     * start/end addresses are displayed, in the Final cartridge style
     * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
-    * secondary address over 255 is considered a start address
+    * command without parameters tries to load first file from drive chosen as above
 
-* uses RAM under ROM and I/O: 61438 bytes free
-* cold/warm start silences multiple SID chips - all $D4xx and $D5xx addresses, configured addresses
+* uses RAM under ROM and I/O: 51199 bytes free (up to `$CFFF`) by default, but 61438 is also possible
+* cold/warm start silences multiple SID chips
 * warm start due to BRK prints out the instruction address
 
 
@@ -40,8 +42,8 @@ The following ROM features are currently missing:
 
 * most BASIC commands
 * BASIC variables
-* BASIC expression parsing
-* floating point routines
+* BASIC expression handling
+* most floating point routines
 * RS-232 support
 * NMI handling is incomplete
 
@@ -143,7 +145,7 @@ Status of the various APIs and variables from the original ROMs
 ## Low memory locations (pages 0 - 3)
 
 
-For the current status of the low memory location implementation andd usage check [this file](c64/aliases/,aliases_ram_lowmem.s). NOTE: available vector to certain routine does not mean that this routine is fully implemented!
+For the current status of the low memory location implementation andd usage check [this file](src/aliases/,aliases_ram_lowmem.s). NOTE: available vector to certain routine does not mean that this routine is fully implemented!
 
 
 ## BASIC
@@ -282,7 +284,7 @@ Not all of them - only these we want to have implemented.
 | `$A68E`   | `RUNC`       | DONE     |                                                    |
 | `$A7AE`   | `NEWSTT`     | PARTIAL  | redirected to RUN command                          |
 | `$AB1E`   | `STROUT`     | DONE     |                                                    |
-| `$AD9E`   | `FRMEVL`     | NOT DONE |                                                    |
+| `$AD9E`   | `FRMEVL`     | PARTIAL  |                                                    |
 | `$BDCD`   | `LINPRT`     | DONE     | temporary implementation                           |
 | `$E3BF`   | `INIT`       | NOT DONE |                                                    |
 | `$E422`   | `INITMSG`    | DONE     |                                                    |

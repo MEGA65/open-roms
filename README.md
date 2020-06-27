@@ -4,6 +4,7 @@ A project to create unencumbered open-source ROMs for use on selected retro comp
 
 * [implementation status](./STATUS.md) of various APIs and functionalities
 * [configuration options](./CONFIG.md) for those willing to compile their own, customized ROM set
+* [BASIC extensions](doc/Extended-BASIC.md)
 * [development guide](./doc/Development.md) for those interested in OpenROMs technical aspects
 * [license](./LICENSE) information and list of major contributors
 * [credits](./CREDITS.md) to people whose work was of great help to us

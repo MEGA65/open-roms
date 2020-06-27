@@ -1,0 +1,3 @@
+$02 + STA $B9 + RTS
+
+Routine ending by setting a zeropage variable + plus some part. Trivial - not copyrightable.

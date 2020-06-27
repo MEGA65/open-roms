@@ -1,0 +1,3 @@
+PLA + STA $6B + PLA + STA (address does not match)
+
+Part of sequence storing several values on the stack. Trivial - not copyrightable.

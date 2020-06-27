@@ -1,0 +1,3 @@
+STA $65 + STA $64
+
+Part of the code zeroing a temporary storage on zeropage. Trivial - not copyrightable.

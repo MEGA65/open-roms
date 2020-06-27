@@ -59,6 +59,10 @@ There is no official PETSCII code for `TAB` - we can't utilize the ones from C12
 
 Bits 3 and 4 are extension to the original variable, compatible with the C128 ROMs API. There is no official way to retrieve `NO_SCRL` status as of yet. The `40/80` key status cannot be retrieved in C64 mode at all (C128 hardware limitation).
 
+#### NMI vector modification
+
+Before modifying NMI vector, set it's high byte to 0. The ROM routine considers such address invalid and won't try to call the custom code, thus preventing a crash if interrupt happens in the worst possible moment.
+
 #### Mega65 native mode
 
 Mega65 build starts in legacy mode, which is intended to be reasonably compatible with the C64 ROMs. However, a native Mega65 mode is planned too, to make it easier to utilise extra features of this machine. Soo far the following has been done:
@@ -128,6 +132,7 @@ where:
 | `#IGNORE`      | ignore the file completely                                         |
 | `#TAKE`        | compile the file normally                                          |
 | `#TAKE-FLOAT`  | compile the file, but force it to be floating                      |
+| `#TAKE-HIGH`   | as above, but always place routine at `$E000` or above             |
 | `#TAKE-OFFSET` | shifts the fixed-location address by hex offset given as parameter |
 
 The first match counts, all the remaining ones are dropped. Examples:
@@ -179,6 +184,8 @@ ROUTINE_NAME:
 
 #endif
 ```
+
+Last, but not least - the `#TAKE-HIGH` is intended to be used for BASIC routines, which should still be available after the main BASIC ROM is banked out.
 
 ### CPU-specific optimizations
 

@@ -1,0 +1,3 @@
+RTS + LDA #$01 + BIT + LDA
+
+Routine starting by setting .A to 1 or some other value, depending on entry address (common 6502 trick to save memoryy using BIT instruction). Not creative - not copyrightable.

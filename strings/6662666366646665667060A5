@@ -1,0 +1,3 @@
+ROR $62 + ROR $63 + ROR $64 + ROR $65 + ROR $70 + RTS + LDA (zeropage address does not match)
+
+Unrolled loop that performs a simple operation (shift by one bit) on a well-known variable - floating point accumulator mantissa. Plus some p[art of another instruction, from a different subroutine. Not creative and rather trivial - not copyrightable.

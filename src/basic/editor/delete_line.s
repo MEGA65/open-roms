@@ -62,6 +62,7 @@ delete_line:
 
 	// Line length is <0 or >255 bytes.
 	// Either way, things are bad, so abort.
+
 	jmp do_MEMORY_CORRUPT_error
 !:
 	// Length can now be safely assumed to be in the low

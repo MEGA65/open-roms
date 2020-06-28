@@ -26,7 +26,7 @@ insert_line:
 	// .byte $f1,<OLDTXT,>OLDTXT
 	// .byte $f0,<OLDTXT,>OLDTXT
 	// .byte $0d,0
-	
+
 	lda OLDTXT+0
 	pha
 	lda OLDTXT+1

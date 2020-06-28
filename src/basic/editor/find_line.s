@@ -17,6 +17,38 @@ find_line:
 	lda TXTTAB+1
 	sta OLDTXT+1
 
+	// Check if BASIC text actually contains any program
+
+	lda #$00
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT+0
+	jsr peek_under_roms
+	cmp #$00
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
+	bne find_line_loop
+
+	iny
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT+0
+	jsr peek_under_roms
+	cmp #$00
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
+	beq find_line_fail
+
 	// FALLTROUGH
 
 find_line_loop:

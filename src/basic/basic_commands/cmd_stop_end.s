@@ -27,4 +27,4 @@ cmd_stop:
 
 cmd_end:
 
-	jmp basic_main_loop
+	jmp shell_main_loop

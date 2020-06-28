@@ -50,4 +50,4 @@ cmd_merge_no_error:
 
 	// XXX when number parsing is done, change to continue execution
 
-	jmp basic_main_loop
+	jmp shell_main_loop

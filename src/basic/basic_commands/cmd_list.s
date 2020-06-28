@@ -31,7 +31,7 @@ list_loop:
 	// LIST terminates any running program,
 	// because it has fiddled with the current line pointer.
 	// (Confirmed by testing on a C64)
-	jmp basic_main_loop
+	jmp shell_main_loop
 
 list_more_lines:
 	lda STKEY

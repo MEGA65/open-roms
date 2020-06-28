@@ -27,4 +27,4 @@ basic_warm_start_real:
 	lda CMP0+0
 	jsr print_hex_byte
 !:
-	jmp basic_main_loop
+	jmp shell_main_loop

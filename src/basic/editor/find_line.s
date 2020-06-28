@@ -5,19 +5,24 @@
 
 // Find the BASIC line with number LINNUM
 
+// XXX it should be possible to start from the current line (OLDTXT), or from the startup,
+//     depending on the current and target line number
 
-basic_find_line:
+
+find_line:
+
 	// Get pointer to start of BASIC text
 	lda TXTTAB+0
 	sta OLDTXT+0
 	lda TXTTAB+1
 	sta OLDTXT+1
 
-basic_find_line_loop:	
-	// Then search for line number
-	// Line number
-	
-	ldy #3
+	// FALLTROUGH
+
+find_line_loop:
+
+	// Fetch the high byte of line number and compare
+	ldy #$03
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
@@ -30,10 +35,11 @@ basic_find_line_loop:
 
 	cmp LINNUM+1
 	beq !+
-	bcs line_num_too_high
-	bne not_this_line
+	bcs find_line_fail                           // branch if line number too high
+	bne find_line_next
 !:
-	
+
+	// Fetch the low byte of line number and compare
 	dey
 
 #if CONFIG_MEMORY_MODEL_60K
@@ -45,27 +51,23 @@ basic_find_line_loop:
 #endif
 
 	cmp LINNUM+0
-	beq !+
-	bcs line_num_too_high
-	bne not_this_line
-!:
+	beq find_line_success
+	bcs find_line_fail                           // branch if line number too high
+	bne find_line_next
+
+find_line_success:
+
 	clc
 	rts
-not_this_line:
-	// Not this line, so advance to next line
+
+find_line_next:
+
+	// Advance to the next line
+
 	jsr peek_line_pointer_null_check
-	bcs more_lines_exist
+	bcc find_line_fail                           // branch in no more lines exist
 
-	// no more lines exist, return failure
-line_num_too_high:
-	sec
-	rts
-more_lines_exist:	
-
-	// XXX - Add program mangled check here to be triggered
-	// if the link goes backwards.
-	// Follow link to next line
-	ldy #0
+	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
@@ -76,7 +78,7 @@ more_lines_exist:
 	lda (OLDTXT),y
 #endif
 
-	sta $0100
+	pha
 	iny
 
 #if CONFIG_MEMORY_MODEL_60K
@@ -88,7 +90,16 @@ more_lines_exist:
 #endif
 
 	sta OLDTXT+1
-	lda $0100
+	pla
 	sta OLDTXT+0
 
-	jmp basic_find_line_loop
+#if HAS_OPCODES_65C02
+	bra find_line_loop
+#else
+	jmp find_line_loop
+#endif
+
+find_line_fail:
+
+	sec
+	rts

@@ -80,4 +80,4 @@ cmd_load_no_error:
 
 cmd_load_end:
 
-	jmp basic_main_loop
+	jmp shell_main_loop

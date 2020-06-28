@@ -18,7 +18,7 @@ cmd_goto:
 	bcs !+
 
 	jsr basic_parse_line_number
-	jsr basic_find_line
+	jsr find_line
 	bcc !+
 	// Line does not exist, so report error
 	jmp do_UNDEFD_STATEMENT_error

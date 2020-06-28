@@ -196,4 +196,4 @@ do_basic_error:                        // error code in .X
 	ldx #$FE
 	txs
 
-	jmp basic_main_loop
+	jmp shell_main_loop

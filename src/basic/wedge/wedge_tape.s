@@ -6,17 +6,16 @@
 #if CONFIG_TAPE_WEDGE
 
 
-// .X has to contain size of the buffer
-
 wedge_tape:
 
-	lda #$FF
-	sta CURLIN+1                       // in case of error do not print line number
+	// Prepare for execution
 
-	cpx #$02
-	bne_16 do_SYNTAX_error
+	jsr prepare_direct_execution
+	jsr fetch_character
 
-	lda BUF+1
+	// First character is a 'left arrow', we can ignore it - determine the command
+
+	jsr fetch_character
 
 	cmp #$4C                           // 'L'
 	beq wedge_arrow_L
@@ -30,12 +29,69 @@ wedge_tape:
 
 	jmp do_SYNTAX_error
 
+#if CONFIG_TAPE_HEAD_ALIGN
+
+wedge_arrow_H:
+
+	// Make sure the syntax is correct
+
+	jsr injest_spaces
+	jsr fetch_character
+
+	cmp #$00
+	bne_16 do_SYNTAX_error
+
+	jsr tape_head_align
+
+	jsr print_return
+	jmp do_BREAK_error
+
+#endif
+
 wedge_arrow_L:
 
-	// Execute 'arrow + L'
+	// Make sure the syntax is correct
+
+	jsr injest_spaces
+	jsr fetch_character
 	
+	cmp #$00
+	beq wedge_arrow_L_no_filename      // branch if no file name given
+	cmp #$22
+	bne_16 do_SYNTAX_error             // branch if no opening quote
+
+	// Fetch the file name
+
+	lda TXTPTR+0
+	sta FNADDR+0
+	lda TXTPTR+1
+	sta FNADDR+1
+
+	ldx #$00
+!:
+	jsr fetch_character
+
+	cmp #$00
+	beq !+
+	cmp #$22
+	beq !+
+
+	inx
+	bne !-
+!:
+	stx FNLEN
+
 	lda #$00
-	sta FNLEN                          // default file name is empty
+	beq wedge_arrow_L_got_filename
+
+wedge_arrow_L_no_filename:
+	
+	sta FNLEN                          // .A is 0 here, default file name is empty
+	
+	// FALLTROUGH
+
+wedge_arrow_L_got_filename:            // .A has to be 0
+
 	sta VERCKB                         // operation is LOAD, not VERIFY
 
 	ldy #$01
@@ -50,17 +106,6 @@ wedge_arrow_L:
 	// Perform loading
 
 	jmp cmd_load_got_params
-
-#if CONFIG_TAPE_HEAD_ALIGN
-
-wedge_arrow_H:
-
-	jsr tape_head_align
-
-	jsr print_return
-	jmp do_BREAK_error
-
-#endif
 
 
 #endif // CONFIG_TAPE_WEDGE

@@ -37,7 +37,10 @@ shell_got_line:
 
 	// Store length of input buffer ready for tokenising
 	stx __tokenise_work1
-	// XXX we should probably store 0 at the end of used BUF
+
+	// Store 0 as the sentinel
+	lda #$00
+	sta BUF, x
 
 	// FALLTROUGH
 
@@ -76,10 +79,13 @@ shell_process_line:
 
 	// Check if a wedge should take over
 
+#if CONFIG_DOS_WEDGE
+
+	ldx __tokenise_work1                         // size of the input, DOS wedges needs this  XXX this should not be needed
+
+#endif
 #if CONFIG_DOS_WEDGE || CONFIG_TAPE_WEDGE
 	
-	ldx __tokenise_work1                         // size of the input, wedges need this  XXX this should not be needed
-
 	// Check if DOS wedge should take over
 	lda BUF
 
@@ -170,20 +176,6 @@ shell_add_delete_line:
 
 shell_execute_line:	
 
-	// Setup pointer to the statement
-	lda #<BUF
-	sta TXTPTR+0
-	lda #>BUF
-	sta TXTPTR+1
-
-	// There is no stored line, so zero that pointer out
-	lda #$00
-	sta OLDTXT+0
-	sta OLDTXT+1
-
-	// Put invalid line number in current line number value,
-	// so that we know we are in direct mode (Computes Mapping the 64 p19)
-	lda #$FF
-	sta CURLIN+1
-
+	jsr prepare_direct_execution
 	jmp execute_statements
+

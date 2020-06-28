@@ -16,6 +16,10 @@ cmd_merge:
 
 	jsr helper_load_fetch_devnum
 
+	// Make sure VARTAB is correctly set
+
+	jsr calculate_VARTAB
+
 	// Perform loading - just for a different address
 
 	sec

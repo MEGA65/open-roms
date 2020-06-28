@@ -13,6 +13,10 @@ Tries to switch the machine to turbo mode - details differ depending on the conf
 
 Tries to switch the machine back to 1 MHz operation mode.
 
+### `OLD`
+
+Tries to restore program destroyed by NEW or a reset.
+
 ### `MERGE "file_name" [, device_number]`
 
 Appends the BASIC program from a storage medium to the one currently present in memory.

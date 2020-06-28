@@ -181,6 +181,7 @@ const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
 	{ true,  true,  true,  "KCC_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
 	{ true,  true,  true,  "KCC_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
 	{ true,  true,  true,  "KCC_04",   "BVERIFY",      },
+	{ true,  true,  true,  "KCC_05",   "OLD",          }, // OpenROMs specific, not present in CBM BASIC dialects
 } };
 
 // extended BASIC keywords - reserved for BASIC commands likely making sense on most C64-compatible machines

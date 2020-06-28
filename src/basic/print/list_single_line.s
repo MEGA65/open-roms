@@ -223,9 +223,11 @@ list_is_pi:
 list_is_literal:
 
 	pha
+	bit QTSW
+	bpl list_is_literal_known                    // in quote mode every character is allowed
 	and #$7F
 	cmp #$12
-	beq list_is_literal_known                    // branch if quote mode on/off
+	beq list_is_literal_known                    // enabling/disabling reverse mode is allowed
 	and #%01100000
 	bne list_is_literal_known
 	pla

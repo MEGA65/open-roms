@@ -155,7 +155,7 @@ shell_add_delete_line:
 
 	// Line already present - delete it
 	jsr delete_line
-
+	jsr find_line                                // refresh OLDTXT
 !:
 	// Insert new line if non-zero length, i.e., that
 	// we are not just deleting the line.

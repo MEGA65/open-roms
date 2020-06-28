@@ -23,3 +23,4 @@
 .label print_features                  = BASIC_0.proxy_B1_print_features
 #endif
 .label do_STRING_TOO_LONG_error        = BASIC_0.do_STRING_TOO_LONG_error
+.label str_rev_question                = BASIC_0.str_rev_question

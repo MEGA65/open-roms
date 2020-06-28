@@ -10,6 +10,7 @@
 // print string routine
 
 STROUT:
+
 	// Setup pointer
 	sty FRESPC+1
 	sta FRESPC+0

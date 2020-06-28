@@ -114,9 +114,9 @@ basic_shift_mem_down_and_relink:
 
 	
 relink_down_next_line:
-	// inc $d020
-	// jmp relink_down_next_line
-	
+
+	// XXX reuse code from cmd_old
+
 	// Subtract __tokenise_work3 from the pointer
 	ldy #0
 

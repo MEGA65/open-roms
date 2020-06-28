@@ -128,8 +128,8 @@ basic_shift_mem_up_and_relink:
 #endif
 	
 relink_up_next_line:
-	// inc $d020
-	// jmp relink_up_next_line
+
+	// XXX reuse code from cmd_old
 	
 	// Advance pointer by tokenise_word3 bytes
 	ldy #0

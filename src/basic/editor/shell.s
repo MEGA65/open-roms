@@ -148,24 +148,22 @@ shell_add_delete_line:
 
 	// First, clear all variables, so that we only have to shove BASIC text around
 	jsr basic_do_clr
-.break
-	// Delete line if present
+
+	// Check if line already present
 	jsr find_line
-
-// XXX
-
 	bcs !+
 
-	// Delete the line, whether we are deleting or
-	// replacing the line
-	jsr basic_delete_line
+	// Line already present - delete it
+.break
+	jsr delete_line
+
 !:
 	// Insert new line if non-zero length, i.e., that
 	// we are not just deleting the line.
 	lda __tokenise_work1
 	cmp __tokenise_work2
 	beq !+
-	jsr basic_insert_line
+	jsr insert_line
 !:
 	// No READY message after entering or deleting a line of BASIC
 	jmp shell_read_next_line

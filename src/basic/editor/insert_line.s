@@ -2,17 +2,18 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
+//
 // Insert the tokenised line stored at $0200.
-// First work out where in the list to put it
-// (basic_find_line with the line number can be used to work
-// out the insertion point, as it should abort once it finds a
-// line number too high).
+//
+// First work out where in the list to put it (find_line with the line number can be used to work
+// out the insertion point, as it should abort once it finds a line number too high).
 // Then all we have to do is push the rest of the BASIC text up,
 // and update the pointers in all following basic lines.
+//
 
-basic_insert_line:
+insert_line:
 
-	// ASSUMES basic_find_line has been called to set the insert point.
+	// ASSUMES find_line has been called to set the insert point.
 	// We need to insert space for the link link token, the line number,
 	// and the zero-terminated line itself.  This means 2+2+1 plus length
 	// of tokenised string after the line number
@@ -36,6 +37,7 @@ basic_insert_line:
 	lda __tokenise_work2
 	sec
 	sbc __tokenise_work1
+
 	// Add on the four bytes space we need
 	clc
 	adc #5
@@ -82,7 +84,7 @@ basic_insert_line:
 
 	// Now store the line body itself
 	inc __tokenise_work2
-line_store_loop:
+!:
 	ldx __tokenise_work1
 	lda $0200,x
 	inc __tokenise_work1
@@ -97,7 +99,7 @@ line_store_loop:
 
 	lda __tokenise_work1
 	cmp __tokenise_work2
-	bne line_store_loop
+	bne !-
 	dec __tokenise_work2
 	
 	clc

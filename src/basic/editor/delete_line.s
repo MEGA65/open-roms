@@ -2,14 +2,12 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-// Delete the current BASIC line, which is assumed to have already
-// been found with find_line.
-// Really only consists of copying memory down.
-// The only complication is that we have to do the copy with ROMs
-// banked out. Oh, yes, and we have to update all the links in
-// the following basic lines.
+//
+// Delete the current BASIC line, which is assumed to have already been found with find_line.
+// Consists of copying memory down and lline linkage update.
+//
 
-basic_delete_line:
+delete_line:
 
 	// jsr printf
 	// .text "DELETING LINE AT $"
@@ -61,6 +59,7 @@ basic_delete_line:
 	sbc #0
 	cmp #$00
 	beq !+
+
 	// Line length is <0 or >255 bytes.
 	// Either way, things are bad, so abort.
 	jmp do_MEMORY_CORRUPT_error

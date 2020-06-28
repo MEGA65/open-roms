@@ -37,14 +37,14 @@
 	.label VARTAB    = $2D // $2D-$2E  end of BASIC code, start of variables
 	.label ARYTAB    = $2F // $2F-$30  -- NOT IMPLEMENTED --
 	.label STREND    = $31 // $31-$32  -- NOT IMPLEMENTED --
-	.label FRETOP    = $33 // $33-$34  -- NOT IMPLEMENTED --
+	.label FRETOP    = $33 // $33-$34  pointer to bottom of strings area
 	.label FRESPC    = $35 // $35-$36  [!] our implementation uses this as temporary string pointer
 	.label MEMSIZ    = $37 // $37-$38  highest address of BASIC memory + 1
 	.label CURLIN    = $39 // $39-$3A  current BASIC line number
 	.label OLDLIN    = $3B // $3B-$3C  previous BASIC line number
 	.label OLDTXT    = $3D // $3D-$3E  current BASIC line pointer
 	.label DATLIN    = $3F // $3F-$40  -- NOT IMPLEMENTED --
-	.label DATPTR    = $41 // $41-$42  -- NOT IMPLEMENTED --
+	.label DATPTR    = $41 // $41-$42  pointer for READ/DATA copmmands
 	.label INPPTR    = $43 // $43-$44  -- NOT IMPLEMENTED --
 	.label VARNAM    = $45 // $45-$46  -- NOT IMPLEMENTED --
 	.label VARPNT    = $47 // $47-$48  -- NOT IMPLEMENTED --

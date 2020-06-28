@@ -11,6 +11,7 @@
 .label peek_via_OLDTXT                 = BASIC_0.proxy_B1_peek_via_OLDTXT
 .label poke_via_OLDTXT                 = BASIC_0.proxy_B1_poke_via_OLDTXT
 .label JCHROUT                         = BASIC_0.proxy_B1_JCHROUT
+.label JCLALL                          = BASIC_0.proxy_B1_JCLALL
 .label JMEMTOP                         = KERNAL_0.JMEMTOP
 .label plot_set                        = KERNAL_0.plot_set
 .label init_oldtxt                     = BASIC_0.init_oldtxt

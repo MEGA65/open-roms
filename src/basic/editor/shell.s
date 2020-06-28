@@ -147,7 +147,7 @@ shell_process_line:
 shell_add_delete_line:
 
 	// First, clear all variables, so that we only have to shove BASIC text around
-	jsr basic_do_clr
+	jsr do_clr
 
 	// Check if line already present
 	jsr find_line

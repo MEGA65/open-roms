@@ -27,8 +27,6 @@ cmd_let:
 	nop
 cmd_if:
 	nop
-cmd_restore:
-	nop
 cmd_gosub:
 	nop
 cmd_return:

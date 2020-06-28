@@ -5,7 +5,7 @@
 
 cmd_run:
 	// RUN clears all variables
-	jsr basic_do_clr
+	jsr do_clr
 cmd_goto:
 	// Disable Kernal messages
 	lda #$00

@@ -40,7 +40,7 @@ cmd_merge_no_error:
 	sty VARTAB+1
 
 	// Clear the variables
-	jsr basic_do_clr
+	jsr do_clr
 
 	// Now relink the loaded program, line links supplied are almost certainly wrong
 

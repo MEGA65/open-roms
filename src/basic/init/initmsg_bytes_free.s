@@ -10,7 +10,59 @@
 
 initmsg_bytes_free:
 
-	jsr basic_do_new
+	// Setup pointers to BASIC memory storage
+
+	lda #<$0801
+	sta TXTTAB+0
+	lda #>$0801
+	sta TXTTAB+1
+
+	// Get top of memory.
+	// If a cart is present, then it is $7FFF,
+	// if not, then it is $F7FF, since we support having
+	// programs and variables under ROM.
+	// i.e., we support 56KB RAM for BASIC, keeping some space
+	// free for some optimisation structures, e.g., FOR/NEXT loop
+	// records (without them going on the stack), GOSUB stack
+	// (same story), expression value cache?
+
+	sec			// Read, not write value
+	jsr JMEMTOP
+	cpx #$80
+	beq !+
+#if CONFIG_MEMORY_MODEL_60K
+	lda #>$F7FF
+#elif CONFIG_MEMORY_MODEL_50K
+	lda #>$D000	
+#elif CONFIG_MEMORY_MODEL_46K
+	lda #>$C000
+#else // CONFIG_MEMORY_MODEL_38K
+	lda #>$A000
+#endif
+	skip_2_bytes_trash_nvz
+!:	
+	lda #>$8000
+	sta MEMSIZ+1
+#if CONFIG_MEMORY_MODEL_60K
+	cpx #$80
+	beq !+
+	lda #$FF
+	skip_2_bytes_trash_nvz
+!:
+	lda #<$00
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	lda #<$00
+#endif
+	sta MEMSIZ+0
+
+	// XXX move the part above to a more suitable place
+
+	// Initialize other variables by performing NEW
+
+	jsr do_new
+
+	// Print number of bytes free
+
     sec
 	lda MEMSIZ+0
 	sbc TXTTAB+0
@@ -20,6 +72,5 @@ initmsg_bytes_free:
 
 	jsr print_integer
 
-	// Print rest of the start up message
 	ldx #IDX__STR_BYTES
 	jmp print_packed_misc_str

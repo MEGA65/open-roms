@@ -56,7 +56,7 @@ cmd_load_no_error:
 
 	// C64 BASIC apparently does not clear variables after a LOAD in the
 	// middle of a program. For safety, we do.
-	jsr basic_do_clr
+	jsr do_clr
 
 	// Now relink the loaded program, as we cannot trust the line
 	// links supplied. For example, the VICE virtual drive emulation

@@ -17,8 +17,9 @@
 	.label VB1__list_single_line        = $4000 + 2 * 3
 	.label VB1__print_packed_error      = $4000 + 2 * 4
 	.label VB1__print_packed_misc_str   = $4000 + 2 * 5
-	.label VB1__basic_do_clr            = $4000 + 2 * 6
-	.label VB1__basic_do_new            = $4000 + 2 * 7
+	.label VB1__do_new                  = $4000 + 2 * 6
+	.label VB1__do_clr                  = $4000 + 2 * 7
+	.label VB1__do_restore              = $4000 + 2 * 8
 
 #else
 
@@ -30,7 +31,8 @@
 	.word list_single_line
 	.word print_packed_error
 	.word print_packed_misc_str
-	.word basic_do_clr
-	.word basic_do_new
+	.word do_new
+	.word do_clr
+	.word do_restore
 
 #endif

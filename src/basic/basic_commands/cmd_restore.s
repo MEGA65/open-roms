@@ -3,10 +3,10 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-cmd_clr:
+cmd_restore:
 
-	jsr do_clr
+	jsr do_restore
 
-	// CLR command does not stop execution (confirmed on a C64)
+	// RESTORE command does not stop execution (confirmed on a C64)
 
 	jmp execute_statements

@@ -43,7 +43,7 @@ insert_line:
 	adc #5
 	pha
 	tax
-	
+
 	// Make the space
 	jsr basic_shift_mem_up_and_relink
 

@@ -26,14 +26,14 @@
 
 tk_pack:
 
-	// Reuse the CPU stack - addresses below $102 are used by 'tokenise_line.s'
+	// Reuse the CPU stack - address $100 is used by 'tokenise_line.s'
 
-	.label tk__len_unpacked = $103 // length of unpacked data; it could replace 'tk__nibble_flag', but at the cost of code size/performance
-	.label tk__shorten_bits = $104 // 2 bytes for quick shortening of packed candidate
-	.label tk__nibble_flag  = $106 // $00 = start from new byte, $FF = start from high nibble
-	.label tk__byte_offset  = $107 // offset of the current byte (to place new data) in tk__packed
+	.label tk__len_unpacked = $101 // length of unpacked data; it could replace 'tk__nibble_flag', but at the cost of code size/performance
+	.label tk__shorten_bits = $102 // 2 bytes for quick shortening of packed candidate
+	.label tk__nibble_flag  = $104 // $00 = start from new byte, $FF = start from high nibble
+	.label tk__byte_offset  = $105 // offset of the current byte (to place new data) in tk__packed
 
-	.label tk__packed       = $108 // packed candidate, 25 bytes is enough for worst case - a 16 byte keyword
+	.label tk__packed       = $106 // packed candidate, 25 bytes is enough for worst case - a 16 byte keyword
 
 	// Initialize variables
 

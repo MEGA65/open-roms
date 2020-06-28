@@ -154,7 +154,6 @@ shell_add_delete_line:
 	bcs !+
 
 	// Line already present - delete it
-.break
 	jsr delete_line
 
 !:

@@ -15,7 +15,7 @@ Tries to switch the machine back to 1 MHz operation mode.
 
 ### `MERGE "file_name" [, device_number]`
 
-Appends the BASIC program from a storage medium to the one currently present in memory. NOTE: due to bug in BASIC editor (improper VARTAB handling) it currently works only with programs loaded from the storage medium, not the ones typed in!
+Appends the BASIC program from a storage medium to the one currently present in memory.
 
 ### `BLOAD "file_name", device_number, start_address`
 

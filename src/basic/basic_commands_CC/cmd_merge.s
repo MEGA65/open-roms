@@ -18,8 +18,6 @@ cmd_merge:
 
 	// Perform loading - just for a different address
 
-	// XXX sometimes works, sometimes does not - probably improper handling of VARTAB somewhere
-
 	sec
 	lda VARTAB+0
 	sbc #$02

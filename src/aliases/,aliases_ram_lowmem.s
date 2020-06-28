@@ -71,6 +71,12 @@
 	.label FAC2_mantissa   = $6A // $6A - $6D
 	.label FAC2_sign       = $6E
 
+	// We re-use FAC2 for memory move pointers, since we cannot be doing calculations while moving memory
+	.label memmove__src    = $69
+	.label memmove__dst    = $6B
+	.label memmove__size   = $6D
+
+
 	.label ARISGN    = $6F //          -- NOT IMPLEMENTED --
 	.label FACOV     = $70 //          FAC1 low order mantissa
 	.label FBUFPT    = $71 // $71-$72  -- NOT IMPLEMENTED --

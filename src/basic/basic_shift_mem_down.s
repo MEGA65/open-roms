@@ -9,28 +9,28 @@ basic_shift_mem_down_and_relink:
 
 	// Destination is OLDTXT
 	lda OLDTXT+0
-	sta __memmove_dst+0
+	sta memmove__dst+0
 	lda OLDTXT+1
-	sta __memmove_dst+1	
+	sta memmove__dst+1	
 	
 	// Source is that plus X
 	txa
 	pha 			// also keep for later
 	clc
 	adc OLDTXT+0
-	sta __memmove_src+0
+	sta memmove__src+0
 	lda OLDTXT+1
 	adc #0
-	sta __memmove_src+1
+	sta memmove__src+1
 
 	// Size is distance from source to end of BASIC text.
 	lda VARTAB+0
 	sec
-	sbc __memmove_src+0
-	sta __memmove_size+0
+	sbc memmove__src+0
+	sta memmove__size+0
 	lda VARTAB+1
-	sbc __memmove_src+1
-	sta __memmove_size+1
+	sbc memmove__src+1
+	sta memmove__size+1
 
 	// jsr printf
 	// .text "TOP OF BASIC = $"
@@ -38,14 +38,14 @@ basic_shift_mem_down_and_relink:
 	// .byte $f0,<VARTAB,>VARTAB
 	// .byte $0d
 	// .text "SHIFTING DOWN $"
-	// .byte $f1,<__memmove_size,>__memmove_size
-	// .byte $f0,<__memmove_size,>__memmove_size
+	// .byte $f1,<memmove__size,>memmove__size
+	// .byte $f0,<memmove__size,>memmove__size
 	// .text " BYTES FROM $"
-	// .byte $f1,<__memmove_src,>__memmove_src
-	// .byte $f0,<__memmove_src,>__memmove_src
+	// .byte $f1,<memmove__src,>memmove__src
+	// .byte $f0,<memmove__src,>memmove__src
 	// .text " TO $"
-	// .byte $f1,<__memmove_dst,>__memmove_dst
-	// .byte $f0,<__memmove_dst,>__memmove_dst
+	// .byte $f1,<memmove__dst,>memmove__dst
+	// .byte $f0,<memmove__dst,>memmove__dst
 	// .byte $0d,0
 	
 	// The copy routine that copies under the ROMs is as simple
@@ -59,44 +59,44 @@ basic_shift_mem_down_and_relink:
 	// This means we have to then reduce the source and
 	// target pointers by the same amount
 
-	lda __memmove_size+0
+	lda memmove__size+0
 	eor #$ff
 	sta __tokenise_work3
-	sta __memmove_size+0
+	sta memmove__size+0
 
-	lda __memmove_src+0
+	lda memmove__src+0
 	sec
 	sbc __tokenise_work3
-	sta __memmove_src+0
-	lda __memmove_src+1
+	sta memmove__src+0
+	lda memmove__src+1
 	sbc #0
-	sta __memmove_src+1
+	sta memmove__src+1
 
-	lda __memmove_dst+0
+	lda memmove__dst+0
 	sec
 	sbc __tokenise_work3
-	sta __memmove_dst+0
-	lda __memmove_dst+1
+	sta memmove__dst+0
+	lda memmove__dst+1
 	sbc #0
-	sta __memmove_dst+1
+	sta memmove__dst+1
 
 	// Increase copy page count so we can post-decrement compare with $00
-	inc __memmove_size+1
+	inc memmove__size+1
 	
 	// jsr printf
 	// .text "REVISED BOUNDS $"
-	// .byte $f1,<__memmove_size,>__memmove_size
-	// .byte $f0,<__memmove_size,>__memmove_size
+	// .byte $f1,<memmove__size,>memmove__size
+	// .byte $f0,<memmove__size,>memmove__size
 	// .text " BYTES FROM $"
-	// .byte $f1,<__memmove_src,>__memmove_src
-	// .byte $f0,<__memmove_src,>__memmove_src
+	// .byte $f1,<memmove__src,>memmove__src
+	// .byte $f0,<memmove__src,>memmove__src
 	// .text " TO $"
-	// .byte $f1,<__memmove_dst,>__memmove_dst
-	// .byte $f0,<__memmove_dst,>__memmove_dst
+	// .byte $f1,<memmove__dst,>memmove__dst
+	// .byte $f0,<memmove__dst,>memmove__dst
 	// .byte $0d,0
 
 	// Get Y value ready for the copy
-	ldy __memmove_size+0
+	ldy memmove__size+0
 	
 	jsr shift_mem_down
 
@@ -131,7 +131,7 @@ relink_down_next_line:
 
 	sec
 	sbc __tokenise_work3
-	sta __memmove_src+0
+	sta memmove__src+0
 	iny
 
 #if CONFIG_MEMORY_MODEL_60K
@@ -143,10 +143,10 @@ relink_down_next_line:
 #endif
 
 	sbc #0
-	sta __memmove_src+1
+	sta memmove__src+1
 
 	ldy #0
-	lda __memmove_src+0
+	lda memmove__src+0
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
@@ -156,7 +156,7 @@ relink_down_next_line:
 #endif
 
 	iny
-	lda __memmove_src+1
+	lda memmove__src+1
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
@@ -166,9 +166,9 @@ relink_down_next_line:
 
 relink_down_loop:	
 	// Now advance pointer to the next line,
-	lda __memmove_src+0
+	lda memmove__src+0
 	sta OLDTXT+0
-	lda __memmove_src+1
+	lda memmove__src+1
 	sta OLDTXT+1
 
 	// Have we run out of lines to patch?

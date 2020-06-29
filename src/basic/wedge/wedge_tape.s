@@ -19,6 +19,8 @@ wedge_tape:
 
 	cmp #$4C                           // 'L'
 	beq wedge_arrow_L
+	cmp #$4D                           // 'M'
+	beq wedge_arrow_M
 
 #if CONFIG_TAPE_HEAD_ALIGN
 
@@ -50,62 +52,21 @@ wedge_arrow_H:
 
 wedge_arrow_L:
 
-	// Make sure the syntax is correct
-
-	jsr injest_spaces
-	jsr fetch_character
-	
-	cmp #$00
-	beq wedge_arrow_L_no_filename      // branch if no file name given
-	cmp #$22
-	bne_16 do_SYNTAX_error             // branch if no opening quote
-
-	// Fetch the file name
-
-	lda TXTPTR+0
-	sta FNADDR+0
-	lda TXTPTR+1
-	sta FNADDR+1
-
-	ldx #$00
-!:
-	jsr fetch_character
-
-	cmp #$00
-	beq !+
-	cmp #$22
-	beq !+
-
-	inx
-	bne !-
-!:
-	stx FNLEN
-
-	lda #$00
-	beq wedge_arrow_L_got_filename
-
-wedge_arrow_L_no_filename:
-	
-	sta FNLEN                          // .A is 0 here, default file name is empty
-	
-	// FALLTROUGH
-
-wedge_arrow_L_got_filename:            // .A has to be 0
-
-	sta VERCKB                         // operation is LOAD, not VERIFY
-
-	ldy #$01
-#if CONFIG_TAPE_TURBO
-	ldx #$07                           // turbo tape device
-#else
-	ldx #$01                           // normal tape device
-#endif
-
-	jsr JSETFLS
+	jsr wedge_tape_prepare_load
 
 	// Perform loading
 
 	jmp cmd_load_got_params
+
+wedge_arrow_M:
+
+	jsr wedge_tape_prepare_load
+	ldy #$00
+	sty SA                             // for MERGE secondary address has to be 0!
+
+	// Perform merging
+
+	jmp cmd_merge_got_params
 
 
 #endif // CONFIG_TAPE_WEDGE

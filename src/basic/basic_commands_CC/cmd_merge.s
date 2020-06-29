@@ -16,6 +16,10 @@ cmd_merge:
 
 	jsr helper_load_fetch_devnum
 
+	// FALLTROUGH
+
+cmd_merge_got_params:
+
 	// Make sure VARTAB is correctly set
 
 	jsr calculate_VARTAB

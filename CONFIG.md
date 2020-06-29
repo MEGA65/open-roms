@@ -285,7 +285,7 @@ Feature needs about 330 bytes in BASIC segment. If unsure - enable.
 
 ### `CONFIG_TAPE_WEDGE`
 
-If enabled, a simple DOS wedge is available from the direct mode for tape loading - supports `←L` only, optionally with a file name.
+If enabled, a simple DOS wedge is available from the direct mode for tape loading - supports `←L` (for `LOAD`) and `←M` (for `MERGE`), optionally with a file name.
 
 Feature needs several bytes in BASIC segment. If unsure - enable.
 

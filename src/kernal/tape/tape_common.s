@@ -282,10 +282,20 @@ tape_match_loop:
 	cmp #KEY_ASTERISK
 	beq tape_return_ok
 
+	iny
+	iny
+	iny
+	iny
+	iny
+
 	cmp (TAPE1), y
 	bne tape_return_not_ok
 
-	iny
+	dey
+	dey
+	dey
+	dey
+
 	cpy #$10
 	bne tape_match_loop
 

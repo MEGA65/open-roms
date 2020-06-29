@@ -3,27 +3,33 @@
 // #LAYOUT# *   *       #IGNORE
 
 
+//
+// Shift the BASIC program down to cover the area of removed line
+//
+
+
 basic_shift_mem_down_and_relink:
-	// Shift memory down to basic_current_line_pointer
-	// from X bytes further along.
 
 	// Destination is OLDTXT
+
 	lda OLDTXT+0
 	sta memmove__dst+0
 	lda OLDTXT+1
 	sta memmove__dst+1	
-	
-	// Source is that plus X
-	txa
-	pha 			// also keep for later
+
+	// Source is OLDTXT + .X
+
 	clc
+	txa
+
 	adc OLDTXT+0
 	sta memmove__src+0
 	lda OLDTXT+1
-	adc #0
+	adc #$00
 	sta memmove__src+1
 
-	// Size is distance from source to end of BASIC text.
+	// Size is distance from source (OLDTXT) to the end of BASIC text (VARTAB)
+
 	lda VARTAB+0
 	sec
 	sbc memmove__src+0
@@ -32,148 +38,39 @@ basic_shift_mem_down_and_relink:
 	sbc memmove__src+1
 	sta memmove__size+1
 
-	// jsr printf
-	// .text "TOP OF BASIC = $"
-	// .byte $f1,<VARTAB,>VARTAB
-	// .byte $f0,<VARTAB,>VARTAB
-	// .byte $0d
-	// .text "SHIFTING DOWN $"
-	// .byte $f1,<memmove__size,>memmove__size
-	// .byte $f0,<memmove__size,>memmove__size
-	// .text " BYTES FROM $"
-	// .byte $f1,<memmove__src,>memmove__src
-	// .byte $f0,<memmove__src,>memmove__src
-	// .text " TO $"
-	// .byte $f1,<memmove__dst,>memmove__dst
-	// .byte $f0,<memmove__dst,>memmove__dst
-	// .byte $0d,0
-	
-	// The copy routine that copies under the ROMs is as simple
-	// as possible to be as small as possible, so we have
-	// to adjust the pointers and counts so that the simple
-	// increment and decrement bounds checks work.
+	// The copy routine is simplified, so that it is fast and (for memory model 60K)
+	// can fit in a small RAM area - therefore it requires to pre-set .Y, so that
+	// the copy ends when it reaches 0; so if copying one byte we want .Y = $FF
 
-	// Specifically we want Y pre-set so that the end of the
-	// copy ends when Y = $00.
-	// So if copying 1 byte, we want Y=$FF
-	// This means we have to then reduce the source and
-	// target pointers by the same amount
-
-	lda memmove__size+0
-	eor #$ff
-	sta __tokenise_work3
-	sta memmove__size+0
-
-	lda memmove__src+0
 	sec
+	lda #$00
+	sbc memmove__size+0
+	tay
+	sty __tokenise_work3
+
+	// Now we have to move down the memmove_src and memmove_dst pointers
+	// to compensate for .Y not being 0
+
+	sec
+	lda memmove__src+0
 	sbc __tokenise_work3
 	sta memmove__src+0
-	lda memmove__src+1
-	sbc #0
-	sta memmove__src+1
-
-	lda memmove__dst+0
+	bcs !+
+	dec memmove__src+1
+!:
 	sec
+	lda memmove__dst+0
 	sbc __tokenise_work3
 	sta memmove__dst+0
-	lda memmove__dst+1
-	sbc #0
-	sta memmove__dst+1
+	bcs !+
+	dec memmove__dst+1
+!:
+	// Perform the copy    XXX add more documentation inside the copy routine!
 
-	// Increase copy page count so we can post-decrement compare with $00
 	inc memmove__size+1
-	
-	// jsr printf
-	// .text "REVISED BOUNDS $"
-	// .byte $f1,<memmove__size,>memmove__size
-	// .byte $f0,<memmove__size,>memmove__size
-	// .text " BYTES FROM $"
-	// .byte $f1,<memmove__src,>memmove__src
-	// .byte $f0,<memmove__src,>memmove__src
-	// .text " TO $"
-	// .byte $f1,<memmove__dst,>memmove__dst
-	// .byte $f0,<memmove__dst,>memmove__dst
-	// .byte $0d,0
-
-	// Get Y value ready for the copy
-	ldy memmove__size+0
-	
 	jsr shift_mem_down
 
-	// Get length of deletion back
-	pla
-	sta __tokenise_work3
+	// Now fix program linkage and calculate VARTAB
 
-	// Check if we still have any lines left
-	ldy #0
-	jsr peek_line_pointer_null_check
-	bcs relink_down_next_line
-	// Nope, so just return
-	clc
-	rts
-
-	
-relink_down_next_line:
-
-	// XXX reuse code from cmd_old
-
-	// Subtract __tokenise_work3 from the pointer
-	ldy #0
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<OLDTXT+0
-	jsr peek_under_roms
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_OLDTXT
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (OLDTXT),y
-#endif
-
-	sec
-	sbc __tokenise_work3
-	sta memmove__src+0
-	iny
-
-#if CONFIG_MEMORY_MODEL_60K
-	jsr peek_under_roms
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_OLDTXT
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (OLDTXT),y
-#endif
-
-	sbc #0
-	sta memmove__src+1
-
-	ldy #0
-	lda memmove__src+0
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<OLDTXT+0
-	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	sta (OLDTXT),y
-#endif
-
-	iny
-	lda memmove__src+1
-
-#if CONFIG_MEMORY_MODEL_60K
-	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	sta (OLDTXT),y
-#endif
-
-relink_down_loop:	
-	// Now advance pointer to the next line,
-	lda memmove__src+0
-	sta OLDTXT+0
-	lda memmove__src+1
-	sta OLDTXT+1
-
-	// Have we run out of lines to patch?
-	jsr peek_line_pointer_null_check
-	bcs relink_down_next_line
-
-	clc
-	rts
+	jsr LINKPRG
+	jmp calculate_VARTAB

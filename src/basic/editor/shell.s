@@ -152,8 +152,8 @@ shell_process_line:
 
 shell_add_delete_line:
 
-	// First, clear all variables, so that we only have to shove BASIC text around
-	jsr do_clr
+	// First make sure VARTAB is correct and clear all the variables
+	jsr calculate_VARTAB
 
 	// Check if line already present
 	jsr find_line

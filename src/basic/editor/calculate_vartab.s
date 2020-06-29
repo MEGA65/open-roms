@@ -3,7 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Calculate the VARTAB value - to mark the end of BASIC program code
+// Calculate the VARTAB value - to mark the end of BASIC program code. Also clears all variables.
 //
 
 calculate_VARTAB:

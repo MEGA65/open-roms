@@ -16,7 +16,7 @@ delete_line:
 	// .byte $0d,0
 
 	// Get address of next line
-	ldy #0
+	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT

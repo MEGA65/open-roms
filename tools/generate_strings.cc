@@ -1,5 +1,5 @@
 //
-// Utility to generate compressed messages and BASIC tokens
+// Utility to generate compressed messages and BASIC keywords
 //
 
 #include "common.h"
@@ -22,13 +22,14 @@ std::string CMD_outFile = "out.s";
 std::string CMD_cnfFile = "";
 
 //
-// Type definition for text/tokens to generate
+// Type definition for strings/keywords to generate
 //
 
 typedef struct StringEntry
 {
-    bool        enabledSTD;     // whether enabled for basic build
-    bool        enabledM65;     // whether enabled for Mega65 build
+    bool        enabledSTD;     // whether enabled for standard build
+    bool        enabledM65;     // whether enabled for Mega 65 build
+    bool        enabledU64;     // whether enabled for Ultimate 64 build
     bool        enabledX16;     // whether enabled for Commander X16 build
     std::string alias;          // alias, for the assembler
     std::string string;         // string/token
@@ -91,150 +92,150 @@ typedef std::vector<StringEncoded> StringEncodedList;
 
 const StringEntryList GLOBAL_Keywords_V2 = { ListType::KEYWORDS, "keywords_V2",
 {
-    // STD    M65    X16
-    { true,  true,  true,  "KV2_80",   "END",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_81",   "FOR",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_82",   "NEXT",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_83",   "DATA",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_84",   "INPUT#",     2 }, // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
-    { true,  true,  true,  "KV2_85",   "INPUT",      0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_86",   "DIM",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_87",   "READ",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_88",   "LET",        2 }, // https://en.wikipedia.org/wiki/Atari_BASIC
-    { true,  true,  true,  "KV2_89",   "GOTO",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_8A",   "RUN",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_8B",   "IF",         0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_8C",   "RESTORE",    3 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_8D",   "GOSUB",      3 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_8E",   "RETURN",     3 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_8F",   "REM",        0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_90",   "STOP",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_91",   "ON",         0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_92",   "WAIT",       2 }, // http://www.picaxe.com/BASIC-Commands/Time-Delays/wait/
-    { true,  true,  true,  "KV2_93",   "LOAD",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_94",   "SAVE",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_95",   "VERIFY",     2 }, // https://en.wikipedia.org/wiki/Sinclair_BASIC
-    { true,  true,  true,  "KV2_96",   "DEF",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_97",   "POKE",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_98",   "PRINT#",     2 }, // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
-    { true,  true,  true,  "KV2_99",   "PRINT",      0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_9A",   "CONT",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_9B",   "LIST",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_9C",   "CLR",        2 }, // Apple I Replica Creation: Back to the Garage, p125
-    { true,  true,  true,  "KV2_9D",   "CMD",        2 }, // https://en.wikipedia.org/wiki/List_of_DOS_commands
-    { true,  true,  true,  "KV2_9E",   "SYS",        2 }, // https://www.lifewire.com/dos-commands-4070427
-    { true,  true,  true,  "KV2_9F",   "OPEN",       2 }, // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
-    // STD    M65    X16
-    { true,  true,  true,  "KV2_A0",   "CLOSE",      3 }, // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
-    { true,  true,  true,  "KV2_A1",   "GET",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_A2",   "NEW",        0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_A3",   "TAB(",       2 }, // http://www.antonis.de/qbebooks/gwbasman/tab.html
-    { true,  true,  true,  "KV2_A4",   "TO",         0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_A5",   "FN",         0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_A6",   "SPC(",       2 }, // http://www.antonis.de/qbebooks/gwbasman/spc.html
-    { true,  true,  true,  "KV2_A7",   "THEN",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_A8",   "NOT",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_A9",   "STEP",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_AA",   "+",          0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_AB",   "-",          0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_AC",   "*",          0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_AD",   "/",          0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_AE",   "^",          0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_AF",   "AND",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_B0",   "OR",         0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_B1",   ">",          0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_B2",   "=",          0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_B3",   "<",          0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_B4",   "SGN",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_B5",   "INT",        0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_B6",   "ABS",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_B7",   "USR",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_B8",   "FRE",        2 }, // http://www.antonis.de/qbebooks/gwbasman/fre.html
-    { true,  true,  true,  "KV2_B9",   "POS",        0 }, // http://www.antonis.de/qbebooks/gwbasman/pos.html
-    { true,  true,  true,  "KV2_BA",   "SQR",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_BB",   "RND",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_BC",   "LOG",        0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_BD",   "EXP",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_BE",   "COS",        0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_BF",   "SIN",        2 }, // https://www.landsnail.com/a2ref.htm
-    // STD    M65    X16
-    { true,  true,  true,  "KV2_C0",   "TAN",        0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_C1",   "ATN",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_C2",   "PEEK",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_C3",   "LEN",        0 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_C4",   "STR$",       3 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_C5",   "VAL",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_C6",   "ASC",        2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_C7",   "CHR$",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_C8",   "LEFT$",      3 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_C9",   "RIGHT$",     2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_CA",   "MID$",       2 }, // https://www.landsnail.com/a2ref.htm
-    { true,  true,  true,  "KV2_CB",   "GO",         0 }, // https://en.wikipedia.org/wiki/Goto
+    // STD    M65    U64    X16
+    { true,  true,  true,  true,  "KV2_80",   "END",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_81",   "FOR",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_82",   "NEXT",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_83",   "DATA",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_84",   "INPUT#",     2 }, // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
+    { true,  true,  true,  true,  "KV2_85",   "INPUT",      0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_86",   "DIM",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_87",   "READ",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_88",   "LET",        2 }, // https://en.wikipedia.org/wiki/Atari_BASIC
+    { true,  true,  true,  true,  "KV2_89",   "GOTO",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_8A",   "RUN",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_8B",   "IF",         0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_8C",   "RESTORE",    3 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_8D",   "GOSUB",      3 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_8E",   "RETURN",     3 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_8F",   "REM",        0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_90",   "STOP",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_91",   "ON",         0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_92",   "WAIT",       2 }, // http://www.picaxe.com/BASIC-Commands/Time-Delays/wait/
+    { true,  true,  true,  true,  "KV2_93",   "LOAD",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_94",   "SAVE",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_95",   "VERIFY",     2 }, // https://en.wikipedia.org/wiki/Sinclair_BASIC
+    { true,  true,  true,  true,  "KV2_96",   "DEF",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_97",   "POKE",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_98",   "PRINT#",     2 }, // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
+    { true,  true,  true,  true,  "KV2_99",   "PRINT",      0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_9A",   "CONT",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_9B",   "LIST",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_9C",   "CLR",        2 }, // Apple I Replica Creation: Back to the Garage, p125
+    { true,  true,  true,  true,  "KV2_9D",   "CMD",        2 }, // https://en.wikipedia.org/wiki/List_of_DOS_commands
+    { true,  true,  true,  true,  "KV2_9E",   "SYS",        2 }, // https://www.lifewire.com/dos-commands-4070427
+    { true,  true,  true,  true,  "KV2_9F",   "OPEN",       2 }, // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
+    // STD    M65    U64    X16
+    { true,  true,  true,  true,  "KV2_A0",   "CLOSE",      3 }, // https://www.atariarchives.org/creativeatari/Using_Disks_With_Atari_Basic.php
+    { true,  true,  true,  true,  "KV2_A1",   "GET",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_A2",   "NEW",        0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_A3",   "TAB(",       2 }, // http://www.antonis.de/qbebooks/gwbasman/tab.html
+    { true,  true,  true,  true,  "KV2_A4",   "TO",         0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_A5",   "FN",         0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_A6",   "SPC(",       2 }, // http://www.antonis.de/qbebooks/gwbasman/spc.html
+    { true,  true,  true,  true,  "KV2_A7",   "THEN",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_A8",   "NOT",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_A9",   "STEP",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_AA",   "+",          0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_AB",   "-",          0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_AC",   "*",          0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_AD",   "/",          0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_AE",   "^",          0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_AF",   "AND",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_B0",   "OR",         0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_B1",   ">",          0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_B2",   "=",          0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_B3",   "<",          0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_B4",   "SGN",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_B5",   "INT",        0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_B6",   "ABS",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_B7",   "USR",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_B8",   "FRE",        2 }, // http://www.antonis.de/qbebooks/gwbasman/fre.html
+    { true,  true,  true,  true,  "KV2_B9",   "POS",        0 }, // http://www.antonis.de/qbebooks/gwbasman/pos.html
+    { true,  true,  true,  true,  "KV2_BA",   "SQR",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_BB",   "RND",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_BC",   "LOG",        0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_BD",   "EXP",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_BE",   "COS",        0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_BF",   "SIN",        2 }, // https://www.landsnail.com/a2ref.htm
+    // STD    M65    U64    X16
+    { true,  true,  true,  true,  "KV2_C0",   "TAN",        0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_C1",   "ATN",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_C2",   "PEEK",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_C3",   "LEN",        0 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_C4",   "STR$",       3 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_C5",   "VAL",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_C6",   "ASC",        2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_C7",   "CHR$",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_C8",   "LEFT$",      3 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_C9",   "RIGHT$",     2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_CA",   "MID$",       2 }, // https://www.landsnail.com/a2ref.htm
+    { true,  true,  true,  true,  "KV2_CB",   "GO",         0 }, // https://en.wikipedia.org/wiki/Goto
 } };
 
 // extended BASIC keywords - reserved for generic (hardware independent) BASIC commands
 
 const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
 {
-    // STD    M65    X16
-    { true,  true,  true,  "KCC_01",   "MERGE",        }, // OpenROMs specific, not present in CBM BASIC dialects
-    { true,  true,  true,  "KCC_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
-    { true,  true,  true,  "KCC_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
-    { true,  true,  true,  "KCC_04",   "BVERIFY",      },
-    { true,  true,  true,  "KCC_05",   "OLD",          }, // OpenROMs specific, not present in CBM BASIC dialects
+    // STD    M65    U64    X16
+    { true,  true,  true,  true,  "KCC_01",   "MERGE",        }, // OpenROMs specific, not present in CBM BASIC dialects
+    { true,  true,  true,  true,  "KCC_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
+    { true,  true,  true,  true,  "KCC_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
+    { true,  true,  true,  true,  "KCC_04",   "BVERIFY",      },
+    { true,  true,  true,  true,  "KCC_05",   "OLD",          }, // OpenROMs specific, not present in CBM BASIC dialects
 } };
 
 // extended BASIC keywords - reserved for BASIC commands likely making sense on most C64-compatible machines
 
 const StringEntryList GLOBAL_Keywords_CD =  { ListType::KEYWORDS, "keywords_CD",
 {
-    // STD    M65    X16
-    { true,  true,  true,  "KCD_01",   "SLOW",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
-    { true,  true,  true,  "KCD_02",   "FAST",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
+    // STD    M65    U64    X16
+    { true,  true,  true,  true,  "KCD_01",   "SLOW",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
+    { true,  true,  true,  true,  "KCD_02",   "FAST",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
 } };
 
 // extended BASIC keywords - reserved for board-specific BASIC commands
 
 const StringEntryList GLOBAL_Keywords_CE =  { ListType::KEYWORDS, "keywords_CE",
 {
-    // STD    M65    X16
-    { false, false, false, "KCE_01",   "TESTCMD",      },
+    // STD    M65    U64    X16
+    { false, false, false, false, "KCE_01",   "TESTCMD",      },
 } };
 
 const StringEntryList GLOBAL_Keywords_CF =  { ListType::KEYWORDS, "keywords_CF",
 {
-    // STD    M65    X16
-    { false, false, false, "KCF_01",   "TESTCMD",      },
+    // STD    M65    U64    X16
+    { false, false, false, false, "KCF_01",   "TESTCMD",      },
 } };
 
 // extended BASIC keywords - reserved for generic (hardware independent) BASIC functions
 
 const StringEntryList GLOBAL_Keywords_D0 =  { ListType::KEYWORDS, "keywords_D0",
 {
-    // STD    M65    X16
-    { false, false, false, "KD0_01",   "TESTFUN",      },
+    // STD    M65    U64    X16
+    { false, false, false, false, "KD0_01",   "TESTFUN",      },
 } };
 
 // extended BASIC keywords - reserved for BASIC functions likely making sense on most C64-compatible machines
 
 const StringEntryList GLOBAL_Keywords_D1 =  { ListType::KEYWORDS, "keywords_D1",
 {
-    // STD    M65    X16
-    { false, false, false, "KD1_01",   "TESTFUN",       },
+    // STD    M65    U64    X16
+    { false, false, false, false, "KD1_01",   "TESTFUN",       },
 } };
 
 // extended BASIC keywords - reserved for board-specific BASIC functions
 
 const StringEntryList GLOBAL_Keywords_D2 =  { ListType::KEYWORDS, "keywords_D2",
 {
-    // STD    M65    X16
-    { false, false, false, "KD2_01",   "TESTFUN",      },
+    // STD    M65    U64    X16
+    { false, false, false, false, "KD2_01",   "TESTFUN",      },
 } };
 
 const StringEntryList GLOBAL_Keywords_D3 =  { ListType::KEYWORDS, "keywords_D3",
 {
-    // STD    M65    X16
-    { false, false, false, "KD3_01",   "TESTFUN",      },
+    // STD    M65    U64    X16
+    { false, false, false, false, "KD3_01",   "TESTFUN",      },
 } };
 
 
@@ -252,65 +253,65 @@ const StringEntryList GLOBAL_Keywords_D3 =  { ListType::KEYWORDS, "keywords_D3",
 
 const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
 {
-    // STD    M65    X16   --- error strings compatible with CBM BASIC V2
-    { true,  true,  true,  "EV2_01", "TOO MANY FILES"           },
-    { true,  true,  true,  "EV2_02", "FILE OPEN"                },
-    { true,  true,  true,  "EV2_03", "FILE NOT OPEN"            },
-    { true,  true,  true,  "EV2_04", "FILE NOT FOUND"           },
-    { true,  true,  true,  "EV2_05", "DEVICE NOT PRESENT"       },
-    { true,  true,  true,  "EV2_06", "NOT INPUT FILE"           },
-    { true,  true,  true,  "EV2_07", "NOT OUTPUT FILE"          },
-    { true,  true,  true,  "EV2_08", "MISSING FILENAME"         },
-    { true,  true,  true,  "EV2_09", "ILLEGAL DEVICE NUMBER"    },
-    { true,  true,  true,  "EV2_0A", "NEXT WITHOUT FOR"         },
-    { true,  true,  true,  "EV2_0B", "SYNTAX"                   },
-    { true,  true,  true,  "EV2_0C", "RETURN WITHOUT GOSUB"     },
-    { true,  true,  true,  "EV2_0D", "OUT OF DATA"              },
-    { true,  true,  true,  "EV2_0E", "ILLEGAL QUANTITY"         },
-    { true,  true,  true,  "EV2_0F", "OVERFLOW"                 },
-    { true,  true,  true,  "EV2_10", "OUT OF MEMORY"            },
-    { true,  true,  true,  "EV2_11", "UNDEF\'D STATEMENT"       },
-    { true,  true,  true,  "EV2_12", "BAD SUBSCRIPT"            },
-    { true,  true,  true,  "EV2_13", "REDIM\'D ARRAY"           },
-    { true,  true,  true,  "EV2_14", "DIVISION BY ZERO"         },
-    { true,  true,  true,  "EV2_15", "ILLEGAL DIRECT"           },
-    { true,  true,  true,  "EV2_16", "TYPE MISMATCH"            },
-    { true,  true,  true,  "EV2_17", "STRING TOO LONG"          },
-    { true,  true,  true,  "EV2_18", "FILE DATA"                },
-    { true,  true,  true,  "EV2_19", "FORMULA TOO COMPLEX"      },
-    { true,  true,  true,  "EV2_1A", "CAN\'T CONTINUE"          },
-    { true,  true,  true,  "EV2_1B", "UNDEF\'D FUNCTION"        },
-    { true,  true,  true,  "EV2_1C", "VERIFY"                   },
-    { true,  true,  true,  "EV2_1D", "LOAD"                     },
-    { true,  true,  true,  "EV2_1E", "BREAK"                    },
-    // STD    M65    X16   --- error strings compatible with CBM BASIC V7
-    { false, false, false, "EV7_1F", "CAN'T RESUME"             }, // not used for now
-    { false, false, false, "EV7_20", "LOOP NOT FOUND"           }, // not used for now
-    { false, false, false, "EV7_21", "LOOP WITHOUT DO"          }, // not used for now
-    { true,  true,  true,  "EV7_22", "DIRECT MODE ONLY"         },
-    { false, false, false, "EV7_23", "NO GRAPHICS AREA"         }, // not used for now
-    { false, false, false, "EV7_24", "BAD DISK"                 }, // not used for now
-    { false, false, false, "EV7_25", "BEND NOT FOUND"           }, // not used for now
-    { false, false, false, "EV7_26", "LINE NUMBER TOO LARGE"    }, // not used for now
-    { false, false, false, "EV7_27", "UNRESOLVED REFERENCE"     }, // not used for now
-    { true,   true,  true, "EV7_28", "NOT IMPLEMENTED"          }, // this message actually differs from the CBM one
-    { false, false, false, "EV7_29", "FILE READ"                }, // not used for now
-    // STD    M65    X16   --- error strings specific to OpenROMs, not present in CBM BASIC dialects
-    { true,  true,  true,  "EOR_2A", "MEMORY CORRUPT"           },   
+    // STD    M65    U64    X16   --- error strings compatible with CBM BASIC V2
+    { true,  true,  true,  true,  "EV2_01", "TOO MANY FILES"           },
+    { true,  true,  true,  true,  "EV2_02", "FILE OPEN"                },
+    { true,  true,  true,  true,  "EV2_03", "FILE NOT OPEN"            },
+    { true,  true,  true,  true,  "EV2_04", "FILE NOT FOUND"           },
+    { true,  true,  true,  true,  "EV2_05", "DEVICE NOT PRESENT"       },
+    { true,  true,  true,  true,  "EV2_06", "NOT INPUT FILE"           },
+    { true,  true,  true,  true,  "EV2_07", "NOT OUTPUT FILE"          },
+    { true,  true,  true,  true,  "EV2_08", "MISSING FILENAME"         },
+    { true,  true,  true,  true,  "EV2_09", "ILLEGAL DEVICE NUMBER"    },
+    { true,  true,  true,  true,  "EV2_0A", "NEXT WITHOUT FOR"         },
+    { true,  true,  true,  true,  "EV2_0B", "SYNTAX"                   },
+    { true,  true,  true,  true,  "EV2_0C", "RETURN WITHOUT GOSUB"     },
+    { true,  true,  true,  true,  "EV2_0D", "OUT OF DATA"              },
+    { true,  true,  true,  true,  "EV2_0E", "ILLEGAL QUANTITY"         },
+    { true,  true,  true,  true,  "EV2_0F", "OVERFLOW"                 },
+    { true,  true,  true,  true,  "EV2_10", "OUT OF MEMORY"            },
+    { true,  true,  true,  true,  "EV2_11", "UNDEF\'D STATEMENT"       },
+    { true,  true,  true,  true,  "EV2_12", "BAD SUBSCRIPT"            },
+    { true,  true,  true,  true,  "EV2_13", "REDIM\'D ARRAY"           },
+    { true,  true,  true,  true,  "EV2_14", "DIVISION BY ZERO"         },
+    { true,  true,  true,  true,  "EV2_15", "ILLEGAL DIRECT"           },
+    { true,  true,  true,  true,  "EV2_16", "TYPE MISMATCH"            },
+    { true,  true,  true,  true,  "EV2_17", "STRING TOO LONG"          },
+    { true,  true,  true,  true,  "EV2_18", "FILE DATA"                },
+    { true,  true,  true,  true,  "EV2_19", "FORMULA TOO COMPLEX"      },
+    { true,  true,  true,  true,  "EV2_1A", "CAN\'T CONTINUE"          },
+    { true,  true,  true,  true,  "EV2_1B", "UNDEF\'D FUNCTION"        },
+    { true,  true,  true,  true,  "EV2_1C", "VERIFY"                   },
+    { true,  true,  true,  true,  "EV2_1D", "LOAD"                     },
+    { true,  true,  true,  true,  "EV2_1E", "BREAK"                    },
+    // STD    M65    U64    X16   --- error strings compatible with CBM BASIC V7
+    { false, false, false, false, "EV7_1F", "CAN'T RESUME"             }, // not used for now
+    { false, false, false, false, "EV7_20", "LOOP NOT FOUND"           }, // not used for now
+    { false, false, false, false, "EV7_21", "LOOP WITHOUT DO"          }, // not used for now
+    { true,  true,  true,  true,  "EV7_22", "DIRECT MODE ONLY"         },
+    { false, false, false, false, "EV7_23", "NO GRAPHICS AREA"         }, // not used for now
+    { false, false, false, false, "EV7_24", "BAD DISK"                 }, // not used for now
+    { false, false, false, false, "EV7_25", "BEND NOT FOUND"           }, // not used for now
+    { false, false, false, false, "EV7_26", "LINE NUMBER TOO LARGE"    }, // not used for now
+    { false, false, false, false, "EV7_27", "UNRESOLVED REFERENCE"     }, // not used for now
+    { true,  true,  true,  true,  "EV7_28", "NOT IMPLEMENTED"          }, // this message actually differs from the CBM one
+    { false, false, false, false, "EV7_29", "FILE READ"                }, // not used for now
+    // STD    M65    U64    X16   --- error strings specific to OpenROMs, not present in CBM BASIC dialects
+    { true,  true,  true,  true,  "EOR_2A", "MEMORY CORRUPT"           },   
 } };
 
 // BASIC errors - miscelaneous strings
 
 const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
 {
-    // STD    M65    X16   --- misc strings as on CBM machines
-    { true,  true,  true,  "STR_RET_QM",  "\r?"                 },
-    { true,  true,  true,  "STR_BYTES",   " BASIC BYTES FREE"   }, // https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  "STR_READY",   "\rREADY.\r"          }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  "STR_ERROR",   " ERROR"              }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
-    { true,  true,  true,  "STR_IN",      " IN "                },
-    // STD    M65    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
-    { true,  true,  true,  "STR_BRK_AT",  "\rBRK AT $"          },
+    // STD    M65    U64    X16   --- misc strings as on CBM machines
+    { true,  true,  true,  true,  "STR_RET_QM",  "\r?"                 },
+    { true,  true,  true,  true,  "STR_BYTES",   " BASIC BYTES FREE"   }, // https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_READY",   "\rREADY.\r"          }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_ERROR",   " ERROR"              }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+    { true,  true,  true,  true,  "STR_IN",      " IN "                },
+    // STD    M65    U64    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
+    { true,  true,  true,  true,  "STR_BRK_AT",  "\rBRK AT $"          },
     // Note: depending on configuration, additional strings will be added here
 } };
 
@@ -534,6 +535,12 @@ class DataSetM65 : public DataSet
 {
     bool isRelevant(const StringEntry &entry) const { return entry.enabledM65; }
     std::string layoutName() const { return "M65"; }
+};
+
+class DataSetU64 : public DataSet
+{
+    bool isRelevant(const StringEntry &entry) const { return entry.enabledU64; }
+    std::string layoutName() const { return "STD"; } // XXX to be changed for 'U64' once the layout is finished
 };
 
 class DataSetX16 : public DataSet
@@ -1190,9 +1197,9 @@ void DataSet::generateConfigDepStrings()
 
         if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"])
         {
-            StringEntry newEntry1 = { true, true, true, "STR_PAL",      "PAL\r"    };
-            StringEntry newEntry2 = { true, true, true, "STR_NTSC",     "NTSC\r"   };
-            StringEntry newEntry3 = { true, true, true, "STR_FEATURES", featureStr };
+            StringEntry newEntry1 = { true, true, true, true, "STR_PAL",      "PAL\r"    };
+            StringEntry newEntry2 = { true, true, true, true, "STR_NTSC",     "NTSC\r"   };
+            StringEntry newEntry3 = { true, true, true, true, "STR_FEATURES", featureStr };
 
             stringEntryList.list.push_back(newEntry1);
             stringEntryList.list.push_back(newEntry2);
@@ -1783,6 +1790,22 @@ void writeStrings()
         // Retrieve the results
        
         outputString = dataSetM65.getOutput();
+    }
+    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_ULTIMATE_64"])
+    {
+        DataSetU64 dataSetU64;
+
+        // Add input data to computation objects
+
+        dataSetU64.addStrings(GLOBAL_Keywords_V2);
+        dataSetU64.addStrings(GLOBAL_Keywords_CC);
+        dataSetU64.addStrings(GLOBAL_Keywords_CD);
+        dataSetU64.addStrings(GLOBAL_Errors);
+        dataSetU64.addStrings(GLOBAL_MiscStrings);
+       
+        // Retrieve the results
+       
+        outputString = dataSetU64.getOutput();
     }
     else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"])
     {

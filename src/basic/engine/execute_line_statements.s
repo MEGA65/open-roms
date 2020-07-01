@@ -177,7 +177,7 @@ execute_statements_end_of_line:
 	// Advance the basic line pointer to the next line; if end,
 	// go to the main loop
 
-	jsr basic_follow_link_to_next_line
+	jsr follow_link_to_next_line
 
 	lda OLDTXT+0
 	ora OLDTXT+1

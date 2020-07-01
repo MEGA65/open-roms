@@ -34,11 +34,11 @@ list_loop:
 	jmp shell_main_loop
 
 list_more_lines:
+
 	lda STKEY
 	bmi !+
 	jmp cmd_stop
 !:
 	jsr list_single_line
-	// Now link to the next line
-	jsr basic_find_next_line
+	jsr follow_link_to_next_line
 	jmp list_loop

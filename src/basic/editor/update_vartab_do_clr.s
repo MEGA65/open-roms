@@ -18,7 +18,7 @@ update_VARTAB_do_clr:
 	lda OLDTXT+1
 	sta VARTAB+1
 
-	jsr basic_follow_link_to_next_line
+	jsr follow_link_to_next_line
 
 	lda OLDTXT+0
 	ora OLDTXT+1

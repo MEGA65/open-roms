@@ -1,0 +1,3 @@
+LDX #$00 + LDY #$00
+
+Load $00 into both index registers. Trivial - not copyrightable.

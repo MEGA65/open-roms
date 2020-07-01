@@ -1,0 +1,3 @@
+CMP #$22 + BNE (offset matches) + LDA $D4 (QTSW) + EOR #(value does not match)
+
+Small piece of code handling QTSW flag - telling whether we are in the quote mode. Nothing complicated here - not creative, not copyrightable.

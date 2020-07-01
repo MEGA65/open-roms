@@ -30,6 +30,13 @@ proxy_B1_poke_via_OLDTXT:
 	jmp map_BASIC_1
 
 
+proxy_B1_JCLALL:
+
+	jsr map_NORMAL
+	jsr JCLALL
+	jmp map_BASIC_1
+
+
 proxy_B1_JCHROUT:
 
 	jsr map_NORMAL
@@ -56,6 +63,7 @@ proxy_B1_print_space:
 	jsr map_NORMAL
 	jsr print_space
 	jmp map_BASIC_1
+
 
 #if CONFIG_SHOW_FEATURES
 

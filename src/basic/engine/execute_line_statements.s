@@ -164,7 +164,7 @@ execute_statements_end_of_line:
 
 	ldx CURLIN+1
 	inx
-	beq_16 basic_main_loop
+	beq_16 shell_main_loop
 
 	// Advance to the next line - first copy the line number
 	// to previous line number
@@ -177,11 +177,11 @@ execute_statements_end_of_line:
 	// Advance the basic line pointer to the next line; if end,
 	// go to the main loop
 
-	jsr basic_follow_link_to_next_line
+	jsr follow_link_to_next_line
 
 	lda OLDTXT+0
 	ora OLDTXT+1
-	beq_16 basic_main_loop
+	beq_16 shell_main_loop
 	
 	// FALLTROUGH
 
@@ -191,7 +191,7 @@ execute_line:
 
 	ldy #0
 	jsr peek_line_pointer_null_check
-	bcc_16 basic_main_loop             // branch if end of program reached
+	bcc_16 shell_main_loop             // branch if end of program reached
 
 	// Skip pointer and line number to get address of first statement
 

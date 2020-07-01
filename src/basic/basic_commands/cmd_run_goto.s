@@ -5,7 +5,7 @@
 
 cmd_run:
 	// RUN clears all variables
-	jsr basic_do_clr
+	jsr do_clr
 cmd_goto:
 	// Disable Kernal messages
 	lda #$00
@@ -18,7 +18,7 @@ cmd_goto:
 	bcs !+
 
 	jsr basic_parse_line_number
-	jsr basic_find_line
+	jsr find_line
 	bcc !+
 	// Line does not exist, so report error
 	jmp do_UNDEFD_STATEMENT_error

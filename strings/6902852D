@@ -1,0 +1,3 @@
+ADC #$02 + STA $2D
+
+Add 2, store value in zeropage variable. Trivial - not copyrightable.

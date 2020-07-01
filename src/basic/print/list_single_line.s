@@ -67,7 +67,9 @@ list_print_loop:
 	lda (OLDTXT),y
 #endif
 
-	beq list_end_of_line
+	bne !+
+	rts                                          // end of line
+!:
 	cmp #$22
 	bne list_not_quote
 	lda QTSW
@@ -118,6 +120,10 @@ list_display_token_CC:
 	// Subtract $1 from token to get offset in token list
 	dex
 
+	// Check if token is known
+	cpx #TK__MAXTOKEN_keywords_CC
+	bcs list_display_unknown_token               // XXX consider displaying two question marks here
+
 	// Now ask for it to be printed
 	jsr print_packed_keyword_CC
 
@@ -156,6 +162,10 @@ list_display_token_CD:
 	// Subtract $1 from token to get offset in token list
 	dex
 
+	// Check if token is known
+	cpx #TK__MAXTOKEN_keywords_CD
+	bcs list_display_unknown_token               // XXX consider displaying two question marks here
+
 	// Now ask for it to be printed
 	jsr print_packed_keyword_CD
 
@@ -174,8 +184,12 @@ list_display_token_V2:
 
 	// Subtract $80 from token to get offset in token list
 	txa
-	and #$7f
+	and #$7F
 	tax
+
+	// Check if token is known
+	cpx #TK__MAXTOKEN_keywords_V2
+	bcs list_display_unknown_token
 
 	// Now ask for it to be printed
 	jsr print_packed_keyword_V2
@@ -188,12 +202,14 @@ list_token_displayed:
 	ply_trash_a
 	pla
 
-	cmp #$8f
+	cmp #$8F
 	bne list_not_rem
 	// REM command locks quote flag on until the end of the line, allowing
 	// funny characters in REM statements without problem.
 	sta QTSW    // Any value other than $00 or $FF will lock quote mode on, so the token value of REM is fine here
-	// FALL THROUGH
+	
+	// FALLTHROUGH
+
 list_not_rem:		
 	
 	iny
@@ -205,13 +221,52 @@ list_is_pi:
 	// FALLTROUGH
 
 list_is_literal:
-	jsr JCHROUT
-	iny
-	bne list_print_loop
-	
-list_end_of_line:
-	
-	rts
 
+	pha
+	bit QTSW
+	bpl list_is_literal_known                    // in quote mode every character is allowed
+	and #$7F
+	cmp #$12
+	beq list_is_literal_known                    // enabling/disabling reverse mode is allowed
+	and #%01100000
+	bne list_is_literal_known
+	pla
+
+	// FALLTROUGH
+
+list_is_unknown:
+
+	phy_trash_a
+	lda #<str_rev_question
+	ldy #>str_rev_question
+	jsr STROUT
+	ply_trash_a
+
+#if HAS_OPCODES_65C02
+	bra !+
+#else
+	jmp !+
+#endif
+
+list_is_literal_known:
+
+	pla
+	jsr JCHROUT
+!:
+	iny
+	bne_16 list_print_loop
+	
+	rts                                          // end of line
+
+list_display_unknown_token:
+
+	pla
+	pla
+
+#if HAS_OPCODES_65C02
+	bra list_is_unknown
+#else
+	jmp list_is_unknown
+#endif
 
 #endif // ROM layout

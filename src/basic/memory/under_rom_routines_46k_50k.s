@@ -70,14 +70,12 @@ peek_under_roms_via_FAC1_PLUS_1:
 
 
 
-shift_mem_up:
+shift_mem_up_internal:
 
-	// Move __memmove_size bytes from __memmove_src to __memmove_dst,
-	// where __memmove_dst > __memmove_src
+	// Move memmove__size bytes from memmove__src to memmove__dst, where memmove__dst > memmove__src
+	//
 	// This means we have to copy from the back end down.
-	// This routine assumes the pointers are already pointed
-	// to the end of the areas, and that Y is correctly initialised
-	// to allow the copy to begin.
+	// This routine assumes the pointers are already pointed to the end of the areas, and that .Y is correctly initialized
 
 	// Unmap BASIC lower ROM
 
@@ -88,30 +86,28 @@ shift_mem_up:
 
 	// Perform the copying
 !:	
-	lda (__memmove_src),y
-	sta (__memmove_dst),y
+	lda (memmove__src),y
+	sta (memmove__dst),y
 	dey
 	bne !-
-	dec __memmove_src+1
-	dec __memmove_dst+1
-	dec __memmove_size+1
+	dec memmove__src+1
+	dec memmove__dst+1
+	dec memmove__size+1
 	bne !-
 
 #if HAS_OPCODES_65C02
-	bra shift_mem_finalize
+	bra shift_mem_internal_finalize
 #else
-	jmp shift_mem_finalize
+	jmp shift_mem_internal_finalize
 #endif
 
 
-shift_mem_down:
+shift_mem_down_internal:
 
-	// Move __memmove_size bytes from __memmove_src to __memmove_dst,
-	// where __memmove_dst > __memmove_src
+	// Move memmove__size bytes from memmove__src to memmove__dst, where memmove__dst > memmove__src
+	//
 	// This means we have to copy from the back end down.
-	// This routine assumes the pointers are already pointed
-	// to the end of the areas, and that Y is correctly initialised
-	// to allow the copy to begin.
+	// This routine assumes the pointers are already pointed to the end of the areas, and that .Y is correctly initialized
 
 	// Unmap BASIC lower ROM
 
@@ -122,17 +118,18 @@ shift_mem_down:
 
 	// Perform the copying
 !:
-	lda (__memmove_src),y
-	sta (__memmove_dst),y
+	lda (memmove__src),y
+	sta (memmove__dst),y
 	iny
 	bne !-
-	inc __memmove_src+1
-	inc __memmove_dst+1
-	dec __memmove_size+1
+	inc memmove__src+1
+	inc memmove__dst+1
+	dec memmove__size+1
 	bne !-
+
 	// FALLTROUGH
 
-shift_mem_finalize:
+shift_mem_internal_finalize:
 
 	// Restore memory mapping and quit
 

@@ -5,7 +5,7 @@
 
 cmd_clr:
 
-	jsr basic_do_clr
+	jsr do_clr
 
 	// CLR command does not stop execution (confirmed on a C64)
 

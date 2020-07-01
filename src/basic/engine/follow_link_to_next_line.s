@@ -2,7 +2,8 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-basic_follow_link_to_next_line:
+follow_link_to_next_line:
+
 	ldy #0
 
 #if CONFIG_MEMORY_MODEL_60K
@@ -28,4 +29,5 @@ basic_follow_link_to_next_line:
 	sta OLDTXT+1
 	pla
 	sta OLDTXT+0
+
 	rts

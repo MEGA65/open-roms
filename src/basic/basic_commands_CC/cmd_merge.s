@@ -16,9 +16,15 @@ cmd_merge:
 
 	jsr helper_load_fetch_devnum
 
-	// Perform loading - just for a different address
+	// FALLTROUGH
 
-	// XXX sometimes works, sometimes does not - probably improper handling of VARTAB somewhere
+cmd_merge_got_params:
+
+	// Make sure VARTAB is correctly set
+
+	jsr update_VARTAB_do_clr
+
+	// Perform loading - just for a different address
 
 	sec
 	lda VARTAB+0
@@ -36,18 +42,10 @@ cmd_merge:
 
 cmd_merge_no_error:
 
-	// Store last loaded address
+	// Relink loaded program, clear variables
 
-	stx VARTAB+0
-	sty VARTAB+1
-
-	// Clear the variables
-	jsr basic_do_clr
-
-	// Now relink the loaded program, line links supplied are almost certainly wrong
-
-	jsr LINKPRG
+	jsr update_LINKPRG_VARTAB_do_clr
 
 	// XXX when number parsing is done, change to continue execution
 
-	jmp basic_main_loop
+	jmp shell_main_loop

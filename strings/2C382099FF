@@ -1,0 +1,3 @@
+$2C + SEC + JSR $FF99 (MEMTOP)
+
+Call of a well-known routine, following operation type set and some part. Trivial - not copyrightable.

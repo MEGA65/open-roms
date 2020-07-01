@@ -1,0 +1,3 @@
+$FF, $FF, $00, $00
+
+Sequence of bytes being similar most likely fue to ROM not being filled in completely. Trivial - not copyrightable.

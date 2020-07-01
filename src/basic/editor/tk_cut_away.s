@@ -18,6 +18,15 @@ tk_cut_away_1: // for single-byte tokenized keywords
 
 	dec tk__len_unpacked                         // keyword length, afterwards number of bytes to cut away
 
+	// Correct the line length
+
+	sec
+	lda tk__length
+	sbc tk__len_unpacked
+	sta tk__length
+
+	// Copy the remaining,. untokenized part in the proper place
+
 	inc tk__offset
 	ldy tk__offset
 

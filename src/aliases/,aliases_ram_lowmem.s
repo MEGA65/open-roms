@@ -32,19 +32,19 @@
 	.label LASTPT    = $17 // $17-$18  pointer to the last used slot in the temporary string descriptor
 	.label TEMPST    = $19 // $19-$21  temporary string stack descriptors
 	.label INDEX     = $22 // $22-$25  temporary variables, [!] our usage might be different
-	.label RESHO     = $26 // $26-$2A  -- NOT IMPLEMENTED --
+	.label RESHO     = $26 // $26-$2A  temporary variables, [!] our usage might be different
 	.label TXTTAB    = $2B // $2B-$2C  start of BASIC code
 	.label VARTAB    = $2D // $2D-$2E  end of BASIC code, start of variables
 	.label ARYTAB    = $2F // $2F-$30  -- NOT IMPLEMENTED --
 	.label STREND    = $31 // $31-$32  -- NOT IMPLEMENTED --
-	.label FRETOP    = $33 // $33-$34  -- NOT IMPLEMENTED --
+	.label FRETOP    = $33 // $33-$34  pointer to bottom of strings area
 	.label FRESPC    = $35 // $35-$36  [!] our implementation uses this as temporary string pointer
 	.label MEMSIZ    = $37 // $37-$38  highest address of BASIC memory + 1
 	.label CURLIN    = $39 // $39-$3A  current BASIC line number
 	.label OLDLIN    = $3B // $3B-$3C  previous BASIC line number
 	.label OLDTXT    = $3D // $3D-$3E  current BASIC line pointer
 	.label DATLIN    = $3F // $3F-$40  -- NOT IMPLEMENTED --
-	.label DATPTR    = $41 // $41-$42  -- NOT IMPLEMENTED --
+	.label DATPTR    = $41 // $41-$42  pointer for READ/DATA copmmands
 	.label INPPTR    = $43 // $43-$44  -- NOT IMPLEMENTED --
 	.label VARNAM    = $45 // $45-$46  -- NOT IMPLEMENTED --
 	.label VARPNT    = $47 // $47-$48  -- NOT IMPLEMENTED --
@@ -70,6 +70,12 @@
 	.label FAC2_exponent   = $69
 	.label FAC2_mantissa   = $6A // $6A - $6D
 	.label FAC2_sign       = $6E
+
+	// We re-use FAC2 for memory move pointers, since we cannot be doing calculations while moving memory
+	.label memmove__src    = $69
+	.label memmove__dst    = $6B
+	.label memmove__size   = $6D
+
 
 	.label ARISGN    = $6F //          -- NOT IMPLEMENTED --
 	.label FACOV     = $70 //          FAC1 low order mantissa
@@ -229,15 +235,15 @@
 	// IRQs are disabled when doing such accesses, and a default NMI handler only increments
 	// a counter, so that if an NMI occurs, it does not crash the machine, but can be captured.
 
-	.label missed_nmi_flag  = $2A7
-	.label tiny_nmi_handler = $2A8
-	.label peek_under_roms  = tiny_nmi_handler + peek_under_roms_routine - tiny_nmi_handler_routine
-	.label poke_under_roms  = tiny_nmi_handler + poke_under_roms_routine - tiny_nmi_handler_routine
-	.label memmap_allram    = tiny_nmi_handler + memmap_allram_routine   - tiny_nmi_handler_routine
-	.label memmap_normal    = tiny_nmi_handler + memmap_normal_routine   - tiny_nmi_handler_routine
+	.label missed_nmi_flag         = $2A7
+	.label tiny_nmi_handler        = $2A8
+	.label peek_under_roms         = tiny_nmi_handler + peek_under_roms_routine - tiny_nmi_handler_routine
+	.label poke_under_roms         = tiny_nmi_handler + poke_under_roms_routine - tiny_nmi_handler_routine
+	.label memmap_allram           = tiny_nmi_handler + memmap_allram_routine   - tiny_nmi_handler_routine
+	.label memmap_normal           = tiny_nmi_handler + memmap_normal_routine   - tiny_nmi_handler_routine
 #if SEGMENT_BASIC
-	.label shift_mem_up     = tiny_nmi_handler + shift_mem_up_routine    - tiny_nmi_handler_routine
-	.label shift_mem_down   = tiny_nmi_handler + shift_mem_down_routine  - tiny_nmi_handler_routine
+	.label shift_mem_up_internal   = tiny_nmi_handler + shift_mem_up_routine    - tiny_nmi_handler_routine
+	.label shift_mem_down_internal = tiny_nmi_handler + shift_mem_down_routine  - tiny_nmi_handler_routine
 #endif
 
 #endif // CONFIG_MEMORY_MODEL_60K

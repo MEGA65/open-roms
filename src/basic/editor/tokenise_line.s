@@ -21,22 +21,20 @@ tokenise_line:
 
 #else
 
-	// Reuse the CPU stack - addresses above $101 are used by 'tk_pack.s'
+	// Reuse the CPU stack - addresses above $100 are used by 'tk_pack.s'
 
 	.label tk__offset       = $100               // offset into string
-	.label tk__length       = $101               // length of the raw string  XXX reuse __tokenise_work1?
+	.label tk__length       = __tokenise_work1   // length of the raw string
 
 	// Initialize variables
 
 	lda #$00
 	sta tk__offset
 
-	ldx __tokenise_work1
-	stx tk__length
-
 	// Terminate input string with $00
 
 	// XXX do we need this?
+	ldx tk__length
 	sta BUF, x
 
 	// FALLTROUGH
@@ -123,23 +121,19 @@ tokenise_line_keyword_V2:
 	sta BUF, x
 
 	// Cut away unnecessary bytes
-
 	jsr tk_cut_away_1
 
 	// Special handling for REM command - after this one nothing more should be tokenised
 
 	pla
 	cmp #$0F                                     // REM token index
-	jmp tokenise_line_loop
+	bne tokenise_line_loop
 
 	// FALLTROUGH
 
 tokenise_line_done:
 
-	// Update line length and quit
-
-	lda tk__length
-	sta __tokenise_work1
+	// Quit
 
 	rts
 

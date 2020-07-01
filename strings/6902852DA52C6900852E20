@@ -1,0 +1,3 @@
+ADC #$02 + STA $2D + LDA $2C + ADC #$00 + STA $2E + JSR (address does not match)
+
+Code calculatin VARTAB value from TXTTAB - by adding 2. Trivial - not copyrightable.

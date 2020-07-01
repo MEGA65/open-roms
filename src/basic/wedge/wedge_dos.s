@@ -96,7 +96,7 @@ wedge_dos_change_drive:
 	jmp do_ILLEGAL_DEVICE_NUMBER_error
 !:
 	sta FA
-	jmp basic_main_loop
+	jmp shell_main_loop
 
 wedge_dos_status_get:
 
@@ -238,7 +238,7 @@ wedge_dos_directory_display:
 
 wedge_dos_clean_exit:
 	jsr JCLALL
-	jmp basic_main_loop
+	jmp shell_main_loop
 
 wedge_dos_basic_error:
 	pha

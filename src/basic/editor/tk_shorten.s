@@ -31,9 +31,8 @@ tk_shorten_1n:
 	ldy tk__byte_offset                // will be needed in both cases
 
 	// Now we need to check which nibble to cut away
-
 	bit tk__nibble_flag
-	bcs tk_shorten_1n_lo
+	bmi tk_shorten_1n_lo
 
 	// FALLTROUGH
 
@@ -45,7 +44,7 @@ tk_shorten_1n_hi:                      // tk__nibble_flag = $00, both nibbles fr
     sty tk__byte_offset
 
 	lda tk__packed, y
-	and #$F0
+	and #$0F
 	sta tk__packed, y
 
 	// Adjust remaining counters / flags, and quit
@@ -78,7 +77,7 @@ tk_shorten_3n:
 	// Now we need to check which nibble to cut away
 
 	bit tk__nibble_flag
-	bcs tk_shorten_3n_2bytes
+	bmi tk_shorten_3n_2bytes
 
 	// FALLTROUGH
 

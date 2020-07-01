@@ -2,14 +2,12 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-// Delete the current BASIC line, which is assumed to have already
-// been found with basic_find_line.
-// Really only consists of copying memory down.
-// The only complication is that we have to do the copy with ROMs
-// banked out. Oh, yes, and we have to update all the links in
-// the following basic lines.
+//
+// Delete the current BASIC line, which is assumed to have already been found with find_line.
+// Consists of copying memory down and lline linkage update.
+//
 
-basic_delete_line:
+delete_line:
 
 	// jsr printf
 	// .text "DELETING LINE AT $"
@@ -18,7 +16,7 @@ basic_delete_line:
 	// .byte $0d,0
 
 	// Get address of next line
-	ldy #0
+	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT
@@ -61,30 +59,20 @@ basic_delete_line:
 	sbc #0
 	cmp #$00
 	beq !+
+
 	// Line length is <0 or >255 bytes.
 	// Either way, things are bad, so abort.
+
 	jmp do_MEMORY_CORRUPT_error
 !:
 	// Length can now be safely assumed to be in the low
 	// byte only, i.e., stored in __tokenise_work3
 
-	lda __tokenise_work3
-	pha
-	tax
+	ldx __tokenise_work3
 
 	// Shuffle everything down
-	jsr basic_shift_mem_down_and_relink
+	jsr shift_txt_down
 
-	// Now decrease top of BASIC mem
-	pla
-	sta __tokenise_work3
-	lda VARTAB+0
-	sec
-	sbc __tokenise_work3
-	sta VARTAB+0
-	lda VARTAB+1
-	sbc #0
-	sta VARTAB+1
+	// Finish by fixing program linkage and calculating new 
 
-	clc
-	rts
+	jmp update_LINKPRG_VARTAB_do_clr

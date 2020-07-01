@@ -127,7 +127,7 @@ tokenise_line_keyword_V2:
 
 	pla
 	cmp #$0F                                     // REM token index
-	jmp tokenise_line_loop
+	bne tokenise_line_loop
 
 	// FALLTROUGH
 

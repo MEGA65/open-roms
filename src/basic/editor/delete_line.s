@@ -68,23 +68,11 @@ delete_line:
 	// Length can now be safely assumed to be in the low
 	// byte only, i.e., stored in __tokenise_work3
 
-	lda __tokenise_work3
-	pha
-	tax
+	ldx __tokenise_work3
 
 	// Shuffle everything down
-	jsr basic_shift_mem_down_and_relink
+	jsr shift_txt_down
 
-	// Now decrease top of BASIC mem
-	pla
-	sta __tokenise_work3
-	lda VARTAB+0
-	sec
-	sbc __tokenise_work3
-	sta VARTAB+0
-	lda VARTAB+1
-	sbc #0
-	sta VARTAB+1
+	// Finish by fixing program linkage and calculating new 
 
-	clc
-	rts
+	jmp update_LINKPRG_VARTAB_do_clr

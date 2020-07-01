@@ -22,7 +22,7 @@ cmd_merge_got_params:
 
 	// Make sure VARTAB is correctly set
 
-	jsr calculate_VARTAB
+	jsr update_VARTAB_do_clr
 
 	// Perform loading - just for a different address
 
@@ -42,17 +42,9 @@ cmd_merge_got_params:
 
 cmd_merge_no_error:
 
-	// Store last loaded address
+	// Relink loaded program, clear variables
 
-	stx VARTAB+0
-	sty VARTAB+1
-
-	// Clear the variables
-	jsr do_clr
-
-	// Now relink the loaded program, line links supplied are almost certainly wrong
-
-	jsr LINKPRG
+	jsr update_LINKPRG_VARTAB_do_clr
 
 	// XXX when number parsing is done, change to continue execution
 

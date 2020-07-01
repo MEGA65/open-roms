@@ -14,60 +14,42 @@
 insert_line:
 
 	// ASSUMES find_line has been called to set the insert point.
-	// We need to insert space for the link link token, the line number,
-	// and the zero-terminated line itself.  This means 2+2+1 plus length
-	// of tokenised string after the line number
-
-	// But first, remember where the pointer will be, so that we can
-	// put the line in there after.
 
 	// jsr printf
 	// .text "INSERTING LINE AT $"
 	// .byte $f1,<OLDTXT,>OLDTXT
 	// .byte $f0,<OLDTXT,>OLDTXT
 	// .byte $0d,0
-
-	lda OLDTXT+0
-	pha
-	lda OLDTXT+1
-
-	pha
 	
 	// Get number of bytes in tokenised line after line number
 	lda __tokenise_work2
 	sec
 	sbc __tokenise_work1
 
-	// Add on the four bytes space we need
+	// Add on the five bytes space we need (2 bytes for linkage, 2 bytes for line number, 1 byte for terminator)
 	clc
-	adc #5
-	pha
+	adc #$05
 	tax
 
 	// Make the space
-	jsr basic_shift_mem_up_and_relink
+	jsr shift_txt_up
 
-	// Now increase top of BASIC mem
-	pla
-	clc
-	adc VARTAB+0
-	sta VARTAB+0
-	lda VARTAB+1
-	adc #0
-	sta VARTAB+1
-	
-	// Get pointer back
-	pla
-	sta OLDTXT+1
-	pla
-	sta OLDTXT+0
-
-	// Write the line number
-	ldy #2
-	lda LINNUM+0
+	// Put dummy linkage, we will correct it later
+	ldy #$01
+	tya
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
+	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	sta (OLDTXT),y
+#endif
+
+	// Put the line number
+	iny
+	lda LINNUM+0
+
+#if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (OLDTXT),y
@@ -100,7 +82,12 @@ insert_line:
 	lda __tokenise_work1
 	cmp __tokenise_work2
 	bne !-
-	dec __tokenise_work2
-	
-	clc
-	rts
+
+	// FALLTROUGH
+
+update_LINKPRG_VARTAB_do_clr:
+
+	// Finish by fixing program linkage and calculating new VARTAB
+
+	jsr LINKPRG
+	jmp update_VARTAB_do_clr

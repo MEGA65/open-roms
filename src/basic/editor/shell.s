@@ -153,7 +153,7 @@ shell_process_line:
 shell_add_delete_line:
 
 	// First make sure VARTAB is correct and clear all the variables
-	jsr calculate_VARTAB
+	jsr update_VARTAB_do_clr
 
 	// Check if line already present
 	jsr find_line

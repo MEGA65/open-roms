@@ -32,7 +32,7 @@
 	.label LASTPT    = $17 // $17-$18  pointer to the last used slot in the temporary string descriptor
 	.label TEMPST    = $19 // $19-$21  temporary string stack descriptors
 	.label INDEX     = $22 // $22-$25  temporary variables, [!] our usage might be different
-	.label RESHO     = $26 // $26-$2A  -- NOT IMPLEMENTED --
+	.label RESHO     = $26 // $26-$2A  temporary variables, [!] our usage might be different
 	.label TXTTAB    = $2B // $2B-$2C  start of BASIC code
 	.label VARTAB    = $2D // $2D-$2E  end of BASIC code, start of variables
 	.label ARYTAB    = $2F // $2F-$30  -- NOT IMPLEMENTED --
@@ -235,15 +235,15 @@
 	// IRQs are disabled when doing such accesses, and a default NMI handler only increments
 	// a counter, so that if an NMI occurs, it does not crash the machine, but can be captured.
 
-	.label missed_nmi_flag  = $2A7
-	.label tiny_nmi_handler = $2A8
-	.label peek_under_roms  = tiny_nmi_handler + peek_under_roms_routine - tiny_nmi_handler_routine
-	.label poke_under_roms  = tiny_nmi_handler + poke_under_roms_routine - tiny_nmi_handler_routine
-	.label memmap_allram    = tiny_nmi_handler + memmap_allram_routine   - tiny_nmi_handler_routine
-	.label memmap_normal    = tiny_nmi_handler + memmap_normal_routine   - tiny_nmi_handler_routine
+	.label missed_nmi_flag         = $2A7
+	.label tiny_nmi_handler        = $2A8
+	.label peek_under_roms         = tiny_nmi_handler + peek_under_roms_routine - tiny_nmi_handler_routine
+	.label poke_under_roms         = tiny_nmi_handler + poke_under_roms_routine - tiny_nmi_handler_routine
+	.label memmap_allram           = tiny_nmi_handler + memmap_allram_routine   - tiny_nmi_handler_routine
+	.label memmap_normal           = tiny_nmi_handler + memmap_normal_routine   - tiny_nmi_handler_routine
 #if SEGMENT_BASIC
-	.label shift_mem_up     = tiny_nmi_handler + shift_mem_up_routine    - tiny_nmi_handler_routine
-	.label shift_mem_down   = tiny_nmi_handler + shift_mem_down_routine  - tiny_nmi_handler_routine
+	.label shift_mem_up_internal   = tiny_nmi_handler + shift_mem_up_routine    - tiny_nmi_handler_routine
+	.label shift_mem_down_internal = tiny_nmi_handler + shift_mem_down_routine  - tiny_nmi_handler_routine
 #endif
 
 #endif // CONFIG_MEMORY_MODEL_60K

@@ -6,7 +6,7 @@
 // Calculate the VARTAB value - to mark the end of BASIC program code. Also clears all variables.
 //
 
-calculate_VARTAB:
+update_VARTAB_do_clr:
 
 	lda TXTTAB+0
 	sta OLDTXT+0

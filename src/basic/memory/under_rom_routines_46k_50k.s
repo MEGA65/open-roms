@@ -70,7 +70,7 @@ peek_under_roms_via_FAC1_PLUS_1:
 
 
 
-shift_mem_up:
+shift_mem_up_internal:
 
 	// Move memmove__size bytes from memmove__src to memmove__dst, where memmove__dst > memmove__src
 	//
@@ -96,13 +96,13 @@ shift_mem_up:
 	bne !-
 
 #if HAS_OPCODES_65C02
-	bra shift_mem_finalize
+	bra shift_mem_internal_finalize
 #else
-	jmp shift_mem_finalize
+	jmp shift_mem_internal_finalize
 #endif
 
 
-shift_mem_down:
+shift_mem_down_internal:
 
 	// Move memmove__size bytes from memmove__src to memmove__dst, where memmove__dst > memmove__src
 	//
@@ -126,9 +126,10 @@ shift_mem_down:
 	inc memmove__dst+1
 	dec memmove__size+1
 	bne !-
+
 	// FALLTROUGH
 
-shift_mem_finalize:
+shift_mem_internal_finalize:
 
 	// Restore memory mapping and quit
 

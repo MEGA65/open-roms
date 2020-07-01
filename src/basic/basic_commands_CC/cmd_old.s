@@ -17,8 +17,7 @@ cmd_old:
 	tya
 	sta (TXTTAB),y
 
-	jsr LINKPRG
-	jsr calculate_VARTAB
+	jsr update_LINKPRG_VARTAB_do_clr
 
 	// Quit
 

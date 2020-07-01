@@ -1,0 +1,3 @@
+$00 + STA $26 + STA $27 + STA $28 + STA $29 (temporary variables)
+
+Couple of instructions settin 0 into temporary zeropage variables. Trivial - not copyrightable.

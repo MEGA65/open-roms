@@ -1,0 +1,3 @@
+CMP #$01 + BEQ (offset matches) + CMP #$03
+
+Two decisions based on accumulator value (second not even the same one). Trivial - not copyrightable.

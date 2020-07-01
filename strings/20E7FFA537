@@ -1,0 +1,3 @@
+JSR $FFE7 + LDA $37
+
+Calling a documented routine (CLALL) and fetching a byte from zeropage variable. Trivial - not copyrightable.

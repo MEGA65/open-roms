@@ -1,0 +1,3 @@
+LDA $61 + RTS + LDA (zeropage address does not match)
+
+One routine ending with returning a zeropage variable, another one starting with fetching data to acccumulator (not even the same address). Trivial - not copyrightable.

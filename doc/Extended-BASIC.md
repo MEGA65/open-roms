@@ -41,6 +41,10 @@ Launches a built-in tape head alignment tool. Destorys program in memory. Press 
 
 ## Additional BASIC commands
 
+### `COLD`
+
+Resets the machine. In direct mode asks for confirmation firsts.
+
 ### `FAST`
 
 Tries to switch the machine to turbo mode - details differ depending on the configured machine / motherboard.

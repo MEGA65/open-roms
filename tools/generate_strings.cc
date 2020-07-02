@@ -178,11 +178,14 @@ const StringEntryList GLOBAL_Keywords_V2 = { ListType::KEYWORDS, "keywords_V2",
 const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
 {
     // STD    M65    U64    X16
-    { true,  true,  true,  true,  "KCC_01",   "MERGE",        }, // OpenROMs specific, not present in CBM BASIC dialects
+    { true,  true,  true,  true,  "KCC_01",   "MERGE",        }, // Not present in CBM BASIC dialects, but common to some extensions (*)
     { true,  true,  true,  true,  "KCC_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
     { true,  true,  true,  true,  "KCC_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
     { true,  true,  true,  true,  "KCC_04",   "BVERIFY",      },
-    { true,  true,  true,  true,  "KCC_05",   "OLD",          }, // OpenROMs specific, not present in CBM BASIC dialects
+    { true,  true,  true,  true,  "KCC_05",   "OLD",          }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { true,  true,  true,  true,  "KCC_06",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+
+    // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };
 
 // extended BASIC keywords - reserved for BASIC commands likely making sense on most C64-compatible machines
@@ -310,6 +313,7 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { true,  true,  true,  true,  "STR_READY",   "\rREADY.\r"          }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
     { true,  true,  true,  true,  "STR_ERROR",   " ERROR"              }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
     { true,  true,  true,  true,  "STR_IN",      " IN "                },
+    { true,  true,  true,  true,  "STR_IF_SURE", "\rARE YOU SURE? "    }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
     // STD    M65    U64    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
     { true,  true,  true,  true,  "STR_BRK_AT",  "\rBRK AT $"          },
     // Note: depending on configuration, additional strings will be added here

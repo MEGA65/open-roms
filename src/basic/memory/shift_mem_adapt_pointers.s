@@ -9,13 +9,13 @@
 
 shift_mem_adapt_pointers:
 
-	sty RESHO+4
+	sty memmove__tmp
 
 	// Adapt source pointer
 
 	sec
 	lda memmove__src+0
-	sbc RESHO+4
+	sbc memmove__tmp
 	sta memmove__src+0
 	bcs !+
 	dec memmove__src+1
@@ -24,7 +24,7 @@ shift_mem_adapt_pointers:
 
 	sec
 	lda memmove__dst+0
-	sbc RESHO+4
+	sbc memmove__tmp
 	sta memmove__dst+0
 	bcs !+
 	dec memmove__dst+1

@@ -58,7 +58,7 @@ oper_add_strings:
 	adc __FAC2+0
 	bcs_16 do_STRING_TOO_LONG_error
 
-	jsr alloc_temp_string
+	// jsr alloc_temp_string
 
 .break
 

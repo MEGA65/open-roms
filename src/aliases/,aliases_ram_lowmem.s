@@ -52,7 +52,7 @@
 	.label OPPTR     = $4B // $4B-$4C  helper variable for expression computation, [!] our usage details are different
 	.label OPMASK    = $4D //          -- NOT IMPLEMENTED --
 	.label DEFPNT    = $4E // $4E-$4F  -- NOT IMPLEMENTED --
-	.label DSCPNT    = $50 // $50-$52  -- NOT IMPLEMENTED --
+	.label DSCPNT    = $50 // $50-$52  temporary area fro string handling, [!] our usage might differ
 	.label FOUR6     = $53 //          -- NOT IMPLEMENTED --
 	.label JMPER     = $54 // $54-$56  -- NOT IMPLEMENTED --
 	.label TEMPF1    = $57 // $57-$5B  BASIC numeric work area
@@ -70,12 +70,6 @@
 	.label FAC2_exponent   = $69
 	.label FAC2_mantissa   = $6A // $6A - $6D
 	.label FAC2_sign       = $6E
-
-	// We re-use FAC2 for memory move pointers, since we cannot be doing calculations while moving memory
-	.label memmove__src    = $69
-	.label memmove__dst    = $6B
-	.label memmove__size   = $6D
-
 
 	.label ARISGN    = $6F //          -- NOT IMPLEMENTED --
 	.label FACOV     = $70 //          FAC1 low order mantissa

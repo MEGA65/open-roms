@@ -32,6 +32,7 @@
 .label panic               = KERNAL().panic
 #endif
 
+.label vector_reset        = KERNAL().vector_reset
 .label hw_entry_reset      = KERNAL().hw_entry_reset
 
 #if CONFIG_DBG_PRINTF

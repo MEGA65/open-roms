@@ -15,7 +15,8 @@
 	cmd_bsave,
 	cmd_bverify,
 
-	cmd_old
+	cmd_old,
+	cmd_cold
 )
 
 

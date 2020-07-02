@@ -9,6 +9,11 @@ shell_main_loop:
 	ldx #IDX__STR_READY
 	jsr print_packed_misc_str
 
+	// Mark mode as direct
+
+	lda #$FF
+	sta CURLIN+1
+
 	// Enable Kernal messages
 	lda #$80
 	jsr JSETMSG

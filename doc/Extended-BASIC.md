@@ -37,13 +37,13 @@ Like above, but merges a BASIC program to the one already stored in memory.
 
 ### `←H`
 
-Launches a built-in tape head alignment tool. Destorys program in memory. Press `RUN/STOP` to terminate the tool.
+Launches a built-in tape head alignment tool. Destroys program in memory. Press `RUN/STOP` to terminate the tool.
 
 ## Additional BASIC commands
 
 ### `COLD`
 
-Resets the machine. In direct mode asks for confirmation firsts.
+Resets the machine. In direct mode asks for confirmation first.
 
 ### `FAST`
 

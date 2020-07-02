@@ -19,6 +19,7 @@
 //
 
 // XXX test this routine
+// XXX make it compatible with under-ROM routines
 
 varstr_alloc:
 
@@ -61,15 +62,36 @@ varstr_alloc_retry:
 
 	ldy #$00
 	lda DSCPNT+0
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<FRETOP
+	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (FRETOP), y
+#endif
+
 	iny
 	lda DSCPNT+1
+
+#if CONFIG_MEMORY_MODEL_60K
+	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (FRETOP), y
+#endif
 
 	// Now lower FRETOP again to make space for the string content
 
 	dey                                          // $01 -> $00
-	lda (DSCPNT), y
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<DSCPNT
+	jsr peek_under_roms
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_DSCPNT
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (DSCPNT),y
+#endif
+
 	jsr varstr_FRETOP_down
 	bcs varstr_alloc_fail
 
@@ -77,10 +99,22 @@ varstr_alloc_retry:
 
 	iny                                          // $00 -> $01
 	lda FRETOP+0
-	sta (DSCPNT), y
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<DSCPNT
+	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	sta (FRETOP), y
+#endif
+
 	iny
 	lda FRETOP+1
+
+#if CONFIG_MEMORY_MODEL_60K
+	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (DSCPNT), y
+#endif
 
 	// The end
 

@@ -18,6 +18,8 @@
 // - DSCPNT+0, DSCPNT+1 - pointer to string descriptor, first pointed byte should contain desired length
 //
 
+// XXX test this routine
+
 varstr_alloc:
 
 	// Mark garbage collector as not run yet
@@ -44,21 +46,45 @@ varstr_alloc_retry:
 	lda #$02
 	jsr varstr_FRETOP_down 
 
-#else // HAS_OPCODES_65CE02
+#else // HAS_OPCODES_65CE02 - this time code is slightly longer, but faster
 
 	dew FRETOP
 	dew FRETOP
+
+	jsr varstr_FRETOP_check
 
 #endif
 
-	jsr varstr_FRETOP_check
 	bcs varstr_alloc_fail
 
-	// XXX finish this
+	// Create the back-pointer to the string descriptor
 
+	ldy #$00
+	lda DSCPNT+0
+	sta (FRETOP), y
+	iny
+	lda DSCPNT+1
+	sta (FRETOP), y
 
+	// Now lower FRETOP again to make space for the string content
 
+	dey                                          // $01 -> $00
+	lda (DSCPNT), y
+	jsr varstr_FRETOP_down
+	bcs varstr_alloc_fail
 
+	// Success - fill in the string descriptor
+
+	iny                                          // $00 -> $01
+	lda FRETOP+0
+	sta (DSCPNT), y
+	iny
+	lda FRETOP+1
+	sta (DSCPNT), y
+
+	// The end
+
+	rts
 
 varstr_alloc_fail:
 
@@ -72,35 +98,13 @@ varstr_alloc_fail:
 	// Check if it is worth to perform garbage collection and retry
 
 	bit GARBFL
+	bpl_16 do_OUT_OF_MEMORY_error
 
-	// XXX finish this
+	dec GARBFL                                   // $00 -> $FF
+	jsr varstr_garbage_collect
 
-
-
-
-// XXX move these helper routines to a better place
-
-
-varstr_FRETOP_down: // memmove__tmp - length to lower FRETOP
-
-	sec
-	lda FRETOP+0
-	sbc memmove__tmp
-	sta FRETOP+0
-	bcs !+
-	dec FRETOP+1
-!:
-	rts
-
-varstr_FRETOP_check:
-
-	// Check if FRETOP > STREND, Carry set if not
-
-	lda STREND+1
-	cmp FRETOP+1
-	beq !+
-	rts
-!:
-	lda STREND+0
-	cmp FRETOP+0
-	rts
+#if HAS_OPCODES_65C02
+	bra varstr_alloc_retry
+#else
+	jmp varstr_alloc_retry
+#endif

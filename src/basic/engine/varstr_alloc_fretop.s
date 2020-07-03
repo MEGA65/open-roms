@@ -6,13 +6,13 @@
 // Helper routines for 'varstr_alloc'
 //
 
-varstr_FRETOP_down:                    // .A - bytes to lower FRETOP, uses memmove__tmp
+varstr_FRETOP_down_A:                  // .A - bytes to lower FRETOP, uses DSCPNT+2
 
-	sta memmove__tmp
+	sta DSCPNT+2 
 
 	sec
 	lda FRETOP+0
-	sbc memmove__tmp
+	sbc DSCPNT+2 
 	sta FRETOP+0
 	bcs !+
 	dec FRETOP+1

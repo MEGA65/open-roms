@@ -37,6 +37,6 @@ cmd_bload:
 	jsr JLOAD
 	bcs_16 do_kernal_error
 
-	// XXX when number parsing is done, change to continue execution
+	// Execute next statement
 
-	jmp shell_main_loop
+	jmp end_of_statement

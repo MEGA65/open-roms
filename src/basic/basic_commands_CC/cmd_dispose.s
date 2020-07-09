@@ -7,4 +7,7 @@ cmd_dispose:
 
 	jsr varstr_garbage_collect
 
-	jmp execute_statements
+	// Execute next statement
+
+	jmp end_of_statement
+

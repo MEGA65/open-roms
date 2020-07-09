@@ -62,7 +62,7 @@ cmd_sys_setup_call:
 	// Call the routine.
 	jsr USRPOK
 	
-	jmp execute_statements
+	jmp end_of_statement
 
 
 	//

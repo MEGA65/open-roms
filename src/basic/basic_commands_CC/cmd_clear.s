@@ -7,4 +7,7 @@ cmd_clear:
 
 	jsr clear_screen
 
-	jmp execute_statements
+	// Execute next statement
+
+	jmp end_of_statement
+

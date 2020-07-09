@@ -46,6 +46,6 @@ cmd_merge_no_error:
 
 	jsr update_LINKPRG_VARTAB_do_clr
 
-	// XXX when number parsing is done, change to continue execution
+	// Execute next statement
 
-	jmp shell_main_loop
+	jmp end_of_statement

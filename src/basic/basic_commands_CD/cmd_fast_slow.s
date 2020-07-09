@@ -20,8 +20,8 @@ cmd_fast:
 
 	lda #$41
 	sta CPU_D6510
+	jmp end_of_statement
 
-	jmp execute_statements
 
 #elif CONFIG_MB_ULTIMATE_64
 
@@ -30,12 +30,12 @@ cmd_fast:
 cmd_slow:
 
 	sta SCPU_SPEED_NORMAL
-	jmp execute_statements
+	jmp end_of_statement
 
 cmd_fast:
 
 	sta SCPU_SPEED_TURBO
-	jmp execute_statements
+	jmp end_of_statement
 
 #elif CONFIG_PLATFORM_COMMODORE_64
 
@@ -60,8 +60,7 @@ cmd_fast:
 	lda #$01
 !:
 	sta VIC_CLKRATE
-
-	jmp execute_statements
+	jmp end_of_statement
 
 #else
 

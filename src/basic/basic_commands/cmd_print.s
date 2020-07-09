@@ -89,4 +89,6 @@ cmd_print_new_line_done:
 
 cmd_print_done:
 
-	jmp execute_statements
+	// Execute next statement
+
+	jmp end_of_statement

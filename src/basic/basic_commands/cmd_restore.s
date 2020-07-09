@@ -9,4 +9,4 @@ cmd_restore:
 
 	// RESTORE command does not stop execution (confirmed on a C64)
 
-	jmp execute_statements
+	jmp end_of_statement

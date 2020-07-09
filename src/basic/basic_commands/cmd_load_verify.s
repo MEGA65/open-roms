@@ -52,7 +52,7 @@ cmd_load_no_error:
 	// For VERIFY - this is it
 
 	lda VERCKB
-	bne_16 execute_statements
+	bne_16 end_of_statement
 
 	// C64 BASIC apparently does not clear variables after a LOAD in the
 	// middle of a program. For safety, we do.

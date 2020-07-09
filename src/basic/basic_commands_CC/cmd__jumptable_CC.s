@@ -9,14 +9,17 @@
 
 .const command_CC_list = List().add(
 
+	cmd_old,
+
 	cmd_merge,
 
 	cmd_bload,
 	cmd_bsave,
 	cmd_bverify,
 
-	cmd_old,
-	cmd_cold
+	cmd_cold,
+	cmd_clear,
+	cmd_dispose
 )
 
 

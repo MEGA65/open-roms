@@ -122,7 +122,8 @@ varstr_garbage_collect_check_bptr:
 
 	// Move string memory up by INDEX
 
-	// XXX
+	// XXX: set memmove__src (last byte of source), memmove__dst (last byte of destination), memmove__size (bytes to copy)
+	jsr shift_mem_up
 
 	// Update TXTPTR
 

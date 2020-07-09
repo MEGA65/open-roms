@@ -178,12 +178,14 @@ const StringEntryList GLOBAL_Keywords_V2 = { ListType::KEYWORDS, "keywords_V2",
 const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
 {
     // STD    M65    U64    X16
-    { true,  true,  true,  true,  "KCC_01",   "MERGE",        }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-    { true,  true,  true,  true,  "KCC_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
-    { true,  true,  true,  true,  "KCC_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
-    { true,  true,  true,  true,  "KCC_04",   "BVERIFY",      },
-    { true,  true,  true,  true,  "KCC_05",   "OLD",          }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { true,  true,  true,  true,  "KCC_01",   "OLD",          }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { true,  true,  true,  true,  "KCC_02",   "MERGE",        }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { true,  true,  true,  true,  "KCC_03",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
+    { true,  true,  true,  true,  "KCC_04",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
+    { true,  true,  true,  true,  "KCC_05",   "BVERIFY",      },
     { true,  true,  true,  true,  "KCC_06",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { true,  true,  true,  true,  "KCC_07",   "CLEAR",        }, // Not present in CBM BASIC dialects, OpenROMs specific
+    { true,  true,  true,  true,  "KCC_08",   "DISPOSE",      }, // Not present in CBM BASIC dialects, OpenROMs specific
 
     // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };

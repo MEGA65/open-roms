@@ -35,6 +35,8 @@
 .label vector_reset        = KERNAL().vector_reset
 .label hw_entry_reset      = KERNAL().hw_entry_reset
 
+.label clear_screen        = KERNAL().clear_screen
+
 #if CONFIG_DBG_PRINTF
 .label printf              = KERNAL().printf
 #endif

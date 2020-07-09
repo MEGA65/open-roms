@@ -57,6 +57,14 @@ Tries to switch the machine back to 1 MHz operation mode.
 
 Tries to restore program destroyed by `NEW` or a reset.
 
+### `CLEAR`
+
+Clears the screen content.
+
+### `DISPOSE`
+
+Runs the garbage collector - disposes outdated strings.
+
 ### `MERGE "file_name" [, device_number]`
 
 Appends the BASIC program from a storage medium to the one currently present in memory.

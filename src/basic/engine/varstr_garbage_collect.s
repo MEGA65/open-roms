@@ -38,14 +38,21 @@ varstr_garbage_collect:
 
 varstr_garbage_collect_loop:
 
-	// Check if this was the last string
-	// XXX instead check if FRETOP+INDEX == TXTPTR
+	// Check if this was the last string (if FRETOP+INDEX == TXTPTR), use OLDTXT as temporary storage
+
+	clc
+	lda INDEX+0
+	adc FRETOP+0
+	sta OLDTXT+0
+	lda INDEX+1
+	adc FRETOP+1
+	sta OLDTXT+1
 
 	lda TXTPTR+0
-	cmp FRETOP+0
+	cmp OLDTXT+0
 	bne varstr_garbage_collect_check_bptr
 	lda TXTPTR+1
-	cmp FRETOP+1
+	cmp OLDTXT+1
 	bne varstr_garbage_collect_check_bptr
 
 	// End of strings - nothing more to do
@@ -119,7 +126,18 @@ varstr_garbage_collect_check_bptr:
 
 	// Update TXTPTR
 
-	// XXX
+	ldy #$00
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT
+	jsr peek_under_roms
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
+	jsr varstr_TXTPTR_down_A
 
 	// Next iteration
 

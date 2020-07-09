@@ -3,10 +3,6 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-cmd_restore:
+// PLACEHOLDER for completeness - jumptable contains direct address
 
-	jsr do_restore
-
-	// RESTORE command does not stop execution (confirmed on a C64)
-
-	jmp end_of_statement
+// RESTORE command does not stop execution (confirmed on a C64)

@@ -3,6 +3,14 @@
 // #LAYOUT# *   *       #IGNORE
 
 
+end_of_program:
+
+	// Entry point for commands not wishing to continue
+	pha
+	pha
+
+	// FALLTROUGH
+
 shell_main_loop:
 
 	// Tell user we are ready

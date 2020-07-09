@@ -42,10 +42,6 @@ cmd_merge_got_params:
 
 cmd_merge_no_error:
 
-	// Relink loaded program, clear variables
+	// Relink loaded program, clear variables, execute next statement
 
-	jsr update_LINKPRG_VARTAB_do_clr
-
-	// Execute next statement
-
-	jmp end_of_statement
+	jmp update_LINKPRG_VARTAB_do_clr

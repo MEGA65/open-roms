@@ -40,4 +40,4 @@ cmd_save_do: // entry point for BSAVE
 
 	// Execute next statement
 
-	jmp end_of_statement
+	rts

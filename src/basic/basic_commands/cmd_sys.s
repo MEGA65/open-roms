@@ -60,10 +60,7 @@ cmd_sys_setup_call:
 	plp
 
 	// Call the routine.
-	jsr USRPOK
-	
-	jmp end_of_statement
-
+	jmp USRPOK
 
 	//
 	// XXX Temporary ugly hack to support 'SYS PI*656'

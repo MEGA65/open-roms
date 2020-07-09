@@ -20,7 +20,7 @@ cmd_fast:
 
 	lda #$41
 	sta CPU_D6510
-	jmp end_of_statement
+	rts
 
 
 #elif CONFIG_MB_ULTIMATE_64
@@ -30,12 +30,12 @@ cmd_fast:
 cmd_slow:
 
 	sta SCPU_SPEED_NORMAL
-	jmp end_of_statement
+	rts
 
 cmd_fast:
 
 	sta SCPU_SPEED_TURBO
-	jmp end_of_statement
+	rts
 
 #elif CONFIG_PLATFORM_COMMODORE_64
 
@@ -60,13 +60,13 @@ cmd_fast:
 	lda #$01
 !:
 	sta VIC_CLKRATE
-	jmp end_of_statement
+	rts
 
 #else
 
 cmd_slow:
 
-	nop                                          // to prevent double label
+	nop                                          // just to prevent double label
 
 	// FALLTROUGH
 

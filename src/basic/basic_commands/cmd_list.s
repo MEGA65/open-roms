@@ -31,7 +31,7 @@ list_loop:
 	// LIST terminates any running program,
 	// because it has fiddled with the current line pointer.
 	// (Confirmed by testing on a C64)
-	jmp shell_main_loop
+	jmp end_of_program
 
 list_more_lines:
 

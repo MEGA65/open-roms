@@ -42,14 +42,24 @@ execute_statements:
 	cmp #$7F
 	bcc_16 execute_statements_var_assign         // not a token - try variable assign
 
-	cmp #$A6
+	// Move token code to .X
+
+	tax
+
+	// A token - first push the 'end_of_statement' address for RTS
+
+	lda #>(end_of_statement - 1)
+	pha
+	lda #<(end_of_statement - 1)
+	pha
+
+	cpx #$A6
 	bcs execute_statements_extended
 
 #if !HAS_OPCODES_65C02
 
 	// Get the jump table entry for it, push it on the stack, and then RTS to start it.
 
-	tax
 	lda command_jumptable_hi - $80, x
 	pha
 	lda command_jumptable_lo - $80, x
@@ -61,6 +71,7 @@ execute_statements:
 
 	// Use jumptable to go to the command routine
 
+	txa
 	asl
 	tax
 	jmp (command_jumptable, x)
@@ -72,14 +83,14 @@ execute_statements_extended:
 
 	// Support for extended BASIC commands
 
-	cmp #$CC
+	cpx #$CC
 	beq execute_statements_CC
-	cmp #$CD
+	cpx #$CD
 	beq execute_statements_CD
 
 	// 'GO' command has a strange token, it is placed after function tokens
 
-	cmp #$CB                                     
+	cpx #$CB                                     
 	beq_16 cmd_go
 
 	jmp do_SYNTAX_error

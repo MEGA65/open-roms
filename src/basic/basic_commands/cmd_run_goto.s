@@ -4,9 +4,15 @@
 
 
 cmd_run:
+
 	// RUN clears all variables
 	jsr do_clr
+
 cmd_goto:
+
+	// XXX optimize this: deduplicate last part (and init_oldtxt) with load/verify,
+	// if line number greater than current line - find line backwards
+
 	// Disable Kernal messages
 	lda #$00
 	jsr JSETMSG
@@ -24,4 +30,7 @@ cmd_goto:
 	jmp do_UNDEFD_STATEMENT_error
 !:
 	// Run it!
+	
+	pha
+	pha
 	jmp execute_line

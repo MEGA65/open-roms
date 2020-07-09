@@ -74,10 +74,9 @@ cmd_load_no_error:
 
 	ldx CURLIN+1
 	inx
-	beq cmd_load_end                   // branch if direct mode
 
+	beq_16 end_of_program              // branch if direct mode
+	
+	pha
+	pha
 	jmp execute_line
-
-cmd_load_end:
-
-	jmp shell_main_loop

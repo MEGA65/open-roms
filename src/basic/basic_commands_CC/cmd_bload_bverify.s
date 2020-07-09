@@ -39,4 +39,4 @@ cmd_bload:
 
 	// Execute next statement
 
-	jmp end_of_statement
+	rts

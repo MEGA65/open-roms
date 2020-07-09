@@ -91,4 +91,4 @@ cmd_print_done:
 
 	// Execute next statement
 
-	jmp end_of_statement
+	rts

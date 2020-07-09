@@ -5,9 +5,6 @@
 
 cmd_clear:
 
-	jsr clear_screen
+	// XXX in the future add separate implementation for graphics screen
 
-	// Execute next statement
-
-	jmp end_of_statement
-
+	jmp clear_screen

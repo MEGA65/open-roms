@@ -19,7 +19,7 @@
 
 	cmd_cold,
 	cmd_clear,
-	cmd_dispose
+	varstr_garbage_collect             // cmd_dispose
 )
 
 

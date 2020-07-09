@@ -3,10 +3,6 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-cmd_clr:
+// PLACEHOLDER for completeness - jumptable contains direct address
 
-	jsr do_clr
-
-	// CLR command does not stop execution (confirmed on a C64)
-
-	jmp end_of_statement
+// CLR command does not stop execution (confirmed on a C64)

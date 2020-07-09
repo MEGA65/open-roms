@@ -21,4 +21,4 @@ cmd_old:
 
 	// Quit
 
-	jmp shell_main_loop
+	jmp end_of_program

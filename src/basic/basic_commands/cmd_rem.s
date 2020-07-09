@@ -7,4 +7,6 @@
 
 cmd_rem:
 
+	pha
+	pha
 	jmp execute_statements_end_of_line

@@ -23,7 +23,7 @@
 	cmd_goto,
 	cmd_run,
 	cmd_if,
-	cmd_restore,
+	do_restore,                        // cmd_restore
 	cmd_gosub,
 	cmd_return,
 	cmd_rem,
@@ -42,7 +42,7 @@
 	cmd_print,
 	cmd_cont,
 	cmd_list,
-	cmd_clr,
+	do_clr,                            // cmd_clr
 	cmd_cmd,
 	cmd_sys,
 	cmd_open,

@@ -37,21 +37,21 @@ execute_statements:
 	ldx #$19
 	stx TEMPPT
 
-	// Check if token is valid for execution
-
-	cmp #$7F
-	bcc_16 execute_statements_var_assign         // not a token - try variable assign
-
 	// Move token code to .X
 
 	tax
 
-	// A token - first push the 'end_of_statement' address for RTS
+	// Push the 'end_of_statement' address for RTS
 
 	lda #>(end_of_statement - 1)
 	pha
 	lda #<(end_of_statement - 1)
 	pha
+
+	// Check if token is valid for execution
+
+	cpx #$7F
+	bcc_16 execute_statements_var_assign         // not a token - try variable assign
 
 	cpx #$A6
 	bcs execute_statements_extended
@@ -243,17 +243,18 @@ execute_line:
 
 execute_statements_var_assign:
 
-	// XXX here we should handle variable assignments, probably in a separate file
-
 	// Prevent wedges from being executed within a program
 
 #if CONFIG_TAPE_WEDGE
-	cmp #$40
+	cpx #$40
 	beq_16 do_DIRECT_MODE_ONLY_error
 #endif
 #if CONFIG_DOS_WEDGE
-	cmp #$5F
+	cpx #$5F
 	beq_16 do_DIRECT_MODE_ONLY_error
 #endif
 
-	jmp do_SYNTAX_error
+	// Try variable assignment - execute as LET command
+
+	jsr unconsume_character
+	jmp cmd_let

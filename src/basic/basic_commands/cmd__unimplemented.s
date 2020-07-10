@@ -23,8 +23,6 @@ cmd_dim:
 	nop
 cmd_read:
 	nop
-cmd_let:
-	nop
 cmd_if:
 	nop
 cmd_gosub:

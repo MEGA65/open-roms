@@ -116,13 +116,130 @@ varstr_garbage_collect_check_bptr:
 	beq varstr_garbage_collect_unused 
 	
 	// The back-pointer is not NULL - string is used
-	// Increase the string descriptor pointer by INDEX
 
-	// XXX implement this
+	// Setup 'memmove__size' - number of bytes to copy
 
-	// Move string memory up by INDEX
+	ldy #$00
 
-	// XXX: set memmove__src (last byte of source), memmove__dst (last byte of destination), memmove__size (bytes to copy)
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT
+	jsr peek_under_roms
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+
+	sta memmove__size+0
+	lda #$00
+	sta memmove__size+1
+
+	// The 'memmove__size' contains string length - add back-pointer size
+
+#if !HAS_OPCODES_65CE02
+	clc
+	lda memmove__size+0
+	adc #$02
+	sta memmove__size+0
+	bcc !+
+	inc memmove__size+1
+!:
+#else // HAS_OPCODES_65CE02
+	inw memmove__size
+	inw memmove__size
+#endif
+
+	// Setup 'memmove__src' - last byte of source
+
+	iny
+
+#if CONFIG_MEMORY_MODEL_60K
+	jsr peek_under_roms
+	sta memmove__src+0
+	iny
+	jsr peek_under_roms
+	sta memmove__src+1
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	// XXX consider optimized version without multiple JSRs
+	jsr peek_under_roms_via_OLDTXT
+	sta memmove__src+0
+	iny
+	jsr peek_under_roms_via_OLDTXT
+	sta memmove__src+1
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+	sta memmove__src+0
+	iny
+	lda (OLDTXT),y
+	sta memmove__src+1
+#endif
+
+	// The 'memmove__src' contains the first byte of source - add 'memmove__size' to it
+
+	clc
+	lda memmove__src+0
+	adc memmove__size+0
+	sta memmove__src+0
+	lda memmove__src+1
+	adc memmove__size+1
+	sta memmove__src+1
+
+	// Shift 'memmove__src' to point last byte of source
+
+#if !HAS_OPCODES_65CE02
+	sec
+	lda memmove__src+0
+	sbc #$01
+	sta memmove__src+0
+	bcs !+
+	dec memmove__src+1
+!:
+#else // HAS_OPCODES_65CE02
+	dew memmove__src
+#endif
+
+	// Setup 'memmove__dst' - last byte of destination
+
+	clc
+	lda memmove__src+0
+	adc INDEX+0
+	sta memmove__dst+0
+	lda memmove__src+1
+	adc INDEX+1
+	sta memmove__dst+1
+
+	// Increase the string descriptor pointer by INDEX, so that it will point to the new position
+
+	ldy #$01
+
+#if CONFIG_MEMORY_MODEL_60K
+	
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	// XXX consider optimized version without multiple JSRs
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	clc
+	lda (OLDTXT),y
+	adc INDEX+0
+	sta (OLDTXT),y
+	iny
+	lda (OLDTXT),y
+	adc INDEX+1
+	sta (OLDTXT),y
+
+#endif
+
+	// Move string memory up
+
 	jsr shift_mem_up
 
 	// Update TXTPTR

@@ -51,6 +51,23 @@ peek_under_roms_via_OLDTXT:
 	jmp peek_under_roms_finalize
 #endif
 
+peek_under_roms_via_VARPNT:
+
+	// Unmap BASIC lower ROM
+
+	lda #$26
+	sta CPU_R6510
+
+	// Retrieve value from under ROMs
+
+	lda (VARPNT), y
+
+#if HAS_OPCODES_65C02
+	bra peek_under_roms_finalize
+#else
+	jmp peek_under_roms_finalize
+#endif
+
 peek_under_roms_via_DSCPNT:
 
 	// Unmap BASIC lower ROM

@@ -259,11 +259,7 @@ varstr_garbage_collect_check_bptr:
 
 	// Next iteration
 
-#if HAS_OPCODES_65C02
-	bra varstr_garbage_collect_loop
-#else
 	jmp varstr_garbage_collect_loop
-#endif
 
 varstr_garbage_collect_unused:
 
@@ -299,11 +295,7 @@ varstr_garbage_collect_unused:
 
 	// Next iteration
 
-#if HAS_OPCODES_65C02
-	bra varstr_garbage_collect_loop
-#else
 	jmp varstr_garbage_collect_loop
-#endif
 
 
 

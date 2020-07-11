@@ -47,7 +47,7 @@
 	.label DATPTR    = $41 // $41-$42  pointer for READ/DATA copmmands
 	.label INPPTR    = $43 // $43-$44  -- NOT IMPLEMENTED --
 	.label VARNAM    = $45 // $45-$46  current variable name
-	.label VARPNT    = $47 // $47-$48  -- NOT IMPLEMENTED --
+	.label VARPNT    = $47 // $47-$48  current variable/descriptor pointer
 	.label FORPNT    = $49 // $49-$4A  -- NOT IMPLEMENTED --
 	.label OPPTR     = $4B // $4B-$4C  helper variable for expression computation, [!] our usage details are different
 	.label OPMASK    = $4D //          -- NOT IMPLEMENTED --

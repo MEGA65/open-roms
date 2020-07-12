@@ -20,6 +20,7 @@
 	.label VB1__do_new                  = $4000 + 2 * 6
 	.label VB1__do_clr                  = $4000 + 2 * 7
 	.label VB1__do_restore              = $4000 + 2 * 8
+	.label VB1__cmd_mem_cont            = $4000 + 2 * 9
 
 #else
 
@@ -34,5 +35,6 @@
 	.word do_new
 	.word do_clr
 	.word do_restore
+	.word cmd_mem_cont
 
 #endif

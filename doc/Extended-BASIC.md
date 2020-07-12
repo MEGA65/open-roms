@@ -39,31 +39,7 @@ Like above, but merges a BASIC program to the one already stored in memory.
 
 Launches a built-in tape head alignment tool. Destroys program in memory. Press `RUN/STOP` to terminate the tool.
 
-## Additional BASIC commands
-
-### `COLD`
-
-Resets the machine. In direct mode asks for confirmation first.
-
-### `FAST`
-
-Tries to switch the machine to turbo mode - details differ depending on the configured machine / motherboard.
-
-### `SLOW`
-
-Tries to switch the machine back to 1 MHz operation mode.
-
-### `OLD`
-
-Tries to restore program destroyed by `NEW` or a reset.
-
-### `CLEAR`
-
-Clears the screen content.
-
-### `DISPOSE`
-
-Runs the garbage collector - disposes outdated strings.
+## Additional BASIC commands - I/O
 
 ### `MERGE "file_name" [, device_number]`
 
@@ -80,6 +56,41 @@ Verify operation for the binary data starting from a given addres. NOTE: for now
 ### `BSAVE "file_name", device_number, start_address, end_address`
 
 Saves the binary data from the given memory area. NOTE: for now syntax differs from the BASIC V3.5+ - this will be changed once the necessary BASIC infrastructure is implemented.
+
+## Additional BASIC commands - misc
+
+### `COLD`
+
+Resets the machine. In direct mode asks for confirmation first.
+
+### `FAST`
+
+Tries to switch the machine to turbo mode - details differ depending on the configured machine / motherboard.
+
+### `SLOW`
+
+Tries to switch the machine back to 1 MHz operation mode.
+
+### `OLD`
+
+Tries to restore program destroyed by the `NEW` command or a reset.
+
+### `MEM`
+
+Displays BASIC memory usage information:
+* `TXT` - size of BASIC program text, always at least 2 bytes are used
+* `VAR` - bytes occupied by float and integer variables, string variable descriptors, and function descriptors
+* `ARR` - bytes occupied by arrays (note: for string arrays only descriptors are stored here)
+* `STR` - bytes occupied by strings, also the ones belonging to arrays
+* `SPC` - unused space
+
+### `CLEAR`
+
+Clears the screen content.
+
+### `DISPOSE`
+
+Runs the garbage collector - disposes outdated strings.
 
 # Planned BASIC features, when V2 compatibility is reached
 

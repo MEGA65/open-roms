@@ -19,7 +19,8 @@
 
 	cmd_cold,
 	cmd_clear,
-	varstr_garbage_collect             // cmd_dispose
+	varstr_garbage_collect,            // cmd_dispose
+	cmd_mem
 )
 
 

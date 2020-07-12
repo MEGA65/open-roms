@@ -1,4 +1,5 @@
 // #LAYOUT# STD *       #TAKE
+// #LAYOUT# M65 BASIC_1 #TAKE
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
@@ -43,7 +44,11 @@ do_kernal_error:                       // .A = KERNAL error code, also almost ma
 	beq do_BREAK_error                 // XXX is 0 really a proper error code?
 
 	dex
+#if (ROM_LAYOUT_M65 && SEGMENT_BASIC_1)
+	jmp do_basic_error
+#else
 	bpl do_basic_error                 // branch always
+#endif
 
 	// Error messages specific to OpenROMs BASIC dialect
 
@@ -138,6 +143,16 @@ do_FILE_OPEN_error:
 do_TO_MANY_FILES_error:
 	.byte $EA
 
+#if (ROM_LAYOUT_M65 && SEGMENT_BASIC_1)
+
+	jmp do_error_fetch
+
+#else
+
+	// FALLTROUGH
+
+do_error_fetch:
+
 	// Now get the error id and restore $E6 to its correct value
 	
 	lda $E6
@@ -161,6 +176,11 @@ do_TO_MANY_FILES_error:
 	// FALLTHROUGH
 
 do_basic_error:                        // error code in .X
+
+#if ROM_LAYOUT_M65
+	// Make sure we are back with normal memory map
+	jsr map_NORMAL
+#endif
 
 	// "?"
 	
@@ -197,3 +217,5 @@ do_basic_error:                        // error code in .X
 	txs
 
 	jmp shell_main_loop
+
+#endif // ROM layout

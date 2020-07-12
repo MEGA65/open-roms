@@ -186,6 +186,7 @@ const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
     { true,  true,  true,  true,  "KCC_06",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
     { true,  true,  true,  true,  "KCC_07",   "CLEAR",        }, // Not present in CBM BASIC dialects, OpenROMs specific
     { true,  true,  true,  true,  "KCC_08",   "DISPOSE",      }, // Not present in CBM BASIC dialects, OpenROMs specific
+    { true,  true,  true,  true,  "KCC_09",   "MEM",          }, // Not present in CBM BASIC dialects, OpenROMs specific
 
     // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };
@@ -310,14 +311,20 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
 const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
 {
     // STD    M65    U64    X16   --- misc strings as on CBM machines
-    { true,  true,  true,  true,  "STR_RET_QM",  "\r?"                 },
-    { true,  true,  true,  true,  "STR_BYTES",   " BASIC BYTES FREE"   }, // https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  true,  "STR_READY",   "\rREADY.\r"          }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  true,  "STR_ERROR",   " ERROR"              }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
-    { true,  true,  true,  true,  "STR_IN",      " IN "                },
-    { true,  true,  true,  true,  "STR_IF_SURE", "\rARE YOU SURE? "    }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
+    { true,  true,  true,  true,  "STR_RET_QM",   "\r?"                },
+    { true,  true,  true,  true,  "STR_BYTES",    " BASIC BYTES FREE"  }, // https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_READY",    "\rREADY.\r"         }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_ERROR",    " ERROR"             }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+    { true,  true,  true,  true,  "STR_IN",       " IN "               },
+    { true,  true,  true,  true,  "STR_IF_SURE",  "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
     // STD    M65    U64    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
-    { true,  true,  true,  true,  "STR_BRK_AT",  "\rBRK AT $"          },
+    { true,  true,  true,  true,  "STR_BRK_AT",   "\rBRK AT $"         },
+    { true,  true,  true,  true,  "STR_MEM_TEXT", "\rTXT: "            },
+    { true,  true,  true,  true,  "STR_MEM_VARS", "\rVAR: "            },
+    { true,  true,  true,  true,  "STR_MEM_ARRS", "\rARR: "            },
+    { true,  true,  true,  true,  "STR_MEM_STRS", "\rSTR: "            },
+    { true,  true,  true,  true,  "STR_MEM_FREE", "\r\rSPC: "          },
+
     // Note: depending on configuration, additional strings will be added here
 } };
 

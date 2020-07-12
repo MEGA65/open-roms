@@ -22,5 +22,6 @@
 #if CONFIG_SHOW_FEATURES
 .label print_features                  = BASIC_0.proxy_B1_print_features
 #endif
-.label do_STRING_TOO_LONG_error        = BASIC_0.do_STRING_TOO_LONG_error
+.label do_error_fetch                  = BASIC_0.do_error_fetch
+.label do_basic_error                  = BASIC_0.do_basic_error
 .label str_rev_question                = BASIC_0.str_rev_question

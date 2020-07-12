@@ -41,7 +41,9 @@ cmd_sys_hack_not_needed:
 	// XXX End of hack
 	//
 
-	jsr fetch_line_number
+	lda #IDX__EV2_0B // 'SYNTAX ERROR'
+	jsr fetch_uint16
+	bcs_16 do_SYNTAX_error
 
 cmd_sys_setup_call:
 	lda #$4C // JMP opcode

@@ -298,7 +298,7 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
     { false, false, false, false, "EV7_23", "NO GRAPHICS AREA"         }, // not used for now
     { false, false, false, false, "EV7_24", "BAD DISK"                 }, // not used for now
     { false, false, false, false, "EV7_25", "BEND NOT FOUND"           }, // not used for now
-    { false, false, false, false, "EV7_26", "LINE NUMBER TOO LARGE"    }, // not used for now
+    { true,  true,  true,  true,  "EV7_26", "LINE NUMBER TOO LARGE"    },
     { false, false, false, false, "EV7_27", "UNRESOLVED REFERENCE"     }, // not used for now
     { true,  true,  true,  true,  "EV7_28", "NOT IMPLEMENTED"          }, // this message actually differs from the CBM one
     { false, false, false, false, "EV7_29", "FILE READ"                }, // not used for now

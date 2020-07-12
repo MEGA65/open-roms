@@ -24,6 +24,7 @@ cmd_goto:
 	bcs !+
 
 	jsr fetch_line_number
+	bcs_16 do_SYNTAX_error
 	jsr find_line
 	bcc !+
 	// Line does not exist, so report error

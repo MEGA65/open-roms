@@ -1,4 +1,5 @@
 // #LAYOUT# STD *       #TAKE
+// #LAYOUT# M65 BASIC_1 #TAKE
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
@@ -7,6 +8,14 @@
 //
 
 prepare_direct_execution:
+
+#if (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+	jsr     map_BASIC_1
+	jsr_ind VB1__prepare_direct_execution
+	jmp     map_NORMAL
+
+#else
 
 	// Setup pointer to the statement
 	lda #<BUF
@@ -25,3 +34,5 @@ prepare_direct_execution:
 	sta CURLIN+1
 
 	rts
+
+#endif // ROM layout

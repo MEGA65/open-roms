@@ -103,4 +103,52 @@ peek_under_roms_via_FAC1_PLUS_1:
 #endif
 
 
+#if ROM_LAYOUT_M65
+
+
+fetch_character:
+
+	ldy #0
+
+	// Unmap BASIC lower ROM
+
+	lda #$26
+	sta CPU_R6510
+
+	// Retrieve value from under ROMs, advance text pointer
+
+	lda (TXTPTR), y
+	inw TXTPTR
+
+	// Restore memory mapping
+
+	bra peek_under_roms_finalize
+
+
+fetch_character_skip_spaces:
+
+	ldy #0
+
+	// Unmap BASIC lower ROM
+
+	lda #$26
+	sta CPU_R6510
+
+	// Retrieve value from under ROMs, advance text pointer
+!:
+	lda (TXTPTR), y
+	inw TXTPTR
+
+	// Skip space characters
+
+	cmp #$20
+	beq !-
+
+	// Restore memory mapping
+
+	bra peek_under_roms_finalize
+
+
+#endif
+
 #endif

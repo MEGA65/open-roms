@@ -84,7 +84,7 @@ wedge_dos_command:
 wedge_dos_change_drive:
 
 	// Reuse the line number parser for device number retrieval
-	jsr basic_parse_line_number
+	jsr fetch_line_number
 	lda LINNUM+1
 	beq !+
 	jmp do_ILLEGAL_QUANTITY_error

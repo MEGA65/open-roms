@@ -41,7 +41,7 @@ cmd_sys_hack_not_needed:
 	// XXX End of hack
 	//
 
-	jsr basic_parse_line_number
+	jsr fetch_line_number
 
 cmd_sys_setup_call:
 	lda #$4C // JMP opcode

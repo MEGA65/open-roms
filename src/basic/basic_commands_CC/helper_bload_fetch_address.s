@@ -12,7 +12,7 @@ helper_bload_fetch_address:
 	jsr injest_comma
 	bcs_16 do_SYNTAX_error
 
-	jsr basic_parse_line_number                  // XXX detect errors here
+	jsr fetch_line_number                        // XXX detect errors here
 
 	ldx LINNUM+0
 	ldy LINNUM+1

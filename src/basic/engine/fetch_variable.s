@@ -16,7 +16,7 @@ fetch_variable:
 	cmp #$20                           // ignore all the spaces
 	beq !-
 
-	jsr fetch_variable_is_AZ
+	jsr is_AZ
 	bcs_16 do_SYNTAX_error
 
 	sta VARNAM+0
@@ -24,7 +24,7 @@ fetch_variable:
 	// Fetch the (optional) second character
 
 	jsr fetch_character
-	jsr fetch_variable_is_09_AZ
+	jsr is_09_AZ
 	bcs fetch_variable_check_type
 
 	sta VARNAM+1
@@ -32,7 +32,7 @@ fetch_variable:
 	// Fetch the remaining variable characters - ignore them
 !:
 	jsr fetch_character
-	jsr fetch_variable_is_09_AZ
+	jsr is_09_AZ
 	bcc !-
 
 	// FALLTROUGH

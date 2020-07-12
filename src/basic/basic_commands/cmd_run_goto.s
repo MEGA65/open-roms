@@ -23,7 +23,7 @@ cmd_goto:
 	jsr end_of_statement_check
 	bcs !+
 
-	jsr basic_parse_line_number
+	jsr fetch_line_number
 	jsr find_line
 	bcc !+
 	// Line does not exist, so report error

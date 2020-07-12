@@ -17,7 +17,7 @@ fetch_coma_uint8:
 fetch_uint8:
 
 	jsr injest_spaces
-	jsr basic_parse_line_number                  // XXX detect errors here
+	jsr fetch_line_number                        // XXX detect errors here
 	lda LINNUM+1
 	bne_16 do_ILLEGAL_QUANTITY_error
 	lda LINNUM+0

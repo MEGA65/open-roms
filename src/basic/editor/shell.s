@@ -142,7 +142,7 @@ shell_process_line:
 	lda #>BUF
 	sta TXTPTR+1
 
-	jsr basic_parse_line_number
+	jsr fetch_line_number
 
 	// Get pointer to next char
 	lda TXTPTR+0

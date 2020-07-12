@@ -41,7 +41,7 @@ FRMEVL_loop:
 
 	// Check if end of statement, fetch the character
 
-	jsr end_of_statement_check
+	jsr is_end_of_statement
 	bcs_16 do_SYNTAX_error
 	jsr fetch_character
 
@@ -200,7 +200,7 @@ FRMEVL_fetch_string:
 
 FRMEVL_got_value:
 
-	jsr end_of_statement_check
+	jsr is_end_of_statement
 	bcs FRMEVL_compute_all             // compute the stack if expression ended
 
 	// FALLTROUGH

@@ -8,7 +8,7 @@ cmd_print:
 
 	// First check if we have anything to print
 
-	jsr end_of_statement_check
+	jsr is_end_of_statement
 	bcs cmd_print_new_line_done
 
 	jsr fetch_character
@@ -76,7 +76,7 @@ cmd_print_next_arg:
 
 	// Look for the next argument
 
-	jsr end_of_statement_check
+	jsr is_end_of_statement
 	bcs cmd_print_new_line_done
 
 	cmp #$2C                           // comma    XXX on C64 behavior is more complicated, fix it

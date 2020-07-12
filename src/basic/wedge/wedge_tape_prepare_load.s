@@ -13,9 +13,8 @@ wedge_tape_prepare_load:
 
 	// Make sure the syntax is correct
 
-	jsr injest_spaces
-	jsr fetch_character
-	
+	jsr fetch_character_skip_spaces
+
 	cmp #$00
 	beq wedge_tape_prepare_load_no_filename      // branch if no file name given
 	cmp #$22

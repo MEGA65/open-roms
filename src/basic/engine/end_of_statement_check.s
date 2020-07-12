@@ -9,6 +9,8 @@
 
 end_of_statement_check:
 
+	// XXX consider optimized version for 46K/56K memory models
+
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K

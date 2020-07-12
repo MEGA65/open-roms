@@ -16,7 +16,6 @@ fetch_coma_uint8:
 
 fetch_uint8:
 
-	jsr injest_spaces
 	lda #IDX__EV2_0E                             // 'ILLEGAL QUANTITY ERROR'
 	jsr fetch_uint16
 	bcs !+

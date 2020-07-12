@@ -18,9 +18,7 @@ fetch_uint16:
 
 	// Fetch the first character (skip spaces), check if 0-9
 
-	jsr fetch_character
-	cmp #$20
-	beq fetch_uint16
+	jsr fetch_character_skip_spaces
 
 	jsr convert_PETSCII_to_digit
 	bcs fetch_uint16_rts

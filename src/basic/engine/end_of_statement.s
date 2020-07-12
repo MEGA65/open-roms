@@ -9,10 +9,7 @@
 
 end_of_statement:
 
-	jsr fetch_character
-
-	cmp #$20                           // check for space
-	beq end_of_statement
+	jsr fetch_character_skip_spaces
 
 	cmp #$3A                           // check for colon
 	beq_16 execute_statements

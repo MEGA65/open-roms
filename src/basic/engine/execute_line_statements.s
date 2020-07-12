@@ -16,9 +16,7 @@ execute_statements:
 
 	// Skip over any white spaces and colons (':')
 !:
-	jsr fetch_character
-	cmp #$20                           // space, can be skipped
-	beq !-
+	jsr fetch_character_skip_spaces
 	cmp #$3A                           // colon, can be skipped
 	beq !-
 	

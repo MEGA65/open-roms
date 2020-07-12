@@ -11,11 +11,8 @@ fetch_variable:
 	sta VARNAM+1
 
 	// Fetch the first character
-!:
-	jsr fetch_character
-	cmp #$20                           // ignore all the spaces
-	beq !-
 
+	jsr fetch_character_skip_spaces
 	jsr is_AZ
 	bcs_16 do_SYNTAX_error
 

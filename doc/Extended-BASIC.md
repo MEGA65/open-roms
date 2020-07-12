@@ -112,7 +112,6 @@ Ideas for the future, most of them suitable for Mega65 or other power machines o
 * `LABEL`, `LGOTO` and `LGOSUB` - jump to label
 * some kind of subroutines with local variable namespace, possibly loaded from disc (like in Warsaw Basic 3.2)
 * for Mega65 mode, move variables to a separate memory area, consider extending variable name length
-* DOS Wedge should ask (`ARE YOU SURE?`) before removing a file or formating the disc
 * `←V` (verify from tape) - if Kernal is extended to offer this feature
 * modulo function or opeerator
 * `DPEEK`, `DPOKE`, `QPEEK`, `QPOKE` - 2/4 byte `PEEK` and `POKE` variants

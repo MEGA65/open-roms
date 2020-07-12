@@ -51,6 +51,52 @@ wedge_dos:
 
 wedge_dos_command:
 
+	// Check if command needs confirmation
+
+	ldy #$00
+	lda (TXTPTR), y
+
+	cmp #$52                                     // 'R' - because 'RD' is a directory removal command
+	bne !+
+
+	iny
+	lda (TXTPTR), y
+	cmp #$44                                     // 'D'
+	bne wedge_dos_command_confirmed
+	beq wedge_dos_command_ask
+!:
+	cmp #$4E                                     // 'N' - for the disk format
+	beq !+
+	cmp #$53                                     // 'S' - for the file scratch
+	bne wedge_dos_command_confirmed
+!:
+	// This is probably a dangerous command - check further the syntax,
+	// if 'N:', 'S:', 'Nx:' or 'Sx:' (where 'x' is a digit) - ask for confirmation first
+
+	iny
+	lda (TXTPTR), y
+	cmp #$3A                                     // ':' - colon
+	beq wedge_dos_command_ask
+
+	jsr is_09
+	bcs wedge_dos_command_confirmed
+
+	iny
+	lda (TXTPTR), y
+	cmp #$3A                                     // ':' - colon
+	bne wedge_dos_command_confirmed
+
+	// FALLTROUGH
+
+wedge_dos_command_ask:
+
+	jsr helper_ask_if_sure
+	bcs_16 wedge_dos_clean_exit
+	
+	// FALLTROUGH
+
+wedge_dos_command_confirmed:
+
 	// Provide command name
 
 	jsr wedge_dos_setnam
@@ -62,14 +108,13 @@ wedge_dos_command:
 	// Retrieve status, print it if not OK
 
 	jsr JCLALL
-	jsr wedge_dos_status_get
+	jsr wedge_dos_status_get_no_new_line
 
 	lda BUF+0
 	cmp #$30 // '0'
 	bne wedge_dos_status_print
 
-	lda BUF+1
-	cmp #$30 // '0'
+	eor BUF+1
 	bne wedge_dos_status_print
 
 	// Clean-up and exit
@@ -102,6 +147,10 @@ wedge_dos_status_get:
 	// New line - separate status from current display
 
 	jsr print_return
+
+	// FALLTROUGH
+
+wedge_dos_status_get_no_new_line:
 
 	// Here the flow is mostly the same as in the example from
 	// https://codebase64.org/doku.php?id=base:reading_the_error_channel_of_a_disk_drive
@@ -158,10 +207,19 @@ wedge_dos_status_get_done:
 wedge_dos_status:
 
 	jsr wedge_dos_status_get
+#if HAS_OPCODES_65C02
+	bra wedge_dos_status_print_no_new_line
+#else
+	jmp wedge_dos_status_print_no_new_line
+#endif
+
+wedge_dos_status_print:
+
+	jsr print_return
 
 	// FALLTROUGH
 
-wedge_dos_status_print:
+wedge_dos_status_print_no_new_line:
 
 	// Print buffered status
 
@@ -205,7 +263,7 @@ wedge_dos_directory:
 	bcs wedge_dos_basic_error
 
 	// Ignore start address (2 first bytes) - XXX check for errors
-	
+
 	jsr JCHRIN
 	bcs wedge_dos_basic_error
 	jsr JCHRIN

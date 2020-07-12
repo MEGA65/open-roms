@@ -169,12 +169,12 @@ shell_add_delete_line:
 	jsr update_VARTAB_do_clr
 
 	// Check if line already present
-	jsr find_line
+	jsr find_line_from_start
 	bcs !+
 
 	// Line already present - delete it
 	jsr delete_line
-	jsr find_line                                // refresh OLDTXT
+	jsr find_line_from_start                     // refresh OLDTXT
 !:
 	// Insert new line if non-zero length, i.e., that
 	// we are not just deleting the line.

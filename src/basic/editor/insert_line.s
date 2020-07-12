@@ -13,7 +13,7 @@
 
 insert_line:
 
-	// ASSUMES find_line has been called to set the insert point.
+	// ASSUMES find_line_from_start has been called to set the insert point.
 
 	// jsr printf
 	// .text "INSERTING LINE AT $"

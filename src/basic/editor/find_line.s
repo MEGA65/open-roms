@@ -3,23 +3,17 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-// Find the BASIC line with number LINNUM
-
-// XXX it should be possible to start from the current line (OLDTXT), or from the startup,
-//     depending on the current and target line number
+// Find the BASIC line with number in LINNUM
 
 
-find_line:
+find_line_from_start:
 
 	// Get pointer to start of BASIC text
-	lda TXTTAB+0
-	sta OLDTXT+0
-	lda TXTTAB+1
-	sta OLDTXT+1
+	jsr init_oldtxt
 
 	// FALLTROUGH
 
-find_line_loop:
+find_line_from_current:
 
 	// Check if line is not empty
 
@@ -100,9 +94,9 @@ find_line_next:
 	sta OLDTXT+0
 
 #if HAS_OPCODES_65C02
-	bra find_line_loop
+	bra find_line_from_current
 #else
-	jmp find_line_loop
+	jmp find_line_from_current
 #endif
 
 find_line_fail:

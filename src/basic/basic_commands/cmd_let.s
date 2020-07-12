@@ -59,7 +59,26 @@ cmd_let_assign_integer:
 	lda VALTYP
 	bmi_16 do_TYPE_MISMATCH_error
 
-	// XXX finish the implementation
+#if CONFIG_MEMORY_MODEL_60K
+	
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	// XXX consider optimized version without multiple JSRs
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#endif
 
 	jmp do_NOT_IMPLEMENTED_error
 
@@ -68,7 +87,26 @@ cmd_let_assign_float:
 	lda VALTYP
 	bmi_16 do_TYPE_MISMATCH_error
 
-	// XXX finish the implementation
+#if CONFIG_MEMORY_MODEL_60K
+	
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	// XXX consider optimized version without multiple JSRs
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#endif
 
 	jmp do_NOT_IMPLEMENTED_error
 
@@ -79,6 +117,25 @@ cmd_let_assign_string:
 	lda VALTYP
 	bpl_16 do_TYPE_MISMATCH_error
 
-	// XXX finish the implementation
+#if CONFIG_MEMORY_MODEL_60K
+	
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	// XXX consider optimized version without multiple JSRs
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#endif
 
 	jmp do_NOT_IMPLEMENTED_error

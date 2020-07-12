@@ -213,22 +213,39 @@ varstr_garbage_collect_check_bptr:
 	ldy #$01
 
 #if CONFIG_MEMORY_MODEL_60K
-	
-	// XXX
-	// XXX: implement this
-	// XXX
+
+	ldx #<OLDTXT
+	jsr peek_under_roms
+	clc
+	adc INDEX+0
+	php
+	jsr poke_under_roms
+
+	iny
+	jsr peek_under_roms
+	plp
+	adc INDEX+1
+	jsr poke_under_roms
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	// XXX consider optimized version without multiple JSRs
 
-	// XXX
-	// XXX: implement this
-	// XXX
+	jsr peek_under_roms_via_OLDTXT
+	clc
+	adc INDEX+0
+	sta (OLDTXT),y
+	iny
+
+	php
+	jsr peek_under_roms_via_OLDTXT
+	plp
+	adc INDEX+1
+	sta (OLDTXT),y
 
 #else // CONFIG_MEMORY_MODEL_38K
 
-	clc
 	lda (OLDTXT),y
+	clc
 	adc INDEX+0
 	sta (OLDTXT),y
 	iny

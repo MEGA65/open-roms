@@ -1,4 +1,5 @@
 // #LAYOUT# STD *       #TAKE
+// #LAYOUT# M65 BASIC_1 #TAKE
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
@@ -9,6 +10,14 @@
 // .X has to contain size of the buffer
 
 wedge_dos:
+
+#if (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+	jsr     map_BASIC_1
+	jsr_ind VB1__wedge_dos
+	jmp     map_NORMAL
+
+#else
 
 	// Prepare buffer - finish it with '0'
 
@@ -353,5 +362,7 @@ wedge_dos_setnam:
 
 	jmp JSETNAM
 
+
+#endif // ROM layout
 
 #endif // CONFIG_DOS_WEDGE

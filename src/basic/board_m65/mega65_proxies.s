@@ -36,6 +36,22 @@ proxy_B1_JCLALL:
 	jsr JCLALL
 	jmp map_BASIC_1
 
+#if CONFIG_DOS_WEDGE
+
+proxy_B1_JCLOSE:
+
+	jsr map_NORMAL
+	jsr JCLOSE
+	jmp map_BASIC_1
+
+
+proxy_B1_JOPEN:
+
+	jsr map_NORMAL
+	jsr JOPEN
+	jmp map_BASIC_1
+
+#endif
 
 proxy_B1_JCHROUT:
 
@@ -72,5 +88,32 @@ proxy_B1_print_features:
 	jsr map_NORMAL
 	jsr print_features
 	jmp map_BASIC_1
+
+#endif
+
+#if CONFIG_DOS_WEDGE
+
+proxy_B1_fetch_character:
+
+	jsr map_NORMAL
+	jsr fetch_character
+	jmp map_BASIC_1
+
+proxy_B1_fetch_character_skip_spaces:
+
+	jsr map_NORMAL
+	jsr fetch_character_skip_spaces
+	jmp map_BASIC_1
+
+proxy_B1_fetch_uint8:
+
+	jsr map_NORMAL
+	jsr fetch_uint8
+	jmp map_BASIC_1
+
+proxy_B1_shell_main_loop:
+
+	jsr map_NORMAL
+	jmp shell_main_loop
 
 #endif

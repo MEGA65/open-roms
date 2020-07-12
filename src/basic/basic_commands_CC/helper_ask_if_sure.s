@@ -1,4 +1,5 @@
 // #LAYOUT# STD *       #TAKE
+// #LAYOUT# M65 BASIC_1 #TAKE
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
@@ -9,6 +10,14 @@
 
 
 helper_ask_if_sure:
+
+#if (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
+
+	jsr     map_BASIC_1
+	jsr_ind VB1__helper_ask_if_sure
+	jmp     map_NORMAL
+
+#else
 
 	// First check, if we are in direct mode,; if not, do not ask
 
@@ -63,3 +72,6 @@ helper_ask_if_sure_ok:
 
 	clc
 	rts
+
+
+#endif // ROM layout

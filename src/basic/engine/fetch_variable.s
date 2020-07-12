@@ -48,7 +48,11 @@ fetch_variable_check_type:
 
 fetch_variable_type_float:
 
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 
 #if HAS_OPCODES_65C02
 	bra fetch_variable_find_addr

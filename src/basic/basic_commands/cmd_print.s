@@ -19,7 +19,11 @@ cmd_print:
 
 cmd_print_loop:
 
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 
 	// FALLTROUGH
 

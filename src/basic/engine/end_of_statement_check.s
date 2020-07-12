@@ -26,7 +26,11 @@ end_of_statement_check:
 
 	cmp #$20
 	bne !+
+#if !HAS_OPCODES_65CE02
 	jsr consume_character
+#else
+	inw TXTPTR
+#endif
 	jmp end_of_statement_check
 !:
 	cmp #$00

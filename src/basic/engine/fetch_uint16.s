@@ -88,7 +88,11 @@ fetch_uint16_loop:
 
 fetch_uint16_end:
 
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 	clc
 
 	// FALLTROUGH

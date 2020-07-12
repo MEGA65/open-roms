@@ -41,7 +41,11 @@ fetch_operator_success:
 
 fetch_operator_failed:
 
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 
 	sec
 	rts
@@ -57,7 +61,11 @@ fetch_operator_try_gteq:
 
 	// This is a '>'
 
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 	lda #$07
 	bne fetch_operator_success         // branch always
 !:
@@ -79,7 +87,11 @@ fetch_operator_try_lteq_neq:
 
 	// This is a '<'
 
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 	lda #$09
 	bne fetch_operator_success         // branch always
 !:

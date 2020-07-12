@@ -29,13 +29,13 @@ fetch_character:
 
 #endif
 
+#if !HAS_OPCODES_65CE02
+
 	// FALLTHROUGH
 	
 consume_character:
 
 	// Advance basic text pointer
-
-#if !HAS_OPCODES_65CE02
 
 	inc TXTPTR+0
 	bne !+
@@ -43,6 +43,8 @@ consume_character:
 !:
 
 #else // HAS_OPCODES_65CE02
+
+	// Advance basic text pointer
 
 	inw TXTPTR
 

@@ -254,5 +254,9 @@ execute_statements_var_assign:
 
 	// Try variable assignment - execute as LET command
 
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 	jmp cmd_let

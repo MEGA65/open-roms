@@ -178,7 +178,11 @@ FRMEVL_fetch_string:
 !:
 	// No closing quote, but end of the data
 
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 
 	// FALLTROUGH
 

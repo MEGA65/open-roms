@@ -14,7 +14,11 @@ injest_assign:
 	beq injest_assign_found
 	
 	// Not found
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 
 	sec
 	rts

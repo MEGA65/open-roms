@@ -9,14 +9,17 @@
 
 injest_comma:
 
-	jsr fetch_character
+	jsr fetch_character_skip_spaces
 	cmp #$2C                           // comma character
 	beq injest_comma_found
-	cmp #$20                           // space, can always be skipped
-	beq injest_comma
 	
 	// Not found
+
+#if !HAS_OPCODES_65CE02
 	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
 
 	sec
 	rts

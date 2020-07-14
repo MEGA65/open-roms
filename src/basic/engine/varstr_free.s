@@ -11,6 +11,9 @@
 
 // XXX test this routine
 
+// XXX handle strings located in program area
+// XXX change DSCPNT format to be compliant with all other descriptors
+
 varstr_free:
 
 	// First copy the string descriptor data to DSCPNT

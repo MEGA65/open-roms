@@ -133,7 +133,7 @@ fetch_variable_find_addr_loop:
 
 fetch_variable_adjust_VARPNT:
 
-	// Adjust VARPNT to point just after variable name and quit
+	// Adjust VARPNT to point just after variable name (XXX is it needed?) and quit
 
 #if !HAS_OPCODES_65CE02
 
@@ -170,15 +170,72 @@ fetch_variable_alocate:
 	
 	// First check if we have enough space for a new descriptor
 
+#if CONFIG_MEMORY_MODEL_60K
+	
 	// XXX
+	// XXX: implement this
+	// XXX
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	// XXX consider optimized version without multiple JSRs
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#endif
 
 	// If needed, move all the arrays up
 
+#if CONFIG_MEMORY_MODEL_60K
+	
 	// XXX
+	// XXX: implement this
+	// XXX
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	// XXX consider optimized version without multiple JSRs
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#endif
 
 	// Set pointer to new variable
 
+#if CONFIG_MEMORY_MODEL_60K
+	
 	// XXX
+	// XXX: implement this
+	// XXX
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	// XXX consider optimized version without multiple JSRs
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#endif
 
 	// Fill-in the new variable name, descriptor (it is enough to zero first 2 bytes of content)
 

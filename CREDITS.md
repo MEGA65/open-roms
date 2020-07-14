@@ -24,6 +24,11 @@
 * silverdr - for the floating point routines [description](https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics)
 * the [C64 Wiki](https://www.c64-wiki.com) contributors
 
+## other
+
+* Gábor Lénárt - for his work on [XEMU Mega65 emulator](https://github.com/lgblgblgb/xemu)
+* Mads Nielsen - for the [Kick Assembler](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
+
 <br />
 
 * ... and all the others we forgot

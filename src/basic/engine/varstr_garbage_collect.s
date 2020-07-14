@@ -4,6 +4,9 @@
 
 // XXX test this routine
 
+// XXX change DSCPNT format to be compliant with all other descriptors
+
+
 varstr_garbage_collect:
 
 	// The routine utilizes the 'shift_mem_up' - which leaves INDEX+0 and INDEX+1

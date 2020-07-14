@@ -147,7 +147,22 @@ scnkey_bucky_loop:
 
 	// Set KEYTAB vector
 
-	jsr via_keylog // XXX for some CPUs we have indirect jsr
+	lda KEYLOG+1
+	bne !+
+	jsr scnkey_set_keytab              // KEYLOG routine on zeropage? most likely vector not set
+#if HAS_OPCODES_65C02
+	bra scnkey_keytab_set_done
+#else
+	jmp scnkey_keytab_set_done
+#endif
+!:
+#if HAS_OPCODES_65CE02
+	jsr_ind KEYLOG
+#else
+	jsr scnkey_via_keylog
+#endif
+
+scnkey_keytab_set_done:
 
 #if CONFIG_JOY2_CURSOR
 
@@ -482,9 +497,5 @@ scnkey_early_repeat:
 	sta KOUNT
 
 	rts
-
-via_keylog:
-	jmp (KEYLOG)
-
 
 #endif // no CONFIG_LEGACY_SCNKEY

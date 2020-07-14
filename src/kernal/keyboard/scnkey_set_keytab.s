@@ -38,8 +38,8 @@ scnkey_set_keytab:
 	cmp #$FF
 	bne scnkey_valid_offset
 
-	// $FF means we shouldn't decode anything, mark this by setting high byte
-	// of KEYTAB to 0 (I don't think anyone would put keyboard decoding table
+	// $FF means we should not decode anything, mark this by setting high byte
+	// of KEYTAB to 0 (I do not think anyone would put keyboard decoding table
     // at zeropage)
 	lda #$00
 	beq !+ // branch always

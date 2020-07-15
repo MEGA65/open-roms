@@ -175,6 +175,7 @@ cmd_let_assign_string:
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<VARPNT
+	jsr poke_under_rom
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (VARPNT), y
 #endif
@@ -198,34 +199,40 @@ cmd_let_assign_string_not_empty:
 	rts
 
 cmd_let_assign_string_not_same:
-.break
-	// XXX something is wrong with checks below
 
 	// Strings are not the same - check if the new one is located within the text area, between TXTTAB and VARTAB
 
-	lda TXTTAB+1
+	lda VARTAB+1
 	cmp __FAC1+2
 	bcc cmd_let_assign_string_not_text_area
 	bne !+
-	lda TXTTAB+0
+	lda VARTAB+0
 	cmp __FAC1+1
-	bcc cmd_let_assign_string_not_text_area
+	bcc cmd_let_assign_string_not_text_area	
 !:
 	lda __FAC1+2
-	cmp VARTAB+1
+	cmp TXTTAB+1
 	bcc cmd_let_assign_string_not_text_area
 	bne !+
 	lda __FAC1+1
-	cmp VARTAB+0
-	bcc cmd_let_assign_string_not_text_area	
+	cmp TXTTAB+0
+	bcc cmd_let_assign_string_not_text_area
 !:
 	// String is located within text area - great, just copy the descriptor
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
-	// XXX: implement this
-	// XXX
+	// .X already contains #<VARPNT
+
+	ldy #$00
+	lda __FAC1+0
+	jsr poke_under_rom
+	iny
+	lda __FAC1+1
+	jsr poke_under_rom
+	iny
+	lda __FAC1+2
+	jsr poke_under_rom
 
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
@@ -245,7 +252,7 @@ cmd_let_assign_string_not_same:
 
 cmd_let_assign_string_not_text_area:
 
-	// Check if size of both equals and the old on is above FRETOP
+	// Check if size of both strings equals and the old on is above FRETOP
 
 	// XXX
 

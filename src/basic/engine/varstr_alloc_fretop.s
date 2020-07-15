@@ -6,15 +6,13 @@
 // Helper routines for 'varstr_alloc'
 //
 
-// XXX change DSCPNT to use standard descriptor format
+varstr_FRETOP_down_A:                  // .A - bytes to lower FRETOP, uses DSCPNT+0
 
-varstr_FRETOP_down_A:                  // .A - bytes to lower FRETOP, uses DSCPNT+2
-
-	sta DSCPNT+2 
+	sta DSCPNT+0 
 
 	sec
 	lda FRETOP+0
-	sbc DSCPNT+2 
+	sbc DSCPNT+0 
 	sta FRETOP+0
 	bcs !+
 	dec FRETOP+1

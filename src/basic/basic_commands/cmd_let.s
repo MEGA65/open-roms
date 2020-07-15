@@ -9,9 +9,19 @@ cmd_let:
 	// Fetch variable name, should be followed by assign operator
 
 	jsr fetch_variable
+
+#if HAS_OPCODES_65CE02
 	bcs_16 do_SYNTAX_error
 	jsr injest_assign
 	bcs_16 do_SYNTAX_error
+#else
+	bcs !+
+	jsr injest_assign
+	bcc !++
+!:
+	jmp do_SYNTAX_error
+!:
+#endif
 
 	// Determine variable type and push it to the stack
 
@@ -149,12 +159,67 @@ cmd_let_assign_string:
 
 	// First special case - check if the new string has size 0
 
-	lda DSCPNT+0
+	lda __FAC1+0
 	bne cmd_let_assign_string_not_empty
 
-	// XXX free old string data
+	// Yes, it is empty - check if the old one is, free it if necessary
 
-	// Set the new variable as size 0
+	lda DSCPNT+0
+	bne !+
+	jsr varstr_free_DSCPNT_set
+!:
+	// Set the new variable as empty string
+
+	ldy #$00
+	lda #$00
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<VARPNT
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	sta (VARPNT), y
+#endif
+
+	rts
+
+cmd_let_assign_string_not_empty:
+
+	// Check if the source and destination strings are the same
+
+	lda DSCPNT+1
+	cmp __FAC1+1
+	bne cmd_let_assign_string_not_same
+	iny
+	lda DSCPNT+2
+	cmp __FAC1+2
+	bne cmd_let_assign_string_not_same
+
+	// If we are here, than both source and destination strings are the same - nothing more to be done
+
+	rts
+
+cmd_let_assign_string_not_same:
+.break
+	// XXX something is wrong with checks below
+
+	// Strings are not the same - check if the new one is located within the text area, between TXTTAB and VARTAB
+
+	lda TXTTAB+1
+	cmp __FAC1+2
+	bcc cmd_let_assign_string_not_text_area
+	bne !+
+	lda TXTTAB+0
+	cmp __FAC1+1
+	bcc cmd_let_assign_string_not_text_area
+!:
+	lda __FAC1+2
+	cmp VARTAB+1
+	bcc cmd_let_assign_string_not_text_area
+	bne !+
+	lda __FAC1+1
+	cmp VARTAB+0
+	bcc cmd_let_assign_string_not_text_area	
+!:
+	// String is located within text area - great, just copy the descriptor
 
 #if CONFIG_MEMORY_MODEL_60K
 	
@@ -164,30 +229,21 @@ cmd_let_assign_string:
 
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
+	ldy #$00
+	lda __FAC1+0
+	sta (VARPNT), y
+	iny
+	lda __FAC1+1
+	sta (VARPNT), y
+	iny
+	lda __FAC1+2
+	sta (VARPNT), y
 
 #endif
 
 	rts
 
-cmd_let_assign_string_not_empty:
-
-	// Check if the source and destination strings are the same (VARPNT should now point just after variable name)
-
-	lda VARPNT+0
-	cmp __FAC1+1
-	bne !+
-	iny
-	lda VARPNT+1
-	cmp __FAC1+2
-	bne !+
-
-	// If we are here, than both source and destination strings are the same - nothing more to be done
-
-	rts
-!:
-	// Strings are not the same - check if the new one is located within a text area, between TXTTAB and VARTAB
-
-	// XXX
+cmd_let_assign_string_not_text_area:
 
 	// Check if size of both equals and the old on is above FRETOP
 

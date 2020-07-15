@@ -68,7 +68,7 @@ peek_under_roms_via_VARPNT:
 	jmp peek_under_roms_finalize
 #endif
 
-peek_under_roms_via_DSCPNT:
+peek_under_roms_via_DSCPNT_PLUS_1:
 
 	// Unmap BASIC lower ROM
 
@@ -77,7 +77,7 @@ peek_under_roms_via_DSCPNT:
 
 	// Retrieve value from under ROMs
 
-	lda (DSCPNT), y
+	lda (DSCPNT+1), y
 
 #if HAS_OPCODES_65C02
 	bra peek_under_roms_finalize

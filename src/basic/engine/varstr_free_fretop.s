@@ -8,11 +8,11 @@
 
 // XXX change DSCPNT to use standard descriptor format
 
-varstr_FRETOP_up:                    // DSCPNT+2 - bytes to increment FRETO, uses DSCPNT+2
+varstr_FRETOP_up:                    // DSCPNT+0 - bytes to increment FRETO
 
 	clc
 	lda FRETOP+0
-	adc DSCPNT+2
+	adc DSCPNT+0
 	sta FRETOP+0
 	bcc !+
 	inc FRETOP+1

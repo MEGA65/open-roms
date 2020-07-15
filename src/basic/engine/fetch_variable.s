@@ -2,6 +2,10 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
+//
+// Carry set = failure, not recognized variable name
+//
+
 
 fetch_variable:
 
@@ -14,8 +18,17 @@ fetch_variable:
 
 	jsr fetch_character_skip_spaces
 	jsr is_AZ
-	bcs_16 do_SYNTAX_error
+	bcc !+
 
+#if !HAS_OPCODES_65CE02
+	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
+
+	sec
+	rts
+!:
 	sta VARNAM+0
 
 	// Fetch the (optional) second character
@@ -96,7 +109,7 @@ fetch_variable_find_addr_loop:
 	cmp ARYTAB+1
 	bne !+
 	lda VARPNT+0
-	cmp VARPNT+0
+	cmp ARYTAB+0
 	beq fetch_variable_alocate
 !:
 	// Compare current variable name with searched one
@@ -151,6 +164,7 @@ fetch_variable_adjust_VARPNT:
 
 #endif
 
+	clc
 	rts
 
 fetch_variable_find_addr_next:
@@ -168,82 +182,87 @@ fetch_variable_find_addr_next:
 
 fetch_variable_alocate:
 	
-	// First check if we have enough space for a new descriptor
+	// First check if we have enough space for a new descriptor (if FRETOP - STREND >= 7)
 
-#if CONFIG_MEMORY_MODEL_60K
-	
-	// XXX
-	// XXX: implement this
-	// XXX
+	sec
+	lda FRETOP+0
+	sbc STREND+0
+	pha
+	lda FRETOP+1
+	sbc STREND+1
+	bne !+                             // branch if high byte of result > 0
 
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	// XXX consider optimized version without multiple JSRs
+	pla
+	cmp #$07
+	bcs fetch_variable_alocate_space_OK
 
-	// XXX
-	// XXX: implement this
-	// XXX
+	jmp do_OUT_OF_MEMORY_error
+!:
+	pla
 
-#else // CONFIG_MEMORY_MODEL_38K
+	// FALLTROUGH
 
-	// XXX
-	// XXX: implement this
-	// XXX
-
-#endif
+fetch_variable_alocate_space_OK:
 
 	// If needed, move all the arrays up
 
 #if CONFIG_MEMORY_MODEL_60K
 	
 	// XXX
-	// XXX: implement this
+	// XXX: implement this for arrays
 	// XXX
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	// XXX consider optimized version without multiple JSRs
 
 	// XXX
-	// XXX: implement this
+	// XXX: implement this for arrays
 	// XXX
 
 #else // CONFIG_MEMORY_MODEL_38K
 
 	// XXX
-	// XXX: implement this
+	// XXX: implement this for arrays
 	// XXX
 
 #endif
 
-	// Set pointer to new variable
+	// Adjust ARYTAB and STREND
 
-#if CONFIG_MEMORY_MODEL_60K
-	
-	// XXX
-	// XXX: implement this
-	// XXX
+	clc
+	lda STREND+0
+	adc #$07
+	sta STREND+0
+	bcc !+
+	inc STREND+1
+!:
 
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	// XXX consider optimized version without multiple JSRs
-
-	// XXX
-	// XXX: implement this
-	// XXX
-
-#else // CONFIG_MEMORY_MODEL_38K
-
-	// XXX
-	// XXX: implement this
-	// XXX
-
-#endif
+	clc
+	lda ARYTAB+0
+	adc #$07
+	sta ARYTAB+0
+	bcc !+
+	inc ARYTAB+1
+!:
+	// VARPNT already points to the start of the variable descriptor
 
 	// Fill-in the new variable name, descriptor (it is enough to zero first 2 bytes of content)
 
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
-	
-	// XXX
+
+	ldx #<VARNAM
+	lda VARNAM+0
+	jsr poke_under_roms
+	iny
+	lda VARNAM+1
+	jsr poke_under_roms
+	iny
+	lda #$00
+	jsr poke_under_roms
+	iny
+	jsr poke_under_roms
 
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	

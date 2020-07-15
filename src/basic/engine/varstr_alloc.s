@@ -19,7 +19,7 @@
 //
 
 // XXX test this routine
-// XXX make it compatible with under-ROM routines
+// XXX change DSCPNT to use standard descriptor format
 
 varstr_alloc:
 

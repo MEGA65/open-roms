@@ -68,9 +68,19 @@ FRMEVL_loop:
 	// $7F has to be a function
 
 	cmp #$80                           // check for a token
-	bcc FRMEVL_execute_function
+	bcs FRMEVL_execute_function
 
-	// There are 2 possibilities left - a floating point value or a variable
+	// Check for a variable
+
+#if !HAS_OPCODES_65CE02
+	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
+	jsr fetch_variable
+	bcc FRMEVL_got_value
+
+	// There is one possibility left - a floating point value
 
 
 	// XXX implement this part
@@ -279,7 +289,7 @@ FRMEVL_push_operator_address:
 	// as this is the place where unary operator support calls
 
 	tsx
-	cpx #$40                           // XXX is this a safe threshold?
+	cpx #$60                           // XXX is this a safe threshold?
 	bcc_16 do_FORMULA_TOO_COMPLEX_error
 
 	// Push the operator address to stack, in a form

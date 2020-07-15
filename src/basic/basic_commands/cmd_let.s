@@ -9,6 +9,7 @@ cmd_let:
 	// Fetch variable name, should be followed by assign operator
 
 	jsr fetch_variable
+	bcs_16 do_SYNTAX_error
 	jsr injest_assign
 	bcs_16 do_SYNTAX_error
 
@@ -148,15 +149,35 @@ cmd_let_assign_string:
 
 	// First special case - check if the new string has size 0
 
+	lda DSCPNT+0
+	bne cmd_let_assign_string_not_empty
+
+	// XXX free old string data
+
+	// Set the new variable as size 0
+
+#if CONFIG_MEMORY_MODEL_60K
+	
 	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+
+
+#endif
+
+	rts
+
+cmd_let_assign_string_not_empty:
 
 	// Check if the source and destination strings are the same (VARPNT should now point just after variable name)
 
-	lda VARPNT+1
+	lda VARPNT+0
 	cmp __FAC1+1
 	bne !+
 	iny
-	lda VARPNT+2
+	lda VARPNT+1
 	cmp __FAC1+2
 	bne !+
 

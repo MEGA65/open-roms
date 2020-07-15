@@ -4,8 +4,7 @@
 
 // XXX test this routine
 
-// XXX change DSCPNT format to be compliant with all other descriptors
-
+// XXX change DSCPNT to use standard descriptor format
 
 varstr_garbage_collect:
 

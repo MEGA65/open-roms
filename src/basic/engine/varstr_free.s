@@ -6,27 +6,32 @@
 // Releases back memory used by string
 //
 // Input:
+// - DSCPNT+0           - string size
 // - DSCPNT+1, DSCPNT+2 - pointer to string
 //
 
 // XXX test this routine
-// XXX check if this entry point is needed
 
 
 varstr_free:
 
-	// XXX consider moving size check (DSCPNT+0) here
+	// Check the string size - do not do anything if 0
 
-	// XXX
-	// XXX check if string is located above FRETOP, handle case if it is not
-	// XXX
+	lda DSCPNT+0
+	bne !+
+	rts
+!:
+	// Check if string is above FRETOP (in string area)
 
-	// Quick check - is the string the lowest one?
+	jsr varstr_cmp_fretop
+	bcs !+
 
-	cmp FRETOP+0
-	bne varstr_free_inside
-	lda DSCPNT+2
-	cmp FRETOP+1
+	// No, it does not belong to string area - quit
+
+	rts
+!:
+	// Check if this is the lowest string
+
 	bne varstr_free_inside
 
 	// This is the lowest string - so just increase FRETOP, this way

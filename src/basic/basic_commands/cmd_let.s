@@ -171,12 +171,10 @@ cmd_let_assign_string:
 	lda __FAC1+0
 	bne cmd_let_assign_string_not_empty
 
-	// Yes, it is empty - check if the old one is, free it if necessary
+	// Yes, it is empty - free the old one
 
-	lda DSCPNT+0
-	bne !+
 	jsr varstr_free
-!:
+
 	// Set the new variable as empty string
 
 	ldy #$00
@@ -276,9 +274,7 @@ cmd_let_assign_string_not_text_area:
 	// No special case optimization is possible
 	// Free the memory belonging to the old string
 
-	// XXX
-	// jsr varstr_free
-
+	jsr varstr_free
 
 	// And allocate memory for the new string
 

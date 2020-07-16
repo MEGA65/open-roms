@@ -17,7 +17,6 @@ varstr_cmp_fretop:
 	beq !+
 	rts
 !:
-	lda DSCPNT+2
-	cmp FRETOP+1
+	lda DSCPNT+1
+	cmp FRETOP+0
 	rts
-

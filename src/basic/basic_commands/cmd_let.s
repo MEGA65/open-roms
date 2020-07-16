@@ -11,16 +11,20 @@ cmd_let:
 	jsr fetch_variable
 
 #if HAS_OPCODES_65CE02
+
 	bcs_16 do_SYNTAX_error
 	jsr injest_assign
 	bcs_16 do_SYNTAX_error
+
 #else
+
 	bcs !+
 	jsr injest_assign
 	bcc !++
 !:
 	jmp do_SYNTAX_error
 !:
+
 #endif
 
 	// Determine variable type and push it to the stack
@@ -132,16 +136,21 @@ cmd_let_assign_string:
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
-	// XXX: implement this
-	// XXX
+	ldx #<VARPNT
+
+	ldy #$00
+	jsr peek_under_roms
+	sta DSCPNT+0
+	iny
+	jsr peek_under_roms
+	sta DSCPNT+1
+	iny
+	jsr peek_under_roms
+	sta DSCPNT+2
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	// XXX consider optimized version without multiple JSRs
 
-	// XXX
-	// XXX: implement this
-	// XXX
+	jsr helper_let_strdesccpy
 
 #else // CONFIG_MEMORY_MODEL_38K
 
@@ -269,10 +278,14 @@ cmd_let_assign_string_not_text_area:
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
+
 	ldx #<VARPNT
 	jsr poke_under_roms
+
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	
 	sta (VARPNT), y
+
 #endif
 
 	lda __FAC1+0
@@ -284,9 +297,26 @@ cmd_let_assign_string_not_text_area:
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
-	// XXX: implement this
-	// XXX
+	ldx #<VARPNT
+
+	ldy #$02
+	jsr peek_under_roms
+	sta DSCPNT+2
+	dey
+	jsr peek_under_roms
+	sta DSCPNT+1
+	dey
+
+	// .Y is now 0 - copy the content
+!:
+
+	ldx #<__FAC1+1
+	jsr peek_under_roms
+	ldx #<DSCPNT+1
+	jsr poke_under_roms
+	iny
+	cpy __FAC1+0
+	bne !-
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	

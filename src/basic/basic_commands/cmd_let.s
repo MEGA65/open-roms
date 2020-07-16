@@ -273,8 +273,16 @@ cmd_let_assign_string_not_text_area:
 
 	// XXX
 
-	// No special case optimization is possible - alocate new memory area
+	// No special case optimization is possible
+	// Free the memory belonging to the old string
 
+	// XXX
+	// jsr varstr_free_DSCPNT_set
+
+
+	// And allocate memory for the new string
+
+	lda __FAC1+0
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
@@ -287,9 +295,6 @@ cmd_let_assign_string_not_text_area:
 	sta (VARPNT), y
 
 #endif
-
-	lda __FAC1+0
-	sta (VARPNT), y
 
 	jsr varstr_alloc
 
@@ -343,9 +348,5 @@ cmd_let_assign_string_not_text_area:
 	bne !-
 
 #endif
-
-	// Free the memory of the old string
-
-	// XXX
 
 	rts

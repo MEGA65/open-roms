@@ -12,7 +12,7 @@
 // XXX test this routine
 // XXX check if this entry point is needed
 
-varstr_free:
+varstr_free: // XXX is it needed? if not, we do not need peek_under_roms_via_DSCPNT_PLUS_1
 
 	// First copy the string descriptor data to DSCPNT
 	// XXX write optimized version for CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
@@ -58,7 +58,7 @@ varstr_free:
 
 varstr_free_DSCPNT_set:
 
-	// consider moving size check (DSCPNT+0) here
+	// XXX consider moving size check (DSCPNT+0) here
 
 	// XXX
 	// XXX check if string is located above FRETOP, handle case if it is not

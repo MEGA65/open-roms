@@ -78,8 +78,49 @@ FRMEVL_loop:
 	dew TXTPTR
 #endif
 	jsr fetch_variable
-	bcc FRMEVL_got_value
+	bcs !+
 
+	// Found the variable - copy descriptor to FAC1
+
+#if CONFIG_MEMORY_MODEL_60K
+	
+	ldx #<VARPNT
+
+	ldy #$00
+	jsr peek_under_roms
+	sta __FAC1+0
+	iny
+	jsr peek_under_roms
+	sta __FAC1+1
+	iny
+	jsr peek_under_roms
+	sta __FAC1+2
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	
+	jsr helper_frmevl_strdesccpy
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	ldy #$00
+	lda (VARPNT),y
+	sta __FAC1+0
+	iny
+	lda (VARPNT),y
+	sta __FAC1+1
+	iny
+	lda (VARPNT),y
+	sta __FAC1+2
+
+#endif
+
+#if HAS_OPCODES_65C02
+	bra FRMEVL_got_value
+#else
+	jmp FRMEVL_got_value
+#endif
+
+!:
 	// There is one possibility left - a floating point value
 
 

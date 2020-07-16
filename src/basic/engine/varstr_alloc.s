@@ -15,7 +15,9 @@
 // - https://sites.google.com/site/h2obsession/CBM/basic/variable-format
 //
 // Input:
-// - DSCPNT+1, DSCPNT+2 - pointer to string descriptor, first pointed byte should contain desired length
+// - VARPNT - pointer to string descriptor, first pointed byte should contain desired length
+// Output:
+// - fills-in pointer in the string descriptor
 //
 
 // XXX test this routine
@@ -39,7 +41,7 @@ varstr_alloc_retry:
 	lda FRETOP+1
 	sta INDEX+1
 
-	// Lower FRETOP to make space for string descriptor
+	// Lower FRETOP to make space for the back-pointer
 
 #if !HAS_OPCODES_65CE02
 
@@ -60,7 +62,7 @@ varstr_alloc_retry:
 	// Create the back-pointer to the string descriptor
 
 	ldy #$00
-	lda DSCPNT+1
+	lda VARPNT+0
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<FRETOP
@@ -70,7 +72,7 @@ varstr_alloc_retry:
 #endif
 
 	iny
-	lda DSCPNT+2
+	lda VARPNT+1
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr poke_under_roms
@@ -80,15 +82,15 @@ varstr_alloc_retry:
 
 	// Now lower FRETOP again to make space for the string content
 
-	dey                                          // $01 -> $00
+	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<DSCPNT+1
+	ldx #<VARPNT
 	jsr peek_under_roms
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_DSCPNT_PLUS_1
+	jsr peek_under_roms_via_VARPNT
 #else // CONFIG_MEMORY_MODEL_38K
-	lda (DSCPNT+1),y
+	lda (VARPNT),y
 #endif
 
 	jsr varstr_FRETOP_down_A
@@ -96,24 +98,21 @@ varstr_alloc_retry:
 
 	// Success - fill in the string descriptor
 
-	iny                                          // $00 -> $01
-	lda FRETOP+0
+	ldy #$01
 
 #if CONFIG_MEMORY_MODEL_60K
-	ldx #<FRETOP
+	ldx #<VARPNT
+	lda FRETOP+0
 	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	sta (FRETOP), y
-#endif
-
 	iny
 	lda FRETOP+1
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<DSCPNT+1
 	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	sta (DSCPNT+1), y
+	lda FRETOP+0
+	sta (VARPNT), y
+	iny
+	lda FRETOP+1
+	sta (VARPNT), y
 #endif
 
 	// The end

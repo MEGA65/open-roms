@@ -175,7 +175,7 @@ cmd_let_assign_string:
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<VARPNT
-	jsr poke_under_rom
+	jsr poke_under_roms
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	sta (VARPNT), y
 #endif
@@ -226,13 +226,13 @@ cmd_let_assign_string_not_same:
 
 	ldy #$00
 	lda __FAC1+0
-	jsr poke_under_rom
+	jsr poke_under_roms
 	iny
 	lda __FAC1+1
-	jsr poke_under_rom
+	jsr poke_under_roms
 	iny
 	lda __FAC1+2
-	jsr poke_under_rom
+	jsr poke_under_roms
 
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
@@ -260,17 +260,27 @@ cmd_let_assign_string_not_text_area:
 
 	// XXX
 
-	// Free the memory of the old string, it is not possible to reuse it
-
-	// XXX
-
 	// Check if the new string is a temporary one - if so, reuse already done alocation
 
 	// XXX
 
-	// No special case optimization is possible - alocate new memory area and copy the string
+	// No special case optimization is possible - alocate new memory area
 
-	// XXX
+	ldy #$00
+
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<VARPNT
+	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	sta (VARPNT), y
+#endif
+
+	lda __FAC1+0
+	sta (VARPNT), y
+
+	jsr varstr_alloc
+
+	// Copy the string
 
 #if CONFIG_MEMORY_MODEL_60K
 	
@@ -279,18 +289,33 @@ cmd_let_assign_string_not_text_area:
 	// XXX
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	// XXX consider optimized version without multiple JSRs
-
-	// XXX
-	// XXX: implement this
-	// XXX
+	
+	jsr helper_let_strvarcpy
 
 #else // CONFIG_MEMORY_MODEL_38K
 
-	// XXX
-	// XXX: implement this
-	// XXX
+	// Retrieve pointer to destination
+
+	ldy #$02
+	lda (VARPNT), y
+	sta DSCPNT+2
+	dey
+	lda (VARPNT), y
+	sta DSCPNT+1
+	dey
+
+	// .Y is now 0 - copy the content
+!:
+	lda (__FAC1+1),y
+	sta (DSCPNT+1),y
+	iny
+	cpy __FAC1+0
+	bne !-
 
 #endif
 
-	jmp do_NOT_IMPLEMENTED_error
+	// Free the memory of the old string
+
+	// XXX
+
+	rts

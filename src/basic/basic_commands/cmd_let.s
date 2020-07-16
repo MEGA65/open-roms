@@ -175,7 +175,7 @@ cmd_let_assign_string:
 
 	lda DSCPNT+0
 	bne !+
-	jsr varstr_free_DSCPNT_set
+	jsr varstr_free
 !:
 	// Set the new variable as empty string
 
@@ -277,7 +277,7 @@ cmd_let_assign_string_not_text_area:
 	// Free the memory belonging to the old string
 
 	// XXX
-	// jsr varstr_free_DSCPNT_set
+	// jsr varstr_free
 
 
 	// And allocate memory for the new string

@@ -6,57 +6,14 @@
 // Releases back memory used by string
 //
 // Input:
-// - DSCPNT+1, DSCPNT+2 - pointer to string descriptor
+// - DSCPNT+1, DSCPNT+2 - pointer to string
 //
 
 // XXX test this routine
 // XXX check if this entry point is needed
 
-varstr_free: // XXX is it needed? if not, we do not need peek_under_roms_via_DSCPNT_PLUS_1
 
-	// First copy the string descriptor data to DSCPNT
-	// XXX write optimized version for CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-
-	ldy #$00
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<DSCPNT+1
-	jsr peek_under_roms
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_DSCPNT_PLUS_1
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (DSCPNT+1),y
-#endif
-
-	sta DSCPNT+0                                 // length of the string
-	iny
-
-#if CONFIG_MEMORY_MODEL_60K
-	jsr peek_under_roms
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_DSCPNT_PLUS_1
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (DSCPNT+1),y
-#endif
-
-	pha
-	iny
-
-#if CONFIG_MEMORY_MODEL_60K
-	jsr peek_under_roms
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_DSCPNT_PLUS_1
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (DSCPNT+1),y
-#endif
-
-	sta DSCPNT+2
-	pla
-	sta DSCPNT+1
-
-	// FALLTROUGH
-
-varstr_free_DSCPNT_set:
+varstr_free:
 
 	// XXX consider moving size check (DSCPNT+0) here
 

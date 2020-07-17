@@ -9,6 +9,8 @@ A project to create unencumbered open-source ROMs for use on selected retro comp
 * [license](./LICENSE) information and list of major contributors
 * [credits](./CREDITS.md) to people whose work was of great help to us
 
+![screenshot demonstrating some features](./doc/screenshot-demo.png)
+
 # Problem Statement and Motivation
 
 The copyrights of various old computer system ROMs are still alive, and together with trademarks, can present significant

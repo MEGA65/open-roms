@@ -87,7 +87,7 @@ varstr_garbage_collect_check_bptr:
 	dew TXTPTR
 #endif
 
-	// Check whether the back-pointer is NULL
+	// Copy the back-pointer to OLDTXT, check if it is NULL
 
 	ldy #$00
 
@@ -293,11 +293,7 @@ varstr_garbage_collect_unused:
 
 	ldy #$00
 	lda (TXTPTR), y
-
-	// Decrement string length by 1, it will be easier to perform calculations
-
 	tax
-	dex
 
 	// Increase INDEX (shift offset) by string length + back-pointer length
 

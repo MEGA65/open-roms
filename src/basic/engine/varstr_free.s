@@ -70,9 +70,8 @@ varstr_free_inside:
 	bcc !+
 	inc DSCPNT+2
 !:
-	// Put the size - this value will be used by the garbage collector // XXX maybe size-1 would be better?
+	// Put the size-1, garbage collector will make use of this value
 
-	inc DSCPNT+0
 	lda DSCPNT+0
 	ldy #$00
 

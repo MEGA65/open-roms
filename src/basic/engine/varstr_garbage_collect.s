@@ -39,7 +39,7 @@ varstr_garbage_collect:
 
 varstr_garbage_collect_loop:
 
-	// Check if this was the last string (if FRETOP+INDEX == TXTPTR), use OLDTXT as temporary storage
+	// Check if this was the last (lowest) string (if FRETOP+INDEX == TXTPTR), use OLDTXT as temporary storage
 
 	clc
 	lda INDEX+0
@@ -304,7 +304,7 @@ varstr_garbage_collect_unused:
 
 	// Decrease TXTPTR by unused string length-1
 
-	tax
+	txa
 	jsr varstr_TXTPTR_down_A
 
 	// Next iteration

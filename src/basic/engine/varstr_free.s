@@ -59,18 +59,9 @@ varstr_free_inside:
 	// This is not the lowest string; mark it as free
 	// First preserve the string size, it will make it easier for the garbage collector
 
-	lda DSCPNT+0
-	tay
-	dey
+	// Increase DSCPNT+1/+2 to point to the back-pointer minus 1
 
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<FRETOP
-	jsr poke_under_roms
-#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	sta (FRETOP), y
-#endif
-
-	// Now increase DSCPNT+1/+2 to point to the back-pointer
+	dec DSCPNT+0
 
 	clc
 	lda DSCPNT+1
@@ -79,9 +70,10 @@ varstr_free_inside:
 	bcc !+
 	inc DSCPNT+2
 !:
-	// Fill the back-pointer with 0
+	// Put the size - this value will be used by the garbage collector // XXX maybe size-1 would be better?
 
-	lda #$00
+	inc DSCPNT+0
+	lda DSCPNT+0
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
@@ -91,7 +83,18 @@ varstr_free_inside:
 	sta (DSCPNT+1), y
 #endif
 
-	iny                                          // $00 -> $01
+	// Now fill-in the back-pointer with 0's
+
+	tya
+	iny
+
+#if CONFIG_MEMORY_MODEL_60K
+	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	sta (DSCPNT+1), y
+#endif
+
+	iny
 
 #if CONFIG_MEMORY_MODEL_60K
 	jmp poke_under_roms

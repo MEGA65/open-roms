@@ -39,24 +39,24 @@ varstr_garbage_collect:
 
 varstr_garbage_collect_loop:
 
-	// Check if this was the last (lowest) string (if FRETOP+INDEX == TXTPTR), use OLDTXT as temporary storage
+	// Check if this was the last (lowest) string (if FRETOP == TXTPTR)
+
+	lda FRETOP+1
+	cmp TXTPTR+1
+	bne varstr_garbage_collect_check_bptr	
+	lda FRETOP+0
+	cmp TXTPTR+0
+	bne varstr_garbage_collect_check_bptr	
+
+	// End of strings - adapt FRETOP
 
 	clc
 	lda INDEX+0
 	adc FRETOP+0
-	sta OLDTXT+0
+	sta FRETOP+0
 	lda INDEX+1
 	adc FRETOP+1
-	sta OLDTXT+1
-
-	lda TXTPTR+0
-	cmp OLDTXT+0
-	bne varstr_garbage_collect_check_bptr
-	lda TXTPTR+1
-	cmp OLDTXT+1
-	bne varstr_garbage_collect_check_bptr
-
-	// End of strings - nothing more to do
+	sta FRETOP+1
 
 	// FALLTROUGH
 
@@ -114,7 +114,7 @@ varstr_garbage_collect_check_bptr:
 #endif
 
 	ora OLDTXT+0
-	beq varstr_garbage_collect_unused 
+	beq_16 varstr_garbage_collect_unused 
 	
 	// The back-pointer is not NULL - string is used
 
@@ -275,6 +275,23 @@ varstr_garbage_collect_check_bptr:
 
 	jsr varstr_TXTPTR_down_A
 
+	// Check if variable descriptor in __FAC1 matches the previously moved string;
+	// if so - adapt it too
+
+	lda __FAC1+2
+	cmp TXTPTR+1
+	bne !+
+	lda __FAC1+1
+	cmp TXTPTR+0
+	bne !+
+
+	clc
+	adc INDEX+0
+	sta __FAC1+1
+	lda __FAC1+2
+	adc INDEX+1
+	sta __FAC1+2
+!:
 	// Next iteration
 
 	jmp varstr_garbage_collect_loop

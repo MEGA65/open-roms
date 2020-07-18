@@ -86,7 +86,7 @@ fetch_variable_type_string:
 	lda VARNAM+1
 	ora #$80
 	sta VARNAM+1
-	
+
 	// FALLTROUGH
 
 fetch_variable_find_addr:
@@ -252,7 +252,7 @@ fetch_variable_alocate_space_OK:
 
 #if CONFIG_MEMORY_MODEL_60K
 
-	ldx #<VARNAM
+	ldx #<VARPNT
 	lda VARNAM+0
 	jsr poke_under_roms
 	iny

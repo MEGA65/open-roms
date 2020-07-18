@@ -52,21 +52,81 @@ oper_add_strings:
 
 	jmp FRMEVL_continue
 !:
-	// Allocate memory for concatenated string
+	// Allocate memory for the concatenated string
 
 	clc
 	adc __FAC2+0
 	bcs_16 do_STRING_TOO_LONG_error
 
-.break
-
 	jsr tmpstr_alloc
 
+	// Copy the temporary string pointer to INDEX
 
+	ldy #$01
+	lda (VARPNT), y
+	sta INDEX+0
+	iny
+	lda (VARPNT), y
+	sta INDEX+1
 
+	// Perform the concatenation
 
-	// XXX finish the implementation
+#if CONFIG_MEMORY_MODEL_60K
+	
+	// XXX
+	// XXX
+	// XXX
 
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	// XXX consider optimized version without multiple JSRs
+
+	// XXX
+	// XXX
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	// Copy data from the first string
+
+	ldy #$00
+!:
+	lda (__FAC2+1),y
+	sta (INDEX),y
+	iny
+	cpy __FAC2+0
+	bne !-
+
+	// Increase INDEX pointer by the size of the 1st string
+
+	tya
+	jsr varstr_INDEX_up_A
+
+	// Copy data from the second string
+
+	ldy #$00
+!:
+	lda (__FAC1+1),y
+	sta (INDEX),y
+	iny
+	cpy __FAC1+0
+	bne !-
+
+#endif
+
+	// Free old strings - if they are temporary
+
+	// XXX
+	// XXX
+	// XXX
+
+	// Copy the descriptor to __FAC1
+
+	ldy #$02
+!:
+	lda (VARPNT), y
+	sta __FAC1, y
+	dey
+	bpl !-
 
 oper_add_strings_end:
 

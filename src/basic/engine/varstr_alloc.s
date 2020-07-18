@@ -20,7 +20,6 @@
 // - fills-in pointer in the string descriptor
 //
 
-// XXX test this routine
 
 varstr_alloc:
 

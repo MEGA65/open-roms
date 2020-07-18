@@ -11,18 +11,18 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * JiffyDOS and DolphinDOS protocols support
 * DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
 * BASIC extensions, see the [documentation](doc/Extended-BASIC.md) 
+* extended / tweaked `LOAD` / `VERIFY` commands
+    * start/end addresses are displayed, in the Final cartridge style
+    * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
+    * command without parameters tries to load first file from drive chosen as above
+* `LIST` command should never damage the screen if trying to list memory content which is not a BASIC program
+* high performance garbage collector
 
 * turbo tape load support (as device 7, or using `←L` / `←M`, optionally with a file name), quite sophisticated: up to 250 blocks (can store bytes under I/O), automatically adjusts for tape speed differences
 * normal tape load error log is limited by free stack space only (no artificial limitation like in original ROMs)
 * tape format autodetection; normal vs turbo is mostly transparent to user
 * improved support for tape adapters (for using regular casette players and other audio devices instead of Datasette) and emulators
 * built-in tape head align tool (only feasible to use on machines with extended memory, like Mega65)
-
-* extended / tweaked `LOAD` / `VERIFY` commands
-    * start/end addresses are displayed, in the Final cartridge style
-    * command with just the file name tries to use the last device if it's number seems sane; otherwise uses 8
-    * command without parameters tries to load first file from drive chosen as above
-* `LIST` command should never damage the screen if trying to list memory content which is not a BASIC program
 
 * uses RAM under ROM and I/O: 51199 bytes free (up to `$CFFF`) by default, but 61438 is also possible
 * cold/warm start silences multiple SID chips
@@ -42,7 +42,7 @@ The following ROM features are currently missing and are not planned due to spac
 The following ROM features are currently missing:
 
 * most BASIC commands
-* BASIC variables
+* BASIC variables (work in progress, strings partially work now)
 * BASIC expression handling
 * most floating point routines
 * RS-232 support

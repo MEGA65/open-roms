@@ -19,6 +19,7 @@ helper_let_strvarcpy:
 	sta CPU_R6510
 
 	// Retrieve pointer to destination
+	// XXX this part is probably not needed
 
 	ldy #$02
 	lda (VARPNT), y

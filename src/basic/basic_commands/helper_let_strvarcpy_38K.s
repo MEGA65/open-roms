@@ -9,7 +9,10 @@
 
 #if CONFIG_MEMORY_MODEL_38K
 
-helper_let_strdesccpy:
+helper_let_strvarcpy:
+
+	// Retrieve pointer to destination
+	// XXX this part is probably not needed
 
 	ldy #$02
 	lda (VARPNT), y

@@ -9,9 +9,12 @@
 
 #if CONFIG_MEMORY_MODEL_60K
 
-helper_let_strdesccpy:
+helper_let_strvarcpy:
 
 	ldx #<VARPNT
+
+	// Retrieve pointer to destination
+	// XXX this part is probably not needed
 
 	ldy #$02
 	jsr peek_under_roms

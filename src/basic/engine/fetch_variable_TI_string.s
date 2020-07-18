@@ -3,8 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-// XXX test this
-
+// XXX does not fully work
 
 fetch_variable_TI_string:
 
@@ -44,12 +43,16 @@ fetch_variable_TI_string_loop:
 	lda INDEX+2
 	cmp table_TI_hi, y
 	bcc fetch_variable_TI_string_got_digit
+	bne fetch_variable_TI_string_inc_digit
 	lda INDEX+1
 	cmp table_TI_mid, y
 	bcc fetch_variable_TI_string_got_digit
+	bne fetch_variable_TI_string_inc_digit
 	lda INDEX+0
 	cmp table_TI_lo, y
 	bcc fetch_variable_TI_string_got_digit
+
+fetch_variable_TI_string_inc_digit:
 
 	// Increment digit and subtract the table value from the counter
 

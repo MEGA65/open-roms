@@ -27,16 +27,7 @@ execute_statements:
 
 	// Not end of the line - it seems we actually have something to execute	
 
-	// Initialize temporary string stack - just about any statement might need it
-	// XXX original C64 ROM initializes this during the startup too - not sure where to put this
-
-	ldx #$16
-	stx LASTPT
-	ldx #$19
-	stx TEMPPT
-
 	// Move token code to .X
-
 	tax
 
 	// Push the 'end_of_statement' address for RTS

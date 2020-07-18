@@ -51,7 +51,7 @@ do_clr:
 
 	// See Computes Mapping the Commodore 64 - page 96
 
-	// XXX check on real ROMs that it is being done too when entering new line
+	// XXX check if original ROM does this too
 	jsr JCLALL
 
 	lda MEMSIZ+0
@@ -68,6 +68,13 @@ do_clr:
 	lda VARTAB+1
 	sta ARYTAB+1
 	sta STREND+1	
+
+	// This is a good place to reset the temporary string stack
+
+	lda #$19
+	sta TEMPPT
+	lda #$16
+	sta LASTPT
 
 	// FALLTROUGH (confirmed on real C64 that CLR indeed resets DATPTR)
 

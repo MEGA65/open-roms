@@ -9,6 +9,7 @@
 
 end_of_statement:
 
+	jsr tmpstr_free_all
 	jsr fetch_character_skip_spaces
 
 	cmp #$3A                           // check for colon

@@ -290,6 +290,22 @@ varstr_garbage_collect_check_bptr:
 	adc INDEX+1
 	sta __FAC1+2
 !:
+	// Same for __FAC2
+
+	lda __FAC2+2
+	cmp TXTPTR+1
+	bne !+
+	lda __FAC2+1
+	cmp TXTPTR+0
+	bne !+
+
+	clc
+	adc INDEX+0
+	sta __FAC2+1
+	lda __FAC2+2
+	adc INDEX+1
+	sta __FAC2+2
+!:
 	// Next iteration
 
 	jmp varstr_garbage_collect_loop

@@ -274,7 +274,6 @@ cmd_let_assign_string_try_reuse:
 
 	// Check if we can reuse old string memory
 
-	sec
 	lda DSCPNT+0
 	cmp __FAC1+0
 

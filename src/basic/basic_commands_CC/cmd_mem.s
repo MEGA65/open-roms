@@ -29,14 +29,58 @@ cmd_mem_cont:
 
 #endif
 
+	// Print header
+
+	lda #$12
+	jsr JCHROUT
+	ldx #IDX__STR_MEM_HDR
+	jsr print_packed_misc_str
+
 	// Print all the information, in a loop, in reverse order
 
 	ldy #$04
-!:
+
+	// FALLTROUGH
+
+cmd_mem_loop:
+
 	// First print the information string
 
 	ldx helper_mem_tab_str, y
 	phy_trash_a
+	jsr print_packed_misc_str
+
+	// Print start address
+
+	ldx #IDX__STR_MEM_1
+	jsr print_packed_misc_str	
+
+#if HAS_OPCODES_65C02
+	ply
+	phy
+#else
+	pla
+	pha
+	tay
+#endif
+	ldx helper_mem_tab_y, y
+	lda $01, x
+	jsr print_hex_byte
+
+#if HAS_OPCODES_65C02
+	ply
+	phy
+#else
+	pla
+	pha
+	tay
+#endif
+	ldx helper_mem_tab_y, y
+	lda $00, x
+	jsr print_hex_byte
+
+
+	ldx #IDX__STR_MEM_2
 	jsr print_packed_misc_str
 
 	// Fetch addresses of zeropage variables
@@ -76,23 +120,31 @@ cmd_mem_cont:
 
 	// Before printing, make sure the result is not negative
 
-	bcc cmd_mem_error
+	bcs !+
+	lda #$3F
+	jsr JCHROUT
+#if HAS_OPCODES_65C02
+	bra cmd_mem_next
+#else
+	jmp cmd_mem_next
+#endif
+
+!:
 	jsr print_integer
+
+	// FALLTROUGH
+
+cmd_mem_next:
 
 	// Check if more iterations needed
 
 	ply_trash_a
 	dey
-	bpl !-
+	bpl cmd_mem_loop
 
 	// Finish
 
 	jmp print_return
 
-
-cmd_mem_error:
-
-	jsr print_return
-	jmp do_MEMORY_CORRUPT_error
 
 #endif // ROM layout

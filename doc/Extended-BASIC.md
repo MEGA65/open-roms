@@ -78,11 +78,11 @@ Tries to restore program destroyed by the `NEW` command or a reset.
 ### `MEM`
 
 Displays BASIC memory usage information:
-* `TXT` - size of BASIC program text, always at least 2 bytes are used
-* `VAR` - bytes occupied by float and integer variables, string variable descriptors, and function descriptors
-* `ARR` - bytes occupied by arrays (note: for string arrays only descriptors are stored here)
-* `STR` - bytes occupied by strings, also the ones belonging to arrays
-* `SPC` - unused space
+* `TEXT` - size of BASIC program text, always at least 2 bytes are used
+* `VARS` - bytes occupied by float and integer variables, string variable descriptors, and function descriptors
+* `ARRS` - bytes occupied by arrays (note: for string arrays only descriptors are stored here)
+* `STRS` - bytes occupied by strings, also the ones belonging to arrays
+* `FREE` - unused space
 
 ### `CLEAR`
 

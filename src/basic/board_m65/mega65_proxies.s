@@ -59,6 +59,11 @@ proxy_B1_JCHROUT:
 	jsr JCHROUT
 	jmp map_BASIC_1
 
+proxy_B1_print_hex_byte:
+
+	jsr map_NORMAL
+	jsr print_hex_byte
+	jmp map_BASIC_1
 
 proxy_B1_print_integer:
 

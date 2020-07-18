@@ -319,11 +319,14 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { true,  true,  true,  true,  "STR_IF_SURE",  "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
     // STD    M65    U64    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
     { true,  true,  true,  true,  "STR_BRK_AT",   "\rBRK AT $"         },
-    { true,  true,  true,  true,  "STR_MEM_TEXT", "\rTXT: "            },
-    { true,  true,  true,  true,  "STR_MEM_VARS", "\rVAR: "            },
-    { true,  true,  true,  true,  "STR_MEM_ARRS", "\rARR: "            },
-    { true,  true,  true,  true,  "STR_MEM_STRS", "\rSTR: "            },
-    { true,  true,  true,  true,  "STR_MEM_FREE", "\r\rSPC: "          },
+    { true,  true,  true,  true,  "STR_MEM_HDR",  "\r\x12 AREA   START   SIZE  \r" },
+    { true,  true,  true,  true,  "STR_MEM_1",    "   $"               },
+    { true,  true,  true,  true,  "STR_MEM_2",    "   "                },
+    { true,  true,  true,  true,  "STR_MEM_TEXT", "\r TEXT"            },
+    { true,  true,  true,  true,  "STR_MEM_VARS", "\r VARS"            },
+    { true,  true,  true,  true,  "STR_MEM_ARRS", "\r ARRS"            },
+    { true,  true,  true,  true,  "STR_MEM_STRS", "\r STRS"            },
+    { true,  true,  true,  true,  "STR_MEM_FREE", "\r\r FREE"          },
 
     // Note: depending on configuration, additional strings will be added here
 } };

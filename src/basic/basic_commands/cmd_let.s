@@ -276,29 +276,11 @@ cmd_let_assign_string_try_reuse:
 
 	sec
 	lda DSCPNT+0
-	sbc __FAC1+0
-	bcc cmd_let_assign_string_try_reuse_unsuccesful
-	
+	cmp __FAC1+0
+
 	// If size of both string equals - simply reuse it
 
 	beq_16 helper_let_strvarcpy
-
-	// Old string is longer - if difference is at least 3 bytes, we can still reuse it
-
-	sbc #$03
-	bcc cmd_let_assign_string_try_reuse_unsuccesful
-
-	// New string is shorter - enought that we can still reuse the old one with a small trick
-/*
-	clc
-	adc DSCPNT+1
-	sta DSCPNT+1
-	bcs !+
-	inc DSCPNT+2
-*/
-	// XXX
-	// XXX implement this part
-	// XXX
 
 cmd_let_assign_string_try_reuse_unsuccesful:
 

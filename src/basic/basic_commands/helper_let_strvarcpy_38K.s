@@ -12,7 +12,6 @@
 helper_let_strvarcpy:
 
 	// Retrieve pointer to destination
-	// XXX this part is probably not needed
 
 	ldy #$02
 	lda (VARPNT), y

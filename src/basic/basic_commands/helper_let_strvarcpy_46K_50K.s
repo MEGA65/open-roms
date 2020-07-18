@@ -19,7 +19,6 @@ helper_let_strvarcpy:
 	sta CPU_R6510
 
 	// Retrieve pointer to destination
-	// XXX this part is probably not needed
 
 	ldy #$02
 	lda (VARPNT), y
@@ -29,7 +28,7 @@ helper_let_strvarcpy:
 	sta DSCPNT+1
 	dey
 
-	// .Y is now 0 - copy the content
+	// Copy the string content
 !:
 	lda (__FAC1+1),y
 	sta (DSCPNT+1),y

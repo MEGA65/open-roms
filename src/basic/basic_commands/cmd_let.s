@@ -134,37 +134,7 @@ cmd_let_assign_string:
 
 	// Copy the string descriptor to DSCPNT
 
-#if CONFIG_MEMORY_MODEL_60K
-	
-	ldx #<VARPNT
-
-	ldy #$00
-	jsr peek_under_roms
-	sta DSCPNT+0
-	iny
-	jsr peek_under_roms
-	sta DSCPNT+1
-	iny
-	jsr peek_under_roms
-	sta DSCPNT+2
-
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-
 	jsr helper_let_strdesccpy
-
-#else // CONFIG_MEMORY_MODEL_38K
-
-	ldy #$00
-	lda (VARPNT), y
-	sta DSCPNT+0
-	iny
-	lda (VARPNT), y
-	sta DSCPNT+1
-	iny
-	lda (VARPNT), y
-	sta DSCPNT+2
-
-#endif
 
 	// First special case - check if the new string has size 0
 

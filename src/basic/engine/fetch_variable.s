@@ -9,12 +9,12 @@
 
 fetch_variable:
 
-	// Fetch variable name
+	// Set default second character and variable type
 
 	lda #$00
 	sta VARNAM+1
 
-	// Fetch the first character
+	// Fetch the first character of variable name
 
 	jsr fetch_character_skip_spaces
 	jsr is_AZ
@@ -79,9 +79,15 @@ fetch_variable_type_integer:
 	ora #$80
 	sta VARNAM+0
 
+	lda #$00
+	skip_2_bytes_trash_nvz
+
 	// FALLTROUGH
 
 fetch_variable_type_string:
+
+	lda #$80
+	sta VALTYP
 
 	lda VARNAM+1
 	ora #$80
@@ -172,7 +178,7 @@ fetch_variable_find_addr_loop:
 
 fetch_variable_adjust_VARPNT:
 
-	// Adjust VARPNT to point just after variable name (XXX is it needed?) and quit
+	// Adjust VARPNT to point just after variable name and quit
 
 #if !HAS_OPCODES_65CE02
 

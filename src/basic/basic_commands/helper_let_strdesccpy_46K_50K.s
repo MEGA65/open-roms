@@ -5,7 +5,7 @@
 // This has to go $E000 or above - routines below banks out the main BASIC ROM!
 
 //
-// Helper routine to copy string descriptor, for LET command
+// Helper routine to copy string descriptor, for LET command and TI$ variable support
 //
 
 

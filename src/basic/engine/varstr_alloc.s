@@ -20,6 +20,9 @@
 // - fills-in pointer in the string descriptor
 //
 
+// NOTE: if FAC1 or FAC2 contains a value (not a string descriptor - these are going to be updated
+//       if garbage collector starts), then preserve __FAC1+1/+2 and __FAC2+1/+2 somewhere, as there
+//       is a small chance they'll get damaged!
 
 varstr_alloc:
 

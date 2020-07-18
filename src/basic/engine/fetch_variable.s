@@ -68,9 +68,9 @@ fetch_variable_type_float:
 #endif
 
 #if HAS_OPCODES_65C02
-	bra fetch_variable_find_addr
+	bra fetch_variable_special
 #else
-	jmp fetch_variable_find_addr
+	jmp fetch_variable_special
 #endif
 
 fetch_variable_type_integer:
@@ -86,6 +86,32 @@ fetch_variable_type_string:
 	lda VARNAM+1
 	ora #$80
 	sta VARNAM+1
+
+	// FALLTROUGH
+
+fetch_variable_special:
+
+	lda VARNAM+0
+	cmp #$54                           // 'T'
+	beq !+
+	cmp #$53                           // 'S'
+	bne fetch_variable_find_addr
+
+	// First character is 'S', check the second one
+
+	lda VARNAM+1
+	cmp #$54                           // 'T'
+	bne fetch_variable_find_addr
+
+	jmp fetch_variable_ST
+!:
+	// First character is 'T', check the second one
+
+	lda VARNAM+1
+	cmp #$49
+	beq_16 fetch_variable_TI
+	cmp #$C9
+	beq_16 fetch_variable_TI_string
 
 	// FALLTROUGH
 

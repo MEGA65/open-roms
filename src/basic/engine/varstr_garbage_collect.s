@@ -2,8 +2,6 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-// XXX test this routine
-
 
 varstr_garbage_collect:
 
@@ -327,37 +325,3 @@ varstr_garbage_collect_unused:
 	// Next iteration
 
 	jmp varstr_garbage_collect_loop
-
-
-
-
-
-
-	// XXX move these routines to separate files
-
-varstr_TXTPTR_down_A:                  // .A - bytes to decrease TXTPTR, uses DSCPNT+0
-
-	sta DSCPNT+0
-
-	sec
-	lda TXTPTR+0
-	sbc DSCPNT+0 
-	sta TXTPTR+0
-	bcs !+
-	dec TXTPTR+1
-!:
-	rts
-
-
-varstr_INDEX_up_A:                     // .A - bytes to increase TXTPTR, uses DSCPNT+0
-
-	sta DSCPNT+0 
-
-	clc
-	lda INDEX+0
-	adc DSCPNT+0 
-	sta INDEX+0
-	bcc !+
-	dec INDEX+1
-!:
-	rts

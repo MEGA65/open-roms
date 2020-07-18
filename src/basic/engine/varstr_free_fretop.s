@@ -6,7 +6,6 @@
 // Helper routines for 'varstr_free'
 //
 
-// XXX change DSCPNT to use standard descriptor format
 
 varstr_FRETOP_up:                    // DSCPNT+0 - bytes to increment FRETO
 

@@ -10,8 +10,6 @@
 // - DSCPNT+1, DSCPNT+2 - pointer to string
 //
 
-// XXX test this routine
-
 
 varstr_free:
 

@@ -20,6 +20,7 @@ varstr_free:
 	rts
 !:
 	// Check if string is above FRETOP (in string area)
+	// XXX consider moving this check out of this routine
 
 	jsr varstr_cmp_fretop
 	bcs !+

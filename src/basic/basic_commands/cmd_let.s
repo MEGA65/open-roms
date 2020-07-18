@@ -259,24 +259,41 @@ cmd_let_assign_string_not_same:
 
 cmd_let_assign_string_not_text_area:
 
-	// Check if size of both strings equals and the old on is above FRETOP
+	// Check if the new string is a temporary one - if so, reuse alocation
 
 	// XXX
 
-	// Check if new one is at least 3 bytes shorter and the old one is above FRETOP
+	// Check if the old string belongs to the string area (is above FRETOP)
 
-	// XXX
+	jsr varstr_cmp_fretop
+	bcc cmd_let_assign_string_no_optimizations
 
-	// Check if the new string is a temporary one - if so, reuse already done alocation
+	// FALLTROUGH
 
-	// XXX
+cmd_let_assign_string_try_reuse:
 
-	// No special case optimization is possible
-	// Free the memory belonging to the old string
+	// Check if size of both strings equals
+
+	lda DSCPNT+0
+	cmp __FAC1
+	bne cmd_let_assign_string_try_reuse_unsuccesful
+
+	// Size of both string equals, the old one belongs to the string area - simply reuse it
+
+	jmp helper_let_strvarcpy
+
+cmd_let_assign_string_try_reuse_unsuccesful:
+	// XXX consider another optimization first: parial memory reuse
+
+	// No special case optimization is possible - but first get rid of the old string
 
 	jsr varstr_free
 
-	// And allocate memory for the new string
+	// FALLTROUGH
+
+cmd_let_assign_string_no_optimizations:
+
+	// Allocate memory for the new string
 
 	lda __FAC1+0
 	ldy #$00
@@ -294,55 +311,6 @@ cmd_let_assign_string_not_text_area:
 
 	jsr varstr_alloc
 
-	// Copy the string
+	// Copy the string and quit
 
-#if CONFIG_MEMORY_MODEL_60K
-	
-	ldx #<VARPNT
-
-	ldy #$02
-	jsr peek_under_roms
-	sta DSCPNT+2
-	dey
-	jsr peek_under_roms
-	sta DSCPNT+1
-	dey
-
-	// .Y is now 0 - copy the content
-!:
-
-	ldx #<__FAC1+1
-	jsr peek_under_roms
-	ldx #<DSCPNT+1
-	jsr poke_under_roms
-	iny
-	cpy __FAC1+0
-	bne !-
-
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	
-	jsr helper_let_strvarcpy
-
-#else // CONFIG_MEMORY_MODEL_38K
-
-	// Retrieve pointer to destination
-
-	ldy #$02
-	lda (VARPNT), y
-	sta DSCPNT+2
-	dey
-	lda (VARPNT), y
-	sta DSCPNT+1
-	dey
-
-	// .Y is now 0 - copy the content
-!:
-	lda (__FAC1+1),y
-	sta (DSCPNT+1),y
-	iny
-	cpy __FAC1+0
-	bne !-
-
-#endif
-
-	rts
+	jmp helper_let_strvarcpy

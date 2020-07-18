@@ -73,16 +73,38 @@ oper_add_strings:
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
-	// XXX
-	// XXX
+	// Copy data from the first string
+
+	ldy #$00
+!:
+	ldx #<(__FAC2+1)
+	jsr peek_under_roms
+	ldx #<INDEX
+	jsr poke_under_roms
+	iny
+	cpy __FAC2+0
+	bne !-
+
+	// Increase INDEX pointer by the size of the 1st string
+
+	tya
+	jsr varstr_INDEX_up_A
+
+	// Copy data from the second string
+
+	ldy #$00
+!:
+	ldx #<(__FAC1+1)
+	jsr peek_under_roms
+	ldx #<INDEX
+	jsr poke_under_roms
+	iny
+	cpy __FAC1+0
+	bne !-
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	// XXX consider optimized version without multiple JSRs
 
-	// XXX
-	// XXX
-	// XXX
+	jsr helper_add_concat
 
 #else // CONFIG_MEMORY_MODEL_38K
 

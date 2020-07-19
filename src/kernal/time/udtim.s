@@ -17,32 +17,34 @@ UDTIM:
 	// (24 hours * 60 minutes * 60 seconds * 60 jiffies),
 	// after this time we have to reset the clock.
 
-#if !HAS_OPCODES_65CE02
 	inc TIME+2
-	bne udtim_time_done   // done with clock
+	bne udtim_rollover_check
 	inc TIME+1
-#else
-	inw TIME+2
-#endif
-	bne udtim_clock_rollover
+	bne udtim_rollover_check
 	inc TIME+0
+
+	// FALLTROUGH
+
+udtim_rollover_check:
+
+	lda TIME+0
+	cmp #$4F
+	bcc udtim_time_done
+	lda TIME+1
+	cmp #$1A	
+	bcc udtim_time_done
+	
+	// FALLTROUGH
+
+udtim_clock_reset:
+
+	lda #$00
+	sta TIME+0
+	sta TIME+1
+	sta TIME+2
 
 	// FALLTROUGH
 
 udtim_time_done:
 
 	jmp udtim_keyboard
-
-udtim_clock_rollover:
-
-	// At this point TIME+0 contains 0
-	lda TIME+1
-	cmp #$1A
-	bne udtim_time_done   // done with clock
-	lda TIME+0
-	cmp #$4F
-	bne udtim_time_done   // done with clock
-	lda #$00
-	sta TIME+0
-	sta TIME+1
-	beq udtim_time_done   // done with clock - will always jump

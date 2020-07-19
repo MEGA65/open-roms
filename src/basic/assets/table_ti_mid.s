@@ -8,9 +8,9 @@
 
 table_TI_mid:
 
-	.byte $EE                // 10 hours    = 3600000 ticks
-	.byte $7E                // 1 hour      =  360000 ticks
-	.byte $75                // 10 minutes  =   30000 ticks
-	.byte $0B                // 1 minute    =    3000 ticks
-	.byte $01                // 10 seconds  =     500 ticks	
-	.byte $00                // 1 second    =      50 ticks
+	.byte $F5                // 10 hours    = 2169000 ticks
+	.byte $4B                // 1 hour      =  216000 ticks
+	.byte $8C                // 10 minutes  =   36000 ticks
+	.byte $0E                // 1 minute    =    3600 ticks
+	.byte $02                // 10 seconds  =     600 ticks
+	.byte $00                // 1 second    =      60 ticks

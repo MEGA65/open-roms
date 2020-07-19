@@ -150,11 +150,8 @@ scnkey_bucky_loop:
 	lda KEYLOG+1
 	bne !+
 	jsr scnkey_set_keytab              // KEYLOG routine on zeropage? most likely vector not set
-#if HAS_OPCODES_65C02
-	bra scnkey_keytab_set_done
-#else
-	jmp scnkey_keytab_set_done
-#endif
+	jmp_8 scnkey_keytab_set_done
+
 !:
 #if HAS_OPCODES_65CE02
 	jsr_ind KEYLOG

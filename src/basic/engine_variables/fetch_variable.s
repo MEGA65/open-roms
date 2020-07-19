@@ -67,11 +67,7 @@ fetch_variable_type_float:
 	dew TXTPTR
 #endif
 
-#if HAS_OPCODES_65C02
-	bra fetch_variable_special
-#else
-	jmp fetch_variable_special
-#endif
+	jmp_8 fetch_variable_special
 
 fetch_variable_type_integer:
 
@@ -313,8 +309,4 @@ fetch_variable_alocate_space_OK:
 
 	// Adjust variable pointer and quit
 
-#if HAS_OPCODES_65C02
-	bra fetch_variable_adjust_VARPNT
-#else
-	jmp fetch_variable_adjust_VARPNT
-#endif
+	jmp_8 fetch_variable_adjust_VARPNT

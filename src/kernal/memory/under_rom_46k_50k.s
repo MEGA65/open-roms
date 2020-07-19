@@ -53,11 +53,7 @@ peek_under_roms_via_FNADDR:
 
 	// Continue using common code
 
-#if HAS_OPCODES_65C02
-	bra peek_under_roms_finalize
-#else
-	jmp peek_under_roms_finalize
-#endif
+	jmp_8 peek_under_roms_finalize
 
 
 peek_under_roms_via_EAL:
@@ -75,11 +71,7 @@ peek_under_roms_via_EAL:
 
 	// Continue using common code
 
-#if HAS_OPCODES_65C02
-	bra peek_under_roms_finalize
-#else
-	jmp peek_under_roms_finalize
-#endif
+	jmp_8 peek_under_roms_finalize
 
 
 #endif

@@ -80,11 +80,7 @@ fetch_uint16_loop:
 
 	// Next iteration
 
-#if HAS_OPCODES_65C02
-	bra fetch_uint16_loop
-#else
-	jmp fetch_uint16_loop
-#endif
+	jmp_8 fetch_uint16_loop
 
 fetch_uint16_end:
 

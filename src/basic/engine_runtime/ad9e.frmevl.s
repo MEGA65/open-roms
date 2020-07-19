@@ -114,11 +114,7 @@ FRMEVL_loop:
 
 #endif
 
-#if HAS_OPCODES_65C02
-	bra FRMEVL_got_value
-#else
-	jmp FRMEVL_got_value
-#endif
+	jmp_8 FRMEVL_got_value
 
 !:
 	// There is one possibility left - a floating point value

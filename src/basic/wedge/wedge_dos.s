@@ -216,11 +216,7 @@ wedge_dos_status_get_done:
 wedge_dos_status:
 
 	jsr wedge_dos_status_get
-#if HAS_OPCODES_65C02
-	bra wedge_dos_status_print_no_new_line
-#else
-	jmp wedge_dos_status_print_no_new_line
-#endif
+	jmp_8 wedge_dos_status_print_no_new_line
 
 wedge_dos_status_print:
 
@@ -243,11 +239,7 @@ wedge_dos_status_print_no_new_line:
 !:
 	// Clean-up and exit
 
-#if HAS_OPCODES_65C02
-	bra wedge_dos_clean_exit
-#else
-	jmp wedge_dos_clean_exit
-#endif
+	jmp_8 wedge_dos_clean_exit
 
 wedge_dos_directory:
 

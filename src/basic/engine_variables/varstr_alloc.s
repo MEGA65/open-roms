@@ -138,8 +138,4 @@ varstr_alloc_fail:
 	dec GARBFL                                   // $00 -> $FF
 	jsr varstr_garbage_collect
 
-#if HAS_OPCODES_65C02
-	bra varstr_alloc_retry
-#else
-	jmp varstr_alloc_retry
-#endif
+	jmp_8 varstr_alloc_retry

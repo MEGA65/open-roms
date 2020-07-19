@@ -33,11 +33,7 @@ shift_mem_up_internal:
 	dec memmove__size+1
 	bne !-
 
-#if HAS_OPCODES_65C02
-	bra shift_mem_internal_finalize
-#else
-	jmp shift_mem_internal_finalize
-#endif
+	jmp_8 shift_mem_internal_finalize
 
 
 shift_mem_down_internal:

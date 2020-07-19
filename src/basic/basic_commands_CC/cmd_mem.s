@@ -123,11 +123,7 @@ cmd_mem_loop:
 	bcs !+
 	lda #$3F
 	jsr JCHROUT
-#if HAS_OPCODES_65C02
-	bra cmd_mem_next
-#else
-	jmp cmd_mem_next
-#endif
+	jmp_8 cmd_mem_next
 
 !:
 	jsr print_integer

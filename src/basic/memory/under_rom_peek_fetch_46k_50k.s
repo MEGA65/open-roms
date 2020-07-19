@@ -44,12 +44,7 @@ peek_under_roms_via_OLDTXT:
 	// Retrieve value from under ROMs
 
 	lda (OLDTXT), y
-
-#if HAS_OPCODES_65C02
-	bra peek_under_roms_finalize
-#else
-	jmp peek_under_roms_finalize
-#endif
+	jmp_8 peek_under_roms_finalize
 
 peek_under_roms_via_VARPNT:
 
@@ -61,12 +56,7 @@ peek_under_roms_via_VARPNT:
 	// Retrieve value from under ROMs
 
 	lda (VARPNT), y
-
-#if HAS_OPCODES_65C02
-	bra peek_under_roms_finalize
-#else
-	jmp peek_under_roms_finalize
-#endif
+	jmp_8 peek_under_roms_finalize
 
 peek_under_roms_via_FAC1_PLUS_1:
 
@@ -78,12 +68,7 @@ peek_under_roms_via_FAC1_PLUS_1:
 	// Retrieve value from under ROMs
 
 	lda (__FAC1 + 1), y
-
-#if HAS_OPCODES_65C02
-	bra peek_under_roms_finalize
-#else
-	jmp peek_under_roms_finalize
-#endif
+	jmp_8 peek_under_roms_finalize
 
 
 #if ROM_LAYOUT_M65

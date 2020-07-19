@@ -16,11 +16,8 @@ tmpstr_free_FAC1:
 	sta DSCPNT+1
 	lda __FAC1+2
 
-#if HAS_OPCODES_65C02
-	bra !+
-#else
-	jmp !+
-#endif
+	jmp_8 !+
+
 
 tmpstr_free_FAC2:
 

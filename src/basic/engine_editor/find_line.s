@@ -24,6 +24,8 @@ find_line_from_current:
 	// Fetch the high byte of line number and compare
 	ldy #$03
 
+	// XXX consider optimized 46K/50K version
+
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr peek_under_roms
@@ -67,6 +69,8 @@ find_line_next:
 	jsr peek_line_pointer_null_check
 	bcc find_line_fail                           // branch in no more lines exist
 
+	// XXX consider optimized 46K/50K version
+
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
@@ -93,11 +97,7 @@ find_line_next:
 	pla
 	sta OLDTXT+0
 
-#if HAS_OPCODES_65C02
-	bra find_line_from_current
-#else
-	jmp find_line_from_current
-#endif
+	jmp_8 find_line_from_current
 
 find_line_fail:
 

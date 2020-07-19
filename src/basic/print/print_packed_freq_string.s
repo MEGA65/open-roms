@@ -114,7 +114,7 @@ print_freq_packed_string_nibble_hi:
 
 	tax
 	lda packed_as_1n-1, x
-	jmp !+                             // XXX should be bra on some CPUs
+	jmp_8 !+
 
 print_freq_packed_string_3n_single:
 

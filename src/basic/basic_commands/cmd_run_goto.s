@@ -49,12 +49,7 @@ cmd_goto:
 	// Else - search from the current line
 
 	jsr find_line_from_current
-
-#if HAS_OPCODES_65C02
-	bra cmd_goto_check
-#else
-	jmp cmd_goto_check
-#endif
+	jmp_8 cmd_goto_check
 
 cmd_goto_direct:
 

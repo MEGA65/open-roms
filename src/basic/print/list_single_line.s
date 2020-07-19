@@ -127,11 +127,8 @@ list_display_token_CC:
 	// Now ask for it to be printed
 	jsr print_packed_keyword_CC
 
-#if HAS_OPCODES_65C02
-	bra list_token_displayed
-#else
-	jmp list_token_displayed
-#endif
+	jmp_8 list_token_displayed
+
 
 list_display_token_CD:
 
@@ -169,11 +166,7 @@ list_display_token_CD:
 	// Now ask for it to be printed
 	jsr print_packed_keyword_CD
 
-#if HAS_OPCODES_65C02
-	bra list_token_displayed
-#else
-	jmp list_token_displayed
-#endif
+	jmp_8 list_token_displayed
 
 list_display_token_V2:
 
@@ -242,11 +235,7 @@ list_is_unknown:
 	jsr STROUT
 	ply_trash_a
 
-#if HAS_OPCODES_65C02
-	bra !+
-#else
-	jmp !+
-#endif
+	jmp_8 !+
 
 list_is_literal_known:
 
@@ -263,10 +252,6 @@ list_display_unknown_token:
 	pla
 	pla
 
-#if HAS_OPCODES_65C02
-	bra list_is_unknown
-#else
-	jmp list_is_unknown
-#endif
+	jmp_8 list_is_unknown
 
 #endif // ROM layout

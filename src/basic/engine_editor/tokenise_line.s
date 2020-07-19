@@ -100,11 +100,7 @@ tokenise_line_loop:
 
 	jsr tk_shorten
 
-#if HAS_OPCODES_65C02
-	bra !-
-#else
-	jmp !-
-#endif
+	jmp_8 !-
 
 tokenise_line_keyword_V2:
 

@@ -2,13 +2,12 @@
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
-// Return C=1 if a pointer in BASIC memory space is NULL, else C=0
-// X = ZP pointer to check
+// Return pointer in BASIC memory space status in Z flag
 
 
 #if CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_60K
 
-peek_line_pointer_null_check:
+is_line_pointer_null:
 
 	// Check the pointer
 
@@ -32,16 +31,7 @@ peek_line_pointer_null_check:
 	lda (OLDTXT),y
 #endif
 
-	bne !+
-
-	// Pointer is NULL
-
-	clc
-	rts
 !:
-	// Pointer not NULL
-
-	sec
 	rts
 
 #endif

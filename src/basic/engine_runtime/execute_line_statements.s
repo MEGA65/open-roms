@@ -189,9 +189,8 @@ execute_line:
 
 	// Check if pointer is null, if so, we are at the end of the program
 
-	ldy #0
-	jsr peek_line_pointer_null_check
-	bcc_16 shell_main_loop             // branch if end of program reached
+	jsr is_line_pointer_null
+	beq_16 shell_main_loop             // branch if end of program reached
 
 	// Skip pointer and line number to get address of first statement
 

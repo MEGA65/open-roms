@@ -19,9 +19,8 @@ find_line_from_current:
 
 	// Check if line is not empty
 
-	jsr peek_line_pointer_null_check
-	bcc find_line_fail
-
+	jsr is_line_pointer_null
+	beq find_line_fail
 
 	// Fetch the high byte of line number and compare
 	ldy #$03
@@ -62,8 +61,8 @@ find_line_next:
 
 	// Advance to the next line
 
-	jsr peek_line_pointer_null_check
-	bcc find_line_fail                           // branch in no more lines exist
+	jsr is_line_pointer_null
+	beq find_line_fail                           // branch in no more lines exist
 
 	ldy #$00
 

@@ -4,13 +4,12 @@
 
 // This has to go $E000 or above - routine below banks out the main BASIC ROM!
 
-// Return C=1 if a pointer in BASIC memory space is NULL, else C=0
-// X = ZP pointer to check
+// Return pointer in BASIC memory space status in Z flag
 
 
 #if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-peek_line_pointer_null_check:
+is_line_pointer_null:
 
 	// Unmap BASIC lower ROM
 
@@ -25,28 +24,14 @@ peek_line_pointer_null_check:
 	
 	dey
 	lda (OLDTXT),y
-	bne !+                   // branch if pointer not NULL
-
-	// Pointer is NULL
-
-	// FALLTROUGH
-
-remap_BASIC_clc_rts:
-
-	lda #$27
-	sta CPU_R6510
-
-	clc
-	rts
 !:
-	// Pointer not NULL
 
-remap_BASIC_sec_rts:
+	// Restore memory mapping and quit
 
+	php
 	lda #$27
 	sta CPU_R6510
-
-	sec
+	plp
 	rts
 
 #endif

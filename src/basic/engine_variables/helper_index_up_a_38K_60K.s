@@ -8,7 +8,7 @@
 
 #if CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_60K
 
-helper_INDEX_up_A:                     // .A - bytes to increase TXTPTR, uses DSCPNT+0
+helper_INDEX_up_A:                     // .A - bytes to increase INDEX, uses DSCPNT+0
 
 	sta DSCPNT+0 
 

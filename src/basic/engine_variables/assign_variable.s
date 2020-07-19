@@ -243,14 +243,15 @@ assign_string_not_same:
 
 assign_string_not_text_area:
 
-	// Check if the new string is a temporary one - if so, reuse alocation
-
-	// XXX
-
 	// Check if the old string belongs to the string area (is above FRETOP)
 
 	jsr helper_cmp_fretop
+
+#if HAS_SMALL_BASIC
 	bcc assign_string_no_optimizations
+#else
+	bcc assign_string_try_takeover
+#endif
 
 	// FALLTROUGH
 
@@ -261,17 +262,26 @@ assign_string_try_reuse:
 	lda DSCPNT+0
 	cmp __FAC1+0
 
+#if HAS_SMALL_BASIC
+
 	// If size of both string equals - simply reuse it
 
 	beq_16 helper_strvarcpy
-
-assign_string_try_reuse_unsuccesful:
 
 	// No special case optimization is possible - but first get rid of the old string
 
 	jsr varstr_free
 
 	// FALLTROUGH
+
+#else
+
+	// If size of both string equals - simply reuse it
+
+	bne assign_string_try_takeover_free
+	jmp helper_strvarcpy
+
+#endif
 
 assign_string_no_optimizations:
 
@@ -296,3 +306,126 @@ assign_string_no_optimizations:
 	// Copy the string and quit
 
 	jmp helper_strvarcpy
+
+
+#if !HAS_SMALL_BASIC
+
+assign_string_try_takeover_free:
+
+	jsr varstr_free
+
+	// FALLTROUGH
+
+assign_string_try_takeover:
+
+	// Check if the new string is a temporary one - if so, takeover the allocation
+
+	ldx #$19
+
+	// FALLTROUGH
+
+assign_string_tmp_check_loop:
+
+	cpx TEMPPT
+	beq assign_string_no_optimizations // branch if this is not a temporary string
+
+	lda $01, x
+	cmp __FAC1+1
+	bne assign_string_tmp_check_next
+
+	lda $02, x
+	cmp __FAC1+2
+	bne assign_string_tmp_check_next
+
+	lda $01, x
+	beq assign_string_tmp_check_next
+
+	// This is a temporary string - takeover the content
+
+#if CONFIG_MEMORY_MODEL_60K
+
+	ldy #$00
+	phx_trash_a
+	lda $00, x
+	ldx #<VARPNT
+	jsr poke_under_roms
+	plx_trash_a
+
+	iny
+	phx_trash_a
+	lda $01, x
+	sta INDEX+0
+	ldx #<VARPNT
+	jsr poke_under_roms
+	plx_trash_a
+	
+	iny
+	phx_trash_a
+	lda $02, x
+	sta INDEX+1
+	ldx #<VARPNT
+	jsr poke_under_roms
+	plx_trash_a
+
+#else
+
+	ldy #$00
+	lda $00, x
+	sta (VARPNT), y
+
+	iny
+	lda $01, x
+	sta INDEX+0
+	sta (VARPNT), y
+
+	iny
+	lda $02, x
+	sta INDEX+1
+	sta (VARPNT), y
+
+#endif
+
+	// Mark the temporary string as free
+
+	lda #$00
+	sta $00, x
+
+	// Now we need to copy VARPNT to back-pointer
+
+	lda __FAC1+0
+	jsr helper_INDEX_up_A
+
+#if CONFIG_MEMORY_MODEL_60K
+
+	ldx #<INDEX
+
+	ldy #$00
+	lda VARPNT+0
+	jsr poke_under_roms
+
+	iny
+	lda VARPNT+1
+	jsr poke_under_roms
+
+#else
+
+	ldy #$00
+	lda VARPNT+0
+	sta (INDEX), y
+
+	iny
+	lda VARPNT+1
+	sta (INDEX), y
+
+#endif
+
+	rts
+
+assign_string_tmp_check_next:
+
+	inx
+	inx
+	inx
+	bne assign_string_tmp_check_loop           // branch always
+
+#endif

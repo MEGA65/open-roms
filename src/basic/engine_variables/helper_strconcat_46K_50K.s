@@ -5,33 +5,40 @@
 // This has to go $E000 or above - routines below banks out the main BASIC ROM!
 
 //
-// Helper routine to copy string variable content, for LET command
+// Helper routine for string concatenation
 //
 
 
 #if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-helper_let_strvarcpy:
+helper_strconcat:
 
 	// Unmap BASIC lower ROM
 
 	lda #$26
 	sta CPU_R6510
 
-	// Retrieve pointer to destination
+	// Copy data from the first string
 
-	ldy #$02
-	lda (VARPNT), y
-	sta DSCPNT+2
-	dey
-	lda (VARPNT), y
-	sta DSCPNT+1
-	dey
+	ldy #$00
+!:
+	lda (__FAC2+1),y
+	sta (INDEX),y
+	iny
+	cpy __FAC2+0
+	bne !-
 
-	// Copy the string content
+	// Increase INDEX pointer by the size of the 1st string
+
+	tya
+	jsr helper_INDEX_up_A
+
+	// Copy data from the second string
+
+	ldy #$00
 !:
 	lda (__FAC1+1),y
-	sta (DSCPNT+1),y
+	sta (INDEX),y
 	iny
 	cpy __FAC1+0
 	bne !-

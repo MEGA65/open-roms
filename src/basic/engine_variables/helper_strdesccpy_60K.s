@@ -3,13 +3,13 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Helper routine to copy string descriptor, for LET command and TI$ variable support
+// Helper routine to copy string descriptor
 //
 
 
 #if CONFIG_MEMORY_MODEL_60K
 
-helper_let_strdesccpy:
+helper_strdesccpy:
 
 	ldx #<VARPNT
 

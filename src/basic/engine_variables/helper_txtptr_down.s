@@ -7,7 +7,7 @@
 //
 
 
-varstr_TXTPTR_down_A:                  // .A - bytes to decrease TXTPTR, uses DSCPNT+0
+helper_TXTPTR_down_A:                  // .A - bytes to decrease TXTPTR, uses DSCPNT+0
 
 	sta DSCPNT+0
 

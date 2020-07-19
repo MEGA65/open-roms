@@ -3,13 +3,13 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Helper routine to copy string descriptor, for LET command
+// Helper routine to copy string descriptor
 //
 
 
 #if CONFIG_MEMORY_MODEL_38K
 
-helper_let_strvarcpy:
+helper_strvarcpy:
 
 	// Retrieve pointer to destination
 

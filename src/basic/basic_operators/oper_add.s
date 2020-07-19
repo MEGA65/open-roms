@@ -36,12 +36,17 @@ oper_add_strings:
 
 	pla
 	sta __FAC2+0
-	beq oper_add_strings_end           // if string 2 is empty, we have nothing to do
+
+	// If string 2 is empty, release it and quit
+
+	beq oper_add_strings_end
 
 	// If string 1 is empty, just copy the metadata
 
 	lda __FAC1+0
 	bne !+
+
+	jsr tmpstr_free_FAC1
 
 	lda __FAC2+0
 	sta __FAC1+0
@@ -88,7 +93,7 @@ oper_add_strings:
 	// Increase INDEX pointer by the size of the 1st string
 
 	tya
-	jsr varstr_INDEX_up_A
+	jsr helper_INDEX_up_A
 
 	// Copy data from the second string
 
@@ -104,7 +109,7 @@ oper_add_strings:
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-	jsr helper_add_concat
+	jsr helper_strconcat
 
 #else // CONFIG_MEMORY_MODEL_38K
 
@@ -121,7 +126,7 @@ oper_add_strings:
 	// Increase INDEX pointer by the size of the 1st string
 
 	tya
-	jsr varstr_INDEX_up_A
+	jsr helper_INDEX_up_A
 
 	// Copy data from the second string
 
@@ -135,11 +140,9 @@ oper_add_strings:
 
 #endif
 
-	// Free old strings - if they are temporary
+	// Free old FAC1 string - if it was temporary
 
-	// XXX
-	// XXX
-	// XXX
+	jsr tmpstr_free_FAC1
 
 	// Copy the descriptor to __FAC1
 
@@ -150,6 +153,9 @@ oper_add_strings:
 	dey
 	bpl !-
 
+	// FALLTROUGH
+
 oper_add_strings_end:
 
+	jsr tmpstr_free_FAC2
 	jmp FRMEVL_continue

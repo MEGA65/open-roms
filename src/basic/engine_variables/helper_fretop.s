@@ -3,10 +3,10 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Helper routines for 'varstr_alloc'
+// Helper routines for FRETOP handling
 //
 
-varstr_FRETOP_down_A:                  // .A - bytes to lower FRETOP, uses DSCPNT+0
+helper_FRETOP_down_A:                  // .A - bytes to lower FRETOP, uses DSCPNT+0
 
 	sta DSCPNT+0 
 
@@ -19,7 +19,7 @@ varstr_FRETOP_down_A:                  // .A - bytes to lower FRETOP, uses DSCPN
 !:
 	// FALLTROUGH
 
-varstr_FRETOP_check:                   // check if FRETOP > STREND, Carry set if not
+helper_FRETOP_check:                   // check if FRETOP > STREND, Carry set if not
 
 	lda STREND+1
 	cmp FRETOP+1

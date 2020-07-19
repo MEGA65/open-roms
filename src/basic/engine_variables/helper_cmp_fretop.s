@@ -10,7 +10,7 @@
 // - Carry flag set - this string belongs to the string area
 
 
-varstr_cmp_fretop:
+helper_cmp_fretop:
 
 	lda DSCPNT+2
 	cmp FRETOP+1

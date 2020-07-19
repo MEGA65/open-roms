@@ -11,7 +11,7 @@ fetch_variable_TI_string:
 
 	lda #$06
 	jsr tmpstr_alloc
-	jsr helper_let_strdesccpy
+	jsr helper_strdesccpy
 
 	// Fetch the time in a safe way, store it in temporary area
 

@@ -20,7 +20,7 @@ tmpstr_alloc:
 
 	lda TEMPPT
 	cmp #$22
-	bcs_16 do_FORMULA_TOO_COMPLEX_error
+	bcs tmpstr_alloc_try_reuse
 
 	tay
 	sta LASTPT
@@ -28,18 +28,43 @@ tmpstr_alloc:
 	adc #$03
 	sta TEMPPT
 
+	// FALLTROUGH
+
+tmpstr_alloc_found:
+
 	// Store desired string length
 
 	stx $00, y
 
 	// Store descriptor address
 
-	lda LASTPT
-	sta VARPNT+0
+	sty VARPNT+0
 	lda #$00
 	sta VARPNT+1
 
 	// Jump to alocation routine
-	// XXX consider falltrough
 
 	jmp varstr_alloc
+
+tmpstr_alloc_try_reuse:
+
+	// It seems there is no space left - try to find empty entry
+
+	ldy #$19
+
+	// FALLTROUGH
+
+tmpstr_alloc_try_reuse_loop:
+
+	lda $00, y
+	beq tmpstr_alloc_found             // branch if free entry found
+
+	iny
+	iny
+	iny
+	cpy #$22
+	bne tmpstr_alloc_try_reuse_loop
+
+	// Everything failed - give up
+
+	jmp do_FORMULA_TOO_COMPLEX_error

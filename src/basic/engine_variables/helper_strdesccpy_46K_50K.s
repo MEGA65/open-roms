@@ -5,13 +5,13 @@
 // This has to go $E000 or above - routines below banks out the main BASIC ROM!
 
 //
-// Helper routine to copy string descriptor, for LET command and TI$ variable support
+// Helper routine to copy string descriptor
 //
 
 
 #if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-helper_let_strdesccpy:
+helper_strdesccpy:
 
 	// Unmap BASIC lower ROM
 

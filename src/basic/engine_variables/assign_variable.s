@@ -3,8 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-
-cmd_let:
+assign_variable:
 
 	// Fetch variable name, should be followed by assign operator
 
@@ -62,14 +61,14 @@ cmd_let:
 	// Determine what to assign
 
 	pla
-	bmi cmd_let_assign_string
-	beq cmd_let_assign_float
+	bmi assign_string
+	beq assign_float
 
 	// FALLTROUGH
 
 	// XXX integer and float probably have much in common
 
-cmd_let_assign_integer:
+assign_integer:
 
 	lda VALTYP
 	bmi_16 do_TYPE_MISMATCH_error
@@ -97,7 +96,7 @@ cmd_let_assign_integer:
 
 	jmp do_NOT_IMPLEMENTED_error
 
-cmd_let_assign_float:
+assign_float:
 
 	lda VALTYP
 	bmi_16 do_TYPE_MISMATCH_error
@@ -125,7 +124,7 @@ cmd_let_assign_float:
 
 	jmp do_NOT_IMPLEMENTED_error
 
-cmd_let_assign_string:
+assign_string:
 
 	// Check if value type matches
 	
@@ -134,12 +133,12 @@ cmd_let_assign_string:
 
 	// Copy the string descriptor to DSCPNT
 
-	jsr helper_let_strdesccpy
+	jsr helper_strdesccpy
 
 	// First special case - check if the new string has size 0
 
 	lda __FAC1+0
-	bne cmd_let_assign_string_not_empty
+	bne assign_string_not_empty
 
 	// Yes, it is empty - free the old one
 
@@ -159,41 +158,41 @@ cmd_let_assign_string:
 
 	rts
 
-cmd_let_assign_string_not_empty:
+assign_string_not_empty:
 
 	// Check if the source and destination strings are the same
 
 	lda DSCPNT+1
 	cmp __FAC1+1
-	bne cmd_let_assign_string_not_same
+	bne assign_string_not_same
 	iny
 	lda DSCPNT+2
 	cmp __FAC1+2
-	bne cmd_let_assign_string_not_same
+	bne assign_string_not_same
 
 	// If we are here, than both source and destination strings are the same - nothing more to be done
 
 	rts
 
-cmd_let_assign_string_not_same:
+assign_string_not_same:
 
 	// Strings are not the same - check if the new one is located within the text area, between TXTTAB and VARTAB
 
 	lda VARTAB+1
 	cmp __FAC1+2
-	bcc cmd_let_assign_string_not_text_area
+	bcc assign_string_not_text_area
 	bne !+
 	lda VARTAB+0
 	cmp __FAC1+1
-	bcc cmd_let_assign_string_not_text_area	
+	bcc assign_string_not_text_area	
 !:
 	lda __FAC1+2
 	cmp TXTTAB+1
-	bcc cmd_let_assign_string_not_text_area
+	bcc assign_string_not_text_area
 	bne !+
 	lda __FAC1+1
 	cmp TXTTAB+0
-	bcc cmd_let_assign_string_not_text_area
+	bcc assign_string_not_text_area
 !:
 	// String is located within text area - great, just copy the descriptor
 
@@ -227,7 +226,7 @@ cmd_let_assign_string_not_same:
 
 	rts
 
-cmd_let_assign_string_not_text_area:
+assign_string_not_text_area:
 
 	// Check if the new string is a temporary one - if so, reuse alocation
 
@@ -235,12 +234,12 @@ cmd_let_assign_string_not_text_area:
 
 	// Check if the old string belongs to the string area (is above FRETOP)
 
-	jsr varstr_cmp_fretop
-	bcc cmd_let_assign_string_no_optimizations
+	jsr helper_cmp_fretop
+	bcc assign_string_no_optimizations
 
 	// FALLTROUGH
 
-cmd_let_assign_string_try_reuse:
+assign_string_try_reuse:
 
 	// Check if we can reuse old string memory
 
@@ -249,9 +248,9 @@ cmd_let_assign_string_try_reuse:
 
 	// If size of both string equals - simply reuse it
 
-	beq_16 helper_let_strvarcpy
+	beq_16 helper_strvarcpy
 
-cmd_let_assign_string_try_reuse_unsuccesful:
+assign_string_try_reuse_unsuccesful:
 
 	// No special case optimization is possible - but first get rid of the old string
 
@@ -259,7 +258,7 @@ cmd_let_assign_string_try_reuse_unsuccesful:
 
 	// FALLTROUGH
 
-cmd_let_assign_string_no_optimizations:
+assign_string_no_optimizations:
 
 	// Allocate memory for the new string
 
@@ -281,4 +280,4 @@ cmd_let_assign_string_no_optimizations:
 
 	// Copy the string and quit
 
-	jmp helper_let_strvarcpy
+	jmp helper_strvarcpy

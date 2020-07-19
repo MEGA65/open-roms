@@ -250,4 +250,4 @@ execute_statements_var_assign:
 #else
 	dew TXTPTR
 #endif
-	jmp cmd_let
+	jmp assign_variable

@@ -19,7 +19,7 @@
 	cmd_input,
 	cmd_dim,
 	cmd_read,
-	cmd_let,
+	assign_variable,                   // cmd_let
 	cmd_goto,
 	cmd_run,
 	cmd_if,

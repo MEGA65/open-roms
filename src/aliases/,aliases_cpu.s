@@ -425,3 +425,17 @@ __l:
 __l:
 #endif
 }
+
+
+//
+// Near jump, on some CPUs can be substituted with shorter instruction
+//
+
+.pseudocommand jmp_8 dst
+{
+#if HAS_OPCODES_65C02
+	bra dst
+#else
+	jmp dst
+#endif
+}

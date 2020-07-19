@@ -79,7 +79,7 @@ varstr_garbage_collect_check_bptr:
 
 #if !HAS_OPCODES_65CE02
 	lda #$02
-	jsr varstr_TXTPTR_down_A
+	jsr helper_TXTPTR_down_A
 #else // HAS_OPCODES_65CE02
 	dew TXTPTR
 	dew TXTPTR
@@ -271,7 +271,7 @@ varstr_garbage_collect_check_bptr:
 	lda (OLDTXT),y
 #endif
 
-	jsr varstr_TXTPTR_down_A
+	jsr helper_TXTPTR_down_A
 
 	// Check if variable descriptor in __FAC1 matches the previously moved string;
 	// if so - adapt it too
@@ -317,7 +317,7 @@ varstr_garbage_collect_unused:
 
 #if !HAS_OPCODES_65CE02
 	lda #$01
-	jsr varstr_TXTPTR_down_A
+	jsr helper_TXTPTR_down_A
 #else // HAS_OPCODES_65CE02
 	dew TXTPTR
 #endif
@@ -338,14 +338,14 @@ varstr_garbage_collect_unused:
 	// Increase INDEX (shift offset) by string length + back-pointer length
 
 	lda #$03
-	jsr varstr_INDEX_up_A
+	jsr helper_INDEX_up_A
 	txa
-	jsr varstr_INDEX_up_A
+	jsr helper_INDEX_up_A
 
 	// Decrease TXTPTR by unused string length-1
 
 	txa
-	jsr varstr_TXTPTR_down_A
+	jsr helper_TXTPTR_down_A
 
 	// Next iteration
 

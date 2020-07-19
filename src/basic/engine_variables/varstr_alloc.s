@@ -48,14 +48,14 @@ varstr_alloc_retry:
 #if !HAS_OPCODES_65CE02
 
 	lda #$02
-	jsr varstr_FRETOP_down_A
+	jsr helper_FRETOP_down_A
 
 #else // HAS_OPCODES_65CE02 - this time code is slightly longer, but faster
 
 	dew FRETOP
 	dew FRETOP
 
-	jsr varstr_FRETOP_check
+	jsr helper_FRETOP_check
 
 #endif
 
@@ -95,7 +95,7 @@ varstr_alloc_retry:
 	lda (VARPNT),y
 #endif
 
-	jsr varstr_FRETOP_down_A
+	jsr helper_FRETOP_down_A
 	bcs varstr_alloc_fail
 
 	// Success - fill in the string descriptor

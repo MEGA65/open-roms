@@ -3,11 +3,11 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Helper routines for 'varstr_free'
+// Helper routine for FRETOP handling
 //
 
 
-varstr_FRETOP_up:                    // DSCPNT+0 - bytes to increment FRETO
+helper_FRETOP_up:                    // DSCPNT+0 - bytes to increment FRETO
 
 	clc
 	lda FRETOP+0

@@ -20,9 +20,9 @@ varstr_free:
 	rts
 !:
 	// Check if string is above FRETOP (in string area)
-	// XXX consider moving this check out of this routine
+	// XXX move this check out of the routine
 
-	jsr varstr_cmp_fretop
+	jsr helper_cmp_fretop
 	bcs !+
 
 	// No, it does not belong to string area - quit
@@ -36,13 +36,13 @@ varstr_free:
 	// This is the lowest string - so just increase FRETOP, this way
 	// the garbage collector will not be needed that quickly
 
-	jsr varstr_FRETOP_up                         // free the string data
+	jsr helper_FRETOP_up                         // free the string data
 
 #if !HAS_OPCODES_65CE02
 
 	lda #$02                                     // free the back-pointer
 	sta DSCPNT+0
-	jmp varstr_FRETOP_up
+	jmp helper_FRETOP_up
 
 #else // HAS_OPCODES_65CE02
 

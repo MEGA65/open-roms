@@ -25,6 +25,7 @@
 .label JREADST                         = KERNAL_0.JREADST
 .label plot_set                        = KERNAL_0.plot_set
 .label init_oldtxt                     = BASIC_0.init_oldtxt
+.label tmpstr_free_all_reset           = BASIC_0.tmpstr_free_all_reset
 .label rom_revision_basic_string       = BASIC_0.rom_revision_basic_string
 .label print_hex_byte                  = BASIC_0.proxy_B1_print_hex_byte
 .label print_integer                   = BASIC_0.proxy_B1_print_integer

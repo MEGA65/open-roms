@@ -16,9 +16,11 @@ varstr_free:
 	// Check the string size - do not do anything if 0
 
 	lda DSCPNT+0
-	bne !+
+	bne varstr_free_non_0
 	rts
-!:
+
+varstr_free_non_0: // entry point to be used when it is clear that string is not empty
+
 	// Check if string is above FRETOP (in string area)
 	// XXX move this check out of the routine
 

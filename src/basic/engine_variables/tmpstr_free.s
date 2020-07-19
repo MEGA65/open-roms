@@ -67,7 +67,7 @@ tmpstr_free_loop:
 
 	sty DSCPNT+0
 	phx_trash_a
-	jsr varstr_free
+	jsr varstr_free_non_0
 	plx_trash_a
 
 	// Mark empty string as free and quit

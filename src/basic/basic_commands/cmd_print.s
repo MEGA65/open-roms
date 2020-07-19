@@ -29,8 +29,9 @@ cmd_print_loop:
 
 cmd_print_after_comma:
 
-	// Now evaluate the expression
+	// Now evaluate the expression and check what to print
 
+	jsr tmpstr_free_all
 	jsr FRMEVL
 	lda VALTYP
 	bpl cmd_print_float

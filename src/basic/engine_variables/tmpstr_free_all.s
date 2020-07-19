@@ -9,12 +9,32 @@ tmpstr_free_all:
 
 	ldx #$19
 
-	// XXX implement this
-
 	//FALLTROUGH
 
 tmpstr_free_all_loop:
 
-	// XXX finish, deduplicate part with CLR
+	// Free all the strings, one by one
+
+	cpx TEMPPT
+	beq tmpstr_free_all_reset
+
+	lda $00, x
+	beq !+
+
+	phx_trash_a
+	jsr varstr_free_non_0
+	plx_trash_a
+!:
+	inx
+	bne tmpstr_free_all_loop           // branch always
+
+tmpstr_free_all_reset: // entry point for CLR
+
+	// RESET TEMPPT and LASTPT to default values
+
+	lda #$19
+	sta TEMPPT
+	lda #$16
+	sta LASTPT
 	
 	rts

@@ -71,10 +71,7 @@ do_clr:
 
 	// This is a good place to reset the temporary string stack
 
-	lda #$19
-	sta TEMPPT
-	lda #$16
-	sta LASTPT
+	jsr tmpstr_free_all_reset
 
 	// FALLTROUGH (confirmed on real C64 that CLR indeed resets DATPTR)
 

@@ -182,9 +182,10 @@ do_basic_error:                        // error code in .X
 	jsr map_NORMAL
 #endif
 
-	// "?"
+	// Clear all temporary variables, print "?"
 	
 	phx_trash_a
+	jsr tmpstr_free_all
 	ldx #IDX__STR_RET_QM
 	jsr print_packed_misc_str
 	plx_trash_a

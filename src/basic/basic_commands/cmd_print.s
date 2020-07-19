@@ -42,6 +42,8 @@ cmd_print_string:
 
 	// Print a string value
 
+	// XXX add optimized 46K/50K version
+
 	ldy #$00
 !:
 	cpy __FAC1 + 0

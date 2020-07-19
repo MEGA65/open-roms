@@ -58,6 +58,7 @@ Ideas for the future, most of them suitable for Mega65 or other power machines o
 * `RUN` should be able to run program from device, as in BASIC V10
 * `PAGE` and `DELAY` commands from Simons BASIC, or something similar
 * `DUMP` command from Simons BASIC, or something similar
+* it should be possbile to assign to `TI` special variable 
 * function to insert a substring starting from given position
 * function to generate string of n duplicated characters
 * function to retrieve fractional part of a number

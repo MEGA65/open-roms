@@ -13,7 +13,7 @@ tmpstr_free_all:
 
 tmpstr_free_all_loop:
 
-	// Free all the strings, one by one
+	// Free all the temporary strings, one by one
 
 	cpx TEMPPT
 	beq tmpstr_free_all_reset
@@ -21,10 +21,18 @@ tmpstr_free_all_loop:
 	lda $00, x
 	beq !+
 
+	sta DSCPNT+0
+	lda $01, x	
+	sta DSCPNT+1
+	lda $02, x	
+	sta DSCPNT+2
+
 	phx_trash_a
 	jsr varstr_free_non_0
 	plx_trash_a
 !:
+	inx
+	inx
 	inx
 	bne tmpstr_free_all_loop           // branch always
 

@@ -21,7 +21,7 @@ SETTIM:
 	sty TIME + 0
 	stx TIME + 1
 	sta TIME + 2
-.break
+
 	// Enable interrupts. More elegant solution would be pha + sei + ... + pla,
 	// but (checked by running a test program) original ROM routine always
 	// leaves IRQs enabled.

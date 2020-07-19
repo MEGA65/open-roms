@@ -6,6 +6,8 @@
 // Find the BASIC line with number in LINNUM
 
 
+#if CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_60K
+
 find_line_from_start:
 
 	// Get pointer to start of BASIC text
@@ -24,13 +26,9 @@ find_line_from_current:
 	// Fetch the high byte of line number and compare
 	ldy #$03
 
-	// XXX consider optimized 46K/50K version
-
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr peek_under_roms
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_OLDTXT
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
@@ -46,8 +44,6 @@ find_line_from_current:
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_OLDTXT
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
@@ -69,15 +65,11 @@ find_line_next:
 	jsr peek_line_pointer_null_check
 	bcc find_line_fail                           // branch in no more lines exist
 
-	// XXX consider optimized 46K/50K version
-
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
 	ldx #<OLDTXT+0
 	jsr peek_under_roms
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_OLDTXT
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
@@ -87,8 +79,6 @@ find_line_next:
 
 #if CONFIG_MEMORY_MODEL_60K
 	jsr peek_under_roms
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_OLDTXT
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 #endif
@@ -103,3 +93,5 @@ find_line_fail:
 
 	sec
 	rts
+
+#endif

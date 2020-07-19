@@ -17,9 +17,9 @@ fetch_variable_TI_string:
 
 	jsr JRDTIM
 
-	sty INDEX+0
+	sty INDEX+2
 	stx INDEX+1
-	sta INDEX+2
+	sta INDEX+0
 
 	// Now calculate the digits, starting from the most important one
 

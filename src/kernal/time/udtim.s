@@ -18,14 +18,14 @@ UDTIM:
 	// after this time we have to reset the clock.
 
 #if !HAS_OPCODES_65CE02
-	inc TIME+0
+	inc TIME+2
 	bne udtim_time_done   // done with clock
 	inc TIME+1
 #else
-	inw TIME+0
+	inw TIME+2
 #endif
 	bne udtim_clock_rollover
-	inc TIME+2
+	inc TIME+0
 
 	// FALLTROUGH
 
@@ -39,10 +39,10 @@ udtim_clock_rollover:
 	lda TIME+1
 	cmp #$1A
 	bne udtim_time_done   // done with clock
-	lda TIME+2
+	lda TIME+0
 	cmp #$4F
 	bne udtim_time_done   // done with clock
 	lda #$00
-	sta TIME+2
+	sta TIME+0
 	sta TIME+1
 	beq udtim_time_done   // done with clock - will always jump

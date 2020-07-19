@@ -75,8 +75,8 @@ assign_variable_TI_string_loop_next:
 
 	// Set the resulting value
 
-	ldy INDEX+0
+	ldy INDEX+2
 	ldx INDEX+1
-	lda INDEX+2
+	lda INDEX+0
 
 	jmp JSETTIM

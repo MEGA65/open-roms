@@ -60,10 +60,10 @@ helper_ask_if_sure:
 	jsr JCHROUT
 
 	clc
-	lda TIME+0
+	lda TIME+2
 	adc #$0C
 !:
-	cmp TIME+0
+	cmp TIME+2
 	bne !-
 
 	// FALLTROUGH

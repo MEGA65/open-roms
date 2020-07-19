@@ -16,15 +16,9 @@ is_line_pointer_null:
 	lda #$26
 	sta CPU_R6510
 
-	// Check the pointer
+	// Check the pointer - reuse code from other routine
 
-	ldy #$01                 // for non-NULL pointer, high byte is almost certainly not NULL
-	lda (OLDTXT),y
-	bne !+                   // branch if pointer not NULL
-	
-	dey
-	lda (OLDTXT),y
-!:
+	jsr line_pointer_null_check
 
 	// Restore memory mapping and quit
 
@@ -32,6 +26,7 @@ is_line_pointer_null:
 	lda #$27
 	sta CPU_R6510
 	plp
+
 	rts
 
 #endif

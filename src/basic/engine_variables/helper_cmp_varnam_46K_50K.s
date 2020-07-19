@@ -2,38 +2,36 @@
 // #LAYOUT# *   BASIC_0 #TAKE-HIGH
 // #LAYOUT# *   *       #IGNORE
 
-// This has to go $E000 or above - routine below banks out the main BASIC ROM!
-
-//
-// Helper routine to copy string descriptor
-//
-
+// This has to go $E000 or above - routines below banks out the main BASIC ROM!
 
 #if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-helper_strdesccpy:
+helper_cmp_varnam:
 
 	// Unmap BASIC lower ROM
 
 	lda #$26
 	sta CPU_R6510
 
-	// Retrieve pointer to destination
+	// Compare variable name
 
 	ldy #$00
-	lda (VARPNT), y
-	sta DSCPNT+0
-	iny
-	lda (VARPNT), y
-	sta DSCPNT+1
-	iny
-	lda (VARPNT), y
-	sta DSCPNT+2
+	lda (VARPNT),y
 
+	cmp VARNAM+0
+	bne !+
+
+	iny
+	lda (VARPNT),y
+	cmp VARNAM+1
+!:
 	// Restore default memory mapping
+	// XXX consider deduplicating with 'is_line_pointer_null'
 
+	php
 	lda #$27
 	sta CPU_R6510
+	plp
 
 	rts
 

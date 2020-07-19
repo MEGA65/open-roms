@@ -25,7 +25,7 @@ find_line_from_current:
 
 	// Check if line is not empty
 
-	jsr find_line_null_ptr_check       // we can't use 'is_line_pointer_null', it maps out/in the BASIC ROM
+	jsr line_pointer_null_check        // we can't use 'is_line_pointer_null', it maps out/in the BASIC ROM
 	beq remap_BASIC_sec_rts            // search failed if there is no program
 
 	// Fetch the high byte of line number and compare
@@ -52,7 +52,7 @@ find_line_next:
 
 	// Advance to the next line
 
-	jsr find_line_null_ptr_check       // we can't use 'is_line_pointer_null', it maps out/in the BASIC ROM
+	jsr line_pointer_null_check        // we can't use 'is_line_pointer_null', it maps out/in the BASIC ROM
 	beq remap_BASIC_sec_rts            // search failed if no more line exists
 
 	ldy #$00
@@ -68,7 +68,7 @@ find_line_next:
 
 	jmp_8 find_line_from_current
 
-find_line_null_ptr_check:
+line_pointer_null_check:               // reused by 'is_line_pointer_null'
 
 	// Check the pointer
 
@@ -81,7 +81,6 @@ find_line_null_ptr_check:
 	bne !+
 !:
 	rts
-
 
 remap_BASIC_clc_rts:
 

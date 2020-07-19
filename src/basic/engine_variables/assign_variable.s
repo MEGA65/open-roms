@@ -7,7 +7,7 @@ assign_variable:
 
 	// Fetch variable name, should be followed by assign operator
 
-	jsr fetch_variable
+	jsr fetch_variable_name
 
 #if HAS_OPCODES_65CE02
 
@@ -25,6 +25,21 @@ assign_variable:
 !:
 
 #endif
+
+	// Check for special variables
+
+	jsr is_var_TI_string
+	beq_16 assign_variable_TI_string
+
+	jsr is_var_TI
+	beq_16 do_SYNTAX_error
+
+	jsr is_var_ST
+	beq_16 do_SYNTAX_error
+
+	// Retrieve the variable address
+
+	jsr fetch_variable_find_addr
 
 	// Determine variable type and push it to the stack
 

@@ -25,8 +25,8 @@ find_line_from_current:
 
 	// Check if line is not empty
 
-	jsr peek_line_pointer_null_check
-	bcc find_line_fail
+	jsr find_line_null_ptr_check       // we can't use 'peek_line_pointer_null_check', it maps out/in the BASIC ROM
+	beq_16 remap_BASIC_sec_rts         // search failed if there is no program
 
 	// Fetch the high byte of line number and compare
 
@@ -35,36 +35,25 @@ find_line_from_current:
 
 	cmp LINNUM+1
 	beq !+
-	bcs find_line_fail                           // branch if line number too high
+	bcs_16 remap_BASIC_sec_rts         // search failed if line number too high
 	bne find_line_next
 !:
-
 	// Fetch the low byte of line number and compare
 
 	dey
 	lda (OLDTXT),y
 
 	cmp LINNUM+0
-	beq find_line_success
-	bcs find_line_fail                           // branch if line number too high
+	beq_16 remap_BASIC_clc_rts
+	bcs_16 remap_BASIC_sec_rts        // search failed if line number too high
 	bne find_line_next
-
-find_line_success:
-
-	// Restore default memory mapping and quit
-
-	lda #$27
-	sta CPU_R6510
-
-	clc
-	rts
 
 find_line_next:
 
 	// Advance to the next line
 
-	jsr peek_line_pointer_null_check
-	bcc find_line_fail                           // branch in no more lines exist
+	jsr find_line_null_ptr_check       // we can't use 'peek_line_pointer_null_check', it maps out/in the BASIC ROM
+	beq_16 remap_BASIC_sec_rts         // search failed if no more line exists
 
 	ldy #$00
 	lda (OLDTXT),y
@@ -79,15 +68,19 @@ find_line_next:
 
 	jmp_8 find_line_from_current
 
-find_line_fail:
+find_line_null_ptr_check:
 
-	// Restore default memory mapping and quit
+	// Check the pointer
 
-	lda #$27
-	sta CPU_R6510
-
-
-	sec
+	ldy #$01                           // for non-NULL pointer, high byte is almost certainly not NULL
+	lda (OLDTXT),y
+	bne !+
+	
+	dey
+	lda (OLDTXT),y
+	bne !+
+!:
 	rts
+
 
 #endif

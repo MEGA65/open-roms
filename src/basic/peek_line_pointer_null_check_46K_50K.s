@@ -21,13 +21,17 @@ peek_line_pointer_null_check:
 
 	ldy #$01                 // for non-NULL pointer, high byte is almost certainly not NULL
 	lda (OLDTXT),y
-	bne !+
+	bne !+                   // branch if pointer not NULL
 	
 	dey
 	lda (OLDTXT),y
-	bne !+
+	bne !+                   // branch if pointer not NULL
 
 	// Pointer is NULL
+
+	// FALLTROUGH
+
+remap_BASIC_clc_rts:
 
 	lda #$27
 	sta CPU_R6510
@@ -36,6 +40,8 @@ peek_line_pointer_null_check:
 	rts
 !:
 	// Pointer not NULL
+
+remap_BASIC_sec_rts:
 
 	lda #$27
 	sta CPU_R6510

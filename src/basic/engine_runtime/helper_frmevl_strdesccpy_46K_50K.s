@@ -30,6 +30,10 @@ helper_frmevl_strdesccpy:
 	lda (VARPNT),y
 	sta __FAC1+2
 
+	// FALLTROUGH
+
+remap_BASIC:
+
 	// Restore default memory mapping
 
 	lda #$27

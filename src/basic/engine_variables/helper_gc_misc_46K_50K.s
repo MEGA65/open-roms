@@ -49,9 +49,6 @@ helper_gc_misc_end:
 
 	// Restore default memory mapping
 
-	lda #$27
-	sta CPU_R6510
-
-	rts
+	jmp remap_BASIC
 
 #endif

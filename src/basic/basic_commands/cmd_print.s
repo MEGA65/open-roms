@@ -42,7 +42,12 @@ cmd_print_string:
 
 	// Print a string value
 
-	// XXX add optimized 46K/50K version
+#if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+
+	jsr helper_print_string
+	jmp_8 cmd_print_next_arg
+
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_60K
 
 	ldy #$00
 !:
@@ -50,23 +55,17 @@ cmd_print_string:
 	beq cmd_print_next_arg
 
 #if CONFIG_MEMORY_MODEL_60K
-
 	ldx #<(__FAC1 + 1)
 	jsr peek_under_roms
-
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-
-	jsr peek_under_roms_via_FAC1_PLUS_1
-
 #else // CONFIG_MEMORY_MODEL_38K
-
 	lda (__FAC1 + 1), y
-
 #endif
 
 	jsr JCHROUT
 	iny
-	jmp !-
+	bpl !-
+
+#endif
 
 cmd_print_float:
 

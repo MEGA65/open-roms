@@ -21,7 +21,7 @@ peek_under_roms_via_TXTPTR:
 
 	// FALLTROUGH
 
-peek_under_roms_finalize:
+remap_BASIC_preserve_A:
 
 	// Restore memory mapping
 
@@ -44,7 +44,7 @@ peek_under_roms_via_OLDTXT:
 	// Retrieve value from under ROMs
 
 	lda (OLDTXT), y
-	jmp_8 peek_under_roms_finalize
+	jmp_8 remap_BASIC_preserve_A
 
 peek_under_roms_via_VARPNT:
 
@@ -56,7 +56,7 @@ peek_under_roms_via_VARPNT:
 	// Retrieve value from under ROMs
 
 	lda (VARPNT), y
-	jmp_8 peek_under_roms_finalize
+	jmp_8 remap_BASIC_preserve_A
 
 peek_under_roms_via_FAC1_PLUS_1:
 
@@ -67,9 +67,8 @@ peek_under_roms_via_FAC1_PLUS_1:
 
 	// Retrieve value from under ROMs
 
-	lda (__FAC1 + 1), y
-	jmp_8 peek_under_roms_finalize
-
+	lda (__FAC1+1), y
+	jmp_8 remap_BASIC_preserve_A
 
 #if ROM_LAYOUT_M65
 
@@ -90,7 +89,7 @@ fetch_character:
 
 	// Restore memory mapping
 
-	bra peek_under_roms_finalize
+	jmp_8 remap_BASIC_preserve_A
 
 
 fetch_character_skip_spaces:
@@ -114,7 +113,7 @@ fetch_character_skip_spaces:
 
 	// Restore memory mapping
 
-	bra peek_under_roms_finalize
+	jmp_8 remap_BASIC_preserve_A
 
 
 #endif

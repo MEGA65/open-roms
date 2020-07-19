@@ -26,8 +26,6 @@ assign_variable_TI_string:
 
 	// FALLTROUGH
 
-	// XXX provide optimized version for memory models 46K/50K
-
 assign_variable_TI_string_loop:
 
 	// First fetch the digit

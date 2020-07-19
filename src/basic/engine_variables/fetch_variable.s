@@ -93,27 +93,14 @@ fetch_variable_type_string:
 
 fetch_variable_special:
 
-	lda VARNAM+0
-	cmp #$54                           // 'T'
-	beq !+
-	cmp #$53                           // 'S'
-	bne fetch_variable_find_addr
-
-	// First character is 'S', check the second one
-
-	lda VARNAM+1
-	cmp #$54                           // 'T'
-	bne fetch_variable_find_addr
-
-	jmp fetch_variable_ST
-!:
-	// First character is 'T', check the second one
-
-	lda VARNAM+1
-	cmp #$49
-	beq_16 fetch_variable_TI
-	cmp #$C9
+	jsr is_var_TI_string
 	beq_16 fetch_variable_TI_string
+
+	jsr is_var_TI
+	beq_16 fetch_variable_TI
+
+	jsr is_var_ST
+	beq_16 fetch_variable_ST
 
 	// FALLTROUGH
 

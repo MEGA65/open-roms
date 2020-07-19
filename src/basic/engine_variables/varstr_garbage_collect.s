@@ -87,6 +87,12 @@ varstr_garbage_collect_check_bptr:
 
 	// Copy the back-pointer to OLDTXT, check if it is NULL
 
+#if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+
+	jsr helper_gc_fetch_backpointer
+
+#else 
+
 	ldy #$00
 
 #if CONFIG_MEMORY_MODEL_60K
@@ -95,13 +101,6 @@ varstr_garbage_collect_check_bptr:
 	sta OLDTXT+0
 	iny
 	jsr peek_under_roms
-	sta OLDTXT+1
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	// XXX consider optimized version without multiple JSRs
-	jsr peek_under_roms_via_TXTPTR
-	sta OLDTXT+0
-	iny
-	jsr peek_under_roms_via_TXTPTR
 	sta OLDTXT+1
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (TXTPTR),y
@@ -112,6 +111,9 @@ varstr_garbage_collect_check_bptr:
 #endif
 
 	ora OLDTXT+0
+
+#endif
+
 	beq_16 varstr_garbage_collect_unused 
 	
 	// The back-pointer is not NULL - string is used
@@ -159,12 +161,7 @@ varstr_garbage_collect_check_bptr:
 	jsr peek_under_roms
 	sta memmove__src+1
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	// XXX consider optimized version without multiple JSRs
-	jsr peek_under_roms_via_OLDTXT
-	sta memmove__src+0
-	iny
-	jsr peek_under_roms_via_OLDTXT
-	sta memmove__src+1
+	jsr helper_gc_set_memmove_src
 #else // CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
 	sta memmove__src+0
@@ -227,19 +224,8 @@ varstr_garbage_collect_check_bptr:
 	jsr poke_under_roms
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	// XXX consider optimized version without multiple JSRs
-
-	jsr peek_under_roms_via_OLDTXT
-	clc
-	adc INDEX+0
-	sta (OLDTXT),y
-	iny
-
-	php
-	jsr peek_under_roms_via_OLDTXT
-	plp
-	adc INDEX+1
-	sta (OLDTXT),y
+	
+	jsr helper_gc_increase_oldtxt
 
 #else // CONFIG_MEMORY_MODEL_38K
 

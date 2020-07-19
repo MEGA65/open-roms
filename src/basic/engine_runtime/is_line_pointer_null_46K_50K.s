@@ -20,6 +20,10 @@ is_line_pointer_null:
 
 	jsr line_pointer_null_check
 
+	// FALLTROUGH
+
+remap_BASIC_preserve_P:
+
 	// Restore memory mapping and quit
 
 	php

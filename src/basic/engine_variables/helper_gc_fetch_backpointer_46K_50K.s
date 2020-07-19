@@ -6,25 +6,25 @@
 
 #if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-helper_cmp_varnam:
+helper_gc_fetch_backpointer:
 
 	// Unmap BASIC lower ROM
 
 	lda #$26
 	sta CPU_R6510
 
-	// Compare variable name
+	// Copy the back-pointer to OLDTXT, check if it is NULL
 
 	ldy #$00
-	lda (VARPNT),y
-
-	cmp VARNAM+0
-	bne !+
+	lda (TXTPTR),y
+	sta OLDTXT+0
 
 	iny
-	lda (VARPNT),y
-	cmp VARNAM+1
-!:
+	lda (TXTPTR),y
+	sta OLDTXT+1
+
+	ora OLDTXT+0
+
 	// Restore default memory mapping
 
 	jmp remap_BASIC_preserve_P

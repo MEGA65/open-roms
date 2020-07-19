@@ -39,6 +39,3 @@ setup_pal_ntsc:
 
 wait_x_bars:
 	STUB_IMPLEMENTATION()
-
-udtim_keyboard:
-	STUB_IMPLEMENTATION()

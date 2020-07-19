@@ -51,6 +51,12 @@ udtim_clock_reset:
 
 udtim_keyboard:
 
+#if CONFIG_PLATFORM_COMMANDER_X16
+
+	STUB_IMPLEMENTATION()
+
+#else
+
 	// According to [CM64], page 27, the action we have to perform is to copy
 	// the last row of keyboard to RAM, so that various routines can detect the STOP
 	// key press. But something as simple as this would have created warm restart
@@ -93,3 +99,5 @@ udtim_keyboard:
 	// unable to, for example, read the space bar status.
 
 	rts
+
+#endif

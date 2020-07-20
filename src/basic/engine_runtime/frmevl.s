@@ -1,5 +1,4 @@
 // #LAYOUT# STD *       #TAKE
-// #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
 // #LAYOUT# *   BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
@@ -19,7 +18,7 @@
 //   in a correct order
 //
 
-// XXX finish the implementation: invoking functions, fetcching PI, fetching float, fetching variables
+// XXX finish the implementation: invoking functions, fetching floats
 
 
 FRMEVL:
@@ -78,7 +77,7 @@ FRMEVL_loop:
 	dew TXTPTR
 #endif
 	jsr fetch_variable
-	bcs !+
+	bcs FRMEVL_fetch_float
 
 	// Found the variable - copy descriptor to FAC1
 
@@ -115,17 +114,6 @@ FRMEVL_loop:
 #endif
 
 	jmp_8 FRMEVL_got_value
-
-!:
-	// There is one possibility left - a floating point value
-
-
-	// XXX implement this part
-
-
-	// Nothing recognized
-
-	jmp do_SYNTAX_error
 
 //
 // This subroutine handles the situation when we have to execute a BASIC function
@@ -175,9 +163,11 @@ FRMEVL_handle_bracket:
 
 FRMEVL_fetch_PI:
 
-	// XXX implement this
+	lda #<const_PI
+	ldy #>const_PI
+	jsr mov_MEM_FAC1
 
-	jmp do_NOT_IMPLEMENTED_error
+	jmp_8 FRMEVL_got_value_float
 
 //
 // This subroutine fetches the floating point value from the 'outside world'
@@ -188,6 +178,14 @@ FRMEVL_fetch_float:
 	// XXX implement this
 
 	jmp do_NOT_IMPLEMENTED_error
+
+	// FALLTROUGH
+
+FRMEVL_got_value_float:
+
+	lda #$00
+	sta VALTYP
+	beq FRMEVL_got_value
 
 //
 // This subroutine fetches the string value from the 'outside world'

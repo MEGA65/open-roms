@@ -7,6 +7,7 @@
 // Helper table for 'MEM' command - list of minuend zeropage variables
 //
 
+#if !HAS_SMALL_BASIC
 
 helper_mem_tab_x:
 
@@ -15,3 +16,5 @@ helper_mem_tab_x:
 	.byte STREND
 	.byte ARYTAB
 	.byte VARTAB
+
+#endif

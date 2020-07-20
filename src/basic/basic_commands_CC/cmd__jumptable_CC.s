@@ -6,6 +6,7 @@
 // Jumptable for BASIC commands with tokens prefixed by $CC
 //
 
+#if !HAS_SMALL_BASIC
 
 .const command_CC_list = List().add(
 
@@ -17,11 +18,30 @@
 	cmd_bsave,
 	cmd_bverify,
 
-	cmd_cold,
 	cmd_clear,
 	varstr_garbage_collect,            // cmd_dispose
+
+	cmd_cold,
 	cmd_mem
 )
+
+#else
+
+.const command_CC_list = List().add(
+
+	cmd_old,
+
+	cmd_merge,
+
+	cmd_bload,
+	cmd_bsave,
+	cmd_bverify,
+
+	cmd_clear,
+	varstr_garbage_collect             // cmd_dispose
+)
+
+#endif
 
 
 #if !HAS_OPCODES_65C02

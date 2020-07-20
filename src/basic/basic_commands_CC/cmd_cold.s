@@ -3,6 +3,8 @@
 // #LAYOUT# *   *       #IGNORE
 
 
+#if !HAS_SMALL_BASIC
+
 cmd_cold:
 
 	jsr helper_ask_if_sure
@@ -12,3 +14,5 @@ cmd_cold:
 	jmp (vector_reset)                 // hardware CPU vector
 !:
 	rts
+
+#endif

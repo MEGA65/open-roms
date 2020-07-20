@@ -7,19 +7,19 @@ NOTE: Command syntax, behaviour details, and tokens are still subject to change!
 
 The DOS Wedge commands are only available in direct mode, and they have to start from the first character of the line.
 
-### `@`
+### `@` (all)
 
 Displays the error/status read from the current drive. Current drive is either the last device used by any I/O command, the one set by DOS Wedge command, or 8 as a fallback.
 
-### `@$`
+### `@$` (all)
 
 Displays the directory of the current drive. Does not destroy BASIC program in memory.
 
-### `@device_number`
+### `@device_number` (all)
 
 Changes the current drive number.
 
-### `@command`
+### `@command` (all)
 
 Sends the DOS command to the current drive.
 
@@ -27,55 +27,55 @@ Sends the DOS command to the current drive.
 
 The Tape Wedge commands are only available in direct mode, and they have to start from the first character of the line.
 
-### `←L ["file_name"]`
+### `←L ["file_name"]` (all)
 
 Loads the file from tape. Depending on the configuration, it tries to load the file in TurboTape 64 format, in the standard CBM format, or autodetects the file format.
 
-### `←M ["file_name"]`
+### `←M ["file_name"]` (all)
 
 Like above, but merges a BASIC program to the one already stored in memory.
 
-### `←H`
+### `←H` (Mega65)
 
 Launches a built-in tape head alignment tool. Destroys program in memory. Press `RUN/STOP` to terminate the tool.
 
 ## Additional BASIC commands - I/O
 
-### `MERGE "file_name" [, device_number]`
+### `MERGE "file_name" [, device_number]` (all)
 
 Appends the BASIC program from a storage medium to the one currently present in memory.
 
-### `BLOAD "file_name", device_number, start_address`
+### `BLOAD "file_name", device_number, start_address` (all)
 
 Loads a binary file starting from the given memory location. Does not clear variables, does not perform BASIC program relinking, etc. NOTE: for now syntax differs from the BASIC V3.5+ - this will be changed once the necessary BASIC infrastructure is implemented.
 
-### `BVERIFY "file_name", device_number, start_address`
+### `BVERIFY "file_name", device_number, start_address` (all)
 
 Verify operation for the binary data starting from a given addres. NOTE: for now syntax differs from the BASIC V3.5+ - this will be changed once the necessary BASIC infrastructure is implemented.
 
-### `BSAVE "file_name", device_number, start_address, end_address`
+### `BSAVE "file_name", device_number, start_address, end_address` (all)
 
 Saves the binary data from the given memory area. NOTE: for now syntax differs from the BASIC V3.5+ - this will be changed once the necessary BASIC infrastructure is implemented.
 
 ## Additional BASIC commands - misc
 
-### `COLD`
+### `COLD` (Mega65)
 
 Resets the machine. In direct mode asks for confirmation first.
 
-### `FAST`
+### `FAST` (all)
 
 Tries to switch the machine to turbo mode - details differ depending on the configured machine / motherboard.
 
-### `SLOW`
+### `SLOW` (all)
 
 Tries to switch the machine back to 1 MHz operation mode.
 
-### `OLD`
+### `OLD` (all)
 
 Tries to restore program destroyed by the `NEW` command or a reset.
 
-### `MEM`
+### `MEM` (Mega65)
 
 Displays BASIC memory usage information:
 * `TEXT` - size of BASIC program text, always at least 2 bytes are used
@@ -84,10 +84,10 @@ Displays BASIC memory usage information:
 * `STRS` - bytes occupied by strings, also the ones belonging to arrays
 * `FREE` - unused space
 
-### `CLEAR`
+### `CLEAR` (all)
 
 Clears the screen content.
 
-### `DISPOSE`
+### `DISPOSE` (all)
 
 Runs the garbage collector - disposes outdated strings.

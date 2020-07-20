@@ -7,6 +7,7 @@
 // Helper table for 'MEM' command - list of strings to print
 //
 
+#if !HAS_SMALL_BASIC
 
 helper_mem_tab_str:
 
@@ -15,3 +16,5 @@ helper_mem_tab_str:
 	.byte IDX__STR_MEM_ARRS
 	.byte IDX__STR_MEM_VARS
 	.byte IDX__STR_MEM_TEXT
+
+#endif

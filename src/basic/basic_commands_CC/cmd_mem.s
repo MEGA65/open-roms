@@ -4,6 +4,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 
+#if !HAS_SMALL_BASIC
 
 #if (!ROM_LAYOUT_M65 || SEGMENT_BASIC_0)
 
@@ -144,3 +145,5 @@ cmd_mem_next:
 
 
 #endif // ROM layout
+
+#endif // !HAS_SMALL_BASIC

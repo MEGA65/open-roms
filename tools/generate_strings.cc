@@ -183,10 +183,10 @@ const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
     { true,  true,  true,  true,  "KCC_03",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
     { true,  true,  true,  true,  "KCC_04",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
     { true,  true,  true,  true,  "KCC_05",   "BVERIFY",      },
-    { true,  true,  true,  true,  "KCC_06",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-    { true,  true,  true,  true,  "KCC_07",   "CLEAR",        }, // Not present in CBM BASIC dialects, OpenROMs specific
-    { true,  true,  true,  true,  "KCC_08",   "DISPOSE",      }, // Not present in CBM BASIC dialects, OpenROMs specific
-    { true,  true,  true,  true,  "KCC_09",   "MEM",          }, // Not present in CBM BASIC dialects, OpenROMs specific
+    { true,  true,  true,  true,  "KCC_06",   "CLEAR",        }, // Not present in CBM BASIC dialects, OpenROMs specific
+    { true,  true,  true,  true,  "KCC_07",   "DISPOSE",      }, // Not present in CBM BASIC dialects, OpenROMs specific
+    { false, true,  false, false,  "KCC_08",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { false, true,  false, false,  "KCC_09",   "MEM",          }, // Not present in CBM BASIC dialects, OpenROMs specific
 
     // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };
@@ -316,17 +316,17 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { true,  true,  true,  true,  "STR_READY",    "\rREADY.\r"         }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
     { true,  true,  true,  true,  "STR_ERROR",    " ERROR"             }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
     { true,  true,  true,  true,  "STR_IN",       " IN "               },
-    { true,  true,  true,  true,  "STR_IF_SURE",  "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
+    { false, true,  false, false, "STR_IF_SURE",  "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
     // STD    M65    U64    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
     { true,  true,  true,  true,  "STR_BRK_AT",   "\rBRK AT $"         },
-    { true,  true,  true,  true,  "STR_MEM_HDR",  "\r\x12 AREA   START   SIZE  \r" },
-    { true,  true,  true,  true,  "STR_MEM_1",    "   $"               },
-    { true,  true,  true,  true,  "STR_MEM_2",    "   "                },
-    { true,  true,  true,  true,  "STR_MEM_TEXT", "\r TEXT"            },
-    { true,  true,  true,  true,  "STR_MEM_VARS", "\r VARS"            },
-    { true,  true,  true,  true,  "STR_MEM_ARRS", "\r ARRS"            },
-    { true,  true,  true,  true,  "STR_MEM_STRS", "\r STRS"            },
-    { true,  true,  true,  true,  "STR_MEM_FREE", "\r\r FREE"          },
+    { false, true,  false, false, "STR_MEM_HDR",  "\r\x12 AREA   START   SIZE  \r" },
+    { false, true,  false, false, "STR_MEM_1",    "   $"               },
+    { false, true,  false, false, "STR_MEM_2",    "   "                },
+    { false, true,  false, false, "STR_MEM_TEXT", "\r TEXT"            },
+    { false, true,  false, false, "STR_MEM_VARS", "\r VARS"            },
+    { false, true,  false, false, "STR_MEM_ARRS", "\r ARRS"            },
+    { false, true,  false, false, "STR_MEM_STRS", "\r STRS"            },
+    { false, true,  false, false, "STR_MEM_FREE", "\r\r FREE"          },
 
     // Note: depending on configuration, additional strings will be added here
 } };

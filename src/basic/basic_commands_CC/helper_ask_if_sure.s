@@ -9,6 +9,8 @@
 //
 
 
+#if !HAS_SMALL_BASIC
+
 helper_ask_if_sure:
 
 #if (ROM_LAYOUT_M65 && SEGMENT_BASIC_0)
@@ -75,3 +77,5 @@ helper_ask_if_sure_ok:
 
 
 #endif // ROM layout
+
+#endif // !HAS_SMALL_BASIC

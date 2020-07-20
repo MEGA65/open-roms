@@ -60,6 +60,8 @@ wedge_dos:
 
 wedge_dos_command:
 
+#if !HAS_SMALL_BASIC
+
 	// Check if command needs confirmation
 
 	ldy #$00
@@ -105,6 +107,8 @@ wedge_dos_command_ask:
 	// FALLTROUGH
 
 wedge_dos_command_confirmed:
+
+#endif // !HAS_SMALL_BASIC
 
 	// Provide command name
 

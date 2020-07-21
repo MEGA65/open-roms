@@ -195,7 +195,7 @@ list_display_token_01:
 
 	// Check if token is known
 	cpx #TK__MAXTOKEN_keywords_01
-	bcs list_is_unknown                          // XXX consider displaying two question marks here, not one
+	bcs list_is_unknown
 
 	// Now ask for it to be printed
 	phy_trash_a
@@ -219,7 +219,7 @@ list_display_token_02:
 
 	// Check if token is known
 	cpx #TK__MAXTOKEN_keywords_02
-	bcs list_is_unknown                          // XXX consider displaying two question marks here, not one
+	bcs list_is_unknown
 
 	// Now ask for it to be printed
 	phy_trash_a
@@ -248,8 +248,15 @@ list_fetch_subtoken:
 	
 	// Subtract $1 from token to get offset in token list
 	tax
+	beq list_fetch_subtoken_fail
 	dex
 
 	rts
+
+list_fetch_subtoken_fail:
+
+	dey
+	jmp list_display_unknown_token
+
 
 #endif // ROM layout

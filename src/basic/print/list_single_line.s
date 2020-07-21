@@ -142,6 +142,7 @@ list_not_rem:
 	bne list_print_loop // branch always
 
 list_is_pi:
+
 	lda #$7E
 
 	// FALLTROUGH
@@ -202,12 +203,12 @@ list_display_token_01:
 
 	// FALLTROUGH
 
-list_display_token_01_done:
+list_display_token_ext_done:
 
 	ply_trash_a
 
 	// Next iteration
-	jmp_8 list_print_loop
+	jmp_8 list_not_rem
 
 #if !HAS_SMALL_BASIC
 
@@ -223,7 +224,7 @@ list_display_token_02:
 	// Now ask for it to be printed
 	phy_trash_a
 	jsr print_packed_keyword_02
-	jmp_8 list_display_token_01_done
+	jmp_8 list_display_token_ext_done
 
 #endif
 

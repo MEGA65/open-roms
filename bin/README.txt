@@ -22,6 +22,6 @@ Have fun!
 ------
 
 
-PXL font was created by Retrofan, we got a permission to include it with OpenROMs under GNU Lesser General Public License 3.0, see:
+PXL font was created by Retrofan, we got a permission to include it with Open ROMs under GNU Lesser General Public License 3.0, see:
 
 - https://www.forum64.de/index.php?thread/84000-neuer-c64-systemfont-auch-plus4-c128-atari/&postID=1493383#post1493383

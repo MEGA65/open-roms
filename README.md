@@ -1,4 +1,4 @@
-# open-roms
+# Open ROMs
 
 ![screenshot demonstrating some features](./doc/screenshot-demo.png)
 

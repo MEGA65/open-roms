@@ -190,8 +190,8 @@ const StringEntryList GLOBAL_Keywords_01 =  { ListType::KEYWORDS, "keywords_01",
     { true,  true,  true,  true,  "K02_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
     { true,  true,  true,  true,  "K02_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
     { true,  true,  true,  true,  "K02_04",   "BVERIFY",      },
-    { true,  true,  true,  true,  "K02_05",   "CLEAR",        }, // Not present in CBM BASIC dialects, OpenROMs specific
-    { true,  true,  true,  true,  "K02_06",   "DISPOSE",      }, // Not present in CBM BASIC dialects, OpenROMs specific
+    { true,  true,  true,  true,  "K02_05",   "CLEAR",        }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { true,  true,  true,  true,  "K02_06",   "DISPOSE",      }, // Not present in CBM BASIC dialects, Open ROMs specific
 } };
 
 // extended BASIC keywords - list reserved for generic (mostly hardware independent) BASIC commands
@@ -201,7 +201,7 @@ const StringEntryList GLOBAL_Keywords_02 =  { ListType::KEYWORDS, "keywords_02",
     // STD    M65    U64    X16
 
     { false, true,  false, false, "K02_07",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-    { false, true,  false, false, "K02_08",   "MEM",          }, // Not present in CBM BASIC dialects, OpenROMs specific
+    { false, true,  false, false, "K02_08",   "MEM",          }, // Not present in CBM BASIC dialects, Open ROMs specific
 
     // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };
@@ -263,7 +263,7 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
     { false, false, false, false, "EV7_27", "UNRESOLVED REFERENCE"     }, // not used for now
     { true,  true,  true,  true,  "EV7_28", "NOT IMPLEMENTED"          }, // this message actually differs from the CBM one
     { false, false, false, false, "EV7_29", "FILE READ"                }, // not used for now
-    // STD    M65    U64    X16   --- error strings specific to OpenROMs, not present in CBM BASIC dialects
+    // STD    M65    U64    X16   --- error strings specific to Open ROMs, not present in CBM BASIC dialects
     { true,  true,  true,  true,  "EOR_2A", "MEMORY CORRUPT"           },   
 } };
 
@@ -278,7 +278,7 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { true,  true,  true,  true,  "STR_ERROR",    " ERROR"             }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
     { true,  true,  true,  true,  "STR_IN",       " IN "               },
     { false, true,  false, false, "STR_IF_SURE",  "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
-    // STD    M65    U64    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
+    // STD    M65    U64    X16   --- misc strings specific to Open ROMs, not present in CBM ROMs
     { true,  true,  true,  true,  "STR_BRK_AT",   "\rBRK AT $"         },
     { false, true,  false, false, "STR_MEM_HDR",  "\r\x12 AREA   START   SIZE  \r" },
     { false, true,  false, false, "STR_MEM_1",    "   $"               },

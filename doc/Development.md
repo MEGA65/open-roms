@@ -1,5 +1,5 @@
 
-# OpenROMs development guide
+# Open ROMs development guide
 
 NOTE: this document is a preliminary version, definitely incomplete!
 
@@ -10,30 +10,30 @@ NOTE: this document is a preliminary version, definitely incomplete!
 - [DolphinDOS](./Protocol-DolphinDOS.md) 
 
 
-## Guidelines for software developers for OpenROMs compatibility
+## Guidelines for software developers for Open ROMs compatibility
 
-Most important: always test your software on the original ROMs too. If your code works on the OpenROMs, but fails on the original firmware - than something is clearly wrong, and it might stop working once we make OpenROMs more compatible for one reason or another.
+Most important: always test your software on the original ROMs too. If your code works on the Open ROMs, but fails on the original firmware - than something is clearly wrong, and it might stop working once we make Open ROMs more compatible for one reason or another.
 
 ### Unofficial ROM APIs
 
-Please, do not use any internal/unofficial OpenROMs API. They WILL change in an incompatible way, you may believe me. Using unofficial API of the original ROMs is OK if the routine is marked as supported in the [implementation status](../STATUS.md) document.
+Please, do not use any internal/unofficial Open ROMs API. They WILL change in an incompatible way, you may believe me. Using unofficial API of the original ROMs is OK if the routine is marked as supported in the [implementation status](../STATUS.md) document.
 
-### Compatibility with OpenROMs for Mega65
+### Compatibility with Open ROMs for Mega65
 
-The Mega65 OpenROMs build aims to provide a C64-compatible memory map in range `$00000-$0FFFF`. For `$10000` and above, everything is still subject to change.
+The Mega65 Open ROMs build aims to provide a C64-compatible memory map in range `$00000-$0FFFF`. For `$10000` and above, everything is still subject to change.
 
 Please note, that certain ROM routines are moved to additional Mega65 ROM area (2x8KB is not enough to implement full ROM functionality and additional features) - original locations contain just short compatibility code which remaps memory, calls the real routine, and restores default mapping (that means all blocks unmapped). This shouldn't be a problem for original C64 software, but can make a difference for Mega65-aware code; thus, please follow these simple rules:
 
 - do not call ROM routines with .B set to anything other than 0 (and .B set to 0x40 or above is a receipe for disaster!)
 - be aware that ROM routines may restore the default memory mapping by means of MAP/EOM
 
-OpenROMs interrupt handlers do not touch the ROM mapping, range `0x4000-0xBFFF` can be freely mapped without disabling IRQ or NMI. The .Z register is mostly safe to use too - some routines might use it, but they will alwayys restore it's previous state. Please be aware, that for maximum compatibility our IRQ/NMI handlers DO NOT store/restore .Z register.
+Open ROMs interrupt handlers do not touch the ROM mapping, range `0x4000-0xBFFF` can be freely mapped without disabling IRQ or NMI. The .Z register is mostly safe to use too - some routines might use it, but they will alwayys restore it's previous state. Please be aware, that for maximum compatibility our IRQ/NMI handlers DO NOT store/restore .Z register.
 
 ### API extensions
 
 #### PETSCII
 
-OpenROMs provides support for several additional PETSCII codes (all compatible with C128 and/or C65):
+Open ROMs provides support for several additional PETSCII codes (all compatible with C128 and/or C65):
 
 | PETSCII code | description                                         |
 | :----------: | :-------------------------------------------------- |
@@ -69,7 +69,7 @@ Mega65 build starts in legacy mode, which is intended to be reasonably compatibl
 
 - Slightly different chargen. On C64 machines pressing C= + G or C= + M key combinations produces the same visual result as C= + H or C= + N, respectively - despite keycap printing suggests they should produce tinner bars. This was intentional change in the C64 ROMs (compared to VIC-20), to prevent colour problems on 80s era TVs. Screen font used in the legacy mode duplicates this change, but the font intended for native mode has this change reverted back. Additionally, the π sign is available for lower/upper case set too.
 
-## Tinkering with OpenROMs
+## Tinkering with Open ROMs
 
 Make sure to read the main [README](../README.md) first - although any help with the project is always welcome, you need to be aware of the possible legal problems we want to avoid.
 
@@ -77,19 +77,19 @@ Make sure to read the main [README](../README.md) first - although any help with
 
 List of the most important make targets:
 
-| target              | description                                                                    |
-| :------------------ | :----------------------------------------------------------------------------- |
-| `all`               | builds all ROMs, places them in 'build' subdirectory                           |
-| `clean`             | removes all the compilation results and intermediate files                     |
-| `updatebin`         | upates ROMs in 'bin' subdirectory - with embedded version string, for release  |
-| `testsimilarity`    | launches the similarity tool, see [README](../README.md)                       |
-| `test`              | builds the 'custom' configuration, launches it using VICE emulator             |
-| `test_generic`      | builds the default ROMs, for generic C64/C128, launches using VICE             | 
-| `test_generic_x128` | as above, but launches C128 emulator instead                                   |
-| `test_mega65`       | builds the Mega65 ROM, launches it using XEMU emulator                         |
-| `test_ultimate64`   | builds the Ultimate 64 configuration, launches it using VICE emulator          |
-| `test_hybrid`       | builds a hybrid ROM (OpenROMs Kernal + original BASIC), launches it using VICE |
-| `test_testing`      | builds a rather odd testing configuration, launches it using VICE emulator     |
+| target              | description                                                                     |
+| :------------------ | :------------------------------------------------------------------------------ |
+| `all`               | builds all ROMs, places them in 'build' subdirectory                            |
+| `clean`             | removes all the compilation results and intermediate files                      |
+| `updatebin`         | upates ROMs in 'bin' subdirectory - with embedded version string, for release   |
+| `testsimilarity`    | launches the similarity tool, see [README](../README.md)                        |
+| `test`              | builds the 'custom' configuration, launches it using VICE emulator              |
+| `test_generic`      | builds the default ROMs, for generic C64/C128, launches using VICE              | 
+| `test_generic_x128` | as above, but launches C128 emulator instead                                    |
+| `test_mega65`       | builds the Mega65 ROM, launches it using XEMU emulator                          |
+| `test_ultimate64`   | builds the Ultimate 64 configuration, launches it using VICE emulator           |
+| `test_hybrid`       | builds a hybrid ROM (Open ROMs Kernal + original BASIC), launches it using VICE |
+| `test_testing`      | builds a rather odd testing configuration, launches it using VICE emulator      |
 
 
 ### Code segments and ROM layouts

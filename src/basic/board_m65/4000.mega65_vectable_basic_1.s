@@ -31,7 +31,7 @@
 
 #else
 
-	// Vector table (OpenROMs private!)
+	// Vector table (Open ROMs private!)
 
 	.word INITMSG
 	.word LINKPRG

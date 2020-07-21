@@ -50,7 +50,7 @@ do_kernal_error:                       // .A = KERNAL error code, also almost ma
 	bpl do_basic_error                 // branch always
 #endif
 
-	// Error messages specific to OpenROMs BASIC dialect
+	// Error messages specific to Open ROMs BASIC dialect
 
 do_MEMORY_CORRUPT_error:
 	.byte $E6

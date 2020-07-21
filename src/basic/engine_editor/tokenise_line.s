@@ -80,21 +80,25 @@ tokenise_line_loop:
 
 	// Check for extended tokens
 
-	lda #<packed_freq_keywords_CC
+	lda #<packed_freq_keywords_01
 	sta FRESPC+0
-	lda #>packed_freq_keywords_CC
+	lda #>packed_freq_keywords_01
 	sta FRESPC+1
 
 	jsr tk_search
-	bcc tokenise_line_keyword_CC                 // branch if keyword identified
+	bcc tokenise_line_keyword_01                 // branch if keyword identified
 
-	lda #<packed_freq_keywords_CD
+#if !HAS_SMALL_BASIC
+
+	lda #<packed_freq_keywords_02
 	sta FRESPC+0
-	lda #>packed_freq_keywords_CD
+	lda #>packed_freq_keywords_02
 	sta FRESPC+1
 
 	jsr tk_search
-	bcc tokenise_line_keyword_CD                 // branch if keyword identified
+	bcc tokenise_line_keyword_02                 // branch if keyword identified
+
+#endif
 
 	// Shorten packed keyword candidate and try again
 
@@ -169,20 +173,24 @@ tokenise_line_char:
 
 // Support for extended keyword lists
 
-tokenise_line_keyword_CC:
+#if !HAS_SMALL_BASIC
+
+tokenise_line_keyword_02:
 
 	// Store the token list index
 
-	lda #$CC
+	lda #$02
 	skip_2_bytes_trash_nvz
 
 	// FALLTROUGH
 
-tokenise_line_keyword_CD:
+#endif
+
+tokenise_line_keyword_01:
 
 	// Store the token list index
 
-	lda #$CD
+	lda #$01
 
 	ldy tk__offset
 	sta BUF, y

@@ -14,8 +14,8 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  src/basic/,stubs_math \
                  src/basic/assets \
                  src/basic/basic_commands \
-                 src/basic/basic_commands_CC \
-                 src/basic/basic_commands_CD \
+                 src/basic/basic_commands_01 \
+                 src/basic/basic_commands_02 \
                  src/basic/basic_operators \
                  src/basic/basic_functions \
                  src/basic/board_m65 \

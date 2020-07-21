@@ -31,7 +31,7 @@ Ideas for the future, most of them suitable for Mega65 or other power machines o
 * consider `BOOT` command
 * possibly some commands for creating menus and dialog boxes
 * more configurable `INPUT`
-* `PRINT USING`, `PRINT AT(x, y)`, `PRINT CENTRE`
+* `PRINT USING`, ability to position cursor, ability to print result in the center of the screen
 * `CURSOR` command from BASIC V10
 * `RESTORE` should accept lline number as argument
 * hex/dec conversion functions

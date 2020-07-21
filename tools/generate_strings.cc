@@ -173,77 +173,38 @@ const StringEntryList GLOBAL_Keywords_V2 = { ListType::KEYWORDS, "keywords_V2",
     { true,  true,  true,  true,  "KV2_CB",   "GO",         0 }, // https://en.wikipedia.org/wiki/Goto
 } };
 
-// extended BASIC keywords - reserved for generic (hardware independent) BASIC commands
+// extended BASIC keywords - list reserved for small BASIC commands, suitable for inclusion in non-extended ROMs
 
-const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
+const StringEntryList GLOBAL_Keywords_01 =  { ListType::KEYWORDS, "keywords_01",
 {
     // STD    M65    U64    X16
-    { true,  true,  true,  true,  "KCC_01",   "OLD",          }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-    { true,  true,  true,  true,  "KCC_02",   "MERGE",        }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-    { true,  true,  true,  true,  "KCC_03",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
-    { true,  true,  true,  true,  "KCC_04",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
-    { true,  true,  true,  true,  "KCC_05",   "BVERIFY",      },
-    { true,  true,  true,  true,  "KCC_06",   "CLEAR",        }, // Not present in CBM BASIC dialects, OpenROMs specific
-    { true,  true,  true,  true,  "KCC_07",   "DISPOSE",      }, // Not present in CBM BASIC dialects, OpenROMs specific
-    { false, true,  false, false,  "KCC_08",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-    { false, true,  false, false,  "KCC_09",   "MEM",          }, // Not present in CBM BASIC dialects, OpenROMs specific
+    { true,  true,  true,  true,  "K01_01",   "SLOW",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
+    { true,  true,  true,  true,  "K01_02",   "FAST",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
+    { true,  true,  true,  true,  "K01_03",   "OLD",          }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+
+    // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
+
+    // NOTE! These commands are temporarily placed here, they should be a part of list 02!
+
+    { true,  true,  true,  true,  "K02_01",   "MERGE",        }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { true,  true,  true,  true,  "K02_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
+    { true,  true,  true,  true,  "K02_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
+    { true,  true,  true,  true,  "K02_04",   "BVERIFY",      },
+    { true,  true,  true,  true,  "K02_05",   "CLEAR",        }, // Not present in CBM BASIC dialects, OpenROMs specific
+    { true,  true,  true,  true,  "K02_06",   "DISPOSE",      }, // Not present in CBM BASIC dialects, OpenROMs specific
+} };
+
+// extended BASIC keywords - list reserved for generic (mostly hardware independent) BASIC commands
+
+const StringEntryList GLOBAL_Keywords_02 =  { ListType::KEYWORDS, "keywords_02",
+{
+    // STD    M65    U64    X16
+
+    { false, true,  false, false, "K02_07",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { false, true,  false, false, "K02_08",   "MEM",          }, // Not present in CBM BASIC dialects, OpenROMs specific
 
     // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };
-
-// extended BASIC keywords - reserved for BASIC commands likely making sense on most C64-compatible machines
-
-const StringEntryList GLOBAL_Keywords_CD =  { ListType::KEYWORDS, "keywords_CD",
-{
-    // STD    M65    U64    X16
-    { true,  true,  true,  true,  "KCD_01",   "SLOW",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
-    { true,  true,  true,  true,  "KCD_02",   "FAST",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
-} };
-
-// extended BASIC keywords - reserved for board-specific BASIC commands
-
-const StringEntryList GLOBAL_Keywords_CE =  { ListType::KEYWORDS, "keywords_CE",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KCE_01",   "TESTCMD",      },
-} };
-
-const StringEntryList GLOBAL_Keywords_CF =  { ListType::KEYWORDS, "keywords_CF",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KCF_01",   "TESTCMD",      },
-} };
-
-// extended BASIC keywords - reserved for generic (hardware independent) BASIC functions
-
-const StringEntryList GLOBAL_Keywords_D0 =  { ListType::KEYWORDS, "keywords_D0",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KD0_01",   "TESTFUN",      },
-} };
-
-// extended BASIC keywords - reserved for BASIC functions likely making sense on most C64-compatible machines
-
-const StringEntryList GLOBAL_Keywords_D1 =  { ListType::KEYWORDS, "keywords_D1",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KD1_01",   "TESTFUN",       },
-} };
-
-// extended BASIC keywords - reserved for board-specific BASIC functions
-
-const StringEntryList GLOBAL_Keywords_D2 =  { ListType::KEYWORDS, "keywords_D2",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KD2_01",   "TESTFUN",      },
-} };
-
-const StringEntryList GLOBAL_Keywords_D3 =  { ListType::KEYWORDS, "keywords_D3",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KD3_01",   "TESTFUN",      },
-} };
-
 
 // BASIC errors - all dialects
 
@@ -1782,8 +1743,7 @@ void writeStrings()
         // Add input data to computation objects
        
         dataSetX16.addStrings(GLOBAL_Keywords_V2);
-        dataSetX16.addStrings(GLOBAL_Keywords_CC);
-        dataSetX16.addStrings(GLOBAL_Keywords_CD);
+        dataSetX16.addStrings(GLOBAL_Keywords_01);
         dataSetX16.addStrings(GLOBAL_Errors);
         dataSetX16.addStrings(GLOBAL_MiscStrings);
 
@@ -1798,8 +1758,8 @@ void writeStrings()
         // Add input data to computation objects
 
         dataSetM65.addStrings(GLOBAL_Keywords_V2);
-        dataSetM65.addStrings(GLOBAL_Keywords_CC);
-        dataSetM65.addStrings(GLOBAL_Keywords_CD);
+        dataSetM65.addStrings(GLOBAL_Keywords_01);
+        dataSetM65.addStrings(GLOBAL_Keywords_02);
         dataSetM65.addStrings(GLOBAL_Errors);
         dataSetM65.addStrings(GLOBAL_MiscStrings);
        
@@ -1814,8 +1774,7 @@ void writeStrings()
         // Add input data to computation objects
 
         dataSetU64.addStrings(GLOBAL_Keywords_V2);
-        dataSetU64.addStrings(GLOBAL_Keywords_CC);
-        dataSetU64.addStrings(GLOBAL_Keywords_CD);
+        dataSetU64.addStrings(GLOBAL_Keywords_01);
         dataSetU64.addStrings(GLOBAL_Errors);
         dataSetU64.addStrings(GLOBAL_MiscStrings);
        
@@ -1830,8 +1789,7 @@ void writeStrings()
         // Add input data to computation objects
 
         dataSetSTD.addStrings(GLOBAL_Keywords_V2);
-        dataSetSTD.addStrings(GLOBAL_Keywords_CC);
-        dataSetSTD.addStrings(GLOBAL_Keywords_CD);
+        dataSetSTD.addStrings(GLOBAL_Keywords_01);
         dataSetSTD.addStrings(GLOBAL_Errors);
         dataSetSTD.addStrings(GLOBAL_MiscStrings);
 

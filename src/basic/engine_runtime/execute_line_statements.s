@@ -39,11 +39,23 @@ execute_statements:
 
 	// Check if token is valid for execution
 
+#if HAS_SMALL_BASIC
+
+	cpx #$01
+	beq execute_statements_01
+
+#else
+
+	cpx #$03
+	bcc execute_statements_extended
+
+#endif
+
+	cpx #$CB                                     
+	beq_16 cmd_go                                // // 'GO' command has a strange token, placed after function tokens
+
 	cpx #$7F
 	bcc_16 execute_statements_var_assign         // not a token - try variable assign
-
-	cpx #$A6
-	bcs execute_statements_extended
 
 #if !HAS_OPCODES_65C02
 
@@ -67,25 +79,25 @@ execute_statements:
 
 #endif
 
+#if !HAS_SMALL_BASIC
 
 execute_statements_extended:
 
 	// Support for extended BASIC commands
 
-	cpx #$CC
-	beq execute_statements_CC
-	cpx #$CD
-	beq execute_statements_CD
+	// XXX consider jumpable here
 
-	// 'GO' command has a strange token, it is placed after function tokens
+	cpx #$01
+	beq execute_statements_01
 
-	cpx #$CB                                     
-	beq_16 cmd_go
+	cpx #$02
+	beq execute_statements_02
 
 	jmp do_SYNTAX_error
 
+#endif
 
-execute_statements_CC:
+execute_statements_01:
 
 	// Get the sub-token, check that it is valid
 
@@ -93,7 +105,7 @@ execute_statements_CC:
 	cmp #$00
 	beq_16 do_SYNTAX_error
 
-	cmp #(TK__MAXTOKEN_keywords_CC+1)
+	cmp #(TK__MAXTOKEN_keywords_01+1)
 	bcs_16 do_SYNTAX_error
 
 	// Execute command
@@ -103,9 +115,9 @@ execute_statements_CC:
 	// Get the jump table entry for it, push it on the stack, and then RTS to start it.
 
 	tax
-	lda command_CC_jumptable_hi - 1, x
+	lda command_01_jumptable_hi - 1, x
 	pha
-	lda command_CC_jumptable_lo - 1, x
+	lda command_01_jumptable_lo - 1, x
 	pha
 	
 	rts
@@ -116,12 +128,13 @@ execute_statements_CC:
 
 	asl
 	tax
-	jmp (command_CC_jumptable - 2, x)
+	jmp (command_01_jumptable - 2, x)
 
 #endif
 
+#if !HAS_SMALL_BASIC
 
-execute_statements_CD:
+execute_statements_02:
 
 	// Get the sub-token, check that it is valid
 
@@ -129,7 +142,7 @@ execute_statements_CD:
 	cmp #$00
 	beq_16 do_SYNTAX_error
 
-	cmp #(TK__MAXTOKEN_keywords_CD+1)
+	cmp #(TK__MAXTOKEN_keywords_02+1)
 	bcs_16 do_SYNTAX_error
 
 	// Execute command
@@ -139,9 +152,9 @@ execute_statements_CD:
 	// Get the jump table entry for it, push it on the stack, and then RTS to start it.
 
 	tax
-	lda command_CD_jumptable_hi - 1, x
+	lda command_02_jumptable_hi - 1, x
 	pha
-	lda command_CD_jumptable_lo - 1, x
+	lda command_02_jumptable_lo - 1, x
 	pha
 	
 	rts
@@ -152,10 +165,11 @@ execute_statements_CD:
 
 	asl
 	tax
-	jmp (command_CD_jumptable - 2, x)
+	jmp (command_02_jumptable - 2, x)
 
 #endif
 
+#endif // !HAS_SMALL_BASIC
 
 execute_statements_end_of_line:
 

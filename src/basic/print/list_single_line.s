@@ -79,6 +79,7 @@ list_print_loop:
 	jmp list_is_literal
 
 list_not_quote:	
+
 	// Check quote mode, and display as literal if required
 	ldx QTSW
 	bne list_is_literal
@@ -86,87 +87,19 @@ list_not_quote:
 	cmp #$FF
 	beq list_is_pi
 
+	// Check for extended BASIC tokens
+	cmp #$01
+	beq list_display_token_01
+#if !HAS_SMALL_BASIC
+	cmp #$02
+	beq list_display_token_02
+#endif
+
+	// Check for literals
 	cmp #$7F
 	bcc list_is_literal
 
-	// Display a token
-
-list_display_token_CC:
-
-	cmp #$CC
-	bne list_display_token_CD
-
-	// Fetch the sub-token
-
-	iny
-#if ROM_LAYOUT_M65
-	jsr peek_via_OLDTXT
-#elif CONFIG_MEMORY_MODEL_60K
-	ldx #<OLDTXT
-	jsr peek_under_roms
-	cmp #$00
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_OLDTXT
-	cmp #$00
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (OLDTXT),y
-#endif
-
-	// Save registers
-	tax
-	pha
-	phy_trash_a
-
-	// Subtract $1 from token to get offset in token list
-	dex
-
-	// Check if token is known
-	cpx #TK__MAXTOKEN_keywords_CC
-	bcs list_display_unknown_token               // XXX consider displaying two question marks here
-
-	// Now ask for it to be printed
-	jsr print_packed_keyword_CC
-
-	jmp_8 list_token_displayed
-
-
-list_display_token_CD:
-
-	cmp #$CD
-	bne list_display_token_V2
-	
-	// Fetch the sub-token
-
-	iny
-#if ROM_LAYOUT_M65
-	jsr peek_via_OLDTXT
-#elif CONFIG_MEMORY_MODEL_60K
-	ldx #<OLDTXT
-	jsr peek_under_roms
-	cmp #$00
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	jsr peek_under_roms_via_OLDTXT
-	cmp #$00
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (OLDTXT),y
-#endif
-	
-	// Save registers
-	tax
-	pha
-	phy_trash_a
-
-	// Subtract $1 from token to get offset in token list
-	dex
-
-	// Check if token is known
-	cpx #TK__MAXTOKEN_keywords_CD
-	bcs list_display_unknown_token               // XXX consider displaying two question marks here
-
-	// Now ask for it to be printed
-	jsr print_packed_keyword_CD
-
-	jmp_8 list_token_displayed
+	// Display a token - V2 dialect
 
 list_display_token_V2:
 
@@ -253,5 +186,68 @@ list_display_unknown_token:
 	pla
 
 	jmp_8 list_is_unknown
+
+list_display_token_01:
+
+	// Display a 2-byte token - for extended BASIC
+	jsr list_fetch_subtoken
+
+	// Check if token is known
+	cpx #TK__MAXTOKEN_keywords_01
+	bcs list_is_unknown                          // XXX consider displaying two question marks here, not one
+
+	// Now ask for it to be printed
+	phy_trash_a
+	jsr print_packed_keyword_01
+	ply_trash_a
+
+	// Next iteration
+	jmp list_print_loop
+
+
+#if !HAS_SMALL_BASIC
+
+list_display_token_02:
+
+	// Display a 2-byte token - for extended BASIC
+	jsr list_fetch_subtoken
+
+	// Check if token is known
+	cpx #TK__MAXTOKEN_keywords_02
+	bcs list_is_unknown                          // XXX consider displaying two question marks here, not one
+
+	// Now ask for it to be printed
+	phy_trash_a
+	jsr print_packed_keyword_02
+	ply_trash_a
+
+	// Next iteration
+	jmp list_print_loop
+
+#endif
+
+list_fetch_subtoken:
+
+	// Fetch the sub-token
+
+	iny
+#if ROM_LAYOUT_M65
+	jsr peek_via_OLDTXT
+#elif CONFIG_MEMORY_MODEL_60K
+	ldx #<OLDTXT
+	jsr peek_under_roms
+	cmp #$00
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	jsr peek_under_roms_via_OLDTXT
+	cmp #$00
+#else // CONFIG_MEMORY_MODEL_38K
+	lda (OLDTXT),y
+#endif
+	
+	// Subtract $1 from token to get offset in token list
+	tax
+	dex
+
+	rts
 
 #endif // ROM layout

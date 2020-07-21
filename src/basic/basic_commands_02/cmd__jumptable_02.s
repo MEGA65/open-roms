@@ -41,19 +41,10 @@ command_02_jumptable_hi:
 
 #else // HAS_OPCODES_65C02
 
-
-__before_command_02_jumptable:
-
-.if (mod(*, $2) == 1) { brk }          // align code so that vector never crosses page boundary
-
 command_02_jumptable:
 
+	// Note: 65C02 has the page boundary vector bug fixed!
 	put_jumptable(command_02_list)
-
-	// Make sure routine size is always the same - build system limitation
-
-.if (__before_command_02_jumptable == command_02_jumptable) { brk }
-
 
 #endif
 

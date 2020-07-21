@@ -199,11 +199,15 @@ list_display_token_01:
 	// Now ask for it to be printed
 	phy_trash_a
 	jsr print_packed_keyword_01
+
+	// FALLTROUGH
+
+list_display_token_01_done:
+
 	ply_trash_a
 
 	// Next iteration
-	jmp list_print_loop
-
+	jmp_8 list_print_loop
 
 #if !HAS_SMALL_BASIC
 
@@ -219,10 +223,7 @@ list_display_token_02:
 	// Now ask for it to be printed
 	phy_trash_a
 	jsr print_packed_keyword_02
-	ply_trash_a
-
-	// Next iteration
-	jmp list_print_loop
+	jmp_8 list_display_token_01_done
 
 #endif
 

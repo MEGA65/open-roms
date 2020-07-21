@@ -15,6 +15,11 @@ fetch_variable:
 	bcc !+
 	rts
 !:
+	// If this is array, redirect to appropriate routine
+
+	bit DIMFLG
+	bmi_16 fetch_variable_arr
+
 	// Handle special variables - TI$, TI, ST
 
 	jsr is_var_TI_string

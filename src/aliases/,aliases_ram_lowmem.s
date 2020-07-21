@@ -35,8 +35,8 @@
 	.label RESHO     = $26 // $26-$2A  temporary variables, [!] our usage might be different
 	.label TXTTAB    = $2B // $2B-$2C  start of BASIC code
 	.label VARTAB    = $2D // $2D-$2E  end of BASIC code, start of variables
-	.label ARYTAB    = $2F // $2F-$30  -- NOT IMPLEMENTED --
-	.label STREND    = $31 // $31-$32  -- NOT IMPLEMENTED --
+	.label ARYTAB    = $2F // $2F-$30  pointer to start of array storage
+	.label STREND    = $31 // $31-$32  pointer to start of free RAM
 	.label FRETOP    = $33 // $33-$34  pointer to bottom of strings area
 	.label FRESPC    = $35 // $35-$36  [!] our implementation uses this as temporary string pointer
 	.label MEMSIZ    = $37 // $37-$38  highest address of BASIC memory + 1

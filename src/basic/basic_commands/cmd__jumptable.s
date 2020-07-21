@@ -17,7 +17,7 @@
 	cmd_data,
 	cmd_inputhash,
 	cmd_input,
-	cmd_dim,
+	array_create,                      // cmd_dim
 	cmd_read,
 	assign_variable,                   // cmd_let
 	cmd_goto,

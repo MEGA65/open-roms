@@ -94,6 +94,9 @@ fetch_variable_type_string:
 fetch_variable_name_check_array:
 
 	// XXX add check for array
+	lda #$00
+	sta DIMFLG
+
 
 	clc
 	rts

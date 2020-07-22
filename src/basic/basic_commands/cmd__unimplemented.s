@@ -19,8 +19,6 @@ cmd_inputhash:
 	nop
 cmd_input:
 	nop
-cmd_dim:
-	nop
 cmd_read:
 	nop
 cmd_if:

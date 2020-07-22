@@ -4,7 +4,7 @@
 
 //
 // Carry set = failure, not recognized variable name
-//
+// sets FOUR6 and DIMFLG ($80 for array, $00 for regular variable)
 
 
 fetch_variable_name:
@@ -61,6 +61,9 @@ fetch_variable_check_type:
 
 fetch_variable_type_float:
 
+	lda #$05
+	sta FOUR6
+
 #if !HAS_OPCODES_65CE02
 	jsr unconsume_character
 #else
@@ -71,19 +74,25 @@ fetch_variable_type_float:
 
 fetch_variable_type_integer:
 
+	ldy #$02
+
+	lda #$02
+	sta FOUR6
+
 	lda VARNAM+0
 	ora #$80
 	sta VARNAM+0
 
 	lda #$00
-	skip_2_bytes_trash_nvz
-
-	// FALLTROUGH
+	beq !+                             // branch always
 
 fetch_variable_type_string:
 
+	ldy #$03
 	lda #$80
+!:
 	sta VALTYP
+	sty FOUR6
 
 	lda VARNAM+1
 	ora #$80
@@ -93,10 +102,24 @@ fetch_variable_type_string:
 
 fetch_variable_name_check_array:
 
-	// XXX add check for array
+	jsr fetch_character_skip_spaces
+	cmp #$28                          // '('
+	beq !+
+
+	// This is not an array
+
+#if !HAS_OPCODES_65CE02
+	jsr unconsume_character
+#else
+	dew TXTPTR
+#endif
+
 	lda #$00
+	skip_2_bytes_trash_nvz
+!:
+	// This is an array
+
+	lda #$80
+
 	sta DIMFLG
-
-
-	clc
 	rts

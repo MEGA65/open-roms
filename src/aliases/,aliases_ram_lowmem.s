@@ -53,7 +53,7 @@
 	.label OPMASK    = $4D //          -- NOT IMPLEMENTED --
 	.label DEFPNT    = $4E // $4E-$4F  -- NOT IMPLEMENTED --
 	.label DSCPNT    = $50 // $50-$52  temporary area fro string handling, [!] our usage might differ
-	.label FOUR6     = $53 //          -- NOT IMPLEMENTED --
+	.label FOUR6     = $53 //          size of variable content (float = 5, integer = 2, string descriptor = 3)
 	.label JMPER     = $54 // $54-$56  -- NOT IMPLEMENTED --
 	.label TEMPF1    = $57 // $57-$5B  BASIC numeric work area
 	.label TEMPF2    = $5C // $5C-$60  BASIC numeric work area

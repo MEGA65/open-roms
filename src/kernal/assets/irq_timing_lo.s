@@ -22,5 +22,21 @@
 
 irq_timing_lo:                         // low bytes
 
+#if !CONFIG_RS232_UP9600
+
 	.byte <17045                       // NTSC
 	.byte <16421                       // PAL
+
+#else
+
+//
+// Timer values needed by UP9600
+//
+// Original driver code by Daniel Dallman with Bo Zimmerman adaptations,
+// these causes the tick to be generated 64 times per second
+//
+
+	.byte $95                          // NTSC
+	.byte $25                          // PAL
+
+#endif

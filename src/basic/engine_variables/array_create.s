@@ -10,7 +10,9 @@ array_create:
 	jsr fetch_variable_name
 	bcs_16 do_SYNTAX_error
 
-	// It will be easier if we first perform garbage collecion (arrays are not declared often)
+	// XXX check if the array already exists
+
+	// It will be easier if we first perform garbage collection (arrays are not declared often)
 
 	jsr varstr_garbage_collect
 

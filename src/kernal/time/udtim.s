@@ -28,10 +28,18 @@ UDTIM:
 udtim_rollover_check:
 
 	lda TIME+0
+#if !CONFIG_RS232_UP9600
 	cmp #$4F
+#else
+	cmp #$54
+#endif
 	bcc udtim_keyboard
 	lda TIME+1
-	cmp #$1A	
+#if !CONFIG_RS232_UP9600
+	cmp #$1A
+#else
+	cmp #$60
+#endif	
 	bcc udtim_keyboard
 	
 	// FALLTROUGH

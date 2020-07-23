@@ -28,7 +28,7 @@ tmpstr_free_all_loop:
 	sta DSCPNT+2
 
 	phx_trash_a
-	jsr varstr_free_non_0
+	jsr varstr_free_no_checks
 	plx_trash_a
 !:
 	inx

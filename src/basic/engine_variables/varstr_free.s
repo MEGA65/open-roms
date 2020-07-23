@@ -16,21 +16,20 @@ varstr_free:
 	// Check the string size - do not do anything if 0
 
 	lda DSCPNT+0
-	bne varstr_free_non_0
+	bne !+
 	rts
-
-varstr_free_non_0: // entry point to be used when it is clear that string is not empty
-
+!:
 	// Check if string is above FRETOP (in string area)
-	// XXX move this check out of the routine
 
 	jsr helper_cmp_fretop
-	bcs !+
+	bcs varstr_free_no_checks
 
 	// No, it does not belong to string area - quit
 
 	rts
-!:
+
+varstr_free_no_checks: // entry point to be used when it is clear that string is not empty and above FRETOP
+
 	// Check if this is the lowest string
 
 	bne varstr_free_inside

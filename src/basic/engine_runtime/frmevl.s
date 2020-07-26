@@ -323,9 +323,7 @@ FRMEVL_push_operator_address:
 	// Check if there is enough stack space; this could not have been done earlier,
 	// as this is the place where unary operator support calls
 
-	tsx
-	cpx #$60                           // XXX is this a safe threshold?
-	bcc_16 do_FORMULA_TOO_COMPLEX_error
+	jsr check_stack_space
 
 	// Push the operator address to stack, in a form
 	// suitable for RTS

@@ -3,7 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Helper routine, used by garbage collector and string concatenation
+// Helper routine, used in several places
 //
 
 #if CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_60K

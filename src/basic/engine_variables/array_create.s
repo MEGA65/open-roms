@@ -44,15 +44,26 @@ array_create_fetch_dims_loop:
 
 	inx
 
-	// XXX check if stack has reasonable space free
+	// Check if the stack has reasonable space free
 
-	// Fetch the dimension, put it on the stack - confirmed with orioginal ROM,
-	// that it also stores dimensions in the reverse order
+	jsr check_stack_space
+
+	// Fetch the dimension, increment it by 1, and put it on the stack;
+	// confirmed with original ROM, that it also stores dimensions in the reverse order
 
 	jsr fetch_uint16
 	bcs_16 do_SYNTAX_error
 
-	// XXX we probably need to increment LINNUM first
+#if !HAS_OPCODES_65CE02
+	inc LINNUM+0
+	bne !+
+	inc LINNUM+1
+!:
+#else
+	inw LINNUM
+#endif
+
+	beq_16 do_OUT_OF_MEMORY_error
 
 	lda LINNUM+0
 	pha
@@ -144,7 +155,7 @@ array_create_store_dims_done:
 	// Restore FOUR6, calculate number of bytes needed for storage
 
 	pha
-	sta FOUR6 // XXX do we need to store this value in FOUR6?
+	sta FOUR6 // XXX do we need to store this value in FOUR6? is it still needed?
 	sta __FAC1+2
 	stx __FAC1+3                       // .X is 0 at this point
 
@@ -152,15 +163,76 @@ array_create_store_dims_done:
 
 	// XXX check if we have enough memory
 
-	// XXX retrieve and store array name
+	// Retrieve and store array name
 
-	// XXX calculate and store offset to the next array
+	ldy #$00
 
-	// XXX clear area
+#if CONFIG_MEMORY_MODEL_60K
+	
+	// XXX
+	// XXX: implement this
+	// XXX
 
-	// XXX adjust STREND
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-	// XXX adjust offset of the previous array
+	pla
+	sta (STREND), y
+	iny
+	pla
+	sta (STREND), y
+
+#endif
+
+	// Calculate and store offset to the next array
+
+	lda #$02
+	jsr helper_INDEX_up_A
+
+#if CONFIG_MEMORY_MODEL_60K
+	
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K
+
+	ldy #$04
+	lda (STREND), y
+
+#endif
+
+	asl
+	jsr helper_INDEX_up_A
+
+#if CONFIG_MEMORY_MODEL_60K
+	
+	// XXX
+	// XXX: implement this
+	// XXX
+
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+
+	ldy #$02
+	lda INDEX+0
+	sta (STREND), y
+	iny
+	lda INDEX+1
+	sta (STREND), y
+
+#endif
+
+	// Clear newly alocated area
+
+	// XXX implement this
+
+	// Adjust STREND
+
+	// XXX implement this
 
 	jmp do_NOT_IMPLEMENTED_error
-

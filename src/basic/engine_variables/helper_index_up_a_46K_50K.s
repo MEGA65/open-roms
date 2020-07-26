@@ -5,7 +5,7 @@
 // This has to go $E000 or above - it can be used by routines which bank out the main BASIC ROM!
 
 //
-// Helper routine, used by garbage collector and string concatenation
+// Helper routine, used in several places
 //
 
 #if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K

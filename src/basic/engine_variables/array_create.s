@@ -88,14 +88,21 @@ array_create_store_dims:
 	phx_trash_a
 	jsr varstr_garbage_collect
 
-	// __FAC1+0/+1 will be used to calculate number of elements
+	// __FAC1+1/+2 will be used to calculate number of elements
 
 	ldy #$01
-	sty __FAC1+0
-	dey
 	sty __FAC1+1
+	dey
+	sty __FAC1+2
 
-	// Create the initial array structure (format checked by creating arrays with original ROM)
+	// Check if there is enough free memory for the header
+
+	pla                                          // .A - number of dimensions
+	sta __FAC1+0
+	jsr helper_array_create_checkmem
+	lda __FAC1+0
+
+	// Create the initial array structure (header) - format checked by creating arrays with original ROM
 
 	// Bytes 0/1 - array name, but we can not fetch it easily now, so skip it for now
 	// Bytes 2/3 - offset to the next array, skip it for now too
@@ -103,13 +110,15 @@ array_create_store_dims:
 	// Bytes 5+  - max index in each dimension (big endian!), this will be set in a loop
 
 	ldy #$04
-	pla
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
-	// XXX: implement this
-	// XXX
+	stx INDEX+2
+
+	ldx #<STREND
+	jsr poke_under_roms
+
+	ldx INDEX+2
 
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
@@ -118,7 +127,7 @@ array_create_store_dims:
 #endif
 
 	iny                                          // .Y - index to store dimension sizes
-	tax                                          // .X - dimensions not sotred yet
+	tax                                          // .X - dimensions not stored yet
 
 	// FALLTROUGH
 
@@ -126,19 +135,29 @@ array_create_store_loop:
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
-	// XXX: implement this
-	// XXX
+	stx INDEX+2
+	ldx #<STREND
+
+	pla
+	jsr poke_under_roms
+	sta __FAC1+4
+	iny
+	pla
+	jsr poke_under_roms
+	sta __FAC1+3
+	iny
+
+	ldx INDEX+2
 
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
 	pla
 	sta (STREND), y
-	sta __FAC1+3
+	sta __FAC1+4
 	iny
 	pla
 	sta (STREND), y
-	sta __FAC1+2
+	sta __FAC1+3
 	iny
 
 #endif
@@ -156,12 +175,14 @@ array_create_store_dims_done:
 
 	pha
 	sta FOUR6 // XXX do we need to store this value in FOUR6? is it still needed?
-	sta __FAC1+2
-	stx __FAC1+3                       // .X is 0 at this point
+	sta __FAC1+3
+	stx __FAC1+4                       // .X is 0 at this point
 
 	jsr helper_array_create_mul
 
-	// XXX check if we have enough memory
+	// Check if there is enough free memory
+
+	jsr helper_array_create_checkmem
 
 	// Retrieve and store array name
 
@@ -169,9 +190,13 @@ array_create_store_dims_done:
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
-	// XXX: implement this
-	// XXX
+	ldx #<STREND
+
+	pla
+	jsr poke_under_roms
+	iny
+	pla
+	jsr poke_under_roms
 
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
@@ -188,33 +213,20 @@ array_create_store_dims_done:
 	lda #$02
 	jsr helper_INDEX_up_A
 
-#if CONFIG_MEMORY_MODEL_60K
-	
-	// XXX
-	// XXX: implement this
-	// XXX
-
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-
-	// XXX
-	// XXX: implement this
-	// XXX
-
-#else // CONFIG_MEMORY_MODEL_38K
-
-	ldy #$04
-	lda (STREND), y
-
-#endif
-
+	lda __FAC1+0
 	asl
 	jsr helper_INDEX_up_A
 
 #if CONFIG_MEMORY_MODEL_60K
+
+	// .X already contains STREND
 	
-	// XXX
-	// XXX: implement this
-	// XXX
+	ldy #$02
+	lda INDEX+0
+	jsr poke_under_roms
+	iny
+	lda INDEX+1
+	jsr poke_under_roms
 
 #else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
@@ -227,11 +239,7 @@ array_create_store_dims_done:
 
 #endif
 
-	// Clear newly alocated area
-
-	// XXX implement this
-
-	// Adjust STREND
+	// Clear newly alocated area, adjust STREND
 
 	// XXX implement this
 

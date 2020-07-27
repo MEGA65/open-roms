@@ -169,6 +169,10 @@ array_create_store_loop:
 	dex
 	bne array_create_store_loop
 
+	// Store .Y in a safe place - this is the header size
+
+	sty __FAC1+5
+
 	// FALLTROUGH
 
 array_create_store_dims_done:
@@ -241,8 +245,64 @@ array_create_store_dims_done:
 
 #endif
 
-	// Clear newly alocated area, adjust STREND
+	// First increase STREND past the header
 
-	// XXX implement this
+	clc
+	lda __FAC1+5
+	adc STREND+0
+	sta STREND+0
+	bcc !+
+	inc STREND+1
+!:
+	// Clear the newly alocated area
 
-	jmp do_NOT_IMPLEMENTED_error
+	ldy #$00
+#if CONFIG_MEMORY_MODEL_60K
+	ldx #<STREND
+#endif
+
+	// FALLTROUGH
+
+array_create_clear_loop:
+
+	lda #$00
+
+#if CONFIG_MEMORY_MODEL_60K
+	jsr poke_under_roms
+#else // CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+	sta (STREND), y
+#endif
+
+#if !HAS_OPCODES_65CE02
+
+	// Increment STREND+0/+1
+
+	inc STREND+0
+	bne !+
+	inc STREND+1
+!: 
+	// Decrement __FAC1+1/+2
+
+	sec
+	lda __FAC1+1
+	sbc #$01
+	sta __FAC1+1
+	bcs !+
+	dec __FAC1+2
+!:
+	// Check if __FAC1+1/+2 is NULL
+
+	ora __FAC1+2
+
+#else
+
+	inw STREND
+	dew __FAC1+1
+
+#endif
+
+	bne array_create_clear_loop
+
+	// The end
+
+	rts

@@ -54,9 +54,9 @@ helper_array_create_mul_error:
 helper_array_create_mul_success:
 
 	lda INDEX+0
-	sta __FAC1+0
-	lda INDEX+1
 	sta __FAC1+1
+	lda INDEX+1
+	sta __FAC1+2
 
 	plx_trash_a
 	rts

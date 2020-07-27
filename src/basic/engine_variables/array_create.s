@@ -174,12 +174,12 @@ array_create_store_loop:
 array_create_store_dims_done:
 
 	// Restore FOUR6, calculate number of bytes needed for storage
-.break
+
 	pla
 	sta FOUR6 // XXX do we need to store this value in FOUR6? is it still needed?
+
 	sta __FAC1+3
 	stx __FAC1+4                       // .X is 0 at this point
-
 	jsr helper_array_create_mul
 
 	// Check if there is enough free memory
@@ -212,7 +212,7 @@ array_create_store_dims_done:
 
 	// Calculate and store offset to the next array
 
-	lda #$02
+	lda #$05
 	jsr helper_INDEX_up_A
 
 	lda __FAC1+0

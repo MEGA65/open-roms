@@ -46,7 +46,9 @@ array_create_fetch_dims_loop:
 
 	// Check if the stack has reasonable space free
 
+	phx_trash_a
 	jsr check_stack_space
+	plx_trash_a
 
 	// Fetch the dimension, increment it by 1, and put it on the stack;
 	// confirmed with original ROM, that it also stores dimensions in the reverse order
@@ -172,8 +174,8 @@ array_create_store_loop:
 array_create_store_dims_done:
 
 	// Restore FOUR6, calculate number of bytes needed for storage
-
-	pha
+.break
+	pla
 	sta FOUR6 // XXX do we need to store this value in FOUR6? is it still needed?
 	sta __FAC1+3
 	stx __FAC1+4                       // .X is 0 at this point

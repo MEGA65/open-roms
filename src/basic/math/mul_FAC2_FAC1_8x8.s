@@ -12,10 +12,16 @@
 
 mul_FAC2_FAC1_8x8:
 
-	// Special case (optimization) - handle 0 in INDEX+2
+	// Special cases - handle multiplication by 0
+
+	beq mul_FAC2_FAC1_8x8_zero
+	sta INDEX+2
+
+	lda INDEX+3
 	beq mul_FAC2_FAC1_8x8_zero
 
-	sta INDEX+2
+	// Multiply INDEX+2 * INDEX+3
+
 	lda #$00
 
 	dec INDEX+3	// decrement because we will be adding with carry set for speed (an extra one)

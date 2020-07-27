@@ -15,7 +15,7 @@ helper_array_create_mul: // preserves .X and .Y
 	// __FAC1+1 (lo byte) * __FAC1+3 (lo byte)
 
 	lda __FAC1+1
-	sta INDEX+2
+	sta INDEX+3
 	lda __FAC1+3
 	jsr mul_FAC2_FAC1_8x8                        // this preserves .Y
 
@@ -25,14 +25,14 @@ helper_array_create_mul: // preserves .X and .Y
 	// __FAC1+1 (lo byte) * __FAC1+4 (hi byte)
 
 	lda __FAC1+1
-	sta INDEX+2
+	sta INDEX+3
 	lda __FAC1+4
 	jsr helper_array_create_mul_8x8_add          // multiply and add to high byte of the result
 
 	// __FAC1+2 (hi byte) * __FAC1+3 (lo byte)
 
 	lda __FAC1+2
-	sta INDEX+2
+	sta INDEX+3
 	lda __FAC1+3
 	jsr helper_array_create_mul_8x8_add          // multiply and add to high byte of the result
 

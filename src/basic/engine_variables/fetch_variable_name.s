@@ -120,6 +120,7 @@ fetch_variable_name_check_array:
 	// This is an array
 
 	lda #$80
-
 	sta DIMFLG
+
+	clc
 	rts

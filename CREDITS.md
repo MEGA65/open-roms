@@ -5,7 +5,7 @@
 
 * Retrofan - for his Mega65 banner artwork and PXLfont
 * TWW/CTR - for his keyboard handling code
-* Graham - for his PAL/NTSC detection routine
+* Graham - for his PAL/NTSC detection code and compact 8x8 multiplication routine
 * enthusi/Onslaught - for his example Turbo Tape 64 compatible loader
 * djmips - for fast 8x8 multiplication routine
 * Verz - for the integer division routine

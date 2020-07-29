@@ -330,7 +330,7 @@ $(DIR_M65)/OUTK_0.BIN $(DIR_M65)/KERNAL_0_combined.vs $(DIR_M65)/KERNAL_0_combin
 $(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1_combined.vs $(DIR_M65)/BASIC_1_combined.sym:
 	@mkdir -p $(DIR_M65)
 	@rm -f $@* $(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_M65) -l 4000 -h 5fff $(CFG_M65) $(GEN_STR_M65) $(SRCDIR_BASIC) $(GEN_BASIC)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_M65) -l 4000 -h 7fff $(CFG_M65) $(GEN_STR_M65) $(SRCDIR_BASIC) $(GEN_BASIC)
 
 $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym:
 	@mkdir -p $(DIR_M65)
@@ -409,29 +409,27 @@ build/symbols_hybrid.vs: $(DIR_GEN)/KERNAL_combined.vs
 
 # Rules - platform 'Mega65' specific
 
-build/padding_08_KB:
-	dd if=/dev/zero bs=8192 count=1 of=build/padding_08_KB
+build/padding_16_KB:
+	@mkdir -p build
+	dd if=/dev/zero bs=8192 count=2 of=build/padding_16_KB
 build/padding_64_KB:
+	@mkdir -p build
 	dd if=/dev/zero bs=8192 count=8 of=build/padding_64_KB
 
-$(TARGET_M65_x) $(TARGET_M65_x_PXL): build/padding_08_KB build/padding_64_KB $(SEG_LIST_M65) build/chargen_openroms.rom build/chargen_openroms.patched build/chargen_pxlfont.rom build/chargen_pxlfont.patched
+$(TARGET_M65_x) $(TARGET_M65_x_PXL): build/padding_16_KB build/padding_64_KB $(SEG_LIST_M65) build/chargen_openroms.rom build/chargen_openroms.patched build/chargen_pxlfont.rom build/chargen_pxlfont.patched
 	@echo
-	cat build/padding_08_KB                  > $(TARGET_M65_x)
-	cat build/padding_08_KB                 >> $(TARGET_M65_x)
+	cat build/padding_16_KB                  > $(TARGET_M65_x)
 	cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x)
 	cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x)
-	cat build/padding_08_KB                 >> $(TARGET_M65_x)
 	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x)
 	cat build/chargen_openroms.rom          >> $(TARGET_M65_x)
 	cat build/chargen_openroms.patched      >> $(TARGET_M65_x)
 	cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x)
 	cat build/padding_64_KB                 >> $(TARGET_M65_x)
 	@echo
-	cat build/padding_08_KB                  > $(TARGET_M65_x_PXL)
-	cat build/padding_08_KB                 >> $(TARGET_M65_x_PXL)
+	cat build/padding_16_KB                  > $(TARGET_M65_x_PXL)
 	cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x_PXL)
 	cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x_PXL)
-	cat build/padding_08_KB                 >> $(TARGET_M65_x_PXL)
 	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x_PXL)
 	cat build/chargen_pxlfont.rom           >> $(TARGET_M65_x_PXL)
 	cat build/chargen_pxlfont.patched       >> $(TARGET_M65_x_PXL)

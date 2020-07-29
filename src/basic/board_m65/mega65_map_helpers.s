@@ -23,6 +23,6 @@ map_BASIC_1:
 	taz
 
 	lda #$20
-	ldx #$42    // 0x4000 <- map 8KB from 0x22000
+	ldx #$C2    // 0x4000 <- map 16KB from 0x22000
 
 	jmp map_end

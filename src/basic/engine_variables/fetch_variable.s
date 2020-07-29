@@ -69,13 +69,9 @@ fetch_variable_adjust_VARPNT:
 
 #if !HAS_OPCODES_65CE02
 
-	clc
-	lda VARPNT+0
-	adc #$02
-	sta VARPNT+0
-	bcc !+
-	inc VARPNT+1
-!:
+	lda #$02
+	jsr helper_VARPNT_up_A
+
 #else // HAS_OPCODES_65CE02
 
 	inw VARPNT
@@ -91,13 +87,10 @@ fetch_variable_find_addr_next:
 	// Increase VARPNT by 7 - constant value, each variable uses 7 bytes, see:
 	// - https://sites.google.com/site/h2obsession/CBM/basic/variable-format
 
-	clc
-	lda VARPNT+0
-	adc #$07
-	sta VARPNT+0
-	bcc fetch_variable_find_addr_loop
-	inc VARPNT+1
-	bne fetch_variable_find_addr_loop  // branch always
+	lda #$07
+	jsr helper_VARPNT_up_A
+
+	jmp_8 fetch_variable_find_addr_loop
 
 fetch_variable_alocate:
 	

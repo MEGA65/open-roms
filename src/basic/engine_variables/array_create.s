@@ -49,9 +49,7 @@ array_create_fetch_dims_loop:
 
 	// Check if the stack has reasonable space free
 
-	phx_trash_a
 	jsr check_stack_space
-	plx_trash_a
 
 	// Fetch the dimension, increment it by 1, and put it on the stack;
 	// confirmed with original ROM, that it also stores dimensions in the reverse order

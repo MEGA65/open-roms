@@ -10,14 +10,17 @@ array_create:
 	jsr fetch_variable_name
 	bcs_16 do_SYNTAX_error
 
-	// XXX check if the array already exists
+	// Make sure the array does not exist
+
+	jsr find_array
+	bcc_16 do_REDIMD_ARRAY_error
 
 	// Push variable name and FOUR6 on the stack - fetching dimensions might cause
 	// the to be overwritten by the expression parser
 
-	lda VARNAM+0
-	pha
 	lda VARNAM+1
+	pha
+	lda VARNAM+0
 	pha
 	lda FOUR6
 	pha
@@ -180,7 +183,7 @@ array_create_store_dims_done:
 	// Restore FOUR6, calculate number of bytes needed for storage
 
 	pla
-	sta FOUR6 // XXX do we need to store this value in FOUR6? is it still needed?
+	sta FOUR6                          // needed by variable fetch routine
 
 	sta __FAC1+3
 	stx __FAC1+4                       // .X is 0 at this point

@@ -57,36 +57,8 @@ fetch_variable_find_addr_loop:
 	beq fetch_variable_alocate
 !:
 	// Compare current variable name with searched one
-	// XXX consider creating optimized version for 46K/50K memory models
 
-#if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	jsr helper_cmp_varnam
-#else
-
-	ldy #$00
-
-#if CONFIG_MEMORY_MODEL_60K
-	ldx #<VARPNT
-	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (VARPNT),y
-#endif
-
-	cmp VARNAM+0
-	bne fetch_variable_find_addr_next
-
-	iny
-
-#if CONFIG_MEMORY_MODEL_60K
-	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
-	lda (VARPNT),y
-#endif
-
-	cmp VARNAM+1
-
-#endif
-
 	bne fetch_variable_find_addr_next
 
 	// FALLTROUGH

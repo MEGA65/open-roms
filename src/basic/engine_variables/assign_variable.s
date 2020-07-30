@@ -37,13 +37,30 @@ assign_variable:
 	jsr is_var_ST
 	beq_16 do_SYNTAX_error
 
-	// XXX add support for arrays
+	// Push the VARNAM to the stack - it might get overridden
+
+	lda VARNAM+0
+	pha
+	lda VARNAM+1
+	pha
+
+	// Evaluate the expression
+
+	jsr FRMEVL
+
+	// Restore VARNAM
+
+	pla
+	sta VARNAM+1
+	pla
+	sta VARNAM+0
 
 	// Retrieve the variable address
+	// XXX add support for arrays
 
 	jsr fetch_variable_find_addr
 
-	// Determine variable type and push it to the stack
+	// Determine variable type
 
 	lda #$00
 	clc
@@ -55,29 +72,8 @@ assign_variable:
 	bpl !+
 	adc #$80
 !:
-	pha
-
-	// Push the VARPNT to the stack - it might get overridden
-
-	lda VARPNT+0
-	pha
-	lda VARPNT+1
-	pha
-
-	// Evaluate the expression
-
-	jsr FRMEVL
-
-	// Restore VARPNT
-
-	pla
-	sta VARPNT+1
-	pla
-	sta VARPNT+0
-
 	// Determine what to assign
 
-	pla
 	bmi assign_string
 	beq assign_float
 

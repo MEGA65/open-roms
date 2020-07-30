@@ -9,8 +9,8 @@ oper_add:
 	// First check whether arguments match and then choose the variant
 
 	pla
-	cmp VALTYP
-	bne_16 do_TYPE_MISMATCH_error
+	eor VALTYP
+	bmi_16 do_TYPE_MISMATCH_error
 
 	lda VALTYP
 	bmi oper_add_strings

@@ -37,6 +37,8 @@ assign_variable:
 	jsr is_var_ST
 	beq_16 do_SYNTAX_error
 
+	// XXX add support for arrays
+
 	// Retrieve the variable address
 
 	jsr fetch_variable_find_addr

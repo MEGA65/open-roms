@@ -142,8 +142,14 @@ tk_pack_loop_next:
 
 	lda tk__len_unpacked
 	cmp #TK__MAX_KEYWORD_LEN
-	bne tk_pack_loop
+	beq !+                             // if max length reached - quit
 
+	// Check for characters that can only end the token
+
+	lda BUF-1, x
+	cmp #$41
+	bcs tk_pack_loop
+!:
 	rts
 
 tk_pack_1n_new_byte:

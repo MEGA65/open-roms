@@ -4,7 +4,7 @@
 
 //
 // Carry set = failure, not recognized variable name
-// sets FOUR6 and DIMFLG ($80 for array, $00 for regular variable)
+// sets FOUR6 and DIMFLG ($FF for array, $00 for regular variable)
 
 
 fetch_variable_name:
@@ -89,7 +89,7 @@ fetch_variable_type_integer:
 fetch_variable_type_string:
 
 	ldy #$03
-	lda #$80
+	lda #$FF
 !:
 	sta VALTYP
 	sty FOUR6
@@ -119,7 +119,7 @@ fetch_variable_name_check_array:
 !:
 	// This is an array
 
-	lda #$80
+	lda #$FF
 	sta DIMFLG
 
 	clc

@@ -15,21 +15,37 @@ assign_variable:
 	// Check for array
 
 	lda DIMFLG
-	bpl assign_variable_not_array
+	bpl assign_variable_not_array_1
 
-	// Retrieve all the dimensions
+	// Retrieve all the coordinates
 
-	// XXX implement this
+	ldx #$00
+!:
+	inx
+	jsr helper_fetch_arr_coord
 
-	jmp do_NOT_IMPLEMENTED_error
+	lda LINNUM+0
+	pha
+	lda LINNUM+1
+	pha
+
+	// Check if more dimensions are given
+
+	cpy #$00
+	beq !+
+
+	// Push number of dimensions to stack
+
+	phx_trash_a
 
 	// Fetch assignment operator and continue
 
 	jsr injest_assign
 
-	jmp_8 assign_variable_common
+	lda #$FF                           // force DIMFLG to be array
+	jmp_8 assign_variable_common_1
 
-assign_variable_not_array:
+assign_variable_not_array_1:
 
 	// Require assignment operator
 
@@ -46,13 +62,14 @@ assign_variable_not_array:
 	jsr is_var_ST
 	beq_16 do_SYNTAX_error
 
-	// FALLTROUGH
-
-assign_variable_common:
-
 	// Push the DIMFLG and VARNAM to the stack - it might get overridden
 
 	lda DIMFLG
+
+	// FALLTROUGH
+
+assign_variable_common_1:
+
 	pha
 	lda VARNAM+0
 	pha
@@ -72,11 +89,27 @@ assign_variable_common:
 	pla
 	sta DIMFLG // XXX is it needed?
 
+	// Check if array
+
+	bpl assign_variable_not_array_2
+
+	//
 	// XXX add array handling here
+	//
+
+	jmp do_NOT_IMPLEMENTED_error
+
+	jmp_8 assign_variable_common_2
+
+assign_variable_not_array_2:
 
 	// Retrieve the variable address
 
 	jsr fetch_variable_find_addr
+
+	// FALLTROUGH
+
+assign_variable_common_2:
 
 	// Determine variable type
 

@@ -5,26 +5,35 @@
 
 assign_variable:
 
-	// Fetch variable name, should be followed by assign operator
+	// Fetch variable/array name
 
 	jsr fetch_variable_name
-
-#if HAS_OPCODES_65CE02
-
-	bcs_16 do_SYNTAX_error
-	jsr injest_assign
 	bcs_16 do_SYNTAX_error
 
-#else
-
-	bcs !+
 	jsr injest_assign
-	bcc !++
-!:
-	jmp do_SYNTAX_error
-!:
 
-#endif
+	// Check for array
+
+	lda DIMFLG
+	bpl assign_variable_not_array
+
+	// Retrieve all the dimensions
+
+	// XXX implement this
+
+	jmp do_NOT_IMPLEMENTED_error
+
+	// Fetch assignment operator and continue
+
+	jsr injest_assign
+
+	jmp_8 assign_variable_common
+
+assign_variable_not_array:
+
+	// Require assignment operator
+
+	jsr injest_assign
 
 	// Check for special variables
 
@@ -37,8 +46,14 @@ assign_variable:
 	jsr is_var_ST
 	beq_16 do_SYNTAX_error
 
-	// Push the VARNAM to the stack - it might get overridden
+	// FALLTROUGH
 
+assign_variable_common:
+
+	// Push the DIMFLG and VARNAM to the stack - it might get overridden
+
+	lda DIMFLG
+	pha
 	lda VARNAM+0
 	pha
 	lda VARNAM+1
@@ -48,15 +63,18 @@ assign_variable:
 
 	jsr FRMEVL
 
-	// Restore VARNAM
+	// Restore VARNAM and DIMFLG
 
 	pla
 	sta VARNAM+1
 	pla
 	sta VARNAM+0
+	pla
+	sta DIMFLG // XXX is it needed?
+
+	// XXX add array handling here
 
 	// Retrieve the variable address
-	// XXX add support for arrays
 
 	jsr fetch_variable_find_addr
 

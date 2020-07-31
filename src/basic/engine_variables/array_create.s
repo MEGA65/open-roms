@@ -47,15 +47,10 @@ array_create_fetch_dims_loop:
 
 	inx
 
-	// Check if the stack has reasonable space free
-
-	jsr check_stack_space
-
 	// Fetch the dimension, increment it by 1, and put it on the stack;
 	// confirmed with original ROM, that it also stores dimensions in the reverse order
 
-	jsr fetch_uint16
-	bcs_16 do_SYNTAX_error
+	jsr helper_fetch_arr_coord
 
 #if !HAS_OPCODES_65CE02
 	inc LINNUM+0
@@ -75,11 +70,8 @@ array_create_fetch_dims_loop:
 
 	// Check if more dimensions are given
 
-	jsr fetch_character_skip_spaces
-	cmp #$2C                                     // ','
+	cpy #$00
 	beq array_create_fetch_dims_loop
-	cmp #$29                                     // ')'
-	bne_16 do_SYNTAX_error
 
 	// FALLTROUGH
 

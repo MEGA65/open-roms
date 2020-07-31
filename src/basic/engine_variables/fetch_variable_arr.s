@@ -27,27 +27,19 @@ fetch_variable_arr_fetch_coords_loop:
 
 	inx
 
-	// Check if the stack has reasonable space free
+	// Fetch the coordinate and put it on the stack
 
-	jsr check_stack_space
-
-	// Fetch the dimension and put it on the stack
-
-	jsr fetch_uint16
-	bcs_16 do_SYNTAX_error
+	jsr helper_fetch_arr_coord
 
 	lda LINNUM+0
 	pha
 	lda LINNUM+1
 	pha
 
-	// Check if more dimensions are given
+	// If more coordinates given - next iteration
 
-	jsr fetch_character_skip_spaces
-	cmp #$2C                                     // ','
+	cpy #$00
 	beq fetch_variable_arr_fetch_coords_loop
-	cmp #$29                                     // ')'
-	bne_16 do_SYNTAX_error
 
 	// FALLTROUGH
 

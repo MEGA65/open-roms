@@ -144,7 +144,7 @@ tk_pack_loop_next:
 	cmp #TK__MAX_KEYWORD_LEN
 	beq !+                             // if max length reached - quit
 
-	// Check for characters that can only end the token
+	// Check for characters that can only end the keyword
 
 	lda BUF-1, x
 	cmp #$41

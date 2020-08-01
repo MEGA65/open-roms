@@ -10,14 +10,15 @@ assign_variable:
 	jsr fetch_variable_name
 	bcs_16 do_SYNTAX_error
 
-	jsr injest_assign
-
 	// Check for array
 
 	lda DIMFLG
 	bpl assign_variable_not_array_1
 
-	// Retrieve all the coordinates
+	// This is an array - store FOUR6 on the stack, retrieve all the coordinates
+
+	lda FOUR6
+	pha
 
 	ldx #$00
 !:
@@ -32,9 +33,9 @@ assign_variable:
 	// Check if more dimensions are given
 
 	cpy #$00
-	beq !+
+	beq !-
 
-	// Push number of dimensions to stack
+	// Store number of dimensions on the stack
 
 	phx_trash_a
 
@@ -93,12 +94,15 @@ assign_variable_common_1:
 
 	bpl assign_variable_not_array_2
 
-	//
-	// XXX add array handling here
-	//
+	// Yes, this is an array - fetch the number of dimensions
 
-	jmp do_NOT_IMPLEMENTED_error
+	pla
+	sta __FAC1+0
+	tax
 
+	// Fetch the address of the variable
+.break
+	jsr fetch_variable_arr_calc_pos
 	jmp_8 assign_variable_common_2
 
 assign_variable_not_array_2:

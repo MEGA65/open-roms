@@ -26,9 +26,7 @@ helper_fetch_arr_coord:
 	beq helper_fetch_arr_last
 
 	// FALLTROUGH
-
 !:
-
 	jmp do_SYNTAX_error
 
 helper_fetch_arr_more:

@@ -41,6 +41,10 @@ fetch_variable_arr_fetch_coords_loop:
 	cpy #$00
 	beq fetch_variable_arr_fetch_coords_loop
 
+	// Store number of dimensions, will be needed later
+
+	stx __FAC1+0
+
 	// FALLTROUGH
 
 fetch_variable_arr_check_dimensions:
@@ -68,10 +72,6 @@ fetch_variable_arr_check_dimensions:
 #endif
 
 	bne_16 do_BAD_SUBSCRIPT_error
-
-	// Store number of dimensions, will be needed later
-
-	stx __FAC1+0
 
 	// FALLTROUGH
 

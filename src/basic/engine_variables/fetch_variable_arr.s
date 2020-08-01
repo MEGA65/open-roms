@@ -101,15 +101,18 @@ fetch_variable_arr_calc_pos_loop:
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
-	// XXX
-	// XXX
+	ldx #<VARPNT
+
+	jsr peek_under_roms
+	sta __FAC1+3
+	iny
+	jsr peek_under_roms
+	sta __FAC1+4
+	iny
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-	// XXX
-	// XXX
-	// XXX
+	jsr helper_array_fetch_dimension
 
 #else // CONFIG_MEMORY_MODEL_38
 

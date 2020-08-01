@@ -115,7 +115,14 @@ assign_variable_common_1:
 	// Get array address
 
 	jsr find_array
+	bcc !+
 
+	// Array does not exist - we will have to create one with default parameters
+
+	// XXX implement this
+
+	jmp do_NOT_IMPLEMENTED_error
+!:
 	// Fetch the number of dimensions
 
 	pla

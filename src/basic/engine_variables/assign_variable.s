@@ -27,7 +27,7 @@ assign_variable:
 	lda FOUR6
 	pha
 
-	// Retruieve all the coordinates
+	// Retrieve all the coordinates
 
 	ldx #$00
 !:
@@ -103,7 +103,7 @@ assign_variable_common_1:
 
 	bpl assign_variable_not_array_2
 
-	// Preserve FAC1 values which might get overwritten
+	// Yes, this is an array - preserve FAC1 values which might get overwritten
 
 	ldx #$04
 !:
@@ -112,7 +112,11 @@ assign_variable_common_1:
 	dex
 	bpl !-
 
-	// Yes, this is an array - fetch the number of dimensions
+	// Get array address
+
+	jsr find_array
+
+	// Fetch the number of dimensions
 
 	pla
 	sta __FAC1+0

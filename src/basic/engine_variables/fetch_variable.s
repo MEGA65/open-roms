@@ -116,7 +116,43 @@ fetch_variable_alocate:
 
 fetch_variable_alocate_space_OK:
 
-	// If needed, move all the arrays up
+	// If arrays exist, we need to move them upwards
+
+	sec
+	lda STREND+0
+	sta memmove__src+0
+	sbc ARYTAB+0
+	sta memmove__size+0	
+	lda STREND+1
+	sta memmove__src+1
+	sbc ARYTAB+1
+	sta memmove__size+1
+
+	ora memmove__size+0
+	beq fetch_variable_alocate_adjust_vars
+
+	// Indeed, there are arrays - adjust size, calculate the destination and perform copytin
+
+#if !HAS_OPCODES_65CE02
+	inc memmove__size+0
+	bne !+
+	inc memmove__size+1
+!:
+#else // HAS_OPCODES_65CE02
+	inw memmove__size
+#endif
+
+	clc
+	lda memmove__src+0
+	adc #$07
+	sta memmove__dst+0
+	lda memmove__src+1
+	adc #$00
+	sta memmove__dst+1
+
+	jsr shift_mem_up
+
+	// Now, we need to recreate the back-pointers
 
 #if CONFIG_MEMORY_MODEL_60K
 	
@@ -138,6 +174,10 @@ fetch_variable_alocate_space_OK:
 	// XXX
 
 #endif
+
+	// FALLTROUGH
+
+fetch_variable_alocate_adjust_vars:
 
 	// Adjust ARYTAB and STREND
 

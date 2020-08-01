@@ -104,6 +104,7 @@ assign_variable_common_1:
 	bpl assign_variable_not_array_2
 
 	// Yes, this is an array - preserve FAC1 values which might get overwritten
+	// XXX adapt this for floats!
 
 	ldx #$04
 !:
@@ -136,6 +137,7 @@ assign_variable_common_1:
 assign_variable_arr_ret:
 
 	// Restore FAC1 values
+	// XXX adapt this for floats!
 
 	ldx #$04
 !:

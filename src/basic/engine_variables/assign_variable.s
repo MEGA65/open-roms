@@ -15,10 +15,19 @@ assign_variable:
 	lda DIMFLG
 	bpl assign_variable_not_array_1
 
-	// This is an array - store FOUR6 on the stack, retrieve all the coordinates
+	// This is an array - push return address to the stack, will be needed later
+
+	lda #>(assign_variable_common_2-1)
+	pha
+	lda #<(assign_variable_common_2-1)
+	pha
+
+	// Store FOUR6 on tha stack
 
 	lda FOUR6
 	pha
+
+	// Retruieve all the coordinates
 
 	ldx #$00
 !:
@@ -101,9 +110,8 @@ assign_variable_common_1:
 	tax
 
 	// Fetch the address of the variable
-.break
-	jsr fetch_variable_arr_calc_pos
-	jmp_8 assign_variable_common_2
+
+	jmp fetch_variable_arr_calc_pos              // RTS goes to assign_variable_common_2
 
 assign_variable_not_array_2:
 
@@ -193,7 +201,7 @@ assign_float:
 	jmp do_NOT_IMPLEMENTED_error
 
 assign_string:
-
+.break
 	// Check if value type matches
 	
 	lda VALTYP

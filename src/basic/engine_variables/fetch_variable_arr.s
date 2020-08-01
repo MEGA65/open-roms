@@ -156,6 +156,7 @@ fetch_variable_arr_calc_pos_loop_done:
 	// Retrieve FOUR6, use it to calculate final offset
 
 	pla
+
 	sta FOUR6                          // XXX is it needed?
 	sta __FAC1+3
 	stx __FAC1+4                       // .X is 0 at this moment

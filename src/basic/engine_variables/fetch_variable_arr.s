@@ -53,15 +53,17 @@ fetch_variable_arr_check_dimensions:
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX!
-	// XXX
-	// XXX
+	phx_trash_a
+	ldx #<VARPNT
+	ldy #$04
+	jsr peek_under_roms
+	sta INDEX+5
+	plx_trash_a
+	cpx INDEX+5
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-	// XXX!
-	// XXX
-	// XXX
+	jsr helper_array_check_no_dims
 
 #else // CONFIG_MEMORY_MODEL_38
 

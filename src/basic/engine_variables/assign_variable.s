@@ -17,9 +17,9 @@ assign_variable:
 
 	// This is an array - push return address to the stack, will be needed later
 
-	lda #>(assign_variable_common_2-1)
+	lda #>(assign_variable_arr_ret-1)
 	pha
-	lda #<(assign_variable_common_2-1)
+	lda #<(assign_variable_arr_ret-1)
 	pha
 
 	// Store FOUR6 on tha stack
@@ -103,6 +103,15 @@ assign_variable_common_1:
 
 	bpl assign_variable_not_array_2
 
+	// Preserve FAC1 values which might get overwritten
+
+	ldx #$04
+!:
+	lda __FAC1,x
+	sta __FAC2,x
+	dex
+	bpl !-
+
 	// Yes, this is an array - fetch the number of dimensions
 
 	pla
@@ -111,7 +120,19 @@ assign_variable_common_1:
 
 	// Fetch the address of the variable
 
-	jmp fetch_variable_arr_calc_pos              // RTS goes to assign_variable_common_2
+	jmp fetch_variable_arr_calc_pos              // RTS goes to assign_variable_arr_ret
+
+assign_variable_arr_ret:
+
+	// Restore FAC1 values
+
+	ldx #$04
+!:
+	lda __FAC2,x
+	sta __FAC1,x
+	dex
+	bpl !-
+	bmi assign_variable_common_2                 // branch always
 
 assign_variable_not_array_2:
 
@@ -201,7 +222,7 @@ assign_float:
 	jmp do_NOT_IMPLEMENTED_error
 
 assign_string:
-.break
+
 	// Check if value type matches
 	
 	lda VALTYP

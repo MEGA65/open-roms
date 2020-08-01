@@ -120,20 +120,20 @@ fetch_variable_alocate_space_OK:
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
+	// XXX!
 	// XXX: implement this for arrays
 	// XXX
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 	// XXX consider optimized version without multiple JSRs
 
-	// XXX
+	// XXX!
 	// XXX: implement this for arrays
 	// XXX
 
 #else // CONFIG_MEMORY_MODEL_38K
 
-	// XXX
+	// XXX!
 	// XXX: implement this for arrays
 	// XXX
 

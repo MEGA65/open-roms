@@ -53,13 +53,13 @@ fetch_variable_arr_check_dimensions:
 
 #if CONFIG_MEMORY_MODEL_60K
 	
-	// XXX
+	// XXX!
 	// XXX
 	// XXX
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
-	// XXX
+	// XXX!
 	// XXX
 	// XXX
 
@@ -88,18 +88,16 @@ fetch_variable_arr_calc_pos:
 	sta __FAC1+1
 	sta __FAC1+2
 
+	ldx #$00
+
 	// FALLTROUGH
 
 fetch_variable_arr_calc_pos_loop:
 
 	// Fetch the current dimension
 
-	// XXX
-	// XXX there is a bug, it should fetch from the opposite size!
-	// XXX
-
-	dex
 	txa
+	inx
 	asl
 	tay
 
@@ -158,7 +156,7 @@ fetch_variable_arr_calc_pos_loop:
 !:
 	// Check if there are more dimensions to handle
 
-	cpx #$00
+	cpx __FAC1+0
 	bne fetch_variable_arr_calc_pos_loop
 
 	// FALLTROUGH

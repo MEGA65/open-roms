@@ -71,7 +71,7 @@ fetch_variable_arr_check_dimensions:
 
 #endif
 
-	bne_16 do_BAD_SUBSCRIPT_error
+	bne fetch_variable_arr_bad_subscript
 
 	// FALLTROUGH
 
@@ -93,6 +93,10 @@ fetch_variable_arr_calc_pos:
 fetch_variable_arr_calc_pos_loop:
 
 	// Fetch the current dimension
+
+	// XXX
+	// XXX there is a bug, it should fetch from the opposite size!
+	// XXX
 
 	dex
 	txa
@@ -141,12 +145,17 @@ fetch_variable_arr_calc_pos_loop:
 	adc __FAC1+2
 	sta __FAC1+2
 
-	// Compare current coordinate with current dimension size
+	// Compare current coordinate (INDEX+0/+1) with current dimension size (__FAC1+3/+4)
 
-	// XXX
-	// XXX implement this
-	// XXX
+	lda INDEX+1
+	cmp __FAC1+4
+	bcc !+
+	bne fetch_variable_arr_bad_subscript
 
+	lda INDEX+0
+	cmp __FAC1+3
+	bcs fetch_variable_arr_bad_subscript
+!:
 	// Check if there are more dimensions to handle
 
 	cpx #$00
@@ -183,3 +192,7 @@ fetch_variable_arr_calc_pos_loop_done:
 	sta VARPNT+1
 
 	rts
+
+fetch_variable_arr_bad_subscript:
+
+	jmp do_BAD_SUBSCRIPT_error

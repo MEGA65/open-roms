@@ -16,10 +16,10 @@ helper_array_fetch_dimension:
 	// Fetch the dimension
 
 	lda (VARPNT), y
-	sta __FAC1+3
+	sta __FAC1+4
 	iny
 	lda (VARPNT), y
-	sta __FAC1+4
+	sta __FAC1+3
 	iny
 
 	// Restore default memory mapping

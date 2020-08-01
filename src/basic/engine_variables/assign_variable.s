@@ -34,9 +34,9 @@ assign_variable:
 	inx
 	jsr helper_fetch_arr_coord
 
-	lda LINNUM+0
-	pha
 	lda LINNUM+1
+	pha
+	lda LINNUM+0
 	pha
 
 	// Check if more dimensions are given

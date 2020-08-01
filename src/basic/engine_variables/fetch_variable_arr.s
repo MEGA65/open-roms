@@ -31,9 +31,9 @@ fetch_variable_arr_fetch_coords_loop:
 
 	jsr helper_fetch_arr_coord
 
-	lda LINNUM+0
-	pha
 	lda LINNUM+1
+	pha
+	lda LINNUM+0
 	pha
 
 	// If more coordinates given - next iteration
@@ -104,10 +104,10 @@ fetch_variable_arr_calc_pos_loop:
 	ldx #<VARPNT
 
 	jsr peek_under_roms
-	sta __FAC1+3
+	sta __FAC1+4
 	iny
 	jsr peek_under_roms
-	sta __FAC1+4
+	sta __FAC1+3
 	iny
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
@@ -117,10 +117,10 @@ fetch_variable_arr_calc_pos_loop:
 #else // CONFIG_MEMORY_MODEL_38
 
 	lda (VARPNT), y
-	sta __FAC1+3
+	sta __FAC1+4
 	iny
 	lda (VARPNT), y
-	sta __FAC1+4
+	sta __FAC1+3
 	iny
 
 #endif

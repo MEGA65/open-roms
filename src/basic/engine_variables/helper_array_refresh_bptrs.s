@@ -26,7 +26,8 @@ helper_array_refresh_bptrs_loop_1:
 	bne !+
 	lda INDEX+0
 	cmp STREND+0
-	beq helper_array_refresh_bptrs_end
+	bne !+
+	rts
 !:
 	// Calculate start address of the next array, store it in INDEX+2/+3
 
@@ -136,7 +137,3 @@ helper_array_refresh_bptrs_loop_next:
 	sta INDEX+0
 
 	jmp_8 helper_array_refresh_bptrs_loop_1
-
-helper_array_refresh_bptrs_end:
-
-	rts

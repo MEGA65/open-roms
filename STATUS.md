@@ -42,9 +42,8 @@ The following ROM features are currently missing and are not planned due to spac
 The following ROM features are currently missing:
 
 * most BASIC commands
-* BASIC variables (work in progress, strings partially work now)
-* BASIC expression handling
-* most floating point routines
+* BASIC integer/float variables/arrays (strings work now, with the exception of undefined arrays)
+* BASIC expression handling (again, strings should work now)
 * RS-232 support
 * NMI handling is incomplete
 

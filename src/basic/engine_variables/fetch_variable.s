@@ -131,11 +131,12 @@ fetch_variable_alocate_space_OK:
 	ora memmove__size+0
 	beq fetch_variable_alocate_adjust_vars
 
-	// Indeed, there are arrays - adjust size, calculate the destination and perform copytin
+	// Indeed, there are arrays - adjust size, calculate the destination and perform copying
 
 	inc memmove__size+0
 	bne !+
 	inc memmove__size+1
+!:
 
 	clc
 	lda memmove__src+0

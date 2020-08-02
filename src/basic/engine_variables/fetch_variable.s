@@ -133,14 +133,9 @@ fetch_variable_alocate_space_OK:
 
 	// Indeed, there are arrays - adjust size, calculate the destination and perform copytin
 
-#if !HAS_OPCODES_65CE02
 	inc memmove__size+0
 	bne !+
 	inc memmove__size+1
-!:
-#else // HAS_OPCODES_65CE02
-	inw memmove__size
-#endif
 
 	clc
 	lda memmove__src+0
@@ -214,4 +209,4 @@ fetch_variable_alocate_adjust_vars:
 
 	// Adjust variable pointer and quit
 
-	jmp_8 fetch_variable_adjust_VARPNT
+	jmp fetch_variable_adjust_VARPNT

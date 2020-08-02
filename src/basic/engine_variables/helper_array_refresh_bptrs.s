@@ -33,7 +33,40 @@ helper_array_refresh_bptrs_loop_1:
 
 #if CONFIG_MEMORY_MODEL_60K
 
-	// XXX!
+	ldx #<INDEX+0
+
+	ldy #$02
+
+	jsr peek_under_roms
+	clc
+	adc INDEX+0
+	sta INDEX+2 
+	iny
+	php
+	jsr peek_under_roms
+	plp
+	adc INDEX+1
+	sta INDEX+3
+
+	// Check if the current array is a string - if not, go to next array
+
+	ldy #$00
+	jsr peek_under_roms
+	and #$80
+	bmi helper_array_refresh_bptrs_loop_next
+	iny
+	jsr peek_under_roms
+	and #$80
+	bpl helper_array_refresh_bptrs_loop_next
+
+	// It's a string array - scroll INDEX+0/+1 to the first descriptor
+
+	ldy #$04
+	jsr peek_under_roms
+	asl
+	clc
+	adc #$05
+	jsr helper_INDEX_up_A
 
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
@@ -44,28 +77,28 @@ helper_array_refresh_bptrs_loop_1:
 
 	ldy #$02
 
-	lda (INDEX+0), y // XXX
+	lda (INDEX+0), y
 	clc
 	adc INDEX+0
 	sta INDEX+2 
 	iny
-	lda (INDEX+0), y // XXX
+	lda (INDEX+0), y
 	adc INDEX+1
 	sta INDEX+3
 
 	// Check if the current array is a string - if not, go to next array
 
 	ldy #$00
-	lda (INDEX+0), y // XXX
+	lda (INDEX+0), y
 	bmi helper_array_refresh_bptrs_loop_next
 	iny
-	lda (INDEX+0), y // XXX
+	lda (INDEX+0), y
 	bpl helper_array_refresh_bptrs_loop_next
 
 	// It's a string array - scroll INDEX+0/+1 to the first descriptor
 
 	ldy #$04
-	lda (INDEX+0), y // XXX
+	lda (INDEX+0), y
 	asl
 	clc
 	adc #$05
@@ -81,8 +114,34 @@ helper_array_refresh_bptrs_loop_2:
 
 #if CONFIG_MEMORY_MODEL_60K
 
-	// XXX!
+	ldx #<INDEX+0
 
+	ldy #$00
+	jsr peek_under_roms
+	beq !+                                       // skip empty strings
+
+	iny
+	sta INDEX+5
+	jsr peek_under_roms
+	clc
+	adc INDEX+5
+	sta INDEX+4
+	iny
+	php
+	jsr peek_under_roms
+	plp
+	adc #$00
+	sta INDEX+5
+
+	ldx #<INDEX+4
+
+	ldy #$00
+	lda INDEX+0
+	jsr poke_under_roms
+	iny
+	lda INDEX+1
+	jsr poke_under_roms
+!:
 #elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
 
 	jsr helper_array_refresh_bptrs_part2

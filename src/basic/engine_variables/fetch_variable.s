@@ -152,29 +152,6 @@ fetch_variable_alocate_space_OK:
 
 	jsr shift_mem_up
 
-	// Now, we need to recreate the back-pointers
-
-#if CONFIG_MEMORY_MODEL_60K
-	
-	// XXX!
-	// XXX: implement this for arrays
-	// XXX
-
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
-	// XXX consider optimized version without multiple JSRs
-
-	// XXX!
-	// XXX: implement this for arrays
-	// XXX
-
-#else // CONFIG_MEMORY_MODEL_38K
-
-	// XXX!
-	// XXX: implement this for arrays
-	// XXX
-
-#endif
-
 	// FALLTROUGH
 
 fetch_variable_alocate_adjust_vars:
@@ -198,7 +175,16 @@ fetch_variable_alocate_adjust_vars:
 !:
 	// VARPNT already points to the start of the variable descriptor
 
-	// Fill-in the new variable name, descriptor (it is enough to zero first 2 bytes of content)
+	// We need to recreate the back-pointers to string arrays
+
+	lda ARYTAB+0
+	sta INDEX+0
+	lda ARYTAB+1
+	sta INDEX+1
+
+	jsr helper_array_refresh_bptrs
+
+	// Fill-in the new variable name and descriptor (it is enough to zero first 2 bytes of content)
 
 	ldy #$00
 

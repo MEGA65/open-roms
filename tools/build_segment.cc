@@ -874,10 +874,26 @@ void BinningProblem::placeHighRoutines(DualStream &logOutput)
 
     while (!floatingRoutines.empty())
     {
-        // Try to find any high routine
+        // Find the largest high routine
 
-        auto iterRoutine = floatingRoutines.begin();
-        while (iterRoutine != floatingRoutines.end() && !(*iterRoutine)->high) iterRoutine++;
+        auto iterRoutine = floatingRoutines.end();
+
+        for (auto iter = floatingRoutines.begin(); iter < floatingRoutines.end(); iter++)
+        {
+            if (!(*iter)->high) continue;
+
+            if (iterRoutine == floatingRoutines.end() ||
+                (*iterRoutine)->codeLength < (*iter)->codeLength)
+            {
+                iterRoutine = iter;
+                continue;
+            }
+
+            if ((*iterRoutine)->codeLength < (*iter)->codeLength)
+            {
+                iterRoutine = iter;   
+            }
+        }
 
         if (iterRoutine == floatingRoutines.end()) break;
 

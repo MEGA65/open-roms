@@ -177,11 +177,6 @@ fetch_variable_alocate_adjust_vars:
 
 	// We need to recreate the back-pointers to string arrays
 
-	lda ARYTAB+0
-	sta INDEX+0
-	lda ARYTAB+1
-	sta INDEX+1
-
 	jsr helper_array_refresh_bptrs
 
 	// Fill-in the new variable name and descriptor (it is enough to zero first 2 bytes of content)

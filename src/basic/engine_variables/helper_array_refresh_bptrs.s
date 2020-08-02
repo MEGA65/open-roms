@@ -6,9 +6,6 @@
 // Refresh back-pointer to arrays
 //
 
-
-#if CONFIG_MEMORY_MODEL_38K // XXX! create versions for other memory models
-
 helper_array_refresh_bptrs:
 
 	// Refresh back-pointers to arrays
@@ -32,6 +29,17 @@ helper_array_refresh_bptrs_loop_1:
 	beq helper_array_refresh_bptrs_end
 !:
 	// Calculate start address of the next array, store it in INDEX+2/+3
+
+#if CONFIG_MEMORY_MODEL_60K
+
+	// XXX!
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+
+	jsr helper_array_refresh_bptrs_part1
+	bcs helper_array_refresh_bptrs_loop_next
+
+#else // CONFIG_MEMORY_MODEL_38K
 
 	ldy #$02
 
@@ -62,15 +70,27 @@ helper_array_refresh_bptrs_loop_1:
 	adc #$05
 	jsr helper_INDEX_up_A
 
+#endif
+
 	// FALLTROUGH
 
 helper_array_refresh_bptrs_loop_2:
 
 	// Recreate the back-pointer
 
+#if CONFIG_MEMORY_MODEL_60K
+
+	// XXX!
+
+#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+
+	jsr helper_array_refresh_bptrs_part2
+
+#else // CONFIG_MEMORY_MODEL_38K
+
 	ldy #$00
 	lda (INDEX+0), y // XXX
-	beq helper_array_refresh_bptrs_skip      // skip empty strings
+	beq !+                                       // skip empty strings
 
 	iny
 	clc
@@ -87,6 +107,8 @@ helper_array_refresh_bptrs_loop_2:
 	iny
 	lda INDEX+1
 	sta (INDEX+4), y // XXX
+!:
+#endif
 
 	// FALLTROUGH
 
@@ -118,5 +140,3 @@ helper_array_refresh_bptrs_loop_next:
 helper_array_refresh_bptrs_end:
 
 	rts
-
-#endif

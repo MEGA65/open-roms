@@ -171,7 +171,8 @@ fetch_variable_arr_calc_pos_loop_done:
 
 	sta FOUR6                          // XXX is it needed?
 	sta __FAC1+3
-	stx __FAC1+4                       // .X is 0 at this moment
+	lda #$00
+	sta __FAC1+4                       // .X is 0 at this moment
 
 	jsr helper_array_create_mul
 

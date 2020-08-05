@@ -1,0 +1,3 @@
+LDA $46 + PHA + LDA $45 + PHA
+
+Store 16-bit zeropage value on the stack - trivial, not copyrightable.

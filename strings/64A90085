@@ -1,0 +1,3 @@
+$64 + LDA #$00 + STA (zeropage address does not match)
+
+Instruction + some parts - trivial, not copyrightable.

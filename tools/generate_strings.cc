@@ -173,71 +173,38 @@ const StringEntryList GLOBAL_Keywords_V2 = { ListType::KEYWORDS, "keywords_V2",
     { true,  true,  true,  true,  "KV2_CB",   "GO",         0 }, // https://en.wikipedia.org/wiki/Goto
 } };
 
-// extended BASIC keywords - reserved for generic (hardware independent) BASIC commands
+// extended BASIC keywords - list reserved for small BASIC commands, suitable for inclusion in non-extended ROMs
 
-const StringEntryList GLOBAL_Keywords_CC =  { ListType::KEYWORDS, "keywords_CC",
+const StringEntryList GLOBAL_Keywords_01 =  { ListType::KEYWORDS, "keywords_01",
 {
     // STD    M65    U64    X16
-    { true,  true,  true,  true,  "KCC_01",   "MERGE",        }, // OpenROMs specific, not present in CBM BASIC dialects
-    { true,  true,  true,  true,  "KCC_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
-    { true,  true,  true,  true,  "KCC_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
-    { true,  true,  true,  true,  "KCC_04",   "BVERIFY",      },
-    { true,  true,  true,  true,  "KCC_05",   "OLD",          }, // OpenROMs specific, not present in CBM BASIC dialects
+    { true,  true,  true,  true,  "K01_01",   "SLOW",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
+    { true,  true,  true,  true,  "K01_02",   "FAST",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
+    { true,  true,  true,  true,  "K01_03",   "OLD",          }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+
+    // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
+
+    // NOTE! These commands are temporarily placed here, they should be a part of list 02!
+
+    { true,  true,  true,  true,  "K02_01",   "MERGE",        }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { true,  true,  true,  true,  "K02_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
+    { true,  true,  true,  true,  "K02_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
+    { true,  true,  true,  true,  "K02_04",   "BVERIFY",      },
+    { true,  true,  true,  true,  "K02_05",   "CLEAR",        }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { true,  true,  true,  true,  "K02_06",   "DISPOSE",      }, // Not present in CBM BASIC dialects, Open ROMs specific
 } };
 
-// extended BASIC keywords - reserved for BASIC commands likely making sense on most C64-compatible machines
+// extended BASIC keywords - list reserved for generic (mostly hardware independent) BASIC commands
 
-const StringEntryList GLOBAL_Keywords_CD =  { ListType::KEYWORDS, "keywords_CD",
+const StringEntryList GLOBAL_Keywords_02 =  { ListType::KEYWORDS, "keywords_02",
 {
     // STD    M65    U64    X16
-    { true,  true,  true,  true,  "KCD_01",   "SLOW",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
-    { true,  true,  true,  true,  "KCD_02",   "FAST",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
+
+    { false, true,  false, false, "K02_07",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { false, true,  false, false, "K02_08",   "MEM",          }, // Not present in CBM BASIC dialects, Open ROMs specific
+
+    // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };
-
-// extended BASIC keywords - reserved for board-specific BASIC commands
-
-const StringEntryList GLOBAL_Keywords_CE =  { ListType::KEYWORDS, "keywords_CE",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KCE_01",   "TESTCMD",      },
-} };
-
-const StringEntryList GLOBAL_Keywords_CF =  { ListType::KEYWORDS, "keywords_CF",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KCF_01",   "TESTCMD",      },
-} };
-
-// extended BASIC keywords - reserved for generic (hardware independent) BASIC functions
-
-const StringEntryList GLOBAL_Keywords_D0 =  { ListType::KEYWORDS, "keywords_D0",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KD0_01",   "TESTFUN",      },
-} };
-
-// extended BASIC keywords - reserved for BASIC functions likely making sense on most C64-compatible machines
-
-const StringEntryList GLOBAL_Keywords_D1 =  { ListType::KEYWORDS, "keywords_D1",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KD1_01",   "TESTFUN",       },
-} };
-
-// extended BASIC keywords - reserved for board-specific BASIC functions
-
-const StringEntryList GLOBAL_Keywords_D2 =  { ListType::KEYWORDS, "keywords_D2",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KD2_01",   "TESTFUN",      },
-} };
-
-const StringEntryList GLOBAL_Keywords_D3 =  { ListType::KEYWORDS, "keywords_D3",
-{
-    // STD    M65    U64    X16
-    { false, false, false, false, "KD3_01",   "TESTFUN",      },
-} };
-
 
 // BASIC errors - all dialects
 
@@ -292,11 +259,11 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
     { false, false, false, false, "EV7_23", "NO GRAPHICS AREA"         }, // not used for now
     { false, false, false, false, "EV7_24", "BAD DISK"                 }, // not used for now
     { false, false, false, false, "EV7_25", "BEND NOT FOUND"           }, // not used for now
-    { false, false, false, false, "EV7_26", "LINE NUMBER TOO LARGE"    }, // not used for now
+    { true,  true,  true,  true,  "EV7_26", "LINE NUMBER TOO LARGE"    },
     { false, false, false, false, "EV7_27", "UNRESOLVED REFERENCE"     }, // not used for now
     { true,  true,  true,  true,  "EV7_28", "NOT IMPLEMENTED"          }, // this message actually differs from the CBM one
     { false, false, false, false, "EV7_29", "FILE READ"                }, // not used for now
-    // STD    M65    U64    X16   --- error strings specific to OpenROMs, not present in CBM BASIC dialects
+    // STD    M65    U64    X16   --- error strings specific to Open ROMs, not present in CBM BASIC dialects
     { true,  true,  true,  true,  "EOR_2A", "MEMORY CORRUPT"           },   
 } };
 
@@ -305,13 +272,23 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
 const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
 {
     // STD    M65    U64    X16   --- misc strings as on CBM machines
-    { true,  true,  true,  true,  "STR_RET_QM",  "\r?"                 },
-    { true,  true,  true,  true,  "STR_BYTES",   " BASIC BYTES FREE"   }, // https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  true,  "STR_READY",   "\rREADY.\r"          }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  true,  "STR_ERROR",   " ERROR"              }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
-    { true,  true,  true,  true,  "STR_IN",      " IN "                },
-    // STD    M65    U64    X16   --- misc strings specific to OpenROMs, not present in CBM ROMs
-    { true,  true,  true,  true,  "STR_BRK_AT",  "\rBRK AT $"          },
+    { true,  true,  true,  true,  "STR_RET_QM",   "\r?"                },
+    { true,  true,  true,  true,  "STR_BYTES",    " BASIC BYTES FREE"  }, // https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_READY",    "\rREADY.\r"         }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_ERROR",    " ERROR"             }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+    { true,  true,  true,  true,  "STR_IN",       " IN "               },
+    { false, true,  false, false, "STR_IF_SURE",  "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
+    // STD    M65    U64    X16   --- misc strings specific to Open ROMs, not present in CBM ROMs
+    { true,  true,  true,  true,  "STR_BRK_AT",   "\rBRK AT $"         },
+    { false, true,  false, false, "STR_MEM_HDR",  "\r\x12 AREA   START   SIZE  \r" },
+    { false, true,  false, false, "STR_MEM_1",    "   $"               },
+    { false, true,  false, false, "STR_MEM_2",    "   "                },
+    { false, true,  false, false, "STR_MEM_TEXT", "\r TEXT"            },
+    { false, true,  false, false, "STR_MEM_VARS", "\r VARS"            },
+    { false, true,  false, false, "STR_MEM_ARRS", "\r ARRS"            },
+    { false, true,  false, false, "STR_MEM_STRS", "\r STRS"            },
+    { false, true,  false, false, "STR_MEM_FREE", "\r\r FREE"          },
+
     // Note: depending on configuration, additional strings will be added here
 } };
 
@@ -1766,8 +1743,7 @@ void writeStrings()
         // Add input data to computation objects
        
         dataSetX16.addStrings(GLOBAL_Keywords_V2);
-        dataSetX16.addStrings(GLOBAL_Keywords_CC);
-        dataSetX16.addStrings(GLOBAL_Keywords_CD);
+        dataSetX16.addStrings(GLOBAL_Keywords_01);
         dataSetX16.addStrings(GLOBAL_Errors);
         dataSetX16.addStrings(GLOBAL_MiscStrings);
 
@@ -1782,8 +1758,8 @@ void writeStrings()
         // Add input data to computation objects
 
         dataSetM65.addStrings(GLOBAL_Keywords_V2);
-        dataSetM65.addStrings(GLOBAL_Keywords_CC);
-        dataSetM65.addStrings(GLOBAL_Keywords_CD);
+        dataSetM65.addStrings(GLOBAL_Keywords_01);
+        dataSetM65.addStrings(GLOBAL_Keywords_02);
         dataSetM65.addStrings(GLOBAL_Errors);
         dataSetM65.addStrings(GLOBAL_MiscStrings);
        
@@ -1798,8 +1774,7 @@ void writeStrings()
         // Add input data to computation objects
 
         dataSetU64.addStrings(GLOBAL_Keywords_V2);
-        dataSetU64.addStrings(GLOBAL_Keywords_CC);
-        dataSetU64.addStrings(GLOBAL_Keywords_CD);
+        dataSetU64.addStrings(GLOBAL_Keywords_01);
         dataSetU64.addStrings(GLOBAL_Errors);
         dataSetU64.addStrings(GLOBAL_MiscStrings);
        
@@ -1814,8 +1789,7 @@ void writeStrings()
         // Add input data to computation objects
 
         dataSetSTD.addStrings(GLOBAL_Keywords_V2);
-        dataSetSTD.addStrings(GLOBAL_Keywords_CC);
-        dataSetSTD.addStrings(GLOBAL_Keywords_CD);
+        dataSetSTD.addStrings(GLOBAL_Keywords_01);
         dataSetSTD.addStrings(GLOBAL_Errors);
         dataSetSTD.addStrings(GLOBAL_MiscStrings);
 

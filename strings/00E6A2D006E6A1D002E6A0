@@ -1,0 +1,3 @@
+$00 + INC $A2 + BNE (address matches) + INC $A1 + BNE (address matches) + INC $A0
+
+Incrementing 24-bit zeropage variable (TIME) by 1 (+ one byte from another instruction) - trivial, not copyrightable.

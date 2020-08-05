@@ -21,7 +21,7 @@ rnd_seed_init:
 	eor CIA1_TIMAHI
 	sta RNDX+4
 
-	lda TIME+0                         // byte from jiffy counter might be useful too
+	lda TIME+2                         // byte from jiffy counter might be useful too
 	eor SID_RANDOM                     // not sure if SID set correctly, but it will not hurt
 #if CONFIG_MB_MEGA_65
 	eor VIC_XPOS                       // not sure if VIC-IV visible, but it will not hurt

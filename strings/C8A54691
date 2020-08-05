@@ -1,0 +1,3 @@
+INY + LDA $46 + STA (zeropage address does not match),Y
+
+Copy zeopage value to a memory location determined by pointer (not even the same one) - trivial, not copyrightable.

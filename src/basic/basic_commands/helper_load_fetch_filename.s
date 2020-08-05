@@ -11,7 +11,7 @@ helper_load_fetch_filename:
 
 	// Check if end of statement
 
-	jsr end_of_statement_check
+	jsr is_end_of_statement
 	bcs !+
 
 	// Call the expression parser, make sure it returned a string

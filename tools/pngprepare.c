@@ -108,13 +108,16 @@ void abort_(const char * s, ...)
 void read_png_file(char* file_name)
 {
   unsigned char header[8];    // 8 is the maximum size that can be checked
+  size_t readResult;
 
   /* open file and test for it being a png */
   infile = fopen(file_name, "rb");
   if (infile == NULL)
     abort_("[read_png_file] File %s could not be opened for reading", file_name);
 
-  fread(header, 1, 8, infile);
+  readResult = fread(header, 1, 8, infile);
+  if (readResult != 8)
+    abort_("[read_png_file] File %s could not be read", file_name);
   if (png_sig_cmp(header, 0, 8))
     abort_("[read_png_file] File %s is not recognized as a PNG file", file_name);
 

@@ -21,7 +21,7 @@
 
 #else
 
-	// Vector table (OpenROMs private!)
+	// Vector table (Open ROMs private!)
 
 	.word IOINIT
 	.word RAMTAS

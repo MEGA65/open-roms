@@ -16,13 +16,13 @@ rs232_count_channels:
 	ldy LDTND
 !:
 	dey
-	bmi close_rs232_search_done
+	bmi !+
 	lda FAT, y
 	cmp #$02
 	bne !-
 	inx
 	bpl !- // branch always
-	
+!:
 	rts
 
 

@@ -39,17 +39,21 @@ print_packed_misc_str:                 // .X - misc string index
 
 #endif
 
-print_packed_keyword_CC:               // .X - token number
+print_packed_keyword_01:               // .X - token number
 
-	lda #<packed_freq_keywords_CC
-	ldy #>packed_freq_keywords_CC
+	lda #<packed_freq_keywords_01
+	ldy #>packed_freq_keywords_01
 	bne print_freq_packed_string       // branch always
 
-print_packed_keyword_CD:               // .X - token number
+#if !HAS_SMALL_BASIC
 
-	lda #<packed_freq_keywords_CD
-	ldy #>packed_freq_keywords_CD
+print_packed_keyword_02:               // .X - token number
+
+	lda #<packed_freq_keywords_02
+	ldy #>packed_freq_keywords_02
 	bne print_freq_packed_string       // branch always
+
+#endif
 
 print_packed_keyword_V2:               // .X - token number
 
@@ -114,7 +118,7 @@ print_freq_packed_string_nibble_hi:
 
 	tax
 	lda packed_as_1n-1, x
-	jmp !+                             // XXX should be bra on some CPUs
+	jmp_8 !+
 
 print_freq_packed_string_3n_single:
 

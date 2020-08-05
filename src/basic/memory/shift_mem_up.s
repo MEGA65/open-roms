@@ -11,7 +11,7 @@
 // - memmove__dst  - pointer to the last byte of destination
 // - memmove__size - number of bytes to copy
 //
-// All the input variables, .A, and .Y register, are destroyed. Also uses RESHO+4 variable.
+// All the input variables, .A, and .Y register, are destroyed. Also uses memmove__tmp variable.
 //
 
 

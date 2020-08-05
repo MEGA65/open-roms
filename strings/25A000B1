@@ -1,0 +1,4 @@
+ $25 + LDY #$00 + LDA (zeropage address does not match),Y
+ 
+ Instruction + some parts - trivial, not copyrightable.
+ 

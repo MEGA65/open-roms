@@ -29,8 +29,8 @@ hw_entry_irq:
 	bne irq_handler_brk
 
 	// Not caused by BRK - call interrupt routine (only if initialised)
-	lda CINV
-	ora CINV+1
+	// Routine on zeropage = assuming not initialized
+	lda CINV+1
 	beq !+
 	jmp (CINV)
 !:

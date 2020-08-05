@@ -37,8 +37,7 @@ wedge_arrow_H:
 
 	// Make sure the syntax is correct
 
-	jsr injest_spaces
-	jsr fetch_character
+	jsr fetch_character_skip_spaces
 
 	cmp #$00
 	bne_16 do_SYNTAX_error

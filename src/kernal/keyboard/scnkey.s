@@ -147,7 +147,19 @@ scnkey_bucky_loop:
 
 	// Set KEYTAB vector
 
-	jsr via_keylog // XXX for some CPUs we have indirect jsr
+	lda KEYLOG+1
+	bne !+
+	jsr scnkey_set_keytab              // KEYLOG routine on zeropage? most likely vector not set
+	jmp_8 scnkey_keytab_set_done
+
+!:
+#if HAS_OPCODES_65CE02
+	jsr_ind KEYLOG
+#else
+	jsr scnkey_via_keylog
+#endif
+
+scnkey_keytab_set_done:
 
 #if CONFIG_JOY2_CURSOR
 
@@ -315,7 +327,11 @@ scnkey_got_key: // .Y should now contain the key offset in matrix pointed by KEY
 	//
 	// Besides - since I am the one who writes the code, I will make the values exactly how I like them :D
 
+#if !CONFIG_RS232_UP9600
 	lda #$16
+#else
+	lda #$18
+#endif
 	sta DELAY
 
 	// FALLTROUGH
@@ -482,9 +498,5 @@ scnkey_early_repeat:
 	sta KOUNT
 
 	rts
-
-via_keylog:
-	jmp (KEYLOG)
-
 
 #endif // no CONFIG_LEGACY_SCNKEY

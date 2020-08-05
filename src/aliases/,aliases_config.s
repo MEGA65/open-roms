@@ -364,3 +364,10 @@
 	.const CONFIG_COLOR_TXT = $01
 
 #endif
+
+
+// Determine if we need space-savings in BASIC code
+
+#if !ROM_LAYOUT_M65
+#define HAS_SMALL_BASIC
+#endif

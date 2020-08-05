@@ -5,7 +5,7 @@
 
 * Retrofan - for his Mega65 banner artwork and PXLfont
 * TWW/CTR - for his keyboard handling code
-* Graham - for his PAL/NTSC detection routine
+* Graham - for his PAL/NTSC detection code and compact 8x8 multiplication routine
 * enthusi/Onslaught - for his example Turbo Tape 64 compatible loader
 * djmips - for fast 8x8 multiplication routine
 * Verz - for the integer division routine
@@ -23,6 +23,11 @@
 * slark - for his screen codes / PETSCII description at [slark.me](https://slark.me)
 * silverdr - for the floating point routines [description](https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics)
 * the [C64 Wiki](https://www.c64-wiki.com) contributors
+
+## other
+
+* Gábor Lénárt - for his work on [XEMU Mega65 emulator](https://github.com/lgblgblgb/xemu)
+* Mads Nielsen - for the [Kick Assembler](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
 
 <br />
 

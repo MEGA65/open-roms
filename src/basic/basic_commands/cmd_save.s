@@ -38,6 +38,6 @@ cmd_save_do: // entry point for BSAVE
 	jsr JSAVE
 	bcs_16 do_kernal_error
 
-	// The end
+	// Execute next statement
 
-	jmp execute_statements
+	rts

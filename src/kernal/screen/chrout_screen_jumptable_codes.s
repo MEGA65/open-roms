@@ -83,18 +83,9 @@ chrout_screen_jumptable_hi:
 
 #else // HAS_OPCODES_65C02
 
-
-__before_chrout_screen_jumptable:
-
-.if (mod(*, $2) == 1) { brk }          // align code so that vector never crosses page boundary
-
 chrout_screen_jumptable:
 
+	// Note: 65C02 has the page boundary vector bug fixed!
 	put_jumptable(chrout_list)
-
-	// Make sure routine size is always the same - build system limitation
-
-.if (__before_chrout_screen_jumptable == chrout_screen_jumptable) { brk }
-
 
 #endif

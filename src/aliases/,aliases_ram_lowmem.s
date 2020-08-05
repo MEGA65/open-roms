@@ -35,8 +35,8 @@
 	.label RESHO     = $26 // $26-$2A  temporary variables, [!] our usage might be different
 	.label TXTTAB    = $2B // $2B-$2C  start of BASIC code
 	.label VARTAB    = $2D // $2D-$2E  end of BASIC code, start of variables
-	.label ARYTAB    = $2F // $2F-$30  -- NOT IMPLEMENTED --
-	.label STREND    = $31 // $31-$32  -- NOT IMPLEMENTED --
+	.label ARYTAB    = $2F // $2F-$30  pointer to start of array storage
+	.label STREND    = $31 // $31-$32  pointer to start of free RAM
 	.label FRETOP    = $33 // $33-$34  pointer to bottom of strings area
 	.label FRESPC    = $35 // $35-$36  [!] our implementation uses this as temporary string pointer
 	.label MEMSIZ    = $37 // $37-$38  highest address of BASIC memory + 1
@@ -46,14 +46,14 @@
 	.label DATLIN    = $3F // $3F-$40  -- NOT IMPLEMENTED --
 	.label DATPTR    = $41 // $41-$42  pointer for READ/DATA copmmands
 	.label INPPTR    = $43 // $43-$44  -- NOT IMPLEMENTED --
-	.label VARNAM    = $45 // $45-$46  -- NOT IMPLEMENTED --
-	.label VARPNT    = $47 // $47-$48  -- NOT IMPLEMENTED --
+	.label VARNAM    = $45 // $45-$46  current variable name
+	.label VARPNT    = $47 // $47-$48  current variable/descriptor pointer
 	.label FORPNT    = $49 // $49-$4A  -- NOT IMPLEMENTED --
 	.label OPPTR     = $4B // $4B-$4C  helper variable for expression computation, [!] our usage details are different
 	.label OPMASK    = $4D //          -- NOT IMPLEMENTED --
 	.label DEFPNT    = $4E // $4E-$4F  -- NOT IMPLEMENTED --
-	.label DSCPNT    = $50 // $50-$52  -- NOT IMPLEMENTED --
-	.label FOUR6     = $53 //          -- NOT IMPLEMENTED --
+	.label DSCPNT    = $50 // $50-$52  temporary area fro string handling, [!] our usage might differ
+	.label FOUR6     = $53 //          size of variable content (float = 5, integer = 2, string descriptor = 3)
 	.label JMPER     = $54 // $54-$56  -- NOT IMPLEMENTED --
 	.label TEMPF1    = $57 // $57-$5B  BASIC numeric work area
 	.label TEMPF2    = $5C // $5C-$60  BASIC numeric work area
@@ -70,12 +70,6 @@
 	.label FAC2_exponent   = $69
 	.label FAC2_mantissa   = $6A // $6A - $6D
 	.label FAC2_sign       = $6E
-
-	// We re-use FAC2 for memory move pointers, since we cannot be doing calculations while moving memory
-	.label memmove__src    = $69
-	.label memmove__dst    = $6B
-	.label memmove__size   = $6D
-
 
 	.label ARISGN    = $6F //          -- NOT IMPLEMENTED --
 	.label FACOV     = $70 //          FAC1 low order mantissa

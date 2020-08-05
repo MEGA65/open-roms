@@ -1,0 +1,3 @@
+ADC $22 + STA $24
+
+Adding a zeropage value to .A, storing result in another zeropage location - trivial, not copyrightable.

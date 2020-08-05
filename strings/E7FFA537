@@ -1,0 +1,3 @@
+$FFE7 + LDA $37
+ 
+Address of a well-known routine (CLALL) + a single instruction. Trivial - not copyrightable.

@@ -1,0 +1,3 @@
+LDA ($47),Y + PHA + DEY
+
+Small part of a code pushing memory to stack - not creative, not copyrightable.

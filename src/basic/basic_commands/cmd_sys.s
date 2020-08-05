@@ -5,7 +5,7 @@
 
 cmd_sys:
 	
-	jsr end_of_statement_check
+	jsr is_end_of_statement
 	bcc !+
 
 	// SYS requires an argument
@@ -41,7 +41,9 @@ cmd_sys_hack_not_needed:
 	// XXX End of hack
 	//
 
-	jsr basic_parse_line_number
+	lda #IDX__EV2_0B // 'SYNTAX ERROR'
+	jsr fetch_uint16
+	bcs_16 do_SYNTAX_error
 
 cmd_sys_setup_call:
 	lda #$4C // JMP opcode
@@ -60,10 +62,7 @@ cmd_sys_setup_call:
 	plp
 
 	// Call the routine.
-	jsr USRPOK
-	
-	jmp execute_statements
-
+	jmp USRPOK
 
 	//
 	// XXX Temporary ugly hack to support 'SYS PI*656'

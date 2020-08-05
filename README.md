@@ -1,13 +1,17 @@
-# open-roms
+# Open ROMs
+
+![screenshot demonstrating some features](./doc/screenshot-demo.png)
 
 A project to create unencumbered open-source ROMs for use on selected retro computers. Besides this manifest, the following documents are available:
 
 * [implementation status](./STATUS.md) of various APIs and functionalities
 * [configuration options](./CONFIG.md) for those willing to compile their own, customized ROM set
-* [BASIC extensions](doc/Extended-BASIC.md)
-* [development guide](./doc/Development.md) for those interested in OpenROMs technical aspects
+* [BASIC extensions](./doc/Extended-BASIC.md)
+* [development guide](./doc/Development.md) for those interested in technical aspects
 * [license](./LICENSE) information and list of major contributors
 * [credits](./CREDITS.md) to people whose work was of great help to us
+
+To download pre-built ROM images, go [here](./bin).
 
 # Problem Statement and Motivation
 

@@ -1,0 +1,3 @@
+CLC + ADC $22 + STA $24
+
+Adding two zeropage variables - trivial, not copyrightable.

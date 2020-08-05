@@ -1,0 +1,3 @@
+PLA + STA $46 + PLA
+
+Part of code retrieving values from the stack - trivial, not copyrightable.

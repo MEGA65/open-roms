@@ -1,0 +1,3 @@
+STA $22 + BCC (offset matches)
+
+Storing .A in zeropage variable + conditional jump - trivial; not copyrightable.

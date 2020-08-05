@@ -9,4 +9,4 @@ cmd_new:
 
 	// NEW command terminates execution (confirmed on a C64)
 
-	jmp shell_main_loop
+	jmp end_of_program

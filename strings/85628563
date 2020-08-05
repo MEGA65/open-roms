@@ -1,0 +1,3 @@
+STA $62 + STA $63
+
+Storing accumulator in two zeropage locations - trivial, not copyrightable.

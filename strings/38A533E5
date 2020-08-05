@@ -1,0 +1,3 @@
+SEC + LDA $33 + SBC (zeropage address does not match)
+
+Subtracting two zeropage variables (not even both the same ones) - trivial, not copyrightable.

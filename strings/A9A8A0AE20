@@ -1,0 +1,3 @@
+LDA #$A8 + LDY #$AE + JSR (address does not match)
+
+A small piece of code calling a subroutine to fetch PI value - trivial, not copyrightable.

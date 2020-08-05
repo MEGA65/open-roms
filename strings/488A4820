@@ -1,0 +1,3 @@
+PHA + TXA + PHA + JSR (address does not match)
+
+Part of code storing registers on the stack (+ a part of another instruction) - trivial, not copyrightable.

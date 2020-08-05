@@ -1,0 +1,3 @@
+STA $62 + INY + LDA (zeropage address does not match),Y
+
+Store value on zeropage, fetch new from memory location determined by pointer (not even the same one) - not creative, not copyrightable.

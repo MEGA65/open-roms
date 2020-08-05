@@ -1,0 +1,3 @@
+$01 + STA $62 + BCS (offset does not match)
+
+Instruction + some parts - trivial, not copyrightable.

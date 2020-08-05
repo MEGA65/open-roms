@@ -1,0 +1,3 @@
+LDA $7A + PHA + LDA (zeropage address does not match)
+
+Part of code storing some zeropage variables on the stack, not even in the same order - trivial, not copyrightable.

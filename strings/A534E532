@@ -1,0 +1,3 @@
+LDA $34 + SBC $32
+
+Subtracting two zeropage variables - trivial, not copyrightable.

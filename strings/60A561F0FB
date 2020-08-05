@@ -1,0 +1,3 @@
+RTS + LDA $61 + BEQ (offset matches)
+
+End of previous subroutine + beginning of a new one, performing different action depending whether zeropage variable is 0 or not. Trivial - not copyrightable.

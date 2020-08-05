@@ -1,0 +1,3 @@
+ADC $14 + STA $14 + LDA (zeropage address does not match)
+
+Adding a value to a zeropage variable + some part of another instruction - trivial, not copyrightable.

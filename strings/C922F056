@@ -1,0 +1,3 @@
+CMP #$22 ('"') + BEQ (offset matches)
+
+Decision based on accumulator value - trivial, not copyrightable.

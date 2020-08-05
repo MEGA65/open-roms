@@ -1,0 +1,3 @@
+INY + CPY #$06 + BNE (offset does not match)
+
+Ending part of the loop by .Y, counting to 6 - not creative, not copyrightable.

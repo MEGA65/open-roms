@@ -1,0 +1,3 @@
+STX $70 + RTS + JSR (addres does not match)
+
+Routine ending by storing .X to zeropage variable + one byte (start of the instruction) of the next one - trivial, not copyrightable.

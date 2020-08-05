@@ -1,0 +1,3 @@
+LDY #$00 + PLA + STA (zeropage address does not match),Y
+
+Store value from the stack on the location determined by pointer (not even the same one) - not creative, not copyrightable.

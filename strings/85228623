@@ -1,0 +1,3 @@
+STA $22 + STX $23
+
+Storing two registers in a 16-bit zeropage variable - trivial, not copyrightable.

@@ -1,0 +1,3 @@
+STA $63 + STA $64 + STA $65
+
+Storing a value (0) in a multibyte zeropage variable - trivial, not copyrightable.

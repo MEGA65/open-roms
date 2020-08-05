@@ -1,0 +1,3 @@
+ASL $14 + ROL $15
+
+Multiplication of 16-bit zeropage variable by 2 - trivial, not copyrightable.

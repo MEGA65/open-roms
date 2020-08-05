@@ -1,0 +1,3 @@
+JSR $FFBA (SETLFS) + JSR (address does not match)
+
+Call of a well-known subroutine + part of another instruction. Trivial - not copyrightable.

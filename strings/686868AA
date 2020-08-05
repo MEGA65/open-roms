@@ -1,0 +1,3 @@
+PLA + PLA + PLA + TAX
+
+Drop 2 values from the stack, fetch the next one into .X register - trivial, not copyrightable.

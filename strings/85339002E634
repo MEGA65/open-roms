@@ -1,0 +1,3 @@
+STA $33 + BCC (offset matches) + INC $34
+
+Small part of the code to add .A to a 16 bit seropage variable - trivial, not copyrightable.

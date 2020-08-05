@@ -1,0 +1,3 @@
+INY + LDA ($22),Y + ADC (zeropage address does not match)
+
+Fetch value determined by pointer, add content of zeropage variable (not even the same one) - trivial, not copyrightable.

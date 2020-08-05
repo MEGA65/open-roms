@@ -1,0 +1,3 @@
+CLC + ADC $22 + STA (zeropage address does not match)
+
+Subtracting two zeropage variables (not even the same ones) - trivial, not copyrightable.

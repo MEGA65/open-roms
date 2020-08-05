@@ -1,0 +1,3 @@
+LDY #$00 + LDA $45 + STA (zeropage address does not match),Y
+
+Copying value from zeropage variablle to memory location determined by pointer (not even the same one) - trivial, not copyrightable.

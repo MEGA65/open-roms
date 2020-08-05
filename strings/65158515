@@ -1,0 +1,3 @@
+ADC $15 + STA $15
+
+Adding a value to a zeropage variable - trivial, not copyrightable.

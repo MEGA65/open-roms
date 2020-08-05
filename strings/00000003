@@ -1,0 +1,4 @@
+couple of 0's followed by $03
+
+In original ROMs this is a part of floating point constant, in OpenROMs, it can even by a result of code not filling-in the ROM completely. Trivial - not copyrightable.
+

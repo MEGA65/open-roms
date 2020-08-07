@@ -5,23 +5,7 @@
 
 #if CONFIG_MB_MEGA_65
 
-	// Command implementation for Mega65
-
-	// XXX - I think there are some bit-set instructions in 65CE02...
-
-cmd_slow:
-
-	lda #$40
-	skip_2_bytes_trash_nvz
-
-	// FALLTROUGH
-
-cmd_fast:
-
-	lda #$41
-	sta CPU_D6510
-	rts
-
+	// For Mega65 Kernal routines are called directly
 
 #elif CONFIG_MB_ULTIMATE_64
 

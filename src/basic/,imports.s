@@ -51,3 +51,11 @@
 #endif
 
 .label filename_any        = KERNAL().filename_any
+
+#if ROM_LAYOUT_M65
+.label M65_JMODE64         = KERNAL().M65_JMODE64
+.label M65_JMODE65         = KERNAL().M65_JMODE65
+.label M65_JISMODE65       = KERNAL().M65_JISMODE65
+.label M65_JSLOW           = KERNAL().M65_JSLOW
+.label M65_JFAST           = KERNAL().M65_JFAST
+#endif

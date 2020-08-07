@@ -51,8 +51,6 @@ cmd_tab:
 	nop
 cmd_spc:
 	nop
-cmd_go:
-	nop
 
 	// Unimplemented tokens
 

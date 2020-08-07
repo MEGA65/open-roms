@@ -3,6 +3,61 @@
 // #LAYOUT# *   *       #IGNORE
 
 
+cmd_go:
+
+	jsr fetch_character_skip_spaces
+
+	cmp #$A4                           // 'TO' keyword
+	beq cmd_goto
+
+#if !ROM_LAYOUT_M65
+
+	// FALLTROUGH
+
+cmd_go_syntax_error:
+
+	jmp do_SYNTAX_error
+
+#else 
+
+	dew TXTPTR                         // unconsume character
+
+	// Fetch mode
+
+	jsr fetch_uint8
+
+	cmp #64
+	bne !+
+
+	// If in native mode - switch to C64 compatibilty
+
+	jsr M65_JISMODE65
+	bne cmd_go_rts
+
+	jsr helper_ask_if_sure
+	bcs cmd_go_rts
+	jmp M65_JMODE64
+!:
+	cmp #65
+	bne !+
+
+	// If in C64 compatibility mode - switch to native mode
+
+	jsr M65_JISMODE65
+	beq cmd_go_rts
+
+	jsr helper_ask_if_sure
+	bcs cmd_go_rts
+	jmp M65_JMODE65
+!:
+	jmp do_ILLEGAL_QUANTITY_error
+
+cmd_go_rts:
+
+	rts
+
+#endif
+
 cmd_run:
 
 	// RUN clears all variables
@@ -27,7 +82,11 @@ cmd_goto:
 	// GOTO requires line number
 
 	jsr fetch_line_number
+#if !ROM_LAYOUT_M65
+	bcs cmd_go_syntax_error
+#else
 	bcs_16 do_SYNTAX_error
+#endif
 
 	// Check for direct mode
 

@@ -9,8 +9,18 @@
 
 .const command_01_list = List().add(
 
+#if CONFIG_MB_MEGA_65
+
+	M65_JSLOW,
+	M65_JFAST,
+
+#else
+
 	cmd_slow,
 	cmd_fast,
+
+#endif
+
 	cmd_old,
 
 	// NOTE! These commands are temporarily placed here, they should be a part of list 02!

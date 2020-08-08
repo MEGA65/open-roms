@@ -91,3 +91,11 @@ Clears the screen content.
 ### `DISPOSE` (all)
 
 Runs the garbage collector - disposes outdated strings.
+
+### `NSYS` (Mega65)
+
+A 'native' `SYS` - same as `SYS`, but does not switch to C64 compatibility mode.
+
+### `GO 64`, `GO 65` (Mega65)
+
+Switches machine to C64 compatibility mode or to MEGA65 native mode. Performs `CLR`

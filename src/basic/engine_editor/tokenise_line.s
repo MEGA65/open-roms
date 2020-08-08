@@ -100,6 +100,18 @@ tokenise_line_loop:
 
 #endif
 
+#if ROM_LAYOUT_M65
+
+	lda #<packed_freq_keywords_03
+	sta FRESPC+0
+	lda #>packed_freq_keywords_03
+	sta FRESPC+1
+
+	jsr tk_search
+	bcc tokenise_line_keyword_03                 // branch if keyword identified
+
+#endif
+
 	// Shorten packed keyword candidate and try again
 
 	jsr tk_shorten
@@ -172,6 +184,19 @@ tokenise_line_char:
 
 
 // Support for extended keyword lists
+
+#if ROM_LAYOUT_M65
+
+tokenise_line_keyword_03:
+
+	// Store the token list index
+
+	lda #$03
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
+
+#endif
 
 #if !HAS_SMALL_BASIC
 

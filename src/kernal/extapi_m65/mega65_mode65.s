@@ -32,6 +32,11 @@ M65_MODE65:
 	lda #$00
 	sta MISC_EMU
 
+	// Set misc VIC-IV flags
+
+	lda %01000000  // enable C65 character set
+	sta VIC_CTRLA
+
 	// XXX
 
 	// Set screen mode to 80x25

@@ -3,15 +3,39 @@
 // #LAYOUT# *   *       #IGNORE
 
 
+#if ROM_LAYOUT_M65
+
+cmd_nsys:
+	
+	// NSYS requires an argument
+
+	jsr is_end_of_statement
+	bcs_16 do_SYNTAX_error
+	bra cmd_sys_nsys_common
+
+#endif
+
 cmd_sys:
 	
-	jsr is_end_of_statement
-	bcc !+
-
 	// SYS requires an argument
-	jmp do_SYNTAX_error
-	
-!:
+
+	jsr is_end_of_statement
+	bcs_16 do_SYNTAX_error
+
+#if ROM_LAYOUT_M65
+
+	// Make sure we are in C64 compatibility mode
+
+	jsr M65_ISMODE65
+	bne cmd_sys_nsys_common
+	jsr M65_MODE64
+
+	// FALLTROUGH
+
+cmd_sys_nsys_common:
+
+#endif
+
 	//
 	// XXX Temporary ugly hack to support 'SYS PI*656'
 	//

@@ -22,6 +22,11 @@ M65_MODE64:
 	lda #$03
 	sta MISC_EMU
 
+	// Set misc VIC-IV flags
+
+	lda %00000000  // enable C64 character set
+	sta VIC_CTRLA
+
 	// Switch to VIC-II mode
 
 	sta VIC_KEY

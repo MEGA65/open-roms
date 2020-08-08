@@ -46,7 +46,11 @@ execute_statements:
 
 #else
 
+#if ROM_LAYOUT_M65
+	cpx #$04
+#else
 	cpx #$03
+#endif
 	bcc execute_statements_extended
 
 #endif
@@ -92,6 +96,13 @@ execute_statements_extended:
 
 	cpx #$02
 	beq execute_statements_02
+
+#if ROM_LAYOUT_M65
+
+	cpx #$03
+	beq execute_statements_03
+
+#endif
 
 	jmp do_SYNTAX_error
 
@@ -170,6 +181,27 @@ execute_statements_02:
 #endif
 
 #endif // !HAS_SMALL_BASIC
+
+#if ROM_LAYOUT_M65
+
+execute_statements_03:
+
+	// Get the sub-token, check that it is valid
+
+	jsr fetch_character
+	cmp #$00
+	beq_16 do_SYNTAX_error
+
+	cmp #(TK__MAXTOKEN_keywords_03+1)
+	bcs_16 do_SYNTAX_error
+
+	// Use jumptable to go to the command routine
+
+	asl
+	tax
+	jmp (command_03_jumptable - 2, x)
+
+#endif // ROM_LAYOUT_M65
 
 execute_statements_end_of_line:
 

@@ -11,7 +11,7 @@
 	// VIC-IV registers
 
 	.label VIC_KEY      = $D02F
-
+	.label VIC_CTRLA    = $D030
 	.label VIC_CTRLB    = $D031
 
 	.label VIC_XPOS     = $D050

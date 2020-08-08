@@ -206,6 +206,17 @@ const StringEntryList GLOBAL_Keywords_02 =  { ListType::KEYWORDS, "keywords_02",
     // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };
 
+// extended BASIC keywords - list reserved for hardware dependent BASIC commands
+
+const StringEntryList GLOBAL_Keywords_03_M65 =  { ListType::KEYWORDS, "keywords_03",
+{
+    // STD    M65    U64    X16
+
+    { false, true,  false, false, "K03_01",   "NSYS",         }, // Not present in CBM BASIC dialects, Open ROMs specific
+
+} };
+
+
 // BASIC errors - all dialects
 
 /*
@@ -1760,6 +1771,7 @@ void writeStrings()
         dataSetM65.addStrings(GLOBAL_Keywords_V2);
         dataSetM65.addStrings(GLOBAL_Keywords_01);
         dataSetM65.addStrings(GLOBAL_Keywords_02);
+        dataSetM65.addStrings(GLOBAL_Keywords_03_M65);
         dataSetM65.addStrings(GLOBAL_Errors);
         dataSetM65.addStrings(GLOBAL_MiscStrings);
        

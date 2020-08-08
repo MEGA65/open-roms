@@ -15,10 +15,29 @@ default_irq_handler:
 
 #endif // CONFIG_RS232_UP9600
 
+#if ROM_LAYOUT_M65
+
+	jsr M65_ISMODE65
+	bne !+
+
+	jsr m65_cursor_blink
+
+	bra default_irq_handler_common
+!:
+	jsr cursor_blink
+
+default_irq_handler_common:
+
+	jsr JSCNKEY
+	jsr JUDTIM // update jiffy clock
+
+#else
 
 	jsr cursor_blink
 	jsr JSCNKEY
 	jsr JUDTIM // update jiffy clock
+
+#endif
 
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO

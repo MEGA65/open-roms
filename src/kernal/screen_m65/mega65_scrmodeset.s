@@ -60,7 +60,7 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	stx VIC_SCRNPTR+1
 	stx M65_SCRTXTBASE+1
 
-	// Set flags/varaibles for 40/80 columns and 25/50 rows
+	// Set flags/variables for 40/80 columns and 25/50 rows
 
 	tax
 
@@ -68,11 +68,3 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	sta VIC_CTRLB
 
 	rts
-
-
-
-m65_scrtab_vic_ctrlb:
-
-	.byte %00000000 // 40x25
-	.byte %10000000 // 80x25
-	.byte %10000100 // 80x50

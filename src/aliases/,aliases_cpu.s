@@ -261,6 +261,13 @@
 	.byte $22, mod(arg, $100), floor(arg / $100)
 }
 
+.pseudocommand jsr_ind_x addr
+{
+	.var arg = addr.getValue()
+	.byte $23, mod(arg, $100), floor(arg / $100)
+}
+
+
 #endif
 
 

@@ -9,6 +9,9 @@
 
 
 .label STOP                            = KERNAL_0.STOP
+.label M65_SLOW                        = KERNAL_0.M65_SLOW
+.label M65_FAST                        = KERNAL_0.M65_FAST
+
 
 .label hw_entry_reset                  = KERNAL_0.hw_entry_reset
 .label return_from_interrupt           = KERNAL_0.return_from_interrupt
@@ -17,7 +20,7 @@
 
 .label setup_irq_timer                 = KERNAL_0.setup_irq_timer
 .label wait_x_bars                     = KERNAL_0.wait_x_bars
-
+.label viciv_unhide                    = KERNAL_0.viciv_unhide
 
 #if CONFIG_IEC
 
@@ -28,7 +31,6 @@
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 
-.label viciv_unhide                    = KERNAL_0.viciv_unhide
 .label tape_motor_on                   = KERNAL_0.tape_motor_on
 .label tape_motor_off                  = KERNAL_0.tape_motor_off
 

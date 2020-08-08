@@ -72,13 +72,6 @@
 
 #endif
 
-#if CONFIG_MB_MEGA_65
-
-	.label VIC_KEY      = $D02F
-	.label VIC_XPOS     = $D050
-
-#endif
-
 	// SID registers
 
 	.label __SID_BASE   = $D400  // base address of the chip

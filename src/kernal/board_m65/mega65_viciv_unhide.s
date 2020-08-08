@@ -8,17 +8,17 @@
 //
 
 
-#if ROM_LAYOUT_M65 || CONFIG_KEYBOARD_C65 || (CONFIG_MB_MEGA_65 && (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO))
+#if ROM_LAYOUT_M65 || CONFIG_KEYBOARD_C65
 
+	// XXX viciii_unhide for non-Mega65 build?
 
 viciv_unhide:
 
-	lda #$A5
+	lda #$47
 	sta VIC_KEY
-	lda #$96
+	lda #$53
 	sta VIC_KEY
 
 	rts
-
 
 #endif

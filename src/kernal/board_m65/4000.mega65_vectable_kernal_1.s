@@ -18,6 +18,10 @@
 	.label VK1__load_tape_turbo        = $4000 + 2 * 4
 	.label VK1__load_tape_auto         = $4000 + 2 * 5
 	.label VK1__tape_head_align        = $4000 + 2 * 6
+	.label VK1__M65_MODE64             = $4000 + 2 * 7
+	.label VK1__M65_MODE65             = $4000 + 2 * 8
+	.label VK1__M65_SCRMODEGET         = $4000 + 2 * 9
+	.label VK1__M65_SCRMODESET         = $4000 + 2 * 10
 
 #else
 
@@ -50,5 +54,10 @@
 #else
 	.word $0000
 #endif
+
+	.word M65_MODE64
+	.word M65_MODE65
+	.word M65_SCRMODEGET
+	.word M65_SCRMODESET	
 
 #endif

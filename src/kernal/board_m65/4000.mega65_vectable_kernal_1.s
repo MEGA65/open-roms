@@ -23,6 +23,8 @@
 	.label VK1__M65_MODE65             = $4000 + 2 * 9
 	.label VK1__M65_SCRMODEGET         = $4000 + 2 * 10
 	.label VK1__M65_SCRMODESET         = $4000 + 2 * 11
+	.label VK1__M65_CLRSCR             = $4000 + 2 * 12
+	.label VK1__M65_CLRWIN             = $4000 + 2 * 13
 
 #else
 
@@ -61,6 +63,8 @@
 	.word M65_MODE64
 	.word M65_MODE65
 	.word M65_SCRMODEGET
-	.word M65_SCRMODESET	
+	.word M65_SCRMODESET
+	.word M65_CLRSCR	
+	.word M65_CLRWIN	
 
 #endif

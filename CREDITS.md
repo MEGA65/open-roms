@@ -26,8 +26,10 @@
 
 ## other
 
-* Gábor Lénárt - for his work on [XEMU Mega65 emulator](https://github.com/lgblgblgb/xemu)
+* Gábor Lénárt - for [his work](https://github.com/lgblgblgb/xemu) on XEMU Mega65 emulator
+* Hernán Di Pietro - for [his work](https://github.com/hernandp/xemu) on XEMU Mega65 emulator
 * Mads Nielsen - for the [Kick Assembler](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
+* Simon Jameson - for his Kick Assembler [pseudocommands](https://github.com/smnjameson/M65_KickAsm_PseudoCommands) for Mega65 CPU support
 
 <br />
 

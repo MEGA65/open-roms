@@ -7,6 +7,8 @@
 
 cmd_rem:
 
+	// XXX do we need these PHA's?
+
 	pha
 	pha
 	jmp execute_statements_end_of_line

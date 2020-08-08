@@ -12,4 +12,3 @@ m65_chrout_screen:
 	jsr_ind VK1__m65_chrout_screen
 	jsr     map_NORMAL
 	jmp chrout_done_success
-

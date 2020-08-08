@@ -11,7 +11,12 @@
 .label STOP                            = KERNAL_0.STOP
 .label M65_SLOW                        = KERNAL_0.M65_SLOW
 .label M65_FAST                        = KERNAL_0.M65_FAST
+.label M65_ISMODE65                    = KERNAL_0.M65_ISMODE65
 
+#if (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO) || (CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K)
+.label screen_on                       = KERNAL_0.screen_on
+.label screen_off                      = KERNAL_0.screen_off
+#endif
 
 .label hw_entry_reset                  = KERNAL_0.hw_entry_reset
 .label return_from_interrupt           = KERNAL_0.return_from_interrupt

@@ -183,9 +183,9 @@
 	.label C65_EXTKEYS_PR  = $D607
 	.label C65_EXTKEYS_DDR = $D608
 
-	.label M65_BADL_SLI    = $D710
+#endif
 
-#else
+#if !CONFIG_MB_MEGA_65
 
 	// SuperCPU registers
 

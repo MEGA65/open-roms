@@ -12,7 +12,7 @@
 
 	.label VIC_KEY      = $D02F
 
-	.label VIC_SCFLAGS  = $D031
+	.label VIC_CTRLB    = $D031
 
 	.label VIC_XPOS     = $D050
 
@@ -20,5 +20,9 @@
 	.label VIC_COLPTR   = $D064 // 2 bytes
 
 	.label VIC_CHARPTR  = $D068 // 3 bytes
+
+	// MISC registers
+
+	.label MISC_EMU     = $D710 // to enable badlines and slow interrupts
 
 #endif

@@ -8,7 +8,7 @@ M65_MODE64:
 
 	sei
 
-	// XXX provide full implementation
+	// XXX provide full implementation - switch back to normal text mode
 
 	// Set the magic string to mark legacy mode
 
@@ -16,6 +16,15 @@ M65_MODE64:
 	sta M65_MAGICSTR+0
 	sta M65_MAGICSTR+1
 	sta M65_MAGICSTR+2
+
+	// Reenable badlines and slow interrupt emulation
+
+	lda #$03
+	sta MISC_EMU
+
+	// Switch to VIC-II mode
+
+	sta VIC_KEY
 
 	// Reenable interrupts
 

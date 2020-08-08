@@ -37,13 +37,14 @@ M65_CLRWIN:
     bpl !-
 
     lda #$0F
-    sta M65_LPNT_KERN+2
+    sta M65_LPNT_KERN+3
     lda #$F8
-    sta M65_LPNT_KERN+1
+    sta M65_LPNT_KERN+2
 
     // Go trough all the rows
 
     phz
+    ldx M65_SCRMODE
     ldy #$00
 
     // FALLTROUGH
@@ -61,7 +62,7 @@ m65_clrwin_loop:
 !:
 	lda #$20
 	sta_lp (M65_LPNT_SCR),z
-	lda #$00
+	lda COLOR
 	sta_lp (M65_LPNT_KERN),z
 	inz
 	cpz M65_TXTWIN_X1
@@ -71,12 +72,30 @@ m65_clrwin_loop:
 
 m65_clrwin_loop_next:
 
+	// Increment M65_LPNT_SCR and M65_LPNT_KERN by the row length
+
+	clc
+	lda m65_scrtab_txtwidth, x
+	adc M65_LPNT_SCR+0
+	sta M65_LPNT_SCR+0
+	bcc !+
+	inc M65_LPNT_SCR+1
+!:
+	clc
+	lda m65_scrtab_txtwidth, x
+	adc M65_LPNT_KERN+0
+	sta M65_LPNT_KERN+0
+	bcc !+
+	inc M65_LPNT_KERN+1
+!:
+	// Increment row counter, check if new row is valid
+
 	iny
-
-    // XXX
-
+	cpy M65_TXTWIN_Y1
+	bne m65_clrwin_loop
     plz
 
+    // Set screen variables
 
 	// XXX implement this
 

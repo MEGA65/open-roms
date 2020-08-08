@@ -42,6 +42,13 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 
 	sta M65_SCRMODE
 
+	// Set flags/variables for 40/80 columns and 25/50 rows
+
+	tax
+
+	lda m65_scrtab_vic_ctrlb,x
+	sta VIC_CTRLB
+
 	// Set the base screen addresses:
 	// - in VIC_SCRNPTR and M65_SCRTXTBASE to $16000
 	// - in VIC_COLPTR to $0000
@@ -59,12 +66,5 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	ldx #$60
 	stx VIC_SCRNPTR+1
 	stx M65_SCRTXTBASE+1
-
-	// Set flags/variables for 40/80 columns and 25/50 rows
-
-	tax
-
-	lda m65_scrtab_vic_ctrlb,x
-	sta VIC_CTRLB
 
 	rts

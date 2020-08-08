@@ -4,6 +4,6 @@
 
 m65_chrout_screen:
 
-	// Provide implementation
+	// XXX provide implementation
 
 	rts

@@ -56,7 +56,7 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	inx
 	stx VIC_SCRNPTR+2
 	stx M65_SCRTXTBASE+2
-	ldx #$06
+	ldx #$60
 	stx VIC_SCRNPTR+1
 	stx M65_SCRTXTBASE+1
 
@@ -68,8 +68,6 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	jsr_ind_x m65_scrmodeset_flagtab
 
 	rts
-
-
 
 m65_scrmodeset_flagtab:
 

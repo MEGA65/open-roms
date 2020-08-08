@@ -60,7 +60,7 @@ tape_screen_off_motor_on:
 	// On Mega65 we do not have to turn the screen off;
 	// it is enough to disable badline emulation
 
-	jsr mega65_unhide
+	jsr viciv_unhide
 	lda #$00
 	sta M65_BADL_SLI
 

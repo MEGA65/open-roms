@@ -28,7 +28,7 @@ wedge_dos:
 	jsr JCLALL
 
 	// Set file parameters,  channel 15 is a typical one for commands
-	jsr select_device // sets .X register
+	jsr SELDEV                                   // sets .X register
 	lda #$0F
 	ldy #$0F
 	jsr JSETFLS

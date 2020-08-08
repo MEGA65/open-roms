@@ -31,24 +31,26 @@ cmd_go_syntax_error:
 
 	// If in native mode - switch to C64 compatibilty
 
-	jsr M65_JISMODE65
+	jsr M65_ISMODE65
 	bne cmd_go_rts
 
 	jsr helper_ask_if_sure
 	bcs cmd_go_rts
-	jmp M65_JMODE64
+	jsr M65_MODE64
+	jmp do_clr
 !:
 	cmp #65
 	bne !+
 
 	// If in C64 compatibility mode - switch to native mode
 
-	jsr M65_JISMODE65
+	jsr M65_ISMODE65
 	beq cmd_go_rts
 
 	jsr helper_ask_if_sure
 	bcs cmd_go_rts
-	jmp M65_JMODE65
+	jsr M65_MODE65
+	jmp do_clr
 !:
 	jmp do_ILLEGAL_QUANTITY_error
 

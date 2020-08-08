@@ -28,7 +28,7 @@
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 
-.label mega65_unhide                   = KERNAL_0.mega65_unhide
+.label viciv_unhide                    = KERNAL_0.viciv_unhide
 .label tape_motor_on                   = KERNAL_0.tape_motor_on
 .label tape_motor_off                  = KERNAL_0.tape_motor_off
 

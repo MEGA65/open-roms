@@ -72,17 +72,17 @@ m65_clrwin_loop:
 
 m65_clrwin_loop_next:
 
-	// Increment M65_LPNT_SCR and M65_LPNT_KERN by the row length
+	// Increment M65_LPNT_SCR and M65_LPNT_KERN by the logical row length (always 80 = $50)
 
 	clc
-	lda m65_scrtab_txtwidth, x
+	lda #$50
 	adc M65_LPNT_SCR+0
 	sta M65_LPNT_SCR+0
 	bcc !+
 	inc M65_LPNT_SCR+1
 !:
 	clc
-	lda m65_scrtab_txtwidth, x
+	lda #$50
 	adc M65_LPNT_KERN+0
 	sta M65_LPNT_KERN+0
 	bcc !+

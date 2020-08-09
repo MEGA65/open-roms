@@ -16,10 +16,12 @@
 
 	.label VIC_XPOS     = $D050
 
-	.label VIC_SCRNPTR  = $D060 // 4 bytes
-	.label VIC_COLPTR   = $D064 // 2 bytes
+	.label VIC_CHARSTEP = $D058 // 2 bytes  - logical characters per line
 
-	.label VIC_CHARPTR  = $D068 // 3 bytes
+	.label VIC_SCRNPTR  = $D060 // 4 bytes  - pointer to start of screen memory
+	.label VIC_COLPTR   = $D064 // 2 bytes  - pointer to start of color memory
+
+	.label VIC_CHARPTR  = $D068 // 3 bytes  - pointer to start of character generator
 
 	// MISC registers
 

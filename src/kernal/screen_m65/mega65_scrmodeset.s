@@ -49,11 +49,17 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	lda m65_scrtab_vic_ctrlb,x
 	sta VIC_CTRLB
 
+	// Set the logical row length to 80
+
+	ldx #$50
+	stx VIC_CHARSTEP+0
+	ldx #$00
+	stx VIC_CHARSTEP+1
+	
 	// Set the base screen addresses:
 	// - in VIC_SCRNPTR and M65_SCRTXTBASE to $16000
 	// - in VIC_COLPTR to $0000
 
-	ldx #$00
 	stx VIC_COLPTR+0
 	stx VIC_COLPTR+1
 	stx VIC_SCRNPTR+0

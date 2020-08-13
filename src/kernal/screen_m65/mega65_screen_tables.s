@@ -20,6 +20,18 @@ m65_scrtab_txtheight:        // height of the text screen
 	.byte 25
 	.byte 50
 
+m65_scrtab_viewmax_lo:       // maximum allowed viewport start - low byte
+
+	.byte $B0
+	.byte $B0
+	.byte $E0
+
+m65_scrtab_viewmax_hi:       // maximum allowed viewport start - high byte
+
+	.byte $96
+	.byte $96
+	.byte $8E
+
 m65_scrtab_rowoffset_lo:     // row offsets - low bytes
 
 	.byte <(80 *  0), <(80 *  1), <(80 *  2), <(80 *  3), <(80 *  4), <(80 *  5), <(80 *  6), <(80 *  7), <(80 *  8), <(80 *  9)

@@ -2,24 +2,19 @@
 // #LAYOUT# *   *        #IGNORE
 
 
-M65_CLRSCR:
-
-	// Set the text window to whole screen area
-
-	lda #$00
-	sta M65_TXTWIN_X0
-	sta M65_TXTWIN_Y0
-
-	ldx M65_SCRMODE
-	
-	lda m65_scrtab_txtwidth, X
-	sta M65_TXTWIN_X1
-	lda m65_scrtab_txtheight, X
-	sta M65_TXTWIN_Y1
-
-	// FALLTROUGH
-
 M65_CLRWIN:
+
+	// Clear additional attributes from the color code
+	// XXX deduplicate with M65_CLRSCR
+
+	lda COLOR
+	and #$0F
+	sta COLOR
+
+	// Check if windowed mode; if not, go to M65_CLRSCR
+
+	lda M64_SCRWINMODE
+	bpl_16 m65_clrscr_takeover
 
 	// To clear the window, two zeropage long pointers will be used:
 	// - M65_LPNT_SCR  for screen memory
@@ -27,24 +22,28 @@ M65_CLRWIN:
 
 	// First initialize both pointers
 
-	ldx #$03
-!:
-	lda M65_SCRTXTBASE,x
-	sta M65_LPNT_SCR,x
-    lda #$00
-    sta M65_LPNT_KERN,x
-    dex
-    bpl !-
+	lda M65_SCRVIEW+0
+	sta M65_LPNT_SCR+0
+	lda M65_SCRVIEW+1
+	sta M65_LPNT_SCR+1
+	lda M65_SCRSEG+0
+	sta M65_LPNT_SCR+2
+	lda M65_SCRSEG+1
+	sta M65_LPNT_SCR+3
 
-    lda #$0F
-    sta M65_LPNT_KERN+3
-    lda #$F8
-    sta M65_LPNT_KERN+2
+	lda M65_COLVIEW+0
+	sta M65_LPNT_KERN+0
+	lda M65_COLVIEW+1
+	sta M65_LPNT_KERN+1
+	// XXX deduplicate part below with M65_CLRSCR
+	lda #$F8
+	sta M65_LPNT_KERN+2
+	lda #$0F
+	sta M65_LPNT_KERN+3
 
     // Go trough all the rows
 
     phz
-    ldx M65_SCRMODE
     ldy #$00
 
     // FALLTROUGH

@@ -21,6 +21,13 @@
 	.label M65_TMP__K2   = $F2  // $F2      -- UNUSED -- temporary value for various Kernal routines
 
 	//
+	// Page 0 - other reused values
+	//
+
+	.label M65__TXTROW   = PNTR //          screen row
+	.label M65__TXTCOL   = TBLX //          screen column
+
+	//
 	// Pages 4-7 - reused screen memory
 	//
 

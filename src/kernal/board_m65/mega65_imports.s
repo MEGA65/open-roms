@@ -22,6 +22,7 @@
 .label return_from_interrupt           = KERNAL_0.return_from_interrupt
 .label clrchn_reset                    = KERNAL_0.clrchn_reset
 .label udtim_keyboard                  = KERNAL_0.udtim_keyboard
+.label chrout_to_screen_code           = KERNAL_0.chrout_to_screen_code
 
 .label setup_irq_timer                 = KERNAL_0.setup_irq_timer
 .label wait_x_bars                     = KERNAL_0.wait_x_bars

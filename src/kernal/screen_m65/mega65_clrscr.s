@@ -113,6 +113,10 @@ m65_clrscr_loop:
 
     // Set screen variables
 
-	// XXX implement this, together with HOME
+	// XXX provide proper implementation, together with HOME
+
+	lda #$00
+	sta M65__TXTROW
+	sta M65__TXTCOL
 
 	rts

@@ -23,7 +23,7 @@ m65_clrscr_takeover:
 	// - M65_SCRVIEW, M65_COLVIEW
 	// To clear the screen, two zeropage long pointers will be used, initialize them too
 	// - M65_LPNT_SCR  for screen memory
-	// - M65_LPNT_KERN for colour memory (starts from $FF80000)
+	// - M65_LPNT_KERN for colour memory (starts from $FF80000) // XXX preserve this on stack, restore afterwards
 
 	sta M65_COLVIEW+0
 	sta M65_COLVIEW+1

@@ -18,7 +18,7 @@ M65_CLRWIN:
 
 	// To clear the window, two zeropage long pointers will be used:
 	// - M65_LPNT_SCR  for screen memory
-	// - M65_LPNT_KERN for colour memory (starts from $FF80000)
+	// - M65_LPNT_KERN for colour memory (starts from $FF80000) // XXX preserve this on stack, restore afterwards
 
 	// First initialize both pointers
 

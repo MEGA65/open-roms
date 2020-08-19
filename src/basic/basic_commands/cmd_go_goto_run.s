@@ -50,7 +50,16 @@ cmd_go_syntax_error:
 	jsr helper_ask_if_sure
 	bcs cmd_go_rts
 	jsr M65_MODE65
-	jmp do_clr
+	// XXX test code, replace by jmp do_clr
+
+	jsr do_clr
+
+	lda #$41
+	jsr JCHROUT
+testx:
+	jmp testx
+
+
 !:
 	jmp do_ILLEGAL_QUANTITY_error
 
@@ -82,6 +91,8 @@ cmd_run:
 cmd_goto:
 
 	// GOTO requires line number
+	// XXX in case of no parameter, go to line 0 - checked with original ROMs
+
 
 	jsr fetch_line_number
 #if !ROM_LAYOUT_M65

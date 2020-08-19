@@ -2,7 +2,7 @@
 // #LAYOUT# *   *        #IGNORE
 
 
-M65_ISMODE65: // checks if mode is native M65 one, BEQ = jump if native mode
+M65_ISMODE65: // checks if mode is native M65 one, BCC = jump if native mode
 
 	pha
 
@@ -14,6 +14,16 @@ M65_ISMODE65: // checks if mode is native M65 one, BEQ = jump if native mode
 	bne !+
 	lda M65_MAGICSTR+2
 	cmp #$35 // '5'
+	bne !+
+
+	// M65 native mode
+
+	clc
+	pla
+	rts
 !:
+	// C64 compatibility mode
+
+	sec
 	pla
 	rts

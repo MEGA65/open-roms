@@ -27,7 +27,7 @@ cmd_sys:
 	// Make sure we are in C64 compatibility mode
 
 	jsr M65_ISMODE65
-	bne cmd_sys_nsys_common
+	bcs cmd_sys_nsys_common
 	jsr M65_MODE64
 
 	// FALLTROUGH

@@ -26,7 +26,7 @@ tape_screen_on_motor_off:
 #else
 
 	jsr M65_ISMODE65
-	bne_16 screen_on                   // MEGA65 native mode does not have badlines, no need to enable/disable screen
+	bcs_16 screen_on                   // MEGA65 native mode does not have badlines, no need to enable/disable screen
 	rts
 
 #endif
@@ -52,7 +52,7 @@ tape_screen_off_motor_on:
 #else
 
 	jsr M65_ISMODE65
-	beq !+                    	       // MEGA65 native mode does not have badlines, no need to enable/disable screen
+	bcs !+                    	       // MEGA65 native mode does not have badlines, no need to enable/disable screen
 	jsr screen_off
 !:
 

@@ -32,7 +32,7 @@ cmd_go_syntax_error:
 	// If in native mode - switch to C64 compatibilty
 
 	jsr M65_ISMODE65
-	bne cmd_go_rts
+	bcs cmd_go_rts
 
 	jsr helper_ask_if_sure
 	bcs cmd_go_rts
@@ -45,21 +45,12 @@ cmd_go_syntax_error:
 	// If in C64 compatibility mode - switch to native mode
 
 	jsr M65_ISMODE65
-	beq cmd_go_rts
+	bcc cmd_go_rts
 
 	jsr helper_ask_if_sure
 	bcs cmd_go_rts
 	jsr M65_MODE65
-	// XXX test code, replace by jmp do_clr
-
-	jsr do_clr
-
-	lda #$41
-	jsr JCHROUT
-testx:
-	jmp testx
-
-
+	jmp do_clr
 !:
 	jmp do_ILLEGAL_QUANTITY_error
 

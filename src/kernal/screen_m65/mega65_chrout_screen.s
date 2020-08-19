@@ -37,35 +37,35 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 	phz
 	ldz M65__TXTCOL
 
-	// Start from setting M65_SCRSEG to point colour memory (starts from $FF80000)
+	// Start from setting M65_LPNT_SCR to point colour memory (starts from $FF80000)
 
 	lda #$0F
-	sta M65_SCRSEG+3
+	sta M65_LPNT_SCR+3
 	lda #$F8
-	sta M65_SCRSEG+2
+	sta M65_LPNT_SCR+2
 
 	lda M65_COLVIEW+1
-	sta M65_SCRSEG+1
+	sta M65_LPNT_SCR+1
 	lda M65_COLVIEW+0
-	sta M65_SCRSEG+0
+	sta M65_LPNT_SCR+0
 
 	// Add screen row to the address
 
 	ldy M65__TXTROW
 	clc
 	lda m65_scrtab_rowoffset_lo,y
-	adc M65_SCRSEG+0
-	sta M65_SCRSEG+0	
+	adc M65_LPNT_SCR+0
+	sta M65_LPNT_SCR+0	
 	lda m65_scrtab_rowoffset_hi,y
-	adc M65_SCRSEG+1
-	sta M65_SCRSEG+1	
+	adc M65_LPNT_SCR+1
+	sta M65_LPNT_SCR+1	
 
 	// Store the new color in screen memory
 
 	lda COLOR
 	sta_lp (M65_LPNT_SCR),z
 
-	// Now change M65_LPNT_SCRb to point to screen memory
+	// Now change M65_LPNT_SCR to point to screen memory
 
 	// XXX deduplicate this part
 	lda M65_SCRSEG+1

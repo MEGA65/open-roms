@@ -47,3 +47,39 @@ m65_scrtab_rowoffset_hi:     // row offsets - high bytes
 	.byte >(80 * 20), >(80 * 21), >(80 * 22), >(80 * 23), >(80 * 24), >(80 * 25), >(80 * 26), >(80 * 27), >(80 * 28), >(80 * 29)
 	.byte >(80 * 30), >(80 * 31), >(80 * 32), >(80 * 33), >(80 * 34), >(80 * 35), >(80 * 36), >(80 * 37), >(80 * 38), >(80 * 39)
 	.byte >(80 * 40), >(80 * 41), >(80 * 42), >(80 * 43), >(80 * 44), >(80 * 45), >(80 * 46), >(80 * 47), >(80 * 48), >(80 * 49)
+
+// Jumptable for screen control codes support. To improve performance, should be sorted
+// starting from the least probable routine.
+
+m65_chrout_screen_jumptable_codes:
+
+	.byte KEY_CLR 
+	.byte KEY_HOME
+	.byte KEY_C65_SHIFT_OFF
+	.byte KEY_C65_SHIFT_ON
+	.byte KEY_TXT
+	.byte KEY_GFX
+	.byte KEY_RVS_OFF
+	.byte KEY_RVS_ON
+	.byte KEY_CRSR_RIGHT
+	.byte KEY_CRSR_LEFT
+	.byte KEY_CRSR_DOWN
+	.byte KEY_CRSR_UP
+	.byte KEY_INS
+	.byte KEY_TAB
+	.byte KEY_LINE_FEED
+	.byte KEY_UNDERLINE_ON
+	.byte KEY_UNDERLINE_OFF
+	.byte KEY_FLASHING_ON
+	.byte KEY_FLASHING_OFF
+	.byte KEY_TAB_SET_CLR
+	.byte KEY_ESC
+	.byte KEY_BELL
+
+__m65_chrout_screen_jumptable_quote_guard:
+
+	.byte KEY_STOP
+	.byte KEY_DEL
+	.byte KEY_RETURN
+
+__m65_chrout_screen_jumptable_codes_end:

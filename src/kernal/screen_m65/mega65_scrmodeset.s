@@ -52,9 +52,9 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	// Set the logical row length to 80
 
 	ldx #$50
-	stx VIC_CHARSTEP+0
+	// stx VIC_CHARSTEP+0
 	ldx #$00
-	stx VIC_CHARSTEP+1
+	// stx VIC_CHARSTEP+1
 	
 	// Set the following locations:
 	// - M64_SCRWINMODE                - for scroll-console mode

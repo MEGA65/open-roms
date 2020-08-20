@@ -428,12 +428,12 @@ scnkey_got_petscii:
 	// Special handling for SHIFT+TAB; it is easier than creating new matrix
 
 	tax
-	cmp #KEY_TAB_FW
+	cmp #KEY_C64_TAB_FW
 	bne !+
 	lda SHFLAG
 	and #KEY_FLAG_SHIFT
 	beq !+
-	ldx #KEY_TAB_BW
+	ldx #KEY_C64_TAB_BW
 !:
 	txa
 

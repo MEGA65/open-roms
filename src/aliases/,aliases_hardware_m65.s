@@ -16,6 +16,8 @@
 
 	.label VIC_XPOS     = $D050
 
+	.label VIC_CTRLC    = $D054
+
 	.label VIC_CHARSTEP = $D058 // 2 bytes  - logical characters per line
 
 	.label VIC_SCRNPTR  = $D060 // 4 bytes  - pointer to start of screen memory

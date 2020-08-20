@@ -37,7 +37,9 @@ M65_MODE65:
 	lda %01000000  // enable C65 character set
 	sta VIC_CTRLA
 
-	// XXX
+	// XXX enable 48 MHz mode in VIC_CTRLC
+
+	// XXX posibly alter other settings
 
 	// Set screen mode to 80x25
 

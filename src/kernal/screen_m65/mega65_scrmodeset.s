@@ -46,6 +46,8 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 
 	tax
 
+	lda m65_scrtab_scrolx,x
+	sta VIC_SCROLX
 	lda m65_scrtab_vic_ctrlb,x
 	sta VIC_CTRLB
 

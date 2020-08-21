@@ -51,7 +51,7 @@ setup_vicii:
 	lda #$1B                           // according to [CM64] page 137 some software assumes oldest bit is 0
 	sta VIC_SCROLY
 	lda #$C8
-	sta VIC_SCROLX                     // 40 column etc
+	sta VIC_SCROLX                     // 40 column, etc.
 	lda #$14
 	sta VIC_YMCSB
 	lda #$0F

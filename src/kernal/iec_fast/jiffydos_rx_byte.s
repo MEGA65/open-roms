@@ -102,7 +102,7 @@ jiffydos_rx_byte_end:
 	sta C3PO
 
 	// Restore proper IECPROTO value
-	lda #$01
+	lda #IEC_JIFFY
 	sta IECPROTO
 
 	// Re-enable sprites

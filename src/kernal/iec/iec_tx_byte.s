@@ -19,7 +19,7 @@ iec_tx_dispatch:
 
 	php                                // preserve C flag for EOI indication
 	lda IECPROTO
-	cmp #$01
+	cmp #IEC_JIFFY
 	bne !+
 
 	plp
@@ -71,7 +71,7 @@ iec_tx_common:
 
 	// Check if DolphinDOS was detected
 	lda IECPROTO
-	cmp #$02
+	cmp #IEC_DOLPHIN
 	bne iec_tx_no_dolphindos
 
 	// For DolphinDOS just push the byte to parallel port (set it to output first)

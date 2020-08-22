@@ -33,12 +33,12 @@ jiffydos_detect_loop:
 	lda IECPROTO
 	bpl jiffydos_detect_end            // no detection requested, preserve existing protocol
 
-	lda #$00                           // normal protocol
+	lda #IEC_NORMAL                    // normal protocol
 	beq jiffydos_store_proto           // branch always
 
 jiffydos_detected:
 	jsr iec_wait_for_data_release      // guessed from VICE logs
-	lda #$01                           // JiffyDOS protocol
+	lda #IEC_JIFFY                     // JiffyDOS protocol
 
 	// FALLTROUGH
 

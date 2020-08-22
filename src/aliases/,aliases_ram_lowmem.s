@@ -103,11 +103,7 @@
 	.label PTR1      = $9E  //          for tape support, counter of errorneous bytes
 	.label PTR2      = $9F  //          for tape support, counter for errorneous bytes correction
 	.label TIME      = $A0  // $A0-$A2  jiffy clock
-#if !CONFIG_IEC_JIFFYDOS && !CONFIG_IEC_DOLPHINDOS && !CONFIG_IEC_BURST_CIA1 && !CONFIG_IEC_BURST_CIA2 && !CONFIG_IEC_BURST_MEGA_65
-	.label TSFCNT    = $A3  //          temporary variable for tape and IEC, [!] our usage differs
-#else
-	.label IECPROTO  = $A3  //          -- WIP -- [!] 0 = normal, 1 = JiffyDOS, >= $80 for unknown
-#endif
+	.label IECPROTO  = $A3  //          [!] IEC or pseudo-IEC protocol, >= $80 for unknown; originally named TSFCNT
 	.label TBTCNT    = $A4  //          temporary variable for tape and IEC, [!] our usage probably differs in details
 	.label CNTDN     = $A5  //          -- NOT IMPLEMENTED --
 	.label BUFPNT    = $A6  //          -- NOT IMPLEMENTED --
@@ -288,6 +284,25 @@
 #endif
 
 	//                 $3FC     $3FC-$3FF  -- UNUSED --          free for user software
+
+
+//
+// Definitions for extended IEC functionality
+//
+
+	.const IEC_NORMAL  = 0 // has to be 0, always!
+#if CONFIG_IEC_JIFFYDOS 
+	.const IEC_JIFFY   = 1 // has to be 1, always!
+#endif
+#if CONFIG_IEC_DOLPHINDOS
+	.const IEC_DOLPHIN = 2
+#endif
+#if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || ROM_LAYOUT_M65
+	.const IEC_BURST   = 3
+#endif
+#if ROM_LAYOUT_M65
+	.const IEC_ROMDOS  = 4
+#endif
 
 
 //

@@ -24,7 +24,7 @@
 m65dos_init:
 
 	jsr map_DOS_1
-	jsr_ind VDOS_INIT
+	// XXX do after memory mapping is correct: jsr_ind VDOS_INIT
 	jmp_8 !+
 
 m65dos_hasunit:

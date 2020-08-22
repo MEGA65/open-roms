@@ -62,7 +62,7 @@ map_KERNAL_1:
 	tay
 	taz
 
-	ldx #$42    // 0x4000 <- map 8KB from 0x20000
+	ldx #$42                 // $4000 <- map 8KB from $20000
 
 	jmp_8 map_end
 
@@ -78,10 +78,12 @@ map_DOS_1:
 	tab                      // from now on, zeropage starts from $C000
 
 	ldy #$00
-	taz #$81                 // 0xC000 <- map 8KB (4KB useable) from $10000
+	lda #$41
+	taz                      // $C000 <- map 8KB from $10000
 
-	tya
-	ldx #$C2                 // 0x4000 <- map 16KB from 0x20000
+	// XXX what should be the value here??
+	lda #$A0
+	ldx #$C2                 // $4000 <- map 16KB from ?????
 
 	map
 	jmp_8 map_end_no_eom     // no EOM, we do not want interrupts within DOS!
@@ -95,6 +97,6 @@ map_NORMAL_from_DOS_1:
 	phz
 
 	lda #$00
-	tba
+	tab
 
 	jmp_8 map_NORMAL_common

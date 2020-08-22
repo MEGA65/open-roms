@@ -93,4 +93,8 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 
 	// XXX continue the implementation - fix the cursor position
 
+m65_chrout_screen_done:
+
+	// XXX reenable cursor
+
 	rts

@@ -58,7 +58,7 @@ The following ROM features are currently missing:
 | :----------------: | :------: | :------------------------------------------------: |
 | C64                | DONE     |                                                    |
 | C128               | DONE     |                                                    |
-| Mega65             | NOT DONE | code should be complete, but is not tested yet     |
+| Mega65             | PARTIAL  | code mostly complete, but not tested yet           |
 
 <br />
 
@@ -70,7 +70,7 @@ The following ROM features are currently missing:
 | :----------------: | :------: | :------------------------------------------------: |
 | VIC-II             | DONE     |                                                    |
 | 80 columns, VDC    | NOT DONE |                                                    |
-| 80 columns, Mega65 | NOT DONE |                                                    |
+| 80 columns, Mega65 | PARTIAL  | work-in-progreess, not useable yet                 |
 
 <br />
 
@@ -118,6 +118,17 @@ The following ROM features are currently missing:
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
 | CBM cartridge      | NOT DONE |                                                    |
+
+<br />
+
+## MEGA65 storage
+
+<br />
+
+| Driver             | Status   |  Remarks                                                                    |
+| :----------------: | :------: | :-------------------------------------------------------------------------: |
+| internal floppy    | NOT DONE | try to reuse https://github.com/commanderx16/x16-rom/tree/master/dos        |
+| SD card access     | NOT DONE | tryy to reuse https://github.com/commanderx16/x16-rom/tree/master/dos/fat32 |
 
 <br />
 

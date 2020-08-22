@@ -89,3 +89,38 @@ __m65_chrout_screen_jumptable_quote_guard:
 	.byte KEY_RETURN
 
 __m65_chrout_screen_jumptable_codes_end:
+
+
+.const m65_chrout_list = List().add(
+
+	m65_chrout_screen_CLR,
+	m65_chrout_screen_HOME,
+	m65_chrout_screen_SHIFT_OFF,
+	m65_chrout_screen_SHIFT_ON,
+	m65_chrout_screen_TXT,
+	m65_chrout_screen_GFX,
+	m65_chrout_screen_RVS_OFF,
+	m65_chrout_screen_RVS_ON,
+	m65_chrout_screen_CRSR_RIGHT,
+	m65_chrout_screen_CRSR_LEFT,
+	m65_chrout_screen_CRSR_DOWN,
+	m65_chrout_screen_CRSR_UP,
+	m65_chrout_screen_INS,
+	m65_chrout_screen_TAB,
+	m65_chrout_screen_LINE_FEED,
+	m65_chrout_screen_UNDERLINE_ON,
+	m65_chrout_screen_UNDERLINE_OFF,
+	m65_chrout_screen_FLASHING_ON,
+	m65_chrout_screen_FLASHING_OFF,
+	m65_chrout_screen_TAB_SET_CLR,
+	m65_chrout_screen_ESC,
+	m65_chrout_screen_BELL,
+	m65_chrout_screen_STOP,
+	m65_chrout_screen_DEL,
+	m65_chrout_screen_RETURN
+)
+
+m65_chrout_screen_jumptable:
+
+	// Note: 65C02 has the page boundary vector bug fixed!
+	put_jumptable(m65_chrout_list)

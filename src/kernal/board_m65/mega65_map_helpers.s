@@ -77,13 +77,12 @@ map_DOS_1:
 	lda #$C0
 	tab                      // from now on, zeropage starts from $C000
 
-	ldy #$00
-	lda #$41
+	ldy #$40
+	lda #$40
 	taz                      // $C000 <- map 8KB from $10000
 
-	// XXX what should be the value here??
-	lda #$A0
-	ldx #$C2                 // $4000 <- map 16KB from ?????
+	lda #$C0
+	ldx #$C1                 // $4000 <- map 16KB from $20000
 
 	map
 	jmp_8 map_end_no_eom     // no EOM, we do not want interrupts within DOS!

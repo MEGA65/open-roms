@@ -17,6 +17,7 @@
 
 
 cursor_blink:
+
 	// Is the cursor enabled?
 	lda BLNSW
 	bne cursor_blink_end
@@ -50,16 +51,24 @@ cursor_draw:
 	bne cursor_blink_timer_reset // branches always
 
 cursor_disable:
+
 	lda #$80
 	sta BLNSW
 
 	// FALLTHROUGH
 
 cursor_hide_if_visible:
+
 	lda BLNON
 	beq cursor_blink_end
 
+	// FALLTROUGH
+
 cursor_undraw:
+
+	// Prevent interrupts from updating cursor
+	lda #0
+	sta BLNON
 
 	jsr screen_get_clipped_PNTR
 	lda GDBLN
@@ -67,9 +76,6 @@ cursor_undraw:
 	lda GDCOL
 	sta (USER),y
 	
-	lda #0
-	sta BLNON
-
 	// FALLTROUGH
 
 cursor_blink_timer_reset:

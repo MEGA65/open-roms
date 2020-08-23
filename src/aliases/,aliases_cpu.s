@@ -338,6 +338,15 @@
 
 // Flat memory access support
 
+.pseudocommand lda_lp arg {
+	.var value = arg.getValue()
+	.var type  = arg.getType()
+	.if(type != AT_IZEROPAGEZ) .error "'lda_lp' only accepts AT_IZEROPAGEZ"
+	.if(value > $FF )          .error "'lda_lp' requires zeropage address"
+	nop
+	.byte $B2, value
+}
+
 .pseudocommand sta_lp arg {
 	.var value = arg.getValue()
 	.var type  = arg.getType()

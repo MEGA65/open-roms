@@ -8,7 +8,9 @@
 
 m65_chrout_screen:
 
-	// XXX hide cursor if visible
+	jsr m65_cursor_hide_if_visible
+
+	// Retrieve the character to output
 
 	lda SCHAR
 	tax
@@ -127,6 +129,7 @@ m65_chrout_fix_column_row_win:
 
 m65_chrout_screen_done:
 
-	// XXX reenable cursor
+	jsr m65_cursor_show_if_enabled
 
+	// XXX change this to return success
 	rts

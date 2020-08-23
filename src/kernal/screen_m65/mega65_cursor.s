@@ -13,10 +13,6 @@
 
 m65_cursor_disable:       // XXX utilize this!
 
-	// Make sure IRQ won't interfere by increasing the counter      XXX reuse in legacy mode
-	lda #$FF
-	sta BLNCT
-
 	// Disable cursor blinking
 	lda #$80
 	sta BLNSW
@@ -29,40 +25,29 @@ m65_cursor_hide_if_visible:
 	lda #$FF
 	sta BLNCT
 
-	// If cursor is not visible, nothing to do
+	// If cursor is not visible, not much to do
 	lda BLNON
-	beq m65_cursor_blink_timer_reset
+	beq_16 cursor_timer_reset
 
 	// FALLTROUGH
 
 m65_cursor_undraw:
 
-	// XXX provide implementation
+	// Preserve .Z
+	phz
 
+	// Cursor undraw - color
 
-	// Mark cursor as not drawn
-	lda #0
-	sta BLNON
+	jsr m65_helper_scrlpnt_color
+	lda GDCOL
+	sta_lp (M65_LPNT_SCR),z
 
-	rts
+	// Cursor undraw - character
 
-m65_cursor_show_if_enabled:
+	jsr m65_helper_scrlpnt_to_screen
+	lda GDBLN
+	sta_lp (M65_LPNT_SCR),z
 
-	// XXX provide implementation
-
-	lda #$00
-	sta BLNSW
-
-	// FALLTROUGH
-
-m65_cursor_blink_timer_reset:    // XXX reuse code from main KERNAL
-
-	// Rest blink counter (Mapping the 64, p39-40)
-	lda #20
-	sta BLNCT
-
-	// FALLTROUGH
-
-m65_cursor_blink_end:
-
-	rts
+	// Restore .Z and continue as with normal editor
+	plz
+	jmp cursor_undraw_cont

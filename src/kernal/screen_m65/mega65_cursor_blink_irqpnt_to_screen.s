@@ -2,7 +2,7 @@
 // #LAYOUT# *   *        #IGNORE
 
 
-m65_cursor_blink_rework_ptr:
+m65_cursor_blink_irqpnt_to_screen:
 
 	// Adapt pointer to point to screen memory
 

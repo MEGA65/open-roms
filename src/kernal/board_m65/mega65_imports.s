@@ -36,6 +36,9 @@
 
 .label m65_scrtab_txtwidth             = KERNAL_0.m65_scrtab_txtwidth
 .label m65_scrtab_txtheight            = KERNAL_0.m65_scrtab_txtheight
+.label cursor_undraw_cont              = KERNAL_0.cursor_undraw_cont
+.label cursor_timer_reset              = KERNAL_0.cursor_timer_reset
+.label cursor_show_if_enabled          = KERNAL_0.cursor_show_if_enabled
 
 #if CONFIG_IEC
 

@@ -14,28 +14,21 @@
 cursor_show_if_enabled:
 
 	lda BLNSW
-	bne cursor_show_end
+	bne !+
 	lda BLNON
-	bne cursor_show_end
+	bne !+
 
 	// FALLTROUGH
 
 cursor_show:
 
-	// Set cursor as though it had just finished the off phase,
-	// so that the call to cursor_blink paints it
-	lda #$00
-	sta BLNCT
-	sta BLNON
-	jsr cursor_blink
+	// Set the cursor so that it is going to be repainted by the next IRQ
 
-	// Then set the timeout to 1 frame, so that the cursor
-	// blinks under key repeat conditions, like on the original KERNAL
 	lda #$01
 	sta BLNCT
 
-	// FALLTROUGH
+	lda #$00
+	sta BLNON
 
-cursor_show_end:
-
+!:
 	rts

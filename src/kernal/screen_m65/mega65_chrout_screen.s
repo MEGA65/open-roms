@@ -34,32 +34,13 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 
 	tax                                // store screen code, we need .A for calculations
 
-	// Preserve .Z on stack, use it toi store screen columnt
+	// Preserve .Z on stack
 
 	phz
-	ldz M65__TXTCOL
 
-	// Start from setting M65_LPNT_SCR to point colour memory (starts from $FF80000)
+	// Prepare .Z and M65_LPNT_SCR for colour memory manipulation
 
-	lda #$0F
-	sta M65_LPNT_SCR+3
-	lda #$F8
-	sta M65_LPNT_SCR+2
-
-	lda M65_COLVIEW+1
-	sta M65_LPNT_SCR+1
-	lda M65_COLVIEW+0
-	sta M65_LPNT_SCR+0
-
-	// Add screen row to the address
-
-	clc
-	lda M65_TXTROW_OFF+0
-	adc M65_LPNT_SCR+0
-	sta M65_LPNT_SCR+0	
-	lda M65_TXTROW_OFF+1
-	adc M65_LPNT_SCR+1
-	sta M65_LPNT_SCR+1	
+	jsr m65_helper_scrlpnt_color
 
 	// Store the new color in screen memory
 
@@ -68,19 +49,7 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 
 	// Now change M65_LPNT_SCR to point to screen memory
 
-	// XXX deduplicate this part
-	lda M65_SCRSEG+1
-	sta M65_LPNT_SCR+3
-	lda M65_SCRSEG+0
-	sta M65_LPNT_SCR+2
-
-	clc
-	lda M65_SCRBASE+0
-	adc M65_LPNT_SCR+0
-	sta M65_LPNT_SCR+0
-	lda M65_SCRBASE+1
-	adc M65_LPNT_SCR+1
-	sta M65_LPNT_SCR+1
+	jsr m65_helper_scrlpnt_to_screen
 
 	// Store the new character in screen memory, restore .Z
 
@@ -91,6 +60,9 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 	ora #$80                           // reverse the character  XXX consider doing this within chrout_to_screen_code
 !:
 	sta_lp (M65_LPNT_SCR),z
+	
+	// Restore .Z
+
 	plz
 
 	// Increment screen column by 1
@@ -134,7 +106,7 @@ m65_chrout_fix_txtrow_off:
 
 m65_chrout_screen_done:
 
-	jsr m65_cursor_show_if_enabled
+	jsr cursor_show_if_enabled
 
-	// XXX change this to return success
+	// XXX make sure it return success
 	rts

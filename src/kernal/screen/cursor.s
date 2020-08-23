@@ -48,7 +48,7 @@ cursor_draw:
 	lda #1
 	sta BLNON
 
-	bne cursor_blink_timer_reset // branches always
+	bne cursor_timer_reset // branches always
 
 
 // XXX code below is probably not 100% safe
@@ -66,9 +66,9 @@ cursor_hide_if_visible:
 	lda #$FF
 	sta BLNCT
 
-	// If cursor is not visible, nothing to do
+	// If cursor is not visible, not much to do
 	lda BLNON
-	beq cursor_blink_timer_reset
+	beq cursor_timer_reset
 
 	// FALLTROUGH
 
@@ -80,12 +80,17 @@ cursor_undraw:
 	lda GDCOL
 	sta (USER),y
 	
+	// FALLTROUGH
+
+cursor_undraw_cont: // entry point used by MEGA65 screen editor
+
+	// Mark cursor as not drawn
 	lda #0
 	sta BLNON
 
 	// FALLTROUGH
 
-cursor_blink_timer_reset:
+cursor_timer_reset:
 
 	// Rest blink counter (Mapping the 64, p39-40)
 	lda #20

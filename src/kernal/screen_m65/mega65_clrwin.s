@@ -2,6 +2,8 @@
 // #LAYOUT# *   *        #IGNORE
 
 
+// XXX deduplicate pointer manipulation
+
 M65_CLRWIN:
 
 	// Clear additional attributes from the color code

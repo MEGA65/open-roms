@@ -1226,7 +1226,7 @@ void DataSet::generateConfigDepStrings()
 
         // List found
 
-        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"] || GLOBAL_ConfigOptions["CONFIG_BRAND_MEGA_65"])
+        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"] || GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
         {
             StringEntry newEntry1 = { true, true, true, true, "STR_PAL",      "PAL\r"    };
             StringEntry newEntry2 = { true, true, true, true, "STR_NTSC",     "NTSC\r"   };
@@ -1241,7 +1241,7 @@ void DataSet::generateConfigDepStrings()
             stringEntryList.list.push_back(newEntry);
         }
 
-        if (GLOBAL_ConfigOptions["CONFIG_BRAND_MEGA_65"])
+        if (GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
         {
             StringEntry newEntry = { false, true, false, false, "STR_SI_FEATURES", featureStrM65 };
             stringEntryList.list.push_back(newEntry);

@@ -12,18 +12,11 @@
 
 
 
-// Hardware platform and brand
+// Hardware platform
 
 #define CONFIG_PLATFORM_COMMODORE_64
 
 #define CONFIG_MB_MEGA_65
-// #define CONFIG_MB_ULTIMATE_64
-
-// #define CONFIG_BRAND_GENERIC
-// #define CONFIG_BRAND_TESTING
-#define CONFIG_BRAND_MEGA_65
-// #define CONFIG_BRAND_ULTIMATE_64
-
 
 // Processor instruction set
 
@@ -119,15 +112,6 @@
 #define CONFIG_TAPE_WEDGE
 #define CONFIG_TAPE_HEAD_ALIGN
 #define CONFIG_BCD_SAFE_INTERRUPTS
-
-
-// Eye candy
-
-#define CONFIG_COLORS_BRAND
-// #define CONFIG_BANNER_SIMPLE
-// #define CONFIG_BANNER_FANCY
-#define CONFIG_BANNER_BRAND
-// #define CONFIG_SHOW_FEATURES
 
 
 // Built-in DOS configuration

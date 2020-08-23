@@ -307,9 +307,9 @@ Feature needs 2 bytes in KERNAL segmment (for CPUs needing the patch), but at th
 
 Tries to adjust the color scheme to the selected brand. Some brands might not support this.
 
-### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_BRAND`
+### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`
 
-Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_BRAND` heavily depends on the selected brand, not all the brands support it.
+Select startup banner - either a simple one, or with some colorful elements.
 
 Richer banners need more BASIC segment, varies between brands.
 

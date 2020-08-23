@@ -84,6 +84,11 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 	// Store the new character in screen memory, restore .Z
 
 	txa
+
+	bit RVS
+	bpl !+
+	ora #$80                           // reverse the character  XXX consider doing this within chrout_to_screen_code
+!:
 	sta_lp (M65_LPNT_SCR),z
 	plz
 
@@ -91,7 +96,15 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 
 	inc M65__TXTCOL
 
+	// FALLTROUGH
+
+m65_chrout_fix_column_row:
+
 	// XXX continue the implementation - fix the cursor position
+
+	nop
+
+	// FALLTROUGH
 
 m65_chrout_screen_done:
 

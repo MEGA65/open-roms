@@ -123,7 +123,8 @@ initmsg_real:
 
 #if ROM_LAYOUT_M65
 
-	// XXX make it different for future Mega65 native mode
+	jsr M65_ISMODE65
+	bcc !+                             // XXX for MEGA65 native mode, display something else instead
 
 	ldx #$02
 	ldy #$21
@@ -132,6 +133,7 @@ initmsg_real:
 	lda #<text_mode_64
 	ldy #>text_mode_64
 	jsr STROUT
+!:
 
 #endif
 

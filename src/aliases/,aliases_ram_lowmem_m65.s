@@ -24,8 +24,8 @@
 	// Page 0 - other reused values
 	//
 
-	.label M65__TXTROW   = PNTR //          screen row
-	.label M65__TXTCOL   = TBLX //          screen column
+	.label M65__TXTROW   = TBLX //          screen row
+	.label M65__TXTCOL   = PNTR //          screen column
 
 	//
 	// Pages 4-7 - reused screen memory

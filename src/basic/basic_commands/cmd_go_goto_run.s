@@ -37,10 +37,10 @@ cmd_go_syntax_error:
 	jsr helper_ask_if_sure
 	bcs cmd_go_rts
 	jsr M65_MODE64
-	jmp do_clr
+	jmp_8 cmd_go_switchmode_clr_banner
 !:
 	cmp #65
-	bne !+
+	bne_16 do_ILLEGAL_QUANTITY_error
 
 	// If in C64 compatibility mode - switch to native mode
 
@@ -50,9 +50,13 @@ cmd_go_syntax_error:
 	jsr helper_ask_if_sure
 	bcs cmd_go_rts
 	jsr M65_MODE65
-	jmp do_clr
-!:
-	jmp do_ILLEGAL_QUANTITY_error
+
+	// FALLTROUGH
+
+cmd_go_switchmode_clr_banner:
+
+	jsr do_clr
+	jmp INITMSG
 
 cmd_go_rts:
 

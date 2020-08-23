@@ -24,6 +24,7 @@
 .label JCHRIN                          = KERNAL_0.JCHRIN
 .label JREADST                         = KERNAL_0.JREADST
 .label SELDEV                          = KERNAL_0.SELDEV
+.label M65_ISMODE65                    = KERNAL_0.M65_ISMODE65
 .label plot_set                        = KERNAL_0.plot_set
 .label init_oldtxt                     = BASIC_0.init_oldtxt
 .label tmpstr_free_all_reset           = BASIC_0.tmpstr_free_all_reset

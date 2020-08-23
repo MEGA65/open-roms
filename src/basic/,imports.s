@@ -36,6 +36,7 @@
 .label hw_entry_reset      = KERNAL().hw_entry_reset
 
 .label clear_screen        = KERNAL().clear_screen
+.label M65_SETWIN_Y        = KERNAL().M65_SETWIN_Y
 
 #if CONFIG_DBG_PRINTF
 .label printf              = KERNAL().printf

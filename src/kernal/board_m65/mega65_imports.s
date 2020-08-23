@@ -34,8 +34,6 @@
 .label wait_x_bars                     = KERNAL_0.wait_x_bars
 .label viciv_unhide                    = KERNAL_0.viciv_unhide
 
-.label m65_scrtab_rowoffset_lo         = KERNAL_0.m65_scrtab_rowoffset_lo
-.label m65_scrtab_rowoffset_hi         = KERNAL_0.m65_scrtab_rowoffset_hi
 .label m65_scrtab_txtwidth             = KERNAL_0.m65_scrtab_txtwidth
 .label m65_scrtab_txtheight            = KERNAL_0.m65_scrtab_txtheight
 

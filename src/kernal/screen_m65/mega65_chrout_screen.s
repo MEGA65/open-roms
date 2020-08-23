@@ -53,12 +53,11 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 
 	// Add screen row to the address
 
-	ldy M65__TXTROW
 	clc
-	lda m65_scrtab_rowoffset_lo,y
+	lda M65_TXTROW_OFF+0
 	adc M65_LPNT_SCR+0
 	sta M65_LPNT_SCR+0	
-	lda m65_scrtab_rowoffset_hi,y
+	lda M65_TXTROW_OFF+1
 	adc M65_LPNT_SCR+1
 	sta M65_LPNT_SCR+1	
 
@@ -113,7 +112,7 @@ m65_chrout_fix_column_row:
 	// XXX provide implementation
 	// XXX
 
-	jmp_8 m65_chrout_screen_done
+	jmp_8 m65_chrout_fix_txtrow_off
 
 m65_chrout_fix_column_row_win:
 
@@ -124,6 +123,12 @@ m65_chrout_fix_column_row_win:
 	// XXX
 
 	nop
+
+	// FALLTROUGH
+
+m65_chrout_fix_txtrow_off:
+
+	jsr m65_screen_upd_txtrow_off
 
 	// FALLTROUGH
 

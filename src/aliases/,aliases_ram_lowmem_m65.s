@@ -49,6 +49,7 @@
 	.label M65_TXTWIN_Y0    = $58F //            text window - top-left Y coordinate, starting from 0
 	.label M65_TXTWIN_X1    = $590 //            text window - bottom-right X coordinate + 1
 	.label M65_TXTWIN_Y1    = $591 //            text window - bottom-right Y coordinate + 1
-	                               // $592-$5FF  -- UNUSED --
+	.label M65_TXTROW_OFF   = $592 // $592-$594  offset to the current text row
+	                               // $594-$5FF  -- UNUSED --
 	.label M65_RS232_INBUF  = $600 // $600-$6FF  -- reserved for RS-232 input buffer --
 	.label M65_RS232_OUTBUF = $700 // $700-$7FF  -- reserved for RS-232 output buffer --

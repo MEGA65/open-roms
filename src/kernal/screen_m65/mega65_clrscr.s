@@ -118,5 +118,7 @@ m65_clrscr_loop:
 	lda #$00
 	sta M65__TXTROW
 	sta M65__TXTCOL
+	sta M65_TXTROW_OFF+0
+	sta M65_TXTROW_OFF+1
 
 	rts

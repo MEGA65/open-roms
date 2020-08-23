@@ -39,15 +39,13 @@ m65_cursor_blink:
 	sta M65_LPNT_IRQ+0
 
 	// Add screen row to the address
-	ldy M65__TXTROW
 	clc
-	lda m65_scrtab_rowoffset_lo,y
+	lda M65_TXTROW_OFF+0
 	adc M65_LPNT_IRQ+0
 	sta M65_LPNT_IRQ+0	
-	lda m65_scrtab_rowoffset_hi,y
+	lda M65_TXTROW_OFF+1
 	adc M65_LPNT_IRQ+1
 	sta M65_LPNT_IRQ+1	
-
 
 	// Check if cursor was visible or not, and toggle
 	lda BLNON
@@ -68,7 +66,7 @@ m65_cursor_blink_draw:
 	sta_lp (M65_LPNT_IRQ),z
 
 	// Rework pointer to point to screnn memory
-	jsr m65_cursor_blink_adapt_ptr
+	jsr m65_cursor_blink_rework_ptr
 
 	// Cursor draw - character
 	lda_lp (M65_LPNT_IRQ),z
@@ -99,30 +97,10 @@ m65_cursor_blink_undraw:
 	sta_lp (M65_LPNT_IRQ),z
 
 	// Rework pointer to point to screnn memory
-	jsr m65_cursor_blink_adapt_ptr
+	jsr m65_cursor_blink_rework_ptr
 
 	// Cursor undraw - character
 	lda GDBLN
 	sta_lp (M65_LPNT_IRQ),z
 
 	jmp_8 m65_cursor_blink_timer_reset
-
-
-m65_cursor_blink_adapt_ptr:
-
-	// Adapt pointer to point to screen memory
-
-	lda M65_SCRSEG+1
-	sta M65_LPNT_IRQ+3
-	lda M65_SCRSEG+0
-	sta M65_LPNT_IRQ+2
-
-	clc
-	lda M65_SCRBASE+0
-	adc M65_LPNT_IRQ+0
-	sta M65_LPNT_IRQ+0
-	lda M65_SCRBASE+1
-	adc M65_LPNT_IRQ+1
-	sta M65_LPNT_IRQ+1
-
-	rts

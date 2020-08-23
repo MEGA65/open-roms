@@ -15,5 +15,9 @@
 
 screen_calculate_pointers:
 
+	jsr M65_ISMODE65
+	bcs !+
+	jmp m65_screen_upd_txtrow_off
+!:
 	jsr screen_calculate_PNT_USER
 	jmp screen_calculate_PNTR_LNMX

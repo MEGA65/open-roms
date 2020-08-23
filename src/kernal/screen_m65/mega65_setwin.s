@@ -52,5 +52,7 @@ M65_SETWIN_Y:
 	lda M65_TXTWIN_Y0	
 	sta M65__TXTROW
 
+	jsr m65_screen_upd_txtrow_off
+
 	pla
 	rts

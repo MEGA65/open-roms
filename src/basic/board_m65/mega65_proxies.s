@@ -29,7 +29,6 @@ proxy_B1_poke_via_OLDTXT:
 #endif
 	jmp map_BASIC_1
 
-
 proxy_B1_JCLALL:
 
 	jsr map_NORMAL
@@ -85,16 +84,17 @@ proxy_B1_print_space:
 	jsr print_space
 	jmp map_BASIC_1
 
-
-#if CONFIG_SHOW_FEATURES
-
-proxy_B1_print_features:
+proxy_B1_plot_set:
 
 	jsr map_NORMAL
-	jsr print_features
+	jsr plot_set
 	jmp map_BASIC_1
 
-#endif
+proxy_B1_M65_SETWIN_Y:
+
+	jsr map_NORMAL
+	jsr M65_SETWIN_Y
+	jmp map_BASIC_1
 
 #if CONFIG_DOS_WEDGE
 

@@ -56,7 +56,14 @@ cmd_go_syntax_error:
 cmd_go_switchmode_clr_banner:
 
 	jsr do_clr
+
+	ldx CURLIN+1
+	inx
+	bne !+
 	jmp INITMSG
+!:
+	rts
+
 
 cmd_go_rts:
 

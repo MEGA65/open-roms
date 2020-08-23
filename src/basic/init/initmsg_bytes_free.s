@@ -55,12 +55,6 @@ initmsg_bytes_free:
 #endif
 	sta MEMSIZ+0
 
-	// XXX move the part above to a more suitable place
-
-	// Initialize other variables by performing NEW
-
-	jsr do_new
-
 	// Print number of bytes free
 
     sec

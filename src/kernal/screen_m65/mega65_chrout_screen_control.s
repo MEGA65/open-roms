@@ -73,81 +73,6 @@ m65_chrout_try_color_loop:
 
 
 
-
-// XXX: consider moving to separate files
-
-m65_chrout_screen_RETURN:
-
-	// RETURN clears quote and insert modes, it also clears reverse flag
-	
-	lda #$00
-	sta QTSW
-	sta INSRT
-	sta RVS
-
-	// XXX should we clear special colour attributes too?
-
-	// Move cursor to the beginning of the next line
-
-	sta M65__TXTCOL
-	inc M65__TXTROW
-
-	// Correct the column/row values
-
-	jmp m65_chrout_fix_column_row
-
-
-
-
-m65_chrout_screen_RVS_ON:
-
-	lda #$80
-	skip_2_bytes_trash_nvz
-
-	// FALLTROUGH
-
-m65_chrout_screen_RVS_OFF:
-
-	lda #$00
-
-	sta RVS
-	jmp m65_chrout_screen_done
-
-
-
-m65_chrout_screen_CRSR_RIGHT:
-
-	inc M65__TXTCOL
-	skip_2_bytes_trash_nvz
-
-	// FALLTROUGH
-
-m65_chrout_screen_CRSR_LEFT:
-	
-	dec M65__TXTCOL
-	skip_2_bytes_trash_nvz
-
-	// FALLTROUGH
-
-m65_chrout_screen_CRSR_DOWN:
-
-	inc M65__TXTROW
-	skip_2_bytes_trash_nvz
-
-	// FALLTROUGH
-
-m65_chrout_screen_CRSR_UP:
-
-	dec M65__TXTROW
-
-	// Correct the column/row values
-
-	jmp m65_chrout_fix_column_row
-
-
-
-
-
 // XXX: implement screen routines below:
 
 m65_chrout_screen_quote:
@@ -155,14 +80,6 @@ m65_chrout_screen_quote:
 m65_chrout_screen_CLR:
 	nop
 m65_chrout_screen_HOME:
-	nop
-m65_chrout_screen_SHIFT_OFF:
-	nop
-m65_chrout_screen_SHIFT_ON:
-	nop
-m65_chrout_screen_TXT:
-	nop
-m65_chrout_screen_GFX:
 	nop
 m65_chrout_screen_INS:
 	nop

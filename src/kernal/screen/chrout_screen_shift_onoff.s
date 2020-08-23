@@ -11,11 +11,13 @@
 chrout_screen_SHIFT_ON:
 
 	lda #$00 // enable SHIFT+VENDOR combination
-!:
-	sta MODE
-	jmp chrout_screen_done
+	skip_2_bytes_trash_nvz
+
+	// FALLTROUGH
 
 chrout_screen_SHIFT_OFF:
 
 	lda #$80 // disable SHIFT+VENDOR combination
-	bne !-   // branch always
+
+	sta MODE
+	jmp chrout_screen_done

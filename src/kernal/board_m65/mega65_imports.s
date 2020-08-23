@@ -12,6 +12,11 @@
 .label M65_SLOW                        = KERNAL_0.M65_SLOW
 .label M65_FAST                        = KERNAL_0.M65_FAST
 .label M65_ISMODE65                    = KERNAL_0.M65_ISMODE65
+.label M65_SETWIN_XY                   = KERNAL_0.M65_SETWIN_XY
+.label M65_SETWIN_WH                   = KERNAL_0.M65_SETWIN_WH
+.label M65_SETWIN_N                    = KERNAL_0.M65_SETWIN_N
+.label M65_SETWIN_Y                    = KERNAL_0.M65_SETWIN_Y
+
 
 #if (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO) || (CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K)
 .label screen_on                       = KERNAL_0.screen_on

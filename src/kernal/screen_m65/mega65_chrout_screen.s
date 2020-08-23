@@ -100,7 +100,26 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 
 m65_chrout_fix_column_row:
 
-	// XXX continue the implementation - fix the cursor position
+	ldy M65_SCRMODE
+
+	bit M64_SCRWINMODE
+	bmi m65_chrout_fix_column_row_win
+
+	// Non-windowed mode
+
+	// XXX
+	// XXX provide implementation
+	// XXX
+
+	jmp_8 m65_chrout_screen_done
+
+m65_chrout_fix_column_row_win:
+
+	// Windowed mode
+
+	// XXX
+	// XXX provide implementation
+	// XXX
 
 	nop
 

@@ -63,7 +63,7 @@ INITMSG:
 	jsr M65_SETWIN_XY
 
 	ldx #32
-	ldy #7
+	ldy #9
 	jsr M65_SETWIN_WH
 
 	jsr M65_SETWIN_Y
@@ -76,6 +76,9 @@ INITMSG:
 	ldy #$00
 	jsr plot_set
 
+	ldx #IDX__STR_ORS
+	jsr print_packed_misc_str
+
 	ldx #IDX__STR_PRE_REV
 	jsr print_packed_misc_str
 
@@ -84,8 +87,9 @@ INITMSG:
 	jsr STROUT
 
 	jsr print_return
+	jsr print_return
 	jsr initmsg_bytes_free
 
-	ldx #$08
+	ldx #$09
 	ldy #$00
 	jmp plot_set

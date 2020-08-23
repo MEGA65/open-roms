@@ -293,6 +293,8 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     // STD    M65    U64    X16   --- misc strings specific to Open ROMs, not present in CBM ROMs
     { true,  true,  true,  true,  "STR_BRK_AT",     "\rBRK AT $"         },
 
+    { false, true,  false, false, "STR_ORS",        "OPEN ROMS BASIC & KERNAL\r" },
+
     { false, true,  false, false, "STR_MEM_HDR",    "\r\x12 AREA   START   SIZE  \r" },
     { false, true,  false, false, "STR_MEM_1",      "   $"               },
     { false, true,  false, false, "STR_MEM_2",      "   "                },

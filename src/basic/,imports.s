@@ -36,7 +36,6 @@
 .label hw_entry_reset      = KERNAL().hw_entry_reset
 
 .label clear_screen        = KERNAL().clear_screen
-.label M65_SETWIN_Y        = KERNAL().M65_SETWIN_Y
 
 #if CONFIG_DBG_PRINTF
 .label printf              = KERNAL().printf
@@ -61,4 +60,5 @@
 .label M65_ISMODE65        = KERNAL().M65_ISMODE65
 .label M65_SLOW            = KERNAL().M65_SLOW
 .label M65_FAST            = KERNAL().M65_FAST
+.label M65_SETWIN_Y        = KERNAL().M65_SETWIN_Y
 #endif

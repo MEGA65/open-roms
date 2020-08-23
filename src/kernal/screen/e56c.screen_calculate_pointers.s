@@ -15,9 +15,12 @@
 
 screen_calculate_pointers:
 
+#if ROM_LAYOUT_M65
+
 	jsr M65_ISMODE65
-	bcs !+
-	jmp m65_screen_upd_txtrow_off
-!:
+	bcc_16 m65_screen_upd_txtrow_off
+
+#endif
+
 	jsr screen_calculate_PNT_USER
 	jmp screen_calculate_PNTR_LNMX

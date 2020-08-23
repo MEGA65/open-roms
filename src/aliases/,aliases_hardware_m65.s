@@ -27,6 +27,7 @@
 
 	// MISC registers
 
+	.label MISC_BOARDID = $D629 // board identification byte
 	.label MISC_EMU     = $D710 // to enable badlines and slow interrupts
 
 #endif

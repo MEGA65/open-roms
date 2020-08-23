@@ -6,6 +6,8 @@
 
 // Routine is too long to fit in the original location
 
+// XXX banner-related code needs cleanup, move MEGA65 stuff to a separate file
+
 
 #if ROM_LAYOUT_M65
 

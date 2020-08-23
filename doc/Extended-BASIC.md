@@ -84,6 +84,10 @@ Displays BASIC memory usage information:
 * `STRS` - bytes occupied by strings, also the ones belonging to arrays
 * `FREE` - unused space
 
+### `SYSINFO` (Mega65)
+
+Displays various system information.
+
 ### `CLEAR` (all)
 
 Clears the screen content.

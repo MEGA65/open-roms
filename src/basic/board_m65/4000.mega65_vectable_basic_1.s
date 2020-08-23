@@ -22,8 +22,9 @@
 	.label VB1__do_clr                   = $4000 + 2 * 7
 	.label VB1__do_restore               = $4000 + 2 * 8
 	.label VB1__cmd_mem_cont             = $4000 + 2 * 9
-	.label VB1__prepare_direct_execution = $4000 + 2 * 10
-	.label VB1__helper_ask_if_sure       = $4000 + 2 * 11
+	.label VB1__cmd_sysinfo              = $4000 + 2 * 10
+	.label VB1__prepare_direct_execution = $4000 + 2 * 11
+	.label VB1__helper_ask_if_sure       = $4000 + 2 * 12
 
 #if CONFIG_DOS_WEDGE
 	.label VB1__wedge_dos                = $4000 + 2 * 12      
@@ -43,6 +44,7 @@
 	.word do_clr
 	.word do_restore
 	.word cmd_mem_cont
+	.word cmd_sysinfo
 	.word prepare_direct_execution
 	.word helper_ask_if_sure
 

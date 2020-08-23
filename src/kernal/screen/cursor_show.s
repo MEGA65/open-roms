@@ -12,6 +12,7 @@
 
 
 cursor_show_if_enabled:
+
 	lda BLNSW
 	bne cursor_show_end
 	lda BLNON
@@ -36,4 +37,5 @@ cursor_show:
 	// FALLTROUGH
 
 cursor_show_end:
+
 	rts

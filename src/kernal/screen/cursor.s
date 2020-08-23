@@ -50,6 +50,9 @@ cursor_draw:
 
 	bne cursor_blink_timer_reset // branches always
 
+
+// XXX code below is probably not 100% safe
+
 cursor_disable:
 
 	lda #$80
@@ -59,16 +62,17 @@ cursor_disable:
 
 cursor_hide_if_visible:
 
+	// Set countdown to high value, to prevent IRQ interference
+	lda #$FF
+	sta BLNCT
+
+	// If cursor is not visible, nothing to do
 	lda BLNON
-	beq cursor_blink_end
+	beq cursor_blink_timer_reset
 
 	// FALLTROUGH
 
 cursor_undraw:
-
-	// Prevent interrupts from updating cursor
-	lda #0
-	sta BLNON
 
 	jsr screen_get_clipped_PNTR
 	lda GDBLN
@@ -76,6 +80,9 @@ cursor_undraw:
 	lda GDCOL
 	sta (USER),y
 	
+	lda #0
+	sta BLNON
+
 	// FALLTROUGH
 
 cursor_blink_timer_reset:
@@ -87,4 +94,5 @@ cursor_blink_timer_reset:
 	// FALLTROUGH
 
 cursor_blink_end:
+
 	rts

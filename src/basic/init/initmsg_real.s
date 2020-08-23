@@ -73,9 +73,8 @@ initmsg_real:
 	ldy #$0A
 	jsr plot_set
 
-	lda #<pre_revision_string
-	ldy #>pre_revision_string
-	jsr STROUT
+	ldx #IDX__STR_PRE_REV
+	jsr print_packed_misc_str
 
 	lda #<rom_revision_basic_string
 	ldy #>rom_revision_basic_string

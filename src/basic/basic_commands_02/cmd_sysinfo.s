@@ -37,7 +37,14 @@ cmd_sysinfo:
 	ldy #>rom_revision_basic_string
 	jsr STROUT
 
-	// Print board ID
+	jsr print_return
+	jsr print_return
+
+	// FALLTROUGH
+
+print_sysinfo_banner:
+
+	// Print board type
 
 	ldx #IDX__STR_SI_HDR_HW
 	jsr print_packed_misc_str
@@ -52,8 +59,15 @@ cmd_sysinfo:
 	ldy #(__cmd_sysinfo_hw_ids_end - cmd_sysinfo_hw_ids)
 !:
 	ldx cmd_sysinfo_hw_str, y
+	phx
 	jsr print_packed_misc_str
+	plx
+	cpx #IDX__STR_SI_HW_XX
+	bne !+
 
+	lda MISC_BOARDID
+	jsr print_hex_byte
+!:
 	// Print video system information
 
 	ldx #IDX__STR_SI_HDR_VID

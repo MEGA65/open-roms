@@ -53,13 +53,4 @@ rainbow_logo:
     .byte SET_COLOR_0, $00
 }
 
-#if !CONFIG_BRAND_CUSTOM_BUILD
-
-pre_revision_string:
-
-	.text "RELEASE "
-	.byte $00
-
-#endif // no CONFIG_BRAND_CUSTOM_BUILD
-
 #endif

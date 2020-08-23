@@ -306,7 +306,7 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { false, true,  false, false, "STR_SI_MODE64",  "LEGACY MODE"       },
     { false, true,  false, false, "STR_SI_MODE65",  "NATIVE MODE"       },
     { false, true,  false, false, "STR_SI_HDR_REL", "\rRELEASE "        },
-    { false, true,  false, false, "STR_SI_HDR_HW",  "\r\rBOARD  : "     },
+    { false, true,  false, false, "STR_SI_HDR_HW",  "BOARD  : "         },
     { false, true,  false, false, "STR_SI_HW_01",   "MEGA65 R1"         },
     { false, true,  false, false, "STR_SI_HW_02",   "MEGA65 R2"         },
     { false, true,  false, false, "STR_SI_HW_03",   "MEGA65 R3"         },
@@ -316,7 +316,7 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { false, true,  false, false, "STR_SI_HW_42",   "NEXYS4 DDR WIDGET" },
     { false, true,  false, false, "STR_SI_HW_FD",   "WUKONG A100T"      },
     { false, true,  false, false, "STR_SI_HW_FE",   "SIMULATION VHDL"   },
-    { false, true,  false, false, "STR_SI_HW_XX",   "UNKNOWN"           },
+    { false, true,  false, false, "STR_SI_HW_XX",   "UNKNOWN ID $"      },
     { false, true,  false, false, "STR_SI_HDR_VID", "\rVIDEO  : "       },
 
 
@@ -1211,7 +1211,7 @@ void DataSet::generateConfigDepStrings()
 
     // CBDOS features
 
-    featureStrM65 += "CBDOS  : NO\r";
+    featureStrM65 += "CBDOS  : NO FDD/SD/RAM SUPPORT\r";
 
     // Keyboard support features
    
@@ -1244,6 +1244,12 @@ void DataSet::generateConfigDepStrings()
         if (GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
         {
             StringEntry newEntry = { false, true, false, false, "STR_SI_FEATURES", featureStrM65 };
+            stringEntryList.list.push_back(newEntry);
+        }
+
+        if (!GLOBAL_ConfigOptions["CONFIG_BRAND_CUSTOM_BUILD"] || GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+        {
+            StringEntry newEntry = { true, true, true, true, "STR_PRE_REV", "RELEASE " };
             stringEntryList.list.push_back(newEntry);
         }
 

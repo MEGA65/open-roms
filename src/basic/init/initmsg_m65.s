@@ -10,15 +10,22 @@
 INITMSG:
 
 	// Clear the screen first, some cartridges (like IEEE-488) are leaving a mess on the screen
+
 	lda #147
 	jsr JCHROUT
+
+	// Display main banner
 
 	lda #<startup_banner
 	ldy #>startup_banner
 	jsr STROUT
 
+	// Display additional information, depending on the mode
+
 	jsr M65_ISMODE65
-	bcc !+                             // XXX for MEGA65 native mode, display something else instead
+	bcc !+
+
+	// Legacy mode
 
 	ldx #$02
 	ldy #$21
@@ -27,7 +34,8 @@ INITMSG:
 	lda #<startup_banner_legacy
 	ldy #>startup_banner_legacy
 	jsr STROUT
-!:
+
+	// Legacy mode - display revision and available memory
 
 	ldx #$05
 	ldy #$00
@@ -42,3 +50,42 @@ INITMSG:
 	jsr plot_set
 
 	jsr initmsg_bytes_free
+
+	ldx #$07
+	ldy #$00
+	jmp plot_set
+
+!:
+	// Native mode	
+
+	ldx #48
+	ldy #0
+	jsr M65_SETWIN_XY
+
+	ldx #32
+	ldy #7
+	jsr M65_SETWIN_WH
+
+	jsr M65_SETWIN_Y
+	jsr print_sysinfo_banner
+	jsr M65_SETWIN_N
+
+	// Native mode - display revision and available memory
+
+	ldx #$05
+	ldy #$00
+	jsr plot_set
+
+	ldx #IDX__STR_PRE_REV
+	jsr print_packed_misc_str
+
+	lda #<rom_revision_basic_string
+	ldy #>rom_revision_basic_string
+	jsr STROUT
+
+	jsr print_return
+	jsr initmsg_bytes_free
+
+	ldx #$08
+	ldy #$00
+	jmp plot_set

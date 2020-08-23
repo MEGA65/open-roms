@@ -21,14 +21,17 @@ m65_cursor_undraw:
 
 	// XXX provide implementation
 
-	rts
+	lda #$80
+	sta BLNSW
 
+	rts
 
 m65_cursor_show_if_enabled:
 
 	// XXX provide implementation
 
-	nop
+	lda #$00
+	sta BLNSW
 
 	// FALLTROUGH
 

@@ -24,26 +24,30 @@ m65_cursor_blink:
 	dec BLNCT
 	bpl m65_cursor_blink_end
 
-	// Prepare .Z and long pointer to screen position
+	// Prepare .Z for offset within row
 	ldz M65__TXTCOL
-	lda M65_SCRVIEW+0
-	sta M65_LPNT_IRQ+0
-	lda M65_SCRVIEW+1
-	sta M65_LPNT_IRQ+1
-	lda M65_SCRSEG+0
-	sta M65_LPNT_IRQ+2
-	lda M65_SCRSEG+1
-	sta M65_LPNT_IRQ+3
 
-	// Add row offset to the long pointer
+	// Prepare long pointer to color memory
+	lda #$0F
+	sta M65_LPNT_IRQ+3
+	lda #$F8
+	sta M65_LPNT_IRQ+2
+
+	lda M65_COLVIEW+1
+	sta M65_LPNT_IRQ+1
+	lda M65_COLVIEW+0
+	sta M65_LPNT_IRQ+0
+
+	// Add screen row to the address
 	ldy M65__TXTROW
 	clc
 	lda m65_scrtab_rowoffset_lo,y
 	adc M65_LPNT_IRQ+0
-	sta M65_LPNT_IRQ+0
+	sta M65_LPNT_IRQ+0	
 	lda m65_scrtab_rowoffset_hi,y
 	adc M65_LPNT_IRQ+1
 	sta M65_LPNT_IRQ+1	
+
 
 	// Check if cursor was visible or not, and toggle
 	lda BLNON
@@ -56,14 +60,21 @@ m65_cursor_blink_draw:
 	lda #1
 	sta BLNON
 
+	// Cursor draw - color
+	lda_lp (M65_LPNT_IRQ),z
+	sta GDCOL
+	lda COLOR
+	and #$0F
+	sta_lp (M65_LPNT_IRQ),z
+
+	// Rework pointer to point to screnn memory
+	jsr m65_cursor_blink_adapt_ptr
+
 	// Cursor draw - character
 	lda_lp (M65_LPNT_IRQ),z
 	sta GDBLN
 	eor #$80
 	sta_lp (M65_LPNT_IRQ),z
-
-	// Cursor draw - color
-	// XXX provide implementation
 
 m65_cursor_blink_timer_reset:
 
@@ -83,11 +94,35 @@ m65_cursor_blink_undraw:
 	lda #0
 	sta BLNON
 
+	// Cursor undraw - color
+	lda GDCOL
+	sta_lp (M65_LPNT_IRQ),z
+
+	// Rework pointer to point to screnn memory
+	jsr m65_cursor_blink_adapt_ptr
+
 	// Cursor undraw - character
 	lda GDBLN
 	sta_lp (M65_LPNT_IRQ),z
 
-	// Cursor undraw - color
-	// XXX provide implementation
-
 	jmp_8 m65_cursor_blink_timer_reset
+
+
+m65_cursor_blink_adapt_ptr:
+
+	// Adapt pointer to point to screen memory
+
+	lda M65_SCRSEG+1
+	sta M65_LPNT_IRQ+3
+	lda M65_SCRSEG+0
+	sta M65_LPNT_IRQ+2
+
+	clc
+	lda M65_SCRBASE+0
+	adc M65_LPNT_IRQ+0
+	sta M65_LPNT_IRQ+0
+	lda M65_SCRBASE+1
+	adc M65_LPNT_IRQ+1
+	sta M65_LPNT_IRQ+1
+
+	rts

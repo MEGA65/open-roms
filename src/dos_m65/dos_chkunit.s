@@ -6,6 +6,24 @@
 
 dos_CHKUNIT:
 
+	// Check for magic string
+
+	pha
+	phx
+
+	ldx #$04
+!:
+	lda MAGICSTR, x
+	cmp dos_magicstr, x
+	bne dos_CHKUNIT_mem_fail
+	dex
+	bpl !-
+
+	plx
+	pla
+
+	// Check for unit
+
 	cmp UNIT_SDCARD
 	beq dos_CHKUNIT_sdcard
 	cmp UNIT_FLOPPY
@@ -35,4 +53,11 @@ dos_CHKUNIT_ramdisk:
 	lda #$02
 	
 	clc
+	rts
+
+dos_CHKUNIT_mem_fail:
+
+	plx
+	pla
+	sec
 	rts

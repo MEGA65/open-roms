@@ -6,6 +6,9 @@
 	// Page 0
 	//
 
-	.label UNIT_SDCARD  = $00
-	.label UNIT_FLOPPY  = $01
-	.label UNIT_RAMDISK = $02
+	.label MAGICSTR     = $00 // magic string; if not matching, DOS considered non-functional
+
+	.label UNIT_SDCARD  = $05
+	.label UNIT_FLOPPY  = $06
+	.label UNIT_RAMDISK = $07
+

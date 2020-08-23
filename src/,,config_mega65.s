@@ -130,6 +130,13 @@
 // #define CONFIG_SHOW_FEATURES
 
 
+// Built-in DOS configuration
+
+.const CONFIG_UNIT_SDCARD  = 0 // do not change, DOS is not implemented yet
+.const CONFIG_UNIT_FLOPPY  = 0 // do not change, DOS is not implemented yet
+.const CONFIG_UNIT_RAMDISK = 0 // do not change, DOS is not implemented yet
+
+
 // Debug options
 
 // #define CONFIG_DBG_STUBS_BRK

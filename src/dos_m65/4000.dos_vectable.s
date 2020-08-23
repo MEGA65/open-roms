@@ -3,6 +3,7 @@
 
 .word dos_INIT
 .word dos_CHKUNIT
+.word dos_SETUNIT
 .word dos_ACPTR
 .word dos_CIOUT
 .word dos_LISTEN

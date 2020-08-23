@@ -1,10 +1,6 @@
 
 // Dummy implementations - XXX to be replaced with real ones
 
-dos_INIT:
-	nop
-dos_CHKUNIT:
-	nop
 dos_ACPTR:
 	nop
 dos_CIOUT:

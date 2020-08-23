@@ -20,6 +20,13 @@ iec_cmd_close:
 !:
 	ora #$E0
 
+#if ROM_LAYOUT_M65
+
+	jsr m65dos_check
+	bcc_16 m65dos_second                 // branch if device is handeld by internal DOS
+
+#endif
+
 	jmp common_open_close_unlsn_second
 
 

@@ -13,7 +13,17 @@
 //
 
 
+// XXX cleanup: iec_cmd_open and iec_cmd_close should just do ORA and jump directly here
+
+
 SECOND:
+
+#if ROM_LAYOUT_M65
+
+	jsr m65dos_check
+	bcc_16 m65dos_second                 // branch if device is handeld by internal DOS
+
+#endif
 
 #if CONFIG_IEC
 
@@ -21,8 +31,6 @@ SECOND:
 	// responsibility, hovewer, to provide value ORed with $60
 	// - https://www.lemon64.com/forum/viewtopic.php?t=57694&sid=531ba3592bcffadef2ac8b9162f2e529
 	// - https://www.pagetable.com/?p=1031 (Kernal API description)
-
-	// XXX consider checking whether value is in range (contrary to original ROM implementation)
 
 	jmp common_open_close_unlsn_second
 

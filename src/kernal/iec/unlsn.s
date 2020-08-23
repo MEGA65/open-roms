@@ -16,10 +16,21 @@
 
 UNLSN:
 
-#if CONFIG_IEC
+#if CONFIG_IEC || ROM_LAYOUT_M65
 
 	// According to serial-bus.pdf (page 15) this routine flushes the IEC out buffer
 	jsr iec_tx_flush
+
+#endif
+
+#if ROM_LAYOUT_M65
+
+	jsr m65dos_check
+	bcc_16 m65dos_unlsn                // branch if device is handeld by internal DOS
+
+#endif
+
+#if CONFIG_IEC
 
 #if CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS
 

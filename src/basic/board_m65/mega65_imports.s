@@ -23,6 +23,7 @@
 .label JCHKIN                          = KERNAL_0.JCHKIN
 .label JCHRIN                          = KERNAL_0.JCHRIN
 .label JREADST                         = KERNAL_0.JREADST
+.label JSCREEN                         = KERNAL_0.JSCREEN
 .label SELDEV                          = KERNAL_0.SELDEV
 .label M65_ISMODE65                    = KERNAL_0.M65_ISMODE65
 .label M65_SETWIN_XY                   = KERNAL_0.M65_SETWIN_XY

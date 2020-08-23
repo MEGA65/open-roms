@@ -34,6 +34,9 @@
 .label wait_x_bars                     = KERNAL_0.wait_x_bars
 .label viciv_unhide                    = KERNAL_0.viciv_unhide
 
+.label m65_scrtab_txtwidth             = KERNAL_0.m65_scrtab_txtwidth
+.label m65_scrtab_txtheight            = KERNAL_0.m65_scrtab_txtheight
+
 #if CONFIG_IEC
 
 .label iec_set_idle                    = KERNAL_0.iec_set_idle

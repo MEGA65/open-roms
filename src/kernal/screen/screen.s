@@ -15,6 +15,8 @@
 
 SCREEN:
 
+#if !ROM_LAYOUT_M65
+
 	// There are only 2 sane ways to implement this routine,
 	// I hope this one is different than what Commodore picked :)
 
@@ -22,3 +24,29 @@ SCREEN:
 	ldx #40 // 40 rows
 
 	rts
+
+#else
+
+	php
+	jsr M65_ISMODE65
+	bcc !+
+
+	plp
+
+	ldy #25 // 25 columns
+	ldx #40 // 40 rows
+
+	rts
+!:
+	plp
+	pha
+	ldy M65_SCRMODE
+
+	ldx m65_scrtab_txtwidth, y
+	lda m65_scrtab_txtheight, y
+	tay
+
+	pla
+	rts
+
+#endif

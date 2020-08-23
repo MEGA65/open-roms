@@ -73,6 +73,23 @@ print_sysinfo_banner:
 	ldx #IDX__STR_SI_HDR_VID
 	jsr print_packed_misc_str
 
+	jsr JSCREEN
+	
+	phy
+	lda #$00
+	jsr print_integer
+
+	lda #$58
+	jsr JCHROUT	
+
+	ply
+	tya
+	tax
+	lda #$00
+	jsr print_integer
+
+	jsr print_space
+
 	ldx #IDX__STR_NTSC
 	lda TVSFLG
 	beq !+

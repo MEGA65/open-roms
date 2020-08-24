@@ -24,9 +24,12 @@ M65_CLRWIN:
 
 	// First initialize both pointers
 
-	lda M65_SCRVIEW+0
+	clc
+	lda M65_COLVIEW+0
+	adc M65_SCRBASE+0
 	sta M65_LPNT_SCR+0
-	lda M65_SCRVIEW+1
+	lda M65_COLVIEW+1
+	adc M65_SCRBASE+1
 	sta M65_LPNT_SCR+1
 	lda M65_SCRSEG+0
 	sta M65_LPNT_SCR+2

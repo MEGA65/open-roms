@@ -80,10 +80,49 @@ m65_chrout_fix_column_row:
 
 	// Non-windowed mode
 
-	// XXX
-	// XXX provide implementation
-	// XXX
+	// Check for column below 0
 
+	lda M65__TXTCOL
+	bpl !++
+
+	lda M65_COLVIEW+0
+	ora M65_COLVIEW+1
+	ora M65__TXTROW
+	bne !+
+	lda #$00
+	sta M65__TXTCOL
+	jmp_8 !++
+!:
+	dec M65__TXTROW
+	lda m65_scrtab_txtwidth,y
+	sta M65__TXTCOL
+	dec M65__TXTCOL
+!:
+	// Check for column above maximum
+
+	lda M65__TXTCOL
+	cmp m65_scrtab_txtwidth,y
+	bcc !+
+
+	inc M65__TXTROW
+	lda #$00
+	sta M65__TXTCOL
+!:
+	// Check for row below 0
+
+	lda M65__TXTROW
+	bpl !+
+
+	jsr m65_chrout_fix_scroll_up
+!:
+	// Check for row above maximum
+
+	lda M65__TXTROW
+	cmp m65_scrtab_txtheight,y
+	bcc !+
+
+	jsr m65_chrout_fix_scroll_down
+!:
 	jmp_8 m65_chrout_fix_txtrow_off
 
 m65_chrout_fix_column_row_win:
@@ -109,4 +148,90 @@ m65_chrout_screen_done:
 	jsr cursor_show_if_enabled
 
 	// XXX make sure it return success
+	rts
+
+
+
+// Try to fix coordinates by scrolling the screen up
+
+m65_chrout_fix_scroll_up:
+
+	inc M65__TXTROW
+
+	// Check if we can simply adapt the viewport
+
+	lda M65_COLVIEW+0
+	ora M65_COLVIEW+1
+	beq m65_chrout_fix_scroll_up_end
+
+	// Yes, we can simply adapt the viewport
+
+	sec
+	lda M65_COLVIEW+0
+	sbc #$50
+	sta M65_COLVIEW+0
+	sta VIC_COLPTR+0
+	bcs !+
+	dec M65_COLVIEW+1
+	dec VIC_COLPTR+1
+!:
+	sec
+	lda VIC_SCRNPTR+0
+	sbc #$50
+	sta VIC_SCRNPTR+0
+	bcs !+
+	dec VIC_SCRNPTR+1
+!:
+	// FALLTROUGH
+
+m65_chrout_fix_scroll_up_end:
+
+	jmp_8 m65_chrout_fix_scroll_done
+
+
+// Try to fix coordinates by scrolling the screen up
+
+m65_chrout_fix_scroll_down:
+
+	dec M65__TXTROW
+
+	// Check if we can simply adapt the viewport
+
+	lda M65_COLVIEW+1
+	cmp M65_COLVIEWMAX+1
+	bne !+
+
+	lda M65_COLVIEW+0
+	cmp M65_COLVIEWMAX+0
+	beq m65_chrout_fix_scroll_down_scroll
+!:
+	// Yes, we can simply adapt the viewport
+
+	clc
+	lda M65_COLVIEW+0
+	adc #$50
+	sta M65_COLVIEW+0
+	sta VIC_COLPTR+0
+	bcc !+
+	inc M65_COLVIEW+1
+	inc VIC_COLPTR+1
+!:
+	clc
+	lda VIC_SCRNPTR+0
+	adc #$50
+	sta VIC_SCRNPTR+0
+	bcc !+
+	inc VIC_SCRNPTR+1
+!:
+	jmp_8 m65_chrout_fix_scroll_done
+
+m65_chrout_fix_scroll_down_scroll:
+
+	// XXX implement
+
+	// FALLTROUGH
+
+m65_chrout_fix_scroll_done:
+
+	ldy M65_SCRMODE
 	rts

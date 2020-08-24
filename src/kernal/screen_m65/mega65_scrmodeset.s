@@ -71,17 +71,16 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 
 	// Set the following locations:
 	// - M65_SCRBASE                   - for screen starting from $xxxx6000
-	// - M65_SCRVIEW, VIC_SCRNPTR+0/+1 - for screen viewport starting from the same address
+	// - VIC_SCRNPTR+0/+1              - for screen viewport start
 	// - M65_COLVIEW, VIC_COLPTR       - for using color memory from the start
 
 	ldx #$60
 	stx M65_SCRBASE+1
-	stx M65_SCRVIEW+1
 	stx VIC_SCRNPTR+1
 
 	ldx #$00
 	stx M65_SCRBASE+0
-	stx M65_SCRVIEW+0
+
 	stx VIC_SCRNPTR+0
 
 	stx M65_COLVIEW+0
@@ -91,7 +90,7 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 
 	// Set the following locations:
 	// - M65_SCREND                    - for max 200 lines of virtual screen
-	// - M65_SCRVIEWMAX                - as above, but depending on the mode
+	// - M65_COLVIEWMAX                - as above, but depending on the mode
 
 	ldx #$80
 	stx M65_SCRGUARD+0
@@ -99,9 +98,9 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	stx M65_SCRGUARD+1
 
 	ldx M65_SCRMODE
-	lda m65_scrtab_viewmax_lo, x
-	sta M65_SCRVIEWMAX+0
-	lda m65_scrtab_viewmax_hi, x
-	sta M65_SCRVIEWMAX+1
+	lda m65_scrtab_colviewmax_lo, x
+	sta M65_COLVIEWMAX+0
+	lda m65_scrtab_colviewmax_hi, x
+	sta M65_COLVIEWMAX+1
 
 	rts

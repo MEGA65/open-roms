@@ -8,9 +8,7 @@
 //
 
 
-#if ROM_LAYOUT_M65 || CONFIG_KEYBOARD_C65
-
-	// XXX viciii_unhide for non-Mega65 build?
+#if ROM_LAYOUT_M65
 
 viciv_unhide:
 

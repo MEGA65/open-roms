@@ -17,7 +17,7 @@
 .const KEY_FLAG_VENDOR  = %00000010
 .const KEY_FLAG_CTRL    = %00000100
 
-#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65 || ROM_LAYOUT_M65
 .const KEY_FLAG_ALT     = %00001000
 #if CONFIG_KEYBOARD_C128_CAPS_LOCK || CONFIG_KEYBOARD_C65_CAPS_LOCK
 .const KEY_CAPS_LOCK    = %00010000
@@ -40,12 +40,12 @@
 
 // PETSCII codes for certain C128 and C65 functionalities
 
-#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65  || ROM_LAYOUT_M65
 .const KEY_BELL         = $07  // no key, originally CTRL+G // XXX implement, add to C65 keyboard matrix
 .const KEY_ESC          = $1B
 #endif
 
-#if CONFIG_KEYBOARD_C65
+#if CONFIG_KEYBOARD_C65  || ROM_LAYOUT_M65
 .const KEY_TAB           = $09  // XXX add to C65 keyboard matrix
 .const KEY_LINE_FEED     = $0A  // XXX add to C65 keyboard matrix
 .const KEY_TAB_SET_CLR   = $18  // XXX add to C65 keyboard matrix
@@ -69,7 +69,7 @@
 .const KEY_F7           = $88
 .const KEY_F8           = $8C
 
-#if CONFIG_KEYBOARD_C65
+#if CONFIG_KEYBOARD_C65  || ROM_LAYOUT_M65
 .const KEY_F9           = $10
 .const KEY_F10          = $15
 .const KEY_F11          = $16
@@ -78,7 +78,7 @@
 .const KEY_F14          = $1A
 #endif
 
-#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65
+#if CONFIG_KEYBOARD_C128 || CONFIG_KEYBOARD_C65  || ROM_LAYOUT_M65
 .const KEY_HELP         = $84
 #endif
 
@@ -119,7 +119,7 @@
 
 .const KEY_C64_SHIFT_ON  = $09  // no key
 .const KEY_C64_SHIFT_OFF = $08  // no key
-#if CONFIG_KEYBOARD_C65
+#if CONFIG_KEYBOARD_C65  || ROM_LAYOUT_M65
 .const KEY_C65_SHIFT_OFF = $0B  // no key
 .const KEY_C65_SHIFT_ON  = $0C  // no key
 #endif

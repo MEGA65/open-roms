@@ -8,6 +8,7 @@
 #import "KERNAL_0_combined.sym"
 
 
+.label CHROUT                          = KERNAL_0.proxy_K1_CHROUT
 .label STOP                            = KERNAL_0.STOP
 .label M65_SLOW                        = KERNAL_0.M65_SLOW
 .label M65_FAST                        = KERNAL_0.M65_FAST
@@ -36,9 +37,12 @@
 
 .label m65_scrtab_txtwidth             = KERNAL_0.m65_scrtab_txtwidth
 .label m65_scrtab_txtheight            = KERNAL_0.m65_scrtab_txtheight
+.label cursor_enable                   = KERNAL_0.cursor_enable
 .label cursor_undraw_cont              = KERNAL_0.cursor_undraw_cont
 .label cursor_timer_reset              = KERNAL_0.cursor_timer_reset
 .label cursor_show_if_enabled          = KERNAL_0.cursor_show_if_enabled
+.label chrin_programmable_keys         = KERNAL_0.proxy_K1_chrin_programmable_keys
+.label pop_keyboard_buffer             = KERNAL_0.pop_keyboard_buffer
 
 #if CONFIG_IEC
 

@@ -10,53 +10,54 @@
 
 chrin_keyboard:
 
-	// Save .X
-	stx XSAV
+	// Preserve .X and .Y registers
 
-	// Save .Y
+	stx XSAV
 	phy_trash_a
 
-chrin_repeat:
+	// FALLTROUGH
+
+chrin_keyboard_repeat:
 
 	// Do we have a line of input we are currently returning?
 	// If so, return the next byte, and clear the flag when we reach the end.
 
-	// Do we have a line of input waiting?
 	lda CRSW
-	beq read_from_keyboard
+	beq chrin_keyboard_read
 
-	// Yes, we have input waiting at (LSXP)+CRSW
-	// When CRSW = INDX, then we return a carriage return
-	// and clear the flag
+	// We have input waiting at (LSXP)+CRSW
+	// When CRSW = INDX, then we return a carriage return and clear the flag
 	cmp INDX
-	bne not_end_of_input
+	bne chrin_keyboard_not_end_of_input
 
-	// Return carriage return and clear pending input and quote flags
+	// Clear pending input and quote flags
 	lda #$00
 	sta CRSW
 	sta QTSW
 
 	// FALLTROUGH
 
-empty_line:
+chrin_keyboard_empty_line:
+
 	// For an empty line, just return the carriage return
-	// (and do not forget to actually print the carriage return, so that
-	// the cursor advances and screen scrolls as required)
 
 	ply_trash_a
 	ldx XSAV
 	clc
-	lda #$0d
+	lda #$0D
 	rts
 
-not_end_of_input:
-	// Advance index
-	inc CRSW
+chrin_keyboard_not_end_of_input:
 
-	// Return next byte of waiting
+	// Advance index, return the next byte
+	
+	inc CRSW
 	tay
 
+	// FALLTROUGH
+
 chrin_keyboard_return_byte:
+
 	lda (LSXP),y
 	jsr screen_check_toggle_quote
 	tax
@@ -67,28 +68,28 @@ chrin_keyboard_return_byte:
 	clc
 	rts
 
-read_from_keyboard:
+chrin_keyboard_read:
 
 	jsr cursor_enable
 
 	// Wait for a key
 	lda NDX
-	beq chrin_repeat
+	beq chrin_keyboard_repeat
 
 	lda KEYD
 	cmp #$0D
-	bne not_enter
+	bne chrkin_keyboard_not_enter
 
-chrin_enter:
+	// FALLTROUGH
+
+chrin_keyboard_enter:
 
 	jsr cursor_disable
 	jsr pop_keyboard_buffer
 	jsr cursor_hide_if_visible
 
-	// It was enter.
-	// Note that we have a line of input to return, and return the first byte thereof
-	// after computing and storing its length.
-	// (Computes Mapping the 64, p96)
+	// It was enter. Note that we have a line of input to return, and return the first byte
+	// after computing and storing its length (Computes Mapping the 64, p96)
 
 	// Set pointer to line of input
 	lda PNT+0
@@ -120,7 +121,7 @@ chrin_enter_loop:
 
 	// Retrieve bytes
 	dey
-	bmi empty_line
+	bmi chrin_keyboard_empty_line
 	lda (LSXP),y
 	cmp #$20
 	beq chrin_enter_loop
@@ -138,47 +139,18 @@ chrin_enter_loop:
 	// Return first char of line
 	beq chrin_keyboard_return_byte     // branch always
 
-not_enter:
+chrkin_keyboard_not_enter:
 
 	lda KEYD
 
 #if CONFIG_PROGRAMMABLE_KEYS
 
-	ldx #(__programmable_keys_codes_end - programmable_keys_codes - 1)
-
-chrin_programmable_loop:
-
-	cmp programmable_keys_codes, x
-	beq chrin_programmable_key
-	dex
-	bpl chrin_programmable_loop
-
-	// FALLTROUGH
+	jsr chrin_programmable_keys
+	bcc chrin_keyboard_enter
 
 #endif // CONFIG_PROGRAMMABLE_KEYS
 
-chrin_print_character:
-
+	// Print character, keep looking for input from keyboard until carriage return
 	jsr CHROUT
 	jsr pop_keyboard_buffer
-
-	// Keep looking for input from keyboard until carriage return
-	jmp chrin_repeat
-
-#if CONFIG_PROGRAMMABLE_KEYS
-
-chrin_programmable_key:
-
-	// .X contains index of the key code, we need offset to key string instead
-	lda programmable_keys_offsets, x
-	tax
-
-	// Print all the characters assigned to key
-!:
-	lda programmable_keys_strings, x
-	beq chrin_enter
-	jsr CHROUT // our implementation preserves .X too
-	inx
-	bne !-     // jumps always
-
-#endif // CONFIG_PROGRAMMABLE_KEYS
+	jmp chrin_keyboard_repeat

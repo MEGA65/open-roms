@@ -68,8 +68,8 @@
 // #define CONFIG_LEGACY_SCNKEY
 // #define CONFIG_KEYBOARD_C128
 // #define CONFIG_KEYBOARD_C128_CAPS_LOCK
-#define CONFIG_KEYBOARD_C65              // untested
-#define CONFIG_KEYBOARD_C65_CAPS_LOCK    // untested
+// #define CONFIG_KEYBOARD_C65              // untested
+// #define CONFIG_KEYBOARD_C65_CAPS_LOCK    // untested
 // #define CONFIG_KEY_REPEAT_DEFAULT
 // #define CONFIG_KEY_REPEAT_ALWAYS
 #define CONFIG_KEY_FAST_SCAN

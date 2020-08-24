@@ -22,7 +22,7 @@ M65_CLRSCR:
 m65_clrscr_takeover:
 
 	// Set the viewport to the beginning of screen memory - variables:
-	// - M65_SCRVIEW, M65_COLVIEW
+	// - M65_COLVIEW
 	// To clear the screen, two zeropage long pointers will be used, initialize them too
 	// - M65_LPNT_SCR  for screen memory
 	// - M65_LPNT_KERN for colour memory (starts from $FF80000) // XXX preserve this on stack, restore afterwards
@@ -36,11 +36,6 @@ m65_clrscr_takeover:
 	sta M65_LPNT_KERN+2
 	lda #$0F
 	sta M65_LPNT_KERN+3
-
-	lda M65_SCRSEG+0
-	sta M65_SCRVIEW+0
-	lda M65_SCRSEG+1
-	sta M65_SCRVIEW+1
 
 	lda M65_SCRBASE+0
 	sta M65_LPNT_SCR+0	

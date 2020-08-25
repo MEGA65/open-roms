@@ -21,7 +21,7 @@ tape_normal_sync:
 
 	jsr tape_normal_get_marker_while_sync
 	bcs tape_normal_sync_fail          // branch if end of data marker
-	
+
 	jsr tape_normal_get_byte
 	bcs tape_normal_sync_fail
 

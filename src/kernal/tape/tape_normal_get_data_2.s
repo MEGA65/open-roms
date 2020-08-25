@@ -12,10 +12,8 @@
 
 tape_normal_get_data_2:
 
-	// First check if there is a need to read anything
-
-	lda PTR1
-	beq tape_normal_get_data_2_log_checksum
+	// NOTE: Always read all the bytes fro second copy, to taht we stop
+	//       at the moment when it is safe to start recording!
 
 	// Read sync of the block
 	
@@ -27,11 +25,6 @@ tape_normal_get_data_2:
 	// FALLTROUGH
 
 tape_normal_get_data_2_loop:
-
-	// Check if there are missing bytes to read
-	lda PTR1
-	cmp PTR2
-	beq tape_normal_get_data_2_log_checksum      // branch if no more errors to correct
 
 	// Read missing bytes
 

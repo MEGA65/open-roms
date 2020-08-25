@@ -61,6 +61,9 @@ execute_statements:
 	cpx #$7F
 	bcc_16 execute_statements_var_assign         // not a token - try variable assign
 
+	cpx #$A7
+	bcs_16 do_SYNTAX_error
+
 #if !HAS_OPCODES_65C02
 
 	// Get the jump table entry for it, push it on the stack, and then RTS to start it.

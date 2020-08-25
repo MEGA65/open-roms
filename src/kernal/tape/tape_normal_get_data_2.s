@@ -7,7 +7,7 @@
 //
 
 
-#if CONFIG_TAPE_NORMAL && !CONFIG_TAPE_NO_ERROR_CORRECTION
+#if CONFIG_TAPE_NORMAL
 
 
 tape_normal_get_data_2:

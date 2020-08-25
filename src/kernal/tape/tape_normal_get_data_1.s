@@ -21,10 +21,9 @@ tape_normal_get_data_1:
 	// and pointers for error log and correction mechanism
 	lda #$00
 	sta RIPRTY
-#if !CONFIG_TAPE_NO_ERROR_CORRECTION
+
 	sta PTR2
 	sta PTR1
-#endif
 
 	// FALLTROUGH
 
@@ -44,12 +43,6 @@ tape_normal_get_data_1_loop:
 
 	jsr tape_normal_get_byte
 	bcc tape_normal_get_data_1_loop_byte_OK
-	
-#if CONFIG_TAPE_NO_ERROR_CORRECTION
-
-	bcs tape_normal_get_data_1_fail
-
-#else
 
 	// Problem reading a byte, try to add it to the error log
 
@@ -70,8 +63,6 @@ tape_normal_get_data_1_loop:
 	jsr tape_normal_get_marker
 	bcc tape_normal_get_data_1_loop_advance
 	bcs tape_normal_get_data_1_success
-
-#endif
 
 tape_normal_get_data_1_loop_byte_OK:
 

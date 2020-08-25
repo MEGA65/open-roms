@@ -175,12 +175,6 @@ Enable this option if you are using a tape interface adapter with some audio sig
 
 Enable this option if you are using a tape interface adapter lacking tape motor control (most likely every adapter currently being sold) - this will eliminate the need to quickly press space when the program header information gets displayed. Note: if you are using a cassette player with REM port, and your adapter is connected to this port too, than you do not need this option.
 
-### `CONFIG_TAPE_NO_ERROR_CORRECTION`
-
-Normal tape format contains two copies of each data block - in case some bytes from the first one are damaged, they can be corrected by reading them from the second copy. Enabling this option omits the core to read the second block.
-
-If used with `CONFIG_TAPE_NORMAL`, saves about 125 bytes in KERNAL segment. Not recommended when using real magnetic tapes.
-
 ## Multiple SID support
 
 The SID is a sound chip - the original Commodore 64 had one installed. However, mods exists to add more of them for improved sound capabilities. Emulators and FPGA machines typically allow to simulate more than one too. Unfortunately, there is no standard regarding how these additional chips are visible in the processor address space, and there is no sane way to detect it - thus, it has to be configurable.

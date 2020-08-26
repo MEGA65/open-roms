@@ -2,7 +2,6 @@
 // #LAYOUT# *   *        #IGNORE
 
 
-
 m65_helper_scrlpnt_color:
 
 	// Set .Z to the current column
@@ -36,7 +35,7 @@ m65_helper_scrlpnt_color:
 
 m65_helper_scrlpnt_to_screen:
 
-	// Change M65_LPNT_SCR to point to screen memory (when it points to scren memory)
+	// Change M65_LPNT_SCR to point to screen memory (when it points to color memory)
 
 	lda M65_SCRSEG+1
 	sta M65_LPNT_SCR+3

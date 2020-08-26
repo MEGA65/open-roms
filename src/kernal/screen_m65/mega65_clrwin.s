@@ -2,16 +2,13 @@
 // #LAYOUT# *   *        #IGNORE
 
 
-// XXX deduplicate pointer manipulation
+// XXX deduplicate pointer manipulation, see M65_CLRSCR
 
 M65_CLRWIN:
 
 	// Clear additional attributes from the color code
-	// XXX deduplicate with M65_CLRSCR
 
-	lda COLOR
-	and #$0F
-	sta COLOR
+	jsr m65_clear_attributes
 
 	// Check if windowed mode; if not, go to M65_CLRSCR
 

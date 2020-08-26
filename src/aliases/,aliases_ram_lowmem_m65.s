@@ -39,16 +39,17 @@
 
 	.label M65_SCRSEG       = $580 // $580-$581  segment address (2 higher bytes) of the screen memory
 	.label M65_SCRBASE      = $582 // $582-$583  first byte of screen memory
-	.label M65_SCRGUARD     = $584 // $584-$585  last byte of screen memory + 1
-	.label M65_COLVIEW      = $586 // $586-$587  first byte of color memory viewport
-	.label M65_COLVIEWMAX   = $588 // $588-$589  largest allowed value of M65_SCRVIEW
-	.label M65_SCRMODE      = $58A //            0 = 40x25, 1 = 80x25, 2 = 80x50 
-	.label M64_SCRWINMODE   = $58B //            $00 = normal mode, $FF = window enabled
-	.label M65_TXTWIN_X0    = $58C //            text window - top-left X coordinate, starting from 0
-	.label M65_TXTWIN_Y0    = $58D //            text window - top-left Y coordinate, starting from 0
-	.label M65_TXTWIN_X1    = $58E //            text window - bottom-right X coordinate + 1
-	.label M65_TXTWIN_Y1    = $58F //            text window - bottom-right Y coordinate + 1
-	.label M65_TXTROW_OFF   = $590 // $590-$591  offset to the current text row
-	                               // $592-$5FF  -- UNUSED --
+	.label M65_SCRGUARD     = $584 // $584-$585  last byte of screen memory + 1  XXX is it needed?
+	.label M65_COLGUARD     = $586 // $586-$587  last byte of colour memory + 1
+	.label M65_COLVIEW      = $588 // $588-$589  first byte of color memory viewport
+	.label M65_COLVIEWMAX   = $58A // $58A-$58B  largest allowed value of M65_COLVIEW
+	.label M65_SCRMODE      = $58C //            0 = 40x25, 1 = 80x25, 2 = 80x50 
+	.label M64_SCRWINMODE   = $58D //            $00 = normal mode, $FF = window enabled
+	.label M65_TXTWIN_X0    = $58E //            text window - top-left X coordinate, starting from 0
+	.label M65_TXTWIN_Y0    = $58F //            text window - top-left Y coordinate, starting from 0
+	.label M65_TXTWIN_X1    = $590 //            text window - bottom-right X coordinate + 1
+	.label M65_TXTWIN_Y1    = $591 //            text window - bottom-right Y coordinate + 1
+	.label M65_TXTROW_OFF   = $592 // $592-$593  offset to the current text row
+	                               // $594-$5FF  -- UNUSED --
 	.label M65_RS232_INBUF  = $600 // $600-$6FF  -- reserved for RS-232 input buffer --
 	.label M65_RS232_OUTBUF = $700 // $700-$7FF  -- reserved for RS-232 output buffer --

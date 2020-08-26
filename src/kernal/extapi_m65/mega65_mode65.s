@@ -43,7 +43,7 @@ M65_MODE65:
 
 	// Set screen mode to 80x25
 
-	lda #$01
+	lda #$02
 	jsr m65_scrmodeset_internal
 
 	// Clear the screen

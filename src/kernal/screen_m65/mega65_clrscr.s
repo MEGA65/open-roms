@@ -2,15 +2,12 @@
 // #LAYOUT# *   *        #IGNORE
 
 
-// XXX deduplicate pointer manipulation
 
 M65_CLRSCR:
 
 	// Clear additional attributes from the color code
 
-	lda COLOR
-	and #$0F
-	sta COLOR
+	jsr m65_clear_attributes
 
 	// Disable the window mode
 
@@ -19,32 +16,19 @@ M65_CLRSCR:
 
 	// FALLTROUGH
 
-m65_clrscr_takeover:
+m65_clrscr_takeover: // .A has to be 0
 
-	// Set the viewport to the beginning of screen memory - variables:
+	// Set the viewport to the beginning of screen memory - variable:
 	// - M65_COLVIEW
-	// To clear the screen, two zeropage long pointers will be used, initialize them too
-	// - M65_LPNT_SCR  for screen memory
-	// - M65_LPNT_KERN for colour memory (starts from $FF80000) // XXX preserve this on stack, restore afterwards
+	// It will serve as line counter
 
 	sta M65_COLVIEW+0
 	sta M65_COLVIEW+1
 
-	sta M65_LPNT_KERN+0
-	sta M65_LPNT_KERN+1
-	lda #$F8
-	sta M65_LPNT_KERN+2
-	lda #$0F
-	sta M65_LPNT_KERN+3
+	// Clear the row offset, so that it won't interfere
 
-	lda M65_SCRBASE+0
-	sta M65_LPNT_SCR+0	
-	lda M65_SCRBASE+1
-	sta M65_LPNT_SCR+1
-	lda M65_SCRSEG+0
-	sta M65_LPNT_SCR+2
-	lda M65_SCRSEG+1
-	sta M65_LPNT_SCR+3
+	sta M65_TXTROW_OFF+0
+	sta M65_TXTROW_OFF+1
 
 	// Clear the whole screen+color memory
 
@@ -54,45 +38,56 @@ m65_clrscr_takeover:
 
 m65_clrscr_loop:
 
-	// Clear 80 characters
+	// Prepare M65_LPNT_SCR, let it point to color memory
+
+	jsr m65_helper_scrlpnt_color
+
+	// Clear color for the whole line
 
 	ldz #$4F                                     // 80 bytes
-!:
-	lda #$20
-	sta_lp (M65_LPNT_SCR),z
 	lda COLOR
-	sta_lp (M65_LPNT_KERN),z
+!:
+	sta_lp (M65_LPNT_SCR),z
 
 	dez
 	bpl !-
 
-	// Move M65_LPNT_SCR and M65_LPNT_KERN 80 characters forward
-	// XXX deduplicate with window clearing
+	// Let M65_LPNT_SCR point to scren memory
 
-	clc
-	lda M65_LPNT_SCR+0
-	adc #$50
-	sta M65_LPNT_SCR+0
-	bcc !+
-	inc M65_LPNT_SCR+1
+	jsr m65_helper_scrlpnt_to_screen
+
+	// Clear characters in the whole line
+
+	ldz #$4F                                     // 80 bytes
+	lda #$20
 !:
+	sta_lp (M65_LPNT_SCR),z
+
+	dez
+	bpl !-
+
+	// Advance by one line, do next iteration
+
+	// XXX this can probably be deduplicated
 	clc
-	lda M65_LPNT_KERN+0
+	lda M65_COLVIEW+0
 	adc #$50
-	sta M65_LPNT_KERN+0
+	sta M65_COLVIEW+0
 	bcc !+
-	inc M65_LPNT_KERN+1
+	inc M65_COLVIEW+1
 !:
-	// Check if we have more rows to clear
+	// Check if we are allowed to progress further
 
-	lda M65_LPNT_SCR+1
-	cmp M65_SCRGUARD+1
+	lda M65_COLVIEW+1
+	cmp M65_COLVIEWMAX+1
 	bne m65_clrscr_loop
-	lda M65_LPNT_SCR+0
-	cmp M65_SCRGUARD+0
+	lda M65_COLVIEW+0
+	cmp M65_COLVIEWMAX+0
 	bne m65_clrscr_loop
 
-	// Restore .Z register
+m65_clrscr_loop_done:
+
+	// Nothing more to clear - restore .Z register
 
 	plz
 
@@ -102,6 +97,8 @@ m65_clrscr_loop:
 	lda #$00
 	sta VIC_COLPTR+0
 	sta VIC_COLPTR+1
+	sta M65_COLVIEW+0
+	sta M65_COLVIEW+1
 
 	lda M65_SCRBASE+0
 	sta VIC_SCRNPTR+0
@@ -110,7 +107,13 @@ m65_clrscr_loop:
 
     // Set screen variables
 
-	// XXX provide proper implementation, together with HOME
+	// XXX provide proper implementation
+
+    // FALLTROUGH
+
+M65_HOME:
+
+	// XXX provide proper implementation
 
 	lda #$00
 	sta M65__TXTROW

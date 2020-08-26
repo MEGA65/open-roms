@@ -27,7 +27,13 @@ tape_normal_get_pilot_header:          // entry point, reset calibration, requir
 	sta __pulse_threshold_ML
 
 	lda #$80
+
+#if CONFIG_TAPE_AUTODETECT
+	ldy #$FF                           // marker: try to detect turbo
+	bmi tape_normal_get_pilot_header_cont
+#else
 	skip_2_bytes_trash_nvz
+#endif
 
 	// FALLTROUGH
 
@@ -41,6 +47,15 @@ tape_normal_get_pilot_data:            // entry point, require 4x $40 pulses
 tape_normal_get_pilot_short:           // entry point, require 1x $40 pulses
 
 	lda #$01
+
+#if CONFIG_TAPE_AUTODETECT
+	ldy #$00                           // marker: do not try to detect turbo
+	// FALLTROUGH
+tape_normal_get_pilot_header_cont:
+	sty INBIT
+#else
+	skip_2_bytes_trash_nvz
+#endif
 
 	// FALLTROUGH
 
@@ -72,9 +87,12 @@ tape_normal_get_pilot_common_loop_inner:
 	bcc tape_normal_get_pilot_common_restart     // not a pilot - try again
 
 #if CONFIG_TAPE_AUTODETECT
+	bit INBIT
+	bpl !+
 	// Try to distinguish turbo by cheecking for short signals
 	cmp #$B9                                     // see comment in tape_common_autodetect.s
-	bcs !+
+	bcs !++
+!:
 #endif
 
 	jsr tape_normal_calibrate_during_pilot

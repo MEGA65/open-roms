@@ -9,9 +9,6 @@
 // .Y not equal to 0 - returns error if data block is longer (length includes checksum)
 
 
-// XXX improve error handling - do not ignore second copy, handle damaged sync part
-
-
 #if CONFIG_TAPE_NORMAL
 
 

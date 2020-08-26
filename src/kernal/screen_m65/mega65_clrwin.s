@@ -8,7 +8,7 @@ M65_CLRWIN:
 
 	// Clear additional attributes from the color code
 
-	jsr m65_clear_attributes
+	jsr m65_screen_clear_colorattr
 
 	// Check if windowed mode; if not, go to M65_CLRSCR
 

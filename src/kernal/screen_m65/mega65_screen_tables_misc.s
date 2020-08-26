@@ -10,15 +10,15 @@ m65_scrtab_vic_ctrlb:        // parameters for VIC control register B
 
 m65_scrtab_colviewmax_lo:       // maximum allowed color viewport start - low byte
 
-	.byte <((128-25)*80)
-	.byte <((128-25)*80)
-	.byte <((128-50)*80)
+	.byte <((MEMCONF_SCRROWS - 25) * 80)
+	.byte <((MEMCONF_SCRROWS - 25) * 80)
+	.byte <((MEMCONF_SCRROWS - 50) * 80)
 
 m65_scrtab_colviewmax_hi:       // maximum allowed color viewport start - high byte
 
-	.byte >((128-25)*80)
-	.byte >((128-25)*80)
-	.byte >((128-50)*80)
+	.byte >((MEMCONF_SCRROWS - 25) * 80)
+	.byte >((MEMCONF_SCRROWS - 25) * 80)
+	.byte >((MEMCONF_SCRROWS - 50) * 80)
 
 m65_scrtab_scrolx:           // values for VIC_SCROLX
 

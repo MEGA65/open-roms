@@ -7,7 +7,7 @@ M65_CLRSCR:
 
 	// Clear additional attributes from the color code
 
-	jsr m65_clear_attributes
+	jsr m65_screen_clear_colorattr
 
 	// Disable the window mode
 
@@ -79,10 +79,10 @@ m65_clrscr_loop:
 	// Check if we are allowed to progress further
 
 	lda M65_COLVIEW+1
-	cmp M65_COLVIEWMAX+1
+	cmp M65_COLGUARD+1
 	bne m65_clrscr_loop
 	lda M65_COLVIEW+0
-	cmp M65_COLVIEWMAX+0
+	cmp M65_COLGUARD+0
 	bne m65_clrscr_loop
 
 m65_clrscr_loop_done:
@@ -111,7 +111,7 @@ m65_clrscr_loop_done:
 
     // FALLTROUGH
 
-M65_HOME:
+m65_home: // XXX reuse
 
 	// XXX provide proper implementation
 

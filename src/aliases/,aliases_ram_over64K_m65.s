@@ -7,6 +7,11 @@
 	// $10000-$17FFF (32KB) - reserved for DOS
 	// $18000-$18FFF  (4KB) - chargen copied to RAM, to allow character redefinition
 	// $19000-$1B7FF (10KB) - reserved for virtual text screenk, 80x128
+
+.const MEMCONF_SCRBASE = $9000
+.const MEMCONF_SCRROWS = 128
+
+
 	// $1B800-$1DFFF (10KB) - reserved for a color RAM backup when switchin between text/graphics modes
 	//                (4KB) - reserved for sprites
 	//                (2KB) - reserved for future use

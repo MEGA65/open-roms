@@ -97,6 +97,16 @@
 #endif
 
 
+//
+// Some additional 65C02 instructions
+//
+
+#if HAS_OPCODES_65C02
+
+.pseudocommand inc_a { .byte $1A }
+.pseudocommand dec_a { .byte $3A }
+
+#endif
 
 //
 // Some additional 65CE02 instructions

@@ -37,6 +37,7 @@
 
 .label m65_scrtab_txtwidth             = KERNAL_0.m65_scrtab_txtwidth
 .label m65_scrtab_txtheight            = KERNAL_0.m65_scrtab_txtheight
+.label m65_screen_set_indx             = KERNAL_0.m65_screen_set_indx
 .label cursor_enable                   = KERNAL_0.cursor_enable
 .label cursor_undraw_cont              = KERNAL_0.cursor_undraw_cont
 .label cursor_timer_reset              = KERNAL_0.cursor_timer_reset

@@ -75,7 +75,7 @@ m65_chrout_fix_column_row:
 
 	ldy M65_SCRMODE
 
-	bit M64_SCRWINMODE
+	bit M65_SCRWINMODE
 	bmi m65_chrout_fix_column_row_win
 
 	// Non-windowed mode

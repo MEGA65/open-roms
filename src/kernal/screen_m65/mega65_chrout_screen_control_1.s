@@ -46,7 +46,7 @@ m65_chrout_screen_RETURN:
 
 	// Move cursor to the beginning of the next line
 
-	bit M64_SCRWINMODE
+	bit M65_SCRWINMODE
 	bpl !+
 	lda M65_TXTWIN_X0
 	skip_2_bytes_trash_nvz

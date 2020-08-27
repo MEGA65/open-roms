@@ -113,7 +113,7 @@ chrin_keyboard_enter:
 
 chrin_enter_calc_length:
 
-	// Calculate length
+	// Get the logical line length
 	jsr screen_get_logical_line_end_ptr
 	iny
 

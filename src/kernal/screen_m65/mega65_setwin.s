@@ -33,7 +33,9 @@ M65_SETWIN_N:
 	pha
 
 	lda #$00
-	sta M64_SCRWINMODE
+	sta M65_SCRWINMODE
+
+	jsr m65_screen_set_indx
 
 	pla
 	rts
@@ -44,7 +46,11 @@ M65_SETWIN_Y:
 	pha
 
 	lda #$FF
-	sta M64_SCRWINMODE
+	sta M65_SCRWINMODE
+
+	jsr m65_screen_set_indx
+
+	// XXX consider calling HOME instead
 
 	lda M65_TXTWIN_X0
 	sta M65__TXTCOL

@@ -8,10 +8,11 @@
 
 m65_chrin_keyboard:       // XXX connnect this function to Kernal
 
-	// Preserve .X and .Y registers
+	// Preserve .X, .Y and .Z registers
 
 	phx
 	phy
+	phz
 
 	// FALLTROUGH
 
@@ -25,7 +26,7 @@ m65_chrin_keyboard_repeat:
 
 	// XXX implement
 
-	// We have input waiting at (XXX)+CRSW
+	// We have input waiting at [M65__SCRINPUT]+CRSW
 	// When CRSW = INDX, then we return a carriage return and clear the flag
 	
 	cmp INDX
@@ -43,10 +44,16 @@ m65_chrin_keyboard_empty_line:
 
 	// For an empty line, just return the carriage return
 
+	lda #$0D
+
+	// FALLTROUGH
+
+m65_chrin_keyboard_end:
+
+	plz
 	ply
 	plx
 	clc
-	lda #$0D
 	rts
 
 m65_chrin_keyboard_not_end_of_input:
@@ -62,7 +69,7 @@ m65_chrin_keyboard_return_byte:
 
 	// XXX implement
 
-	rts
+	jmp_8 m65_chrin_keyboard_end
 
 m65_chrin_keyboard_read:
 
@@ -80,6 +87,8 @@ m65_chrin_keyboard_read:
 
 m65_chrin_keyboard_enter:
 
+	// Disable cursor, retrieve code from keyboard buffer
+
 	jsr m65_cursor_disable
 	jsr pop_keyboard_buffer
 	jsr m65_cursor_hide_if_visible
@@ -87,11 +96,40 @@ m65_chrin_keyboard_enter:
 	// It was enter. Note that we have a line of input to return, and return the first byte
 	// after computing and storing its length (Computes Mapping the 64, p96)
 
+	// Set pointer to the input, start for the viewport offset + screen memory base
+	clc
+	lda M65_COLVIEW+0
+	adc M65_SCRBASE+0
+	sta M65__SCRINPUT+0
+	lda M65_COLVIEW+1
+	adc M65_SCRBASE+1
+	sta M65__SCRINPUT+1
+	// Add current row offset
+	clc
+	lda M65__SCRINPUT+0
+	adc M65_TXTROW_OFF+0
+	sta M65__SCRINPUT+0
+	lda M65__SCRINPUT+1
+	adc M65_TXTROW_OFF+1
+	sta M65__SCRINPUT+1
+
+	// XXX for windowed mode add current column too
+
+	// Retrieve first byte which is not space
+
+	ldy INDX
+	iny
+
+	// FALLTROUGH
+
+m65_chrin_enter_loop:
+
+	dey
+	bmi m65_chrin_keyboard_empty_line
+
 	// XXX implement
 
 	rts
-
-
 
 
 

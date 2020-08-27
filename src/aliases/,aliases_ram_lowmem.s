@@ -147,7 +147,7 @@
 	.label BLNCT     = $CD  //          cursor blink countdown
 	.label GDBLN     = $CE  //          cursor saved character
 	.label BLNON     = $CF  //          cursor visibility flag
-	.label CRSW      = $D0  //          whether to input from screen or keyboard
+	.label CRSW      = $D0  //          whether to input from screen or keyboard (if from screen, stores input offset)
 	.label PNT       = $D1  // $D1-$D2  pointer to the current screen line
 	.label PNTR      = $D3  //          current screen X position (logical column), 0-79
 	.label QTSW      = $D4  //          quote mode flag

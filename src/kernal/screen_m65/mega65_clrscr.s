@@ -12,7 +12,7 @@ M65_CLRSCR:
 	// Disable the window mode
 
 	lda #$00
-	sta M64_SCRWINMODE
+	sta M65_SCRWINMODE
 
 	// FALLTROUGH
 
@@ -106,6 +106,8 @@ m65_clrscr_loop_done:
 	sta VIC_SCRNPTR+1
 
     // Set screen variables
+
+    jsr m65_screen_set_indx
 
 	// XXX provide proper implementation
 

@@ -59,10 +59,10 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	stx VIC_CHARSTEP+1
 	
 	// Set the following locations:
-	// - M64_SCRWINMODE                - for scroll-console mode
+	// - M65_SCRWINMODE                - for scroll-console mode
 	// - M65_SCRSEG, VIC_SCRNPTR+2/+3  - for screen in $0001xxxx area
 
-	stx M64_SCRWINMODE                           // .X = 0
+	stx M65_SCRWINMODE                           // .X = 0
 	stx M65_SCRSEG+1                             
 	stx VIC_SCRNPTR+3
 	inx

@@ -6,7 +6,7 @@ m65_helper_scrlpnt_color:
 
 	// Set .Z to the current column
 
-	ldz M65__TXTCOL
+	ldz M65__TXTCOL   // XXX probably not the best place for this
 
 	// Setting M65_LPNT_SCR to point to colour memory (starts from $FF80000)
 

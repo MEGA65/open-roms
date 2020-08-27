@@ -12,7 +12,7 @@ M65_CLRWIN:
 
 	// Check if windowed mode; if not, go to M65_CLRSCR
 
-	lda M64_SCRWINMODE
+	lda M65_SCRWINMODE
 	bpl_16 m65_clrscr_takeover
 
 	// To clear the window, two zeropage long pointers will be used:

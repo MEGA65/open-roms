@@ -74,15 +74,15 @@ map_DOS_1:
 	phy
 	phz
 
-	lda #$C0
+	lda #$80
 	tab                      // from now on, zeropage starts from $C000
 
-	ldy #$40
-	lda #$40
-	taz                      // $C000 <- map 8KB from $10000
+	ldy #$80
+	lda #$30
+	taz                      // $8000 <- map 16KB RAM from $10000
 
 	lda #$C0
-	ldx #$C1                 // $4000 <- map 16KB from $20000
+	ldx #$C1                 // $4000 <- map 16KB ROM from $20000
 
 	map
 	jmp_8 map_end_no_eom     // no EOM, we do not want interrupts within DOS!

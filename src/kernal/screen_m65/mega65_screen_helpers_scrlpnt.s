@@ -33,14 +33,10 @@ m65_helper_scrlpnt_color:
 	rts
 
 
+
 m65_helper_scrlpnt_to_screen:
 
 	// Change M65_LPNT_SCR to point to screen memory (when it points to color memory)
-
-	lda M65_SCRSEG+1
-	sta M65_LPNT_SCR+3
-	lda M65_SCRSEG+0
-	sta M65_LPNT_SCR+2
 
 	clc
 	lda M65_SCRBASE+0
@@ -50,4 +46,26 @@ m65_helper_scrlpnt_to_screen:
 	adc M65_LPNT_SCR+1
 	sta M65_LPNT_SCR+1
 
+	// FALLTROUGH
+
+m65_helper_scrlpnt_to_screen_hi:
+
+	lda M65_SCRSEG+1
+	sta M65_LPNT_SCR+3
+	lda M65_SCRSEG+0
+	sta M65_LPNT_SCR+2
+
 	rts
+
+
+
+m65_helper_scrlpnt_chrin:
+
+	// Prepare the pointer for CHRIN
+
+	lda M65__SCRINPUT+0
+	sta M65_LPNT_SCR+0
+	lda M65__SCRINPUT+1
+	sta M65_LPNT_SCR+1
+
+	jmp_8 m65_helper_scrlpnt_to_screen_hi

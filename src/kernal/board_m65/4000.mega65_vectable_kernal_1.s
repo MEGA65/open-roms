@@ -19,13 +19,14 @@
 	.label VK1__load_tape_auto            = $4000 + 2 * 5
 	.label VK1__tape_head_align           = $4000 + 2 * 6
 	.label VK1__m65_chrout_screen         = $4000 + 2 * 7
-	.label VK1__M65_MODE64                = $4000 + 2 * 8
-	.label VK1__M65_MODE65                = $4000 + 2 * 9
-	.label VK1__M65_SCRMODEGET            = $4000 + 2 * 10
-	.label VK1__M65_SCRMODESET            = $4000 + 2 * 11
-	.label VK1__M65_CLRSCR                = $4000 + 2 * 12
-	.label VK1__M65_CLRWIN                = $4000 + 2 * 13
-	.label VK1__m65_screen_upd_txtrow_off = $4000 + 2 * 14
+	.label VK1__m65_chrin_keyboard        = $4000 + 2 * 8
+	.label VK1__M65_MODE64                = $4000 + 2 * 9
+	.label VK1__M65_MODE65                = $4000 + 2 * 10
+	.label VK1__M65_SCRMODEGET            = $4000 + 2 * 11
+	.label VK1__M65_SCRMODESET            = $4000 + 2 * 12
+	.label VK1__M65_CLRSCR                = $4000 + 2 * 13
+	.label VK1__M65_CLRWIN                = $4000 + 2 * 14
+	.label VK1__m65_screen_upd_txtrow_off = $4000 + 2 * 15
 
 #else
 
@@ -60,6 +61,7 @@
 #endif
 
 	.word m65_chrout_screen
+	.word m65_chrin_keyboard
 
 	.word M65_MODE64
 	.word M65_MODE65

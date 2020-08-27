@@ -8,10 +8,8 @@
 
 m65_chrin_keyboard:       // XXX connnect this function to Kernal
 
-	// Preserve .X, .Y and .Z registers
+	// Preserve .Z register
 
-	phx
-	phy
 	phz
 
 	// FALLTROUGH
@@ -23,8 +21,6 @@ m65_chrin_keyboard_repeat:
 
 	lda CRSW
 	beq m65_chrin_keyboard_read
-
-	// XXX implement
 
 	// We have input waiting at [M65__SCRINPUT]+CRSW
 	// When CRSW = INDX, then we return a carriage return and clear the flag
@@ -50,9 +46,9 @@ m65_chrin_keyboard_empty_line:
 
 m65_chrin_keyboard_end:
 
+	ldx XSAV
 	plz
 	ply
-	plx
 	clc
 	rts
 
@@ -67,7 +63,14 @@ m65_chrin_keyboard_not_end_of_input:
 
 m65_chrin_keyboard_return_byte:
 
-	// XXX implement
+	jsr m65_helper_scrlpnt_chrin
+
+	tya
+	taz
+	lda_lp (M65_LPNT_SCR), z
+
+	jsr screen_check_toggle_quote
+	jsr screen_code_to_petscii
 
 	jmp_8 m65_chrin_keyboard_end
 
@@ -113,10 +116,9 @@ m65_chrin_keyboard_enter:
 	adc M65_TXTROW_OFF+1
 	sta M65__SCRINPUT+1
 
-	// XXX for windowed mode add current column too
-
 	// Retrieve first byte which is not space
 
+	jsr m65_helper_scrlpnt_chrin
 	ldy INDX
 	iny
 
@@ -124,13 +126,30 @@ m65_chrin_keyboard_enter:
 
 m65_chrin_enter_loop:
 
+	// Skip spaces at the end of line
 	dey
 	bmi m65_chrin_keyboard_empty_line
 
-	// XXX implement
+	tya
+	taz
+	lda_lp (M65_LPNT_SCR), z
+	cmp #$20
+	beq m65_chrin_enter_loop
+	iny
+	sty INDX
 
-	rts
+	// XXX add windowed mode support here - correct INDX and M65__SCRINPUT
 
+	// Set mark informing that we are returning a line
+	ldy #$01
+	sty CRSW
+
+	// Clear quote mode mark
+	dey
+	sty QTSW
+
+	// Return first char of line
+	jmp_8 m65_chrin_keyboard_return_byte     // branch always
 
 
 m65_chrkin_keyboard_not_enter:
@@ -148,3 +167,4 @@ m65_chrkin_keyboard_not_enter:
 	jsr CHROUT
 	jsr pop_keyboard_buffer
 	jmp m65_chrin_keyboard_repeat
+

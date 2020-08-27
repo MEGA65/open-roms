@@ -15,6 +15,14 @@ chrin_keyboard:
 	stx XSAV
 	phy_trash_a
 
+#if ROM_LAYOUT_M65
+
+/* XXX does not work yet 
+	jsr M65_ISMODE65
+	bcc_16 m65_chrin_keyboard
+*/
+#endif
+
 	// FALLTROUGH
 
 chrin_keyboard_repeat:
@@ -119,7 +127,7 @@ chrin_enter_calc_length:
 
 chrin_enter_loop:
 
-	// Retrieve bytes
+	// Skip spaces at the end of line
 	dey
 	bmi chrin_keyboard_empty_line
 	lda (LSXP),y

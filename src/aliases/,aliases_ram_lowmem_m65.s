@@ -7,7 +7,7 @@
 
 
 	//
-	// Page 0 - reused LDTB1
+	// Page 0 - reused LDTB1 and USER
 	//
 
 	.label M65_TMP__K1   = $D9  // $D9      -- UNUSED -- temporary value for various Kernal routines
@@ -16,9 +16,10 @@
 	.label M65_LPNT_SCR  = $E2  // $E2-$E5  4-byte pointer for temporary usage within BASIC and screen editor
 	                            // E6      reserved for BASIC error handling routines, also in native mode
 	.label M65_MAGICSTR  = $E7  // $E7-$E9  if equals 'M65' it means we are in native mode
-	.label M65_LPNT_IRQ  = $EA  // $EA-$ED  4-byte pointer for temporary usage within interrupts
-	.label M65_LPNT_KERN = $EE  // $EE-$F1  4-byte pointer for temporary usage by KERNAL
-	.label M65_TMP__K2   = $F2  // $F2      -- UNUSED -- temporary value for various Kernal routines
+	                            // EA      reserved for BASIC error handling routines, also in native mode
+	.label M65_LPNT_IRQ  = $EB  // $EB-$EE  4-byte pointer for temporary usage within interrupts
+	.label M65_LPNT_KERN = $EF  // $EF-$F3  4-byte pointer for temporary usage by KERNAL
+	.label M65_TMP__K2   = $F4  // $F4      -- UNUSED -- temporary value for various Kernal routines
 
 	//
 	// Page 0 - other reused values

@@ -54,6 +54,18 @@ proxy_B1_JOPEN:
 
 #endif
 
+proxy_B1_JCHKIN:
+
+	jsr map_NORMAL
+	jsr JCHKIN
+	jmp_8 !-
+
+proxy_B1_JCHRIN:
+
+	jsr map_NORMAL
+	jsr JCHRIN
+	jmp_8 !-
+
 proxy_B1_JCHROUT:
 
 	jsr map_NORMAL
@@ -102,13 +114,13 @@ proxy_B1_fetch_character:
 
 	jsr map_NORMAL
 	jsr fetch_character
-	jmp_8 !-
+	jmp_8 !+
 
 proxy_B1_fetch_character_skip_spaces:
 
 	jsr map_NORMAL
 	jsr fetch_character_skip_spaces
-	jmp_8 !-
+	jmp_8 !+
 
 proxy_B1_fetch_uint8:
 

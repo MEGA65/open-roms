@@ -159,9 +159,8 @@ m65_chrin_keyboard_not_enter:
 
 #if CONFIG_PROGRAMMABLE_KEYS
 
-	// XXX do not work yet
-	//jsr chrin_programmable_keys
-	//bcc m65_chrin_keyboard_enter
+	jsr chrin_programmable_keys
+	bcc m65_chrin_keyboard_enter
 
 #endif // CONFIG_PROGRAMMABLE_KEYS
 
@@ -169,4 +168,3 @@ m65_chrin_keyboard_not_enter:
 	jsr CHROUT
 	jsr pop_keyboard_buffer
 	jmp m65_chrin_keyboard_repeat
-

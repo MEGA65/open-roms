@@ -9,7 +9,7 @@
 proxy_K1_chrin_programmable_keys:
 
 	jsr map_NORMAL
-	jsr CHROUT
+	jsr chrin_programmable_keys
 	jmp_8 !+
 
 proxy_K1_CHROUT:

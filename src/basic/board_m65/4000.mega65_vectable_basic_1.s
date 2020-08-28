@@ -27,7 +27,7 @@
 	.label VB1__helper_ask_if_sure       = $4000 + 2 * 12
 
 #if CONFIG_DOS_WEDGE
-	.label VB1__wedge_dos                = $4000 + 2 * 12      
+	.label VB1__wedge_dos                = $4000 + 2 * 13      
 #endif
 
 #else

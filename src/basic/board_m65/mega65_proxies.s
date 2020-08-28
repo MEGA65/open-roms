@@ -120,6 +120,6 @@ proxy_B1_fetch_uint8:
 proxy_B1_shell_main_loop:
 
 	jsr map_NORMAL
-	jmp_8 !-
+	jmp shell_main_loop
 
 #endif

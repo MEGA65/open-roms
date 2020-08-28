@@ -8,8 +8,10 @@
 
 m65_chrin_keyboard:       // XXX connnect this function to Kernal
 
-	// Preserve .Z register
+	// Preserve .X, .Y and .Z register
 
+	phx
+	phy
 	phz
 
 	// FALLTROUGH
@@ -46,9 +48,9 @@ m65_chrin_keyboard_empty_line:
 
 m65_chrin_keyboard_end:
 
-	ldx XSAV
 	plz
 	ply
+	plx
 	clc
 	rts
 
@@ -81,10 +83,9 @@ m65_chrin_keyboard_read:
 	// Wait for a key
 	lda NDX
 	beq m65_chrin_keyboard_repeat
-
 	lda KEYD
 	cmp #$0D
-	bne m65_chrkin_keyboard_not_enter
+	bne m65_chrin_keyboard_not_enter
 
 	// FALLTROUGH
 
@@ -152,14 +153,15 @@ m65_chrin_enter_loop:
 	jmp_8 m65_chrin_keyboard_return_byte     // branch always
 
 
-m65_chrkin_keyboard_not_enter:
+m65_chrin_keyboard_not_enter:
 
 	lda KEYD
 
 #if CONFIG_PROGRAMMABLE_KEYS
 
-	jsr chrin_programmable_keys
-	bcc m65_chrin_keyboard_enter
+	// XXX do not work yet
+	//jsr chrin_programmable_keys
+	//bcc m65_chrin_keyboard_enter
 
 #endif // CONFIG_PROGRAMMABLE_KEYS
 

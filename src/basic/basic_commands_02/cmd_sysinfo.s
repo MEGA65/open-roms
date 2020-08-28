@@ -38,13 +38,17 @@ cmd_sysinfo:
 	jsr STROUT
 
 	jsr print_return
+
+	jsr M65_ISMODE65
+	bcs print_sysinfo_video
+
 	jsr print_return
 
 	// FALLTROUGH
 
 print_sysinfo_banner:
 
-	// Print board type
+	// Print board type (information not accessible in native mode)
 
 	ldx #IDX__STR_SI_HDR_HW
 	jsr print_packed_misc_str
@@ -68,6 +72,11 @@ print_sysinfo_banner:
 	lda MISC_BOARDID
 	jsr print_hex_byte
 !:
+
+	// FALLTROUGH
+
+print_sysinfo_video:
+
 	// Print video system information
 
 	ldx #IDX__STR_SI_HDR_VID

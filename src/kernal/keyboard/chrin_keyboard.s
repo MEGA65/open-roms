@@ -10,18 +10,17 @@
 
 chrin_keyboard:
 
+#if ROM_LAYOUT_M65
+
+	jsr M65_ISMODE65
+	bcc_16 m65_chrin_keyboard
+
+#endif
+
 	// Preserve .X and .Y registers
 
 	stx XSAV
 	phy_trash_a
-
-#if ROM_LAYOUT_M65
-
-/* XXX does not work yet 
-	jsr M65_ISMODE65
-	bcc_16 m65_chrin_keyboard
-*/
-#endif
 
 	// FALLTROUGH
 
@@ -86,7 +85,7 @@ chrin_keyboard_read:
 
 	lda KEYD
 	cmp #$0D
-	bne chrkin_keyboard_not_enter
+	bne chrkn_keyboard_not_enter
 
 	// FALLTROUGH
 
@@ -147,7 +146,7 @@ chrin_enter_loop:
 	// Return first char of line
 	beq chrin_keyboard_return_byte     // branch always
 
-chrkin_keyboard_not_enter:
+chrkn_keyboard_not_enter:
 
 	lda KEYD
 

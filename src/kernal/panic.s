@@ -11,10 +11,14 @@
 
 panic:
 
-	// Disable interrupts, store error code on stack
+	// Store error code on stack
+
+	pha
+
+	// Reinitialize the hardware
 
 	sei
-	pha
+	jsr IOINIT
 
 #if ROM_LAYOUT_M65
 
@@ -22,13 +26,14 @@ panic:
 
 	jsr map_NORMAL
 	jsr M65_MODE64
+	sei
+
+#else
+
+	jsr setup_vicii
 
 #endif
 
-	// Reinitialize the hardware
-
-	jsr IOINIT
-	jsr setup_vicii
 	jsr clear_screen
 
 	// Disable NMIs

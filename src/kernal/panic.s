@@ -16,6 +16,14 @@ panic:
 	sei
 	pha
 
+#if ROM_LAYOUT_M65
+
+	// Make sure we are in legacy mode
+
+	jsr M65_MODE64
+
+#endif
+
 	// Reinitialize the hardware
 
 	jsr IOINIT

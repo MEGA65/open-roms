@@ -21,27 +21,11 @@ M65_MODE65:
 	lda #$35 // '5'
 	sta M65_MAGICSTR+2
 
-	// XXX find a better place for code below
+	// Initialize VIC-IV
 
-	// Switch VIC to VIC-IV mode
+	jsr viciv_init
 
-	jsr viciv_unhide
-
-	// Disable badlines and slow interrupt emulation
-
-	lda #$00
-	sta MISC_EMU
-
-	// Set misc VIC-IV flags
-
-	lda %01000000  // enable C65 character set
-	sta VIC_CTRLA
-
-	// XXX enable 48 MHz mode in VIC_CTRLC
-
-	// XXX posibly alter other settings
-
-	// Set screen mode to 80x25
+	// Set screen mode to 80x50
 
 	lda #$02
 	jsr m65_scrmodeset_internal

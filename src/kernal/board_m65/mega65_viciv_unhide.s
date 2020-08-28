@@ -1,14 +1,10 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# X16 *        #IGNORE
-// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# M65 KERNAL_0 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
 //
-// Routine to unhide Mega65 extra registers
+// Routine to unhide MEGA65 extra registers
 //
 
-
-#if ROM_LAYOUT_M65
 
 viciv_unhide:
 
@@ -18,5 +14,3 @@ viciv_unhide:
 	sta VIC_KEY
 
 	rts
-
-#endif

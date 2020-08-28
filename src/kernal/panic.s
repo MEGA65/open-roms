@@ -18,8 +18,9 @@ panic:
 
 #if ROM_LAYOUT_M65
 
-	// Make sure we are in legacy mode
+	// Make sure we are in legacy mode with normal memory mapping
 
+	jsr map_NORMAL
 	jsr M65_MODE64
 
 #endif

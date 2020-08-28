@@ -23,6 +23,7 @@ M65_MODE65:
 
 	// Initialize VIC-IV
 
+	jsr setup_vicii
 	jsr viciv_init
 
 	// Set screen mode to 80x50

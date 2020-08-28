@@ -22,7 +22,7 @@ cmd_go_syntax_error:
 
 	dew TXTPTR                         // unconsume character
 
-	// Fetch mode
+	// Fetch desired mode
 
 	jsr fetch_uint8
 

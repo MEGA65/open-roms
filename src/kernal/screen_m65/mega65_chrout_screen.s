@@ -40,6 +40,7 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 
 	// Prepare .Z and M65_LPNT_SCR for colour memory manipulation
 
+	ldz M65__TXTCOL
 	jsr m65_helper_scrlpnt_color
 
 	// Store the new color in screen memory

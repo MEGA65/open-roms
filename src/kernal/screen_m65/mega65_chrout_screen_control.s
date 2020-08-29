@@ -75,8 +75,6 @@ m65_chrout_try_color_loop:
 
 // XXX: implement screen routines below:
 
-m65_chrout_screen_quote:
-	nop
 m65_chrout_screen_CLR:
 	nop
 m65_chrout_screen_HOME:
@@ -101,9 +99,11 @@ m65_chrout_screen_ESC:
 	nop
 m65_chrout_screen_BELL:
 	nop
-m65_chrout_screen_STOP:
-	nop
 m65_chrout_screen_DEL:
+	nop
+m65_chrout_screen_GFX:
+	nop
+m65_chrout_screen_TXT:
 	nop
 
 	jmp m65_chrout_screen_done

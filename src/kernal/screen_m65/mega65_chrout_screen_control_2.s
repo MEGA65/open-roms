@@ -41,18 +41,11 @@ m65_chrout_screen_SHIFT_OFF:
 	jmp_8 m65_chrout_screen_ctrl2_end
 
 
-// GFX/TXT switching support
+// STOP key support
 
-m65_chrout_screen_GFX:
+m65_chrout_screen_STOP:
 
-	lda VIC_YMCSB
-	and #$02 // to upper case
-!:
-	sta VIC_YMCSB
+	lda #$00
+	sta QTSW
+	sta INSRT
 	jmp_8 m65_chrout_screen_ctrl2_end
-
-m65_chrout_screen_TXT:
-
-	lda VIC_YMCSB
-	ora #$02    // to lower case
-	bne !-      // branch always

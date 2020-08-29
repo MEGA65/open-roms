@@ -52,6 +52,17 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 
 	jsr m65_helper_scrlpnt_to_screen
 
+	// Decrement number of chars waiting to be inserted
+
+	lda INSRT
+	beq !+
+	dec INSRT
+!:
+	// Toggle quote flag if required
+
+	txa
+	jsr screen_check_toggle_quote
+
 	// Store the new character in screen memory, restore .Z
 
 	txa

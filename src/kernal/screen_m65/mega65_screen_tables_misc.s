@@ -59,7 +59,6 @@ m65_chrout_screen_jumptable_codes:
 	.byte KEY_CRSR_LEFT
 	.byte KEY_CRSR_DOWN
 	.byte KEY_CRSR_UP
-	.byte KEY_INS
 	.byte KEY_TAB
 	.byte KEY_LINE_FEED
 	.byte KEY_UNDERLINE_ON
@@ -72,6 +71,7 @@ m65_chrout_screen_jumptable_codes:
 
 __m65_chrout_screen_jumptable_quote_guard:
 
+	.byte KEY_INS
 	.byte KEY_STOP
 	.byte KEY_DEL
 	.byte KEY_RETURN
@@ -93,7 +93,6 @@ __m65_chrout_screen_jumptable_codes_end:
 	m65_chrout_screen_CRSR_LEFT,
 	m65_chrout_screen_CRSR_DOWN,
 	m65_chrout_screen_CRSR_UP,
-	m65_chrout_screen_INS,
 	m65_chrout_screen_TAB,
 	m65_chrout_screen_LINE_FEED,
 	m65_chrout_screen_UNDERLINE_ON,
@@ -103,6 +102,7 @@ __m65_chrout_screen_jumptable_codes_end:
 	m65_chrout_screen_TAB_SET_CLR,
 	m65_chrout_screen_ESC,
 	m65_chrout_screen_BELL,
+	m65_chrout_screen_INS,
 	m65_chrout_screen_STOP,
 	m65_chrout_screen_DEL,
 	m65_chrout_screen_RETURN

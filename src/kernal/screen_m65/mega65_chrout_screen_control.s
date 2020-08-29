@@ -79,8 +79,6 @@ m65_chrout_screen_CLR:
 	nop
 m65_chrout_screen_HOME:
 	nop
-m65_chrout_screen_INS:
-	nop
 m65_chrout_screen_TAB:
 	nop
 m65_chrout_screen_LINE_FEED:

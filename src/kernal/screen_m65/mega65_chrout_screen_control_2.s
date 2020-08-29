@@ -40,19 +40,84 @@ m65_chrout_screen_SHIFT_OFF:
 	sta MODE
 	jmp_8 m65_chrout_screen_ctrl2_end
 
+// STOP key
 
-// GFX/TXT switching support
+m65_chrout_screen_STOP:
 
-m65_chrout_screen_GFX:
-
-	lda VIC_YMCSB
-	and #$02 // to upper case
-!:
-	sta VIC_YMCSB
+	lda #$00
+	sta QTSW
+	sta INSRT
 	jmp_8 m65_chrout_screen_ctrl2_end
 
-m65_chrout_screen_TXT:
+// INS key
 
-	lda VIC_YMCSB
-	ora #$02    // to lower case
-	bne !-      // branch always
+m65_chrout_screen_INS:
+
+	// First prepare the pointer to the current row
+
+	jsr m65_helper_scrlpnt_color
+	jsr m65_helper_scrlpnt_to_screen
+
+	// Check for windowed mode
+
+	lda M65_SCRWINMODE
+	bmi_16 m65_chrout_screen_INS_winmode
+
+	// Check if last character of the line is space
+
+	ldy M65_SCRMODE
+	lda m65_scrtab_txtwidth,y
+	dec_a
+	taz
+	lda_lp (M65_LPNT_SCR), z
+	cmp #$20
+	bne_16 m65_chrout_screen_ctrl2_end
+	phz
+
+	// Last character is space - move the characters
+
+	jsr m65_chrout_screen_INS_copy
+
+	// Store space in the current character cell
+
+	lda #$20
+	sta_lp (M65_LPNT_SCR), z
+
+	// Move the color memory
+
+	jsr m65_helper_scrlpnt_color
+	plz
+	jsr m65_chrout_screen_INS_copy
+
+	// Store current colour in the current character cell
+
+	lda COLOR
+	and #$0F
+	sta_lp (M65_LPNT_SCR), z
+
+	// Increase insert mode count (which causes quote-mode like behaviour) and quit
+	
+	inc INSRT
+	jmp_8 m65_chrout_screen_ctrl2_end
+
+m65_chrout_screen_INS_winmode:
+
+	// Check if last character of the line within window is space
+
+	// XXX provide implementation
+
+	jmp_8 m65_chrout_screen_ctrl2_end
+
+
+
+m65_chrout_screen_INS_copy:
+
+	dez
+	lda_lp (M65_LPNT_SCR), z
+	inz
+	sta_lp (M65_LPNT_SCR), z
+	dez
+	cpz M65__TXTCOL
+	bne m65_chrout_screen_INS_copy
+
+	rts

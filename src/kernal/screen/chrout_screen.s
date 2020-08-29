@@ -41,16 +41,6 @@ chrout_screen_literal: // entry point for chrout_screen_quote
 
 	tax                                // store screen code, we need .A for calculations
 
-	// First we need offset from PNT in .Y, we can take it from PNTR
-
-	jsr screen_get_clipped_PNTR
-
-	// Put the character on the screen
-
-	txa
-	ora RVS                            // Computes Mapping the 64, page 38
-	sta (PNT),y
-
 	// Decrement number of chars waiting to be inserted
 
 	lda INSRT
@@ -61,6 +51,16 @@ chrout_screen_literal: // entry point for chrout_screen_quote
 
 	txa
 	jsr screen_check_toggle_quote
+
+	// First we need offset from PNT in .Y, we can take it from PNTR
+
+	jsr screen_get_clipped_PNTR
+
+	// Put the character on the screen
+
+	txa
+	ora RVS                            // Computes Mapping the 64, page 38
+	sta (PNT),y
 
 	// Set colour of the newly printed character
 

@@ -39,6 +39,7 @@ m65_cursor_undraw:
 	// Cursor undraw - color
 
 	jsr m65_helper_scrlpnt_color
+	ldz M65__TXTCOL
 	lda GDCOL
 	sta_lp (M65_LPNT_SCR),z
 

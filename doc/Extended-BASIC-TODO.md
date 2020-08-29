@@ -27,7 +27,7 @@ Ideas for the future, most of them suitable for Mega65 or other power machines o
 * `XOR` operator
 * `AUTO` - line auto numbering
 * `RENUMBER` for chanign the line numbers
-* `IF ... THEN ... ELSE`, `BEGIN ... BEND`
+* `IF ... THEN`, `BEGIN ... BEND`; `ELSE` not planned, as it would have slown down the execution 
 * consider `BOOT` command
 * possibly some commands for creating menus and dialog boxes
 * more configurable `INPUT`

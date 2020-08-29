@@ -7,6 +7,8 @@
 
 cmd_rem:
 
+	inc $d021
+
 	// XXX do we need these PHA's?
 
 	pha

@@ -20,7 +20,7 @@ chkin_iec:
 
 	// Send TALK + TKSA first
 	lda FAT,Y
-	
+
 	jsr TALK
 	bcs_16 chkinout_device_not_present
 

@@ -61,12 +61,14 @@ chkin_set_device:
 	// FALLTROUGH
 
 chkinout_end:
+
 	ply_trash_a
 	pla
 	clc // indicate success
 	rts
 
 chkin_file_not_input:
+
 	ply_trash_a
 	pla
 	jmp kernalerror_FILE_NOT_INPUT

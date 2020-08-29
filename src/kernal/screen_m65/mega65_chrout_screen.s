@@ -38,29 +38,18 @@ m65_chrout_screen_literal: // entry point for m65_chrout_screen_quote
 
 	phz
 
-	// Prepare M65_LPNT_SCR for colour memory manipulation
+	// Prepare .Z and M65_LPNT_SCR for colour memory manipulation
 
 	jsr m65_helper_scrlpnt_color
 
 	// Store the new color in screen memory
 
-	ldz M65__TXTCOL
 	lda COLOR
 	sta_lp (M65_LPNT_SCR),z
 
 	// Now change M65_LPNT_SCR to point to screen memory
 
 	jsr m65_helper_scrlpnt_to_screen
-
-	// Decrement number of chars waiting to be inserted
-
-	lda INSRT
-	beq !+
-	dec INSRT
-!:
-	// Toggle quote flag if required
-	txa
-	jsr screen_check_toggle_quote
 
 	// Store the new character in screen memory, restore .Z
 

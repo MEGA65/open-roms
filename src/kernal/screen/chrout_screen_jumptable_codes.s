@@ -23,10 +23,10 @@ chrout_screen_jumptable_codes:
 	.byte KEY_CRSR_LEFT
 	.byte KEY_CRSR_DOWN
 	.byte KEY_CRSR_UP
+	.byte KEY_INS
 
 __chrout_screen_jumptable_quote_guard:
 
-	.byte KEY_INS
 #if CONFIG_EDIT_STOPQUOTE
 	.byte KEY_STOP
 #endif

@@ -50,6 +50,17 @@ m65_chrout_screen_STOP:
 	sta INSRT
 	jmp_8 m65_chrout_screen_ctrl2_end
 
+// CLR/HOME key support
+
+m65_chrout_screen_CLR:
+
+	jsr M65_CLRWIN
+	jmp_8 m65_chrout_screen_ctrl2_end
+
+m65_chrout_screen_HOME:
+
+	jsr M65_HOME
+	jmp_8 m65_chrout_screen_ctrl2_end
 
 // INS key
 

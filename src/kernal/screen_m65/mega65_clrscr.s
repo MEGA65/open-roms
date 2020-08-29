@@ -113,14 +113,21 @@ m65_clrscr_loop_done:
 
     // FALLTROUGH
 
-m65_home: // XXX reuse
+M65_HOME:
 
-	// XXX provide proper implementation
+	lda M65_SCRWINMODE
+	bmi M65_HOME_winmode
 
 	lda #$00
 	sta M65__TXTROW
 	sta M65__TXTCOL
 	sta M65_TXTROW_OFF+0
 	sta M65_TXTROW_OFF+1
+
+	rts
+
+M65_HOME_winmode:
+
+	// XXX provide implementation
 
 	rts

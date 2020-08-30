@@ -3,6 +3,7 @@
 
 
 // XXX deduplicate pointer manipulation, see M65_CLRSCR
+// XXX consider using DMAgic for this - FILL command
 
 M65_CLRWIN:
 

@@ -31,6 +31,7 @@ m65_clrscr_takeover: // .A has to be 0
 	sta M65_TXTROW_OFF+1
 
 	// Clear the whole screen+color memory
+	// XXX consider using DMAgic for this - FILL command
 
 	phz
 

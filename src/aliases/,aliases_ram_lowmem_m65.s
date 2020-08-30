@@ -52,6 +52,24 @@
 	.label M65_TXTWIN_X1    = $590 //            text window - bottom-right X coordinate + 1
 	.label M65_TXTWIN_Y1    = $591 //            text window - bottom-right Y coordinate + 1
 	.label M65_TXTROW_OFF   = $592 // $592-$593  offset to the current text row
-	                               // $594-$5FF  -- UNUSED --
+	                               // $594-$5EB  -- UNUSED --
+	.label M65_DMAGIC_LIST  = $5EF // $5EF-$5FF  reserved for DMAgic list, 17 bytes
 	.label M65_RS232_INBUF  = $600 // $600-$6FF  -- reserved for RS-232 input buffer --
 	.label M65_RS232_OUTBUF = $700 // $700-$7FF  -- reserved for RS-232 output buffer --
+
+	//
+	// Addresses for configuring the DMA job
+	//
+
+	.label M65_DMAJOB_SIZE_0    = M65_DMAGIC_LIST + 7
+	.label M65_DMAJOB_SIZE_1    = M65_DMAGIC_LIST + 8
+
+	.label M65_DMAJOB_SRC_0     = M65_DMAGIC_LIST + 10
+	.label M65_DMAJOB_SRC_1     = M65_DMAGIC_LIST + 11
+	.label M65_DMAJOB_SRC_2     = M65_DMAGIC_LIST + 9
+	.label M65_DMAJOB_SRC_3     = M65_DMAGIC_LIST + 2
+
+	.label M65_DMAJOB_DST_0     = M65_DMAGIC_LIST + 13
+	.label M65_DMAJOB_DST_1     = M65_DMAGIC_LIST + 14
+	.label M65_DMAJOB_DST_2     = M65_DMAGIC_LIST + 12
+	.label M65_DMAJOB_DST_3     = M65_DMAGIC_LIST + 4

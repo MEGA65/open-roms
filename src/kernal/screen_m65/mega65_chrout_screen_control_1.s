@@ -42,8 +42,6 @@ m65_chrout_screen_RETURN:
 	sta INSRT
 	sta RVS
 
-	// XXX should we clear special colour attributes too?
-
 	// Move cursor to the beginning of the next line
 
 	bit M65_SCRWINMODE

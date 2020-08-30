@@ -38,8 +38,6 @@
 .label viciv_unhide                    = KERNAL_0.viciv_unhide
 .label viciv_init                      = KERNAL_0.viciv_init
 .label viciv_shutdown                  = KERNAL_0.viciv_shutdown
-.label m65_dmagic_oper_copy            = KERNAL_0.m65_dmagic_oper_copy
-.label m65_dmagic_oper_fill            = KERNAL_0.m65_dmagic_oper_fill
 
 .label m65_scrtab_txtwidth             = KERNAL_0.m65_scrtab_txtwidth
 .label m65_scrtab_txtheight            = KERNAL_0.m65_scrtab_txtheight

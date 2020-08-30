@@ -25,7 +25,7 @@ m65_dmagic_oper_fill:
 
 	// Set operation type
 
-	lda #$03                           // operation: FILL
+	lda #($03 + $08)                   // operation: FILL + allow interrupts
 	sta M65_DMAGIC_LIST+6
 
 	// Go to common part
@@ -42,7 +42,7 @@ m65_dmagic_oper_copy:
 
 	// Set operation type
 
-	lda #$00                           // operation: COPY
+	lda #($00 + $08)                   // operation: COPY + allow interrupts
 	sta M65_DMAGIC_LIST+6
 
 	// Adapt the source addresses, go to common part

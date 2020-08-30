@@ -1,6 +1,7 @@
 // #LAYOUT# M65 KERNAL_1 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
+// #define DMAGIC_CLRSCR
 
 
 M65_CLRSCR:
@@ -29,6 +30,51 @@ m65_clrscr_takeover: // .A has to be 0
 
 	sta M65_TXTROW_OFF+0
 	sta M65_TXTROW_OFF+1
+
+#if DMAGIC_CLRSCR
+
+	// XXX for some reason this does not work - find out, why
+
+	// Clear the whole screen + colour memory
+
+	// Screen size
+	sec
+	lda M65_COLGUARD+0
+	sbc #$01
+	sta M65_DMAJOB_SIZE_0
+	lda M65_COLGUARD+1
+	sbc #$00
+	sta M65_DMAJOB_SIZE_1
+
+	// Screen start address
+	lda M65_SCRBASE+0
+	sta M65_DMAJOB_DST_0
+	lda M65_SCRBASE+1
+	sta M65_DMAJOB_DST_1
+	lda M65_SCRSEG+0
+	sta M65_DMAJOB_DST_2
+	lda M65_SCRSEG+1
+	sta M65_DMAJOB_DST_3
+
+	// Fill with spaces
+	lda #$20
+	jsr m65_dmagic_oper_fill
+
+	// Colour RAM start address
+	lda #$00
+	sta M65_DMAJOB_DST_0
+	sta M65_DMAJOB_DST_1
+	lda #$F8
+	sta M65_DMAJOB_DST_2
+	lda #$0F
+	sta M65_DMAJOB_DST_3
+
+	// Fill with colour, without attributes
+	lda COLOR
+	and #$0F
+	jsr m65_dmagic_oper_fill
+
+#else
 
 	// Clear the whole screen+color memory
 	// XXX consider using DMAgic for this - FILL command
@@ -91,6 +137,8 @@ m65_clrscr_loop_done:
 	// Nothing more to clear - restore .Z register
 
 	plz
+
+#endif // no DMAGIC_CLRSCR
 
 	// Set screen+color base address in VIC IV
 	// XXX deduplicate with mode setting routine

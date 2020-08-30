@@ -33,17 +33,14 @@ m65_clrscr_takeover: // .A has to be 0
 
 #if DMAGIC_CLRSCR
 
-	// XXX for some reason this does not work - find out, why
+	// XXX for some reason this does not work correctly - find out, why
 
 	// Clear the whole screen + colour memory
 
 	// Screen size
-	sec
 	lda M65_COLGUARD+0
-	sbc #$01
 	sta M65_DMAJOB_SIZE_0
 	lda M65_COLGUARD+1
-	sbc #$00
 	sta M65_DMAJOB_SIZE_1
 
 	// Screen start address

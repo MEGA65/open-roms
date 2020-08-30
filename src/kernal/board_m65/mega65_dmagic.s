@@ -101,13 +101,13 @@ m65_dmagic_adapt_src:
 	pha
 
 	asl
-	ror M65_DMAJOB_SRC_3 
+	rol M65_DMAJOB_SRC_3 
 	asl
-	ror M65_DMAJOB_SRC_3
+	rol M65_DMAJOB_SRC_3
 	asl
-	ror M65_DMAJOB_SRC_3
+	rol M65_DMAJOB_SRC_3
 	asl
-	ror M65_DMAJOB_SRC_3
+	rol M65_DMAJOB_SRC_3
 
 	pla
 	and %00001111
@@ -126,13 +126,13 @@ m65_dmagic_adapt_dst:
 	pha
 
 	asl
-	ror M65_DMAJOB_DST_3 
+	rol M65_DMAJOB_DST_3 
 	asl
-	ror M65_DMAJOB_DST_3
+	rol M65_DMAJOB_DST_3
 	asl
-	ror M65_DMAJOB_DST_3
+	rol M65_DMAJOB_DST_3
 	asl
-	ror M65_DMAJOB_DST_3
+	rol M65_DMAJOB_DST_3
 
 	pla
 	and %00001111

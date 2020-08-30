@@ -11,6 +11,70 @@
 // XXX: finish the implementation, use in screen editor
 
 
+/*
+	// XXX implementation is wrong - this example seems to work, copies 32 bytes from $19000 to $19001
+
+	// Prepare list
+
+	lda #$0A                        // format F018A
+	sta M65_DMAGIC_LIST + 0
+
+	lda #$80                        // src MB code
+	sta M65_DMAGIC_LIST + 1
+	lda #$00                        // src address - bits 20-27
+	sta M65_DMAGIC_LIST + 2
+
+	lda #$81                        // dst MB code
+	sta M65_DMAGIC_LIST + 3
+	lda #$00                        // dst address - bits 20-27
+	sta M65_DMAGIC_LIST + 4
+
+	lda #$00                        // end of options
+	sta M65_DMAGIC_LIST + 5
+
+	lda #$00                        // COPY, not a chained request
+    sta M65_DMAGIC_LIST + 6
+
+	lda #$20                        // copy $0020 bytes
+    sta M65_DMAGIC_LIST + 7
+	lda #$00
+    sta M65_DMAGIC_LIST + 8 
+
+	lda #$00                        // src address is $xxx9000 (setting bits 0-15)
+    sta M65_DMAGIC_LIST + 9
+	lda #$90
+    sta M65_DMAGIC_LIST + 10 
+	lda #$01                        // src address - bits 16-19
+    sta M65_DMAGIC_LIST + 11
+
+	lda #$01                        // dst address is $xxx9001 (setting bits 0-15)
+    sta M65_DMAGIC_LIST + 12
+	lda #$90
+    sta M65_DMAGIC_LIST + 13 
+	lda #$01                        // dst address - bits 16-19
+    sta M65_DMAGIC_LIST + 14
+
+	lda #$00                        // 'modulo' value is $0000
+    sta M65_DMAGIC_LIST + 15
+    sta M65_DMAGIC_LIST + 16
+
+    // Launch the DMAgic list
+
+	lda #$00                        // DMA list location - bits 16-19                       
+	sta $D702
+
+	lda #$00                        // DMA list location - bits 20-27                    
+	sta $D704
+
+	lda #>M65_DMAGIC_LIST
+	sta $D701
+	lda #<M65_DMAGIC_LIST
+	sta $D705                       // should launch the DMA list
+*/
+
+
+
+
 m65_dmagic_oper_copy:
 
 	// To configure parameters, use:
@@ -36,7 +100,7 @@ m65_dmagic_common:
 	lda #$80
 	sta M65_DMAGIC_LIST+1              // <- $80 = next byte is highest 8 bits of source address
 	inc_a
-	sta M65_DMAGIC_LIST+3              // <- $80 = next byte is highest 8 bits of destination address
+	sta M65_DMAGIC_LIST+3              // <- $81 = next byte is highest 8 bits of destination address
 
 	lda #$00
 	sta M65_DMAGIC_LIST+5              // <- end of options

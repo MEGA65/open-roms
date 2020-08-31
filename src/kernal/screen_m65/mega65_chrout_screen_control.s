@@ -92,10 +92,5 @@ m65_chrout_screen_TAB_SET_CLR:
 m65_chrout_screen_ESC:
 	nop
 m65_chrout_screen_BELL:
-	nop
-m65_chrout_screen_GFX:
-	nop
-m65_chrout_screen_TXT:
-	nop
 
 	jmp m65_chrout_screen_done

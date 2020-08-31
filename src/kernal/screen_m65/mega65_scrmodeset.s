@@ -87,6 +87,16 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	stx VIC_COLPTR+0
 	stx VIC_COLPTR+1
 
+	// Set the following location:
+	// - VIC_CHARPTR                   - for character generator location
+	
+	lda #<MEMCONF_CHRBASE
+	sta VIC_CHARPTR+0
+	lda #>MEMCONF_CHRBASE
+	sta VIC_CHARPTR+1
+	lda #$01
+	sta VIC_CHARPTR+2
+
 	// Set the following locations:
 	// - M65_SCRGUARD, M65_COLGUARD    - guards for virtual screen end
 	// - M65_COLVIEWMAX                - guard for viewport start

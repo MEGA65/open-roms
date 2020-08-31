@@ -62,6 +62,22 @@ m65_chrout_screen_HOME:
 	jsr M65_HOME
 	jmp_8 m65_chrout_screen_ctrl2_end
 
+// Character set switching
+
+m65_chrout_screen_GFX:
+	
+	lda VIC_CHARPTR+1
+	ora #%00001000
+!:
+	sta VIC_CHARPTR+1
+	jmp_8 m65_chrout_screen_ctrl2_end
+
+m65_chrout_screen_TXT:
+
+	lda VIC_CHARPTR+1
+	and #%11110111
+	jmp_8 !-
+
 // INS key
 
 m65_chrout_screen_INS:

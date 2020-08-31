@@ -25,10 +25,10 @@ m65_dmagic_oper_fill:
 	lda #($03 + $08)                   // operation: FILL + allow interrupts
 	sta M65_DMAGIC_LIST+6
 
-	// Adapt the addresses, go to common part
+	// Adapt the addresses, launch the job
 
 	jsr m65_dmagic_adapt_dst
-	jmp_8 m65_dmagic_common
+	jmp_8 m65_dmagic_launch
 
 m65_dmagic_oper_copy:
 
@@ -43,33 +43,13 @@ m65_dmagic_oper_copy:
 	lda #($00 + $08)                   // operation: COPY + allow interrupts
 	sta M65_DMAGIC_LIST+6
 
-	// Adapt the addresses, go to common part
+	// Adapt the addresses, launch the job
 
 	jsr m65_dmagic_adapt_src
 	jsr m65_dmagic_adapt_dst
 
 	// XXX prepare separate version for the opposite direction  - change direction
 	//     by setting bit 6 of M65_DMAJOB_*_2
-
-	// FALLTROUGH
-
-m65_dmagic_common:
-
-	// Set remaining job parameters
-	// XXX this should be done during switching to MEGA65 native mode
-
-	lda #$0A
-	sta M65_DMAGIC_LIST+0              // <- $0A = use F018A list format (it is shorter by 1 byte)
-	lda #$80
-	sta M65_DMAGIC_LIST+1              // <- $80 = next byte is highest 8 bits of source address
-	inc_a
-	sta M65_DMAGIC_LIST+3              // <- $81 = next byte is highest 8 bits of destination address
-
-	lda #$00
-	sta M65_DMAGIC_LIST+5              // <- end of options
-
-	sta M65_DMAGIC_LIST+15             // <- set modulo to 0
-	sta M65_DMAGIC_LIST+16
 
 	// FALLTROUGH
 
@@ -135,5 +115,25 @@ m65_dmagic_adapt_dst:
 	pla
 	and #%00001111
 	sta M65_DMAJOB_DST_2
+
+	rts
+
+
+m65_dmagic_init:
+
+	// Set common job parameters
+
+	lda #$0A
+	sta M65_DMAGIC_LIST+0              // <- $0A = use F018A list format (it is shorter by 1 byte)
+	lda #$80
+	sta M65_DMAGIC_LIST+1              // <- $80 = next byte is highest 8 bits of source address
+	inc_a
+	sta M65_DMAGIC_LIST+3              // <- $81 = next byte is highest 8 bits of destination address
+
+	lda #$00
+	sta M65_DMAGIC_LIST+5              // <- end of options
+
+	sta M65_DMAGIC_LIST+15             // <- set modulo to 0
+	sta M65_DMAGIC_LIST+16
 
 	rts

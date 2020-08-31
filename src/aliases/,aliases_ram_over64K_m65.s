@@ -6,6 +6,9 @@
 
 	// $10000-$17FFF (32KB) - reserved for DOS
 	// $18000-$18FFF  (4KB) - chargen copied to RAM, to allow character redefinition
+
+.const MEMCONF_CHRBASE = $8000
+
 	// $19000-$1B7FF (10KB) - reserved for virtual text screen, 80x128
 
 .const MEMCONF_SCRBASE = $9000

@@ -22,6 +22,4 @@ viciv_init:
 	lda #%01000000  // enable C65 character set
 	sta VIC_CTRLA
 
-	// XXX enable 48 MHz mode in VIC_CTRLC
-
 	rts

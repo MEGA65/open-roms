@@ -61,6 +61,10 @@ m65_mode65:
 	jsr vicii_init
 	jsr viciv_init
 
+	// Initialize various memory structures
+
+	jsr m65_native_meminit
+
 	// Set screen mode to 80x50
 
 	lda #$02

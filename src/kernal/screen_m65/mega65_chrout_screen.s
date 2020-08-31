@@ -125,7 +125,7 @@ m65_chrout_fix_column_row:
 	lda M65__TXTROW
 	bpl !+
 
-	jsr m65_chrout_fix_scroll_up
+	jsr m65_chrout_fix_scroll_down
 !:
 	// Check for row above maximum
 
@@ -133,7 +133,7 @@ m65_chrout_fix_column_row:
 	cmp m65_scrtab_txtheight,y
 	bcc !+
 
-	jsr m65_chrout_fix_scroll_down
+	jsr m65_chrout_fix_scroll_up
 !:
 	jmp_8 m65_chrout_fix_txtrow_off
 
@@ -164,9 +164,9 @@ m65_chrout_screen_done:
 
 
 
-// Try to fix coordinates by scrolling the screen up
+// Try to fix coordinates by scrolling the screen down
 
-m65_chrout_fix_scroll_up:
+m65_chrout_fix_scroll_down:
 
 	inc M65__TXTROW
 
@@ -174,7 +174,7 @@ m65_chrout_fix_scroll_up:
 
 	lda M65_COLVIEW+0
 	ora M65_COLVIEW+1
-	beq m65_chrout_fix_scroll_up_end
+	beq m65_chrout_fix_scroll_down_end
 
 	// Yes, we can simply adapt the viewport
 
@@ -196,14 +196,14 @@ m65_chrout_fix_scroll_up:
 !:
 	// FALLTROUGH
 
-m65_chrout_fix_scroll_up_end:
+m65_chrout_fix_scroll_down_end:
 
-	jmp_8 m65_chrout_fix_scroll_done
+	rts
 
 
 // Try to fix coordinates by scrolling the screen up
 
-m65_chrout_fix_scroll_down:
+m65_chrout_fix_scroll_up:
 
 	dec M65__TXTROW
 
@@ -215,7 +215,7 @@ m65_chrout_fix_scroll_down:
 
 	lda M65_COLVIEW+0
 	cmp M65_COLVIEWMAX+0
-	beq m65_chrout_fix_scroll_down_scroll
+	beq m65_chrout_fix_scroll_up_scroll
 !:
 	// Yes, we can simply adapt the viewport
 
@@ -235,15 +235,22 @@ m65_chrout_fix_scroll_down:
 	bcc !+
 	inc VIC_SCRNPTR+1
 !:
-	jmp_8 m65_chrout_fix_scroll_done
+	rts
 
-m65_chrout_fix_scroll_down_scroll:
+m65_chrout_fix_scroll_up_scroll:
+
+	// Virtual screen is too small - we will lose one row
 
 	// XXX implement
 
-	// FALLTROUGH
+	// XXX set size
 
-m65_chrout_fix_scroll_done:
+	// jsr m65_screen_dmasrcdst_screen
+	// XXX add $50 to DST
+	// jsr m65_dmagic_oper_copy
 
-	ldy M65_SCRMODE
+	// jsr m65_screen_dmasrcdst_color
+	// XXX add $50 to DST
+	// jsr m65_dmagic_oper_copy
+
 	rts

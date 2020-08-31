@@ -1,6 +1,9 @@
 // #LAYOUT# M65 KERNAL_0 #TAKE
 // #LAYOUT# *   *        #IGNORE
 
+//
+// Set the INDX variable - logical row length
+//
 
 m65_screen_set_indx: // leaves value in .A
 

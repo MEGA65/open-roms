@@ -8,9 +8,6 @@
 // - https://c65gs.blogspot.com/2018/01/improving-dmagic-controller-interface.html
 
 
-// XXX: finish the implementation, use in screen editor
-
-
 m65_dmagic_oper_fill:
 
 	// To configure job parameters, use:
@@ -28,8 +25,9 @@ m65_dmagic_oper_fill:
 	lda #($03 + $08)                   // operation: FILL + allow interrupts
 	sta M65_DMAGIC_LIST+6
 
-	// Go to common part
+	// Adapt the addresses, go to common part
 
+	jsr m65_dmagic_adapt_dst
 	jmp_8 m65_dmagic_common
 
 m65_dmagic_oper_copy:
@@ -45,20 +43,20 @@ m65_dmagic_oper_copy:
 	lda #($00 + $08)                   // operation: COPY + allow interrupts
 	sta M65_DMAGIC_LIST+6
 
-	// Adapt the source addresses, go to common part
+	// Adapt the addresses, go to common part
 
 	jsr m65_dmagic_adapt_src
+	jsr m65_dmagic_adapt_dst
+
+	// XXX prepare separate version for the opposite direction  - change direction
+	//     by setting bit 6 of M65_DMAJOB_*_2
 
 	// FALLTROUGH
 
 m65_dmagic_common:
 
-	// Adapt destination addresses - this is always needed
-	// XXX consider inlining this here
-
-	jsr m65_dmagic_adapt_dst
-
 	// Set remaining job parameters
+	// XXX this should be done during switching to MEGA65 native mode
 
 	lda #$0A
 	sta M65_DMAGIC_LIST+0              // <- $0A = use F018A list format (it is shorter by 1 byte)
@@ -110,7 +108,7 @@ m65_dmagic_adapt_src:
 	rol M65_DMAJOB_SRC_3
 
 	pla
-	and %00001111
+	and #%00001111
 	sta M65_DMAJOB_SRC_2
 
 	rts
@@ -135,7 +133,7 @@ m65_dmagic_adapt_dst:
 	rol M65_DMAJOB_DST_3
 
 	pla
-	and %00001111
+	and #%00001111
 	sta M65_DMAJOB_DST_2
 
 	rts

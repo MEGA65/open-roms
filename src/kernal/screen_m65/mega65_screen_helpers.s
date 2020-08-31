@@ -20,3 +20,40 @@ m65_screen_upd_txtrow_off:
 	sta M65_TXTROW_OFF+1
 
 	rts
+
+
+m65_screen_dmasrcdst_screen:
+
+	// Set screen memory as start/end addresses
+
+	lda M65_SCRBASE+0
+	sta M65_DMAJOB_SRC_0
+	sta M65_DMAJOB_DST_0
+	lda M65_SCRBASE+1
+	sta M65_DMAJOB_SRC_1
+	sta M65_DMAJOB_DST_1
+	lda M65_SCRSEG+0
+	sta M65_DMAJOB_SRC_2
+	sta M65_DMAJOB_DST_2
+	lda M65_SCRSEG+1
+!:
+	sta M65_DMAJOB_SRC_3
+	sta M65_DMAJOB_DST_3
+
+	rts
+
+
+m65_screen_dmasrcdst_color:
+
+	// Set color memory as start/end addresses
+
+	lda #$00
+	sta M65_DMAJOB_SRC_0
+	sta M65_DMAJOB_DST_0
+	sta M65_DMAJOB_SRC_1
+	sta M65_DMAJOB_DST_1
+	lda #$F8
+	sta M65_DMAJOB_SRC_2
+	sta M65_DMAJOB_DST_2
+	lda #$0F
+	jmp_8 !-

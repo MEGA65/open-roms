@@ -2,7 +2,9 @@
 // #LAYOUT# *   *        #IGNORE
 
 
-M65_ISMODE65: // checks if mode is native M65 one, BCC = jump if native mode
+M65_MODEGET:
+
+	// Checks if mode is native M65 one; Carry clear = native mode, Carry set = legacy mode
 
 	pha
 

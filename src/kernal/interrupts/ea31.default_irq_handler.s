@@ -17,7 +17,7 @@ default_irq_handler:
 
 #if ROM_LAYOUT_M65
 
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcs !+
 
 	jsr m65_cursor_blink

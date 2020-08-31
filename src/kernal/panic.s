@@ -25,12 +25,13 @@ panic:
 	// Make sure we are in legacy mode with normal memory mapping
 
 	jsr map_NORMAL
-	jsr M65_MODE64
+	sec
+	jsr M65_MODESET          // switch to legacy C64 compatibility mode
 	sei
 
 #else
 
-	jsr setup_vicii
+	jsr vicii_init
 
 #endif
 

@@ -26,9 +26,10 @@ cmd_sys:
 
 	// Make sure we are in C64 compatibility mode
 
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcs cmd_sys_nsys_common
-	jsr M65_MODE64
+	sec
+	jsr M65_MODESET                    // set legacy C64 compatibility mode
 
 	// FALLTROUGH
 

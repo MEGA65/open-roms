@@ -31,12 +31,13 @@ cmd_go_syntax_error:
 
 	// If in native mode - switch to C64 compatibilty
 
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcs cmd_go_rts
 
 	jsr helper_ask_if_sure
 	bcs cmd_go_rts
-	jsr M65_MODE64
+	sec
+	jsr M65_MODESET                    // Carry set = switch to C64 mode
 	jmp_8 cmd_go_switchmode_clr_banner
 !:
 	cmp #65
@@ -44,12 +45,12 @@ cmd_go_syntax_error:
 
 	// If in C64 compatibility mode - switch to native mode
 
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcc cmd_go_rts
 
 	jsr helper_ask_if_sure
 	bcs cmd_go_rts
-	jsr M65_MODE65
+	jsr M65_MODESET                    // Carry clear = switch to M65 mode
 
 	// FALLTROUGH
 

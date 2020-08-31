@@ -17,7 +17,7 @@ screen_calculate_pointers:
 
 #if ROM_LAYOUT_M65
 
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcc_16 m65_screen_upd_txtrow_off
 
 #endif

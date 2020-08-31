@@ -8,19 +8,16 @@
 // would copy the vector table to given memory location
 
 
-M65_JMODE64:
-	jsr M65_MODE64
+M65_JMODEGET:
+	jsr M65_MODEGET
 
-M65_JMODE65: // XXX consider combining with M65_JMODE64
-	jsr M65_MODE65
-
-M65_JISMODE65:
-	jsr M65_ISMODE65
+M65_JISMODESET:
+	jsr M65_MODESET
 
 M65_JSLOW:
 	jsr M65_SLOW
 
-M65_JFAST: // XXX consider combining with M65_JSLOW
+M65_JFAST:
 	jsr M65_FAST
 
 M65_JSELDEV:

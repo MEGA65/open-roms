@@ -22,10 +22,10 @@ INITMSG:
 
 	// Display additional information, depending on the mode
 
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcc !+
 
-	// Legacy mode
+	// Legacy C64 compatibility mode
 
 	ldx #$02
 	ldy #$21

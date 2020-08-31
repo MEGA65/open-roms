@@ -28,7 +28,7 @@ SCREEN:
 #else
 
 	php
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcc !+
 
 	plp
@@ -38,6 +38,8 @@ SCREEN:
 
 	rts
 !:
+	// Screen dimensions depends on text mode
+
 	plp
 	pha
 	ldy M65_SCRMODE

@@ -21,7 +21,7 @@ cmd_sysinfo:
 	ldx #IDX__STR_SI_HEADER
 	jsr print_packed_misc_str
 
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcc !+ 
 
 	ldx #IDX__STR_SI_MODE64
@@ -39,7 +39,7 @@ cmd_sysinfo:
 
 	jsr print_return
 
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcs print_sysinfo_video
 
 	jsr print_return

@@ -11,12 +11,12 @@
 //
 
 
-setup_vicii:
+vicii_init:
 
 #if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
 
 	jsr     map_KERNAL_1
-	jsr_ind VK1__setup_vicii
+	jsr_ind VK1__vicii_init
 	jmp     map_NORMAL
 
 #else

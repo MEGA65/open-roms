@@ -12,7 +12,7 @@ chrout_screen:
 
 #if ROM_LAYOUT_M65
 
-	jsr M65_ISMODE65
+	jsr M65_MODEGET
 	bcc_16 m65_chrout_screen
 
 #endif

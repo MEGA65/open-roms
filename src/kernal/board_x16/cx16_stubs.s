@@ -10,7 +10,7 @@ scnkey_set_keytab:
 clear_screen:
 	STUB_IMPLEMENTATION()
 
-setup_vicii:
+vicii_init:
 	STUB_IMPLEMENTATION()
 
 cursor_blink:

@@ -70,7 +70,7 @@ The following ROM features are currently missing:
 | :----------------: | :------: | :------------------------------------------------: |
 | VIC-II             | DONE     |                                                    |
 | 80 columns, VDC    | NOT DONE |                                                    |
-| 80 columns, Mega65 | PARTIAL  | work-in-progress                                   |
+| 80 columns, Mega65 | PARTIAL  | no windowing mode and C65/M65 extra keys support   |
 
 <br />
 

@@ -5,16 +5,10 @@
 // ROM routine call redirect for Mega65 API routines
 //
 
-M65_MODE64:
+M65_MODESET:
 
 	jsr     map_KERNAL_1
-	jsr_ind VK1__M65_MODE64
-	bra     m65_api_end
-
-M65_MODE65:
-
-	jsr     map_KERNAL_1
-	jsr_ind VK1__M65_MODE65
+	jsr_ind VK1__M65_MODESET
 	bra     m65_api_end
 
 M65_SCRMODEGET:

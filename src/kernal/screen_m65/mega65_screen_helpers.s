@@ -57,3 +57,15 @@ m65_screen_dmasrcdst_color:
 	sta M65_DMAJOB_DST_2
 	lda #$0F
 	jmp_8 !-
+
+
+m65_screen_dmasrc_add_row:
+
+	clc
+	lda M65_DMAJOB_SRC_0
+	adc #$50
+	sta M65_DMAJOB_SRC_0
+	bcc !+
+	inc M65_DMAJOB_SRC_1
+!:
+	rts

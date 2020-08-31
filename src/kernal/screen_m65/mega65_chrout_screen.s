@@ -241,16 +241,49 @@ m65_chrout_fix_scroll_up_scroll:
 
 	// Virtual screen is too small - we will lose one row
 
-	// XXX implement
+	// Calculate size of data to copy
 
-	// XXX set size
+	sec
+	lda M65_COLGUARD+0
+	sbc #$50
+	sta M65_DMAJOB_SIZE_0
+	lda M65_COLGUARD+1
+	sbc #$00
+	sta M65_DMAJOB_SIZE_1
 
-	// jsr m65_screen_dmasrcdst_screen
-	// XXX add $50 to DST
-	// jsr m65_dmagic_oper_copy
+	// Scroll up screen memory
 
-	// jsr m65_screen_dmasrcdst_color
-	// XXX add $50 to DST
-	// jsr m65_dmagic_oper_copy
+	jsr m65_screen_dmasrcdst_screen
+	jsr m65_screen_dmasrc_add_row
+	jsr m65_dmagic_oper_copy
+
+	// Scroll up color memory
+
+	jsr m65_screen_dmasrcdst_color
+	jsr m65_screen_dmasrc_add_row
+	jsr m65_dmagic_oper_copy
+
+	// Clear the last row - color and screen memory
+
+	phz
+
+	jsr m65_helper_scrlpnt_color
+	lda COLOR
+	and #$0F
+	ldz #$4F
+!:
+	sta_lp (M65_LPNT_SCR), z
+	dez
+	bpl !-
+
+	jsr m65_helper_scrlpnt_to_screen
+	lda #$20
+	ldz #$4F
+!:
+	sta_lp (M65_LPNT_SCR), z
+	dez
+	bpl !-
+
+	plz
 
 	rts

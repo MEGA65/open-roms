@@ -22,6 +22,8 @@ M65_CLRWIN:
 
 	// First initialize both pointers
 
+	// XXX use m65_helper_scrlpnt_color and m65_helper_scrlpnt_to_screen instead
+
 	clc
 	lda M65_COLVIEW+0
 	adc M65_SCRBASE+0

@@ -270,7 +270,7 @@ m65_chrout_fix_scroll_up_scroll:
 	jsr m65_helper_scrlpnt_color
 	lda COLOR
 	and #$0F
-	ldz #$4F
+	ldz M65_SCRCOLMAX
 !:
 	sta_lp (M65_LPNT_SCR), z
 	dez
@@ -278,7 +278,7 @@ m65_chrout_fix_scroll_up_scroll:
 
 	jsr m65_helper_scrlpnt_to_screen
 	lda #$20
-	ldz #$4F
+	ldz M65_SCRCOLMAX
 !:
 	sta_lp (M65_LPNT_SCR), z
 	dez

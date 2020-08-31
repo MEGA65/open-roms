@@ -88,8 +88,9 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	stx VIC_COLPTR+1
 
 	// Set the following locations:
-	// - M65_SCRGUARD, M65_COLGUARD    - for max lines of virtual screen
-	// - M65_COLVIEWMAX                - as above, but depending on the mode
+	// - M65_SCRGUARD, M65_COLGUARD    - guards for virtual screen end
+	// - M65_COLVIEWMAX                - guard for viewport start
+	// - M65_SCRCOLMAX                 - maximum allowed column
 
 	ldx #<(MEMCONF_SCRBASE + 80 * MEMCONF_SCRROWS)
 	stx M65_SCRGUARD+0
@@ -106,5 +107,8 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 	sta M65_COLVIEWMAX+0
 	lda m65_scrtab_colviewmax_hi, x
 	sta M65_COLVIEWMAX+1
+	lda m65_scrtab_txtwidth,x
+	dec_a
+	sta M65_SCRCOLMAX
 
 	rts

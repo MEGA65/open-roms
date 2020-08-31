@@ -52,7 +52,8 @@
 	.label M65_TXTWIN_X1    = $590 //            text window - bottom-right X coordinate + 1
 	.label M65_TXTWIN_Y1    = $591 //            text window - bottom-right Y coordinate + 1
 	.label M65_TXTROW_OFF   = $592 // $592-$593  offset to the current text row from the viewport start
-	                               // $594-$5EB  -- UNUSED --
+	.label M65_SCRCOLMAX    = $594 //            maximum allowed column
+	                               // $595-$5EB  -- UNUSED --
 	.label M65_DMAGIC_LIST  = $5EF // $5EF-$5FF  reserved for DMAgic list, 17 bytes
 	.label M65_RS232_INBUF  = $600 // $600-$6FF  -- reserved for RS-232 input buffer --
 	.label M65_RS232_OUTBUF = $700 // $700-$7FF  -- reserved for RS-232 output buffer --

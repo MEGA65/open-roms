@@ -120,7 +120,7 @@ m65_chrin_keyboard_enter:
 	// Retrieve first byte which is not space
 
 	jsr m65_helper_scrlpnt_chrin
-	ldy INDX
+	ldy M65__TXTCOL
 	iny
 
 	// FALLTROUGH

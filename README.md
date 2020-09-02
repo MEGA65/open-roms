@@ -1,6 +1,7 @@
 # Open ROMs
 
-![screenshot demonstrating some features](./doc/screenshot-demo.png)
+![screenshot generic build screenshot](./doc/screenshot-demo-generic.png)
+![screenshot MEGA65 build screenshot](./doc/screenshot-demo-mega65.png)
 
 A project to create unencumbered open-source ROMs for use on selected retro computers. Besides this manifest, the following documents are available:
 

@@ -20,6 +20,8 @@
 
 	.label VIC_CHARSTEP    = $D058 // 2 bytes  - logical characters per line
 
+	.label VIC_SRH         = $D05D //          - various flags, bit 7 = hot registers
+
 	.label VIC_SCRNPTR     = $D060 // 4 bytes  - pointer to start of screen memory
 	.label VIC_COLPTR      = $D064 // 2 bytes  - pointer to start of color memory
 

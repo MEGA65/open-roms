@@ -22,4 +22,21 @@ viciv_init:
 	lda #%01000000  // enable C65 character set
 	sta VIC_CTRLA
 
+	// Disable hot registers
+
+	// FALLTROUGH
+
+viciv_hotregs_off:
+
+	lda VIC_SRH
+	and #$7F
+!:
+	sta VIC_SRH
+	
 	rts
+
+viciv_hotregs_on:
+
+	lda VIC_SRH
+	ora #$80
+	bra !-

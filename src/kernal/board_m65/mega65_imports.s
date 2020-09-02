@@ -38,6 +38,8 @@
 .label viciv_unhide                    = KERNAL_0.viciv_unhide
 .label viciv_init                      = KERNAL_0.viciv_init
 .label viciv_shutdown                  = KERNAL_0.viciv_shutdown
+.label viciv_hotregs_on                = KERNAL_0.viciv_hotregs_on
+.label viciv_hotregs_off               = KERNAL_0.viciv_hotregs_off
 
 .label m65_scrtab_txtwidth             = KERNAL_0.m65_scrtab_txtwidth
 .label m65_scrtab_txtheight            = KERNAL_0.m65_scrtab_txtheight

@@ -46,10 +46,14 @@ m65_scrmodeset_internal: // entry point for M65_MODE65
 
 	tax
 
+	jsr viciv_hotregs_on
+
 	lda m65_scrtab_scrolx,x
 	sta VIC_SCROLX
 	lda m65_scrtab_vic_ctrlb,x
 	sta VIC_CTRLB
+
+	jsr viciv_hotregs_off
 
 	// Set the logical row length to 80
 

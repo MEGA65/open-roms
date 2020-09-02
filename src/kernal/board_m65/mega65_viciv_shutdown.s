@@ -23,6 +23,10 @@ viciv_shutdown:
 	sta VIC_CTRLA  // enable C64 character set
 	sta VIC_CTRLB  // disable extended resolution and attributes
 
+	// Reenable hot registers
+
+	jsr viciv_hotregs_on
+
 	// Hide VIC-IV registers and quit
 
 	sta VIC_KEY

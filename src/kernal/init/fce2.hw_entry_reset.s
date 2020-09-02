@@ -27,8 +27,7 @@ hw_entry_reset:
 
 #if ROM_LAYOUT_M65
 
-	jsr map_NORMAL           // we want normal memory mapping
-	jsr viciv_shutdown       // by default we do not want the VIC-IV
+	jsr m65_reset_part
 
 #endif
 
@@ -62,7 +61,7 @@ hw_entry_reset:
 	// also affirmed by c64 prg p269
 	jsr JRESTOR
 
-	//  "Compute's Mapping the 64" p236
+	// "Compute's Mapping the 64" p236
 	jsr JCINT
 
 #if ROM_LAYOUT_M65

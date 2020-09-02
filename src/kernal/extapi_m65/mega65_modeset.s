@@ -18,10 +18,7 @@ m65_mode64:
 
 	// Set the magic string to mark legacy mode
 
-	lda #$00
-	sta M65_MAGICSTR+0
-	sta M65_MAGICSTR+1
-	sta M65_MAGICSTR+2
+	jsr m65_clr_magictstr
 
 	// Restore VIC-II configuration
 

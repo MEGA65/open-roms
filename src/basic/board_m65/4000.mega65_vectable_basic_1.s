@@ -3,7 +3,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Definitions for communication with Mega65 segment BASIC_1 from BASIC_0
+// Definitions for communication with MEGA65 segment BASIC_1 from BASIC_0
 //
 
 

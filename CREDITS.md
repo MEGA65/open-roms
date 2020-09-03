@@ -3,7 +3,7 @@
 
 ## for source code/assets we reused
 
-* Retrofan - for his Mega65 banner artwork and PXLfont
+* Retrofan - for his MEGA65 banner artwork and PXLfont
 * TWW/CTR - for his keyboard handling code
 * Graham - for his PAL/NTSC detection code and compact 8x8 multiplication routine
 * enthusi/Onslaught - for his example Turbo Tape 64 compatible loader
@@ -26,10 +26,10 @@
 
 ## other
 
-* Gábor Lénárt - for [his work](https://github.com/lgblgblgb/xemu) on XEMU Mega65 emulator
-* Hernán Di Pietro - for [his work](https://github.com/hernandp/xemu) on XEMU Mega65 emulator
+* Gábor Lénárt - for [his work](https://github.com/lgblgblgb/xemu) on XEMU MEGA65 emulator
+* Hernán Di Pietro - for [his work](https://github.com/hernandp/xemu) on XEMU MEGA65 emulator
 * Mads Nielsen - for the [Kick Assembler](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
-* Simon Jameson - for his Kick Assembler [pseudocommands](https://github.com/smnjameson/M65_KickAsm_PseudoCommands) for Mega65 CPU support
+* Simon Jameson - for his Kick Assembler [pseudocommands](https://github.com/smnjameson/M65_KickAsm_PseudoCommands) for MEGA65 CPU support
 
 <br />
 

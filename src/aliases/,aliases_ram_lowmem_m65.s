@@ -2,7 +2,7 @@
 // #LAYOUT# *   * #IGNORE
 
 //
-// Names of ZP and low memory locations for the native Mega65 mode
+// Names of ZP and low memory locations for the native MEGA65 mode
 //
 
 

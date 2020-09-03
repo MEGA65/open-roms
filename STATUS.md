@@ -22,7 +22,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * normal tape load error log is limited by free stack space only (no artificial limitation like in original ROMs)
 * tape format autodetection; normal vs turbo is mostly transparent to user
 * improved support for tape adapters (for using regular casette players and other audio devices instead of Datasette) and emulators
-* built-in tape head align tool (only feasible to use on machines with extended memory, like Mega65)
+* built-in tape head align tool (only feasible to use on machines with extended memory, like MEGA65)
 
 * uses RAM under ROM and I/O: 51199 bytes free (up to `$CFFF`) by default, but 61438 is also possible
 * cold/warm start silences multiple SID chips
@@ -58,7 +58,7 @@ The following ROM features are currently missing:
 | :----------------: | :------: | :------------------------------------------------: |
 | C64                | DONE     |                                                    |
 | C128               | DONE     |                                                    |
-| Mega65             | PARTIAL  | code mostly complete, but not tested yet           |
+| MEGA65             | PARTIAL  | code mostly complete, but not tested yet           |
 
 <br />
 
@@ -70,7 +70,7 @@ The following ROM features are currently missing:
 | :----------------: | :------: | :------------------------------------------------: |
 | VIC-II             | DONE     |                                                    |
 | 80 columns, VDC    | NOT DONE |                                                    |
-| 80 columns, Mega65 | PARTIAL  | no windowing mode and C65/M65 extra keys support   |
+| 80 columns, MEGA65 | PARTIAL  | no windowing mode and C65/M65 extra keys support   |
 
 <br />
 
@@ -103,7 +103,7 @@ The following ROM features are currently missing:
 | JiffyDOS           | PARTIAL  | LOAD needs improvement for better performance      |
 | DolphinDOS         | DONE     |                                                    |
 | CIA burst mod      | NOT DONE |                                                    |
-| Mega65 burst       | NOT DONE |                                                    |
+| MEGA65 burst       | NOT DONE |                                                    |
 
 <br />
 

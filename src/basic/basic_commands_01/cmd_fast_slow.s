@@ -5,7 +5,7 @@
 
 #if CONFIG_MB_MEGA_65
 
-	// For Mega65 Kernal routines are called directly
+	// For MEGA65 Kernal routines are called directly
 
 #elif CONFIG_MB_ULTIMATE_64
 

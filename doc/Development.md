@@ -18,16 +18,16 @@ Most important: always test your software on the original ROMs too. If your code
 
 Please, do not use any internal/unofficial Open ROMs API. They WILL change in an incompatible way, you may believe me. Using unofficial API of the original ROMs is OK if the routine is marked as supported in the [implementation status](../STATUS.md) document.
 
-### Compatibility with Open ROMs for Mega65
+### Compatibility with Open ROMs for MEGA65
 
-The Mega65 Open ROMs build aims to provide a C64-compatible memory map in range `$00000-$0FFFF`. For `$10000` and above, everything is still subject to change.
+The MEGA65 Open ROMs build aims to provide a C64-compatible memory map in range `$00000-$0FFFF`. For `$10000` and above, everything is still subject to change.
 
-Please note, that certain ROM routines are moved to additional Mega65 ROM area (2x8KB is not enough to implement full ROM functionality and additional features) - original locations contain just short compatibility code which remaps memory, calls the real routine, and restores default mapping (that means all blocks unmapped). This shouldn't be a problem for original C64 software, but can make a difference for Mega65-aware code; thus, please follow these simple rules:
+Please note, that certain ROM routines are moved to additional MEGA65 ROM area (2x8KB is not enough to implement full ROM functionality and additional features) - original locations contain just short compatibility code which remaps memory, calls the real routine, and restores default mapping (that means all blocks unmapped). This shouldn't be a problem for original C64 software, but can make a difference for MEGA65-aware code; thus, please follow these simple rules:
 
 - do not call ROM routines with .B set to anything other than 0 (and .B set to 0x40 or above is a receipe for disaster!)
 - be aware that ROM routines may restore the default memory mapping by means of MAP/EOM
 
-Open ROMs interrupt handlers do not touch the ROM mapping, range `0x4000-0xBFFF` can be freely mapped without disabling IRQ or NMI. The .Z register is mostly safe to use too - some routines might use it, but they will alwayys restore it's previous state. Please be aware, that for maximum compatibility our IRQ/NMI handlers DO NOT store/restore .Z register.
+Open ROMs interrupt handlers do not touch the ROM mapping, range `0x4000-0xBFFF` can be freely mapped without disabling IRQ or NMI. The .Z register is mostly safe to use too - some routines might use it, but they will always restore it's previous state. Please be aware, that for maximum compatibility our IRQ/NMI handlers DO NOT store/restore .Z register.
 
 ### API extensions
 
@@ -63,10 +63,11 @@ Bits 3 and 4 are extension to the original variable, compatible with the C128 RO
 
 Before modifying NMI vector, set it's high byte to 0. The ROM routine considers such address invalid and won't try to call the custom code, thus preventing a crash if interrupt happens in the worst possible moment.
 
-#### Mega65 native mode
+#### MEGA65 native mode
 
-Mega65 build starts in legacy mode, which is intended to be reasonably compatible with the C64 ROMs. However, a native Mega65 mode is planned too, to make it easier to utilise extra features of this machine. Soo far the following has been done:
+MEGA65 native mode imlementation has started. Important changes so far:
 
+- Uses VIC-IV features to implement 80-column screen mode; the $0400-$07FF area is utilized by ROM to provide additional features.
 - Slightly different chargen. On C64 machines pressing C= + G or C= + M key combinations produces the same visual result as C= + H or C= + N, respectively - despite keycap printing suggests they should produce tinner bars. This was intentional change in the C64 ROMs (compared to VIC-20), to prevent colour problems on 80s era TVs. Screen font used in the legacy mode duplicates this change, but the font intended for native mode has this change reverted back. Additionally, the π sign is available for lower/upper case set too.
 
 ## Tinkering with Open ROMs
@@ -86,7 +87,7 @@ List of the most important make targets:
 | `test`              | builds the 'custom' configuration, launches it using VICE emulator              |
 | `test_generic`      | builds the default ROMs, for generic C64/C128, launches using VICE              | 
 | `test_generic_x128` | as above, but launches C128 emulator instead                                    |
-| `test_mega65`       | builds the Mega65 ROM, launches it using XEMU emulator                          |
+| `test_mega65`       | builds the MEGA65 ROM, launches it using XEMU emulator                          |
 | `test_ultimate64`   | builds the Ultimate 64 configuration, launches it using VICE emulator           |
 | `test_hybrid`       | builds a hybrid ROM (Open ROMs Kernal + original BASIC), launches it using VICE |
 | `test_testing`      | builds a rather odd testing configuration, launches it using VICE emulator      |
@@ -158,7 +159,7 @@ This can be found in a private (internal) vector table of `KERNAL_1` segment of 
 // #LAYOUT# *   *        #IGNORE
 ```
 
-This is used for memory mapping helper routines, which are only needed for Mega65 build. They will be placed in `KERNAL_0` segment in such case. And the last example:
+This is used for memory mapping helper routines, which are only needed for MEGA65 build. They will be placed in `KERNAL_0` segment in such case. And the last example:
 
 ```
 // #LAYOUT# STD *        #TAKE
@@ -167,7 +168,7 @@ This is used for memory mapping helper routines, which are only needed for Mega6
 // #LAYOUT# *   *        #IGNORE
 ```
 
-This is for the routine, that on Mega65 goes to `KERNAL_1` segment, but can still be transparently called using fixed location in `KERNAL_0` segment. The code might, for example, look this way:
+This is for the routine, that on MEGA65 goes to `KERNAL_1` segment, but can still be transparently called using fixed location in `KERNAL_0` segment. The code might, for example, look this way:
 
 ```
 ROUTINE_NAME:
@@ -186,6 +187,10 @@ ROUTINE_NAME:
 ```
 
 Last, but not least - the `#TAKE-HIGH` is intended to be used for BASIC routines, which should still be available after the main BASIC ROM is banked out.
+
+### MEGA65 computer-based DOS
+
+TODO
 
 ### CPU-specific optimizations
 

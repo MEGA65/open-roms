@@ -1,7 +1,7 @@
 
 # Planned BASIC features, when V2 compatibility is reached
 
-Ideas for the future, most of them suitable for Mega65 or other power machines only
+Ideas for the future, most of them suitable for MEGA65 or other power machines only
 
 * sound support
 * 2D graphics support
@@ -18,16 +18,15 @@ Ideas for the future, most of them suitable for Mega65 or other power machines o
 * `CGOTO` and `CGOSUB` - computatiuonal versions, should accept expressions
 * `LABEL`, `LGOTO` and `LGOSUB` - jump to label
 * some kind of subroutines with local variable namespace, possibly loaded from disc (like in Warsaw Basic 3.2)
-* for Mega65 mode, move variables to a separate memory area, consider extending variable name length
+* for MEGA65 mode, move variables to a separate memory area, consider extending variable name length
 * `←V` (verify from tape) - if Kernal is extended to offer this feature
 * modulo function or opeerator
 * `DPEEK`, `DPOKE`, `QPEEK`, `QPOKE` - 2/4 byte `PEEK` and `POKE` variants
-* all the functions/commands accepting memory addresses should be able to access the whole Mega65 memory
+* all the functions/commands accepting memory addresses should be able to access the whole MEGA65 memory
 * ability to limit memory used by basic to standard 38K or to 46K (memory model switch)
 * `XOR` operator
 * `AUTO` - line auto numbering
 * `RENUMBER` for chanign the line numbers
-* `IF ... THEN`, `BEGIN ... BEND`; `ELSE` not planned, as it would have slown down the execution 
 * consider `BOOT` command
 * possibly some commands for creating menus and dialog boxes
 * more configurable `INPUT`
@@ -38,10 +37,8 @@ Ideas for the future, most of them suitable for Mega65 or other power machines o
 * `DELETE` command to delete several BASIC lines, as in BASIC V10
 * `FOR` loop should accept integer variable as index
 * `FETCH`, `STASH`, `SWAP` - REU support
-* `DMA` command for Mega65
+* `DMA` command for MEGA65
 * geoRAM support
-* `GO 64` / `GO 65` should enable/disable C64 compatibility mode on Mega65
-* `NSYS` for Mega65 - native `SYS` for Mega65, should not switch to C64 compatibilty mode
 * `DO ... LOOP`, `DO ... UNTIL`, `DO ... WHILE`, `EXIT`
 * `SEEK#` to read-and-forget n bytes
 * `RECORD#` command from BASIC V10
@@ -63,3 +60,8 @@ Ideas for the future, most of them suitable for Mega65 or other power machines o
 * function to generate string of n duplicated characters
 * function to retrieve fractional part of a number
 * command to fill text screen area with a character, inverse screen area, scroll, or change fg/bg color of screen area
+
+# Features not planned
+
+* `ELSE` - it would have slown down the execution, can be easily substituted
+* `BEGIN ... BEND` - similarly, using these would hurt the performance

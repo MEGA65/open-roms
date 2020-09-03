@@ -2,7 +2,7 @@
 // #LAYOUT# *   *        #IGNORE
 
 //
-// ROM routine call redirect for Mega65 API routines
+// ROM routine call redirect for MEGA65 API routines
 //
 
 M65_MODESET:

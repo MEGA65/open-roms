@@ -2,7 +2,7 @@
 // #LAYOUT# *   *        #IGNORE
 
 //
-// ROM mapping routines for Mega65
+// ROM mapping routines for MEGA65
 //
 
 // Available memory maps:

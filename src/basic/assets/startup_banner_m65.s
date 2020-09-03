@@ -10,7 +10,7 @@
 
 startup_banner:
 
-	// Fancy Mega65 banner - from Retrofan, slightly tweaked
+	// Fancy MEGA65 banner - from Retrofan, slightly tweaked
 
 
 	// remove unneeded $1F's (blue) and $9A's (light blue)
@@ -34,7 +34,7 @@ startup_banner:
 	.byte $12, $20, $20, $92, $20, $20, $12, $96, $A3, $A3, $A3, $A3, $1F, $92
 	.byte $0D, $0D, $05, $00
 
-	// Fancy Mega65 banner - from Retrofan
+	// Fancy MEGA65 banner - from Retrofan
 	//
 	// .byte $9a, $12, $20, $20, $7f, $a9, $20, $20, $1f, $20, $9a, $20, $20, $20
 	// .byte $20, $1f, $20, $9a, $a9, $20, $20, $20, $92, $a1, $1f, $12, $20, $9a, $a9, $20
@@ -52,7 +52,7 @@ startup_banner:
 	// .byte $20, $20, $1f, $20, $20, $96, $a3, $a3, $a3, $a3, $1f
 	// .byte $92, $0D, $0D, $05, $00
 
-	// Original Mega65 banner - supplied by Deft
+	// Original MEGA65 banner - supplied by Deft
 	//
 	// .byte $9A,$12,$A3,$A3,$A3,$A3,$A3,$A3,$DF,$9B,$92,$20,$05,$12,$A0,$A0
 	// .byte $DF,$9B,$92,$20,$05,$12,$A0,$A0,$DF,$9B,$92,$20,$05,$12,$A0,$A0

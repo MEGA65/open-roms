@@ -86,7 +86,7 @@
 
 
 //
-// Memory mapping for C65 and Mega65
+// Memory mapping for C65 and MEGA65
 //
 
 #if HAS_OPCODES_4510

@@ -2,7 +2,7 @@
 // #LAYOUT# *   *        #IGNORE
 
 //
-// Definitions for calling Mega65 segment KERNAL_0 routines from KERNAL_1
+// Definitions for calling MEGA65 segment KERNAL_0 routines from KERNAL_1
 //
 
 #import "KERNAL_0_combined.sym"

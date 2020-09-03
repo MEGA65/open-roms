@@ -22,7 +22,7 @@ which typically requires the inclusion of firmware, i.e, "ROMs", while respectin
 the owners of the copyrights in the ROMs.
 
 Therefore the goal of this project is to create a fully open-source and unencumbered set of ROMs for various systems.
-The initial focus is the C64 and C65 computers, because of the desire to be able to include open ROMs with the MEGA65
+The initial focus is the C64 and C65 computers, because of the desire to be able to include Open ROMs with the MEGA65
 retro computer.
 
 In short, this project exists precisely because we respect, and want to help others to respect the intellectual property

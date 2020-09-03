@@ -105,7 +105,7 @@ IOINIT:
 
 #else
 
-	// Mega65 specific handling - it contains 4 SIDs
+	// MEGA65 specific handling - it contains 4 SIDs
 
 	sta SID_SIGVOL + __SID_R1_OFFSET
 	sta SID_SIGVOL + __SID_R2_OFFSET

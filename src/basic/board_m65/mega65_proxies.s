@@ -2,7 +2,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Proxies for calling Mega65 segment BASIC_0 and KERNAL_0 routines from BASIC_1
+// Proxies for calling MEGA65 segment BASIC_0 and KERNAL_0 routines from BASIC_1
 //
 
 

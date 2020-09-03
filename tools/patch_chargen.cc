@@ -1,6 +1,6 @@
 //
 // Utility to patch the character generator file to create
-// font for Mega65 native mode and possibly other uses
+// font for MEGA65 native mode and possibly other uses
 //
 
 #include "common.h"

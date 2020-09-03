@@ -1,7 +1,7 @@
 
 # Extended BASIC
 
-NOTE: Command syntax, behaviour details, and tokens are still subject to change! Currently the availability of some depends on the build configuration, in the future most (if not all) extended commands will be available only on machines with extended ROM, like the Mega65 or Ultimate 64.
+NOTE: Command syntax, behaviour details, and tokens are still subject to change! Currently the availability of some depends on the build configuration, in the future most (if not all) extended commands will be available only on machines with extended ROM, like the MEGA65 or Ultimate 64.
 
 ## DOS Wedge
 
@@ -35,7 +35,7 @@ Loads the file from tape. Depending on the configuration, it tries to load the f
 
 Like above, but merges a BASIC program to the one already stored in memory.
 
-### `←H` (Mega65)
+### `←H` (MEGA65)
 
 Launches a built-in tape head alignment tool. Destroys program in memory. Press `RUN/STOP` to terminate the tool.
 
@@ -59,7 +59,7 @@ Saves the binary data from the given memory area. NOTE: for now syntax differs f
 
 ## Additional BASIC commands - misc
 
-### `COLD` (Mega65)
+### `COLD` (MEGA65)
 
 Resets the machine. In direct mode asks for confirmation first.
 
@@ -75,7 +75,7 @@ Tries to switch the machine back to 1 MHz operation mode.
 
 Tries to restore program destroyed by the `NEW` command or a reset.
 
-### `MEM` (Mega65)
+### `MEM` (MEGA65)
 
 Displays BASIC memory usage information:
 * `TEXT` - size of BASIC program text, always at least 2 bytes are used
@@ -84,7 +84,7 @@ Displays BASIC memory usage information:
 * `STRS` - bytes occupied by strings, also the ones belonging to arrays
 * `FREE` - unused space
 
-### `SYSINFO` (Mega65)
+### `SYSINFO` (MEGA65)
 
 Displays various system information.
 
@@ -96,10 +96,10 @@ Clears the screen content.
 
 Runs the garbage collector - disposes outdated strings.
 
-### `NSYS` (Mega65)
+### `NSYS` (MEGA65)
 
 A 'native' `SYS` - same as `SYS`, but does not switch to C64 compatibility mode.
 
-### `GO 64`, `GO 65` (Mega65)
+### `GO 64`, `GO 65` (MEGA65)
 
 Switches machine to C64 compatibility mode or to MEGA65 native mode. Performs `CLR`

@@ -84,7 +84,7 @@ It enables some speed/size code optimizations and allows C65 memory mapping to w
 
 ### `CONFIG_CPU_M65_45GS02`
 
-Choose if you have a Mega65 FPGA board. It enables some speed/size code optimizations and allows Mega65 memory mapping to work.
+Choose if you have a MEGA65 FPGA board. It enables some speed/size code optimizations and allows MEGA65 memory mapping to work.
 
 ### `CONFIG_CPU_WDC_65816`
 
@@ -111,7 +111,7 @@ These models additionaly use RAM under BASIC, and the 50K additionally takes ove
 
 Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires special helper routines installed in `$2A7`-`$2FF` area (normally unused and free for the user). Gives the most free memory for BASIC programs, but it's the slowest (for example, forces disabling optimized LOAD loop for JiffyDOS) and the least compatible model.
 
-It is currently not compatible with Mega65 extended ROMs.
+It is currently not compatible with MEGA65 extended ROMs.
 
 Comparing to standard memory model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
 
@@ -147,7 +147,7 @@ Causes screen blanking during JiffyDOS file loading to increase performance.
 
 ## Tape support
 
-Note: for Mega65 most of the tape support code is placed in it's extended ROM; very little of the (tiny) KERNAL segment is used.
+Note: for MEGA65 most of the tape support code is placed in it's extended ROM; very little of the (tiny) KERNAL segment is used.
 
 ### `CONFIG_TAPE_NORMAL`
 
@@ -287,7 +287,7 @@ Feature needs several bytes in BASIC segment. If unsure - enable.
 
 If enabled, embeds a tape head align tool into the ROM, it can be started with `←H`. Requires `CONFIG_TAPE_WEDGE`.
 
-Feature needs about 800 bytes in KERNAL segment. Only recomended for machines with extended ROM, like Mega65.
+Feature needs about 800 bytes in KERNAL segment. Only recomended for machines with extended ROM, like MEGA65.
 
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 

@@ -21,8 +21,6 @@ cmd_input:
 	nop
 cmd_read:
 	nop
-cmd_if:
-	nop
 cmd_gosub:
 	nop
 cmd_return:

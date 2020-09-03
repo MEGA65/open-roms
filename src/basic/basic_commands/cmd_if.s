@@ -5,6 +5,13 @@
 
 cmd_if:
 
+#if ROM_LAYOUT_M65
+
+	jsr helper_if_mega65
+	bcc cmd_if_true
+
+#endif
+
 	// Calculate expression
 
 	jsr FRMEVL
@@ -13,6 +20,10 @@ cmd_if:
 
 	lda FAC1_exponent
 	beq_16 cmd_rem
+
+	// FALLTROUGH
+
+cmd_if_true:
 
 	// Condition fulfilled - look for GOTO or THEN
 

@@ -103,3 +103,7 @@ Same as `SYS`, but does not switch to C64 compatibility mode.
 ### `GO 64`, `GO 65` (MEGA65)
 
 Switches machine to C64 compatibility mode or to MEGA65 native mode. Performs `CLR`
+
+### `IF MEGA65 THEN`, `IF MEGA65 GOTO` (MEGA65)
+
+Special check for running under MEGA65. The `MEGA65` string is not tokenized, therefore it will be listed properly even under original BASIC V2. `MEGA65` is not a variable here - it is still possible to normally use the `ME` variable.

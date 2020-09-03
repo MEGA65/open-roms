@@ -30,6 +30,7 @@ cmd_sys:
 	bcs cmd_sys_nsys_common
 	sec
 	jsr M65_MODESET                    // set legacy C64 compatibility mode
+	jsr INITMSG_autoswitch
 
 	// FALLTROUGH
 

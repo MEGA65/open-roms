@@ -284,43 +284,44 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
 const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
 {
     // STD    M65    U64    X16   --- misc strings as on CBM machines
-    { true,  true,  true,  true,  "STR_RET_QM",     "\r?"                },
-    { true,  true,  true,  true,  "STR_BYTES",      " BASIC BYTES FREE"  }, // https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  true,  "STR_READY",      "\rREADY.\r"         }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  true,  "STR_ERROR",      " ERROR"             }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
-    { true,  true,  true,  true,  "STR_IN",         " IN "               },
-    { false, true,  false, false, "STR_IF_SURE",    "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
+    { true,  true,  true,  true,  "STR_RET_QM",       "\r?"                },
+    { true,  true,  true,  true,  "STR_BYTES",        " BASIC BYTES FREE"  }, // https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_READY",        "\rREADY.\r"         }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_ERROR",        " ERROR"             }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+    { true,  true,  true,  true,  "STR_IN",           " IN "               },
+    { false, true,  false, false, "STR_IF_SURE",      "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
     // STD    M65    U64    X16   --- misc strings specific to Open ROMs, not present in CBM ROMs
-    { true,  true,  true,  true,  "STR_BRK_AT",     "\rBRK AT $"         },
+    { true,  true,  true,  true,  "STR_BRK_AT",       "\rBRK AT $"         },
 
-    { false, true,  false, false, "STR_ORS",        "OPEN ROMS BASIC & KERNAL\r" },
+    { false, true,  false, false, "STR_ORS",          "OPEN ROMS BASIC & KERNAL\r" },
+    { false, true,  false, false, "STR_ORS_LEGACY_1", "OPEN ROMS "         },
+    { false, true,  false, false, "STR_ORS_LEGACY_2", "\r\rLEGACY MODE   " },
 
-    { false, true,  false, false, "STR_MEM_HDR",    "\r\x12 AREA   START   SIZE  \r" },
-    { false, true,  false, false, "STR_MEM_1",      "   $"               },
-    { false, true,  false, false, "STR_MEM_2",      "   "                },
-    { false, true,  false, false, "STR_MEM_TEXT",   "\r TEXT"            },
-    { false, true,  false, false, "STR_MEM_VARS",   "\r VARS"            },
-    { false, true,  false, false, "STR_MEM_ARRS",   "\r ARRS"            },
-    { false, true,  false, false, "STR_MEM_STRS",   "\r STRS"            },
-    { false, true,  false, false, "STR_MEM_FREE",   "\r\r FREE"          },
+    { false, true,  false, false, "STR_MEM_HDR",      "\r\x12 AREA   START   SIZE  \r" },
+    { false, true,  false, false, "STR_MEM_1",        "   $"               },
+    { false, true,  false, false, "STR_MEM_2",        "   "                },
+    { false, true,  false, false, "STR_MEM_TEXT",     "\r TEXT"            },
+    { false, true,  false, false, "STR_MEM_VARS",     "\r VARS"            },
+    { false, true,  false, false, "STR_MEM_ARRS",     "\r ARRS"            },
+    { false, true,  false, false, "STR_MEM_STRS",     "\r STRS"            },
+    { false, true,  false, false, "STR_MEM_FREE",     "\r\r FREE"          },
 
-    { false, true,  false, false, "STR_SI_HEADER",  "OPEN ROMS, "       },
-    { false, true,  false, false, "STR_SI_MODE64",  "LEGACY MODE"       },
-    { false, true,  false, false, "STR_SI_MODE65",  "NATIVE MODE"       },
-    { false, true,  false, false, "STR_SI_HDR_REL", "\rRELEASE "        },
-    { false, true,  false, false, "STR_SI_HDR_HW",  "BOARD  : "         },
-    { false, true,  false, false, "STR_SI_HW_01",   "MEGA65 R1"         },
-    { false, true,  false, false, "STR_SI_HW_02",   "MEGA65 R2"         },
-    { false, true,  false, false, "STR_SI_HW_03",   "MEGA65 R3"         },
-    { false, true,  false, false, "STR_SI_HW_21",   "MEGAPHONE R1"      },
-    { false, true,  false, false, "STR_SI_HW_40",   "NEXYS4 PSRAM"      },
-    { false, true,  false, false, "STR_SI_HW_41",   "NEXYS4 DDR"        },
-    { false, true,  false, false, "STR_SI_HW_42",   "NEXYS4 DDR WIDGET" },
-    { false, true,  false, false, "STR_SI_HW_FD",   "WUKONG A100T"      },
-    { false, true,  false, false, "STR_SI_HW_FE",   "SIMULATION VHDL"   },
-    { false, true,  false, false, "STR_SI_HW_XX",   "UNKNOWN ID $"      },
-    { false, true,  false, false, "STR_SI_HDR_VID", "\rVIDEO  : "       },
-
+    { false, true,  false, false, "STR_SI_HEADER",    "OPEN ROMS, "        },
+    { false, true,  false, false, "STR_SI_MODE64",    "LEGACY MODE"        },
+    { false, true,  false, false, "STR_SI_MODE65",    "NATIVE MODE"        },
+    { false, true,  false, false, "STR_SI_HDR_REL",   "\rRELEASE "         },
+    { false, true,  false, false, "STR_SI_HDR_HW",    "BOARD  : "          },
+    { false, true,  false, false, "STR_SI_HW_01",     "MEGA65 R1"          },
+    { false, true,  false, false, "STR_SI_HW_02",     "MEGA65 R2"          },
+    { false, true,  false, false, "STR_SI_HW_03",     "MEGA65 R3"          },
+    { false, true,  false, false, "STR_SI_HW_21",     "MEGAPHONE R1"       },
+    { false, true,  false, false, "STR_SI_HW_40",     "NEXYS4 PSRAM"       },
+    { false, true,  false, false, "STR_SI_HW_41",     "NEXYS4 DDR"         },
+    { false, true,  false, false, "STR_SI_HW_42",     "NEXYS4 DDR WIDGET"  },
+    { false, true,  false, false, "STR_SI_HW_FD",     "WUKONG A100T"       },
+    { false, true,  false, false, "STR_SI_HW_FE",     "SIMULATION VHDL"    },
+    { false, true,  false, false, "STR_SI_HW_XX",     "UNKNOWN ID $"       },
+    { false, true,  false, false, "STR_SI_HDR_VID",   "\rVIDEO  : "        },
 
     // Note: depending on configuration, additional strings will be added here
 } };

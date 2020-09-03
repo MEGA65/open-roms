@@ -69,10 +69,3 @@ startup_banner:
 	// .byte $12,$A0,$A0,$9B,$92,$20,$9A,$7F,$12,$A0,$A0,$9B,$92,$20,$9A,$7F
 	// .byte $12,$DF,$92,$7F,$9B,$20,$9A,$20,$9B,"0.2.0.0",$0D
 	// .byte $0D,$05,$92,$00
-
-startup_banner_legacy:
-
-	.text "LEGACY"
-	.byte $11, $9D, $9D, $9D, $9D, $9D
-	.text "MODE"
-	.byte $00

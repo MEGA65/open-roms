@@ -16,7 +16,14 @@ INITMSG:
 
 	jsr map_BASIC_1
 	jsr_ind VB1__INITMSG
+!:
 	jmp map_NORMAL
+
+INITMSG_autoswitch:
+
+	jsr map_BASIC_1
+	jsr_ind VB1__INITMSG_autoswitch
+	bra !-
 
 #else
 

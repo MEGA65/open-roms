@@ -6,7 +6,6 @@
 cmd_go:
 
 	jsr fetch_character_skip_spaces
-
 	cmp #$A4                           // 'TO' keyword
 	beq cmd_goto
 
@@ -35,7 +34,7 @@ cmd_go_syntax_error:
 	bcs cmd_go_rts
 
 	jsr helper_ask_if_sure
-	bcs cmd_go_rts
+	bcs_16 cmd_end
 	sec
 	jsr M65_MODESET                    // Carry set = switch to C64 mode
 	jmp_8 cmd_go_switchmode_clr_banner
@@ -46,11 +45,16 @@ cmd_go_syntax_error:
 	// If in C64 compatibility mode - switch to native mode
 
 	jsr M65_MODEGET
-	bcc cmd_go_rts
+	bcs !+ 
+	jsr cmd_go_sys_check
+	rts
 
+!:
 	jsr helper_ask_if_sure
-	bcs cmd_go_rts
+	bcs_16 cmd_end
 	jsr M65_MODESET                    // Carry clear = switch to M65 mode
+
+	jsr cmd_go_sys_check
 
 	// FALLTROUGH
 
@@ -60,15 +64,31 @@ cmd_go_switchmode_clr_banner:
 
 	ldx CURLIN+1
 	inx
-	bne !+
-	jmp INITMSG
-!:
-	rts
+	beq_16 INITMSG
 
+	lda #147
+	jmp JCHROUT
+
+cmd_go_sys_check:
+
+	// Check for 'GO 65 SYS' construction
+
+	jsr fetch_character_skip_spaces
+	cmp #$9E                           // 'SYS' keyword
+	bne !+
+
+	pla
+	pla
+	jmp cmd_nsys
+!:
+	dew TXTPTR                         // unconsume character
+
+	// FALLTROUGH
 
 cmd_go_rts:
 
 	rts
+
 
 #endif
 

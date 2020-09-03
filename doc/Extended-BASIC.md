@@ -103,3 +103,7 @@ A 'native' `SYS` - same as `SYS`, but does not switch to C64 compatibility mode.
 ### `GO 64`, `GO 65` (MEGA65)
 
 Switches machine to C64 compatibility mode or to MEGA65 native mode. Performs `CLR`
+
+### `GO 65 SYS` (MEGA65)
+
+The same as `GO 65: NSYS`, but does not need tokens unknown to C64 BASIC V2. Intended for usage in 'fat binaries' only.

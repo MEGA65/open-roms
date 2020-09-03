@@ -96,14 +96,10 @@ Clears the screen content.
 
 Runs the garbage collector - disposes outdated strings.
 
-### `NSYS` (MEGA65)
+### `GO SYS` (MEGA65)
 
-A 'native' `SYS` - same as `SYS`, but does not switch to C64 compatibility mode.
+Same as `SYS`, but does not switch to C64 compatibility mode.
 
 ### `GO 64`, `GO 65` (MEGA65)
 
 Switches machine to C64 compatibility mode or to MEGA65 native mode. Performs `CLR`
-
-### `GO SYS` (MEGA65)
-
-The same as `NSYS`, but does not need tokens unknown to C64 BASIC V2. Intended for usage in 'fat binaries' only.

@@ -20,7 +20,7 @@ cmd_go_syntax_error:
 #else 
 
 	cmp #$9E                           // 'SYS' keyword, for 'GO SYS'
-	beq_16 cmd_nsys
+	beq_16 cmd_gosys
 
 	dew TXTPTR                         // unconsume character
 

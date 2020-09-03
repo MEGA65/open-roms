@@ -7,7 +7,7 @@
 
 .const command_03_list = List().add(
 
-	cmd_nsys
+	cmd_rem // XXX just for testing
 )
 
 

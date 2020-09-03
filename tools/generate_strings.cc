@@ -213,7 +213,7 @@ const StringEntryList GLOBAL_Keywords_03_M65 =  { ListType::KEYWORDS, "keywords_
 {
     // STD    M65    U64    X16
 
-    { false, true,  false, false, "K03_01",   "NSYS",         }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { false, true,  false, false, "K03_01",   "TEST",         }, // Not present in CBM BASIC dialects, Open ROMs specific
 
 } };
 

@@ -5,7 +5,7 @@
 
 #if ROM_LAYOUT_M65
 
-cmd_nsys:
+cmd_gosys:
 	
 	// NSYS requires an argument
 

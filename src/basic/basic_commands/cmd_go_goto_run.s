@@ -19,6 +19,9 @@ cmd_go_syntax_error:
 
 #else 
 
+	cmp #$9E                           // 'SYS' keyword, for 'GO SYS'
+	beq_16 cmd_nsys
+
 	dew TXTPTR                         // unconsume character
 
 	// Fetch desired mode
@@ -45,16 +48,11 @@ cmd_go_syntax_error:
 	// If in C64 compatibility mode - switch to native mode
 
 	jsr M65_MODEGET
-	bcs !+ 
-	jsr cmd_go_sys_check
-	rts
+	bcc cmd_go_rts
 
-!:
 	jsr helper_ask_if_sure
 	bcs_16 cmd_end
 	jsr M65_MODESET                    // Carry clear = switch to M65 mode
-
-	jsr cmd_go_sys_check
 
 	// FALLTROUGH
 
@@ -68,22 +66,6 @@ cmd_go_switchmode_clr_banner:
 
 	lda #147
 	jmp JCHROUT
-
-cmd_go_sys_check:
-
-	// Check for 'GO 65 SYS' construction
-
-	jsr fetch_character_skip_spaces
-	cmp #$9E                           // 'SYS' keyword
-	bne !+
-
-	pla
-	pla
-	jmp cmd_nsys
-!:
-	dew TXTPTR                         // unconsume character
-
-	// FALLTROUGH
 
 cmd_go_rts:
 

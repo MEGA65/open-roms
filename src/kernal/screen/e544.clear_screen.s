@@ -12,6 +12,14 @@
 
 clear_screen:
 
+
+#if ROM_LAYOUT_M65
+
+	jsr M65_MODEGET
+	bcc_16 M65_CLRSCR
+
+#endif
+
 	// Clear the line link table - cheecked on original ROMs,
 	// the highest bit set means that the line is NOT a logical
 	// continuation of the previous one

@@ -1,0 +1,4 @@
+2*PI mantissa + LDA (zeropage address does not match)
+ 
+Part of widely used floating point constant (which is generated automatically) + a part of instruction - not creative, not copyrightable.
+

@@ -53,6 +53,12 @@ proxy_K1_lvs_load_verify_error:
 	jsr map_NORMAL
 	jmp lvs_load_verify_error
 
+proxy_K1_m65_load_autoswitch_tape:
+
+	jsr map_NORMAL
+	jsr m65_load_autoswitch_tape
+	jmp_8 !-
+
 proxy_K1_print_kernal_message:
 
 	jsr map_NORMAL

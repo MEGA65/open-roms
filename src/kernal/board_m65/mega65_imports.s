@@ -69,6 +69,7 @@
 .label lvs_return_last_address         = KERNAL_0.proxy_K1_lvs_return_last_address
 .label lvs_device_not_found_error      = KERNAL_0.proxy_K1_lvs_device_not_found_error
 .label lvs_load_verify_error           = KERNAL_0.proxy_K1_lvs_load_verify_error
+.label m65_load_autoswitch_tape        = KERNAL_0.proxy_K1_m65_load_autoswitch_tape
 
 .label lvs_check_EAL                   = KERNAL_0.lvs_check_EAL
 .label lvs_STAL_to_MEMUSS              = KERNAL_0.lvs_STAL_to_MEMUSS

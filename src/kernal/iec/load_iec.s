@@ -95,7 +95,16 @@ load_iec:
 	lda STAL+1
 	sta EAL+1	
 !:
+#if ROM_LAYOUT_M65
+
+	// Switch to legacy mode if needed
+
+	jsr m65_load_autoswitch
+
+#endif
+
 	// Display start address
+
 	jsr lvs_display_loading_verifying
 
 #if (CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS) && !CONFIG_MEMORY_MODEL_60K

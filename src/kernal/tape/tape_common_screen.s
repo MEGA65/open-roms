@@ -11,8 +11,6 @@
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 
 
-// XXX for Mega65 do not disable screen, just disable badline emulation
-
 
 tape_screen_on_motor_off:
 
@@ -21,18 +19,14 @@ tape_screen_on_motor_off:
 	lda COLSTORE
 	sta VIC_EXTCOL
 
-#if !CONFIG_MB_MEGA_65
+#if !ROM_LAYOUT_M65
 
 	jmp screen_on
 
 #else
 
-	// On Mega65 just reenable badline emulation
-
-	lda #$FF
-	sta M65_BADL_SLI
-	sta VIC_KEY
-
+	jsr M65_MODEGET
+	bcs_16 screen_on                   // MEGA65 native mode does not have badlines, no need to enable/disable screen
 	rts
 
 #endif
@@ -51,21 +45,19 @@ tape_screen_off_motor_on:
 	lda VIC_EXTCOL
 	sta COLSTORE
 
-#if !CONFIG_MB_MEGA_65
-	
+#if !ROM_LAYOUT_M65
+
 	jsr screen_off
 
 #else
 
-	// On Mega65 we do not have to turn the screen off;
-	// it is enough to disable badline emulation
-
-	jsr mega65_unhide
-	lda #$00
-	sta M65_BADL_SLI
+	jsr M65_MODEGET
+	// XXX optimize this
+	bcs !+                    	       // MEGA65 native mode does not have badlines, no need to enable/disable screen
+	jsr screen_off
+!:
 
 #endif
-
 
 	jmp tape_motor_on
 

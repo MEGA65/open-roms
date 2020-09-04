@@ -22,6 +22,6 @@ helper_load_init_params_no_VERCKB:
 
 	// Set default device, set secondary address to 0
 
-	jsr select_device
+	jsr SELDEV
 	ldy #$00                           // secondary address
 	jmp JSETFLS

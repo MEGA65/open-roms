@@ -55,14 +55,12 @@
 	cmd_tab,                           // XXX this token probably does not belong here
 	do_SYNTAX_error,                   // 'TO' is not a standalone command
 	do_SYNTAX_error,                   // 'FN' is not a standalone command
-	cmd_spc,                           // XXX this token probably does not belong here
+	cmd_spc                            // XXX this token probably does not belong here
 	
 	// 'THEN' ($A7) and 'STEP' ($A9) are not standalone commands
 	// 'NOT' ($A8) is an operator, not a command
 
-	// $CB, but remapped to $A7
-
-	cmd_go
+	// 'GO' ($CB) is handled separately
 )
 
 

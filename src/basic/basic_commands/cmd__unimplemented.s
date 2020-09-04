@@ -21,8 +21,6 @@ cmd_input:
 	nop
 cmd_read:
 	nop
-cmd_if:
-	nop
 cmd_gosub:
 	nop
 cmd_return:
@@ -50,8 +48,6 @@ cmd_get:
 cmd_tab:
 	nop
 cmd_spc:
-	nop
-cmd_go:
 	nop
 
 	// Unimplemented tokens

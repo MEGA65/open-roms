@@ -223,6 +223,14 @@ tape_handle_header:
 
 	jsr lvs_STAL_to_MEMUSS
 
+#if ROM_LAYOUT_M65
+
+	// Switch to legacy mode if needed
+
+	jsr m65_load_autoswitch_tape
+
+#endif
+
 	// Print LOADING and start address
 
 	jsr lvs_display_loading_verifying

@@ -1,0 +1,4 @@
+PHA + LDA #$46 + PHA
+
+Pushing return address to stack (one byte matched by accident). Not creative - not copyrightable.
+

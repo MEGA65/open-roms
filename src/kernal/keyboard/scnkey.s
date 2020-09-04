@@ -34,30 +34,6 @@
 
 SCNKEY:
 
-#if CONFIG_KEYBOARD_C65 && CONFIG_MB_MEGA_65
-
-	// Idea by Paul Gardner-Stephen
-
-	lda VIC_XPOS                       // check raster X position
-	cmp VIC_XPOS                       // if it changes, we are on a MEGA65 with VIC-IV registers already visible
-	bne scnkey_viciv_mode
-
-	// We are on machine that is not in VIC-IV IO mode, so try enabling it (harmless on C64/C65)
-	// If we are on a C65 (or MEGA65 with C65 VIC-III IO mode selected), the above test would
-	// have failed, but we could already be in C65 IO mode. In that case, this will disable C65 IO
-	// mode when done. This is not ideal, but as MEGA65s start C65 mode with VIC-IV IO mode
-	// selected anyway, it should not be a big problem in practice.
-
-	jsr mega65_unhide
-	jsr scnkey_viciv_mode
-
-	sta VIC_KEY                        // hide Mega65 registers
-	rts
-
-scnkey_viciv_mode:
-
-#endif
-
 	// Prepare for SHFLAG update
 
 	lda SHFLAG
@@ -428,12 +404,12 @@ scnkey_got_petscii:
 	// Special handling for SHIFT+TAB; it is easier than creating new matrix
 
 	tax
-	cmp #KEY_TAB_FW
+	cmp #KEY_C64_TAB_FW
 	bne !+
 	lda SHFLAG
 	and #KEY_FLAG_SHIFT
 	beq !+
-	ldx #KEY_TAB_BW
+	ldx #KEY_C64_TAB_BW
 !:
 	txa
 

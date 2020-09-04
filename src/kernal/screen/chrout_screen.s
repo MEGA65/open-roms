@@ -10,6 +10,13 @@
 
 chrout_screen:
 
+#if ROM_LAYOUT_M65
+
+	jsr M65_MODEGET
+	bcc_16 m65_chrout_screen
+
+#endif
+
 	jsr cursor_hide_if_visible
 
 	lda SCHAR
@@ -19,49 +26,16 @@ chrout_screen:
 	// ones are always printable characters; separate away control codes
 
 	and #$60
-	bne !+
-	jmp chrout_screen_control
-!:
+	beq_16 chrout_screen_control
 	txa
 
 	// Literals - first convert PETSCII to screen code
 
-	// Codes $C0-$DF become $40-$5F
-	cmp #$E0
-	bcs !+
-	cmp #$C0
-	bcc !+
-	
-	and #$7F
-	jmp chrout_screen_literal // not high char
-
-!:
-	// Range $20-$3F is unchanged
-	cmp #$40
-	bcc chrout_screen_literal // not high char
-
-	// Unshifted letters and symbols from $40-$5F
-	// all end up being -$40
-	// (C64 PRG p376)
-
-	// But anything >= $80 needs to be -$40
-	// (C64 PRG p380-381)
-	// And bit 7 should be cleared, only to be
-	// set by reverse video
-	sec
-	sbc #$40
-
-	// Fix shifted chars by adding $20 again
-	cmp #$20
-	bcc chrout_screen_literal // not high char
-	cmp #$40
-	bcs chrout_screen_literal // not high char
-	clc
-	adc #$20
+	jsr chrout_to_screen_code
 
 	// FALLTROUGH
 
-chrout_screen_literal:
+chrout_screen_literal: // entry point for chrout_screen_quote
 
 	// Write normal character on the screen
 

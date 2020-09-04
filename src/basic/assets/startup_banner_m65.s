@@ -1,6 +1,4 @@
-// #LAYOUT# STD *       #TAKE
 // #LAYOUT# M65 BASIC_1 #TAKE
-// #LAYOUT# X16 BASIC_0 #TAKE
 // #LAYOUT# *   *       #IGNORE
 
 //
@@ -10,96 +8,33 @@
 .encoding "petscii_upper"
 
 
-.macro BANNER_TEXT() {
-
-#if CONFIG_BRAND_CUSTOM_BUILD
-	.text "OPEN ROMS "
-	.text CONFIG_CUSTOM_BRAND
-#elif CONFIG_BRAND_GENERIC
-	.text "OPEN ROMS GENERIC BUILD"
-#elif CONFIG_BRAND_TESTING
-	.text "OPEN ROMS TESTING BUILD"
-#elif CONFIG_BRAND_MEGA_65
-	.text "OPEN ROMS FOR MEGA65"
-#elif CONFIG_BRAND_ULTIMATE_64
-	.text "OPEN ROMS FOR ULTIMATE 64"
-#endif
-
-}
-
 startup_banner:
 
-#if CONFIG_BANNER_SIMPLE
+	// Fancy MEGA65 banner - from Retrofan, slightly tweaked
 
-	.text "    " 
-	BANNER_TEXT()
-	.byte $00
 
-#elif CONFIG_BANNER_FANCY
+	// remove unneeded $1F's (blue) and $9A's (light blue)
 
-	BANNER_TEXT()
-	.byte $00
 
-rainbow_logo:
-
-{
-#if CONFIG_COLORS_BRAND && CONFIG_BRAND_MEGA_65
-
-	.var SET_COLOR_0 = $05
-	.var SET_COLOR_1 = $9A
-	.var SET_COLOR_2 = $1E
-	.var SET_COLOR_3 = $9E
-	.var SET_COLOR_4 = $96
-
-#else
-
-	.var SET_COLOR_0 = $05
-	.var SET_COLOR_1 = $1C
-	.var SET_COLOR_2 = $9E
-	.var SET_COLOR_3 = $1E
-	.var SET_COLOR_4 = $9F
-
-#endif
-
-	.byte SET_COLOR_1, $12, $A4, $A4, $A4, $A4, $A4, $A4, $A4, $0D
-    .byte SET_COLOR_2, $12, $A4, $A4, $A4, $A4, $A4, $A4, $0D
-    .byte SET_COLOR_3, $12, $A4, $A4, $A4, $A4, $A4, $0D
-    .byte SET_COLOR_4, $12, $A4, $A4, $A4, $A4, $92
-    .byte SET_COLOR_0, $00
-}
-
-#if !CONFIG_BRAND_CUSTOM_BUILD
-
-pre_revision_string:
-
-	.text "RELEASE "
-	.byte $00
-
-#endif // no CONFIG_BRAND_CUSTOM_BUILD
-
-#elif CONFIG_BANNER_BRAND && CONFIG_BRAND_MEGA_65
-
-	// Fancy Mega65 banner - from Retrofan, slightly tweaked
-
-	.byte $9A, $12, $20, $20, $7F, $A9, $20, $20, $1F, $20, $9A, $20, $20, $20, $20, $1F
-	.byte $20, $9A, $A9, $20, $20, $20, $92, $A1, $1F, $12, $20, $9A, $A9, $20, $20, $20
-	.byte $7F, $1F, $20, $20, $9A, $A3, $A3, $A3, $A3, $A3, $A3, $A3, $1F
+	.byte $9A, $12, $20, $20, $7F, $A9, $20, $20, $92, $20, $12, $20, $20, $20, $20, $92
+	.byte $20, $12, $A9, $20, $20, $20, $92, $A1, $20, $12, $A9, $20, $20, $20, $7F, $92
+	.byte $20, $20, $12, $A3, $A3, $A3, $A3, $A3, $A3, $A3
 	.byte $0D
 	.byte $9A, $12, $20, $20, $20, $20, $20
-	.byte $20, $1F, $20, $9A, $20, $20, $92, $A2, $bb, $1F, $12, $20, $9A, $20, $20, $92
-	.byte $Ac, $A2, $A2, $1F, $12, $20, $9A, $20, $20, $1F, $20, $9A, $20, $20, $1F, $20
-	.byte $20, $1e, $A3, $A3, $A3, $A3, $A3, $A3, $1F
+	.byte $20, $92, $20, $12, $20, $20, $92, $A2, $BB, $92, $20, $12, $20, $20, $92, $AC
+	.byte $A2, $A2, $20, $9A, $12, $20, $20, $92, $20, $12, $20, $20, $92, $20, $20, $12
+	.byte $1E, $A3, $A3, $A3, $A3, $A3, $A3
 	.byte $0D
-	.byte $9A, $12, $20, $20, $92, $7F, $A9, $12, $20, $20, $1F, $20, $9A, $20, $20, $A2
-	.byte $92, $be, $1F, $12, $20, $9A, $20, $20, $92, $bc, $12, $20, $20, $1F, $20, $9A
-	.byte $20, $20, $20, $20, $20, $1F, $20, $20, $9e, $A3, $A3, $A3, $A3, $A3, $1F
+	.byte $9A, $12, $20, $20, $92, $7F, $A9, $12, $20, $20, $92, $20, $12, $20, $20, $A2
+	.byte $92, $BE, $92, $20, $12, $20, $20, $92, $BC, $12, $20, $20, $92, $20, $12, $20
+	.byte $20, $20, $20, $20, $92, $20, $20, $12, $9E, $A3, $A3, $A3, $A3, $A3
 	.byte $0D
-	.byte $9A, $12, $20, $20, $1F, $20, $20, $9A, $20, $20, $1F, $20, $9A, $20, $20, $20
-	.byte $20, $1F, $20, $9A, $20, $20, $20, $20, $20, $1F, $20, $9A, $20, $20, $1F, $20
-	.byte $9A, $20, $20, $1F, $20, $20, $96, $A3, $A3, $A3, $A3, $1F, $92
+	.byte $9A, $12, $20, $20, $92, $20, $20, $12, $20, $20, $92, $20, $12, $20, $20, $20
+	.byte $20, $92, $20, $12, $20, $20, $20, $20, $20, $92, $20, $12, $20, $20, $92, $20
+	.byte $12, $20, $20, $92, $20, $20, $12, $96, $A3, $A3, $A3, $A3, $1F, $92
 	.byte $0D, $0D, $05, $00
 
-	// Fancy Mega65 banner - from Retrofan
+	// Fancy MEGA65 banner - from Retrofan
 	//
 	// .byte $9a, $12, $20, $20, $7f, $a9, $20, $20, $1f, $20, $9a, $20, $20, $20
 	// .byte $20, $1f, $20, $9a, $a9, $20, $20, $20, $92, $a1, $1f, $12, $20, $9a, $a9, $20
@@ -117,7 +52,7 @@ pre_revision_string:
 	// .byte $20, $20, $1f, $20, $20, $96, $a3, $a3, $a3, $a3, $1f
 	// .byte $92, $0D, $0D, $05, $00
 
-	// Original Mega65 banner - supplied by Deft
+	// Original MEGA65 banner - supplied by Deft
 	//
 	// .byte $9A,$12,$A3,$A3,$A3,$A3,$A3,$A3,$DF,$9B,$92,$20,$05,$12,$A0,$A0
 	// .byte $DF,$9B,$92,$20,$05,$12,$A0,$A0,$DF,$9B,$92,$20,$05,$12,$A0,$A0
@@ -134,16 +69,3 @@ pre_revision_string:
 	// .byte $12,$A0,$A0,$9B,$92,$20,$9A,$7F,$12,$A0,$A0,$9B,$92,$20,$9A,$7F
 	// .byte $12,$DF,$92,$7F,$9B,$20,$9A,$20,$9B,"0.2.0.0",$0D
 	// .byte $0D,$05,$92,$00
-
-#if ROM_LAYOUT_M65
-
-text_mode_64:
-
-	.text "LEGACY"
-	.byte $11, $9D, $9D, $9D, $9D, $9D
-	.text "MODE"
-	.byte $00
-
-#endif
-
-#endif

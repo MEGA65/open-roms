@@ -72,13 +72,6 @@
 
 #endif
 
-#if CONFIG_MB_MEGA_65
-
-	.label VIC_KEY      = $D02F
-	.label VIC_XPOS     = $D050
-
-#endif
-
 	// SID registers
 
 	.label __SID_BASE   = $D400  // base address of the chip
@@ -190,9 +183,9 @@
 	.label C65_EXTKEYS_PR  = $D607
 	.label C65_EXTKEYS_DDR = $D608
 
-	.label M65_BADL_SLI    = $D710
+#endif
 
-#else
+#if !CONFIG_MB_MEGA_65
 
 	// SuperCPU registers
 

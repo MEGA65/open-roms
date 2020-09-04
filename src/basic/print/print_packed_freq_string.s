@@ -55,6 +55,16 @@ print_packed_keyword_02:               // .X - token number
 
 #endif
 
+#if ROM_LAYOUT_M65
+
+print_packed_keyword_03:               // .X - token number
+
+	lda #<packed_freq_keywords_03
+	ldy #>packed_freq_keywords_03
+	bne print_freq_packed_string       // branch always
+
+#endif
+
 print_packed_keyword_V2:               // .X - token number
 
 	lda #<packed_freq_keywords_V2

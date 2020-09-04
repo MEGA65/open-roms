@@ -34,7 +34,7 @@ const std::vector<ROMTypeDescriptionEntry> ROM_DEFINITIONS =
         8192,         // file size
         0x1F52,       // signature offset 1
         0,            // signature offset 2
-        0x0004,       // BASIC ID offset
+        0x0007,       // BASIC ID offset
         0             // KERNAL ID offset
     },
     
@@ -52,14 +52,14 @@ const std::vector<ROMTypeDescriptionEntry> ROM_DEFINITIONS =
         128 * 1024,   // file size
         0xBF52,       // signature offset 1
         0xE4B9,       // signature offset 2
-        0xA004,       // BASIC ID offset
+        0xA007,       // BASIC ID offset
         0xFF80        // KERNAL ID offset
     },
 };
 
 const uint32_t MAX_FILE_SIZE = 128 * 1024;
 
-const std::vector<uint8_t> STR_MEGABAS  = { 0x4D, 0x45, 0x47, 0x41, 0x42, 0x41, 0x53, 0x32 };
+const std::vector<uint8_t> STR_BASIC    = { 0x42, 0x41, 0x53, 0x49, 0x43 };
 const std::vector<uint8_t> STR_OR       = { 0x4F, 0x52 };
 const std::vector<uint8_t> STR_SNAPSHOT = { 0x28, 0x44, 0x45, 0x56, 0x45, 0x4C, 0x20, 0x53, 
                                             0x4E, 0x41, 0x50, 0x53, 0x48, 0x4F, 0x54, 0x29,
@@ -409,7 +409,7 @@ void ROMFile::recognizeSrcFile()
         if (srcFileContent.size() != SPEC.fileSize) continue;
 
         if ((SPEC.idBasicOffset != 0) &&
-            memcmp(&srcFileContent[SPEC.idBasicOffset], STR_MEGABAS.data(), STR_MEGABAS.size()) != 0)
+            memcmp(&srcFileContent[SPEC.idBasicOffset], STR_BASIC.data(), STR_BASIC.size()) != 0)
         {
             continue;
         }
@@ -440,7 +440,7 @@ void ROMFile::dropUnmatchingDst()
     // Drop unmatching destination file data
 
     if (!dstFileContent.empty() && (descPtr->idBasicOffset != 0) &&
-        memcmp(&dstFileContent[descPtr->idBasicOffset], STR_MEGABAS.data(), STR_MEGABAS.size()) != 0)
+        memcmp(&dstFileContent[descPtr->idBasicOffset], STR_BASIC.data(), STR_BASIC.size()) != 0)
     {
         dstFileContent.clear();
     }

@@ -76,7 +76,7 @@ dolphindos_load_loop:
 	jsr iec_update_EAL_by_Y
 
 	// Restore proper IECPROTO value
-	lda #$02
+	lda #IEC_DOLPHIN
 	sta IECPROTO
 
 	// End of load loop

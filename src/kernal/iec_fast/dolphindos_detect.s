@@ -56,7 +56,7 @@ dolphindos_detect_success:
 
 	// Protocol detected
 
-	lda #$02
+	lda #IEC_DOLPHIN
 	sta IECPROTO
 
 	rts

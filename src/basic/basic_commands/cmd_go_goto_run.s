@@ -3,6 +3,77 @@
 // #LAYOUT# *   *       #IGNORE
 
 
+cmd_go:
+
+	jsr fetch_character_skip_spaces
+	cmp #$A4                           // 'TO' keyword
+	beq cmd_goto
+
+#if !ROM_LAYOUT_M65
+
+	// FALLTROUGH
+
+cmd_go_syntax_error:
+
+	jmp do_SYNTAX_error
+
+#else 
+
+	cmp #$9E                           // 'SYS' keyword, for 'GO SYS'
+	beq_16 cmd_gosys
+
+	dew TXTPTR                         // unconsume character
+
+	// Fetch desired mode
+
+	jsr fetch_uint8
+
+	cmp #64
+	bne !+
+
+	// If in native mode - switch to C64 compatibilty
+
+	jsr M65_MODEGET
+	bcs cmd_go_rts
+
+	jsr helper_ask_if_sure
+	bcs_16 cmd_end
+	sec
+	jsr M65_MODESET                    // Carry set = switch to C64 mode
+	jmp_8 cmd_go_switchmode_clr_banner
+!:
+	cmp #65
+	bne_16 do_ILLEGAL_QUANTITY_error
+
+	// If in C64 compatibility mode - switch to native mode
+
+	jsr M65_MODEGET
+	bcc cmd_go_rts
+
+	jsr helper_ask_if_sure
+	bcs_16 cmd_end
+	jsr M65_MODESET                    // Carry clear = switch to M65 mode
+
+	// FALLTROUGH
+
+cmd_go_switchmode_clr_banner:
+
+	jsr do_clr
+
+	ldx CURLIN+1
+	inx
+	beq_16 INITMSG
+
+	lda #147
+	jmp JCHROUT
+
+cmd_go_rts:
+
+	rts
+
+
+#endif
+
 cmd_run:
 
 	// RUN clears all variables
@@ -25,9 +96,15 @@ cmd_run:
 cmd_goto:
 
 	// GOTO requires line number
+	// XXX in case of no parameter, go to line 0 - checked with original ROMs
+
 
 	jsr fetch_line_number
+#if !ROM_LAYOUT_M65
+	bcs cmd_go_syntax_error
+#else
 	bcs_16 do_SYNTAX_error
+#endif
 
 	// Check for direct mode
 

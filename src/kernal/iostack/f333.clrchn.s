@@ -22,7 +22,7 @@ CLRCHN:
 
 	// FALLTROUGH
 
-clrchn_reset: // entry needed by setup_vicii
+clrchn_reset: // entry needed by vicii_init
 
 	// Set input device number to keyboard
 	lda #$00

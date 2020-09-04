@@ -41,5 +41,8 @@ basic_cold_start_internal:
 	// Print startup messages
 	jsr INITMSG
 
+	// Initialize other variables by performing NEW
+	jsr do_new
+
 	// jump into warm start loop
 	jmp basic_warm_start

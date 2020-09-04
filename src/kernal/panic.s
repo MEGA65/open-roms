@@ -11,15 +11,30 @@
 
 panic:
 
-	// Disable interrupts, store error code on stack
+	// Store error code on stack
 
-	sei
 	pha
 
 	// Reinitialize the hardware
 
+	sei
 	jsr IOINIT
-	jsr setup_vicii
+
+#if ROM_LAYOUT_M65
+
+	// Make sure we are in legacy mode with normal memory mapping
+
+	jsr map_NORMAL
+	sec
+	jsr M65_MODESET          // switch to legacy C64 compatibility mode
+	sei
+
+#else
+
+	jsr vicii_init
+
+#endif
+
 	jsr clear_screen
 
 	// Disable NMIs

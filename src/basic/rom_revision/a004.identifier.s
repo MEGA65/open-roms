@@ -4,8 +4,20 @@
 // #LAYOUT# *   *       #IGNORE
 
 
-// Computes Mapping the 64, p89
-// 8 character name
-// MEGABAS2 = "MEGA BASIC 2"
+// Computes Mapping the 64, p89 - 8 character name
 
-	.byte $4D,$45,$47,$41,$42,$41,$53,$32
+#if ROM_LAYOUT_M65
+
+	// 'M65BASIC'
+
+	.byte $4D, $36, $35                // 'M65'
+
+#else
+
+	// 'ORGBASIC', Open ROMs Generic BASIC
+
+	.byte $4F, $52, $47                // 'ORG'
+
+#endif
+
+	.byte $42, $41, $53, $49, $43      // 'BASIC'

@@ -86,7 +86,7 @@
 
 
 //
-// Memory mapping for C65 and Mega65
+// Memory mapping for C65 and MEGA65
 //
 
 #if HAS_OPCODES_4510
@@ -97,6 +97,16 @@
 #endif
 
 
+//
+// Some additional 65C02 instructions
+//
+
+#if HAS_OPCODES_65C02
+
+.pseudocommand inc_a { .byte $1A }
+.pseudocommand dec_a { .byte $3A }
+
+#endif
 
 //
 // Some additional 65CE02 instructions
@@ -259,6 +269,101 @@
 {
 	.var arg = addr.getValue()
 	.byte $22, mod(arg, $100), floor(arg / $100)
+}
+
+.pseudocommand jsr_ind_x addr
+{
+	.var arg = addr.getValue()
+	.byte $23, mod(arg, $100), floor(arg / $100)
+}
+
+
+// Others, taken from https://github.com/smnjameson/M65_KickAsm_PseudoCommands
+
+.const z  = -999            // allows (base page),z addressing mode
+.const sy = -998            // allows (base page, s),y addressing mode
+.const AT_IZEROPAGEZ = 13   // adds a pseudo addressing mode
+.const AT_INDIRECTX = -5    // adds a pseudo addressing mode
+
+.function GetAdressingModeType(arg) {
+	.if(arg == AT_NONE)       .return "AT_NONE"
+	.if(arg == AT_IMMEDIATE)  .return "AT_IMMEDIATE"
+	.if(arg == AT_INDIRECT)   .return "AT_INDIRECT"
+	.if(arg == AT_INDIRECTX)  .return "AT_INDIRECTX"
+	.if(arg == AT_ABSOLUTE)   .return "AT_ABSOLUTE"
+	.if(arg == AT_ABSOLUTEX)  .return "AT_ABSOLUTEX"
+	.if(arg == AT_ABSOLUTEY)  .return "AT_ABSOLUTEY"
+	.if(arg == AT_IZEROPAGEX) .return "AT_IZEROPAGEX"
+	.if(arg == AT_IZEROPAGEY) .return "AT_IZEROPAGEY"
+	.if(arg == AT_IZEROPAGEZ) .return "AT_IZEROPAGEZ"
+	.return arg
+}
+
+.pseudocommand cpz arg {
+	.var value = arg.getValue()
+	.var type  = arg.getType()	
+	.if(type == AT_IMMEDIATE) {
+		.byte $C2, value
+	} else .if(type == AT_ABSOLUTE) {
+		.if(value <= $FF ) {
+			.byte $D4, value
+		} else {
+			.byte $DC, <value, >value
+		}
+	} else {
+		.error "Invalid adressingmode. 'cpz' doesn't support "+GetAdressingModeType(type)+" mode"
+	}
+}
+
+.pseudocommand lda arg {
+	.var value = arg.getValue()
+	.var type  = arg.getType()
+	.if(type != AT_IZEROPAGEZ) .error "':lda' only accepts AT_IZEROPAGEZ"
+	.if(value > $FF )          .error "':lda ($nn),z' requires zeropage address"
+	.byte $B2, value
+}
+
+.pseudocommand ldz arg
+{
+	.var value = arg.getValue()
+	.var type  = arg.getType()	
+	.if(type == AT_IMMEDIATE) {
+		.byte $A3, value
+	} else .if(type == AT_ABSOLUTE) {
+		.byte $AB, <value, >value
+	} else .if(type == AT_ABSOLUTEX) {
+		.byte $BB, <value, >value
+	} else {
+		.error "Invalid adressingmode. 'ldz' doesn't support "+GetAdressingModeType(type)+" mode"
+	}
+}
+
+.pseudocommand sta arg {
+	.var value = arg.getValue()
+	.var type  = arg.getType()
+	.if(type != AT_IZEROPAGEZ) .error "':sta' only accepts AT_IZEROPAGEZ"
+	.if(value > $FF )          .error "':sta ($nn),z' requires zeropage address"
+	.byte $92, value
+}
+
+// Flat memory access support
+
+.pseudocommand lda_lp arg {
+	.var value = arg.getValue()
+	.var type  = arg.getType()
+	.if(type != AT_IZEROPAGEZ) .error "'lda_lp' only accepts AT_IZEROPAGEZ"
+	.if(value > $FF )          .error "'lda_lp' requires zeropage address"
+	nop
+	.byte $B2, value
+}
+
+.pseudocommand sta_lp arg {
+	.var value = arg.getValue()
+	.var type  = arg.getType()
+	.if(type != AT_IZEROPAGEZ) .error "'sta_lp' only accepts AT_IZEROPAGEZ"
+	.if(value > $FF )          .error "'sta_lp' requires zeropage address"
+	nop
+	.byte $92, value
 }
 
 #endif

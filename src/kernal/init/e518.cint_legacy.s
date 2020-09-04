@@ -14,9 +14,24 @@
 
 cint_legacy: // $E518
 
+#if ROM_LAYOUT_M65
+
+	jsr M65_MODEGET
+	bcs !+
+
+	jsr M65_MODESET
+	bra cint_legacy_end
+!:
+#endif
+
 	// Setup video and I/O
 	// See here: https://csdb.dk/forums/index.php?roomid=11&topicid=17048&firstpost=22
-	jsr setup_vicii
+	
+	jsr vicii_init
+
+	// FALLTROUGH
+
+cint_legacy_end:
 
 	// Code below must be placed under $E51B, or some code will break - see here:
 	// - https://csdb.dk/forums/index.php?roomid=11&topicid=17048&firstpost=2

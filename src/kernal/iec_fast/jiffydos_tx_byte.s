@@ -83,7 +83,7 @@ jiffydos_tx_byte_finalize:
 	sta CIA2_PRA
 
 	// Restore proper IECPROTO value
-	lda #$01
+	lda #IEC_JIFFY
 	sta IECPROTO
 
 	// Re-enable sprites and interrupts

@@ -95,7 +95,16 @@ load_iec:
 	lda STAL+1
 	sta EAL+1	
 !:
+#if ROM_LAYOUT_M65
+
+	// Switch to legacy mode if needed
+
+	jsr m65_load_autoswitch
+
+#endif
+
 	// Display start address
+
 	jsr lvs_display_loading_verifying
 
 #if (CONFIG_IEC_JIFFYDOS || CONFIG_IEC_DOLPHINDOS) && !CONFIG_MEMORY_MODEL_60K
@@ -107,12 +116,12 @@ load_iec:
 	lda IECPROTO
 
 #if CONFIG_IEC_JIFFYDOS
-	cmp #$01
+	cmp #IEC_JIFFY
 	beq_16 jiffydos_load               // branch if JiffyDOS
 #endif
 
 #if CONFIG_IEC_DOLPHINDOS
-	cmp #$02
+	cmp #IEC_DOLPHIN
 	beq_16 dolphindos_load             // branch if DolphinDOS
 #endif
 

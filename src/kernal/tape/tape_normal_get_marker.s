@@ -29,17 +29,13 @@ tape_normal_get_marker_type:
 
 
 
-!:  // Not an entry point!!!
-
-	// XXX check for short pulses of turbo here
-
+	// Not an entry point!!!
+!:
 	jsr tape_normal_calibrate_during_pilot                 // while sync use short pulses for calibration
 
 	// FALLTROUGH
 
 tape_normal_get_marker_while_sync:
-
-	// (L,M) - end of byte, (L,S) - end of data
 
 	jsr tape_common_get_pulse
 	bcs !-                                                 // branch if short pulse

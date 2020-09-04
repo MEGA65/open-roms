@@ -17,7 +17,7 @@
 iec_rx_dispatch:
 
 	lda IECPROTO
-	cmp #$01
+	cmp #IEC_JIFFY
 	beq_16 jiffydos_rx_byte
 
 	// FALLTROUGH
@@ -54,7 +54,7 @@ iec_rx_byte:
 
 	// Check if DolphinDOS was detected
 	lda IECPROTO
-	cmp #$02
+	cmp #IEC_DOLPHIN
 	bne iec_rx_no_dolphindos
 
 	// For DolphinDOS just fetch the byte from parallel port

@@ -12,18 +12,11 @@
 
 
 
-// Hardware platform and brand
+// Hardware platform
 
 #define CONFIG_PLATFORM_COMMODORE_64
 
 #define CONFIG_MB_MEGA_65
-// #define CONFIG_MB_ULTIMATE_64
-
-// #define CONFIG_BRAND_GENERIC
-// #define CONFIG_BRAND_TESTING
-#define CONFIG_BRAND_MEGA_65
-// #define CONFIG_BRAND_ULTIMATE_64
-
 
 // Processor instruction set
 
@@ -55,7 +48,6 @@
 #define CONFIG_TAPE_AUTODETECT
 #define CONFIG_TAPE_NO_KEY_SENSE
 #define CONFIG_TAPE_NO_MOTOR_CONTROL
-// #define CONFIG_TAPE_NO_ERROR_CORRECTION
 
 
 // Multiple SID support
@@ -75,8 +67,8 @@
 // #define CONFIG_LEGACY_SCNKEY
 // #define CONFIG_KEYBOARD_C128
 // #define CONFIG_KEYBOARD_C128_CAPS_LOCK
-#define CONFIG_KEYBOARD_C65              // untested
-#define CONFIG_KEYBOARD_C65_CAPS_LOCK    // untested
+// #define CONFIG_KEYBOARD_C65              // untested
+// #define CONFIG_KEYBOARD_C65_CAPS_LOCK    // untested
 // #define CONFIG_KEY_REPEAT_DEFAULT
 // #define CONFIG_KEY_REPEAT_ALWAYS
 #define CONFIG_KEY_FAST_SCAN
@@ -121,13 +113,11 @@
 #define CONFIG_BCD_SAFE_INTERRUPTS
 
 
-// Eye candy
+// Built-in DOS configuration
 
-#define CONFIG_COLORS_BRAND
-// #define CONFIG_BANNER_SIMPLE
-// #define CONFIG_BANNER_FANCY
-#define CONFIG_BANNER_BRAND
-// #define CONFIG_SHOW_FEATURES
+.const CONFIG_UNIT_SDCARD  = 0 // do not change, DOS is not implemented yet
+.const CONFIG_UNIT_FLOPPY  = 0 // do not change, DOS is not implemented yet
+.const CONFIG_UNIT_RAMDISK = 0 // do not change, DOS is not implemented yet
 
 
 // Debug options

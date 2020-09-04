@@ -15,6 +15,13 @@
 
 TKSA:
 
+#if ROM_LAYOUT_M65
+
+	jsr m65dos_check
+	bcc_16 m65dos_tksa                   // branch if device is handeld by internal DOS
+
+#endif
+
 #if CONFIG_IEC
 
 	// Due to OPEN/CLOSE/TKSA/SECOND command encoding, allowed channels are 0-15; it is the caller

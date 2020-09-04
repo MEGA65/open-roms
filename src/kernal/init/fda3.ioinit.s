@@ -20,7 +20,8 @@ IOINIT:
 
 	jsr     map_KERNAL_1
 	jsr_ind VK1__IOINIT
-	jmp     map_NORMAL
+	// End by initializing the MEGA65 internal DOS
+	jmp     m65dos_init
 
 #else
 
@@ -104,7 +105,7 @@ IOINIT:
 
 #else
 
-	// Mega65 specific handling - it contains 4 SIDs
+	// MEGA65 specific handling - it contains 4 SIDs
 
 	sta SID_SIGVOL + __SID_R1_OFFSET
 	sta SID_SIGVOL + __SID_R2_OFFSET

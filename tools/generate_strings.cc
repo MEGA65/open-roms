@@ -202,9 +202,21 @@ const StringEntryList GLOBAL_Keywords_02 =  { ListType::KEYWORDS, "keywords_02",
 
     { false, true,  false, false, "K02_07",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
     { false, true,  false, false, "K02_08",   "MEM",          }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { false, true,  false, false, "K02_09",   "SYSINFO",      }, // Not present in CBM BASIC dialects, Open ROMs specific
 
     // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };
+
+// extended BASIC keywords - list reserved for hardware dependent BASIC commands
+
+const StringEntryList GLOBAL_Keywords_03_M65 =  { ListType::KEYWORDS, "keywords_03",
+{
+    // STD    M65    U64    X16
+
+    { false, true,  false, false, "K03_01",   "TEST",         }, // Not present in CBM BASIC dialects, Open ROMs specific
+
+} };
+
 
 // BASIC errors - all dialects
 
@@ -272,22 +284,44 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
 const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
 {
     // STD    M65    U64    X16   --- misc strings as on CBM machines
-    { true,  true,  true,  true,  "STR_RET_QM",   "\r?"                },
-    { true,  true,  true,  true,  "STR_BYTES",    " BASIC BYTES FREE"  }, // https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  true,  "STR_READY",    "\rREADY.\r"         }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
-    { true,  true,  true,  true,  "STR_ERROR",    " ERROR"             }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
-    { true,  true,  true,  true,  "STR_IN",       " IN "               },
-    { false, true,  false, false, "STR_IF_SURE",  "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
+    { true,  true,  true,  true,  "STR_RET_QM",       "\r?"                },
+    { true,  true,  true,  true,  "STR_BYTES",        " BASIC BYTES FREE"  }, // https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_READY",        "\rREADY.\r"         }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
+    { true,  true,  true,  true,  "STR_ERROR",        " ERROR"             }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
+    { true,  true,  true,  true,  "STR_IN",           " IN "               },
+    { false, true,  false, false, "STR_IF_SURE",      "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
     // STD    M65    U64    X16   --- misc strings specific to Open ROMs, not present in CBM ROMs
-    { true,  true,  true,  true,  "STR_BRK_AT",   "\rBRK AT $"         },
-    { false, true,  false, false, "STR_MEM_HDR",  "\r\x12 AREA   START   SIZE  \r" },
-    { false, true,  false, false, "STR_MEM_1",    "   $"               },
-    { false, true,  false, false, "STR_MEM_2",    "   "                },
-    { false, true,  false, false, "STR_MEM_TEXT", "\r TEXT"            },
-    { false, true,  false, false, "STR_MEM_VARS", "\r VARS"            },
-    { false, true,  false, false, "STR_MEM_ARRS", "\r ARRS"            },
-    { false, true,  false, false, "STR_MEM_STRS", "\r STRS"            },
-    { false, true,  false, false, "STR_MEM_FREE", "\r\r FREE"          },
+    { true,  true,  true,  true,  "STR_BRK_AT",       "\rBRK AT $"         },
+
+    { false, true,  false, false, "STR_ORS",          "OPEN ROMS BASIC & KERNAL\r" },
+    { false, true,  false, false, "STR_ORS_LEGACY_1", "OPEN ROMS "         },
+    { false, true,  false, false, "STR_ORS_LEGACY_2", "\r\rLEGACY MODE   " },
+
+    { false, true,  false, false, "STR_MEM_HDR",      "\r\x12 AREA   START   SIZE  \r" },
+    { false, true,  false, false, "STR_MEM_1",        "   $"               },
+    { false, true,  false, false, "STR_MEM_2",        "   "                },
+    { false, true,  false, false, "STR_MEM_TEXT",     "\r TEXT"            },
+    { false, true,  false, false, "STR_MEM_VARS",     "\r VARS"            },
+    { false, true,  false, false, "STR_MEM_ARRS",     "\r ARRS"            },
+    { false, true,  false, false, "STR_MEM_STRS",     "\r STRS"            },
+    { false, true,  false, false, "STR_MEM_FREE",     "\r\r FREE"          },
+
+    { false, true,  false, false, "STR_SI_HEADER",    "OPEN ROMS, "        },
+    { false, true,  false, false, "STR_SI_MODE64",    "LEGACY MODE"        },
+    { false, true,  false, false, "STR_SI_MODE65",    "NATIVE MODE"        },
+    { false, true,  false, false, "STR_SI_HDR_REL",   "\rRELEASE "         },
+    { false, true,  false, false, "STR_SI_HDR_HW",    "BOARD  : "          },
+    { false, true,  false, false, "STR_SI_HW_01",     "MEGA65 R1"          },
+    { false, true,  false, false, "STR_SI_HW_02",     "MEGA65 R2"          },
+    { false, true,  false, false, "STR_SI_HW_03",     "MEGA65 R3"          },
+    { false, true,  false, false, "STR_SI_HW_21",     "MEGAPHONE R1"       },
+    { false, true,  false, false, "STR_SI_HW_40",     "NEXYS4 PSRAM"       },
+    { false, true,  false, false, "STR_SI_HW_41",     "NEXYS4 DDR"         },
+    { false, true,  false, false, "STR_SI_HW_42",     "NEXYS4 DDR WIDGET"  },
+    { false, true,  false, false, "STR_SI_HW_FD",     "WUKONG A100T"       },
+    { false, true,  false, false, "STR_SI_HW_FE",     "SIMULATION VHDL"    },
+    { false, true,  false, false, "STR_SI_HW_XX",     "UNKNOWN ID $"       },
+    { false, true,  false, false, "STR_SI_HDR_VID",   "\rVIDEO  : "        },
 
     // Note: depending on configuration, additional strings will be added here
 } };
@@ -1097,68 +1131,91 @@ void DataSet::generateConfigDepStrings()
     // Generate string to show the build features
    
     std::string featureStr;
-   
+    std::string featureStrM65 = "\r";
+
     // Tape support features
    
     if (GLOBAL_ConfigOptions["CONFIG_TAPE_NORMAL"] && GLOBAL_ConfigOptions["CONFIG_TAPE_TURBO"])
     {
-        featureStr = "TAPE LOAD NORMAL TURBO\r";
+        featureStr    += "TAPE LOAD NORMAL TURBO\r";
+        featureStrM65 += "TAPE   : LOAD NORMAL TURBO\r";
     }
     else if (GLOBAL_ConfigOptions["CONFIG_TAPE_NORMAL"])
     {
-        featureStr = "TAPE LOAD NORMAL\r";
+        featureStr    += "TAPE LOAD NORMAL\r";
+        featureStrM65 += "TAPE   : LOAD NORMAL\r";
     }
     else if (GLOBAL_ConfigOptions["CONFIG_TAPE_TURBO"])
     {
-        featureStr = "TAPE LOAD TURBO\r";
+        featureStr    += "TAPE LOAD TURBO\r";
+        featureStrM65 += "TAPE   : LOAD TURBO\r";
     }
    
     // IEC support features
    
     if (GLOBAL_ConfigOptions["CONFIG_IEC"])
     {
-        featureStr += "IEC";
+        featureStr    += "IEC";
+        featureStrM65 += "IEC    :";
        
         bool extendedIEC = false;
        
         if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_CIA1"])
         {
-            featureStr += " BURST1";
-            extendedIEC = true;
+            featureStr    += " BURST1";
+            extendedIEC    = true;
         }
         if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_CIA2"])
         {
-            featureStr += " BURST2";
-            extendedIEC = true;
+            featureStr    += " BURST2";
+            extendedIEC    = true;
         }
         if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_MEGA65"])
         {
-            featureStr += " BURST";
-            extendedIEC = true;
+            featureStr    += " BURST";
+            featureStrM65 += " BURST";
+            extendedIEC    = true;
         }
        
         if (GLOBAL_ConfigOptions["CONFIG_IEC_DOLPHINDOS"])
         {
-            featureStr += " DOLPHIN";
-            extendedIEC = true;
+            featureStr    += " DOLPHIN";
+            featureStrM65 += " DOLPHIN";
+            extendedIEC    = true;
         }
        
         if (GLOBAL_ConfigOptions["CONFIG_IEC_JIFFYDOS"])
         {
-            featureStr += " JIFFY";
-            extendedIEC = true;
+            featureStr    += " JIFFY";
+            featureStrM65 += " JIFFY";
+            extendedIEC    = true;
         }
        
-        if (!extendedIEC) featureStr += " NORMAL";
-       
-        featureStr += "\r";
+        if (!extendedIEC)
+        {
+            featureStr    += " NORMAL ONLY";
+            featureStrM65 += " NORMAL ONLY";
+        }
+
+        featureStr    += "\r";
+        featureStrM65 += "\r";
     }
-   
+    else
+    {
+        featureStrM65 += "IEC    : NO\r";
+    }
+
     // RS-232 support features
    
     if (GLOBAL_ConfigOptions["CONFIG_RS232_UP2400"]) featureStr += "UP2400\r";
     if (GLOBAL_ConfigOptions["CONFIG_RS232_UP9600"]) featureStr += "UP9600\r";
    
+    featureStrM65 += "RS-232 : NO\r";
+
+    // CBDOS features
+
+    featureStrM65 += "CBDOS  : NO FDD/SD/RAM SUPPORT\r";
+
     // Keyboard support features
    
     if (GLOBAL_ConfigOptions["CONFIG_KEYBOARD_C128"]) featureStr += "KBD 128\r";
@@ -1172,18 +1229,34 @@ void DataSet::generateConfigDepStrings()
 
         // List found
 
-        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"])
+        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"] || GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
         {
             StringEntry newEntry1 = { true, true, true, true, "STR_PAL",      "PAL\r"    };
             StringEntry newEntry2 = { true, true, true, true, "STR_NTSC",     "NTSC\r"   };
-            StringEntry newEntry3 = { true, true, true, true, "STR_FEATURES", featureStr };
 
             stringEntryList.list.push_back(newEntry1);
             stringEntryList.list.push_back(newEntry2);
-            stringEntryList.list.push_back(newEntry3);
-
-            break;
         }
+
+        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"])
+        {
+            StringEntry newEntry = { true, true, true, true, "STR_FEATURES", featureStr };
+            stringEntryList.list.push_back(newEntry);
+        }
+
+        if (GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+        {
+            StringEntry newEntry = { false, true, false, false, "STR_SI_FEATURES", featureStrM65 };
+            stringEntryList.list.push_back(newEntry);
+        }
+
+        if (!GLOBAL_ConfigOptions["CONFIG_BRAND_CUSTOM_BUILD"] || GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+        {
+            StringEntry newEntry = { true, true, true, true, "STR_PRE_REV", "RELEASE " };
+            stringEntryList.list.push_back(newEntry);
+        }
+
+        break;
     }
 }
 
@@ -1760,6 +1833,7 @@ void writeStrings()
         dataSetM65.addStrings(GLOBAL_Keywords_V2);
         dataSetM65.addStrings(GLOBAL_Keywords_01);
         dataSetM65.addStrings(GLOBAL_Keywords_02);
+        dataSetM65.addStrings(GLOBAL_Keywords_03_M65);
         dataSetM65.addStrings(GLOBAL_Errors);
         dataSetM65.addStrings(GLOBAL_MiscStrings);
        

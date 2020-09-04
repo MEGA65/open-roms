@@ -51,3 +51,13 @@
 #endif
 
 .label filename_any        = KERNAL().filename_any
+
+.label SELDEV              = KERNAL().SELDEV
+
+#if ROM_LAYOUT_M65
+.label M65_MODEGET         = KERNAL().M65_MODEGET
+.label M65_MODESET         = KERNAL().M65_MODESET
+.label M65_SLOW            = KERNAL().M65_SLOW
+.label M65_FAST            = KERNAL().M65_FAST
+.label M65_SETWIN_Y        = KERNAL().M65_SETWIN_Y
+#endif

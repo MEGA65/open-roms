@@ -74,12 +74,36 @@ scnkey_toggle_if_needed: // entry for SCNKEY (TWW/CTR version)
 	lda LSTSHF
 	and #$03
 	cmp #$03
-	beq !+ // alreeady toggled
+	beq !+ // already toggled
 
 	// Toggle char set
+
+#if ROM_LAYOUT_M65
+
+	jsr M65_MODEGET
+	bcc !++
+
+	// Toggling charsets for C64 mode
 
 	lda VIC_YMCSB
 	eor #$02
 	sta VIC_YMCSB
 !:
 	rts
+
+	// Toggling charsets for M65 mode
+!:
+	lda VIC_CHARPTR+1
+	eor #%00001000
+	sta VIC_CHARPTR+1
+	rts
+
+#else
+
+	lda VIC_YMCSB
+	eor #$02
+	sta VIC_YMCSB
+!:
+	rts
+
+#endif

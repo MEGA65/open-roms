@@ -94,6 +94,10 @@ list_not_quote:
 	cmp #$02
 	beq list_display_token_02
 #endif
+#if ROM_LAYOUT_M65
+	cmp #$03
+	beq list_display_token_03
+#endif
 
 	// Check for literals
 	cmp #$7F
@@ -224,6 +228,24 @@ list_display_token_02:
 	// Now ask for it to be printed
 	phy_trash_a
 	jsr print_packed_keyword_02
+	jmp_8 list_display_token_ext_done
+
+#endif
+
+#if ROM_LAYOUT_M65
+
+list_display_token_03:
+
+	// Display a 2-byte token - for extended BASIC
+	jsr list_fetch_subtoken
+
+	// Check if token is known
+	cpx #TK__MAXTOKEN_keywords_03
+	bcs list_is_unknown
+
+	// Now ask for it to be printed
+	phy_trash_a
+	jsr print_packed_keyword_03
 	jmp_8 list_display_token_ext_done
 
 #endif

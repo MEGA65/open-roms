@@ -22,7 +22,8 @@
 	// varstr_garbage_collect,            // cmd_dispose
 
 	cmd_cold,
-	cmd_mem
+	cmd_mem,
+	cmd_sysinfo
 )
 
 

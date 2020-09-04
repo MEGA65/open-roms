@@ -56,7 +56,7 @@ __kb_matrix_ctrl:
 	.byte $1F,$19,$07,$9E,$02,$08,$15,$16
 	.byte $12,$09,$0A,$92,$0D,$0B,$0F,$0E
 #if CONFIG_EDIT_TABULATORS
-	.byte $00,$10,$0C,$00,KEY_TAB_FW,$1B,$00,KEY_TAB_BW
+	.byte $00,$10,$0C,$00,KEY_C64_TAB_FW,$1B,$00,KEY_C64_TAB_BW
 #else
 	.byte $00,$10,$0C,$00,$00,$1B,$00,$00
 #endif

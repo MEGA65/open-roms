@@ -145,7 +145,7 @@ jiffydos_load_end:
 	sta C3PO
 
 	// Restore proper IECPROTO value
-	lda #$01
+	lda #IEC_JIFFY
 	sta IECPROTO
 
 #if CONFIG_IEC_JIFFYDOS_BLANK

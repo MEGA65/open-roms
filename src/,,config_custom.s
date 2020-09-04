@@ -22,7 +22,6 @@
 #define CONFIG_BRAND_CUSTOM_BUILD
 // #define CONFIG_BRAND_GENERIC
 // #define CONFIG_BRAND_TESTING
-// #define CONFIG_BRAND_MEGA_65
 // #define CONFIG_BRAND_ULTIMATE_64
 
 .const CONFIG_CUSTOM_BRAND = @"CUSTOM BUILD"
@@ -61,7 +60,6 @@
 #define CONFIG_TAPE_AUTODETECT
 // #define CONFIG_TAPE_NO_KEY_SENSE
 // #define CONFIG_TAPE_NO_MOTOR_CONTROL
-// #define CONFIG_TAPE_NO_ERROR_CORRECTION
 
 // #define CONFIG_RS232_UP2400                   // please keep disabled for now
 // #define CONFIG_RS232_UP9600                   // please keep disabled for now
@@ -134,7 +132,6 @@
 // #define CONFIG_COLORS_BRAND
 // #define CONFIG_BANNER_SIMPLE
 #define CONFIG_BANNER_FANCY
-// #define CONFIG_BANNER_BRAND
 #define CONFIG_SHOW_FEATURES
 
 

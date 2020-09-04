@@ -13,8 +13,8 @@ chrout_screen_jumptable_codes:
 
 	.byte KEY_CLR 
 	.byte KEY_HOME
-	.byte KEY_SHIFT_OFF
-	.byte KEY_SHIFT_ON
+	.byte KEY_C64_SHIFT_OFF
+	.byte KEY_C64_SHIFT_ON
 	.byte KEY_TXT
 	.byte KEY_GFX
 	.byte KEY_RVS_OFF
@@ -31,8 +31,8 @@ __chrout_screen_jumptable_quote_guard:
 	.byte KEY_STOP
 #endif
 #if CONFIG_EDIT_TABULATORS
-	.byte KEY_TAB_BW
-	.byte KEY_TAB_FW
+	.byte KEY_C64_TAB_BW
+	.byte KEY_C64_TAB_FW
 #endif
 	.byte KEY_DEL
 	.byte KEY_RETURN

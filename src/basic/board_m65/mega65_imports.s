@@ -2,7 +2,7 @@
 // #LAYOUT# *   *       #IGNORE
 
 //
-// Definitions for calling Mega65 segments BASIC_0 and KERNAL_0 routines from BASIC_1
+// Definitions for calling MEGA65 segments BASIC_0 and KERNAL_0 routines from BASIC_1
 //
 
 #import "BASIC_0_combined.sym"
@@ -12,6 +12,7 @@
 .label poke_via_OLDTXT                 = BASIC_0.proxy_B1_poke_via_OLDTXT
 .label JCHROUT                         = BASIC_0.proxy_B1_JCHROUT
 .label JCLALL                          = BASIC_0.proxy_B1_JCLALL
+.label plot_set                        = BASIC_0.proxy_B1_plot_set
 #if CONFIG_DOS_WEDGE
 .label JCLOSE                          = BASIC_0.proxy_B1_JCLOSE
 .label JOPEN                           = BASIC_0.proxy_B1_JOPEN
@@ -20,10 +21,16 @@
 .label JSETFLS                         = KERNAL_0.JSETFLS
 .label JSETNAM                         = KERNAL_0.JSETNAM
 .label JGETIN                          = KERNAL_0.JGETIN
-.label JCHKIN                          = KERNAL_0.JCHKIN
-.label JCHRIN                          = KERNAL_0.JCHRIN
+.label JCHKIN                          = BASIC_0.proxy_B1_JCHKIN
+.label JCHRIN                          = BASIC_0.proxy_B1_JCHRIN
 .label JREADST                         = KERNAL_0.JREADST
-.label plot_set                        = KERNAL_0.plot_set
+.label JSCREEN                         = KERNAL_0.JSCREEN
+.label SELDEV                          = KERNAL_0.SELDEV
+.label M65_MODEGET                     = KERNAL_0.M65_MODEGET
+.label M65_SETWIN_XY                   = KERNAL_0.M65_SETWIN_XY
+.label M65_SETWIN_WH                   = KERNAL_0.M65_SETWIN_WH
+.label M65_SETWIN_Y                    = BASIC_0.proxy_B1_M65_SETWIN_Y
+.label M65_SETWIN_N                    = KERNAL_0.M65_SETWIN_N
 .label init_oldtxt                     = BASIC_0.init_oldtxt
 .label tmpstr_free_all_reset           = BASIC_0.tmpstr_free_all_reset
 .label rom_revision_basic_string       = BASIC_0.rom_revision_basic_string

@@ -24,6 +24,14 @@ default_brk_handler:
 
 #endif
 
+#if ROM_LAYOUT_M65
+
+	// Make sure we have normal memory mapping
+
+	jsr map_NORMAL
+
+#endif
+
 	jsr JRESTOR
 	jsr JIOINIT
 

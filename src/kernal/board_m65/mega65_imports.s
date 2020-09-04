@@ -2,22 +2,55 @@
 // #LAYOUT# *   *        #IGNORE
 
 //
-// Definitions for calling Mega65 segment KERNAL_0 routines from KERNAL_1
+// Definitions for calling MEGA65 segment KERNAL_0 routines from KERNAL_1
 //
 
 #import "KERNAL_0_combined.sym"
 
 
+.label CHROUT                          = KERNAL_0.proxy_K1_CHROUT
 .label STOP                            = KERNAL_0.STOP
+.label M65_SLOW                        = KERNAL_0.M65_SLOW
+.label M65_FAST                        = KERNAL_0.M65_FAST
+.label M65_MODEGET                     = KERNAL_0.M65_MODEGET
+.label M65_SETWIN_XY                   = KERNAL_0.M65_SETWIN_XY
+.label M65_SETWIN_WH                   = KERNAL_0.M65_SETWIN_WH
+.label M65_SETWIN_N                    = KERNAL_0.M65_SETWIN_N
+.label M65_SETWIN_Y                    = KERNAL_0.M65_SETWIN_Y
+
+
+#if (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO) || (CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K)
+.label screen_on                       = KERNAL_0.screen_on
+.label screen_off                      = KERNAL_0.screen_off
+#endif
 
 .label hw_entry_reset                  = KERNAL_0.hw_entry_reset
 .label return_from_interrupt           = KERNAL_0.return_from_interrupt
 .label clrchn_reset                    = KERNAL_0.clrchn_reset
 .label udtim_keyboard                  = KERNAL_0.udtim_keyboard
+.label chrout_to_screen_code           = KERNAL_0.chrout_to_screen_code
+.label colour_codes                    = KERNAL_0.colour_codes
+.label screen_check_toggle_quote       = KERNAL_0.screen_check_toggle_quote
+.label screen_code_to_petscii          = KERNAL_0.screen_code_to_petscii
 
 .label setup_irq_timer                 = KERNAL_0.setup_irq_timer
 .label wait_x_bars                     = KERNAL_0.wait_x_bars
+.label viciv_unhide                    = KERNAL_0.viciv_unhide
+.label viciv_init                      = KERNAL_0.viciv_init
+.label viciv_shutdown                  = KERNAL_0.viciv_shutdown
+.label viciv_hotregs_on                = KERNAL_0.viciv_hotregs_on
+.label viciv_hotregs_off               = KERNAL_0.viciv_hotregs_off
 
+.label m65_clr_magictstr               = KERNAL_0.m65_clr_magictstr
+.label m65_scrtab_txtwidth             = KERNAL_0.m65_scrtab_txtwidth
+.label m65_scrtab_txtheight            = KERNAL_0.m65_scrtab_txtheight
+.label m65_screen_set_indx             = KERNAL_0.m65_screen_set_indx
+.label cursor_enable                   = KERNAL_0.cursor_enable
+.label cursor_undraw_cont              = KERNAL_0.cursor_undraw_cont
+.label cursor_timer_reset              = KERNAL_0.cursor_timer_reset
+.label cursor_show_if_enabled          = KERNAL_0.cursor_show_if_enabled
+.label chrin_programmable_keys         = KERNAL_0.proxy_K1_chrin_programmable_keys
+.label pop_keyboard_buffer             = KERNAL_0.pop_keyboard_buffer
 
 #if CONFIG_IEC
 
@@ -28,7 +61,6 @@
 
 #if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
 
-.label mega65_unhide                   = KERNAL_0.mega65_unhide
 .label tape_motor_on                   = KERNAL_0.tape_motor_on
 .label tape_motor_off                  = KERNAL_0.tape_motor_off
 
@@ -37,6 +69,7 @@
 .label lvs_return_last_address         = KERNAL_0.proxy_K1_lvs_return_last_address
 .label lvs_device_not_found_error      = KERNAL_0.proxy_K1_lvs_device_not_found_error
 .label lvs_load_verify_error           = KERNAL_0.proxy_K1_lvs_load_verify_error
+.label m65_load_autoswitch_tape        = KERNAL_0.proxy_K1_m65_load_autoswitch_tape
 
 .label lvs_check_EAL                   = KERNAL_0.lvs_check_EAL
 .label lvs_STAL_to_MEMUSS              = KERNAL_0.lvs_STAL_to_MEMUSS

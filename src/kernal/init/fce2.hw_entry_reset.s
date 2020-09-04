@@ -27,7 +27,7 @@ hw_entry_reset:
 
 #if ROM_LAYOUT_M65
 
-	jsr map_NORMAL           // we want normal memory mapping
+	jsr m65_reset_part
 
 #endif
 
@@ -61,8 +61,15 @@ hw_entry_reset:
 	// also affirmed by c64 prg p269
 	jsr JRESTOR
 
-	//  "Compute's Mapping the 64" p236
+	// "Compute's Mapping the 64" p236
 	jsr JCINT
+
+#if ROM_LAYOUT_M65
+
+	clc
+	jsr M65_MODESET          // on MEGA65 go to native mode by default
+
+#endif
 
 	// What do we do when finished?  A C64 jumps into the BASIC ROM
 	cli // allow interrupts to happen

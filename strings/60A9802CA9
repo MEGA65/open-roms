@@ -1,0 +1,3 @@
+RTS + LDA #$80 + BIT (to skip 2 bytes) + LDA (value does not match)
+
+Routine starting with .A loaded with one of 2 values, depending on entrance address. Common technique on 6502. Not creative - not copyrightable.

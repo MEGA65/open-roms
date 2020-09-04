@@ -163,7 +163,7 @@ do_error_fetch:
 	// $E6 has even part
 	asl
 	ora $EA
-	and #$7f
+	and #$7F
 	tax
 
 	// Restore $EA to correct value in case the NOP above is used

@@ -16,6 +16,7 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  src/basic/basic_commands \
                  src/basic/basic_commands_01 \
                  src/basic/basic_commands_02 \
+                 src/basic/basic_commands_03_m65 \
                  src/basic/basic_operators \
                  src/basic/basic_functions \
                  src/basic/board_m65 \
@@ -32,12 +33,16 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  src/basic/rom_revision \
                  src/basic/wedge
 
+SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
+                 src/dos_m65 \
+
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal \
                  src/kernal/,stubs \
                  src/kernal/assets \
                  src/kernal/board_m65 \
                  src/kernal/board_x16 \
+                 src/kernal/extapi_m65 \
                  src/kernal/iec \
                  src/kernal/iec_fast \
                  src/kernal/init \
@@ -50,17 +55,19 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal/rom_revision \
                  src/kernal/rs232 \
                  src/kernal/screen \
+                 src/kernal/screen_m65 \
                  src/kernal/tape \
                  src/kernal/time
 
-SRC_BASIC  = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
-SRC_KERNAL = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
-SRC_TOOLS  = $(wildcard tools/*.c,tools/*.cc)
+SRC_BASIC   = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+SRC_DOS_M65 = $(foreach dir,$(SRCDIR_DOS_M65),$(wildcard $(dir)/*.s))
+SRC_KERNAL  = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+SRC_TOOLS   = $(wildcard tools/*.c,tools/*.cc)
 
 # Generated files
 
-GEN_BASIC  = build/,generated/float_constants.s
-GEN_KERNAL =
+GEN_BASIC   = build/,generated/float_constants.s
+GEN_KERNAL  =
 
 # List of build directories
 
@@ -91,8 +98,9 @@ GEN_STR_X16 = $(DIR_X16)/,generated/packed_strings.s
 
 # Dependencies - helper variables
 
-DEP_BASIC   = $(SRC_BASIC)  $(SRCDIR_BASIC)  $(GEN_BASIC)
-DEP_KERNAL  = $(SRC_KERNAL) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+DEP_BASIC   = $(SRC_BASIC)   $(SRCDIR_BASIC)   $(GEN_BASIC)
+DEP_DOS_M65 = $(SRC_DOS_M65) $(SRCDIR_DOS_M65)
+DEP_KERNAL  = $(SRC_KERNAL)  $(SRCDIR_KERNAL)  $(GEN_KERNAL)
 
 # List of tools
 
@@ -140,6 +148,7 @@ TARGET_LIST = build/chargen_openroms.rom \
 
 SEG_LIST_M65 =    $(DIR_M65)/basic.seg_0  \
                   $(DIR_M65)/basic.seg_1  \
+                  $(DIR_M65)/dos.seg_1    \
 				  $(DIR_M65)/kernal.seg_0 \
 				  $(DIR_M65)/kernal.seg_1
 
@@ -204,7 +213,7 @@ build/chargen_openroms.patched: $(TOOL_PATCH_CHARGEN) build/chargen_openroms.rom
 build/chargen_pxlfont.patched: $(TOOL_PATCH_CHARGEN) build/chargen_pxlfont.rom
 	$(TOOL_PATCH_CHARGEN) -i build/chargen_pxlfont.rom -o $@ -n 6px-PXLfont
 
-# Dependencies - BASIC and KERNAL
+# Dependencies - BASIC, DOS, and KERNAL
 
 $(DIR_CUS)/OUTB_x.BIN $(DIR_CUS)/BASIC_combined.vs: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_CUS) $(GEN_STR_CUS) $(DIR_CUS)/KERNAL_combined.sym
@@ -236,6 +245,8 @@ $(DIR_X16)/OUTK_0.BIN $(DIR_X16)/KERNAL_0_combined.vs $(DIR_X16)/KERNAL_0_combin
 
 $(DIR_M65)/basic.seg_1  $(DIR_M65)/BASIC_1_combined.vs  $(DIR_M65)/BASIC_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_M65)/BASIC_0_combined.sym
+$(DIR_M65)/dos.seg_1    $(DIR_M65)/DOS_1_combined.vs    $(DIR_M65)/DOS_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_DOS) $(CFG_M65)
 $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym
 
@@ -315,7 +326,7 @@ build/target_%/OUTK_x.BIN build/target_%/KERNAL_combined.vs build/target_%/KERNA
 	@rm -f $@* build/target_$*/KERNAL*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r STD -s KERNAL -i KERNAL-$* -o OUTK_x.BIN -d build/target_$* -l e4d3 -h ffff src/,,config_$*.s $(SRCDIR_KERNAL) $(GEN_KERNAL) $(GEN_STR_$*)
 
-# Rules - BASIC and KERNAL intermediate files, for Mega65
+# Rules - BASIC and KERNAL intermediate files, for MEGA65
 
 $(DIR_M65)/OUTB_0.BIN $(DIR_M65)/BASIC_0_combined.vs $(DIR_M65)/BASIC_0_combined.sym:
 	@mkdir -p $(DIR_M65)
@@ -331,6 +342,11 @@ $(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1_combined.vs $(DIR_M65)/BASIC_1_combine
 	@mkdir -p $(DIR_M65)
 	@rm -f $@* $(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_M65) -l 4000 -h 7fff $(CFG_M65) $(GEN_STR_M65) $(SRCDIR_BASIC) $(GEN_BASIC)
+
+$(DIR_M65)/dos.seg_1 $(DIR_M65)/DOS_1_combined.vs $(DIR_M65)/DOS_1_combined.sym:
+	@mkdir -p $(DIR_M65)
+	@rm -f $@* $(DIR_M65)/dos.seg_1 $(DIR_M65)/DOS_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s DOS_1 -i DOS_1-mega65 -o dos.seg_1 -d $(DIR_M65) -l 4000 -h 7fff $(CFG_M65) $(SRCDIR_DOS_M65)
 
 $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym:
 	@mkdir -p $(DIR_M65)
@@ -407,18 +423,15 @@ build/kernal_hybrid.rom: kernal $(DIR_GEN)/OUTK_x.BIN
 build/symbols_hybrid.vs: $(DIR_GEN)/KERNAL_combined.vs
 	sort $(DIR_GEN)/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
-# Rules - platform 'Mega65' specific
+# Rules - MEGA65 platform specific
 
-build/padding_16_KB:
-	@mkdir -p build
-	dd if=/dev/zero bs=8192 count=2 of=build/padding_16_KB
 build/padding_64_KB:
 	@mkdir -p build
 	dd if=/dev/zero bs=8192 count=8 of=build/padding_64_KB
 
-$(TARGET_M65_x) $(TARGET_M65_x_PXL): build/padding_16_KB build/padding_64_KB $(SEG_LIST_M65) build/chargen_openroms.rom build/chargen_openroms.patched build/chargen_pxlfont.rom build/chargen_pxlfont.patched
+$(TARGET_M65_x) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB build/chargen_openroms.rom build/chargen_openroms.patched build/chargen_pxlfont.rom build/chargen_pxlfont.patched
 	@echo
-	cat build/padding_16_KB                  > $(TARGET_M65_x)
+	cat $(DIR_M65)/dos.seg_1        > $(TARGET_M65_x)
 	cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x)
 	cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x)
 	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x)
@@ -427,7 +440,7 @@ $(TARGET_M65_x) $(TARGET_M65_x_PXL): build/padding_16_KB build/padding_64_KB $(S
 	cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x)
 	cat build/padding_64_KB                 >> $(TARGET_M65_x)
 	@echo
-	cat build/padding_16_KB                  > $(TARGET_M65_x_PXL)
+	cat $(DIR_M65)/dos.seg_1        > $(TARGET_M65_x_PXL)
 	cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x_PXL)
 	cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x_PXL)
 	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x_PXL)

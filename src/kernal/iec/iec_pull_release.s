@@ -20,7 +20,7 @@ iec_pull_atn_clk_release_data:
 	lda CIA2_PRA
 	ora #BIT_CIA2_PRA_ATN_OUT          // pull
 	sta CIA2_PRA
-	
+
 	// FALLTROUGH
 
 iec_pull_clk_release_data:

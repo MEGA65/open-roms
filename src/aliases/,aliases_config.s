@@ -63,18 +63,21 @@
 #if CONFIG_BRAND_TESTING
 	.eval selected++
 #endif
-#if CONFIG_BRAND_MEGA_65
-	.eval selected++
-#endif
 #if CONFIG_BRAND_ULTIMATE_64
 	.eval selected++
 #endif
 
+#if !CONFIG_MB_MEGA_65
 	.if (selected != 1) .error "Please select exactly one CONFIG_BRAND_* option"
-
-#if CONFIG_MB_MEGA_65 && !(CONFIG_BRAND_MEGA_65 || CONFIG_BRAND_TESTING || CONFIG_BRAND_CUSTOM_BUILD)
-	.error "Please select brand either matching the CONFIG_MB_*, or a testing/custom one"
 #endif
+#if CONFIG_MB_MEGA_65
+	.if (selected != 0) .error "Do not use CONFIG_BRAND_* options for MEGA65"
+#endif
+
+#if CONFIG_MB_MEGA_65 && CONFIG_SHOW_FEATURES
+	.if (selected != 0) .error "Do not use CONFIG_SHOW_FEATURES options for MEGA65"
+#endif
+
 #if CONFIG_MB_ULTIMATE_64 && !(CONFIG_BRAND_ULTIMATE_64 || CONFIG_BRAND_TESTING || CONFIG_BRAND_CUSTOM_BUILD)
 	.error "Please select brand either matching the CONFIG_MB_*, or a testing/custom one"
 #endif
@@ -110,10 +113,10 @@
 // Check that memory model and ROM layout configurations is correct
 {
 #if ROM_LAYOUT_M65 && !CONFIG_CPU_M65_45GS02
-	.error "Mega65 ROM layout requires CONFIG_CPU_M65_45GS02"
+	.error "MEGA65 ROM layout requires CONFIG_CPU_M65_45GS02"
 #endif
 #if ROM_LAYOUT_M65 && !CONFIG_MB_MEGA_65
-	.error "Mega65 ROM layout requires CONFIG_MB_MEGA_65"
+	.error "MEGA65 ROM layout requires CONFIG_MB_MEGA_65"
 #endif
 
 	.var selected = 0;
@@ -218,18 +221,17 @@
 #if CONFIG_BANNER_FANCY
 	.eval selected++
 #endif
-#if CONFIG_BANNER_BRAND
-	.eval selected++
-#endif
 
+#if !CONFIG_MB_MEGA_65
 	.if (selected != 1) .error "Please select exactly one CONFIG_BANNER_* option" 
-
-#if CONFIG_BANNER_BRAND && !CONFIG_BRAND_MEGA_65
-	.error "CONFIG_BANNER_BRAND is not supported for your CONFIG_BRAND_*" 
 #endif
 
-#if CONFIG_MB_MEGA_65 && CONFIG_SHOW_PAL_NTSC
-	.error "MEGA65 can switch PAL/NTSC during run-time, CONFIG_SHOW_PAL_NTSC makes no sense"
+#if CONFIG_MB_MEGA_65
+	.if (selected != 0) .error "Do not use CONFIG_BANNER_* options for MEGA65"
+#endif
+
+#if CONFIG_MB_MEGA_65 && CONFIG_COLORS_BRAND
+	.error "Do not use CONFIG_COLORS_BRAND options for MEGA65"
 #endif
 
 }

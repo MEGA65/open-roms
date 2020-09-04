@@ -84,7 +84,7 @@ It enables some speed/size code optimizations and allows C65 memory mapping to w
 
 ### `CONFIG_CPU_M65_45GS02`
 
-Choose if you have a Mega65 FPGA board. It enables some speed/size code optimizations and allows Mega65 memory mapping to work.
+Choose if you have a MEGA65 FPGA board. It enables some speed/size code optimizations and allows MEGA65 memory mapping to work.
 
 ### `CONFIG_CPU_WDC_65816`
 
@@ -111,7 +111,7 @@ These models additionaly use RAM under BASIC, and the 50K additionally takes ove
 
 Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires special helper routines installed in `$2A7`-`$2FF` area (normally unused and free for the user). Gives the most free memory for BASIC programs, but it's the slowest (for example, forces disabling optimized LOAD loop for JiffyDOS) and the least compatible model.
 
-It is currently not compatible with Mega65 extended ROMs.
+It is currently not compatible with MEGA65 extended ROMs.
 
 Comparing to standard memory model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
 
@@ -147,7 +147,7 @@ Causes screen blanking during JiffyDOS file loading to increase performance.
 
 ## Tape support
 
-Note: for Mega65 most of the tape support code is placed in it's extended ROM; very little of the (tiny) KERNAL segment is used.
+Note: for MEGA65 most of the tape support code is placed in it's extended ROM; very little of the (tiny) KERNAL segment is used.
 
 ### `CONFIG_TAPE_NORMAL`
 
@@ -174,12 +174,6 @@ Enable this option if you are using a tape interface adapter with some audio sig
 ### `CONFIG_TAPE_NO_MOTOR_CONTROL`
 
 Enable this option if you are using a tape interface adapter lacking tape motor control (most likely every adapter currently being sold) - this will eliminate the need to quickly press space when the program header information gets displayed. Note: if you are using a cassette player with REM port, and your adapter is connected to this port too, than you do not need this option.
-
-### `CONFIG_TAPE_NO_ERROR_CORRECTION`
-
-Normal tape format contains two copies of each data block - in case some bytes from the first one are damaged, they can be corrected by reading them from the second copy. Enabling this option omits the core to read the second block.
-
-If used with `CONFIG_TAPE_NORMAL`, saves about 125 bytes in KERNAL segment. Not recommended when using real magnetic tapes.
 
 ## Multiple SID support
 
@@ -293,7 +287,7 @@ Feature needs several bytes in BASIC segment. If unsure - enable.
 
 If enabled, embeds a tape head align tool into the ROM, it can be started with `←H`. Requires `CONFIG_TAPE_WEDGE`.
 
-Feature needs about 800 bytes in KERNAL segment. Only recomended for machines with extended ROM, like Mega65.
+Feature needs about 800 bytes in KERNAL segment. Only recomended for machines with extended ROM, like MEGA65.
 
 ### `CONFIG_BCD_SAFE_INTERRUPTS`
 
@@ -307,9 +301,9 @@ Feature needs 2 bytes in KERNAL segmment (for CPUs needing the patch), but at th
 
 Tries to adjust the color scheme to the selected brand. Some brands might not support this.
 
-### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`, `CONFIG_BANNER_BRAND`
+### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`
 
-Select startup banner - either a simple one, or with some colorful elements. `CONFIG_BANNER_BRAND` heavily depends on the selected brand, not all the brands support it.
+Select startup banner - either a simple one, or with some colorful elements.
 
 Richer banners need more BASIC segment, varies between brands.
 

@@ -1,11 +1,9 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# M65 BASIC_1 #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+// #LAYOUT# STD *        #TAKE
+// #LAYOUT# *   KERNAL_0 #TAKE
+// #LAYOUT# *   *        #IGNORE
 
-// XXX for Mega65, it should be available in BASIC_1 segment only
 
-select_device:
+SELDEV:
 
 	// Take last device number, make sure it is a drive - 8 or above. Above 30,
 	// although illegal for IEC we also consider a drive, as they exists

@@ -20,6 +20,13 @@ iec_cmd_open: // similar to TKSA, but without turnaround
 !:
 	ora #$F0
 
+#if ROM_LAYOUT_M65
+
+	jsr m65dos_check
+	bcc_16 m65dos_second                 // branch if device is handeld by internal DOS
+
+#endif
+
 #if CONFIG_IEC_BURST_CIA1 || CONFIG_IEC_BURST_CIA2 || CONFIG_IEC_BURST_MEGA_65
 	pha
 	jsr burst_advertise

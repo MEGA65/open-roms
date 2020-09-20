@@ -6,17 +6,17 @@
 ;
 
 
-!addr VDOS_INIT    = $4000 +  0 * 2
-!addr VDOS_CHKUNIT = $4000 +  1 * 2
-!addr VDOS_SETUNIT = $4000 +  2 * 2
-!addr VDOS_ACPTR   = $4000 +  3 * 2
-!addr VDOS_CIOUT   = $4000 +  4 * 2
-!addr VDOS_LISTEN  = $4000 +  5 * 2
-!addr VDOS_SECOND  = $4000 +  6 * 2
-!addr VDOS_TALK    = $4000 +  7 * 2
-!addr VDOS_TKSA    = $4000 +  8 * 2
-!addr VDOS_UNTLK   = $4000 +  9 * 2
-!addr VDOS_UNLSN   = $4000 + 10 * 2
+!addr VDOS_INIT    = $4020 +  0 * 2
+!addr VDOS_CHKUNIT = $4020 +  1 * 2
+!addr VDOS_SETUNIT = $4020 +  2 * 2
+!addr VDOS_ACPTR   = $4020 +  3 * 2
+!addr VDOS_CIOUT   = $4020 +  4 * 2
+!addr VDOS_LISTEN  = $4020 +  5 * 2
+!addr VDOS_SECOND  = $4020 +  6 * 2
+!addr VDOS_TALK    = $4020 +  7 * 2
+!addr VDOS_TKSA    = $4020 +  8 * 2
+!addr VDOS_UNTLK   = $4020 +  9 * 2
+!addr VDOS_UNLSN   = $4020 + 10 * 2
 
 
 m65dos_init:

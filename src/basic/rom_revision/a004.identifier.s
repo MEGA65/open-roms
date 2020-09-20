@@ -1,23 +1,22 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
 
-// Computes Mapping the 64, p89 - 8 character name
+; Computes Mapping the 64, p89 - 8 character name
 
-#if ROM_LAYOUT_M65
+!ifdef CONFIG_MB_M65 {
 
-	// 'M65BASIC'
+	; 'M65BASIC'
 
-	.byte $4D, $36, $35                // 'M65'
+	!byte $4D, $36, $35                ; 'M65'
 
-#else
+} else {
 
-	// 'ORGBASIC', Open ROMs Generic BASIC
+	; 'ORGBASIC', Open ROMs Generic BASIC
 
-	.byte $4F, $52, $47                // 'ORG'
+	!byte $4F, $52, $47                ; 'ORG'
+}
 
-#endif
-
-	.byte $42, $41, $53, $49, $43      // 'BASIC'
+	!byte $42, $41, $53, $49, $43      ; 'BASIC'

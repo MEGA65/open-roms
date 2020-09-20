@@ -1,10 +1,10 @@
-// #LAYOUT# M65 KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
 
 m65_cursor_blink_irqpnt_to_screen:
 
-	// Adapt pointer to point to screen memory
+	; Adapt pointer to point to screen memory
 
 	lda M65_SCRSEG+1
 	sta M65_LPNT_IRQ+3

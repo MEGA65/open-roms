@@ -1,61 +1,61 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Default handler for all not-yet-implemented functions
-//
-// Note: NOPs are here just to make debugging easier (no duplicated labels)!
-//
+;
+; Default handler for all not-yet-implemented functions
+;
+; Note: NOPs are here just to make debugging easier (no duplicated labels)!
+;
 
 
 fun_sgn:
-	nop
+	+nop
 fun_int:
-	nop
+	+nop
 fun_abs:
-	nop
+	+nop
 fun_usr:
-	nop
+	+nop
 fun_fre:
-	nop
+	+nop
 fun_pos:
-	nop
+	+nop
 fun_sqr:
-	nop
+	+nop
 fun_rnd:
-	nop
+	+nop
 fun_log:
-	nop
+	+nop
 fun_exp:
-	nop
+	+nop
 fun_cos:
-	nop
+	+nop
 fun_sin:
-	nop
+	+nop
 fun_tan:
-	nop
+	+nop
 fun_atn:
-	nop
+	+nop
 fun_peek:
-	nop
+	+nop
 fun_len:
-	nop
+	+nop
 fun_str:
-	nop
+	+nop
 fun_val:
-	nop
+	+nop
 fun_asc:
-	nop
+	+nop
 fun_chr:
-	nop
+	+nop
 fun_left:
-	nop
+	+nop
 fun_right:
-	nop
+	+nop
 fun_mid:
-	nop
+	+nop
 
-	// Unimplemented tokens
+	; Unimplemented tokens
 
 	jmp do_NOT_IMPLEMENTED_error

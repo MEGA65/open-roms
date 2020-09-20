@@ -1,10 +1,10 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Math package - helper routines for RESHO manipulation
-//
+;
+; Math package - helper routines for RESHO manipulation
+;
 
 
 muldiv_RESHO_set_0:
@@ -24,7 +24,7 @@ muldiv_RESHO_01_add_A:
 	clc
 	adc RESHO+0
 	sta RESHO+0
-	bcc !+
+	bcc @1
 	inc RESHO+1
-!:
+@1:
 	rts

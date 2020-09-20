@@ -20,18 +20,16 @@
 #include <set>
 #include <vector>
 
-const std::string ASM_CMD       = "java -jar ";
-
 const std::string LAB_OUT_START = "__routine_START_";
 const std::string LAB_OUT_END   = "__routine_END_";
-const std::string LAB_IN_START  = ".label __routine_START_";
-const std::string LAB_IN_END    = ".label __routine_END_";
+const std::string LAB_IN_START  = "\t" + LAB_OUT_START;
+const std::string LAB_IN_END    = "\t" + LAB_OUT_END;
 
 //
 // Command line settings
 //
 
-std::string CMD_assFile   = "KickAss.jar";
+std::string CMD_assembler = "./acme";
 std::string CMD_outFile   = "OUT.BIN";
 std::string CMD_outDir    = "./out";
 std::string CMD_segName   = "MAIN";
@@ -49,7 +47,7 @@ std::list<std::string> CMD_inList;
 void printUsage()
 {
     std::cout << "\n" <<
-        "usage: build_segment [-a <assembler jar file>] [-o <out file>] [-d <out dir>]" << "\n" <<
+        "usage: build_segment [-a <assembler command>] [-o <out file>] [-d <out dir>]" << "\n" <<
         "                     [-l <start/low address>] [-h <end/high address>]" << "\n" <<
         "                     [-s <segment name>] [-i <segment display info>]" << "\n" <<
         "                     [-r <rom layout>]" << "\n" <<
@@ -70,6 +68,16 @@ void printBannerBinCompile()
     printBannerLineBottom();
 }
 
+std::string toLabel(const std::string &fileName)
+{
+    std::string retVal = fileName;
+
+    std::replace(retVal.begin(), retVal.end(), ',', '_');
+    std::replace(retVal.begin(), retVal.end(), '.', '_');
+
+    return retVal;
+}
+
 //
 // Class definitions
 //
@@ -80,15 +88,24 @@ public:
     SourceFile(const std::string &fileName, const std::string &dirName);
 
     void preprocess();
-    bool preprocessLine(const std::string &line);
+    void preprocessLine(const std::string &line, uint32_t lineNum);
+    void preprocessLine_Alias(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum);
+    void preprocessLine_Import(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
+    void preprocessLine_Layout(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
+
     bool nameMatch(const std::string &token, const std::string &name);
 
     std::string fileName;
     std::string dirName;
 
+    bool layoutProcessingDone;
     bool ignore;
     bool floating;
     bool high;
+
+    std::map<std::string, std::list<std::pair<std::string, uint16_t>>> symbolImports;
+    std::map<uint32_t, std::pair<std::string, uint16_t>>               symbolAliases;
+
     std::vector<char> content;
 
     std::string label;
@@ -166,7 +183,7 @@ void parseCommandLine(int argc, char **argv)
     {
         switch(opt)
         {
-            case 'a': CMD_assFile   = optarg; break;
+            case 'a': CMD_assembler = optarg; break;
             case 'o': CMD_outFile   = optarg; break;
             case 'd': CMD_outDir    = optarg; break;
             case 's': CMD_segName   = optarg; break;
@@ -291,15 +308,15 @@ void calcRoutineSizes()
     // Start at $100, so that no local data gets accesses using ZP addressing modes
     // during this pass, which would otherwise upset things later
 
-    outFile << "\n" << ".segment " << CMD_segName << " [start=$100, min=$100, max=$FFFF]" << "\n";
-    outFile << "#define SEGMENT_" << CMD_segName << "\n";
-    outFile << "#define ROM_LAYOUT_" << CMD_romLayout << "\n";
+    outFile << "\n" << "*=$100" << "\n";
+    outFile << "!set SEGMENT_" << CMD_segName << " = 1\n";
+    outFile << "!set ROM_LAYOUT_" << CMD_romLayout << " = 1\n";
 
     for (const auto &sourceFile : GLOBAL_sourceFiles)
     {
         outFile << "\n\n\n\n";
-        outFile << "/* Source file: " << sourceFile.fileName << " */" << "\n\n";
-        outFile << ".memblock \"" << sourceFile.fileName << "\"" << "\n";
+        outFile << ";--- Source file " << sourceFile.fileName << "\n\n";
+        outFile << "!zone " << toLabel(sourceFile.fileName) << "\n\n";
         outFile << LAB_OUT_START << sourceFile.label << ":" << "\n\n";
 
         outFile << std::string(sourceFile.content.begin(), sourceFile.content.end());
@@ -313,8 +330,9 @@ void calcRoutineSizes()
 
     // All written - now launch the assembler
 
-    const std::string cmd = "cd " + filePath + " && " + ASM_CMD + CMD_assFile + " " +
-                            outFileNameBare + " -symbolfile -o /dev/null";
+    const std::string cmd = "cd " + filePath + " && " + CMD_assembler +
+                            " --color --outfile /dev/null --symbollist " + CMD_segName + "_sizetest.sym " +
+                            outFileNameBare;
     std::cout << "command: " << cmd << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
@@ -348,8 +366,8 @@ void calcRoutineSizes()
 
         auto eqPos = line.rfind('=');
 
-        auto address         = strtol(line.substr(eqPos + 2).c_str(), nullptr ,16);
-        std::string refLabel = line.substr(0, eqPos);
+        auto address         = strtol(line.substr(eqPos + 3).c_str(), nullptr , 16);
+        std::string refLabel = line.substr(0, eqPos - 1);
 
         for (auto &sourceFile : GLOBAL_sourceFiles)
         {
@@ -494,32 +512,32 @@ void compileSegment()
     // First combine everything into one assembler file
 
     const std::string outFileNameBare = CMD_segName + "_combined.s";
+    const std::string vlfFileNamePath = CMD_segName + "_combined.vs";
+    const std::string repFileNamePath = CMD_segName + "_combined.rep";
+    const std::string symFileNamePath = CMD_segName + "_combined.sym";
     const std::string filePath        = CMD_outDir + DIR_SEPARATOR;
     const std::string outFileNamePath = filePath + outFileNameBare;
     unlink(outFileNamePath.c_str());
+    unlink(vlfFileNamePath.c_str());
+    unlink(repFileNamePath.c_str());
+    unlink(symFileNamePath.c_str());
     std::ofstream outFile(outFileNamePath, std::fstream::out | std::fstream::trunc);
     if (!outFile.good()) ERROR(std::string("can't open temporary file '") + outFileNamePath + "'");
 
     // Write the header
 
-    outFile << "\n" <<
-               ".segment " << CMD_segName <<
-               " [start=$" << std::hex << CMD_loAddress <<
-               ", min=$" << std::hex << CMD_loAddress <<
-               ", max=$" << std::hex << CMD_hiAddress <<
-               ", outBin=\"" << CMD_outFile << "\", fill]" <<
-               "\n";
-    outFile << "#define SEGMENT_" << CMD_segName << "\n";
-    outFile << "#define ROM_LAYOUT_" << CMD_romLayout << "\n";
-    outFile << ".namespace " << CMD_segName << " {" << "\n\n";
+    outFile << "!set SEGMENT_" << CMD_segName << " = 1\n";
+    outFile << "!set ROM_LAYOUT_" << CMD_romLayout << " = 1\n\n";
+    outFile << "\t* = $" << std::hex << CMD_loAddress << ", INVISIBLE\n";
+    outFile << "\t!fill $" << std::hex << (CMD_hiAddress + 1 - CMD_loAddress) << "\n\n";
 
     // Write files which only contain definitions (no routines)
 
     for (const auto &sourceFile : GLOBAL_sourceFiles_noCode)
     {
         outFile << "\n\n\n\n";
-        outFile << "/* Source file: " << sourceFile.fileName << " */" << "\n\n";
-        outFile << ".memblock \"" << sourceFile.fileName << "\"" << "\n";
+        outFile << ";--- Source file " << sourceFile.fileName << "\n\n";
+        outFile << "!zone " << toLabel(sourceFile.fileName) << "\n\n";
         outFile << std::string(sourceFile.content.begin(), sourceFile.content.end());
         outFile << "\n";
     }
@@ -529,22 +547,27 @@ void compileSegment()
     for (const auto &routine : GLOBAL_binningProblem.fixedRoutines)
     {
         outFile << "\n\n\n\n";
-        outFile << "/* Source file: " << routine.second->fileName << " */" << "\n\n";
-        outFile << ".memblock \"" << routine.second->fileName << "\"" << "\n";
+        outFile << ";--- Source file " << routine.second->fileName << "\n\n";
+        outFile << "!zone " << toLabel(routine.second->fileName) << "\n\n";
         outFile << "\t* = $" << std::hex << routine.first << "\n\n";
         outFile << std::string(routine.second->content.begin(), routine.second->content.end());
         outFile << "\n";
     }
 
-    outFile << "\n\n" << "} // namespace" << "\n";
+    outFile << "\n\n";
 
     if (!outFile.good()) ERROR(std::string("error writing temporary file '") + outFileNamePath + "'");
     outFile.close();
 
     // All written - now launch the assembler
 
-    const std::string cmd = "cd " + filePath + " && " + ASM_CMD + CMD_assFile + " " +
-                            outFileNameBare + " -symbolfile -vicesymbols -o " + CMD_outFile;
+    const std::string cmd = "cd " + filePath + " && " + CMD_assembler +
+                            " --strict-segments --color" +
+                            " --outfile "     + CMD_outFile +
+                            " --symbollist "  + symFileNamePath +
+                            " --vicelabels "  + vlfFileNamePath +
+                            " --report "      + repFileNamePath +
+                            " " + outFileNameBare;
     std::cout << "command: " << cmd << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
@@ -582,6 +605,7 @@ int main(int argc, char **argv)
 SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) :
     fileName(fileName),
     dirName(dirName),
+    layoutProcessingDone(false),
     ignore(false),
     floating(false),
     high(false),
@@ -638,30 +662,65 @@ SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) 
 
     preprocess();
 
-    // Generate KickAss compatible label from the file name
+    // Generate assembler compatible label from the file name
 
-    label = fileName.substr(0, fileName.length() - 2);
-
-    std::replace(label.begin(), label.end(), '.', '_');
-    std::replace(label.begin(), label.end(), ',', '_');
+    label = toLabel(fileName);
 }
 
 void SourceFile::preprocess()
 {
     std::string contentStr(content.begin(), content.end());
-    std::istringstream stream(contentStr);
+    std::istringstream stream1(contentStr);
+    std::istringstream stream2(contentStr);
     std::string line;
+    uint32_t    lineNum = 0;
 
-    while (std::getline(stream, line))
+    // Preprocess all the lines
+
+    while (std::getline(stream1, line))
     {
+        lineNum++;
+
         if (line.empty()) continue;
         std::replace(line.begin(), line.end(), '\t', ' ');
         line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
-        if (!preprocessLine(line)) break;
+        preprocessLine(line, lineNum - 1);
     }
+
+    // Replace content with preprocessed one
+
+    std::string spacing;
+    content.clear();
+    lineNum = 0;
+
+    size_t maxSymLen = 0;
+    for (const auto &symbolAlias : symbolAliases) maxSymLen = std::max(maxSymLen, symbolAlias.second.first.length());
+
+    while (std::getline(stream2, line))
+    {
+        if (symbolAliases.find(lineNum) != symbolAliases.end())
+        {
+            std::ostringstream alias;
+            spacing.resize(maxSymLen + 2 - symbolAliases[lineNum].first.length(), ' ');
+            alias << "!addr " << symbolAliases[lineNum].first << spacing << "= $" <<
+                     std::hex << symbolAliases[lineNum].second << "    " << line;
+            const std::string aliasStr = alias.str();
+            content.insert(content.end(), aliasStr.begin(), aliasStr.end());
+        }
+        else
+        {
+            content.insert(content.end(), line.begin(), line.end());          
+        }
+
+        content.push_back('\n');
+        lineNum++;
+    }
+
+    symbolAliases.clear();
+    symbolImports.clear();
 }
 
-bool SourceFile::preprocessLine(const std::string &line)
+void SourceFile::preprocessLine(const std::string &line, uint32_t lineNum)
 {
     // Split the line into tokens
 
@@ -674,7 +733,7 @@ bool SourceFile::preprocessLine(const std::string &line)
         if (token.empty()) continue;
         tokens.push_back(token);
     }
-    if (tokens.empty()) return true;
+    if (tokens.empty()) return;
 
     // Now preprocess line using the token list
 
@@ -682,19 +741,94 @@ bool SourceFile::preprocessLine(const std::string &line)
 
     // Injest the comment token
 
-    if ((iter++)->compare("//") != 0 || iter == tokens.end()) return true;
+    if ((iter++)->compare(";;") != 0 || iter == tokens.end()) return;
 
     // Check if supported directive
 
-    if ((iter++)->compare("#LAYOUT#") != 0) return true;
+    if (iter->compare("#ALIAS#") == 0) preprocessLine_Alias(tokens, ++iter, lineNum);
+    else if (iter->compare("#IMPORT#") == 0) preprocessLine_Import(tokens, ++iter);
+    else if (iter->compare("#LAYOUT#") == 0) preprocessLine_Layout(tokens, ++iter);
+}
+
+void SourceFile::preprocessLine_Alias(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum)
+{
+    if (ignore) return;
+
+    // Extract symbol, namespace, and target
+
+    if (iter == tokens.end()) ERROR("syntax error, missing symbol in '#ALIAS#'");
+    std::string symbol = *(iter++);
+
+    if (iter == tokens.end() || (iter++)->compare("=") != 0) ERROR("syntax error, expected assignment in '#ALIAS#'");
+    if (iter == tokens.end()) ERROR("syntax error, missing namespace/target in '#ALIAS#'");
+
+    auto dotPos = iter->rfind('.');
+    std::string symNameSpace = iter->substr(0, dotPos);
+    std::string symTarget    = iter->substr(dotPos + 1, std::string::npos);
+
+    if (symNameSpace.empty()) ERROR("syntax error, missing namespace in '#ALIAS#'");
+    if (symTarget.empty())    ERROR("syntax error, missing target in '#ALIAS#'");
+
+    // Put the alias - if address found
+
+    for (const auto &alias : symbolImports[symNameSpace])
+    {
+        if (alias.first.compare(symTarget) != 0) continue;
+
+        symbolAliases[lineNum] = std::pair<std::string, uint16_t>(symbol, alias.second);
+        break;
+    }
+}
+
+void SourceFile::preprocessLine_Import(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter)
+{
+    if (ignore) return;
+
+    if (iter == tokens.end()) ERROR("syntax error, missing namespace in '#IMPORT#'");
+    std::string symNameSpace = *(iter++);
+
+    if (iter == tokens.end() || iter->compare("=") != 0) ERROR("syntax error, expected assignment in '#IMPORT#'");
+
+    while (++iter != tokens.end())
+    {
+        // Try to import sumbols for the file
+
+        std::ifstream impFile;
+        impFile.open(CMD_outDir + DIR_SEPARATOR + *iter);
+        if (!impFile.good())
+        {
+            impFile.close();
+            continue;
+        }
+
+        std::string line;
+        while (std::getline(impFile, line))
+        {
+            // Import label and address
+
+            auto eqPos = line.rfind('=');
+
+            auto address      = strtol(line.substr(eqPos + 3).c_str(), nullptr , 16);
+            std::string label = line.substr(1, eqPos - 2);
+
+            symbolImports[symNameSpace].push_back(std::pair<std::string, uint16_t>(label, address));
+        }
+
+        impFile.close();
+    }
+}
+
+void SourceFile::preprocessLine_Layout(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter)
+{
+    if (layoutProcessingDone) return;
 
     // Check if segment name and rom layout match
 
     if (iter == tokens.end()) ERROR("syntax error, missing rom layout in '#LAYOUT#'");
-    if (!nameMatch(*(iter++), CMD_romLayout)) return true;
+    if (!nameMatch(*(iter++), CMD_romLayout)) return;
 
     if (iter == tokens.end()) ERROR("syntax error, missing segment name in '#LAYOUT#'");
-    if (!nameMatch(*(iter++), CMD_segName)) return true;
+    if (!nameMatch(*(iter++), CMD_segName)) return;
 
     // Retrieve and apply action
 
@@ -720,13 +854,14 @@ bool SourceFile::preprocessLine(const std::string &line)
     }
     else if (iter->compare("#TAKE") != 0)
     {
-        ERROR(std::string("syntax error, unsupported action '") + token + "' in '#LAYOUT#'");
+        ERROR(std::string("syntax error, unsupported action '") + *iter + "' in '#LAYOUT#'");
     }
 
-    // Tell the caller to finish processing the file
+    // Mark the file - to tell that layout processing is finished
 
-    return false;
+    layoutProcessingDone = true;
 }
+
 
 bool SourceFile::nameMatch(const std::string &token, const std::string &name)
 {

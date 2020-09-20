@@ -1,31 +1,29 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Advertise burst IEC protocol support to the receiver
-//
+;
+; Advertise burst IEC protocol support to the receiver
+;
 
 
-#if CONFIG_IEC_BURST_MEGA_65
+!ifdef CONFIG_IEC_BURST_M65 {
 
 
 burst_advertise:
 
-#if CONFIG_IEC_JIFFYDOS
+!ifdef CONFIG_IEC_JIFFYDOS {
 
-	// Skip if other protocol (only JiffyDOS is possible at this moment) already detected
+	; Skip if other protocol (only JiffyDOS is possible at this moment) already detected
 	lda IECPROTO
-	bmi !+
+	bmi @1
 	bne burst_advertise_done:              
-!:
-#endif
+@1:
+}
 
-	panic #$FF // XXX implement this
+	+panic #$FF ; XXX implement this
 
 burst_advertise_done:
 
 	rts
-
-
-#endif
+}

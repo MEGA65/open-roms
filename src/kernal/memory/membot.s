@@ -1,15 +1,15 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Official Kernal routine, described in:
-//
-// - [RG64] C64 Programmers Reference Guide   - page 287/288
-// - [CM64] Computes Mapping the Commodore 64 - page 240
-//
-// CPU registers that has to be preserved (see [RG64]): .A
-//
+;
+; Official Kernal routine, described in:
+;
+; - [RG64] C64 Programmers Reference Guide   - page 287/288
+; - [CM64] Computes Mapping the Commodore 64 - page 240
+;
+; CPU registers that has to be preserved (see [RG64]): .A
+;
 
 MEMBOT:
 
@@ -18,7 +18,7 @@ MEMBOT:
 	ldy MEMSTR+1
 	ldx MEMSTR+0
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 membot_set:
 

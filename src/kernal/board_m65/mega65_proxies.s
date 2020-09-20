@@ -1,25 +1,29 @@
-// #LAYOUT# M65 KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Proxies for calling MEGA65 segment KERNAL_0 routines from KERNAL_1
-//
+;
+; Proxies for calling MEGA65 segment KERNAL_0 routines from KERNAL_1
+;
 
 
 proxy_K1_chrin_programmable_keys:
 
 	jsr map_NORMAL
 	jsr chrin_programmable_keys
-	jmp_8 !+
+	bra proxy_K1_end
 
 proxy_K1_CHROUT:
 
 	jsr map_NORMAL
 	jsr CHROUT
-!:
+
+	; FALLTROUGH
+
+proxy_K1_end:
+
 	jmp map_KERNAL_1
 
-#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+!ifdef HAS_TAPE {
 
 proxy_K1_kernalerror_ROUTINE_TERMINATED:
 
@@ -30,13 +34,13 @@ proxy_K1_lvs_display_loading_verifying:
 
 	jsr map_NORMAL
 	jsr lvs_display_loading_verifying
-	jmp_8 !-
+	bra proxy_K1_end
 
 proxy_K1_lvs_display_done:
 
 	jsr map_NORMAL
 	jsr lvs_display_done
-	jmp_8 !-
+	bra proxy_K1_end
 
 proxy_K1_lvs_return_last_address:
 
@@ -57,28 +61,27 @@ proxy_K1_m65_load_autoswitch_tape:
 
 	jsr map_NORMAL
 	jsr m65_load_autoswitch_tape
-	jmp_8 !-
+	bra proxy_K1_end
 
 proxy_K1_print_kernal_message:
 
 	jsr map_NORMAL
 	jsr print_kernal_message
-	jmp_8 !-
+	bra proxy_K1_end
 
 proxy_K1_print_return:
 
 	jsr map_NORMAL
 	jsr print_return
-	jmp_8 !-
+	bra proxy_K1_end
+}
 
-#endif
 
-#if CONFIG_TAPE_HEAD_ALIGN
+!ifdef CONFIG_TAPE_HEAD_ALIGN {
 
 proxy_K1_CLALL:
 
 	jsr map_NORMAL
 	jsr CLALL
-	jmp_8 !-
-
-#endif
+	bra proxy_K1_end
+}

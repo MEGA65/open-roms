@@ -64,9 +64,17 @@ SRC_DOS_M65 = $(foreach dir,$(SRCDIR_DOS_M65),$(wildcard $(dir)/*.s))
 SRC_KERNAL  = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
 SRC_TOOLS   = $(wildcard tools/*.c,tools/*.cc)
 
+DIR_ACME    = assembler/acme/src
+HDR_ACME    = $(filter-out $(wildcard $(DIR_ACME)/_*.h),$(wildcard $(DIR_ACME)/*.h))
+SRC_ACME    = $(DIR_ACME)/acme.c $(DIR_ACME)/platform.c $(DIR_ACME)/alu.c $(DIR_ACME)/typesystem.c \
+              $(DIR_ACME)/cliargs.c $(DIR_ACME)/global.c $(DIR_ACME)/output.c $(DIR_ACME)/flow.c \
+              $(DIR_ACME)/macro.c $(DIR_ACME)/cpu.c $(DIR_ACME)/encoding.c $(DIR_ACME)/pseudoopcodes.c \
+              $(DIR_ACME)/dynabuf.c $(DIR_ACME)/mnemo.c $(DIR_ACME)/input.c $(DIR_ACME)/section.c \
+              $(DIR_ACME)/symbol.c $(DIR_ACME)/tree.c
+
 # Generated files
 
-GEN_BASIC   = build/,generated/float_constants.s
+GEN_BASIC   = build/,generated/,float_constants.s
 GEN_KERNAL  =
 
 # List of build directories
@@ -89,12 +97,12 @@ CFG_X16 = src/,,config_cx16.s
 
 # List of files with generated strings
 
-GEN_STR_CUS = $(DIR_CUS)/,generated/packed_strings.s
-GEN_STR_GEN = $(DIR_GEN)/,generated/packed_strings.s
-GEN_STR_TST = $(DIR_TST)/,generated/packed_strings.s
-GEN_STR_M65 = $(DIR_M65)/,generated/packed_strings.s
-GEN_STR_U64 = $(DIR_U64)/,generated/packed_strings.s
-GEN_STR_X16 = $(DIR_X16)/,generated/packed_strings.s
+GEN_STR_CUS = $(DIR_CUS)/,generated/,packed_strings.s
+GEN_STR_GEN = $(DIR_GEN)/,generated/,packed_strings.s
+GEN_STR_TST = $(DIR_TST)/,generated/,packed_strings.s
+GEN_STR_M65 = $(DIR_M65)/,generated/,packed_strings.s
+GEN_STR_U64 = $(DIR_U64)/,generated/,packed_strings.s
+GEN_STR_X16 = $(DIR_X16)/,generated/,packed_strings.s
 
 # Dependencies - helper variables
 
@@ -104,7 +112,6 @@ DEP_KERNAL  = $(SRC_KERNAL)  $(SRCDIR_KERNAL)  $(GEN_KERNAL)
 
 # List of tools
 
-TOOL_COLLECT_DATA       = build/tools/collect_data
 TOOL_GENERATE_CONSTANTS = build/tools/generate_constants
 TOOL_GENERATE_STRINGS   = build/tools/generate_strings
 TOOL_PATCH_CHARGEN      = build/tools/patch_chargen
@@ -112,9 +119,16 @@ TOOL_PNGPREPARE         = build/tools/pngprepare
 TOOL_BUILD_SEGMENT      = build/tools/build_segment
 TOOL_RELEASE            = build/tools/release
 TOOL_SIMILARITY         = build/tools/similarity
-TOOL_ASSEMBLER          = assembler/KickAss.jar
+TOOL_ASSEMBLER          = build/tools/acme
 
-TOOLS_LIST = $(pathsubst tools/%,build/tools/%,$(basename $(SRC_TOOLS)))
+TOOLS_LIST = $(TOOL_GENERATE_CONSTANTS) \
+             $(TOOL_GENERATE_STRINGS) \
+             $(TOOL_PATCH_CHARGEN) \
+             $(TOOL_PNGPREPARE) \
+             $(TOOL_BUILD_SEGMENT) \
+             $(TOOL_RELEASE) \
+             $(TOOL_SIMILARITY) \
+             $(TOOL_ASSEMBLER)
 
 # List of targets
 
@@ -149,13 +163,13 @@ TARGET_LIST = build/chargen_openroms.rom \
 SEG_LIST_M65 =    $(DIR_M65)/basic.seg_0  \
                   $(DIR_M65)/basic.seg_1  \
                   $(DIR_M65)/dos.seg_1    \
-				  $(DIR_M65)/kernal.seg_0 \
-				  $(DIR_M65)/kernal.seg_1
+                  $(DIR_M65)/kernal.seg_0 \
+                  $(DIR_M65)/kernal.seg_1
 
 SEG_LIST_X16 =    $(DIR_X16)/basic.seg_0  \
                   $(DIR_X16)/basic.seg_1  \
-				  $(DIR_X16)/kernal.seg_0 \
-				  $(DIR_X16)/kernal.seg_1
+                  $(DIR_X16)/kernal.seg_0 \
+                  $(DIR_X16)/kernal.seg_1
 
 REL_TARGET_LIST = $(TARGET_LIST_GEN) $(TARGET_M65_x) $(TARGET_M65_x_PXL) $(TARGET_LIST_U64)
 
@@ -169,13 +183,17 @@ GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 
 # Rules - main   XXX fast build does not always succeed, not yet clear, why
 
-.PHONY: all fast clean updatebin
+.PHONY: all clean updatebin
 
 all:
+	@echo
+	@echo --- Building tools ---
+	@echo
+	$(MAKE) -j64 --output-sync=target $(TOOLS_LIST)
+	@echo
+	@echo --- Building Open ROMs ---
+	@echo
 	$(MAKE) $(TARGET_LIST) $(EXT_TARGET_LIST)
-
-fast:
-	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
 	@rm -rf build src/basic/combined.s src/kernal/combined.s
@@ -186,6 +204,15 @@ updatebin:
 	cp build/chargen_openroms.rom bin/chargen_openroms.rom
 
 # Rules - tools
+
+$(DIR_ACME) $(SRC_ACME) $(HDR_ACME):
+	git submodule init
+	git submodule update
+
+$(TOOL_ASSEMBLER): $(DIR_ACME) $(SRC_ACME) $(HDR_ACME)
+	@mkdir -p build/tools
+	echo $(OUT_ACME)
+	$(CC) -o $(TOOL_ASSEMBLER) $(SRC_ACME) -lm -I./assembler/acme/src
 
 $(TOOL_PNGPREPARE): tools/pngprepare.c
 	@mkdir -p build/tools
@@ -303,9 +330,9 @@ $(GEN_STR_X16): $(TOOL_GENERATE_STRINGS) $(CFG_X16)
 	@mkdir -p $(DIR_X16)/,generated
 	$(TOOL_GENERATE_STRINGS) -o $@ -c $(CFG_X16)
 
-build/,generated/float_constants.s: $(TOOL_GENERATE_CONSTANTS)
+build/,generated/,float_constants.s: $(TOOL_GENERATE_CONSTANTS)
 	@mkdir -p build/,generated
-	$(TOOL_GENERATE_CONSTANTS) -o build/,generated/float_constants.s
+	$(TOOL_GENERATE_CONSTANTS) -o build/,generated/,float_constants.s
 
 GEN_STR_custom     = $(GEN_STR_CUS)
 GEN_STR_generic    = $(GEN_STR_GEN)

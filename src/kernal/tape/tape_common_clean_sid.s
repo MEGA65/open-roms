@@ -1,40 +1,38 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Clear the SID settings - for sound effects during LOAD
-//
+;
+; Clear the SID settings - for sound effects during LOAD
+;
 
 
-#if CONFIG_TAPE_TURBO
+!ifdef CONFIG_TAPE_TURBO {
 
 
 tape_clean_sid:
 
 	lda #$00
 	ldy #$1C
-!:
+@1:
 
-#if CONFIG_MB_MEGA_65
+!ifdef CONFIG_MB_M65 {
 
-	// It should be safer than cleaning whole $D400-D47C range
+	; It should be safer than cleaning whole $D400-D47C range
 
 	sta __SID_BASE + __SID_R1_OFFSET, y
 	sta __SID_BASE + __SID_R2_OFFSET, y
 	sta __SID_BASE + __SID_L1_OFFSET, y
 	sta __SID_BASE + __SID_L2_OFFSET, y
 
-#else
+} else {
 
 	sta __SID_BASE, y
 
-#endif
+}
 
 	dey
-	bpl !-
+	bpl @1
 
 	rts
-
-
-#endif
+}

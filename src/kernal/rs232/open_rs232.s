@@ -1,31 +1,31 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// RS-232 part of the OPEN routine
-//
-
-
-#if HAS_RS232
+;
+; RS-232 part of the OPEN routine
+;
 
 
-#if CONFIG_MEMORY_MODEL_60K
-	.error "CONFIG_MEMORY_MODEL_60K is not compatible with RS-232 memory allocation code"
-#endif
+!ifdef HAS_RS232 {
+
+
+!ifdef CONFIG_MEMORY_MODEL_60K {
+	!error "CONFIG_MEMORY_MODEL_60K is not compatible with RS-232 memory allocation code"
+}
 
 
 open_rs232:
 
-	// First check how many RS-232 channels are currently allocated.
-	// If more than one, skip allocation (already allocated).
+	; First check how many RS-232 channels are currently allocated.
+	; If more than one, skip allocation (already allocated).
 
 	jsr rs232_count_channels
-	cpx #$02                           // set Carry if more than one is open
+	cpx #$02                           ; set Carry if more than one is open
 	bcs open_rs232_end
 
-	// Allocate buffers - first RIBUF, afterwards ROBUF
-	// (checked addresses on original ROMs)
+	; Allocate buffers - first RIBUF, afterwards ROBUF
+	; (checked addresses on original ROMs)
 
 	lda MEMSIZK+0
 	sta ROBUF+0
@@ -39,7 +39,7 @@ open_rs232:
 	lda MEMSIZK+1
 	sta ROBUF+1
 
-	// Initialize buffer indexes
+	; Initialize buffer indexes
 
 	lda #$00
 	sta RIDBE
@@ -48,16 +48,13 @@ open_rs232:
 	sta RODBE
 
 
-#if CONFIG_RS232_UP9600
+!ifdef CONFIG_RS232_UP9600 {
 
 	jmp up9600_enable
-
-#endif // CONFIG_RS232_UP9600
-
+}
 
 open_rs232_end:
 
 	jmp open_done_success
+}
 
-
-#endif // HAS_RS232

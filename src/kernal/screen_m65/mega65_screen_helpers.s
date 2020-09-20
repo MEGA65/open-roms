@@ -1,5 +1,5 @@
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
 
 m65_screen_clear_colorattr:
@@ -24,7 +24,7 @@ m65_screen_upd_txtrow_off:
 
 m65_screen_dmasrcdst_screen:
 
-	// Set screen memory as start/end addresses
+	; Set screen memory as start/end addresses
 
 	lda M65_SCRBASE+0
 	sta M65_DMAJOB_SRC_0
@@ -36,7 +36,11 @@ m65_screen_dmasrcdst_screen:
 	sta M65_DMAJOB_SRC_2
 	sta M65_DMAJOB_DST_2
 	lda M65_SCRSEG+1
-!:
+
+	; FALLTROUGH
+
+m65_screen_dmasrcdst_screen_cont:
+
 	sta M65_DMAJOB_SRC_3
 	sta M65_DMAJOB_DST_3
 
@@ -45,7 +49,7 @@ m65_screen_dmasrcdst_screen:
 
 m65_screen_dmasrcdst_color:
 
-	// Set color memory as start/end addresses
+	; Set color memory as start/end addresses
 
 	lda #$00
 	sta M65_DMAJOB_SRC_0
@@ -56,7 +60,7 @@ m65_screen_dmasrcdst_color:
 	sta M65_DMAJOB_SRC_2
 	sta M65_DMAJOB_DST_2
 	lda #$0F
-	jmp_8 !-
+	bra m65_screen_dmasrcdst_screen_cont
 
 
 m65_screen_dmasrc_add_row:
@@ -65,7 +69,7 @@ m65_screen_dmasrc_add_row:
 	lda M65_DMAJOB_SRC_0
 	adc #$50
 	sta M65_DMAJOB_SRC_0
-	bcc !+
+	bcc @1
 	inc M65_DMAJOB_SRC_1
-!:
+@1:
 	rts

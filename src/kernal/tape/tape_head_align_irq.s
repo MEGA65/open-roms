@@ -1,55 +1,55 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Tape head alignemnt tool - interrupt routine
-//
+;
+; Tape head alignemnt tool - interrupt routine
+;
 
 
-#if CONFIG_TAPE_HEAD_ALIGN
+!ifdef CONFIG_TAPE_HEAD_ALIGN {
 
 
 tape_head_align_irq:
 
-	// Acknowledge interrupt
+	; Acknowledge interrupt
 
 	asl VIC_IRQ
 
-	// Ignore 2 first pulses, they can be garbage
+	; Ignore 2 first pulses, they can be garbage
 
 	jsr tape_head_align_get_pulse
 	jsr tape_head_align_get_pulse
 
-	// Now, we can retrieve pulses for the chart
+	; Now, we can retrieve pulses for the chart
 
 	ldx #$00
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_head_align_irq_loop:
 
 	jsr tape_head_align_get_pulse
 
-	// If we approached badlines again - we cannot use this measurement anymore
+	; If we approached badlines again - we cannot use this measurement anymore
 
 	lda VIC_SCROLY
-	bmi !+                             // branch if lower border
+	bmi @1                             ; branch if lower border
 
 	lda VIC_RASTER
-	cmp #$33                           // first line where badline can occur
+	cmp #$33                           ; first line where badline can occur
 	bcs tape_head_align_irq_end
-!:
-	// Draw pulse on the screen
+@1:
+	; Draw pulse on the screen
 
 	cpy #$FF
-	beq !+
+	beq @2
 
-	// Center the chart horizontaly, with some margin from top
+	; Center the chart horizontaly, with some margin from top
 
-	.label __ha_chart = $2000 + 8 * (40 * __ha_start + 4)
+	!addr __ha_chart = $2000 + 8 * (40 * __ha_start + 4)
 
-	phx_trash_a
+	+phx_trash_a
 
 	lda __ha_offsets, y
 	tax
@@ -57,19 +57,19 @@ tape_head_align_irq_loop:
 	ora __ha_chart + 7, x
 	sta __ha_chart + 7, x
 
-	plx_trash_a
-!:
-	// Next iteration
+	+plx_trash_a
+@2:
+	; Next iteration
 
 	inx
 	cpx #$40
 	bne tape_head_align_irq_loop
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_head_align_irq_end:
 
 	jmp return_from_interrupt
 
 
-#endif // CONFIG_TAPE_HEAD_ALIGN
+} ; CONFIG_TAPE_HEAD_ALIGN

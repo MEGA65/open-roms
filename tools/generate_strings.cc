@@ -1229,7 +1229,7 @@ void DataSet::generateConfigDepStrings()
 
         // List found
 
-        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"] || GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"] || GLOBAL_ConfigOptions["CONFIG_MB_M65"])
         {
             StringEntry newEntry1 = { true, true, true, true, "STR_PAL",      "PAL\r"    };
             StringEntry newEntry2 = { true, true, true, true, "STR_NTSC",     "NTSC\r"   };
@@ -1244,13 +1244,13 @@ void DataSet::generateConfigDepStrings()
             stringEntryList.list.push_back(newEntry);
         }
 
-        if (GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+        if (GLOBAL_ConfigOptions["CONFIG_MB_M65"])
         {
             StringEntry newEntry = { false, true, false, false, "STR_SI_FEATURES", featureStrM65 };
             stringEntryList.list.push_back(newEntry);
         }
 
-        if (!GLOBAL_ConfigOptions["CONFIG_BRAND_CUSTOM_BUILD"] || GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+        if (!GLOBAL_ConfigOptions["CONFIG_BRAND_CUSTOM_BUILD"] || GLOBAL_ConfigOptions["CONFIG_MB_M65"])
         {
             StringEntry newEntry = { true, true, true, true, "STR_PRE_REV", "RELEASE " };
             stringEntryList.list.push_back(newEntry);
@@ -1498,9 +1498,9 @@ void DataSet::encodeStringsFreq()
 
 void DataSet::putCharEncoding(std::ostringstream &stream, uint8_t idx, char character, bool is3n)
 {
-    stream << "\t.byte $" << std::uppercase << std::hex <<
+    stream << "\t!byte $" << std::uppercase << std::hex <<
               std::setfill('0') << std::setw(2) << +character <<
-              "    // " << std::setfill(is3n ? '0' : ' ') << std::setw(2) << +idx;
+              "    ; " << std::setfill(is3n ? '0' : ' ') << std::setw(2) << +idx;
 
     std::string petscii;
 
@@ -1530,7 +1530,7 @@ void DataSet::prepareOutput_1n_3n(std::ostringstream &stream)
 
     // Export all nibble-encoded characters
 
-    stream << std::endl << ".macro put_packed_as_1n() // characters encoded as 1 nibble" << std::endl << "{" << std::endl;
+    stream << std::endl << "!macro PUT_PACKED_AS_1N { ; characters encoded as 1 nibble" << std::endl << std::endl;
    
     idx = 0;
     for (const auto& encoding : as1n)
@@ -1542,13 +1542,13 @@ void DataSet::prepareOutput_1n_3n(std::ostringstream &stream)
 
     // Export all byte-encoded characters
 
-    stream << std::endl << ".macro put_packed_as_3n() // characters encoded as 3 nibbles" << std::endl << "{" << std::endl;
+    stream << std::endl << "!macro PUT_PACKED_AS_3N { ; characters encoded as 3 nibbles" << std::endl << std::endl;
 
     idx = 0;
     for (const auto& encoding : as3n)
     {
         if (idx == tk__packed_as_3n) stream << std::endl <<
-            "\t// Characters below are not used by any BASIC keyword" << std::endl << std::endl;
+            "\t; Characters below are not used by any BASIC keyword" << std::endl << std::endl;
 
         putCharEncoding(stream, ++idx, encoding, true);
     }
@@ -1571,7 +1571,7 @@ void DataSet::prepareOutput_labels(std::ostringstream &stream,
 
         if (!stringEncoded.empty())
         {
-            stream << ".label IDX__" << stringEntry.alias <<
+            stream << "!set IDX__" << stringEntry.alias <<
                       std::string(maxAliasLen - stringEntry.alias.length(), ' ') << " = $" <<
                       std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idx << std::endl;
         }
@@ -1584,14 +1584,14 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 {
     if (isCompressionLvl2(stringEntryList))
     {
-        stream << std::endl << ".macro put_packed_dict_";
+        stream << std::endl << "!macro PUT_PACKED_DICT_";
     }
     else
     {
-        stream << std::endl << ".macro put_packed_freq_";           
+        stream << std::endl << "!macro PUT_PACKED_FREQ_";           
     }
 
-    stream << stringEntryList.name << "()" << std::endl << "{" << std::endl;
+    stream << stringEntryList.name << " {" << std::endl << std::endl;
 
     enum LastStr { NONE, SKIPPED, WRITTEN } lastStr = LastStr::NONE;
     for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
@@ -1603,7 +1603,7 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
             if (stringEntryList.type == ListType::DICTIONARY) ERROR("internal error"); // should never happen
 
             if (lastStr == LastStr::WRITTEN) stream << std::endl;
-            stream << "\t.byte $00    // skipped " << stringEntryList.list[idxString].alias << std::endl;
+            stream << "\t!byte $00    ; skipped " << stringEntryList.list[idxString].alias << std::endl;
             lastStr = LastStr::SKIPPED;
         }
         else
@@ -1614,12 +1614,12 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 
             if (stringEntryList.type != ListType::DICTIONARY)
             {
-                stream << "\t// IDX__" << stringEntryList.list[idxString].alias << std::endl;
+                stream << "\t; IDX__" << stringEntryList.list[idxString].alias << std::endl;
             }
 
             // Output the source string - as a comment
 
-            stream << "\t// '";
+            stream << "\t; '";
             for (auto &character : stringEntryList.list[idxString].string)
             {
                 if (character >= 32 && character <= 132 && character != 39 && character != 34)
@@ -1639,7 +1639,7 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 
             // Output the encoding
 
-            stream << "\t.byte ";
+            stream << "\t!byte ";
 
             bool first = true;
             for (const auto &charEncoded : stringEncoded)
@@ -1665,8 +1665,8 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 
     if (stringEntryList.type == ListType::KEYWORDS)
     {
-        stream << std::endl << "\t// Marker - end of the keyword list" << std::endl;
-        stream << "\t.byte $FF, $FF" << std::endl;
+        stream << std::endl << "\t; Marker - end of the keyword list" << std::endl;
+        stream << "\t!byte $FF, $FF" << std::endl;
     }
 
     stream << "}" << std::endl;
@@ -1677,7 +1677,7 @@ void DataSet::prepareOutput()
     // Convert our encoded strings to a KickAssembler source
 
     std::ostringstream stream;
-    stream << std::endl << "#if ROM_LAYOUT_" << layoutName() << std::endl;
+    stream << std::endl << "!ifdef ROM_LAYOUT_" << layoutName() << " {"<< std::endl;
 
     // Export 1-nibble and 3-nibble encoding data
 
@@ -1685,8 +1685,8 @@ void DataSet::prepareOutput()
 
     // Export additional data for the tokenizer
 
-    stream << std::endl << ".label TK__PACKED_AS_3N    = $" << std::hex << +tk__packed_as_3n <<
-              std::endl << ".label TK__MAX_KEYWORD_LEN = "  << std::dec << +tk__max_keyword_len << std::endl;
+    stream << std::endl << "!set TK__PACKED_AS_3N    = $" << std::hex << +tk__packed_as_3n <<
+              std::endl << "!set TK__MAX_KEYWORD_LEN = "  << std::dec << +tk__max_keyword_len << std::endl;
 
     // Export encoded strings
 
@@ -1705,7 +1705,7 @@ void DataSet::prepareOutput()
 
         if (stringEntryList.type == ListType::KEYWORDS)
         {
-            stream << std::endl << ".label TK__MAXTOKEN_" << stringEntryList.name << " = " <<
+            stream << std::endl << "!set TK__MAXTOKEN_" << stringEntryList.name << " = " <<
                       std::dec << stringEncodedList.size() << std::endl;
         }
 
@@ -1716,7 +1716,7 @@ void DataSet::prepareOutput()
 
     // Finalize the file stream
 
-    stream << std::endl << "#endif // ROM_LAYOUT_" << layoutName() << std::endl;
+    stream << std::endl << "} ; ROM_LAYOUT_" << layoutName() << std::endl;
     outFileContent = stream.str();
 }
 
@@ -1748,21 +1748,21 @@ void parseConfigFile()
         std::getline(cnfFile, workStr);
         if (cnfFile.bad()) ERROR("error reading configuration file");
         workStr = std::regex_replace(workStr, std::regex("^[ \t]+"), "");
-       
+
         // Skip lines which are not preprocessor definitions
        
-        if (workStr.empty() || workStr[0] != '#') continue;
+        if (workStr.empty() || workStr[0] != '!') continue;
        
-        // Make sure this is '#define '
+        // Make sure this is '!set '
        
-        if (!std::regex_match(workStr, std::regex("^#define[ \t].*")))
+        if (!std::regex_match(workStr, std::regex("^\\!set[ \t].*")))
         {
-            ERROR(std::string("only '#define' preprocessor directives allowed in config files - line ") + std::to_string(lineNum));
+            continue;
         }
 
-        // Get rid of the directive and trailing spaces/comments
+        // Get rid of the directive and trailing spaces/values/comments
    
-        workStr = std::regex_replace(workStr, std::regex("^#define[ \t]+"), "");
+        workStr = std::regex_replace(workStr, std::regex("^\\!set[ \t]+"), "");
         workStr = std::regex_replace(workStr, std::regex("[ \t]+.*"), "");
 
         // Add definitin to config option map
@@ -1784,7 +1784,7 @@ void printUsage()
 void printBanner()
 {
     printBannerLineTop();
-    std::cout << "// Generating compressed messages and BASIC tokens\n";
+    std::cout << "; Generating compressed messages and BASIC tokens\n";
     printBannerLineBottom();
 }
 
@@ -1824,7 +1824,7 @@ void writeStrings()
        
         outputString = dataSetX16.getOutput();
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_M65"])
     {
         DataSetM65 dataSetM65;
 
@@ -1841,7 +1841,7 @@ void writeStrings()
        
         outputString = dataSetM65.getOutput();
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_ULTIMATE_64"])
+    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_U64"])
     {
         DataSetU64 dataSetU64;
 
@@ -1887,7 +1887,7 @@ void writeStrings()
 
     // Write header
 
-    outFile << "//\n// Generated file - do not edit\n//";
+    outFile << ";\n; Generated file - do not edit\n;";
 
     // Write packed strings
 

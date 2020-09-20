@@ -1,9 +1,9 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-// Just a compatibility jump - our routine is longer than original one
+; Just a compatibility jump - our routine is longer than original one
 
 	jmp round_FAC1
 	

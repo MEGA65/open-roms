@@ -1,56 +1,55 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Fetches a single character
-//
+;
+; Fetches a single character
+;
 
+!set NEEDED = 0
+; For these configurations we have optimized version in another file
+!ifndef CONFIG_MB_M65                  { !set NEEDED = 1 }
+!ifndef CONFIG_MEMORY_MODEL_46K_OR_50K { !set NEEDED = 1 }
 
-// For these configurations we have optimized version in another file
-#if !(ROM_LAYOUT_M65 && (CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K))
+!if NEEDED {
 
 fetch_character:
 
 	ldy #0
 
-#if CONFIG_MEMORY_MODEL_60K
+!ifdef CONFIG_MEMORY_MODEL_60K {
 
 	ldx #<TXTPTR
 	jsr peek_under_roms
 
-#elif CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+} else ifdef CONFIG_MEMORY_MODEL_46K_OR_50K {
 
 	jsr peek_under_roms_via_TXTPTR
 
-#else // CONFIG_MEMORY_MODEL_38K
+} else { ; CONFIG_MEMORY_MODEL_38K
 
 	lda (TXTPTR),y
+}
 
-#endif
+!ifndef HAS_OPCODES_65CE02 {
 
-#if !HAS_OPCODES_65CE02
-
-	// FALLTHROUGH
+	; FALLTHROUGH
 	
 consume_character:
 
-	// Advance basic text pointer
+	; Advance basic text pointer
 
 	inc TXTPTR+0
-	bne !+
+	bne @1
 	inc TXTPTR+1
-!:
+@1:
 
-#else // HAS_OPCODES_65CE02
+} else { ; HAS_OPCODES_65CE02
 
-	// Advance basic text pointer
+	; Advance basic text pointer
 
 	inw TXTPTR
-
-#endif
+}
 
 	rts
-
-
-#endif
+}

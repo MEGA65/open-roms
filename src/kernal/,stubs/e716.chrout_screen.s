@@ -1,8 +1,8 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
 
-// Screen CHROUT
+; Screen CHROUT
 
-	STUB_IMPLEMENTATION()
+	+STUB_IMPLEMENTATION

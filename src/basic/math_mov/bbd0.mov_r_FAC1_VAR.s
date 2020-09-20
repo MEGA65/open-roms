@@ -1,21 +1,21 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Math package - move FAC1 (rounds) to memory variable
-//
-// Input:
-// - FORPNT ($49/$4A) - variable address
-//
-// See also:
-// - https://www.c64-wiki.com/wiki/BASIC-ROM
-//
+;
+; Math package - move FAC1 (rounds) to memory variable
+;
+; Input:
+; - FORPNT ($49/$4A) - variable address
+;
+; See also:
+; - https://www.c64-wiki.com/wiki/BASIC-ROM
+;
 
 mov_r_FAC1_VAR:
 
 	ldy #FORPNT+1
 	ldx #FORPNT+0
 
-	// FALLTROUGH to mov_r_FAC1_MEM
+	; FALLTROUGH to mov_r_FAC1_MEM

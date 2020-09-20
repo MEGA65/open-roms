@@ -1,22 +1,22 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Shift RESHO by one byte - for multiplication
-//
+;
+; Shift RESHO by one byte - for multiplication
+;
 
 mul_FAC2_FAC1_shift:
 
-	// Check if rounding is needed
+	; Check if rounding is needed
 
 	php
 	clc
 	lda RESHO+4
-	bpl !+
+	bpl @1
 	sec
-!:
-	// Copy bytes
+@1:
+	; Copy bytes
 
 	lda RESHO+3
 	sta RESHO+4
@@ -28,19 +28,19 @@ mul_FAC2_FAC1_shift:
 	sta RESHO+1
 	lda #$00
 	sta RESHO+0
-	bcc !+
+	bcc @2
 
-	// Perform rounding
+	; Perform rounding
 
 	inc RESHO+4
-	bne !+
+	bne @2
 	inc RESHO+3
-	bne !+
+	bne @2
 	inc RESHO+2
-	bne !+
+	bne @2
 	inc RESHO+1
-	bne !+
+	bne @2
 	inc RESHO+0
-!:
+@2:
 	plp
 	rts

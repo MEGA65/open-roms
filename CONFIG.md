@@ -13,7 +13,7 @@ Just edit them and recompile the project. To enable particular option - uncommen
 
 Note however, that features do not came for free - enabling them needs some additional ROM space (in BASIC segment, in KERNAL segment, or in both), which is VERY limited on the target machines. Some options might be unavailable for speecific targets - read the comments in the configuration files. Some options might also carry compatibility and/or performance hit - so choose wisely.
 
-## Hardware platform and brand
+## Hardware platform
 
 ### `CONFIG_PLATFORM_COMMODORE_64`
 
@@ -25,13 +25,17 @@ Since Open ROMs is highly modular, it should be possible to add other platforms 
 * 8KB ROM area `$A000`-`$BFFF`
 * 8KB ROM area `$E000`-`$FFFF`
 
-### `CONFIG_MB_MEGA_65`, `CONFIG_MB_ULTIMATE_64`
+### `CONFIG_MB_M65`, `CONFIG_MB_U64`
 
-Select if the ROM is going to be used exclusively on the specific motherboard. It prevents from enabling options not having sense, skips initialization of C128-only registers, etc.
+Select if the ROM is going to be used exclusively on the specified motherboard. It prevents from enabling options not having sense, skips initialization of C128-only registers, and enables motherboard-specific features.
+
+## Brand
+
+Branding is only allowed for C64 platform, if no motherboard is specified.
 
 ### `CONFIG_BRAND_CUSTOM`
 
-Intended for custom builds, which are not to be redistributed. Allows to configure branding with `CONFIG_CUSTOM_BRAND` varaible
+Intended for custom builds, for private purposes. Allows to configure branding with `CONFIG_CUSTOM_BRAND` macro.
 
 ### `CONFIG_BRAND_GENERIC`
 
@@ -41,11 +45,9 @@ If you don't know which variant to choose - select this one.
 
 Use this one for any kind of testing/experimental build.
 
-### `CONFIG_BRAND_MEGA_65`, `CONFIG_BRAND_ULTIMATE_64`
-
-Select if you are using appropriate motherboard.
-
 ## Processor instruction set
+
+Processor type should be set only for C64 platform, if no motherboard is specified. Otherwise, it will be selected automatically. Setting proper CPU allows to enable various size/performance optimizations.
 
 ### `CONFIG_CPU_MOS_6502`
 
@@ -57,34 +59,19 @@ Choose if your CPU only supports the original MOS Technology 6502 instruction se
 
 If unsure - select this one.
 
+### `CONFIG_CPU_DTV_6502`
+
+Choose if your CPU only supports extended C64 DTV instruction set.
+
+### `CONFIG_CPU_RCW_65C02`
+
+Choose if your CPU supports the Rockwell 65C02 instruction set.
+
 ### `CONFIG_CPU_WDC_65C02`
 
 Choose if your CPU supports the Western Design Center 65C02 instruction set, like:
 
 * WDC 65C02 - used in the Turbo Master accelerator
-
-It enables some speed/size code optimizations.
-
-### `CONFIG_CPU_CSG_65CE02`
-
-Choose if your CPU supports the Commodore Semiconductor Group 65CE02 instruction set, like:
-
-* CSG 65CE02 
-* CSG 4510 - microcontroller used in the Commodore 65 prototypes
-
-It enables some speed/size code optimizations.
-
-### `CONFIG_CPU_CSG_4510`
-
-Choose if your CPU supports the Commodore Semiconductor Group 4510 instruction set, like:
-
-* CSG 4510 - microcontroller used in the Commodore 65 prototypes
-
-It enables some speed/size code optimizations and allows C65 memory mapping to work.
-
-### `CONFIG_CPU_M65_45GS02`
-
-Choose if you have a MEGA65 FPGA board. It enables some speed/size code optimizations and allows MEGA65 memory mapping to work.
 
 ### `CONFIG_CPU_WDC_65816`
 
@@ -93,7 +80,12 @@ Choose if your CPU supports the 16-bit Western Design Center 65816 instruction s
 * WDC 65C816 - used in the Flash 8 accelerator
 * WDC 65C816S - used in the SuperCPU accelerator
 
-It enables some speed/size code optimizations.
+### `CONFIG_CPU_CSG_65CE02`
+
+Choose if your CPU supports the Commodore Semiconductor Group 65CE02 instruction set, like:
+
+* CSG 65CE02 
+* CSG 4510 - microcontroller used in the Commodore 65 prototypes
 
 ## Memory model
 
@@ -115,7 +107,9 @@ It is currently not compatible with MEGA65 extended ROMs.
 
 Comparing to standard memory model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
 
-## IEC devices
+## IEC bus
+
+IEC bus, also known as Serial Port, is a standard interface to connect disk drives, printers, SD2IEC device, etc.
 
 ### `CONFIG_IEC`
 
@@ -145,7 +139,7 @@ Needs about 430 bytes in KERNAL segment. If unsure - enable.
 
 Causes screen blanking during JiffyDOS file loading to increase performance.
 
-## Tape support
+## Tape deck
 
 Note: for MEGA65 most of the tape support code is placed in it's extended ROM; very little of the (tiny) KERNAL segment is used.
 
@@ -175,15 +169,15 @@ Enable this option if you are using a tape interface adapter with some audio sig
 
 Enable this option if you are using a tape interface adapter lacking tape motor control (most likely every adapter currently being sold) - this will eliminate the need to quickly press space when the program header information gets displayed. Note: if you are using a cassette player with REM port, and your adapter is connected to this port too, than you do not need this option.
 
-## Multiple SID support
+## Sound support
 
-The SID is a sound chip - the original Commodore 64 had one installed. However, mods exists to add more of them for improved sound capabilities. Emulators and FPGA machines typically allow to simulate more than one too. Unfortunately, there is no standard regarding how these additional chips are visible in the processor address space, and there is no sane way to detect it - thus, it has to be configurable.
+The original Commodore 64 had one SID sound chip installed. However, mods exists to add more of them for improved sound capabilities. Emulators and FPGA machines typically allow to simulate more than one too. Unfortunately, there is no standard regarding how these additional chips are visible in the processor address space, and there is no sane way to detect it - thus, it has to be configurable.
 
 The SID support in the ROM is very limited - it only disables the sound during startup or warm restart (when STOP+RESTORE is pressed or BRK assembler instruction is executed).
 
-### `CONFIG_SID_2ND` and `CONFIG_SID_3RD` 
+### `CONFIG_SID_2ND_ADDRESS` and `CONFIG_SID_3RD_ADDRESS` 
 
-Each of them add support for one additional SID - addresses should be given in `CONFIG_SID_2ND_ADDRESS` and `CONFIG_SID_3RD_ADDRESS`, respectively. Do not use when `CONFIG_MB_MEGA_65` is selected - the motherboard support code already knows the SID locations. 
+Each of them add support for one additional SID - addresses should be given as parameter, respectively. Do not use when `CONFIG_MB_M65` is selected - the motherboard support code already knows the SID locations. 
 
 Each of these options needs 3 bytes in KERNAL segment.
 
@@ -191,7 +185,7 @@ Each of these options needs 3 bytes in KERNAL segment.
 
 Cause the system to support SIDs in `$D4xx` and `$D5xx` ranges, respectively.
 
-Each of them needs a couple of bytes in KERNAL segment - but they can share some code, and `$D4xx` range support replaces the standard `$D400` address handling, so exact amount depends on the exact configuration. Do not use when `CONFIG_MB_MEGA_65` is selected - the motherboard support code already knows the SID locations.
+Each of them needs a couple of bytes in KERNAL segment - but they can share some code, and `$D4xx` range support replaces the standard `$D400` address handling, so exact amount depends on the exact configuration. Do not use when `CONFIG_MB_M65` is selected - the motherboard support code already knows the SID locations.
 
 ## Keyboard
 

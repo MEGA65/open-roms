@@ -1,55 +1,55 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
 
-// Find the BASIC line with number in LINNUM
+; Find the BASIC line with number in LINNUM
 
 
-#if CONFIG_MEMORY_MODEL_38K || CONFIG_MEMORY_MODEL_60K
+!ifndef CONFIG_MEMORY_MODEL_46K_OR_50K {
 
 find_line_from_start:
 
-	// Get pointer to start of BASIC text
+	; Get pointer to start of BASIC text
 	jsr init_oldtxt
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 find_line_from_current:
 
-	// Check if line is not empty
+	; Check if line is not empty
 
 	jsr is_line_pointer_null
 	beq find_line_fail
 
-	// Fetch the high byte of line number and compare
+	; Fetch the high byte of line number and compare
 	ldy #$03
 
-#if CONFIG_MEMORY_MODEL_60K
+!ifdef CONFIG_MEMORY_MODEL_60K {
 	ldx #<OLDTXT+0
 	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+} else { ; CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
-#endif
+}
 
 	cmp LINNUM+1
-	beq !+
-	bcs find_line_fail                           // branch if line number too high
+	beq @1
+	bcs find_line_fail                           ; branch if line number too high
 	bne find_line_next
-!:
+@1:
 
-	// Fetch the low byte of line number and compare
+	; Fetch the low byte of line number and compare
 	dey
 
-#if CONFIG_MEMORY_MODEL_60K
+!ifdef CONFIG_MEMORY_MODEL_60K {
 	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+} else { ; CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
-#endif
+}
 
 	cmp LINNUM+0
 	beq find_line_success
-	bcs find_line_fail                           // branch if line number too high
+	bcs find_line_fail                           ; branch if line number too high
 	bne find_line_next
 
 find_line_success:
@@ -59,38 +59,37 @@ find_line_success:
 
 find_line_next:
 
-	// Advance to the next line
+	; Advance to the next line
 
 	jsr is_line_pointer_null
-	beq find_line_fail                           // branch in no more lines exist
+	beq find_line_fail                           ; branch in no more lines exist
 
 	ldy #$00
 
-#if CONFIG_MEMORY_MODEL_60K
+!ifdef CONFIG_MEMORY_MODEL_60K {
 	ldx #<OLDTXT+0
 	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+} else { ; CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
-#endif
+}
 
 	pha
 	iny
 
-#if CONFIG_MEMORY_MODEL_60K
+!ifdef CONFIG_MEMORY_MODEL_60K {
 	jsr peek_under_roms
-#else // CONFIG_MEMORY_MODEL_38K
+} else { ; CONFIG_MEMORY_MODEL_38K
 	lda (OLDTXT),y
-#endif
+}
 
 	sta OLDTXT+1
 	pla
 	sta OLDTXT+0
 
-	jmp_8 find_line_from_current
+	+bra find_line_from_current
 
 find_line_fail:
 
 	sec
 	rts
-
-#endif
+}

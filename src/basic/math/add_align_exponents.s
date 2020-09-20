@@ -1,44 +1,44 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Math package - align FAC1 and FAC2 exponents for addition
-//
-// See also:
-// - [CM64] Computes Mapping the Commodore 64 - page 115
-// - https://www.c64-wiki.com/wiki/BASIC-ROM
+;
+; Math package - align FAC1 and FAC2 exponents for addition
+;
+; See also:
+; - [CM64] Computes Mapping the Commodore 64 - page 115
+; - https://www.c64-wiki.com/wiki/BASIC-ROM
 
 add_align_exponents:
 
-	// XXX assume here none of the exponents is 0, check if this is true for orignal ROMs
+	; XXX assume here none of the exponents is 0, check if this is true for orignal ROMs
 
 	lda FAC1_exponent
 	cmp FAC2_exponent
-	beq add_align_exponents_done       // branch if exponents the same
+	beq add_align_exponents_done       ; branch if exponents the same
 	bcs add_align_exponent_FAC2
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 add_align_exponent_FAC1:
 
-	// First check the exponent difference
+	; First check the exponent difference
 
 	lda FAC2_exponent
 	sec
 	sbc FAC1_exponent
 
 	cmp #$28
-	bcs add_align_exponent_FAC1_zero   // branch if difference is very high
+	bcs add_align_exponent_FAC1_zero   ; branch if difference is very high
 
 	cmp #$08
 	bcc add_align_exponent_FAC1_bit
 	
-	// FALLTROUGH
+	; FALLTROUGH
 
 add_align_exponent_FAC1_byte:
 
-	// Add 8 to exponent, divide mantissa by 256
+	; Add 8 to exponent, divide mantissa by 256
 
 	lda FAC1_exponent
 	clc
@@ -56,11 +56,11 @@ add_align_exponent_FAC1_byte:
 	lda #$00
 	sta FAC1_mantissa+0
 
-	beq add_align_exponent_FAC1        // branch always - next iteration
+	beq add_align_exponent_FAC1        ; branch always - next iteration
 
 add_align_exponent_FAC1_bit:
 
-	// Increment exponent, divide mantissa by 2
+	; Increment exponent, divide mantissa by 2
 
 	inc FAC1_exponent
 
@@ -73,7 +73,7 @@ add_align_exponent_FAC1_bit:
 
 	lda FAC1_exponent
 	cmp FAC2_exponent
-	bne add_align_exponent_FAC1_bit    // branch if next iteration needed
+	bne add_align_exponent_FAC1_bit    ; branch if next iteration needed
 
 	rts
 
@@ -90,7 +90,7 @@ add_align_exponent_FAC1_zero:
 	lda FAC2_exponent
 	sta FAC1_exponent
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 add_align_exponents_done:
 
@@ -100,22 +100,22 @@ add_align_exponents_done:
 
 add_align_exponent_FAC2:
 
-	// First check the exponent difference, Carry already set here
+	; First check the exponent difference, Carry already set here
 
 	lda FAC1_exponent
 	sbc FAC2_exponent
 
 	cmp #$20
-	bcs add_align_exponent_FAC2_zero   // branch if difference is very high
+	bcs add_align_exponent_FAC2_zero   ; branch if difference is very high
 
 	cmp #$08
 	bcc add_align_exponent_FAC2_bit
 	
-	// FALLTROUGH
+	; FALLTROUGH
 
 add_align_exponent_FAC2_byte:
 
-	// Add 8 to exponent, divide mantissa by 256
+	; Add 8 to exponent, divide mantissa by 256
 
 	lda FAC2_exponent
 	clc
@@ -131,11 +131,11 @@ add_align_exponent_FAC2_byte:
 	lda #$00
 	sta FAC2_mantissa+0
 
-	beq add_align_exponent_FAC2        // branch always - next iteration
+	beq add_align_exponent_FAC2        ; branch always - next iteration
 
 add_align_exponent_FAC2_bit:
 
-	// Increment exponent, divide mantissa by 2
+	; Increment exponent, divide mantissa by 2
 
 	inc FAC2_exponent
 
@@ -147,7 +147,7 @@ add_align_exponent_FAC2_bit:
 
 	lda FAC1_exponent
 	cmp FAC2_exponent
-	bne add_align_exponent_FAC2_bit    // branch if next iteration needed
+	bne add_align_exponent_FAC2_bit    ; branch if next iteration needed
 
 	rts
 

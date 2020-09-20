@@ -1,11 +1,11 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Initialize random seed using values from FAC1,
-// afterwards generate random number in FAC1
-//
+;
+; Initialize random seed using values from FAC1,
+; afterwards generate random number in FAC1
+;
 
 rnd_seed_from_FAC1:
 

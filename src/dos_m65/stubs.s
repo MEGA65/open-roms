@@ -1,22 +1,22 @@
 
-// Dummy implementations - XXX to be replaced with real ones
+; Dummy implementations - XXX to be replaced with real ones
 
 dos_ACPTR:
-	nop
+	+nop
 dos_CIOUT:
-	nop
+	+nop
 dos_LISTEN:
-	nop
+	+nop
 dos_SECOND:
-	nop
+	+nop
 dos_TALK:
-	nop
+	+nop
 dos_TKSA:
-	nop
+	+nop
 dos_UNTLK:
-	nop
+	+nop
 dos_UNLSN:
-	nop
+	+nop
 
 	sec
 	rts

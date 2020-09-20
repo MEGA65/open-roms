@@ -1,10 +1,10 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Tries to convert PETSCII in .A to a digit (0-9 values), sets Carry to indicate failure
-//
+;
+; Tries to convert PETSCII in .A to a digit (0-9 values), sets Carry to indicate failure
+;
 
 convert_PETSCII_to_digit:
 

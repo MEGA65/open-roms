@@ -1,50 +1,50 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Works similar to $BDCD in original C64 BASIC
-//
+;
+; Works similar to $BDCD in original C64 BASIC
+;
 
 print_integer:
 
-	// Tested with original C64 ROMs, that it trashes FAC1 too
+	; Tested with original C64 ROMs, that it trashes FAC1 too
 
 	sta FAC1_exponent+1
 	stx FAC1_exponent+0
 
-	// Check for 0
+	; Check for 0
 
 	ora FAC1_exponent+0
 	bne print_integer_not_0
 
-	// Just print '0' and quit
+	; Just print '0' and quit
 
 	lda #$30
 	jmp JCHROUT
 
 print_integer_not_0:
 
-	// Try to find the index of the first digit
+	; Try to find the index of the first digit
 
 	ldy #$04
-!:
+@1:
 	jsr print_integer_compare
 	bcs print_integer_digit
 
 	dey
-	bpl !-                             // branch always
+	bpl @1                             ; branch always
 
 print_integer_digit:
 
-	// Determine digit to print
+	; Determine digit to print
 
 	ldx #$00
-!:
+@2:
 	jsr print_integer_compare
-	bcc !+
+	bcc @3
 
-	// Raise digit, lower the integer
+	; Raise digit, lower the integer
 
 	inx
 
@@ -56,9 +56,9 @@ print_integer_digit:
 	sbc print_integer_tab_hi, y
 	sta FAC1_exponent+1
 	
-	bcs !-                             // branch always
-!:
-	// Convert digit in .X to PETSCII in .A and print it out
+	bcs @2                             ; branch always
+@3:
+	; Convert digit in .X to PETSCII in .A and print it out
 
 	txa
 	clc
@@ -66,11 +66,11 @@ print_integer_digit:
 
 	jsr JCHROUT
 
-	// Check if next iteration is needed
+	; Check if next iteration is needed
 
 	dey
 	bpl print_integer_digit
 
-	// The end
+	; The end
 
 	rts

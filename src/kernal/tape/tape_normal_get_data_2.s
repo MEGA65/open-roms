@@ -1,77 +1,77 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Tape (normal) helper routine - data block (backup) reading
-//
+;
+; Tape (normal) helper routine - data block (backup) reading
+;
 
 
-#if CONFIG_TAPE_NORMAL
+!ifdef CONFIG_TAPE_NORMAL {
 
 
 tape_normal_get_data_2:
 
-	// NOTE: Always read all the bytes fro second copy, to taht we stop
-	//       at the moment when it is safe to start recording!
+	; NOTE: Always read all the bytes fro second copy, to taht we stop
+	;       at the moment when it is safe to start recording!
 
-	// Read sync of the block
+	; Read sync of the block
 	
 	ldy #$09
 	jsr tape_normal_sync
-	bcs tape_normal_get_data_2_done              // Carry already set, will indicate error
+	bcs tape_normal_get_data_2_done              ; Carry already set, will indicate error
 	jsr tape_normal_get_marker
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_normal_get_data_2_loop:
 
-	// Read missing bytes
+	; Read missing bytes
 
 	jsr tape_normal_get_byte
 	bcc tape_normal_get_data_2_loop_byte_OK
 
-	// Problem reading a byte - just skip it
+	; Problem reading a byte - just skip it
 
 	bcs tape_normal_get_data_2_loop_advance
 
 tape_normal_get_data_2_loop_byte_OK:
 
 	jsr load_cmp_log_MEMUSS
-	beq tape_normal_get_data_2_loop_from_log     // branch if byte from the log
+	beq tape_normal_get_data_2_loop_from_log     ; branch if byte from the log
 
 	jsr tape_normal_get_marker
-	bcs tape_normal_get_data_2_log_checksum      // branch if end of blocks
+	bcs tape_normal_get_data_2_log_checksum      ; branch if end of blocks
 	bcc tape_normal_get_data_2_loop_advance
 
 
 tape_normal_get_data_2_loop_from_log:
 
-	// This is a byte from the log
+	; This is a byte from the log
 
 	jsr tape_normal_get_marker
-	bcs !+
+	bcs @1
 
 	lda INBIT
 	ldy #$00
-#if ROM_LAYOUT_M65
+!ifdef CONFIG_MB_M65 {
 	jsr tape_normal_byte_store
-#else
+} else {
 	sta (MEMUSS), y
-#endif
-!:
+}
+@1:
 	jsr tape_normal_update_checksum
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_normal_get_data_2_loop_advance:
 
-	// Advance pointer
-#if !HAS_OPCODES_65CE02
+	; Advance pointer
+!ifndef HAS_OPCODES_65CE02 {
 	jsr lvs_advance_MEMUSS
-#else
+} else {
 	inw MEMUSS+0
-#endif
+}
 
 	jmp tape_normal_get_data_2_loop
 
@@ -80,14 +80,14 @@ tape_normal_get_data_2_log_checksum:
 
 	lda PTR1
 	cmp PTR2
-	bne tape_normal_get_data_2_done              // Carry already set
+	bne tape_normal_get_data_2_done              ; Carry already set
 
-	// Validate checksum
+	; Validate checksum
 
 	lda RIPRTY
-	cmp #$01                                     // sets Carry if checksum verification fails
+	cmp #$01                                     ; sets Carry if checksum verification fails
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_normal_get_data_2_done:
 
@@ -99,19 +99,17 @@ load_cmp_log_MEMUSS:
 	ldx PTR2
 	lda STACK+0, x
 	cmp MEMUSS+0
-	bne !+
+	bne @2
 
 	lda STACK+1, x
 	cmp MEMUSS+1
-	bne !+
+	bne @2
 
-	// MEMUSS matches address from the log
+	; MEMUSS matches address from the log
 
 	inc PTR2
 	inc PTR2
-	lda #$00                                     // to set Zero flag
-!:
+	lda #$00                                     ; to set Zero flag
+@2:
 	rts
-
-
-#endif
+}

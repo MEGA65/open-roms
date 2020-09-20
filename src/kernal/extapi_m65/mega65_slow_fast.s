@@ -1,15 +1,15 @@
-// #LAYOUT# M65 KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
 
-M65_SLOW: // set CPU speed to 1 MHz
+M65_SLOW: ; set CPU speed to 1 MHz
 
 	lda #$40
-	skip_2_bytes_trash_nvz
+	+skip_2_bytes_trash_nvz
 
-	// FALLTROUGH
+	; FALLTROUGH
 
-M65_FAST: // set CPU speed to 40 MHz
+M65_FAST: ; set CPU speed to 40 MHz
 
 	lda #$41
 	sta CPU_D6510

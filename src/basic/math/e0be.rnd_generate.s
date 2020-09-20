@@ -1,17 +1,17 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// A fast pseudorandom generator, modified idea from:
-// - https://codebase64.org/doku.php?id=base:32bit_galois_lfsr
-//
-// Output:
-// - FAC1
-//
-// See also:
-// - https://www.atarimagazines.com/compute/issue72/random_numbers.php
-//
+;
+; A fast pseudorandom generator, modified idea from:
+; - https://codebase64.org/doku.php?id=base:32bit_galois_lfsr
+;
+; Output:
+; - FAC1
+;
+; See also:
+; - https://www.atarimagazines.com/compute/issue72/random_numbers.php
+;
 
 rnd_generate:
 
@@ -38,13 +38,13 @@ rnd_generate:
 	eor #$04
 	sta RNDX+4
 
-	sec                                // make sure Carry is always set, for adc
+	sec                                ; make sure Carry is always set, for adc
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 rnd_generate_copy:
 
-	// Copy the generated number to FAC1, mangle it a little
+	; Copy the generated number to FAC1, mangle it a little
 
 	lda RNDX+3
 	adc #$C6
@@ -63,7 +63,7 @@ rnd_generate_copy:
 	rol
 	sta FAC1_mantissa+3
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 rnd_generate_finalize:
 
@@ -71,7 +71,7 @@ rnd_generate_finalize:
 	sta FAC1_sign
 	
 	lda #$80
-	sta FACOV                          // just to prevent 0 after normalization
+	sta FACOV                          ; just to prevent 0 after normalization
 	sta FAC1_exponent
 	
 	jmp normal_FAC1

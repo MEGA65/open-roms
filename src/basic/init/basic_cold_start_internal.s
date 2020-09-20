@@ -1,48 +1,48 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Continuation of the BASIC cold start routine
-//
+;
+; Continuation of the BASIC cold start routine
+;
 
 
 basic_cold_start_internal:
 
-	// Setup vectors at $300
+	; Setup vectors at $300
 	ldy #$0B
-!:
+@1:
 	lda basic_vector_defaults_1, y
 	sta IERROR, y
 	dey
-	bpl !-
+	bpl @1
 
-	// Setup misc vectors
+	; Setup misc vectors
 	ldy #$04
-!:
+@2:
 	lda basic_vector_defaults_2, y
 	sta ADRAY1, y
 	dey
-	bpl !-
+	bpl @2
 
-	// Setup USRPOK
-	lda #$4C // JMP opcode
+	; Setup USRPOK
+	lda #$4C ; JMP opcode
 	sta USRPOK
 	lda #<do_ILLEGAL_QUANTITY_error
 	sta USRADD+0
 	lda #>do_ILLEGAL_QUANTITY_error
 	sta USRADD+1
 
-	// Clear the BRK location address
+	; Clear the BRK location address
 	lda #$00
 	sta CMP0+0
 	sta CMP0+1
 
-	// Print startup messages
+	; Print startup messages
 	jsr INITMSG
 
-	// Initialize other variables by performing NEW
+	; Initialize other variables by performing NEW
 	jsr do_new
 
-	// jump into warm start loop
+	; jump into warm start loop
 	jmp basic_warm_start

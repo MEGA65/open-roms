@@ -1,30 +1,30 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Tape (turbo) helper routine - syynchronize to first byte with value $02
-//
+;
+; Tape (turbo) helper routine - syynchronize to first byte with value $02
+;
 
-#if CONFIG_TAPE_TURBO
+!ifdef CONFIG_TAPE_TURBO {
 
 
 tape_turbo_sync_first:
 
-#if CONFIG_TAPE_AUTODETECT
+!ifdef CONFIG_TAPE_AUTODETECT {
 
 	ldy #$00
-!:
+@1:
 	jsr tape_turbo_get_bit 
 	rol INBIT
 	lda INBIT
 
 	cmp #$FF
-	bne !+
+	bne @2
 	iny
-	bpl !-
-	bmi tape_turbo_sync_first_fail     // suspiciously many $FF bytes, probably not a turbo tape
-!:
+	bpl @1
+	bmi tape_turbo_sync_first_fail     ; suspiciously many $FF bytes, probably not a turbo tape
+@2:
 	cmp #$02
 	bne tape_turbo_sync_first
 
@@ -36,7 +36,7 @@ tape_turbo_sync_first_fail:
 	sec
 	rts
 
-#else // no CONFIG_TAPE_AUTODETECT
+ } else { ; no CONFIG_TAPE_AUTODETECT
 
 	jsr tape_turbo_get_bit 
 	rol INBIT
@@ -46,8 +46,7 @@ tape_turbo_sync_first_fail:
 	bne tape_turbo_sync_first
 
 	rts
+}
 
-#endif
 
-
-#endif
+}

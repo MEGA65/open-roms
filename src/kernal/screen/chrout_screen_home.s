@@ -1,11 +1,11 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# X16 *        #IGNORE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# X16 *        #IGNORE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// HOME key handling within CHROUT
-//
+;
+; HOME key handling within CHROUT
+;
 
 
 chrout_screen_HOME:

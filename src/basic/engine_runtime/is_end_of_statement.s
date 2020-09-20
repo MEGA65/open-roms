@@ -1,10 +1,10 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Check for end of statement, sets Carry if so. Injests all spaces.
-//
+;
+; Check for end of statement, sets Carry if so. Injests all spaces.
+;
 
 
 is_end_of_statement:
@@ -12,28 +12,28 @@ is_end_of_statement:
 	jsr fetch_character_skip_spaces
 
 	cmp #$00
-	beq !+
+	beq @1
 	cmp #$3A
-	beq !+
+	beq @1
 
-	// Not end of statement
+	; Not end of statement
 
-#if !HAS_OPCODES_65CE02
+!ifndef HAS_OPCODES_65CE02 {
 	jsr unconsume_character
-#else
+} else {
 	dew TXTPTR
-#endif
+}
 
 	clc
 	rts
-!:
-	// End of statement
+@1:
+	; End of statement
 
-#if !HAS_OPCODES_65CE02
+!ifndef HAS_OPCODES_65CE02 {
 	jsr unconsume_character
-#else
+} else {
 	dew TXTPTR
-#endif
+}
 
 	sec
 	rts

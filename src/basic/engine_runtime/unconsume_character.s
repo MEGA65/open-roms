@@ -1,12 +1,12 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Reverses character fetch
-//
+;
+; Reverses character fetch
+;
 
-#if !HAS_OPCODES_65CE02
+!ifndef HAS_OPCODES_65CE02 {
 
 unconsume_character:
 
@@ -19,5 +19,4 @@ unconsume_character:
 	sta TXTPTR+1
 
 	rts
-
-#endif
+}

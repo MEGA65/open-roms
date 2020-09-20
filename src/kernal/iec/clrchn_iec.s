@@ -1,33 +1,33 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// IEC part of the CLRCHN routine
-//
+;
+; IEC part of the CLRCHN routine
+;
 
 
-#if CONFIG_IEC
+!ifdef CONFIG_IEC {
 
 
 clrchn_iec:
 
-	// Check input device
+	; Check input device
 	lda DFLTN
 	jsr iec_check_devnum_oc
-	bcs !+
+	bcs @1
 
-	// It was IEC device - send UNTALK first
+	; It was IEC device - send UNTALK first
 	jsr UNTLK
-!:
-	// Check output device
+@1:
+	; Check output device
 	lda DFLTO
 	jsr iec_check_devnum_oc
 
-	// If it was IEC device - send UNLSN first
-	bcc_16 UNLSN
+	; If it was IEC device - send UNLSN first
+	+bcc UNLSN
 
 	rts
 
 
-#endif // CONFIG_IEC
+} ; CONFIG_IEC

@@ -1,13 +1,13 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Helper routine to copy string descriptor
-//
+;
+; Helper routine to copy string descriptor
+;
 
 
-#if CONFIG_MEMORY_MODEL_38K
+!ifdef CONFIG_MEMORY_MODEL_38K {
 
 helper_strdesccpy:
 
@@ -22,5 +22,4 @@ helper_strdesccpy:
 	sta DSCPNT+2
 
 	rts
-
-#endif
+}

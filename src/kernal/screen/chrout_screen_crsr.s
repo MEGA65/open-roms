@@ -1,11 +1,11 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# X16 *        #IGNORE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# X16 *        #IGNORE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Cursor keys handling within CHROUT
-//
+;
+; Cursor keys handling within CHROUT
+;
 
 
 chrout_screen_CRSR_UP:
@@ -14,7 +14,7 @@ chrout_screen_CRSR_UP:
 	beq chrout_screen_CRSR_done
 	dec TBLX
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 chrout_screen_CRSR_done:
 
@@ -25,9 +25,9 @@ chrout_screen_CRSR_DOWN:
 
 	lda TBLX
 	cmp #24
-	bne !+
+	bne @1
 	jsr screen_scroll_up
-!:
+@1:
 	inc TBLX
 	jmp chrout_screen_calc_lptr_done
 
@@ -36,19 +36,23 @@ chrout_screen_CRSR_RIGHT:
 
 	jsr screen_get_clipped_PNTR
 	cpy #39
-	beq_16 screen_advance_to_next_line
+	+beq screen_advance_to_next_line
 	
 	iny
-!:
+
+	; FALLTROUGH
+
+chrout_screen_CRSR_LR_end:
+
 	sty PNTR
-	bpl chrout_screen_CRSR_done        // branch always
+	bpl chrout_screen_CRSR_done        ; branch always
 
 
 chrout_screen_CRSR_LEFT:
 
 	jsr screen_get_clipped_PNTR
 	dey
-	bpl !-
+	bpl chrout_screen_CRSR_LR_end
 
 	lda TBLX
 	beq chrout_screen_CRSR_done
@@ -56,4 +60,4 @@ chrout_screen_CRSR_LEFT:
 	dec TBLX
 	lda #39
 	sta PNTR
-	bne chrout_screen_CRSR_done        // branch always
+	bne chrout_screen_CRSR_done        ; branch always

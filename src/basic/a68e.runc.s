@@ -1,23 +1,23 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-// Well-known BASIC routine, described in:
-//
-// - [CM64] Computes Mapping the Commodore 64 - page 97
-// - https://www.c64-wiki.com/wiki/BASIC-ROM
-// - https://csdb.dk/forums/?roomid=11&topicid=137233
-// 
+; Well-known BASIC routine, described in:
+;
+; - [CM64] Computes Mapping the Commodore 64 - page 97
+; - https://www.c64-wiki.com/wiki/BASIC-ROM
+; - https://csdb.dk/forums/?roomid=11&topicid=137233
+; 
 
-// XXX use this routine to initialize TXTPTR
+; XXX use this routine to initialize TXTPTR
 
 RUNC:
-	// According to WIKI, we should load $7A/$7B with $2B-1/$2C-1), this does not makes sense.
-	// But CSDB claims, that it should 'set current character pointer to start of basic - 1' - this
-	// looks sane, also checked that the original BASIC routine does this (short test program)
+	; According to WIKI, we should load $7A/$7B with $2B-1/$2C-1), this does not makes sense.
+	; But CSDB claims, that it should 'set current character pointer to start of basic - 1' - this
+	; looks sane, also checked that the original BASIC routine does this (short test program)
 
-	// Lets initialize TXTPTR using TXTTAB
+	; Lets initialize TXTPTR using TXTTAB
 
 	lda TXTTAB+0
 	sec

@@ -1,22 +1,22 @@
-// #LAYOUT# M65 BASIC_1 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# M65 BASIC_1 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
 
-// Routine is too long to fit in the original location
+; Routine is too long to fit in the original location
 
-// XXX banner-related code needs cleanup, move MEGA65 stuff to a separate file
+; XXX banner-related code needs cleanup, move MEGA65 stuff to a separate file
 
 
 INITMSG:
 
 	jsr INITMSG_main_banner
 
-	// Display additional information, depending on the mode
+	; Display additional information, depending on the mode
 
 	jsr M65_MODEGET
-	bcc !+
+	bcc @1
 
-	// Legacy C64 compatibility mode
+	; Legacy C64 compatibility mode
 
 	jsr INITMSG_partial
 
@@ -24,8 +24,8 @@ INITMSG:
 	jsr print_packed_misc_str
 
 	bra INITMSG_end
-!:
-	// Native mode	
+@1:
+	; Native mode	
 
 	ldx #48
 	ldy #0
@@ -39,7 +39,7 @@ INITMSG:
 	jsr print_sysinfo_banner
 	jsr M65_SETWIN_N
 
-	// Native mode - display revision and available memory
+	; Native mode - display revision and available memory
 
 	ldx #$05
 	ldy #$00
@@ -53,7 +53,7 @@ INITMSG:
 	jsr print_return
 	jsr print_return
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 INITMSG_end:
 
@@ -65,18 +65,18 @@ INITMSG_end:
 
 INITMSG_main_banner:
 
-	// Clear the screen first, some cartridges (like IEEE-488) are leaving a mess on the screen
+	; Clear the screen first, some cartridges (like IEEE-488) are leaving a mess on the screen
 
 	lda #147
 	jsr JCHROUT
 
-	// Display main banner
+	; Display main banner
 
 	lda #<startup_banner
 	ldy #>startup_banner
 	jmp STROUT
 
-INITMSG_autoswitch: // entry point for 'SYS command'
+INITMSG_autoswitch: ; entry point for 'SYS command'
 
 	jsr INITMSG_main_banner
 	jsr INITMSG_partial
@@ -89,7 +89,7 @@ INITMSG_partial:
 	ldx #IDX__STR_ORS_LEGACY_1
 	jsr print_packed_misc_str
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 INITMSG_revision:
 

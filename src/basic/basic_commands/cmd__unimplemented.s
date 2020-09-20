@@ -1,55 +1,55 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Default handler for all not-yet-implemented commands
-//
-// Note: NOPs are here just to make debugging easier (no duplicated labels)!
-//
+;
+; Default handler for all not-yet-implemented commands
+;
+; Note: NOPs are here just to make debugging easier (no duplicated labels)!
+;
 
 
 cmd_for:
-	nop
+	+nop
 cmd_next:
-	nop
+	+nop
 cmd_data:
-	nop
+	+nop
 cmd_inputhash:
-	nop
+	+nop
 cmd_input:
-	nop
+	+nop
 cmd_read:
-	nop
+	+nop
 cmd_gosub:
-	nop
+	+nop
 cmd_return:
-	nop
+	+nop
 cmd_on:
-	nop
+	+nop
 cmd_wait:
-	nop
+	+nop
 cmd_def:
-	nop
+	+nop
 cmd_poke:
-	nop
+	+nop
 cmd_printhash:
-	nop
+	+nop
 cmd_cont:
-	nop
+	+nop
 cmd_cmd:
-	nop
+	+nop
 cmd_open:
-	nop
+	+nop
 cmd_close:
-	nop
+	+nop
 cmd_get:
-	nop
+	+nop
 cmd_tab:
-	nop
+	+nop
 cmd_spc:
-	nop
+	+nop
 
-	// Unimplemented tokens
+	; Unimplemented tokens
 
 	jmp do_NOT_IMPLEMENTED_error

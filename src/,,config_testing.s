@@ -1,137 +1,149 @@
 
-.const CONFIG_ID = $F0 // should be 1 byte, different for each config file!
-.encoding "petscii_upper"
+!set CONFIG_ID = $F0 ; should be 1 byte, different for each config file!
 
-//
-// Please read CONFIG.md before modifying this file!
-//
+;
+; Please read CONFIG.md before modifying this file!
+;
 
-// Idea:
-// - enable compatibility-risky features
-// - enable code not normally used - to make sure they still compile
-
+; Idea:
+; - enable compatibility-risky features
+; - enable code not normally used - to make sure they still compile
 
 
-// Hardware platform and brand
 
-#define CONFIG_PLATFORM_COMMODORE_64
+; Hardware platform and brand
 
-// #define CONFIG_MB_MEGA_65
-// #define CONFIG_MB_ULTIMATE_64
-
-// #define CONFIG_BRAND_GENERIC
-#define CONFIG_BRAND_TESTING
-// #define CONFIG_BRAND_ULTIMATE_64
+!set CONFIG_PLATFORM_COMMODORE_64 = 1
+!set CONFIG_BRAND_TESTING         = 1
 
 
-// Processor instruction set
+; Processor instruction set
 
-#define CONFIG_CPU_MOS_6502
-// #define CONFIG_CPU_WDC_65C02
-// #define CONFIG_CPU_CSG_65CE02
-// #define CONFIG_CPU_M65_45GS02
-// #define CONFIG_CPU_WDC_65816
-
-
-// Memory model
-
-// #define CONFIG_MEMORY_MODEL_38K
-// #define CONFIG_MEMORY_MODEL_46K
-// #define CONFIG_MEMORY_MODEL_50K
-#define CONFIG_MEMORY_MODEL_60K
+!set CONFIG_CPU_MOS_6502   = 1
+; !set CONFIG_CPU_DTV_6502   = 1
+; !set CONFIG_CPU_RCW_65C02  = 1
+; !set CONFIG_CPU_WDC_65C02  = 1
+; !set CONFIG_CPU_WDC_65816  = 1
+; !set CONFIG_CPU_CSG_65CE02 = 1
 
 
-// I/O devices
+; Memory model
 
-#define CONFIG_IEC
-#define CONFIG_IEC_DOLPHINDOS
-// #define CONFIG_IEC_DOLPHINDOS_FAST
-#define CONFIG_IEC_JIFFYDOS
-// #define CONFIG_IEC_JIFFYDOS_BLANK
-
-// #define CONFIG_TAPE_NORMAL
-#define CONFIG_TAPE_TURBO
-// #define CONFIG_TAPE_AUTODETECT
-// #define CONFIG_TAPE_NO_KEY_SENSE
-// #define CONFIG_TAPE_NO_MOTOR_CONTROL
+; !set CONFIG_MEMORY_MODEL_38K = 1
+; !set CONFIG_MEMORY_MODEL_46K = 1
+; !set CONFIG_MEMORY_MODEL_50K = 1
+!set CONFIG_MEMORY_MODEL_60K = 1
 
 
-// Multiple SID support
+; IEC bus configuration
 
-#define CONFIG_SID_2ND
-.const CONFIG_SID_2ND_ADDRESS = $D420
-
-#define CONFIG_SID_3RD
-.const CONFIG_SID_3RD_ADDRESS = $D440
-
-// #define CONFIG_SID_D4XX
-// #define CONFIG_SID_D5XX
+!set CONFIG_IEC = 1
+!set CONFIG_IEC_DOLPHINDOS = 1
+; !set CONFIG_IEC_DOLPHINDOS_FAST = 1
+!set CONFIG_IEC_JIFFYDOS = 1
+; !set CONFIG_IEC_JIFFYDOS_BLANK = 1
 
 
-// Keyboard settings
+; Tape deck configuration
 
-#define CONFIG_LEGACY_SCNKEY
-// #define CONFIG_KEYBOARD_C128
-// #define CONFIG_KEYBOARD_C128_CAPS_LOCK
-// #define CONFIG_KEYBOARD_C65              // untested
-// #define CONFIG_KEYBOARD_C65_CAPS_LOCK    // untested
-// #define CONFIG_KEY_REPEAT_DEFAULT
-// #define CONFIG_KEY_REPEAT_ALWAYS
-#define CONFIG_KEY_FAST_SCAN
-#define CONFIG_JOY1_CURSOR
-#define CONFIG_JOY2_CURSOR
-
-#define CONFIG_PROGRAMMABLE_KEYS
-
-.const CONFIG_KEYCMD_RUN  = @"\$5FL"
-
-.const CONFIG_KEYCMD_F1   = @"@"
-.const CONFIG_KEYCMD_F2   = @""
-.const CONFIG_KEYCMD_F3   = @"RUN:"
-.const CONFIG_KEYCMD_F4   = @""
-.const CONFIG_KEYCMD_F5   = @"LOAD"
-.const CONFIG_KEYCMD_F6   = @""
-.const CONFIG_KEYCMD_F7   = @"@$"
-.const CONFIG_KEYCMD_F8   = @""
-
-.const CONFIG_KEYCMD_HELP = @"LIST"
-
-.const CONFIG_KEYCMD_F9   = @""
-.const CONFIG_KEYCMD_F10  = @""
-.const CONFIG_KEYCMD_F11  = @""
-.const CONFIG_KEYCMD_F12  = @""
-.const CONFIG_KEYCMD_F13  = @""
-.const CONFIG_KEYCMD_F14  = @""
+; !set CONFIG_TAPE_NORMAL = 1
+!set CONFIG_TAPE_TURBO = 1
+; !set CONFIG_TAPE_AUTODETECT = 1
+; !set CONFIG_TAPE_NO_KEY_SENSE = 1
+; !set CONFIG_TAPE_NO_MOTOR_CONTROL = 1
 
 
-// Screen editor
+; Sound support
 
-#define CONFIG_EDIT_STOPQUOTE
-#define CONFIG_EDIT_TABULATORS
-
-
-// Software features
-
-#define CONFIG_PANIC_SCREEN
-#define CONFIG_DOS_WEDGE
-#define CONFIG_TAPE_WEDGE
-// #define CONFIG_TAPE_HEAD_ALIGN
-#define CONFIG_BCD_SAFE_INTERRUPTS
+!set CONFIG_SID_2ND_ADDRESS = $D420
+!set CONFIG_SID_3RD_ADDRESS = $D440
+; !set CONFIG_SID_D4XX = 1
+; !set CONFIG_SID_D5XX = 1
 
 
-// Eye candy
+; Keyboard settings
 
-// #define CONFIG_COLORS_BRAND
-#define CONFIG_BANNER_SIMPLE
-// #define CONFIG_BANNER_FANCY
-#define CONFIG_SHOW_FEATURES
+!set CONFIG_LEGACY_SCNKEY = 1
+; !set CONFIG_KEYBOARD_C128 = 1
+; !set CONFIG_KEYBOARD_C128_CAPS_LOCK = 1
+; !set CONFIG_KEYBOARD_C65 = 1              ; untested
+; !set CONFIG_KEYBOARD_C65_CAPS_LOCK = 1    ; untested
+; !set CONFIG_KEY_REPEAT_DEFAULT = 1
+; !set CONFIG_KEY_REPEAT_ALWAYS = 1
+!set CONFIG_KEY_FAST_SCAN = 1
+!set CONFIG_JOY1_CURSOR = 1
+!set CONFIG_JOY2_CURSOR = 1
+
+!set CONFIG_PROGRAMMABLE_KEYS = 1
+
+!set   CONFIG_KEYCMD_RUN = 1
+!macro CONFIG_KEYCMD_RUN  {
+	!byte $5F
+	!pet "l" }
+
+!set   CONFIG_KEYCMD_F1 = 1
+!macro CONFIG_KEYCMD_F1   { !pet "@" }
+; !set   CONFIG_KEYCMD_F2 = 1
+; !macro CONFIG_KEYCMD_F2   { !pet "" }
+!set   CONFIG_KEYCMD_F3 = 1
+!macro CONFIG_KEYCMD_F3   { !pet "run:" }
+; !set   CONFIG_KEYCMD_F4 = 1
+; !macro CONFIG_KEYCMD_F4   { !pet "" }
+!set   CONFIG_KEYCMD_F5 = 1
+!macro CONFIG_KEYCMD_F5   { !pet "load" }
+; !set   CONFIG_KEYCMD_F6 = 1
+; !macro CONFIG_KEYCMD_F6   { !pet "" }
+!set   CONFIG_KEYCMD_F7 = 1
+!macro CONFIG_KEYCMD_F7   { !pet "@$" }
+; !set   CONFIG_KEYCMD_F8 = 1
+; !macro CONFIG_KEYCMD_F8   { !pet "" }
+
+!set   CONFIG_KEYCMD_HELP = 1
+!macro CONFIG_KEYCMD_HELP { !pet "list" }
+
+; !set   CONFIG_KEYCMD_F9 = 1
+; !macro CONFIG_KEYCMD_F9   { !pet "" }
+; !set   CONFIG_KEYCMD_F10 = 1
+; !macro CONFIG_KEYCMD_F10  { !pet "" }
+; !set   CONFIG_KEYCMD_F11 = 1
+; !macro CONFIG_KEYCMD_F11  { !pet "" }
+; !set   CONFIG_KEYCMD_F12 = 1
+; !macro CONFIG_KEYCMD_F12  { !pet "" }
+; !set   CONFIG_KEYCMD_F13 = 1
+; !macro CONFIG_KEYCMD_F13  { !pet "" }
+; !set   CONFIG_KEYCMD_F14 = 1
+; !macro CONFIG_KEYCMD_F14  { !pet "" }
 
 
-// Debug options
 
-// #define CONFIG_DBG_STUBS_BRK
-#define CONFIG_DBG_PRINTF
+; Screen editor
 
-// Other
+!set CONFIG_EDIT_STOPQUOTE = 1
+!set CONFIG_EDIT_TABULATORS = 1
 
-// #define CONFIG_COMPRESSION_LVL_2
+
+; Software features
+
+!set CONFIG_PANIC_SCREEN = 1
+!set CONFIG_DOS_WEDGE = 1
+!set CONFIG_TAPE_WEDGE = 1
+; !set CONFIG_TAPE_HEAD_ALIGN = 1
+!set CONFIG_BCD_SAFE_INTERRUPTS = 1
+
+
+; Eye candy
+
+; !set CONFIG_COLORS_BRAND = 1
+!set CONFIG_BANNER_SIMPLE = 1
+; !set CONFIG_BANNER_FANCY = 1
+!set CONFIG_SHOW_FEATURES = 1
+
+
+; Debug options
+
+; !set CONFIG_DBG_STUBS_BRK = 1
+!set CONFIG_DBG_PRINTF = 1
+
+; Other
+
+; !set CONFIG_COMPRESSION_LVL_2 = 1

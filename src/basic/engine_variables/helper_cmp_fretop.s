@@ -14,9 +14,8 @@ helper_cmp_fretop:
 
 	lda DSCPNT+2
 	cmp FRETOP+1
-	beq @1    ; XXX! BNE+RTS would save one byte
-	rts
-@1:
+	bne @1
 	lda DSCPNT+1
 	cmp FRETOP+0
+@1:
 	rts

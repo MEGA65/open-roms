@@ -22,10 +22,12 @@ m65_dmagic_oper_fill:
 
 	; Set operation type
 
-	lda #($03 + $08)                   ; operation: FILL + allow interrupts
+	lda #$03                           ; operation: FILL
 	sta M65_DMAGIC_LIST+6
 
-	; XXX! put 0 into M65_DMAJOB_SRC_3 to clear the flags
+	; Put this into M65_DMAJOB_SRC_3 too - to make sure flags (4 most significant bits) are cleared
+
+	sta M65_DMAJOB_SRC_3
 
 	; Adapt the addresses, launch the job
 
@@ -42,7 +44,7 @@ m65_dmagic_oper_copy:
 
 	; Set operation type
 
-	lda #($00 + $08)                   ; operation: COPY + allow interrupts
+	lda #$00                           ; operation: COPY
 	sta M65_DMAGIC_LIST+6
 
 	; Adapt the addresses, launch the job
@@ -135,8 +137,6 @@ m65_dmagic_init:
 	lda #$00
 	sta M65_DMAGIC_LIST+5              ; <- end of options
 
-	; !XXX modulo is ignored - remove these, shift M65_DMAGIC_LIST up by 2 bytes 
-	sta M65_DMAGIC_LIST+15             ; <- set modulo to 0
-	sta M65_DMAGIC_LIST+16
+	; Modulo is never used - thus our list is 15 bytes, not 17
 
 	rts

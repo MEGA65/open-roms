@@ -25,9 +25,9 @@ m65_dmagic_oper_fill:
 	lda #$03                           ; operation: FILL
 	sta M65_DMAGIC_LIST+6
 
-	; Put this into M65_DMAJOB_SRC_3 too - to make sure flags (4 most significant bits) are cleared
+	; Put this into M65_DMAJOB_SRC_2 too - to make sure flags (4 most significant bits) are cleared
 
-	sta M65_DMAJOB_SRC_3
+	sta M65_DMAJOB_SRC_2
 
 	; Adapt the addresses, launch the job
 

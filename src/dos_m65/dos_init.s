@@ -29,7 +29,3 @@ dos_INIT:
 	; XXX initialize drivers, etc.
 
 	rts
-
-dos_magicstr: ; 'CBDOS'
-
-	!byte $43, $42, $44, $4F, $53

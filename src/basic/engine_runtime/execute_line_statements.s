@@ -248,28 +248,32 @@ execute_line:
 	ldy #$02
 
 !ifdef CONFIG_MEMORY_MODEL_60K {
+	
 	ldx #<OLDTXT
 	jsr peek_under_roms
-} else ifdef CONFIG_MEMORY_MODEL_46K_OR_50K {
-	jsr peek_under_roms_via_OLDTXT ; XXX! speed-optimize - combine whole flow into one routine
-} else { ; CONFIG_MEMORY_MODEL_38K
-	lda (OLDTXT),y
-}
-
 	sta CURLIN+0
+
 	iny
-
-!ifdef CONFIG_MEMORY_MODEL_60K {
 	jsr peek_under_roms
-} else ifdef CONFIG_MEMORY_MODEL_46K_OR_50K {
-	jsr peek_under_roms_via_OLDTXT
-} else { ; CONFIG_MEMORY_MODEL_38K
-	lda (OLDTXT),y
-}
-
 	sta CURLIN+1
 
 	jmp execute_statements
+
+} else ifdef CONFIG_MEMORY_MODEL_46K_OR_50K {
+
+	jmp helper_execute_line_statements
+
+} else { ; CONFIG_MEMORY_MODEL_38K
+
+	lda (OLDTXT),y
+	sta CURLIN+0
+	
+	iny
+	lda (OLDTXT),y
+	sta CURLIN+1
+
+	jmp execute_statements
+}
 
 
 execute_statements_var_assign:

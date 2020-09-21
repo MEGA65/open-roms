@@ -212,7 +212,7 @@ $(DIR_ACME) $(SRC_ACME) $(HDR_ACME):
 $(TOOL_ASSEMBLER): $(DIR_ACME) $(SRC_ACME) $(HDR_ACME)
 	@mkdir -p build/tools
 	echo $(OUT_ACME)
-	$(CC) -o $(TOOL_ASSEMBLER) $(SRC_ACME) -lm -I./assembler/acme/src
+	$(CC) -o $(TOOL_ASSEMBLER) $(SRC_ACME) -lm -w -I./assembler/acme/src
 
 $(TOOL_PNGPREPARE): tools/pngprepare.c
 	@mkdir -p build/tools

@@ -245,7 +245,7 @@ int main(int argc,char **argv)
 	  if (f) {
 	    // Get explanation why this match is irrelevant
 	    char line[1024]; line[0]=0;
-	    fgets(line,1024,f);
+	    if (0 == fgets(line,1024,f)) fprintf(stderr,"Warning: null fgets result\n");
 	    while (line[0]&&line[strlen(line)-1]=='\r') line[strlen(line)-1]=0;
 	    while (line[0]&&line[strlen(line)-1]=='\n') line[strlen(line)-1]=0;
 	    if (verbose)

@@ -28,6 +28,7 @@
 
 * Gábor Lénárt - for [his work](https://github.com/lgblgblgb/xemu) on XEMU MEGA65 emulator
 * Hernán Di Pietro - for [his work](https://github.com/hernandp/xemu) on XEMU MEGA65 emulator
+* Marco Baye - for [ACME](https://sourceforge.net/projects/acme-crossass) cross-assembler
 * Mads Nielsen - for the [Kick Assembler](http://www.theweb.dk/KickAssembler/Main.html#frontpage)
 * Simon Jameson - for his Kick Assembler [pseudocommands](https://github.com/smnjameson/M65_KickAsm_PseudoCommands) for MEGA65 CPU support
 

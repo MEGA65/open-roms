@@ -206,25 +206,34 @@ updatebin:
 # Rules - tools
 
 $(DIR_ACME) $(SRC_ACME) $(HDR_ACME):
-	git submodule init
-	git submodule update
+	@echo
+	@echo Fetching ACME source code...
+	@git submodule init
+	@git submodule update
 
 $(TOOL_ASSEMBLER): $(DIR_ACME) $(SRC_ACME) $(HDR_ACME)
+	@echo
+	@echo Building $@ ...
 	@mkdir -p build/tools
-	echo $(OUT_ACME)
-	$(CC) -o $(TOOL_ASSEMBLER) $(SRC_ACME) -lm -w -I./assembler/acme/src
+	@$(CC) -o $(TOOL_ASSEMBLER) $(SRC_ACME) -lm -w -I./assembler/acme/src
 
 $(TOOL_PNGPREPARE): tools/pngprepare.c
+	@echo
+	@echo Building $@ ...
 	@mkdir -p build/tools
-	$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
+	@$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
 
 build/tools/%: tools/%.c
+	@echo
+	@echo Building $@ ...
 	@mkdir -p build/tools
-	$(CC) -O2 -Wall -o $@ $<
+	@$(CC) -O2 -Wall -o $@ $<
 
 build/tools/%: tools/%.cc tools/common.h
+	@echo
+	@echo Building $@ ...
 	@mkdir -p build/tools
-	$(CXX) -O2 -Wall -o $@ $<
+	@$(CXX) -O2 -Wall -o $@ $<
 
 # Rules - CHARGEN
 

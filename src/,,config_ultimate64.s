@@ -1,5 +1,5 @@
 
-!set CONFIG_ID = $03 ; should be 1 byte, different for each config file!
+;; #CONFIG# ID $03 ; should be 1 byte, different for each config file!
 
 ;
 ; Please read CONFIG.md before modifying this file!
@@ -45,8 +45,8 @@
 
 ; Sound support
 
-; !set CONFIG_SID_2ND_ADDRESS = $D420
-; !set CONFIG_SID_3RD_ADDRESS = $D440
+;; #CONFIG# SID_2ND_ADDRESS            NO
+;; #CONFIG# SID_3RD_ADDRESS            NO
 ;; #CONFIG# SID_D4XX                   YES
 ;; #CONFIG# SID_D5XX                   YES
 

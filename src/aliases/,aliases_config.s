@@ -189,10 +189,16 @@
 	!if (counter != 0) { !error "Do not use CONFIG_SID_* options for MEGA65 motherboard" }
 }
 !ifdef CONFIG_SID_2ND_ADDRESS {
-	!if (CONFIG_SID_2ND_ADDRESS = $D400) { !error "CONFIG_SID_2ND_ADDRESS points to the 1st SID" }
+	!if (CONFIG_SID_2ND_ADDRESS = $D400)      { !error "CONFIG_SID_2ND_ADDRESS points to the 1st SID" }
+	!if (CONFIG_SID_2ND_ADDRESS < $D420)      { !error "CONFIG_SID_2ND_ADDRESS needs hex value from $D420-$D7E0 range" }
+	!if (CONFIG_SID_2ND_ADDRESS > $D7E0)      { !error "CONFIG_SID_2ND_ADDRESS needs hex value from $D420-$D7E0 range" }
+	!if ((CONFIG_SID_2ND_ADDRESS % $20) != 0) { !error "CONFIG_SID_2ND_ADDRESS has to be aligned to $20" }
 }
 !ifdef CONFIG_SID_3RD_ADDRESS {
-	!if (CONFIG_SID_3RD_ADDRESS = $D400) { !error "CONFIG_SID_3RD_ADDRESS points to the 1st SID" }
+	!if (CONFIG_SID_3RD_ADDRESS = $D400)      { !error "CONFIG_SID_3RD_ADDRESS points to the 1st SID" }
+	!if (CONFIG_SID_3RD_ADDRESS < $D420)      { !error "CONFIG_SID_3RD_ADDRESS needs hex value from $D420-$D7E0 range" }
+	!if (CONFIG_SID_3RD_ADDRESS > $D7E0)      { !error "CONFIG_SID_3RD_ADDRESS needs hex value from $D420-$D7E0 range" }
+	!if ((CONFIG_SID_3RD_ADDRESS % $20) != 0) { !error "CONFIG_SID_3RD_ADDRESS has to be aligned to $20" }
 }
 !ifdef CONFIG_SID_2ND_ADDRESS { !ifdef CONFIG_SID_3RD_ADDRESS {
 	!if (CONFIG_SID_2ND_ADDRESS = CONFIG_SID_3RD_ADDRESS) { !error "Configured SIDs have the same addresses" }

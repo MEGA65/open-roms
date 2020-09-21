@@ -117,6 +117,8 @@ private:
     typedef struct ConfigEntry {
         std::string key;
         std::string valStr; // XXX add support for string values
+        uint32_t    valInt;
+        bool        valIntValid;
     } ConfigEntry;
 
     std::map<uint32_t, ConfigEntry> configEntries;
@@ -725,8 +727,17 @@ void SourceFile::preprocess()
         {
             // XXX add spacing
             // XXX add support for string values
-            outStream << "!set CONFIG_" << configEntries[lineNum].key << " = 1" <<
-                         "    " << line;
+            outStream << "!set CONFIG_" << configEntries[lineNum].key << " = ";
+            if (configEntries[lineNum].valIntValid)
+            {
+                outStream << "$" << std::hex << configEntries[lineNum].valInt;
+            }
+            else
+            {
+                outStream << "1";
+            }
+
+            outStream << "    " << line;
 
             const std::string outString = outStream.str();
             content.insert(content.end(), outString.begin(), outString.end());
@@ -818,7 +829,14 @@ void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std
     if (valStr.compare("NO") == 0) return;
     else if (valStr.compare("YES") == 0)
     {
-        configEntries[lineNum].key = key;
+        configEntries[lineNum].key         = key;
+        configEntries[lineNum].valIntValid = false;
+    }
+    else if (valStr.length() > 1 && valStr[0] == '$')
+    {
+        configEntries[lineNum].key         = key;
+        configEntries[lineNum].valInt      = std::stoul(valStr.substr(1, std::string::npos), nullptr, 16);
+        configEntries[lineNum].valIntValid = true;
     }
     else
     {

@@ -1076,7 +1076,7 @@ void DictEncoder::process(StringEntryList &outDictionary)
 
 bool DataSet::isCompressionLvl2(const StringEntryList &list) const
 {
-    return (GLOBAL_ConfigOptions["CONFIG_COMPRESSION_LVL_2"] && list.type == ListType::STRINGS_BASIC);
+    return (GLOBAL_ConfigOptions["COMPRESSION_LVL_2"] && list.type == ListType::STRINGS_BASIC);
 }
 
 void DataSet::addStrings(const StringEntryList &stringList)
@@ -1135,17 +1135,17 @@ void DataSet::generateConfigDepStrings()
 
     // Tape support features
    
-    if (GLOBAL_ConfigOptions["CONFIG_TAPE_NORMAL"] && GLOBAL_ConfigOptions["CONFIG_TAPE_TURBO"])
+    if (GLOBAL_ConfigOptions["TAPE_NORMAL"] && GLOBAL_ConfigOptions["TAPE_TURBO"])
     {
         featureStr    += "TAPE LOAD NORMAL TURBO\r";
         featureStrM65 += "TAPE   : LOAD NORMAL TURBO\r";
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_TAPE_NORMAL"])
+    else if (GLOBAL_ConfigOptions["TAPE_NORMAL"])
     {
         featureStr    += "TAPE LOAD NORMAL\r";
         featureStrM65 += "TAPE   : LOAD NORMAL\r";
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_TAPE_TURBO"])
+    else if (GLOBAL_ConfigOptions["TAPE_TURBO"])
     {
         featureStr    += "TAPE LOAD TURBO\r";
         featureStrM65 += "TAPE   : LOAD TURBO\r";
@@ -1153,38 +1153,38 @@ void DataSet::generateConfigDepStrings()
    
     // IEC support features
    
-    if (GLOBAL_ConfigOptions["CONFIG_IEC"])
+    if (GLOBAL_ConfigOptions["IEC"])
     {
         featureStr    += "IEC";
         featureStrM65 += "IEC    :";
        
         bool extendedIEC = false;
        
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_CIA1"])
+        if (GLOBAL_ConfigOptions["IEC_BURST_CIA1"])
         {
             featureStr    += " BURST1";
             extendedIEC    = true;
         }
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_CIA2"])
+        if (GLOBAL_ConfigOptions["IEC_BURST_CIA2"])
         {
             featureStr    += " BURST2";
             extendedIEC    = true;
         }
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_MEGA65"])
+        if (GLOBAL_ConfigOptions["IEC_BURST_MEGA65"])
         {
             featureStr    += " BURST";
             featureStrM65 += " BURST";
             extendedIEC    = true;
         }
        
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_DOLPHINDOS"])
+        if (GLOBAL_ConfigOptions["IEC_DOLPHINDOS"])
         {
             featureStr    += " DOLPHIN";
             featureStrM65 += " DOLPHIN";
             extendedIEC    = true;
         }
        
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_JIFFYDOS"])
+        if (GLOBAL_ConfigOptions["IEC_JIFFYDOS"])
         {
             featureStr    += " JIFFY";
             featureStrM65 += " JIFFY";
@@ -1207,8 +1207,9 @@ void DataSet::generateConfigDepStrings()
 
     // RS-232 support features
    
-    if (GLOBAL_ConfigOptions["CONFIG_RS232_UP2400"]) featureStr += "UP2400\r";
-    if (GLOBAL_ConfigOptions["CONFIG_RS232_UP9600"]) featureStr += "UP9600\r";
+    if (GLOBAL_ConfigOptions["RS232_ACIA"])   featureStr += "ACIA 6551\r";
+    if (GLOBAL_ConfigOptions["RS232_UP2400"]) featureStr += "UP2400\r";
+    if (GLOBAL_ConfigOptions["RS232_UP9600"]) featureStr += "UP9600\r";
    
     featureStrM65 += "RS-232 : NO\r";
 
@@ -1218,8 +1219,8 @@ void DataSet::generateConfigDepStrings()
 
     // Keyboard support features
    
-    if (GLOBAL_ConfigOptions["CONFIG_KEYBOARD_C128"]) featureStr += "KBD 128\r";
-    if (GLOBAL_ConfigOptions["CONFIG_KEYBOARD_C65"])  featureStr += "KBD 65\r";
+    if (GLOBAL_ConfigOptions["KEYBOARD_C128"]) featureStr += "KBD 128\r";
+    if (GLOBAL_ConfigOptions["KEYBOARD_C65"])  featureStr += "KBD 65\r";
 
     // Add strings to appropriate list
    
@@ -1229,7 +1230,7 @@ void DataSet::generateConfigDepStrings()
 
         // List found
 
-        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"] || GLOBAL_ConfigOptions["CONFIG_MB_M65"])
+        if (GLOBAL_ConfigOptions["SHOW_FEATURES"] || GLOBAL_ConfigOptions["MB_M65"])
         {
             StringEntry newEntry1 = { true, true, true, true, "STR_PAL",      "PAL\r"    };
             StringEntry newEntry2 = { true, true, true, true, "STR_NTSC",     "NTSC\r"   };
@@ -1238,19 +1239,19 @@ void DataSet::generateConfigDepStrings()
             stringEntryList.list.push_back(newEntry2);
         }
 
-        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"])
+        if (GLOBAL_ConfigOptions["SHOW_FEATURES"])
         {
             StringEntry newEntry = { true, true, true, true, "STR_FEATURES", featureStr };
             stringEntryList.list.push_back(newEntry);
         }
 
-        if (GLOBAL_ConfigOptions["CONFIG_MB_M65"])
+        if (GLOBAL_ConfigOptions["MB_M65"])
         {
             StringEntry newEntry = { false, true, false, false, "STR_SI_FEATURES", featureStrM65 };
             stringEntryList.list.push_back(newEntry);
         }
 
-        if (!GLOBAL_ConfigOptions["CONFIG_BRAND_CUSTOM_BUILD"] || GLOBAL_ConfigOptions["CONFIG_MB_M65"])
+        if (!GLOBAL_ConfigOptions["BRAND_CUSTOM_BUILD"] || GLOBAL_ConfigOptions["MB_M65"])
         {
             StringEntry newEntry = { true, true, true, true, "STR_PRE_REV", "RELEASE " };
             stringEntryList.list.push_back(newEntry);
@@ -1749,27 +1750,34 @@ void parseConfigFile()
         if (cnfFile.bad()) ERROR("error reading configuration file");
         workStr = std::regex_replace(workStr, std::regex("^[ \t]+"), "");
 
-        // Skip lines which are not preprocessor definitions
-       
-        if (workStr.empty() || workStr[0] != '!') continue;
-       
-        // Make sure this is '!set '
-       
-        if (!std::regex_match(workStr, std::regex("^\\!set[ \t].*")))
+        // Split the line into tokens
+
+        std::vector<std::string> tokens;
+
+        std::istringstream workStream(workStr);
+        std::string token;
+        while(std::getline(workStream, token, ' '))
+        {
+            if (token.empty()) continue;
+            tokens.push_back(token);
+        }
+        if (tokens.empty()) continue;
+
+        // Only accept lines which are boolean config options set to YES
+
+        if (tokens.size() < 4 ||
+            tokens[0].compare(";;")       != 0 ||
+            tokens[1].compare("#CONFIG#") != 0 ||
+            tokens[3].compare("YES")      != 0)
         {
             continue;
         }
 
-        // Get rid of the directive and trailing spaces/values/comments
-   
-        workStr = std::regex_replace(workStr, std::regex("^\\!set[ \t]+"), "");
-        workStr = std::regex_replace(workStr, std::regex("[ \t]+.*"), "");
-
         // Add definitin to config option map
 
-        if (workStr.empty()) ERROR(std::string("error parsing config file - line ") + std::to_string(lineNum));
+        if (tokens[2].empty()) ERROR(std::string("error parsing config file - line ") + std::to_string(lineNum));
 
-        GLOBAL_ConfigOptions[workStr] = true;
+        GLOBAL_ConfigOptions[tokens[2]] = true;
     }
    
     cnfFile.close();
@@ -1809,7 +1817,7 @@ void writeStrings()
 {
     std::string outputString;
    
-    if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMANDER_X16"])
+    if (GLOBAL_ConfigOptions["PLATFORM_COMMANDER_X16"])
     {
         DataSetX16 dataSetX16;
 
@@ -1824,7 +1832,7 @@ void writeStrings()
        
         outputString = dataSetX16.getOutput();
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_M65"])
+    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["MB_M65"])
     {
         DataSetM65 dataSetM65;
 
@@ -1841,7 +1849,7 @@ void writeStrings()
        
         outputString = dataSetM65.getOutput();
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_U64"])
+    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["MB_U64"])
     {
         DataSetU64 dataSetU64;
 
@@ -1856,7 +1864,7 @@ void writeStrings()
        
         outputString = dataSetU64.getOutput();
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"])
+    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"])
     {
         DataSetSTD dataSetSTD;
 

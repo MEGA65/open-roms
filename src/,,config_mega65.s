@@ -6,110 +6,108 @@
 ;
 
 ; Idea:
-; - sane defaults for the Mega 65 FPGA computer
+; - sane defaults for the MEGA65 FPGA computer
 ; - do not enable features which are a significant compatibility risk
 
 
 
 ; Hardware platform
 
-!set CONFIG_PLATFORM_COMMODORE_64 = 1
-!set CONFIG_MB_M65                = 1
+;; #CONFIG# PLATFORM_COMMODORE_64      YES
+;; #CONFIG# MB_M65                     YES
 
 
 ; Memory model
 
-; !set CONFIG_MEMORY_MODEL_38K = 1
-; !set CONFIG_MEMORY_MODEL_46K = 1
-!set CONFIG_MEMORY_MODEL_50K = 1
+;; #CONFIG# MEMORY_MODEL_38K           NO
+;; #CONFIG# MEMORY_MODEL_46K           NO
+;; #CONFIG# MEMORY_MODEL_50K           YES
 
 
 ; IEC bus configuration
 
-!set CONFIG_IEC = 1
-; !set CONFIG_IEC_DOLPHINDOS = 1
-; !set CONFIG_IEC_DOLPHINDOS_FAST = 1
-!set CONFIG_IEC_JIFFYDOS = 1
-!set CONFIG_IEC_JIFFYDOS_BLANK = 1
-; !set CONFIG_IEC_BURST_M65 = 1               ; please keep disabled for now
+;; #CONFIG# IEC                        YES
+;; #CONFIG# IEC_DOLPHINDOS             NO
+;; #CONFIG# IEC_DOLPHINDOS_FAST        NO
+;; #CONFIG# IEC_JIFFYDOS               YES
+;; #CONFIG# IEC_JIFFYDOS_BLANK         YES
+;; #CONFIG# IEC_BURST_M65              NO        ; please keep disabled for now
 
 
 ; Tape deck configuration
 
-!set CONFIG_TAPE_NORMAL = 1
-!set CONFIG_TAPE_TURBO = 1
-!set CONFIG_TAPE_AUTODETECT = 1
-!set CONFIG_TAPE_NO_KEY_SENSE = 1
-!set CONFIG_TAPE_NO_MOTOR_CONTROL = 1
+;; #CONFIG# TAPE_NORMAL                YES
+;; #CONFIG# TAPE_TURBO                 YES
+;; #CONFIG# TAPE_AUTODETECT            YES
+;; #CONFIG# TAPE_NO_KEY_SENSE          YES
+;; #CONFIG# TAPE_NO_MOTOR_CONTROL      YES
 
 
 ; Keyboard settings
 
-; !set CONFIG_LEGACY_SCNKEY = 1
-; !set CONFIG_KEYBOARD_C128 = 1
-; !set CONFIG_KEYBOARD_C128_CAPS_LOCK = 1
-; !set CONFIG_KEYBOARD_C65 = 1              ; untested
-; !set CONFIG_KEYBOARD_C65_CAPS_LOCK = 1    ; untested
-; !set CONFIG_KEY_REPEAT_DEFAULT = 1
-; !set CONFIG_KEY_REPEAT_ALWAYS = 1
-!set CONFIG_KEY_FAST_SCAN = 1
-!set CONFIG_JOY1_CURSOR = 1
-!set CONFIG_JOY2_CURSOR = 1
+;; #CONFIG# LEGACY_SCNKEY              NO
+;; #CONFIG# KEYBOARD_C65               NO        ; untested
+;; #CONFIG# KEYBOARD_C65_CAPS_LOCK     NO        ; untested
+;; #CONFIG# KEY_REPEAT_DEFAULT         NO
+;; #CONFIG# KEY_REPEAT_ALWAYS          NO
+;; #CONFIG# KEY_FAST_SCAN              YES
+;; #CONFIG# JOY1_CURSOR                YES
+;; #CONFIG# JOY2_CURSOR                YES
 
-!set CONFIG_PROGRAMMABLE_KEYS = 1
+;; #CONFIG# PROGRAMMABLE_KEYS          YES
 
-!set   CONFIG_KEYCMD_RUN = 1
+;; #CONFIG# KEYCMD_RUN                 YES
 !macro CONFIG_KEYCMD_RUN  {
 	!byte $5F
 	!pet "l" }
 
-!set   CONFIG_KEYCMD_F1 = 1
+;; #CONFIG# KEYCMD_F1                  YES
 !macro CONFIG_KEYCMD_F1   { !pet "@" }
-; !set   CONFIG_KEYCMD_F2 = 1
+;; #CONFIG# KEYCMD_F2                  NO
 ; !macro CONFIG_KEYCMD_F2   { !pet "" }
-!set   CONFIG_KEYCMD_F3 = 1
+;; #CONFIG# KEYCMD_F3                  YES
 !macro CONFIG_KEYCMD_F3   { !pet "run:" }
-; !set   CONFIG_KEYCMD_F4 = 1
+;; #CONFIG# KEYCMD_F4                  NO
 ; !macro CONFIG_KEYCMD_F4   { !pet "" }
-!set   CONFIG_KEYCMD_F5 = 1
+;; #CONFIG# KEYCMD_F5                  YES
 !macro CONFIG_KEYCMD_F5   { !pet "load" }
-; !set   CONFIG_KEYCMD_F6 = 1
+;; #CONFIG# KEYCMD_F6                  NO
 ; !macro CONFIG_KEYCMD_F6   { !pet "" }
-!set   CONFIG_KEYCMD_F7 = 1
+;; #CONFIG# KEYCMD_F7                  YES
 !macro CONFIG_KEYCMD_F7   { !pet "@$" }
-; !set   CONFIG_KEYCMD_F8 = 1
+;; #CONFIG# KEYCMD_F8                  NO
 ; !macro CONFIG_KEYCMD_F8   { !pet "" }
 
-!set   CONFIG_KEYCMD_HELP = 1
+;; #CONFIG# KEYCMD_HELP                YES
 !macro CONFIG_KEYCMD_HELP { !pet "list" }
 
-!set   CONFIG_KEYCMD_F9 = 1
-!macro CONFIG_KEYCMD_F9   { !pet "boot" }
-!set   CONFIG_KEYCMD_F10 = 1
+;; #CONFIG# KEYCMD_F9                  YES
+!macro CONFIG_KEYCMD_F9   { !pet "rem f9" }
+;; #CONFIG# KEYCMD_F10                 YES
 !macro CONFIG_KEYCMD_F10  { !pet "rem f10" }
-!set   CONFIG_KEYCMD_F11 = 1
-!macro CONFIG_KEYCMD_F11  { !pet "monitor" }
-!set   CONFIG_KEYCMD_F12 = 1
+;; #CONFIG# KEYCMD_F11                 YES
+!macro CONFIG_KEYCMD_F11  { !pet "rem f11" }
+;; #CONFIG# KEYCMD_F12                 YES
 !macro CONFIG_KEYCMD_F12  { !pet "rem f12" }
-!set   CONFIG_KEYCMD_F13 = 1
-!macro CONFIG_KEYCMD_F13  { !byte $5F !pet "h" }
-!set   CONFIG_KEYCMD_F14 = 1
+;; #CONFIG# KEYCMD_F13                 YES
+!macro CONFIG_KEYCMD_F13  { !pet "rem f13" }
+;; #CONFIG# KEYCMD_F14                 YES
 !macro CONFIG_KEYCMD_F14  { !pet "rem f14" }
 
 
 ; Screen editor
 
-!set CONFIG_EDIT_STOPQUOTE = 1
-!set CONFIG_EDIT_TABULATORS = 1
+;; #CONFIG# EDIT_STOPQUOTE             YES
+;; #CONFIG# EDIT_TABULATORS            NO
 
 
 ; Software features
 
-!set CONFIG_PANIC_SCREEN = 1
-!set CONFIG_DOS_WEDGE = 1
-!set CONFIG_TAPE_WEDGE = 1
-!set CONFIG_TAPE_HEAD_ALIGN = 1
-!set CONFIG_BCD_SAFE_INTERRUPTS = 1
+;; #CONFIG# PANIC_SCREEN               YES
+;; #CONFIG# DOS_WEDGE                  YES
+;; #CONFIG# TAPE_WEDGE                 YES
+;; #CONFIG# TAPE_HEAD_ALIGN            YES
+;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 
 ; Built-in DOS configuration
@@ -121,9 +119,10 @@
 
 ; Debug options
 
-; !set CONFIG_DBG_STUBS_BRK = 1
-; !set CONFIG_DBG_PRINTF = 1
+;; #CONFIG# DBG_STUBS_BRK              NO
+;; #CONFIG# DBG_PRINTF                 NO
+
 
 ; Other
 
-; !set CONFIG_COMPRESSION_LVL_2 = 1
+;; #CONFIG# COMPRESSION_LVL_2          NO

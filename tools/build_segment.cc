@@ -88,17 +88,12 @@ public:
     SourceFile(const std::string &fileName, const std::string &dirName);
 
     void preprocess();
-    void preprocessLine(const std::string &line, uint32_t lineNum);
-    void preprocessLine_Alias(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum);
-    void preprocessLine_Import(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
-    void preprocessLine_Layout(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
 
     bool nameMatch(const std::string &token, const std::string &name);
 
     std::string fileName;
     std::string dirName;
 
-    bool layoutProcessingDone;
     bool ignore;
     bool floating;
     bool high;
@@ -114,6 +109,23 @@ public:
 
     int testAddrStart; // start address during test run
     int testAddrEnd;   // end address during test run
+
+private:
+
+    bool layoutProcessingDone;
+
+    typedef struct ConfigEntry {
+        std::string key;
+        std::string valStr; // XXX add support for string values
+    } ConfigEntry;
+
+    std::map<uint32_t, ConfigEntry> configEntries;
+
+    void preprocessLine(const std::string &line, uint32_t lineNum);
+    void preprocessLine_Alias(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum);
+    void preprocessLine_Config(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum);
+    void preprocessLine_Import(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
+    void preprocessLine_Layout(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
 };
 
 class BinningProblem
@@ -605,14 +617,14 @@ int main(int argc, char **argv)
 SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) :
     fileName(fileName),
     dirName(dirName),
-    layoutProcessingDone(false),
     ignore(false),
     floating(false),
     high(false),
     startAddr(-1),
     codeLength(-1),
     testAddrStart(-1),
-    testAddrEnd(-1)
+    testAddrEnd(-1),
+    layoutProcessingDone(false)
 {
     const std::string fileNameWithPath = dirName + DIR_SEPARATOR + fileName;
     std::cout << "reading file: " << fileNameWithPath << "\n";
@@ -698,14 +710,26 @@ void SourceFile::preprocess()
 
     while (std::getline(stream2, line))
     {
+        std::ostringstream outStream;
+
         if (symbolAliases.find(lineNum) != symbolAliases.end())
         {
-            std::ostringstream alias;
             spacing.resize(maxSymLen + 2 - symbolAliases[lineNum].first.length(), ' ');
-            alias << "!addr " << symbolAliases[lineNum].first << spacing << "= $" <<
-                     std::hex << symbolAliases[lineNum].second << "    " << line;
-            const std::string aliasStr = alias.str();
-            content.insert(content.end(), aliasStr.begin(), aliasStr.end());
+            outStream << "!addr " << symbolAliases[lineNum].first << spacing << "= $" <<
+                         std::hex << symbolAliases[lineNum].second << "    " << line;
+
+            const std::string outString = outStream.str();
+            content.insert(content.end(), outString.begin(), outString.end());
+        }
+        else if (configEntries.find(lineNum) != configEntries.end())
+        {
+            // XXX add spacing
+            // XXX add support for string values
+            outStream << "!set CONFIG_" << configEntries[lineNum].key << " = 1" <<
+                         "    " << line;
+
+            const std::string outString = outStream.str();
+            content.insert(content.end(), outString.begin(), outString.end());
         }
         else
         {
@@ -745,7 +769,8 @@ void SourceFile::preprocessLine(const std::string &line, uint32_t lineNum)
 
     // Check if supported directive
 
-    if (iter->compare("#ALIAS#") == 0) preprocessLine_Alias(tokens, ++iter, lineNum);
+    if (iter->compare("#ALIAS#") == 0) preprocessLine_Alias(tokens,        ++iter, lineNum);
+    else if (iter->compare("#CONFIG#") == 0) preprocessLine_Config(tokens, ++iter, lineNum);
     else if (iter->compare("#IMPORT#") == 0) preprocessLine_Import(tokens, ++iter);
     else if (iter->compare("#LAYOUT#") == 0) preprocessLine_Layout(tokens, ++iter);
 }
@@ -777,6 +802,28 @@ void SourceFile::preprocessLine_Alias(const std::list<std::string> &tokens, std:
 
         symbolAliases[lineNum] = std::pair<std::string, uint16_t>(symbol, alias.second);
         break;
+    }
+}
+
+void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum)
+{
+    if (ignore) return;
+
+    if (iter == tokens.end()) ERROR("syntax error, missing key in '#CONFIG#'");
+    std::string key = *(iter++);
+
+    if (iter == tokens.end()) ERROR("syntax error, missing value in '#CONFIG#'");
+    std::string valStr = *(iter++);
+
+    if (valStr.compare("NO") == 0) return;
+    else if (valStr.compare("YES") == 0)
+    {
+        configEntries[lineNum].key = key;
+    }
+    else
+    {
+        // XXX add support for string values
+        ERROR("syntax error, unknown key in '#CONFIG#'");
     }
 }
 

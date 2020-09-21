@@ -22,6 +22,12 @@ IOINIT:
 	jsr (VK1__IOINIT)
 	jmp m65dos_init 	               ; end by initializing the MEGA65 internal DOS
 
+IOINIT_skip_DOS:
+
+	jsr map_KERNAL_1
+	jsr (VK1__IOINIT)
+	jmp map_NORMAL
+
 } else {
 
 	;

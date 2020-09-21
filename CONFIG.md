@@ -177,13 +177,13 @@ The SID support in the ROM is very limited - it only disables the sound during s
 
 ### `CONFIG_SID_2ND_ADDRESS` and `CONFIG_SID_3RD_ADDRESS` 
 
-Each of them add support for one additional SID - addresses should be given as parameter, respectively. Do not use when `CONFIG_MB_M65` is selected - the motherboard support code already knows the SID locations. 
+Each of them adds support for one additional SID - addresses should be given as parameters. Do not use when `CONFIG_MB_M65` is selected - the motherboard support code already knows the SID locations. 
 
 Each of these options needs 3 bytes in KERNAL segment.
 
-### `CONFIG_SID_D4XX` and `CONFIG_SID_D5XX`
+### `CONFIG_SID_D4XX`, `CONFIG_SID_D5XX`, `CONFIG_SID_D6XX` and `CONFIG_SID_D7XX`
 
-Cause the system to support SIDs in `$D4xx` and `$D5xx` ranges, respectively.
+Enables support for SIDs in `$D4xx` / `$D5xx` / `$D6xx` / `$D7xx` ranges, respectively.
 
 Each of them needs a couple of bytes in KERNAL segment - but they can share some code, and `$D4xx` range support replaces the standard `$D400` address handling, so exact amount depends on the exact configuration. Do not use when `CONFIG_MB_M65` is selected - the motherboard support code already knows the SID locations.
 

@@ -829,13 +829,43 @@ void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std
     if (valStr.compare("NO") == 0) return;
     else if (valStr.compare("YES") == 0)
     {
+        // This is a YES/NO value (bool)
+
         configEntries[lineNum].key         = key;
         configEntries[lineNum].valIntValid = false;
     }
     else if (valStr.length() > 1 && valStr[0] == '$')
     {
+        // This is a hexadecimal value
+
+        for (size_t idx = 1; idx < valStr.length(); idx++)
+        {
+            if (valStr[idx] < '0' && valStr[idx] > '9' &&
+                valStr[idx] < 'A' && valStr[idx] > 'F' &&
+                valStr[idx] < 'a' && valStr[idx] > 'f')
+            {
+                ERROR("syntax error, wrong hex value in '#CONFIG#'");
+            }
+        }
+
         configEntries[lineNum].key         = key;
         configEntries[lineNum].valInt      = std::stoul(valStr.substr(1, std::string::npos), nullptr, 16);
+        configEntries[lineNum].valIntValid = true;
+    }
+    else if (valStr.length() > 0 && valStr[0] >= '0' && valStr[0] <= '9')
+    {
+        // This is a decimal value
+
+        for (size_t idx = 0; idx < valStr.length(); idx++)
+        {
+            if (valStr[idx] < '0' && valStr[idx] > '9')
+            {
+                ERROR("syntax error, wrong dec value in '#CONFIG#'");
+            }
+        }
+
+        configEntries[lineNum].key         = key;
+        configEntries[lineNum].valInt      = std::stoul(valStr.substr(0, std::string::npos), nullptr, 10);
         configEntries[lineNum].valIntValid = true;
     }
     else

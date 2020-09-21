@@ -84,9 +84,9 @@ IOINIT_skip_DOS:
 !ifdef CONFIG_SID_3RD_ADDRESS {
 	sta SID_SIGVOL - __SID_BASE + CONFIG_SID_3RD_ADDRESS
 }
-	; Silence whole D4XX and D5XX ranges (if configured)
+	; Silence whole D4XX, D5XX, D6XX, D7XX ranges (if configured)
 
-!ifdef CONFIG_SID_D4XX_OR_D5XX {
+!ifdef CONFIG_SID_DX_RANGE {
 
 	ldy #$00
 @1:
@@ -96,6 +96,12 @@ IOINIT_skip_DOS:
 }
 !ifdef CONFIG_SID_D5XX {
 	sta SID_SIGVOL + $100, Y
+}
+!ifdef CONFIG_SID_D6XX {
+	sta SID_SIGVOL + $200, Y
+}
+!ifdef CONFIG_SID_D7XX {
+	sta SID_SIGVOL + $300, Y
 }
 
 	tya

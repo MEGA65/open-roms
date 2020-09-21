@@ -49,6 +49,8 @@
 ;; #CONFIG# SID_3RD_ADDRESS            NO
 ;; #CONFIG# SID_D4XX                   YES
 ;; #CONFIG# SID_D5XX                   YES
+;; #CONFIG# SID_D6XX                   NO
+;; #CONFIG# SID_D7XX                   NO
 
 
 ; Keyboard settings

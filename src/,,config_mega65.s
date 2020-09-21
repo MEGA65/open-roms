@@ -112,9 +112,9 @@
 
 ; Built-in DOS configuration
 
-!set CONFIG_UNIT_SDCARD  = 0 ; do not change, DOS is not implemented yet
-!set CONFIG_UNIT_FLOPPY  = 0 ; do not change, DOS is not implemented yet
-!set CONFIG_UNIT_RAMDISK = 0 ; do not change, DOS is not implemented yet
+;; #CONFIG# UNIT_SDCARD                0         ; do not change, DOS is not implemented yet
+;; #CONFIG# UNIT_FLOPPY                0         ; do not change, DOS is not implemented yet
+;; #CONFIG# UNIT_RAMDISK               0         ; do not change, DOS is not implemented yet
 
 
 ; Debug options

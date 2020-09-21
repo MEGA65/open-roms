@@ -181,6 +181,8 @@
 !ifdef CONFIG_SID_3RD_ADDRESS { !set counter = counter + 1 }
 !ifdef CONFIG_SID_D4XX        { !set counter = counter + 1 }
 !ifdef CONFIG_SID_D5XX        { !set counter = counter + 1 }
+!ifdef CONFIG_SID_D6XX        { !set counter = counter + 1 }
+!ifdef CONFIG_SID_D7XX        { !set counter = counter + 1 }
 
 !ifdef CONFIG_PLATFORM_COMMANDER_X16 {
 	!if (counter != 0) { !error "Do not use CONFIG_SID_* options for Commander X16 platform" }
@@ -189,16 +191,24 @@
 	!if (counter != 0) { !error "Do not use CONFIG_SID_* options for MEGA65 motherboard" }
 }
 !ifdef CONFIG_SID_2ND_ADDRESS {
-	!if (CONFIG_SID_2ND_ADDRESS = $D400)      { !error "CONFIG_SID_2ND_ADDRESS points to the 1st SID" }
-	!if (CONFIG_SID_2ND_ADDRESS < $D420)      { !error "CONFIG_SID_2ND_ADDRESS needs hex value from $D420-$D7E0 range" }
-	!if (CONFIG_SID_2ND_ADDRESS > $D7E0)      { !error "CONFIG_SID_2ND_ADDRESS needs hex value from $D420-$D7E0 range" }
-	!if ((CONFIG_SID_2ND_ADDRESS % $20) != 0) { !error "CONFIG_SID_2ND_ADDRESS has to be aligned to $20" }
+	!if (CONFIG_SID_2ND_ADDRESS = $D400)          { !error "CONFIG_SID_2ND_ADDRESS points to the 1st SID" }
+	!if (CONFIG_SID_2ND_ADDRESS < $D420)          { !error "CONFIG_SID_2ND_ADDRESS needs hex value from $D420-$D7E0 range" }
+	!if (CONFIG_SID_2ND_ADDRESS > $D7E0)          { !error "CONFIG_SID_2ND_ADDRESS needs hex value from $D420-$D7E0 range" }
+	!if ((CONFIG_SID_2ND_ADDRESS % $20)   != 0)   { !error "CONFIG_SID_2ND_ADDRESS has to be aligned to $20" }
+	!if ((CONFIG_SID_2ND_ADDRESS DIV $100) = $D4) { !ifdef CONFIG_SID_D4XX { !error "CONFIG_SID_2ND_ADDRESS redundant due to CONFIG_SID_D4XX" } }
+	!if ((CONFIG_SID_2ND_ADDRESS DIV $100) = $D5) { !ifdef CONFIG_SID_D5XX { !error "CONFIG_SID_2ND_ADDRESS redundant due to CONFIG_SID_D5XX" } }
+	!if ((CONFIG_SID_2ND_ADDRESS DIV $100) = $D6) { !ifdef CONFIG_SID_D6XX { !error "CONFIG_SID_2ND_ADDRESS redundant due to CONFIG_SID_D6XX" } }
+	!if ((CONFIG_SID_2ND_ADDRESS DIV $100) = $D7) { !ifdef CONFIG_SID_D7XX { !error "CONFIG_SID_2ND_ADDRESS redundant due to CONFIG_SID_D7XX" } }
 }
 !ifdef CONFIG_SID_3RD_ADDRESS {
-	!if (CONFIG_SID_3RD_ADDRESS = $D400)      { !error "CONFIG_SID_3RD_ADDRESS points to the 1st SID" }
-	!if (CONFIG_SID_3RD_ADDRESS < $D420)      { !error "CONFIG_SID_3RD_ADDRESS needs hex value from $D420-$D7E0 range" }
-	!if (CONFIG_SID_3RD_ADDRESS > $D7E0)      { !error "CONFIG_SID_3RD_ADDRESS needs hex value from $D420-$D7E0 range" }
-	!if ((CONFIG_SID_3RD_ADDRESS % $20) != 0) { !error "CONFIG_SID_3RD_ADDRESS has to be aligned to $20" }
+	!if (CONFIG_SID_3RD_ADDRESS = $D400)          { !error "CONFIG_SID_3RD_ADDRESS points to the 1st SID" }
+	!if (CONFIG_SID_3RD_ADDRESS < $D420)          { !error "CONFIG_SID_3RD_ADDRESS needs hex value from $D420-$D7E0 range" }
+	!if (CONFIG_SID_3RD_ADDRESS > $D7E0)          { !error "CONFIG_SID_3RD_ADDRESS needs hex value from $D420-$D7E0 range" }
+	!if ((CONFIG_SID_3RD_ADDRESS % $20)   != 0)   { !error "CONFIG_SID_3RD_ADDRESS has to be aligned to $20" }
+	!if ((CONFIG_SID_3RD_ADDRESS DIV $100) = $D4) { !ifdef CONFIG_SID_D4XX { !error "CONFIG_SID_3RD_ADDRESS redundant due to CONFIG_SID_D4XX" } }
+	!if ((CONFIG_SID_3RD_ADDRESS DIV $100) = $D5) { !ifdef CONFIG_SID_D5XX { !error "CONFIG_SID_3RD_ADDRESS redundant due to CONFIG_SID_D5XX" } }
+	!if ((CONFIG_SID_3RD_ADDRESS DIV $100) = $D6) { !ifdef CONFIG_SID_D6XX { !error "CONFIG_SID_3RD_ADDRESS redundant due to CONFIG_SID_D6XX" } }
+	!if ((CONFIG_SID_3RD_ADDRESS DIV $100) = $D7) { !ifdef CONFIG_SID_D7XX { !error "CONFIG_SID_3RD_ADDRESS redundant due to CONFIG_SID_D7XX" } }
 }
 !ifdef CONFIG_SID_2ND_ADDRESS { !ifdef CONFIG_SID_3RD_ADDRESS {
 	!if (CONFIG_SID_2ND_ADDRESS = CONFIG_SID_3RD_ADDRESS) { !error "Configured SIDs have the same addresses" }
@@ -349,9 +359,10 @@
 
 ; Handle sound configuration
 
-!ifdef CONFIG_SID_D4XX { !set CONFIG_SID_D4XX_OR_D5XX = 1 }
-!ifdef CONFIG_SID_D5XX { !set CONFIG_SID_D4XX_OR_D5XX = 1 }
-
+!ifdef CONFIG_SID_D4XX { !set CONFIG_SID_DX_RANGE = 1 }
+!ifdef CONFIG_SID_D5XX { !set CONFIG_SID_DX_RANGE = 1 }
+!ifdef CONFIG_SID_D6XX { !set CONFIG_SID_DX_RANGE = 1 }
+!ifdef CONFIG_SID_D7XX { !set CONFIG_SID_DX_RANGE = 1 }
 
 
 ; Handle keyboard configuration

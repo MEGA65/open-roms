@@ -1,0 +1,3 @@
+STX $70 + RTS + JSR $xx1B (address high byte does not match)
+
+Routine ends by storing .X in well-known zeropage variable, next starts with call to another subroutine - trivial and not creative - not copyrightable.

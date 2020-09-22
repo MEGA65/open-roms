@@ -1,0 +1,3 @@
+INC $A2 + BNE (offset matches) + INC $A1 + BNE (skip next instruction) + INC $A0
+
+Incrementing 24-bit value (timer) by 1. Not creative - not copyrioghtable.

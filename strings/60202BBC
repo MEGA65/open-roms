@@ -1,0 +1,3 @@
+RTS + JSR $BC2B
+
+Subroutin starts by calling another, well known subroutine. Trivial - not copyrightable.

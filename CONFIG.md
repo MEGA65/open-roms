@@ -11,7 +11,7 @@ It's not possible to provide ROM builds that suit everyone needs - therefore con
 
 Just edit them and recompile the project. To enable particular option:
 * change YES to NO, decimal string, or hex string precedeed with `$`
-* change YES to a string enclosed in `"`; within the string you can place `\"` to include quote character, or `\xx`, where `xx` is a hexadecimal code for the given PETSCII displayable character
+* change YES to a string enclosed in `"`; within the string you can place `\"` to include quote character, or `\xx`, where `xx` is a hexadecimal code for the given PETSCII displayable character; always use uppercase letters
 
 Note however, that features do not came for free - enabling them needs some additional ROM space (in BASIC segment, in KERNAL segment, or in both), which is VERY limited on the target machines. Some options might be unavailable for speecific targets - read the comments in the configuration files. Some options might also carry compatibility and/or performance hit - so choose wisely.
 

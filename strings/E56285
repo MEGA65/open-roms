@@ -1,0 +1,3 @@
+SBC $62 + STA (zeropage address does not match)
+
+Instruction + some parts. Trivial - not copyrightable.

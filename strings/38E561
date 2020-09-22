@@ -1,0 +1,3 @@
+SEC + SBC $61
+
+Subtracting zeropage variable from .A. Trivial - not copyrightable.

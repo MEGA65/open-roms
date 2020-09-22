@@ -76,11 +76,7 @@
 
 ;; #CONFIG# PROGRAMMABLE_KEYS          YES
 
-;; #CONFIG# KEYCMD_RUN                 YES
-!macro CONFIG_KEYCMD_RUN  {
-	!byte $5F
-	!pet "l"
-}
+;; #CONFIG# KEYCMD_RUN                 "\5FL"
 
 ;; #CONFIG# KEYCMD_F1                  "@8$"
 ;; #CONFIG# KEYCMD_F2                  "LOAD"

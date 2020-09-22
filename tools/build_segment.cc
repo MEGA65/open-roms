@@ -849,9 +849,18 @@ void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std
                 if ((line.size() <= ++pos) || (line[pos] == '\n')) ERROR("syntax error, unfinished string in '#CONFIG#'");
                 byte = line[pos];
             };
+            auto byteToNibble = [&byte]() -> uint8_t
+            {
+                if (byte >= '0' && byte <= '9') return byte - '0';
+                if (byte >= 'a' && byte <= 'f') return byte - 'a' + 10;
+                if (byte >= 'A' && byte <= 'F') return byte - 'A' + 10;
+
+                ERROR("syntax error, improper 2-digit hex value in '#CONFIG#'");
+                return 0;
+            };
 
             advance();
-            
+
             // Convert string from ASCII to PETSCII
 
             if (byte == '"') break;
@@ -862,10 +871,15 @@ void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std
                 if (byte == '"')
                 {
                     configEntries[lineNum].valBlob.push_back(byte);
-                    continue;
                 }
+                else
+                {
+                    uint8_t val = byteToNibble() * 16;
+                    advance();
+                    val += byteToNibble(); 
 
-                // XXX handle hex values
+                    configEntries[lineNum].valBlob.push_back(val);
+                }
             }
             else if ((byte >= 0x20 && byte <= 0x5B) || byte == 0x5D) configEntries[lineNum].valBlob.push_back(byte);
             else ERROR("syntax error, invalid character in string in '#CONFIG#'");

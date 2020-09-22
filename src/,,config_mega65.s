@@ -56,10 +56,7 @@
 
 ;; #CONFIG# PROGRAMMABLE_KEYS          YES
 
-;; #CONFIG# KEYCMD_RUN                 YES
-!macro CONFIG_KEYCMD_RUN  {
-	!byte $5F
-	!pet "l" }
+;; #CONFIG# KEYCMD_RUN                 "RUN"
 
 ;; #CONFIG# KEYCMD_F1                  "@8$"
 ;; #CONFIG# KEYCMD_F2                  "LOAD"
@@ -72,9 +69,9 @@
 
 ;; #CONFIG# KEYCMD_HELP                "LIST"
 
-;; #CONFIG# KEYCMD_F9                  "REM F9"
+;; #CONFIG# KEYCMD_F9                  "\5FL"
 ;; #CONFIG# KEYCMD_F10                 "REM F10"
-;; #CONFIG# KEYCMD_F11                 "REM F11"
+;; #CONFIG# KEYCMD_F11                 "\5FH"
 ;; #CONFIG# KEYCMD_F12                 "REM F12"
 ;; #CONFIG# KEYCMD_F13                 "REM F13"
 ;; #CONFIG# KEYCMD_F14                 "REM F14"

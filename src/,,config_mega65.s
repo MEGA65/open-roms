@@ -61,38 +61,23 @@
 	!byte $5F
 	!pet "l" }
 
-;; #CONFIG# KEYCMD_F1                  YES
-!macro CONFIG_KEYCMD_F1   { !pet "@" }
-;; #CONFIG# KEYCMD_F2                  NO
-; !macro CONFIG_KEYCMD_F2   { !pet "" }
-;; #CONFIG# KEYCMD_F3                  YES
-!macro CONFIG_KEYCMD_F3   { !pet "run:" }
-;; #CONFIG# KEYCMD_F4                  NO
-; !macro CONFIG_KEYCMD_F4   { !pet "" }
-;; #CONFIG# KEYCMD_F5                  YES
-!macro CONFIG_KEYCMD_F5   { !pet "load" }
+;; #CONFIG# KEYCMD_F1                  "@8$"
+;; #CONFIG# KEYCMD_F2                  "LOAD"
+;; #CONFIG# KEYCMD_F3                  "@9$"
+;; #CONFIG# KEYCMD_F4                  "RUN:"
+;; #CONFIG# KEYCMD_F5                  "@10$"
 ;; #CONFIG# KEYCMD_F6                  NO
-; !macro CONFIG_KEYCMD_F6   { !pet "" }
-;; #CONFIG# KEYCMD_F7                  YES
-!macro CONFIG_KEYCMD_F7   { !pet "@$" }
+;; #CONFIG# KEYCMD_F7                  "@11$"
 ;; #CONFIG# KEYCMD_F8                  NO
-; !macro CONFIG_KEYCMD_F8   { !pet "" }
 
-;; #CONFIG# KEYCMD_HELP                YES
-!macro CONFIG_KEYCMD_HELP { !pet "list" }
+;; #CONFIG# KEYCMD_HELP                "LIST"
 
-;; #CONFIG# KEYCMD_F9                  YES
-!macro CONFIG_KEYCMD_F9   { !pet "rem f9" }
-;; #CONFIG# KEYCMD_F10                 YES
-!macro CONFIG_KEYCMD_F10  { !pet "rem f10" }
-;; #CONFIG# KEYCMD_F11                 YES
-!macro CONFIG_KEYCMD_F11  { !pet "rem f11" }
-;; #CONFIG# KEYCMD_F12                 YES
-!macro CONFIG_KEYCMD_F12  { !pet "rem f12" }
-;; #CONFIG# KEYCMD_F13                 YES
-!macro CONFIG_KEYCMD_F13  { !pet "rem f13" }
-;; #CONFIG# KEYCMD_F14                 YES
-!macro CONFIG_KEYCMD_F14  { !pet "rem f14" }
+;; #CONFIG# KEYCMD_F9                  "REM F9"
+;; #CONFIG# KEYCMD_F10                 "REM F10"
+;; #CONFIG# KEYCMD_F11                 "REM F11"
+;; #CONFIG# KEYCMD_F12                 "REM F12"
+;; #CONFIG# KEYCMD_F13                 "REM F13"
+;; #CONFIG# KEYCMD_F14                 "REM F14"
 
 
 ; --- Screen editor

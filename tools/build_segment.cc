@@ -108,17 +108,18 @@ private:
     bool layoutProcessingDone;
 
     typedef struct ConfigEntry {
-        std::string key;
-        std::string valStr; // XXX add support for string values
-        uint32_t    valInt;
-        bool        valIntValid;
+        std::string          key;
+        std::vector<uint8_t> valBlob;
+        uint32_t             valInt;
+        bool                 valIntValid;
     } ConfigEntry;
 
     std::map<uint32_t, ConfigEntry> configEntries;
 
     void preprocessLine(const std::string &line, uint32_t lineNum);
     void preprocessLine_Alias(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum);
-    void preprocessLine_Config(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum);
+    void preprocessLine_Config(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter,
+                               const std::string &line, uint32_t lineNum);
     void preprocessLine_Import(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
     void preprocessLine_Layout(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
 };
@@ -712,8 +713,7 @@ void SourceFile::preprocess()
         }
         else if (configEntries.find(lineNum) != configEntries.end())
         {
-            // XXX add spacing
-            // XXX add support for string values
+
             outStream << "!set CONFIG_" << configEntries[lineNum].key << " = ";
             if (configEntries[lineNum].valIntValid)
             {
@@ -725,6 +725,20 @@ void SourceFile::preprocess()
             }
 
             outStream << "    " << line;
+
+            if (!configEntries[lineNum].valBlob.empty())
+            {
+                outStream << "\n!macro CONFIG_" << configEntries[lineNum].key << " { !byte ";
+
+                bool first = true;
+                for (auto &byte : configEntries[lineNum].valBlob)
+                {
+                    outStream << std::string(first ? "$" : ", $") << std::string((byte < 10) ? "0" : "") <<
+                                 std::hex << (int) byte;
+                    first = false;
+                }
+                outStream << " }";
+            }
 
             const std::string outString = outStream.str();
             content.insert(content.end(), outString.begin(), outString.end());
@@ -768,7 +782,7 @@ void SourceFile::preprocessLine(const std::string &line, uint32_t lineNum)
     // Check if supported directive
 
     if (iter->compare("#ALIAS#") == 0) preprocessLine_Alias(tokens,        ++iter, lineNum);
-    else if (iter->compare("#CONFIG#") == 0) preprocessLine_Config(tokens, ++iter, lineNum);
+    else if (iter->compare("#CONFIG#") == 0) preprocessLine_Config(tokens, ++iter, line, lineNum);
     else if (iter->compare("#IMPORT#") == 0) preprocessLine_Import(tokens, ++iter);
     else if (iter->compare("#LAYOUT#") == 0) preprocessLine_Layout(tokens, ++iter);
 }
@@ -803,7 +817,8 @@ void SourceFile::preprocessLine_Alias(const std::list<std::string> &tokens, std:
     }
 }
 
-void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum)
+void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter,
+                                       const std::string &line, uint32_t lineNum)
 {
     if (ignore) return;
 
@@ -817,6 +832,46 @@ void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std
     else if (valStr.compare("YES") == 0)
     {
         // This is a YES/NO value (bool)
+
+        configEntries[lineNum].key         = key;
+        configEntries[lineNum].valIntValid = false;
+    }
+    else if (valStr.length() > 1 && valStr[0] == '"')
+    {
+        // This is a string value
+
+        auto pos = line.find('"', 0);
+        while (true)
+        {
+            char byte;
+            auto advance = [&byte, &line, &pos]()
+            {
+                if ((line.size() <= ++pos) || (line[pos] == '\n')) ERROR("syntax error, unfinished string in '#CONFIG#'");
+                byte = line[pos];
+            };
+
+            advance();
+            
+            // Convert string from ASCII to PETSCII
+
+            if (byte == '"') break;
+            if (byte == '\\')
+            {
+                advance();
+
+                if (byte == '"')
+                {
+                    configEntries[lineNum].valBlob.push_back(byte);
+                    continue;
+                }
+
+                // XXX handle hex values
+            }
+            else if ((byte >= 0x20 && byte <= 0x5B) || byte == 0x5D) configEntries[lineNum].valBlob.push_back(byte);
+            else ERROR("syntax error, invalid character in string in '#CONFIG#'");
+        }
+
+        if (configEntries[lineNum].valBlob.empty()) ERROR("syntax error, empty string in '#CONFIG#'");
 
         configEntries[lineNum].key         = key;
         configEntries[lineNum].valIntValid = false;
@@ -857,8 +912,7 @@ void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std
     }
     else
     {
-        // XXX add support for string values
-        ERROR("syntax error, unknown key in '#CONFIG#'");
+        ERROR("syntax error, unknown key in '#CONFIG#' line ");
     }
 }
 

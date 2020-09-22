@@ -54,17 +54,10 @@ void printUsage()
         "                     <input dir/file list>" << "\n\n";
 }
 
-void printBannerCollectAnalyse()
+void printBanner()
 {
     printBannerLineTop();
-    std::cout << "// Segment '" << CMD_segInfo << "' - collecting and analysing routines" << "\n";
-    printBannerLineBottom();
-}
-
-void printBannerBinCompile()
-{
-    printBannerLineTop();
-    std::cout << "// Segment '" << CMD_segInfo << "' - binning and compiling the assembly" << "\n";
+    std::cout << "// Building segment '" << CMD_segInfo << "'" << "\n";
     printBannerLineBottom();
 }
 
@@ -140,10 +133,10 @@ public:
     bool isSolved() const;
 
     void addToProblem(SourceFile *routine);
-    void fillGap(DualStream &logOutput, int gapAddress, const std::list<SourceFile *> &routines);
-    void placeHighRoutines(DualStream &logOutput);
-    void performObviousSteps(DualStream &logOutput);
-    void removeUselessGaps(DualStream &logOutput);
+    void fillGap(std::ofstream &dbgOutput, int gapAddress, const std::list<SourceFile *> &routines);
+    void placeHighRoutines(std::ofstream &dbgOutput);
+    void performObviousSteps(std::ofstream &dbgOutput);
+    void removeUselessGaps(std::ofstream &dbgOutput);
     void sortFloatingRoutinesBySize();
 
     std::map<int, SourceFile *> fixedRoutines;    // routines with location already fixed
@@ -158,7 +151,7 @@ public:
 class Solver
 {
 public:
-    explicit Solver(BinningProblem &problem) : problem(problem), logOutput(logFile, std::cout) {}
+    explicit Solver(BinningProblem &problem) : problem(problem), logOutput(dbgOutput, std::cout) {}
 
     void run();
 
@@ -168,9 +161,9 @@ public:
 private:
 
     BinningProblem &problem;
-    std::ofstream logFile;
 
-    DualStream logOutput;
+    std::ofstream dbgOutput;
+    DualStream    logOutput;
 };
 
 //
@@ -344,10 +337,11 @@ void calcRoutineSizes()
 
     // All written - now launch the assembler
 
-    const std::string cmd = "cd " + filePath + " && " + CMD_assembler +
-                            " --color --outfile /dev/null --symbollist " + CMD_segName + "_sizetest.sym " +
-                            outFileNameBare;
-    std::cout << "command: " << cmd << "\n" << std::flush;
+    const std::string cmdParams = std::string(" ") + "--color --outfile /dev/null --symbollist " +
+                                  CMD_segName + "_sizetest.sym " + outFileNameBare;
+    const std::string cmd       = "cd " + filePath + " && " + CMD_assembler + cmdParams;
+
+    std::cout << "asm call:" << cmdParams << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
         ERROR("assembler running failed");
@@ -441,8 +435,8 @@ void prepareBinningProblem()
 
     const std::string logFileNamePath = CMD_outDir + DIR_SEPARATOR + CMD_segName + "_binproblem.log";
     unlink(logFileNamePath.c_str());
-    std::ofstream logFile(logFileNamePath, std::fstream::out | std::fstream::trunc);
-    DualStream logOutput(logFile, std::cout);
+    std::ofstream dbgOutput(logFileNamePath, std::fstream::out | std::fstream::trunc);
+    DualStream    logOutput(dbgOutput, std::cout);
 
     // Print out code length information
 
@@ -465,7 +459,7 @@ void prepareBinningProblem()
             floating_high = "                  ";
         }
 
-        logOutput << "file:    " << floating_high << sourceFile.fileName << spacing << "size: " << std::to_string(sourceFile.codeLength) << "\n";
+        dbgOutput << "file:    " << floating_high << sourceFile.fileName << spacing << "size: " << std::to_string(sourceFile.codeLength) << "\n";
     }
 
     // Create the binning problem
@@ -492,22 +486,20 @@ void prepareBinningProblem()
 
     for (auto& gap : GLOBAL_binningProblem.gaps)
     {
-        logOutput << "gap address: $" << std::uppercase << std::hex << gap.first <<
+        dbgOutput << "gap address: $" << std::uppercase << std::hex << gap.first <<
                      "    size: " << std::to_string(gap.second) << "\n";
     }
 
-    logOutput << "\n";
+    dbgOutput << "\n";
 
     // Close the log file
 
-    if (!logFile.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
-    logFile.close();
+    if (!dbgOutput.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
+    dbgOutput.close();
 }
 
 void solveBinningProblem()
 {
-    std::cout << "trying to solve the routine binning problem" << "\n\n";
-
     // Do some routine actions on the binning problem object
 
     Solver solver(GLOBAL_binningProblem);
@@ -527,13 +519,11 @@ void compileSegment()
 
     const std::string outFileNameBare = CMD_segName + "_combined.s";
     const std::string vlfFileNamePath = CMD_segName + "_combined.vs";
-    const std::string repFileNamePath = CMD_segName + "_combined.rep";
     const std::string symFileNamePath = CMD_segName + "_combined.sym";
     const std::string filePath        = CMD_outDir + DIR_SEPARATOR;
     const std::string outFileNamePath = filePath + outFileNameBare;
     unlink(outFileNamePath.c_str());
     unlink(vlfFileNamePath.c_str());
-    unlink(repFileNamePath.c_str());
     unlink(symFileNamePath.c_str());
     std::ofstream outFile(outFileNamePath, std::fstream::out | std::fstream::trunc);
     if (!outFile.good()) ERROR(std::string("can't open temporary file '") + outFileNamePath + "'");
@@ -575,14 +565,14 @@ void compileSegment()
 
     // All written - now launch the assembler
 
-    const std::string cmd = "cd " + filePath + " && " + CMD_assembler +
-                            " --strict-segments --color" +
-                            " --outfile "     + CMD_outFile +
-                            " --symbollist "  + symFileNamePath +
-                            " --vicelabels "  + vlfFileNamePath +
-                            " --report "      + repFileNamePath +
-                            " " + outFileNameBare;
-    std::cout << "command: " << cmd << "\n" << std::flush;
+    const std::string cmdParams = std::string(" ") + "--strict-segments --color" +
+                                  " --outfile "     + CMD_outFile +
+                                  " --symbollist "  + symFileNamePath +
+                                  " --vicelabels "  + vlfFileNamePath +
+                                  " " + outFileNameBare;
+    const std::string cmd = "cd " + filePath + " && " + CMD_assembler + cmdParams;
+
+    std::cout << "asm call:" << cmdParams << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
         ERROR("assembler running failed");
@@ -597,13 +587,11 @@ int main(int argc, char **argv)
 {
     parseCommandLine(argc, argv);
 
-    printBannerCollectAnalyse();
+    printBanner();
 
     readSourceFiles();
     checkInputFileLabels();
     calcRoutineSizes();
-
-    printBannerBinCompile();
 
     prepareBinningProblem();
     solveBinningProblem();
@@ -629,24 +617,23 @@ SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) 
     layoutProcessingDone(false)
 {
     const std::string fileNameWithPath = dirName + DIR_SEPARATOR + fileName;
-    std::cout << "reading file: " << fileNameWithPath << "\n";
 
     // Open the file
 
     std::ifstream inFile;
     inFile.open(fileNameWithPath);
-    if (!inFile.good()) ERROR("unable to open file");
+    if (!inFile.good()) ERROR(fileNameWithPath + " - unable to open file");
 
     // Read the content
 
     inFile.seekg(0, inFile.end);
     auto fileLength = inFile.tellg();
-    if (fileLength == 0) ERROR("file is empty");
+    if (fileLength == 0) ERROR(fileNameWithPath + " - file is empty");
     content.resize(fileLength);
 
     inFile.seekg(0);
     inFile.read(&content[0], fileLength);
-    if (!inFile.good()) ERROR("error reading file content");
+    if (!inFile.good()) ERROR(fileNameWithPath + " - error reading file content");
     if (content.back() != '\n') content.push_back('\n');
 
     inFile.close();
@@ -1054,7 +1041,7 @@ void BinningProblem::addToProblem(SourceFile *routine)
     }
 }
 
-void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::list<SourceFile *> &routines)
+void BinningProblem::fillGap(std::ofstream &dbgOutput, int gapAddress, const std::list<SourceFile *> &routines)
 {
     int offset = 0;
     std::string spacing;
@@ -1064,7 +1051,7 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
         int targetAddr = gapAddress + offset;
 
         spacing.resize(GLOBAL_maxFileNameLen + 4 - routine->fileName.length(), ' ');
-        logOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
+        dbgOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
                      routine->fileName << spacing << "size: " << routine->codeLength << "\n";
 
         fixedRoutines[targetAddr] = routine;
@@ -1080,22 +1067,22 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
 
     if (offset == gaps[gapAddress])
     {
-        logOutput << "filled to the last byte" << "\n";
+        dbgOutput << "filled to the last byte" << "\n";
     }
     else if (!isSolved())
     {
-        logOutput << "filled in - dropped bytes: " << gaps[gapAddress] - offset << "\n";
+        dbgOutput << "filled in - dropped bytes: " << gaps[gapAddress] - offset << "\n";
         statWasted += gaps[gapAddress] - offset;
     }
     else
     {
-        logOutput << "out of routines" << "\n";
+        dbgOutput << "out of routines" << "\n";
     }
 
     gaps.erase(gapAddress);
 }
 
-void BinningProblem::placeHighRoutines(DualStream &logOutput)
+void BinningProblem::placeHighRoutines(std::ofstream &dbgOutput)
 {
     // Place routines which has to be stored in the high ROM area
     // It is expected there will be very few of them, so no complicated algorithms here
@@ -1159,11 +1146,11 @@ void BinningProblem::placeHighRoutines(DualStream &logOutput)
         fixedRoutines[targetAddr] = *iterRoutine;
         statFree   -= routineSize;
 
-        logOutput << "reducing gap $" << std::hex << gapAddress << std::dec <<
+        dbgOutput << "reducing gap $" << std::hex << gapAddress << std::dec <<
                     " to size " << gaps[gapAddress] << "\n";
 
         spacing.resize(GLOBAL_maxFileNameLen + 4 - (*iterRoutine)->fileName.length(), ' ');
-        logOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
+        dbgOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
                      (*iterRoutine)->fileName << spacing << "size: " <<
                      (*iterRoutine)->codeLength << "\n";
 
@@ -1172,7 +1159,7 @@ void BinningProblem::placeHighRoutines(DualStream &logOutput)
     }
 }
 
-void BinningProblem::performObviousSteps(DualStream &logOutput)
+void BinningProblem::performObviousSteps(std::ofstream &dbgOutput)
 {
     // Get the size of the biggest routine; if there is just one gap which
     // can handle it - put the routine exactly there
@@ -1201,7 +1188,7 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
         if (!lastGap && gaps.size() == 1)
         {
             lastGap = true;
-            logOutput << "selected gap: $" << std::hex << gapAddress << std::dec <<
+            dbgOutput << "selected gap: $" << std::hex << gapAddress << std::dec <<
                          " (size: " << gaps[gapAddress] << ") - the last remaining" << "\n";
         }
 
@@ -1216,12 +1203,12 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
 
             if (gaps.size() > 1)
             {
-                logOutput << "forced reducing gap $" << std::hex << gapAddress << std::dec <<
+                dbgOutput << "forced reducing gap $" << std::hex << gapAddress << std::dec <<
                              " to size " << gaps[gapAddress] << "\n";
             }
 
             spacing.resize(GLOBAL_maxFileNameLen + 4 - floatingRoutines.back()->fileName.length(), ' ');
-            logOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
+            dbgOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
                          floatingRoutines.back()->fileName << spacing << "size: " <<
                          floatingRoutines.back()->codeLength << "\n";
 
@@ -1233,7 +1220,7 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
     }
 }
 
-void BinningProblem::removeUselessGaps(DualStream &logOutput)
+void BinningProblem::removeUselessGaps(std::ofstream &dbgOutput)
 {
     // Get the size of the smallest floating routine,
     // remove all the gaps which are smaller in size
@@ -1248,7 +1235,7 @@ void BinningProblem::removeUselessGaps(DualStream &logOutput)
         {
             if (gap.second < minUsefulSize)
             {
-                logOutput << "dropping gap: $" << std::hex << gap.first << std::dec << " (size: " << gap.second << ")" << "\n";
+                dbgOutput << "dropping gap: $" << std::hex << gap.first << std::dec << " (size: " << gap.second << ")" << "\n";
                 statWasted += gap.second;
                 gaps.erase(gap.first);
                 repeat = true;
@@ -1276,7 +1263,7 @@ void Solver::run()
 
     const std::string logFileNamePath = CMD_outDir + DIR_SEPARATOR + CMD_segName + "_binsolution.log";
     unlink(logFileNamePath.c_str());
-    logFile.open(logFileNamePath, std::fstream::out | std::fstream::trunc);
+    dbgOutput.open(logFileNamePath, std::fstream::out | std::fstream::trunc);
 
     // Sort the floating routines, just to be extra sure
 
@@ -1284,42 +1271,43 @@ void Solver::run()
 
     // Place routines which should be stored in high-ROM
 
-    problem.placeHighRoutines(logOutput);
+    problem.placeHighRoutines(dbgOutput);
 
     // Run the solver until all is done
 
     while (!problem.gaps.empty() && !problem.floatingRoutines.empty())
     {
-        problem.performObviousSteps(logOutput);
-        problem.removeUselessGaps(logOutput);
+        problem.performObviousSteps(dbgOutput);
+        problem.removeUselessGaps(dbgOutput);
 
         if (problem.gaps.empty() || problem.floatingRoutines.empty()) break;
 
         int gapAddr = selectGapToFill();
 
-        logOutput << "selected gap: $" << std::hex << gapAddr << std::dec << " (size: " << problem.gaps[gapAddr] << ")" << "\n";
+        dbgOutput << "selected gap: $" << std::hex << gapAddr << std::dec << " (size: " << problem.gaps[gapAddr] << ")" << "\n";
 
         std::list<SourceFile *> partialSolution;
         findPartialSolution(problem.gaps[gapAddr], partialSolution);
-        problem.fillGap(logOutput, gapAddr, partialSolution);
+        problem.fillGap(dbgOutput, gapAddr, partialSolution);
     }
 
     // Print out the result
 
     if (problem.isSolved())
     {
-        logOutput << "\n" << "all the routines sucessfully placed" << "\n\n";
-
+        dbgOutput << "\n";
+        logOutput << "all routines sucessfully placed" << "\n";
+        dbgOutput << "\n";
         logOutput << "segment statistics:" << "\n";
         // logOutput << "    - total size:   " << problem.statSize << "\n"; - for BASIC contains filling gap too
         logOutput << "    - wasted bytes: " << problem.statWasted << "\n";
-        logOutput << "    - still free:   " << problem.statFree - problem.statWasted << "\n\n";
+        logOutput << "    - still free:   " << problem.statFree - problem.statWasted << "\n";
     }
 
     // Close the log file
 
-    if (!logFile.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
-    logFile.close();
+    if (!dbgOutput.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
+    dbgOutput.close();
 }
 
 int Solver::selectGapToFill()

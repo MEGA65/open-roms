@@ -181,31 +181,27 @@ HYBRID_WARNING = "*** WARNING *** Distributing kernal_hybrid.rom violates both o
 
 GIT_COMMIT:= $(shell git log -1 --pretty='%h' | tr '[:lower:]' '[:upper:]')
 
-# Rules - main   XXX fast build does not always succeed, not yet clear, why
+# Rules - main - XXX building ROMs in parallel sometimes fails - most likely due to rules producing multiple targets
 
 .PHONY: all clean updatebin
 
 all:
-	@echo
-	@echo --- Building tools ---
-	@echo
-	$(MAKE) -j64 --output-sync=target $(TOOLS_LIST)
-	@echo
-	@echo --- Building Open ROMs ---
-	@echo
-	$(MAKE) $(TARGET_LIST) $(EXT_TARGET_LIST)
+	@$(MAKE) -s $(DIR_ACME) $(SRC_ACME)
+	@$(MAKE) -s -j`nproc` --output-sync=target $(TOOLS_LIST)
+	@$(MAKE) -s --output-sync=target $(TARGET_LIST) $(EXT_TARGET_LIST)
 
 clean:
 	@rm -rf build src/basic/combined.s src/kernal/combined.s
 
 updatebin:
-	$(MAKE) -j64 --output-sync=target $(TARGET_LIST) $(TOOL_RELEASE)
-	$(TOOL_RELEASE) -i ./build -o ./bin $(patsubst build/%,%,$(REL_TARGET_LIST))
-	cp build/chargen_openroms.rom bin/chargen_openroms.rom
+	@$(MAKE) -s $(DIR_ACME) $(SRC_ACME)
+	@$(MAKE) --output-sync=target $(TARGET_LIST) $(TOOL_RELEASE)
+	@$(TOOL_RELEASE) -i ./build -o ./bin $(patsubst build/%,%,$(REL_TARGET_LIST))
+	@cp build/chargen_openroms.rom bin/chargen_openroms.rom
 
 # Rules - tools
 
-$(DIR_ACME) $(SRC_ACME) $(HDR_ACME):
+$(DIR_ACME) $(SRC_ACME):
 	@echo
 	@echo Fetching ACME source code...
 	@git submodule init
@@ -213,41 +209,41 @@ $(DIR_ACME) $(SRC_ACME) $(HDR_ACME):
 
 $(TOOL_ASSEMBLER): $(DIR_ACME) $(SRC_ACME) $(HDR_ACME)
 	@echo
-	@echo Building $@ ...
+	@echo Compiling tool $@ ...
 	@mkdir -p build/tools
 	@$(CC) -o $(TOOL_ASSEMBLER) $(SRC_ACME) -lm -w -I./assembler/acme/src
 
 $(TOOL_PNGPREPARE): tools/pngprepare.c
 	@echo
-	@echo Building $@ ...
+	@echo Compiling tool $@ ...
 	@mkdir -p build/tools
 	@$(CC) -O2 -Wall -I/usr/local/include -L/usr/local/lib -o $@ $< -lpng
 
 build/tools/%: tools/%.c
 	@echo
-	@echo Building $@ ...
+	@echo Compiling tool $@ ...
 	@mkdir -p build/tools
 	@$(CC) -O2 -Wall -o $@ $<
 
 build/tools/%: tools/%.cc tools/common.h
 	@echo
-	@echo Building $@ ...
+	@echo Compiling tool $@ ...
 	@mkdir -p build/tools
 	@$(CXX) -O2 -Wall -o $@ $<
 
 # Rules - CHARGEN
 
 build/chargen_openroms.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
-	$(TOOL_PNGPREPARE) charrom assets/8x8font.png $@
+	@$(TOOL_PNGPREPARE) charrom assets/8x8font.png $@ 1>build/pngprepare.log
 
 build/chargen_pxlfont.rom: bin/chargen_pxlfont_2.3.rom
-	cp $< $@
+	@cp $< $@
 
 build/chargen_openroms.patched: $(TOOL_PATCH_CHARGEN) build/chargen_openroms.rom
-	$(TOOL_PATCH_CHARGEN) -i build/chargen_openroms.rom -o $@ -n 7px-OpenROMs
+	@$(TOOL_PATCH_CHARGEN) -i build/chargen_openroms.rom -o $@ -n 7px-OpenROMs
 
 build/chargen_pxlfont.patched: $(TOOL_PATCH_CHARGEN) build/chargen_pxlfont.rom
-	$(TOOL_PATCH_CHARGEN) -i build/chargen_pxlfont.rom -o $@ -n 6px-PXLfont
+	@$(TOOL_PATCH_CHARGEN) -i build/chargen_pxlfont.rom -o $@ -n 6px-PXLfont
 
 # Dependencies - BASIC, DOS, and KERNAL
 
@@ -415,37 +411,37 @@ $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1_combined.vs $(DIR_X16)/KERNAL_1_comb
 
 .PRECIOUS: build/target_%/OUTx_x.BIN
 build/target_%/OUTx_x.BIN:
-	cat build/target_$*/OUTB_x.BIN build/target_$*/OUTK_x.BIN > $@
+	@cat build/target_$*/OUTB_x.BIN build/target_$*/OUTK_x.BIN > $@
 
 .PRECIOUS: build/kernal_%.rom
 build/kernal_%.rom:
-	dd if=build/target_$*/OUTx_x.BIN bs=8192 count=1 skip=2 of=$@
+	@dd if=build/target_$*/OUTx_x.BIN bs=8192 count=1 skip=2 of=$@ status=none
 
 .PRECIOUS: build/basic_%.rom
 build/basic_%.rom:
-	dd if=build/target_$*/OUTx_x.BIN bs=8192 count=1 skip=0 of=$@
+	@dd if=build/target_$*/OUTx_x.BIN bs=8192 count=1 skip=0 of=$@ status=none
 
 .PRECIOUS: build/symbols_%.vs
 build/symbols_%.vs:
-	sort build/target_$*/BASIC_combined.vs build/target_$*/KERNAL_combined.vs | uniq | grep -v "__" > $@
+	@sort build/target_$*/BASIC_combined.vs build/target_$*/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
 $(DIR_M65)/OUTx_0.BIN:
-	cat $(DIR_M65)/OUTB_0.BIN $(DIR_M65)/OUTK_0.BIN > $@
+	@cat $(DIR_M65)/OUTB_0.BIN $(DIR_M65)/OUTK_0.BIN > $@
 
 $(DIR_M65)/kernal.seg_0: $(DIR_M65)/OUTx_0.BIN
-	dd if=$(DIR_M65)/OUTx_0.BIN bs=8192 count=1 skip=2 of=$@
+	@dd if=$(DIR_M65)/OUTx_0.BIN bs=8192 count=1 skip=2 of=$@ status=none
 
 $(DIR_M65)/basic.seg_0: $(DIR_M65)/OUTx_0.BIN
-	dd if=$(DIR_M65)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@
+	@dd if=$(DIR_M65)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
 
 $(DIR_X16)/OUTx_0.BIN:
-	cat $(DIR_X16)/OUTB_0.BIN $(DIR_X16)/OUTK_0.BIN > $@
+	@cat $(DIR_X16)/OUTB_0.BIN $(DIR_X16)/OUTK_0.BIN > $@
 
 $(DIR_X16)/kernal.seg_0: $(DIR_X16)/OUTx_0.BIN
-	dd if=$(DIR_X16)/OUTx_0.BIN bs=8192 count=1 skip=1 of=$@
+	@dd if=$(DIR_X16)/OUTx_0.BIN bs=8192 count=1 skip=1 of=$@ status=none
 
 $(DIR_X16)/basic.seg_0: $(DIR_X16)/OUTx_0.BIN
-	dd if=$(DIR_X16)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@
+	@dd if=$(DIR_X16)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
 
 build/kernal_hybrid.rom: kernal $(DIR_GEN)/OUTK_x.BIN
 	@echo
@@ -457,44 +453,59 @@ build/kernal_hybrid.rom: kernal $(DIR_GEN)/OUTK_x.BIN
 	cat $(DIR_GEN)/OUTK_x.BIN) > $@
 
 build/symbols_hybrid.vs: $(DIR_GEN)/KERNAL_combined.vs
-	sort $(DIR_GEN)/KERNAL_combined.vs | uniq | grep -v "__" > $@
+	@sort $(DIR_GEN)/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
 # Rules - MEGA65 platform specific
 
 build/padding_64_KB:
 	@mkdir -p build
-	dd if=/dev/zero bs=8192 count=8 of=build/padding_64_KB
+	@dd if=/dev/zero bs=8192 count=8 of=build/padding_64_KB status=none
 
 $(TARGET_M65_x) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB build/chargen_openroms.rom build/chargen_openroms.patched build/chargen_pxlfont.rom build/chargen_pxlfont.patched
 	@echo
-	cat $(DIR_M65)/dos.seg_1        > $(TARGET_M65_x)
-	cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x)
-	cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x)
-	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x)
-	cat build/chargen_openroms.rom          >> $(TARGET_M65_x)
-	cat build/chargen_openroms.patched      >> $(TARGET_M65_x)
-	cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x)
-	cat build/padding_64_KB                 >> $(TARGET_M65_x)
 	@echo
-	cat $(DIR_M65)/dos.seg_1        > $(TARGET_M65_x_PXL)
-	cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x_PXL)
-	cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x_PXL)
-	cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x_PXL)
-	cat build/chargen_pxlfont.rom           >> $(TARGET_M65_x_PXL)
-	cat build/chargen_pxlfont.patched       >> $(TARGET_M65_x_PXL)
-	cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x_PXL)
-	cat build/padding_64_KB                 >> $(TARGET_M65_x_PXL)
+	@echo
+	@echo //-------------------------------------------------------------------------------------------
+	@echo // Making ROM image for MEGA65 - with Open ROMs chargen
+	@echo //-------------------------------------------------------------------------------------------
+	@cat $(DIR_M65)/dos.seg_1        > $(TARGET_M65_x)
+	@cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x)
+	@cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x)
+	@cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x)
+	@cat build/chargen_openroms.rom          >> $(TARGET_M65_x)
+	@cat build/chargen_openroms.patched      >> $(TARGET_M65_x)
+	@cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x)
+	@cat build/padding_64_KB                 >> $(TARGET_M65_x)
+	@echo
+	@echo
+	@echo
+	@echo //-------------------------------------------------------------------------------------------
+	@echo // Making ROM image for MEGA65 - with PXL font chargen
+	@echo //-------------------------------------------------------------------------------------------
+	@cat $(DIR_M65)/dos.seg_1        > $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x_PXL)
+	@cat build/chargen_pxlfont.rom           >> $(TARGET_M65_x_PXL)
+	@cat build/chargen_pxlfont.patched       >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x_PXL)
+	@cat build/padding_64_KB                 >> $(TARGET_M65_x_PXL)
 	@echo
 
 # Rules - platform 'Commander X16' specific
 
 $(TARGET_X16_x): $(SEG_LIST_X16) build/chargen_openroms.rom
 	@echo
-	cat $(DIR_X16)/basic.seg_0      > $(TARGET_X16_x)
-	cat $(DIR_X16)/kernal.seg_0    >> $(TARGET_X16_x)
-	cat build/chargen_openroms.rom        >> $(TARGET_X16_x)
-	cat $(DIR_X16)/basic.seg_1     >> $(TARGET_X16_x)
-	cat $(DIR_X16)/kernal.seg_1    >> $(TARGET_X16_x)
+	@echo
+	@echo
+	@echo //-------------------------------------------------------------------------------------------
+	@echo // Making ROM image for Commander X16 - with Open ROMs chargen
+	@echo //-------------------------------------------------------------------------------------------
+	@cat $(DIR_X16)/basic.seg_0      > $(TARGET_X16_x)
+	@cat $(DIR_X16)/kernal.seg_0    >> $(TARGET_X16_x)
+	@cat build/chargen_openroms.rom        >> $(TARGET_X16_x)
+	@cat $(DIR_X16)/basic.seg_1     >> $(TARGET_X16_x)
+	@cat $(DIR_X16)/kernal.seg_1    >> $(TARGET_X16_x)
 	@echo
 
 # Rules - tests

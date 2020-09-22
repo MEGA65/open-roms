@@ -248,7 +248,7 @@ void writeConstants()
    
     outFile.close();
 
-    std::cout << std::string("Constants written to: ") + CMD_outFile + "\n\n";
+    std::cout << std::string("floating point constants written to: ") + CMD_outFile + "\n\n";
 }
 
 

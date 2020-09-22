@@ -1106,7 +1106,7 @@ void DataSet::addStrings(const StringEntryList &stringList)
 
 void DataSet::process()
 {
-    std::cout << "Processing file '" << CMD_cnfFile << "', layout '" << layoutName() << "'" << std::endl;
+    std::cout << "processing file '" << CMD_cnfFile << "', layout '" << layoutName() << "'" << std::endl;
 
     generateConfigDepStrings();
     validateLists();
@@ -1792,7 +1792,7 @@ void printUsage()
 void printBanner()
 {
     printBannerLineTop();
-    std::cout << "; Generating compressed messages and BASIC tokens\n";
+    std::cout << "// Generating compressed messages and BASIC tokens\n";
     printBannerLineBottom();
 }
 
@@ -1907,7 +1907,7 @@ void writeStrings()
   
     outFile.close();
 
-    std::cout << std::string("Compressed strings written to: ") + CMD_outFile + "\n\n";
+    std::cout << std::string("compressed strings written to: '") + CMD_outFile + "'\n\n";
 }
 
 //

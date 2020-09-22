@@ -11,13 +11,13 @@
 
 
 
-; Hardware platform and brand
+; --- Hardware platform and brand
 
 ;; #CONFIG# PLATFORM_COMMODORE_64      YES
 ;; #CONFIG# MB_U64                     YES
 
 
-; Memory model
+; --- Memory model
 
 ;; #CONFIG# MEMORY_MODEL_38K           NO
 ;; #CONFIG# MEMORY_MODEL_46K           NO
@@ -25,7 +25,7 @@
 ;; #CONFIG# MEMORY_MODEL_60K           NO
 
 
-; IEC bus configuration
+; --- IEC bus configuration
 
 ;; #CONFIG# IEC                        YES
 ;; #CONFIG# IEC_DOLPHINDOS             YES
@@ -34,7 +34,7 @@
 ;; #CONFIG# IEC_JIFFYDOS_BLANK         YES
 
 
-; Tape deck configuration
+; --- Tape deck configuration
 
 ;; #CONFIG# TAPE_NORMAL                YES
 ;; #CONFIG# TAPE_TURBO                 YES
@@ -43,7 +43,7 @@
 ;; #CONFIG# TAPE_NO_MOTOR_CONTROL      NO
 
 
-; Sound support
+; --- Sound support
 
 ;; #CONFIG# SID_2ND_ADDRESS            NO
 ;; #CONFIG# SID_3RD_ADDRESS            NO
@@ -53,7 +53,7 @@
 ;; #CONFIG# SID_D7XX                   NO
 
 
-; Keyboard settings
+; --- Keyboard settings
 
 ;; #CONFIG# LEGACY_SCNKEY              NO
 ;; #CONFIG# KEYBOARD_C128              NO
@@ -100,13 +100,13 @@
 ;; #CONFIG# KEYCMD_F14                 NO
 
 
-; Screen editor
+; --- Screen editor
 
 ;; #CONFIG# EDIT_STOPQUOTE             YES
 ;; #CONFIG# EDIT_TABULATORS            NO
 
 
-; Software features
+; --- Software features
 
 ;; #CONFIG# PANIC_SCREEN               YES
 ;; #CONFIG# DOS_WEDGE                  YES
@@ -115,7 +115,7 @@
 ;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 
-; Eye candy
+; --- Eye candy
 
 ;; #CONFIG# COLORS_BRAND               YES
 ;; #CONFIG# BANNER_SIMPLE              NO
@@ -123,12 +123,12 @@
 ;; #CONFIG# SHOW_FEATURES              YES
 
 
-; Debug options
+; --- Debug options
 
 ;; #CONFIG# DBG_STUBS_BRK              NO
 ;; #CONFIG# DBG_PRINTF                 NO
 
 
-; Other
+; --- Other
 
 ;; #CONFIG# COMPRESSION_LVL_2          NO

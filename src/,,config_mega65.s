@@ -11,20 +11,20 @@
 
 
 
-; Hardware platform
+; --- Hardware platform
 
 ;; #CONFIG# PLATFORM_COMMODORE_64      YES
 ;; #CONFIG# MB_M65                     YES
 
 
-; Memory model
+; --- Memory model
 
 ;; #CONFIG# MEMORY_MODEL_38K           NO
 ;; #CONFIG# MEMORY_MODEL_46K           NO
 ;; #CONFIG# MEMORY_MODEL_50K           YES
 
 
-; IEC bus configuration
+; --- IEC bus configuration
 
 ;; #CONFIG# IEC                        YES
 ;; #CONFIG# IEC_DOLPHINDOS             NO
@@ -34,7 +34,7 @@
 ;; #CONFIG# IEC_BURST_M65              NO        ; please keep disabled for now
 
 
-; Tape deck configuration
+; --- Tape deck configuration
 
 ;; #CONFIG# TAPE_NORMAL                YES
 ;; #CONFIG# TAPE_TURBO                 YES
@@ -43,7 +43,7 @@
 ;; #CONFIG# TAPE_NO_MOTOR_CONTROL      YES
 
 
-; Keyboard settings
+; --- Keyboard settings
 
 ;; #CONFIG# LEGACY_SCNKEY              NO
 ;; #CONFIG# KEYBOARD_C65               NO        ; untested
@@ -95,13 +95,13 @@
 !macro CONFIG_KEYCMD_F14  { !pet "rem f14" }
 
 
-; Screen editor
+; --- Screen editor
 
 ;; #CONFIG# EDIT_STOPQUOTE             YES
 ;; #CONFIG# EDIT_TABULATORS            NO
 
 
-; Software features
+; --- Software features
 
 ;; #CONFIG# PANIC_SCREEN               YES
 ;; #CONFIG# DOS_WEDGE                  YES
@@ -110,19 +110,19 @@
 ;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 
-; Built-in DOS configuration
+; --- Built-in DOS configuration
 
 ;; #CONFIG# UNIT_SDCARD                0         ; do not change, DOS is not implemented yet
 ;; #CONFIG# UNIT_FLOPPY                0         ; do not change, DOS is not implemented yet
 ;; #CONFIG# UNIT_RAMDISK               0         ; do not change, DOS is not implemented yet
 
 
-; Debug options
+; --- Debug options
 
 ;; #CONFIG# DBG_STUBS_BRK              NO
 ;; #CONFIG# DBG_PRINTF                 NO
 
 
-; Other
+; --- Other
 
 ;; #CONFIG# COMPRESSION_LVL_2          NO

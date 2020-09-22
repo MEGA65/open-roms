@@ -10,17 +10,17 @@
 
 
 
-; Hardware platform and brand
+; --- Hardware platform and brand
 
 ;; #CONFIG# PLATFORM_COMMANDER_X16     YES
 
 
-; Memory model
+; --- Memory model
 
 ;; #CONFIG# MEMORY_MODEL_38K           YES
 
 
-; Keyboard settings
+; --- Keyboard settings
 
 ;; #CONFIG# PROGRAMMABLE_KEYS          NO
 
@@ -44,13 +44,13 @@
 ;; #CONFIG# KEYCMD_F14                 NO
 
 
-; Screen editor
+; --- Screen editor
 
 ;; #CONFIG# EDIT_STOPQUOTE             NO
 ;; #CONFIG# EDIT_TABULATORS            NO
 
 
-; Software features
+; --- Software features
 
 ;; #CONFIG# PANIC_SCREEN               NO
 ;; #CONFIG# DOS_WEDGE                  NO
@@ -59,7 +59,7 @@
 ;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 
-; Eye candy
+; --- Eye candy
 
 ;; #CONFIG# COLORS_BRAND               NO
 ;; #CONFIG# BANNER_SIMPLE              NO
@@ -67,11 +67,12 @@
 ;; #CONFIG# SHOW_FEATURES              NO
 
 
-; Debug options
+; --- Debug options
 
 ;; #CONFIG# DBG_STUBS_BRK              NO
 ;; #CONFIG# DBG_PRINTF                 NO
 
-; Other
+
+; --- Other
 
 ;; #CONFIG# COMPRESSION_LVL_2          NO

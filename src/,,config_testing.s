@@ -11,13 +11,13 @@
 
 
 
-; Hardware platform and brand
+; --- Hardware platform and brand
 
 ;; #CONFIG# PLATFORM_COMMODORE_64      YES
 ;; #CONFIG# BRAND_TESTING              YES
 
 
-; Processor instruction set
+; --- Processor instruction set
 
 ;; #CONFIG# CPU_MOS_6502               YES
 ;; #CONFIG# CPU_DTV_6502               NO
@@ -27,7 +27,7 @@
 ;; #CONFIG# CPU_CSG_65CE02             NO
 
 
-; Memory model
+; --- Memory model
 
 ;; #CONFIG# MEMORY_MODEL_38K           NO
 ;; #CONFIG# MEMORY_MODEL_46K           NO
@@ -35,7 +35,7 @@
 ;; #CONFIG# MEMORY_MODEL_60K           YES
 
 
-; IEC bus configuration
+; --- IEC bus configuration
 
 ;; #CONFIG# IEC                        YES
 ;; #CONFIG# IEC_DOLPHINDOS             YES
@@ -44,7 +44,7 @@
 ;; #CONFIG# IEC_JIFFYDOS_BLANK         NO
 
 
-; Tape deck configuration
+; --- Tape deck configuration
 
 ;; #CONFIG# TAPE_NORMAL                NO
 ;; #CONFIG# TAPE_TURBO                 YES
@@ -53,7 +53,7 @@
 ;; #CONFIG# TAPE_NO_MOTOR_CONTROL      NO
 
 
-; Sound support
+; --- Sound support
 
 ;; #CONFIG# SID_2ND_ADDRESS            NO
 ;; #CONFIG# SID_3RD_ADDRESS            NO
@@ -63,7 +63,7 @@
 ;; #CONFIG# SID_D7XX                   NO
 
 
-; Keyboard settings
+; --- Keyboard settings
 
 ;; #CONFIG# LEGACY_SCNKEY              YES
 ;; #CONFIG# KEYBOARD_C128              NO
@@ -110,13 +110,13 @@
 ;; #CONFIG# KEYCMD_F14                 NO
 
 
-; Screen editor
+; --- Screen editor
 
 ;; #CONFIG# EDIT_STOPQUOTE             YES
 ;; #CONFIG# EDIT_TABULATORS            YES
 
 
-; Software features
+; --- Software features
 
 ;; #CONFIG# PANIC_SCREEN               YES
 ;; #CONFIG# DOS_WEDGE                  YES
@@ -125,7 +125,7 @@
 ;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 
-; Eye candy
+; --- Eye candy
 
 ;; #CONFIG# COLORS_BRAND               NO
 ;; #CONFIG# BANNER_SIMPLE              YES
@@ -133,12 +133,12 @@
 ;; #CONFIG# SHOW_FEATURES              YES
 
 
-; Debug options
+; --- Debug options
 
 ;; #CONFIG# DBG_STUBS_BRK              NO
 ;; #CONFIG# DBG_PRINTF                 YES
 
 
-; Other
+; --- Other
 
 ;; #CONFIG# COMPRESSION_LVL_2          NO

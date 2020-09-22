@@ -9,9 +9,9 @@
 
 !macro  BANNER_TEXT {
 
-!ifdef CONFIG_BRAND_CUSTOM_BUILD {
+!ifdef CONFIG_BRAND_CUSTOM {
 	!pet "open roms "
-	+CONFIG_CUSTOM_BRAND
+	+CONFIG_BRAND_CUSTOM
 } else ifdef CONFIG_BRAND_GENERIC {
 	!pet "open roms generic build"
 } else ifdef CONFIG_BRAND_TESTING {
@@ -48,5 +48,4 @@ rainbow_logo:
     !byte SET_COLOR_3, $12, $A4, $A4, $A4, $A4, $A4, $0D
     !byte SET_COLOR_4, $12, $A4, $A4, $A4, $A4, $92
     !byte SET_COLOR_0, $00
-
 }

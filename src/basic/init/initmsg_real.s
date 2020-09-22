@@ -18,7 +18,7 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
-!ifndef CONFIG_BRAND_CUSTOM_BUILD {
+!ifndef CONFIG_BRAND_CUSTOM {
 
 	ldx #$01
 	ldy #$04
@@ -28,9 +28,9 @@ initmsg_real:
 	ldy #>rom_revision_basic_string
 	jsr STROUT
 
-} ; no CONFIG_BRAND_CUSTOM_BUILD
+} ; no CONFIG_BRAND_CUSTOM
 
-!ifndef CONFIG_BRAND_CUSTOM_BUILD {
+!ifndef CONFIG_BRAND_CUSTOM {
 	ldx #$03
 } else {
 	ldx #$02
@@ -40,7 +40,7 @@ initmsg_real:
 
 	jsr initmsg_bytes_free
 
-!ifndef CONFIG_BRAND_CUSTOM_BUILD {
+!ifndef CONFIG_BRAND_CUSTOM {
 	ldx #$06
 } else {
 	ldx #$05
@@ -67,7 +67,7 @@ initmsg_real:
 	ldy #>startup_banner
 	jsr STROUT
 
-!ifndef CONFIG_BRAND_CUSTOM_BUILD {
+!ifndef CONFIG_BRAND_CUSTOM {
 
 	ldx #$01
 	ldy #$0A
@@ -80,9 +80,9 @@ initmsg_real:
 	ldy #>rom_revision_basic_string
 	jsr STROUT
 
-} ; no CONFIG_BRAND_CUSTOM_BUILD
+} ; no CONFIG_BRAND_CUSTOM
 
-!ifndef CONFIG_BRAND_CUSTOM_BUILD {
+!ifndef CONFIG_BRAND_CUSTOM {
 	ldx #$03
 } else {
 	ldx #$02
@@ -92,7 +92,7 @@ initmsg_real:
 
 	jsr initmsg_bytes_free
 
-!ifndef CONFIG_BRAND_CUSTOM_BUILD {
+!ifndef CONFIG_BRAND_CUSTOM {
 	ldx #$06
 } else {
 	ldx #$05

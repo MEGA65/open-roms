@@ -37,7 +37,7 @@
 ; Check that brand configuration is correct
 
 !set counter = 0
-!ifdef CONFIG_BRAND_CUSTOM_BUILD { !set counter = counter + 1 }
+!ifdef CONFIG_BRAND_CUSTOM       { !set counter = counter + 1 }
 !ifdef CONFIG_BRAND_GENERIC      { !set counter = counter + 1 }
 !ifdef CONFIG_BRAND_TESTING      { !set counter = counter + 1 }
 

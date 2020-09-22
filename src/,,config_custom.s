@@ -14,8 +14,7 @@
 ; --- Hardware platform and brand
 
 ;; #CONFIG# PLATFORM_COMMODORE_64      YES
-;; #CONFIG# BRAND_CUSTOM_BUILD         YES
-;; #CONFIG# CUSTOM_BRAND               "CUSTOM BUILD"
+;; #CONFIG# BRAND_CUSTOM               "CUSTOM BUILD"
 
 
 ; --- Processor instruction set

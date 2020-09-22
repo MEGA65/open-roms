@@ -136,22 +136,27 @@ wedge_dos_command_confirmed:
 
 wedge_dos_change_drive:
 
-	; Fetch new drive number, make sure this is the last part of the command
+	; Fetch new drive number, make sure it is sane
 
 	jsr fetch_uint8
-	pha
-	jsr fetch_character_skip_spaces
-	cmp #$00
-	+bne do_SYNTAX_error
-	pla
-
-	; Check if device number is valid for IEC drive
-
 	cmp #$08
 	+bcc do_ILLEGAL_DEVICE_NUMBER_error
 
+	; Check if this is end of command, or directory request
+
+	pha
+	jsr fetch_character_skip_spaces
+	cmp #$24
+	beq wedge_dos_change_drive_directory
+
+	; Make sure this is end of command
+
+	cmp #$00
+	+bne do_SYNTAX_error
+
 	; Store new device number and return to shell
 
+	pla
 	sta FA
 	jmp shell_main_loop
 
@@ -244,6 +249,17 @@ wedge_dos_status_print_no_new_line:
 	; Clean-up and exit
 
 	+bra wedge_dos_clean_exit
+
+wedge_dos_change_drive_directory:
+
+	; Store new device number, display directory
+
+	pla
+	sta FA
+
+	dec TXTPTR+0                                 ; in direct mode we do not have to care about TXTPTR+1
+
+	; FALLTROUGH
 
 wedge_dos_directory:
 

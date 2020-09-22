@@ -9,19 +9,23 @@ The DOS Wedge commands are only available in direct mode, and they have to start
 
 ### `@` (all)
 
-Displays the error/status read from the current drive. Current drive is either the last device used by any I/O command, the one set by DOS Wedge command, or 8 as a fallback.
+Displays the error/status read from the current unit. Current unit is either the last device used by any I/O command, the one set by DOS Wedge command, or a default one for the given build.
 
-### `@$` (all)
+### `@$[mask]` (all)
 
-Displays the directory of the current drive. Does not destroy BASIC program in memory.
+Displays the directory of the current unit. Can be followed by mask, like in `LOAD "$mask"`. Does not destroy BASIC program in memory.
 
-### `@device_number` (all)
+### `@<unit_number>` (all)
 
-Changes the current drive number.
+Changes the current unit number.
+
+### `@<unit_number>$[mask]` (all)
+
+Combines the two above - displays the directory of the selected driove, in one command.
 
 ### `@command` (all)
 
-Sends the DOS command to the current drive.
+Sends the DOS command to the current unit.
 
 ## Tape Wedge
 

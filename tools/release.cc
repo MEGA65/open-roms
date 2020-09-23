@@ -498,6 +498,7 @@ void ROMFile::analyzeContent()
 {
     auto revOffset1 = (descPtr->signatureOffset1 != 0) ? (descPtr->signatureOffset1 + 3) : 0;
     auto revOffset2 = (descPtr->signatureOffset2 != 0) ? (descPtr->signatureOffset2 + 3) : 0;
+    auto revOffset3 = (descPtr->dosDateOffset    != 0) ? descPtr->dosDateOffset          : 0;
     
     if (revOffset1 == 0)
     {
@@ -534,6 +535,11 @@ void ROMFile::analyzeContent()
         }
 
         if (revOffset2 != 0 && idx - revOffset2 < 0x10)
+        {
+            continue;
+        }
+
+        if (revOffset3 != 0 && idx - revOffset3 < 0x10)
         {
             continue;
         }

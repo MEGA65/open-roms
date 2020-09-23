@@ -2,7 +2,8 @@
 ;; #LAYOUT# *   *        #IGNORE
 
 ; Reset (hardware initialization) to be used when Open ROMs is used under hypervisor
-; XXX for now this is just a proposal
+
+; XXX size-optimize this; share code with regular reset
 
 
 m65_hypervisor_reset:
@@ -12,23 +13,32 @@ m65_hypervisor_reset:
 	sei                      ; disable the interrupts, as fast as possible
 	cld                      ; Kernal is not designed to operate in decimal mode
 
-	see                      ; disable extended stack
-	ldx #$FF                 ; initial stack size
-	txs
-
-	; XXX size-optimize this; share code with regular reset
+	; Do not reset the stack (see, ldx #$FF, txs) - we need to know where to return
 	
-	jsr m65_reset_part       ; initialize MEGA65 specific hardware
-
+	jsr m65_reset_part       ; init MEGA65 specific hardware, shutdown VIC-IV, clear native mode mark
 	ldx #$28                 ; 40 columns, screen disabled for now
 	stx VIC_SCROLX
-	
-	jsr IOINIT_skip_DOS      ; DOS needs to map memory over $8000 - not allowed under hypervisor
+
+	jsr IOINIT_skip_DOS      ; better not to initialize DOS under hypervisor, risk of incompatibility
 	jsr JRAMTAS
 	jsr JRESTOR
 	jsr JCINT
 
-	; Finished
+	; Restore hypervisor memory mapping and quit
+
+	lda #$00                 ; lower memory  - megabyte $00
+	ldx #$0F                 ; lower memory  - request to set the megabyte
+	ldy #$FF                 ; higher memory - megabyte $FF
+	ldz #$0F                 ; higher memory - request to set the megabyte
+
+	map
+
+	tax                      ; lower memory  - keep unmapped (.A is already 0)
+	tay                      ; higher memory - lower 16 bits of the offset are also 0's
+	ldz #$3F                 ; higher memory - map is %0011 = $3, offset is $FF0
+
+	map
+	eom
 
 	cli
 	rts

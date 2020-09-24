@@ -11,17 +11,21 @@
 
 !addr CARD_IS_SDHC = $80 ; $00 = SD, $80 = SDHC
 !addr CARD_SIZE    = $81 ; 4 bytes
+!addr CARD_SECNUM  = $85 ; 4 bytes - sector number
 
-; Temporary XXX addresses are temporary
 
-!addr TMP_SECNUM   = $85  ; 4 bytes - sector number
+; Temporary data XXX addresses are temporary
+
 !addr TMP_STEP     = $89  ; 4 bytes
+!addr TMP_RETRIES  = $8D  ; 1 byte
 
 
 ; XXX hardware address SD_SECTORBUF = 0xffd6e00L;
 
 
-
+; External entry points:
+; - m65_sdcard_init
+; - m65_sdcard_readsector
 
 
 
@@ -68,7 +72,7 @@ m65_sdcard_init_sdhc:
 	lda #$80
 	sta CARD_IS_SDHC
 
-	; Prepare data for determining card size - put $00200000 to TMP_STEP and TMP_SECNUM
+	; Prepare data for determining card size - put $00200000 to TMP_STEP and CARD_SECNUM
 
     ; SDHC claims 32GB limit, and reading from beyond that might cause
     ; trouble. However, 32bits x 512byte sectors = 16TB addressable.
@@ -76,17 +80,18 @@ m65_sdcard_init_sdhc:
     ; or at least the top few bits.
 
 	; XXX this should be initialized to 0 in a loop
+	; XXX is it needed for anything
 
 	lda #$00
-	sta TMP_SECNUM+0
+	sta CARD_SECNUM+0
 	sta TMP_STEP+0
-	sta TMP_SECNUM+1
+	sta CARD_SECNUM+1
 	sta TMP_STEP+1
-	sta TMP_SECNUM+2
+	sta CARD_SECNUM+2
 	sta TMP_STEP+2
 
 	lda #$02
-	sta TMP_SECNUM+3
+	sta CARD_SECNUM+3
 	sta TMP_STEP+3
 
 	bra m65_sdcard_init_getsize
@@ -98,20 +103,21 @@ m65_sdcard_init_sdsc:
 	lda #$40                           ; use byte addressing
 	sta SD_CTL
 
-	; Prepare data for determining card size - put $00200000 to TMP_STEP and TMP_SECNUM
+	; Prepare data for determining card size - put $00200000 to TMP_STEP and CARD_SECNUM
 
 	; XXX this should be initialized to 0 in a loop
+	; XXX is it needed for anything
 
 	lda #$00
-	sta TMP_SECNUM+0
+	sta CARD_SECNUM+0
 	sta TMP_STEP+0
-	sta TMP_SECNUM+1
+	sta CARD_SECNUM+1
 	sta TMP_STEP+1
-	sta TMP_SECNUM+3
+	sta CARD_SECNUM+3
 	sta TMP_STEP+3
 
 	lda #$02
-	sta TMP_SECNUM+2
+	sta CARD_SECNUM+2
 	sta TMP_STEP+2
 
 	; FALLTROUGH
@@ -122,8 +128,104 @@ m65_sdcard_init_getsize:
 	; (binary search of sector numbers is NOT safe for some reason.
 	; It frequently reports bigger than the size of the card)
 
-	; XXX finish
+	lda #$00
+	sta CARD_SECNUM+0
+	sta CARD_SECNUM+1
+	sta CARD_SECNUM+2
+	sta CARD_SECNUM+3
 
+	; step = 16*2048
+
+	sta TMP_STEP+0
+	sta TMP_STEP+2
+	sta TMP_STEP+3
+	lda #$08
+	sta TMP_STEP+1
+
+	; XXX finish the implementation
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+m65_sdcard_readsector: ; XXX reads sector CARD_SECNUM
+
+	; Set read address, depending on card type
+
+	bit CARD_IS_SDHC
+	bpl m65_sdcard_readsector_sdsc
+
+m65_sdcard_readsector_sdhc:
+
+	lda CARD_SECNUM+0
+	sta SD_ADDR+0
+	lda CARD_SECNUM+1
+	sta SD_ADDR+1
+	lda CARD_SECNUM+2
+	sta SD_ADDR+2
+	lda CARD_SECNUM+3
+	sta SD_ADDR+3
+
+	bra m65_sdcard_readsector_read
+
+
+m65_sdcard_readsector_sdsc: ; multiply sector number by 512
+
+	lda #$00
+	sta SD_ADDR+0
+	clc
+	lda CARD_SECNUM+0
+	rol
+	sta SD_ADDR+1
+	lda CARD_SECNUM+1
+	rol
+	sta SD_ADDR+2
+	lda CARD_SECNUM+2
+	rol
+	sta SD_ADDR+3
+	bcs m65_sdcard_readsector_fail               ; branch if sector number too large for SD card
+	lda CARD_SECNUM+3
+	bne m65_sdcard_readsector_fail               ; branch if sector number too large for SD card
+
+	; FALLTROUGH
+
+m65_sdcard_readsector_read:
+
+	; Wait till card is ready
+
+
+
+
+
+
+	; Set number of retries
+
+	lda #$0A
+	sta TMP_RETRIES
+
+	; XXX
+
+
+
+
+
+
+
+
+m65_sdcard_readsector_fail:
+
+	sec
+	rts
 
 
 

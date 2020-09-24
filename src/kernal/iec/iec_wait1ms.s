@@ -23,7 +23,7 @@ iec_wait1ms:
 
 	; FALLTROUGH
 
-wait_x_bars: ; additional entry point for delayy in screen and tape support
+wait_x_bars: ; additional entry point for delay in screen and tape support
              ; has to preserve .Y and put .X to 0
 
 	lda VIC_RASTER

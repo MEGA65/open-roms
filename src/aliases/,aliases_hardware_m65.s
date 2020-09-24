@@ -32,6 +32,12 @@
 	!addr C65_EXTKEYS_PR  = $D607
 	!addr C65_EXTKEYS_DDR = $D608
 
+	; SD card
+
+	!addr SD_CTL          = $D680
+	!addr SD_ADDR         = $D681 ; 4 bytes
+	!addr SD_ERRCODE      = $D6DA
+
 	; DMAgic
 
 	!addr DMA_ADDRLSBTRIG = $D700

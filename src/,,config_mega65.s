@@ -51,8 +51,8 @@
 ;; #CONFIG# KEY_REPEAT_DEFAULT         NO
 ;; #CONFIG# KEY_REPEAT_ALWAYS          NO
 ;; #CONFIG# KEY_FAST_SCAN              YES
-;; #CONFIG# JOY1_CURSOR                YES
-;; #CONFIG# JOY2_CURSOR                YES
+;; #CONFIG# JOY1_CURSOR                NO
+;; #CONFIG# JOY2_CURSOR                NO
 
 ;; #CONFIG# PROGRAMMABLE_KEYS          YES
 

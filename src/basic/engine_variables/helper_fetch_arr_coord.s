@@ -1,32 +1,32 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Helper routine for fetching array coordinates
-//
-// If this was last coordinate, set .Y to $FF, otherwise to $00
-//
+;
+; Helper routine for fetching array coordinates
+;
+; If this was last coordinate, set .Y to $FF, otherwise to $00
+;
 
 helper_fetch_arr_coord:
 
-	// Check if the stack has reasonable space free
+	; Check if the stack has reasonable space free
 
 	jsr check_stack_space
 
-	// Fetch the dimension
+	; Fetch the dimension
 
 	jsr fetch_uint16
-	bcs !+
+	bcs @1
 
 	jsr fetch_character_skip_spaces
-	cmp #$2C                                     // ','
+	cmp #$2C                                     ; ','
 	beq helper_fetch_arr_more
-	cmp #$29                                     // ')'
+	cmp #$29                                     ; ')'
 	beq helper_fetch_arr_last
 
-	// FALLTROUGH
-!:
+	; FALLTROUGH
+@1:
 	jmp do_SYNTAX_error
 
 helper_fetch_arr_more:

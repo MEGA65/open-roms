@@ -9,13 +9,15 @@ It's not possible to provide ROM builds that suit everyone needs - therefore con
 * [`src/,,config_ultimate64.s`](src/,,config_ultimate64.s)
 * [`src/,,config_testing.s`](src/,,config_testing.s)
 
-Just edit them and recompile the project. To enable particular option - uncomment it by removing leading `//` from before `#define` directive (as you probably guessed, commenting out disables it). Some options are followed by constants - you can change them too to further fine-tune the build.
+Just edit them and recompile the project. To enable particular option:
+* change YES to NO, decimal string, or hex string precedeed with `$`
+* change YES to a string enclosed in `"`; within the string you can place `\"` to include quote character, or `\xx`, where `xx` is a hexadecimal code for the given PETSCII displayable character; always use uppercase letters
 
 Note however, that features do not came for free - enabling them needs some additional ROM space (in BASIC segment, in KERNAL segment, or in both), which is VERY limited on the target machines. Some options might be unavailable for speecific targets - read the comments in the configuration files. Some options might also carry compatibility and/or performance hit - so choose wisely.
 
-## Hardware platform and brand
+## Hardware platform
 
-### `CONFIG_PLATFORM_COMMODORE_64`
+### `PLATFORM_COMMODORE_64`
 
 Commodore 64 is the only hardware platform available now - and the main one, as the Open ROMs API is meant to be compatible with the Commodore 64.
 
@@ -25,29 +27,31 @@ Since Open ROMs is highly modular, it should be possible to add other platforms 
 * 8KB ROM area `$A000`-`$BFFF`
 * 8KB ROM area `$E000`-`$FFFF`
 
-### `CONFIG_MB_MEGA_65`, `CONFIG_MB_ULTIMATE_64`
+### `MB_M65`, `MB_U64`
 
-Select if the ROM is going to be used exclusively on the specific motherboard. It prevents from enabling options not having sense, skips initialization of C128-only registers, etc.
+Select if the ROM is going to be used exclusively on the specified motherboard. It prevents from enabling options not having sense, skips initialization of C128-only registers, and enables motherboard-specific features.
 
-### `CONFIG_BRAND_CUSTOM`
+## Brand
 
-Intended for custom builds, which are not to be redistributed. Allows to configure branding with `CONFIG_CUSTOM_BRAND` varaible
+Branding is only allowed for C64 platform, if no motherboard is specified.
 
-### `CONFIG_BRAND_GENERIC`
+### `BRAND_CUSTOM_BUILD`
+
+Intended for custom builds, for private purposes - expects a string.
+
+### `BRAND_GENERIC`
 
 If you don't know which variant to choose - select this one.
 
-### `CONFIG_BRAND_TESTING`
+### `BRAND_TESTING`
 
 Use this one for any kind of testing/experimental build.
 
-### `CONFIG_BRAND_MEGA_65`, `CONFIG_BRAND_ULTIMATE_64`
-
-Select if you are using appropriate motherboard.
-
 ## Processor instruction set
 
-### `CONFIG_CPU_MOS_6502`
+Processor type should be set only for C64 platform, if no motherboard is specified. Otherwise, it will be selected automatically. Setting proper CPU allows to enable various size/performance optimizations.
+
+### `CPU_MOS_6502`
 
 Choose if your CPU only supports the original MOS Technology 6502 instruction set, like:
 
@@ -57,57 +61,47 @@ Choose if your CPU only supports the original MOS Technology 6502 instruction se
 
 If unsure - select this one.
 
-### `CONFIG_CPU_WDC_65C02`
+### `CPU_DTV_6502`
+
+Choose if your CPU only supports extended C64 DTV instruction set.
+
+### `CPU_RCW_65C02`
+
+Choose if your CPU supports the Rockwell 65C02 instruction set.
+
+### `CPU_WDC_65C02`
 
 Choose if your CPU supports the Western Design Center 65C02 instruction set, like:
 
 * WDC 65C02 - used in the Turbo Master accelerator
 
-It enables some speed/size code optimizations.
-
-### `CONFIG_CPU_CSG_65CE02`
-
-Choose if your CPU supports the Commodore Semiconductor Group 65CE02 instruction set, like:
-
-* CSG 65CE02 
-* CSG 4510 - microcontroller used in the Commodore 65 prototypes
-
-It enables some speed/size code optimizations.
-
-### `CONFIG_CPU_CSG_4510`
-
-Choose if your CPU supports the Commodore Semiconductor Group 4510 instruction set, like:
-
-* CSG 4510 - microcontroller used in the Commodore 65 prototypes
-
-It enables some speed/size code optimizations and allows C65 memory mapping to work.
-
-### `CONFIG_CPU_M65_45GS02`
-
-Choose if you have a MEGA65 FPGA board. It enables some speed/size code optimizations and allows MEGA65 memory mapping to work.
-
-### `CONFIG_CPU_WDC_65816`
+### `CPU_WDC_65816`
 
 Choose if your CPU supports the 16-bit Western Design Center 65816 instruction set, like:
 
 * WDC 65C816 - used in the Flash 8 accelerator
 * WDC 65C816S - used in the SuperCPU accelerator
 
-It enables some speed/size code optimizations.
+### `CPU_CSG_65CE02`
+
+Choose if your CPU supports the Commodore Semiconductor Group 65CE02 instruction set, like:
+
+* CSG 65CE02 
+* CSG 4510 - microcontroller used in the Commodore 65 prototypes
 
 ## Memory model
 
 Different layouts of memory are possible - but they can be selected at compile time only.
 
-### `CONFIG_MEMORY_MODEL_38K`
+### `MEMORY_MODEL_38K`
 
 Memory model the original machine uses - memory available for BASIC ends at `$9FFF`, just before the first block of ROM. The fastest and the most compatible, but gives the least memory for BASIC. If unsure - select this one.
 
-### `CONFIG_MEMORY_MODEL_46K` and `CONFIG_MEMORY_MODEL_50K`
+### `MEMORY_MODEL_46K` and `MEMORY_MODEL_50K`
 
 These models additionaly use RAM under BASIC, and the 50K additionally takes over `$C000`-`$CFFF` range. They should still be highly compatible (no additional RAM for helper routines is needed), and the performance penalty should be much lower than 60K model.
 
-### `CONFIG_MEMORY_MODEL_60K`
+### `MEMORY_MODEL_60K`
 
 Uses RAM under BASIC, I/O and KERNAL, takes over `$C000`-`$CFFF` area requires special helper routines installed in `$2A7`-`$2FF` area (normally unused and free for the user). Gives the most free memory for BASIC programs, but it's the slowest (for example, forces disabling optimized LOAD loop for JiffyDOS) and the least compatible model.
 
@@ -115,149 +109,151 @@ It is currently not compatible with MEGA65 extended ROMs.
 
 Comparing to standard memory model, it needs about 180 bytes in BASIC segment and 80 bytes in KERNAL segment - at the moment of doing the test, these values are expected to change often.
 
-## IEC devices
+## IEC bus
 
-### `CONFIG_IEC`
+IEC bus, also known as Serial Port, is a standard interface to connect disk drives, printers, SD2IEC device, etc.
+
+### `IEC`
 
 Adds support for the IEEC bus - for serial printers, disk drives, etc.
 
 Needs over 1000 bytes in KERNAL segment. If unsure - enable.
 
-### `CONFIG_IEC_DOLPHINDOS`
+### `IEC_DOLPHINDOS`
 
 Adds support for DolphinDOS fast protocol to the IEC bus, using UserPort cable.
 
 Needs about 160 bytes in KERNAL segment. If unsure - enable.
 
-### `CONFIG_IEC_DOLPHINDOS_FAST`
+### `IEC_DOLPHINDOS_FAST`
 
 Faster `LOAD` loop implementation for DolphinDOS protocol.
 
 Needs 20 more bytes in KERNAL segment.
 
-### `CONFIG_IEC_JIFFYDOS`
+### `IEC_JIFFYDOS`
 
 Adds support for JiffyDOS fast protocol to the IEC bus.
 
 Needs about 430 bytes in KERNAL segment. If unsure - enable.
 
-### `CONFIG_IEC_JIFFYDOS_BLANK`
+### `IEC_JIFFYDOS_BLANK`
 
 Causes screen blanking during JiffyDOS file loading to increase performance.
 
-## Tape support
+## Tape deck
 
 Note: for MEGA65 most of the tape support code is placed in it's extended ROM; very little of the (tiny) KERNAL segment is used.
 
-### `CONFIG_TAPE_NORMAL`
+### `TAPE_NORMAL`
 
 Adds a minimal normal (standard Commodore format) tape support - just LOAD command.
 
 Needs about 1050 bytes in KERNAL segment (if both normal and turbo are enabled, about 900 bytes are needed, as they share some code). If unsure - enable.
 
-### `CONFIG_TAPE_TURBO`
+### `TAPE_TURBO`
 
 Adds a minimal turbo tape support - just LOAD command (device 7, like on _Action Replay_ and _Final_ cartridges), up to 250 blocks
 
 Needs about 700 bytes in KERNAL segment (if both normal and turbo are enabled, about 1300 bytes are needed, as they share some code). If unsure - enable.
 
-### `CONFIG_TAPE_AUTODETECT`
+### `TAPE_AUTODETECT`
 
 Tape format (normal/turbo) is always autodetected.
 
 Needs about 100 more bytes in KERNAL segment.
 
-### `CONFIG_TAPE_NO_KEY_SENSE`
+### `TAPE_NO_KEY_SENSE`
 
 Enable this option if you are using a tape interface adapter with some audio signal source connected. These adapters lack key sense functionality, so the computer is unable to tell whether Play got pressed or not - this option changes the ROM behaviour, so that it can detect Play pressed when impulses start arriving from the tape.
 
-### `CONFIG_TAPE_NO_MOTOR_CONTROL`
+### `TAPE_NO_MOTOR_CONTROL`
 
 Enable this option if you are using a tape interface adapter lacking tape motor control (most likely every adapter currently being sold) - this will eliminate the need to quickly press space when the program header information gets displayed. Note: if you are using a cassette player with REM port, and your adapter is connected to this port too, than you do not need this option.
 
-## Multiple SID support
+## Sound support
 
-The SID is a sound chip - the original Commodore 64 had one installed. However, mods exists to add more of them for improved sound capabilities. Emulators and FPGA machines typically allow to simulate more than one too. Unfortunately, there is no standard regarding how these additional chips are visible in the processor address space, and there is no sane way to detect it - thus, it has to be configurable.
+The original Commodore 64 had one SID sound chip installed. However, mods exists to add more of them for improved sound capabilities. Emulators and FPGA machines typically allow to simulate more than one too. Unfortunately, there is no standard regarding how these additional chips are visible in the processor address space, and there is no sane way to detect it - thus, it has to be configurable.
 
 The SID support in the ROM is very limited - it only disables the sound during startup or warm restart (when STOP+RESTORE is pressed or BRK assembler instruction is executed).
 
-### `CONFIG_SID_2ND` and `CONFIG_SID_3RD` 
+### `SID_2ND_ADDRESS` and `SID_3RD_ADDRESS` 
 
-Each of them add support for one additional SID - addresses should be given in `CONFIG_SID_2ND_ADDRESS` and `CONFIG_SID_3RD_ADDRESS`, respectively. Do not use when `CONFIG_MB_MEGA_65` is selected - the motherboard support code already knows the SID locations. 
+Each of them adds support for one additional SID - addresses should be given as parameters. Do not use when `MB_M65` is selected - the motherboard support code already knows the SID locations. 
 
 Each of these options needs 3 bytes in KERNAL segment.
 
-### `CONFIG_SID_D4XX` and `CONFIG_SID_D5XX`
+### `SID_D4XX`, `SID_D5XX`, `SID_D6XX` and `SID_D7XX`
 
-Cause the system to support SIDs in `$D4xx` and `$D5xx` ranges, respectively.
+Enables support for SIDs in `$D4xx` / `$D5xx` / `$D6xx` / `$D7xx` ranges, respectively.
 
-Each of them needs a couple of bytes in KERNAL segment - but they can share some code, and `$D4xx` range support replaces the standard `$D400` address handling, so exact amount depends on the exact configuration. Do not use when `CONFIG_MB_MEGA_65` is selected - the motherboard support code already knows the SID locations.
+Each of them needs a couple of bytes in KERNAL segment - but they can share some code, and `$D4xx` range support replaces the standard `$D400` address handling, so exact amount depends on the exact configuration. Do not use when `MB_M65` is selected - the motherboard support code already knows the SID locations.
 
 ## Keyboard
 
 Original keyboard support routine is just horrible. It does nothing to prevent ghosting - press A+S+D at the same time - it prints F. Try to use joystick connected to control port 1 - it outputs phantom characters. The Open ROMs provides much more sophisticated routines to prevent such problems.
 
-### `CONFIG_LEGACY_SCNKEY`
+### `LEGACY_SCNKEY`
 
 Uses old Open ROMs keyboard scanning routine, which is basically the example routine by TWW/CTR, hacked to work within Kernal. It's greatest advantage is multi-key rollover, it's disadvantages - it's much less compatible (uses several bytes of memory which are normally free for user software - thus, it is considered legacy for now), does not support all the system variables (`RPTFLG` and `KEYLOG` are unsupported), and ignores the configuration options - this can be changed, but it requires some effort.
 
 Needs 30-250 more space in KERNAL segment (depending on the features enabled for current default routine). If unsure - disable.
 
-### `CONFIG_KEYBOARD_C128`
+### `KEYBOARD_C128`
 
 Allows to use additional keys found on the C128 keyboard.
 
 Needs about 130 bytes more space in KERNAL segment. If unsure - disable.
 
-### `CONFIG_KEYBOARD_C128_CAPS_LOCK`
+### `KEYBOARD_C128_CAPS_LOCK`
 
-Allows to use CAPS LOCK key on the C128 keyboard, this is independent from `CONFIG_KEYBOARD_C128`. Support is C64-safe (there is a protection against false-positive reading on the C64).
+Allows to use CAPS LOCK key on the C128 keyboard, this is independent from `KEYBOARD_C128`. Support is C64-safe (there is a protection against false-positive reading on the C64).
 
 Needs about 50 bytes more space in KERNAL segment. If unsure - disable.
 
-### `CONFIG_KEYBOARD_C65`, `CONFIG_KEYBOARD_C65_CAPS_LOCK`
+### `KEYBOARD_C65`, `KEYBOARD_C65_CAPS_LOCK`
 
 Similar, but for C65 keyboard. Please note - the C65 keyboard support is (as of yet) completely untested!
 
-### `CONFIG_KEY_REPEAT_DEFAULT`
+### `KEY_REPEAT_DEFAULT`
 
 Enables key repetition by default during the startup (sets `RPTFLG`).
 
 Needs 5 bytes more space in KERNAL segment.
 
-### `CONFIG_KEY_REPEAT_ALWAYS`
+### `KEY_REPEAT_ALWAYS`
 
 Enables the key repetition and ignores `RPTFLG`.
 
 Saves 22 bytes from KERNAL segment.
 
-### `CONFIG_KEY_FAST_SCAN`
+### `KEY_FAST_SCAN`
 
 Performs somee speed optimizations in the keyboard scanning routine, at the expense of some more ROM space.
 
 Needs 13 bytes more space in KERNAL segment. Only disable if you are running out of ROM space.
 
-### `CONFIG_JOY1_CURSOR` and `CONFIG_JOY2_CURSOR`
+### `JOY1_CURSOR` and `JOY2_CURSOR`
 
 Joystick movement also moves the cursor.
 
 Needs about 65 bytes of ROM space in KERNAL segment to handle both joysticks.
 
-### `CONFIG_PROGRAMMABLE_KEYS`
+### `PROGRAMMABLE_KEYS`
 
-Allows to assign commands to any function key, `RUN` key and `HELP` key (if selected keybaord has one) - just fill-in appropriate `CONFIG_KEYCMD_*` variable(s). Keys not present on the selected keyboard are ignored.
+Allows to assign commands to any function key, `RUN` key and `HELP` key (if selected keybaord has one) - just fill-in appropriate `KEYCMD_*` variable(s). Keys not present on the selected keyboard are ignored.
 
 Needs 25 bytes more space in KERNAL segment for the code. In addition, each configured key takes 3 bytes + length of the command.
 
 ## Screen editor
 
-### `CONFIG_EDIT_STOPQUOTE`
+### `EDIT_STOPQUOTE`
 
 If enabled, STOP key terminates insert/quote mode (like on some _Black Box_ cartridges).
 
 Feature needs 12 bytes in KERNAL segment. If unsure - enable.
 
-### `CONFIG_EDIT_TABULATORS`
+### `EDIT_TABULATORS`
 
 If enabled, allows use of TAB (or CTRL+>) and SHIFT+TAB (or CTRL+<) to switch between predefined tabulator positions.
 
@@ -265,31 +261,31 @@ Feature needs 35-45 bytes in KERNAL segment. If unsure - enable.
 
 ## Software features
 
-### `CONFIG_PANIC_SCREEN`
+### `PANIC_SCREEN`
 
 If enabled, certain fatal errors will produce a nice bluescreen instead of just resetting the machine.
 
 Feature needs over 100 bytes in KERNAL segment. If unsure - enable.
 
-### `CONFIG_DOS_WEDGE`
+### `DOS_WEDGE`
 
 If enabled, a simple DOS wedge is available from the direct mode - supports `@<drive_number>`, `@<command>`, `@$`, `@$<params>` and `@` commands.
 
 Feature needs about 330 bytes in BASIC segment. If unsure - enable.
 
-### `CONFIG_TAPE_WEDGE`
+### `TAPE_WEDGE`
 
 If enabled, a simple DOS wedge is available from the direct mode for tape loading - supports `←L` (for `LOAD`) and `←M` (for `MERGE`), optionally with a file name.
 
 Feature needs several bytes in BASIC segment. If unsure - enable.
 
-### `CONFIG_TAPE_HEAD_ALIGN`
+### `TAPE_HEAD_ALIGN`
 
-If enabled, embeds a tape head align tool into the ROM, it can be started with `←H`. Requires `CONFIG_TAPE_WEDGE`.
+If enabled, embeds a tape head align tool into the ROM, it can be started with `←H`. Requires `TAPE_WEDGE`.
 
 Feature needs about 800 bytes in KERNAL segment. Only recomended for machines with extended ROM, like MEGA65.
 
-### `CONFIG_BCD_SAFE_INTERRUPTS`
+### `BCD_SAFE_INTERRUPTS`
 
 On the most widespread CPUs the D flag is not cleared upon entering interrupts. Since the original Kernal does not clear it either, it's not safe to use BCD processor mode without disabling the interrupts first. This option makes sure the D flag is disabled at the start of the interrupt - this allows some optimizations in the code.
 
@@ -297,17 +293,17 @@ Feature needs 2 bytes in KERNAL segmment (for CPUs needing the patch), but at th
 
 ## Eye candy
 
-### `CONFIG_COLORS_BRAND`
+### `COLORS_BRAND`
 
 Tries to adjust the color scheme to the selected brand. Some brands might not support this.
 
-### `CONFIG_BANNER_SIMPLE`, `CONFIG_BANNER_FANCY`
+### `BANNER_SIMPLE`, `BANNER_FANCY`
 
 Select startup banner - either a simple one, or with some colorful elements.
 
 Richer banners need more BASIC segment, varies between brands.
 
-### `CONFIG_SHOW_FEATURES`
+### `SHOW_FEATURES`
 
 If enabled, shows the most important compiled-in features on the startup screen. Also shows the video system (PAL/NTSC).
 
@@ -317,16 +313,16 @@ It is recommended to keep it enabled for informational purposes.
 
 Options in this section are for debug purposes only. If unsure - disable.
 
-### `CONFIG_DBG_STUBS_BRK`
+### `DBG_STUBS_BRK`
 
 Replaces `RTS` stubbed routines implementation with one causing a break.
 
-### `CONFIG_DBG_PRINTF`
+### `DBG_PRINTF`
 
 Makes `printf` routine available.
 
 ## Other options
 
-### `CONFIG_COMPRESSION_LVL_2`
+### `COMPRESSION_LVL_2`
 
 Adds additional step in compressing BASIC interpreter strings - a dictionary compression. Not tested extensively - and for now it won't bring any improvement (it will even increase the code/data size) as we do not have enough strings yet to make this method useful. Do not use!

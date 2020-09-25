@@ -15,6 +15,7 @@ build/*
 # Various IDE project files, temporary files, etc.
 
 dump.mem
+vgcore*
 *project
 .*swp
 *.log

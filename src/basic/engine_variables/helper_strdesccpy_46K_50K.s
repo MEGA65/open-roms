@@ -1,24 +1,24 @@
-// #LAYOUT# STD *       #TAKE-HIGH
-// #LAYOUT# *   BASIC_0 #TAKE-HIGH
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE-HIGH
+;; #LAYOUT# *   BASIC_0 #TAKE-HIGH
+;; #LAYOUT# *   *       #IGNORE
 
-// This has to go $E000 or above - routine below banks out the main BASIC ROM!
+; This has to go $E000 or above - routine below banks out the main BASIC ROM!
 
-//
-// Helper routine to copy string descriptor
-//
+;
+; Helper routine to copy string descriptor
+;
 
 
-#if CONFIG_MEMORY_MODEL_46K || CONFIG_MEMORY_MODEL_50K
+!ifdef CONFIG_MEMORY_MODEL_46K_OR_50K {
 
 helper_strdesccpy:
 
-	// Unmap BASIC lower ROM
+	; Unmap BASIC lower ROM
 
 	lda #$26
 	sta CPU_R6510
 
-	// Retrieve pointer to destination
+	; Retrieve pointer to destination
 
 	ldy #$00
 	lda (VARPNT), y
@@ -30,11 +30,10 @@ helper_strdesccpy:
 	lda (VARPNT), y
 	sta DSCPNT+2
 
-	// Restore default memory mapping
+	; Restore default memory mapping
 
 	lda #$27
 	sta CPU_R6510
 
 	rts
-
-#endif
+}

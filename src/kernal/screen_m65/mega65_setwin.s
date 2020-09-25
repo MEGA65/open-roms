@@ -1,5 +1,5 @@
-// #LAYOUT# M65 KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
 
 M65_SETWIN_XY:
@@ -50,7 +50,7 @@ M65_SETWIN_Y:
 
 	jsr m65_screen_set_indx
 
-	// XXX consider calling HOME instead
+	; XXX consider calling HOME instead
 
 	lda M65_TXTWIN_X0
 	sta M65__TXTCOL

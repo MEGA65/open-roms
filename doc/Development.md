@@ -101,7 +101,7 @@ Currently there are 3 ROM layouts defined:
 - `M65` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, additional segments might be added to the build system in the future; at the moment of writing this document additional 16KB of ROM is defined as `BASIC_1` segment and additional 8KB of ROM is defined as `KERNAL_1` segment
 - `X16` - memory layout for the Commander X16 machine
 
-To check for current ROM layout or code segment use KickAssembler preprocessor defines, like `ROM_LAYOUT_STD`, `ROM_LAYOUT_M65`, `SEGMENT_BASIC`, `SEGMENT_KERNAL_1`.
+Expect at least one more, `U64`, if the planned additional ROM banks support for Ultimate 64 gets implemented. To check for current ROM layout or code segment use KickAssembler preprocessor defines, like `ROM_LAYOUT_STD`, `SEGMENT_M65_BASIC_0`, `SEGMENT_X16_KERNAL_1`.
 
 ### Fixed location vs floating routines
 
@@ -118,7 +118,7 @@ File name of the fixed location routine adheres to the scheme: `addr.name.s`, wh
 For handling different ROM layouts, our build tool provides support for pragma-like comments, in the form:
 
 ```
-// #LAYOUT# <rom-layout> <code-segment> <action> <parameters>
+;; #LAYOUT# <rom-layout> <code-segment> <action> <parameters>
 ```
 
 where:
@@ -139,33 +139,33 @@ where:
 The first match counts, all the remaining ones are dropped. Examples:
 
 ```
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 ```
 
 This is a very common one. For standard ROM layout just take the file. For non-standard ones take it only for compiling `KERNAL_0` segment, ignore it for anything other (like `KERNAL_1`). Another example:
 
 ```
-// #LAYOUT# M65 KERNAL_0 #TAKE-FLOAT
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_0 #TAKE-FLOAT
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 ```
 
 This can be found in a private (internal) vector table of `KERNAL_1` segment of `M65` layout. For standard ROM part (`KERNAL_0` segment) take it as floating routine (for `KERNAL_0` segment the file provides only labels for the vector table). For `KERNAL_1` segment of `M65` layout, take it as a fixed location-routine; in such case the file will provide a vector table itself. For memory layout other than `M65`, just ignore the file. Yet another example:
 
 ```
-// #LAYOUT# M65 KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 ```
 
 This is used for memory mapping helper routines, which are only needed for MEGA65 build. They will be placed in `KERNAL_0` segment in such case. And the last example:
 
 ```
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# M65 KERNAL_0 #TAKE
-// #LAYOUT# M65 KERNAL_1 #TAKE-FLOAT
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# M65 KERNAL_1 #TAKE-FLOAT
+;; #LAYOUT# *   *        #IGNORE
 ```
 
 This is for the routine, that on MEGA65 goes to `KERNAL_1` segment, but can still be transparently called using fixed location in `KERNAL_0` segment. The code might, for example, look this way:
@@ -173,17 +173,16 @@ This is for the routine, that on MEGA65 goes to `KERNAL_1` segment, but can stil
 ```
 ROUTINE_NAME:
 
-#if (ROM_LAYOUT_M65 && SEGMENT_KERNAL_0)
+!ifdef SEGMENT_M65_KERNAL_0 {
 
-    jsr     map_KERNAL_1
-    jsr_ind VK1__ROUTINE_NAME    // execute routine from KERNAL_1 segment
-    jmp     map_NORMAL
+    jsr map_KERNAL_1
+    jsr (VK1__ROUTINE_NAME)    // execute routine from KERNAL_1 segment
+    jmp map_NORMAL
 
-#else
+} else {
 
     // real routine, ended with RTS
-
-#endif
+}
 ```
 
 Last, but not least - the `#TAKE-HIGH` is intended to be used for BASIC routines, which should still be available after the main BASIC ROM is banked out.

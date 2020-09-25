@@ -1076,7 +1076,7 @@ void DictEncoder::process(StringEntryList &outDictionary)
 
 bool DataSet::isCompressionLvl2(const StringEntryList &list) const
 {
-    return (GLOBAL_ConfigOptions["CONFIG_COMPRESSION_LVL_2"] && list.type == ListType::STRINGS_BASIC);
+    return (GLOBAL_ConfigOptions["COMPRESSION_LVL_2"] && list.type == ListType::STRINGS_BASIC);
 }
 
 void DataSet::addStrings(const StringEntryList &stringList)
@@ -1106,7 +1106,7 @@ void DataSet::addStrings(const StringEntryList &stringList)
 
 void DataSet::process()
 {
-    std::cout << "Processing file '" << CMD_cnfFile << "', layout '" << layoutName() << "'" << std::endl;
+    std::cout << "processing file '" << CMD_cnfFile << "', layout '" << layoutName() << "'" << std::endl;
 
     generateConfigDepStrings();
     validateLists();
@@ -1135,17 +1135,17 @@ void DataSet::generateConfigDepStrings()
 
     // Tape support features
    
-    if (GLOBAL_ConfigOptions["CONFIG_TAPE_NORMAL"] && GLOBAL_ConfigOptions["CONFIG_TAPE_TURBO"])
+    if (GLOBAL_ConfigOptions["TAPE_NORMAL"] && GLOBAL_ConfigOptions["TAPE_TURBO"])
     {
         featureStr    += "TAPE LOAD NORMAL TURBO\r";
         featureStrM65 += "TAPE   : LOAD NORMAL TURBO\r";
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_TAPE_NORMAL"])
+    else if (GLOBAL_ConfigOptions["TAPE_NORMAL"])
     {
         featureStr    += "TAPE LOAD NORMAL\r";
         featureStrM65 += "TAPE   : LOAD NORMAL\r";
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_TAPE_TURBO"])
+    else if (GLOBAL_ConfigOptions["TAPE_TURBO"])
     {
         featureStr    += "TAPE LOAD TURBO\r";
         featureStrM65 += "TAPE   : LOAD TURBO\r";
@@ -1153,38 +1153,38 @@ void DataSet::generateConfigDepStrings()
    
     // IEC support features
    
-    if (GLOBAL_ConfigOptions["CONFIG_IEC"])
+    if (GLOBAL_ConfigOptions["IEC"])
     {
         featureStr    += "IEC";
         featureStrM65 += "IEC    :";
        
         bool extendedIEC = false;
        
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_CIA1"])
+        if (GLOBAL_ConfigOptions["IEC_BURST_CIA1"])
         {
             featureStr    += " BURST1";
             extendedIEC    = true;
         }
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_CIA2"])
+        if (GLOBAL_ConfigOptions["IEC_BURST_CIA2"])
         {
             featureStr    += " BURST2";
             extendedIEC    = true;
         }
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_BURST_MEGA65"])
+        if (GLOBAL_ConfigOptions["IEC_BURST_MEGA65"])
         {
             featureStr    += " BURST";
             featureStrM65 += " BURST";
             extendedIEC    = true;
         }
        
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_DOLPHINDOS"])
+        if (GLOBAL_ConfigOptions["IEC_DOLPHINDOS"])
         {
             featureStr    += " DOLPHIN";
             featureStrM65 += " DOLPHIN";
             extendedIEC    = true;
         }
        
-        if (GLOBAL_ConfigOptions["CONFIG_IEC_JIFFYDOS"])
+        if (GLOBAL_ConfigOptions["IEC_JIFFYDOS"])
         {
             featureStr    += " JIFFY";
             featureStrM65 += " JIFFY";
@@ -1207,8 +1207,9 @@ void DataSet::generateConfigDepStrings()
 
     // RS-232 support features
    
-    if (GLOBAL_ConfigOptions["CONFIG_RS232_UP2400"]) featureStr += "UP2400\r";
-    if (GLOBAL_ConfigOptions["CONFIG_RS232_UP9600"]) featureStr += "UP9600\r";
+    if (GLOBAL_ConfigOptions["RS232_ACIA"])   featureStr += "ACIA 6551\r";
+    if (GLOBAL_ConfigOptions["RS232_UP2400"]) featureStr += "UP2400\r";
+    if (GLOBAL_ConfigOptions["RS232_UP9600"]) featureStr += "UP9600\r";
    
     featureStrM65 += "RS-232 : NO\r";
 
@@ -1218,8 +1219,8 @@ void DataSet::generateConfigDepStrings()
 
     // Keyboard support features
    
-    if (GLOBAL_ConfigOptions["CONFIG_KEYBOARD_C128"]) featureStr += "KBD 128\r";
-    if (GLOBAL_ConfigOptions["CONFIG_KEYBOARD_C65"])  featureStr += "KBD 65\r";
+    if (GLOBAL_ConfigOptions["KEYBOARD_C128"]) featureStr += "KBD 128\r";
+    if (GLOBAL_ConfigOptions["KEYBOARD_C65"])  featureStr += "KBD 65\r";
 
     // Add strings to appropriate list
    
@@ -1229,7 +1230,7 @@ void DataSet::generateConfigDepStrings()
 
         // List found
 
-        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"] || GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+        if (GLOBAL_ConfigOptions["SHOW_FEATURES"] || GLOBAL_ConfigOptions["MB_M65"])
         {
             StringEntry newEntry1 = { true, true, true, true, "STR_PAL",      "PAL\r"    };
             StringEntry newEntry2 = { true, true, true, true, "STR_NTSC",     "NTSC\r"   };
@@ -1238,19 +1239,19 @@ void DataSet::generateConfigDepStrings()
             stringEntryList.list.push_back(newEntry2);
         }
 
-        if (GLOBAL_ConfigOptions["CONFIG_SHOW_FEATURES"])
+        if (GLOBAL_ConfigOptions["SHOW_FEATURES"])
         {
             StringEntry newEntry = { true, true, true, true, "STR_FEATURES", featureStr };
             stringEntryList.list.push_back(newEntry);
         }
 
-        if (GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+        if (GLOBAL_ConfigOptions["MB_M65"])
         {
             StringEntry newEntry = { false, true, false, false, "STR_SI_FEATURES", featureStrM65 };
             stringEntryList.list.push_back(newEntry);
         }
 
-        if (!GLOBAL_ConfigOptions["CONFIG_BRAND_CUSTOM_BUILD"] || GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+        if (!GLOBAL_ConfigOptions["BRAND_CUSTOM_BUILD"] || GLOBAL_ConfigOptions["MB_M65"])
         {
             StringEntry newEntry = { true, true, true, true, "STR_PRE_REV", "RELEASE " };
             stringEntryList.list.push_back(newEntry);
@@ -1498,9 +1499,9 @@ void DataSet::encodeStringsFreq()
 
 void DataSet::putCharEncoding(std::ostringstream &stream, uint8_t idx, char character, bool is3n)
 {
-    stream << "\t.byte $" << std::uppercase << std::hex <<
+    stream << "\t!byte $" << std::uppercase << std::hex <<
               std::setfill('0') << std::setw(2) << +character <<
-              "    // " << std::setfill(is3n ? '0' : ' ') << std::setw(2) << +idx;
+              "    ; " << std::setfill(is3n ? '0' : ' ') << std::setw(2) << +idx;
 
     std::string petscii;
 
@@ -1530,7 +1531,7 @@ void DataSet::prepareOutput_1n_3n(std::ostringstream &stream)
 
     // Export all nibble-encoded characters
 
-    stream << std::endl << ".macro put_packed_as_1n() // characters encoded as 1 nibble" << std::endl << "{" << std::endl;
+    stream << std::endl << "!macro PUT_PACKED_AS_1N { ; characters encoded as 1 nibble" << std::endl << std::endl;
    
     idx = 0;
     for (const auto& encoding : as1n)
@@ -1542,13 +1543,13 @@ void DataSet::prepareOutput_1n_3n(std::ostringstream &stream)
 
     // Export all byte-encoded characters
 
-    stream << std::endl << ".macro put_packed_as_3n() // characters encoded as 3 nibbles" << std::endl << "{" << std::endl;
+    stream << std::endl << "!macro PUT_PACKED_AS_3N { ; characters encoded as 3 nibbles" << std::endl << std::endl;
 
     idx = 0;
     for (const auto& encoding : as3n)
     {
         if (idx == tk__packed_as_3n) stream << std::endl <<
-            "\t// Characters below are not used by any BASIC keyword" << std::endl << std::endl;
+            "\t; Characters below are not used by any BASIC keyword" << std::endl << std::endl;
 
         putCharEncoding(stream, ++idx, encoding, true);
     }
@@ -1571,7 +1572,7 @@ void DataSet::prepareOutput_labels(std::ostringstream &stream,
 
         if (!stringEncoded.empty())
         {
-            stream << ".label IDX__" << stringEntry.alias <<
+            stream << "!set IDX__" << stringEntry.alias <<
                       std::string(maxAliasLen - stringEntry.alias.length(), ' ') << " = $" <<
                       std::uppercase << std::hex << std::setfill('0') << std::setw(2) << +idx << std::endl;
         }
@@ -1584,14 +1585,14 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 {
     if (isCompressionLvl2(stringEntryList))
     {
-        stream << std::endl << ".macro put_packed_dict_";
+        stream << std::endl << "!macro PUT_PACKED_DICT_";
     }
     else
     {
-        stream << std::endl << ".macro put_packed_freq_";           
+        stream << std::endl << "!macro PUT_PACKED_FREQ_";           
     }
 
-    stream << stringEntryList.name << "()" << std::endl << "{" << std::endl;
+    stream << stringEntryList.name << " {" << std::endl << std::endl;
 
     enum LastStr { NONE, SKIPPED, WRITTEN } lastStr = LastStr::NONE;
     for (uint8_t idxString = 0; idxString < stringEncodedList.size(); idxString++)
@@ -1603,7 +1604,7 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
             if (stringEntryList.type == ListType::DICTIONARY) ERROR("internal error"); // should never happen
 
             if (lastStr == LastStr::WRITTEN) stream << std::endl;
-            stream << "\t.byte $00    // skipped " << stringEntryList.list[idxString].alias << std::endl;
+            stream << "\t!byte $00    ; skipped " << stringEntryList.list[idxString].alias << std::endl;
             lastStr = LastStr::SKIPPED;
         }
         else
@@ -1614,12 +1615,12 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 
             if (stringEntryList.type != ListType::DICTIONARY)
             {
-                stream << "\t// IDX__" << stringEntryList.list[idxString].alias << std::endl;
+                stream << "\t; IDX__" << stringEntryList.list[idxString].alias << std::endl;
             }
 
             // Output the source string - as a comment
 
-            stream << "\t// '";
+            stream << "\t; '";
             for (auto &character : stringEntryList.list[idxString].string)
             {
                 if (character >= 32 && character <= 132 && character != 39 && character != 34)
@@ -1639,7 +1640,7 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 
             // Output the encoding
 
-            stream << "\t.byte ";
+            stream << "\t!byte ";
 
             bool first = true;
             for (const auto &charEncoded : stringEncoded)
@@ -1665,8 +1666,8 @@ void DataSet::prepareOutput_packed(std::ostringstream &stream,
 
     if (stringEntryList.type == ListType::KEYWORDS)
     {
-        stream << std::endl << "\t// Marker - end of the keyword list" << std::endl;
-        stream << "\t.byte $FF, $FF" << std::endl;
+        stream << std::endl << "\t; Marker - end of the keyword list" << std::endl;
+        stream << "\t!byte $FF, $FF" << std::endl;
     }
 
     stream << "}" << std::endl;
@@ -1677,7 +1678,7 @@ void DataSet::prepareOutput()
     // Convert our encoded strings to a KickAssembler source
 
     std::ostringstream stream;
-    stream << std::endl << "#if ROM_LAYOUT_" << layoutName() << std::endl;
+    stream << std::endl << "!ifdef ROM_LAYOUT_" << layoutName() << " {"<< std::endl;
 
     // Export 1-nibble and 3-nibble encoding data
 
@@ -1685,8 +1686,8 @@ void DataSet::prepareOutput()
 
     // Export additional data for the tokenizer
 
-    stream << std::endl << ".label TK__PACKED_AS_3N    = $" << std::hex << +tk__packed_as_3n <<
-              std::endl << ".label TK__MAX_KEYWORD_LEN = "  << std::dec << +tk__max_keyword_len << std::endl;
+    stream << std::endl << "!set TK__PACKED_AS_3N    = $" << std::hex << +tk__packed_as_3n <<
+              std::endl << "!set TK__MAX_KEYWORD_LEN = "  << std::dec << +tk__max_keyword_len << std::endl;
 
     // Export encoded strings
 
@@ -1705,7 +1706,7 @@ void DataSet::prepareOutput()
 
         if (stringEntryList.type == ListType::KEYWORDS)
         {
-            stream << std::endl << ".label TK__MAXTOKEN_" << stringEntryList.name << " = " <<
+            stream << std::endl << "!set TK__MAXTOKEN_" << stringEntryList.name << " = " <<
                       std::dec << stringEncodedList.size() << std::endl;
         }
 
@@ -1716,7 +1717,7 @@ void DataSet::prepareOutput()
 
     // Finalize the file stream
 
-    stream << std::endl << "#endif // ROM_LAYOUT_" << layoutName() << std::endl;
+    stream << std::endl << "} ; ROM_LAYOUT_" << layoutName() << std::endl;
     outFileContent = stream.str();
 }
 
@@ -1748,28 +1749,35 @@ void parseConfigFile()
         std::getline(cnfFile, workStr);
         if (cnfFile.bad()) ERROR("error reading configuration file");
         workStr = std::regex_replace(workStr, std::regex("^[ \t]+"), "");
-       
-        // Skip lines which are not preprocessor definitions
-       
-        if (workStr.empty() || workStr[0] != '#') continue;
-       
-        // Make sure this is '#define '
-       
-        if (!std::regex_match(workStr, std::regex("^#define[ \t].*")))
-        {
-            ERROR(std::string("only '#define' preprocessor directives allowed in config files - line ") + std::to_string(lineNum));
-        }
 
-        // Get rid of the directive and trailing spaces/comments
-   
-        workStr = std::regex_replace(workStr, std::regex("^#define[ \t]+"), "");
-        workStr = std::regex_replace(workStr, std::regex("[ \t]+.*"), "");
+        // Split the line into tokens
+
+        std::vector<std::string> tokens;
+
+        std::istringstream workStream(workStr);
+        std::string token;
+        while(std::getline(workStream, token, ' '))
+        {
+            if (token.empty()) continue;
+            tokens.push_back(token);
+        }
+        if (tokens.empty()) continue;
+
+        // Only accept lines which are boolean config options set to YES
+
+        if (tokens.size() < 4 ||
+            tokens[0].compare(";;")       != 0 ||
+            tokens[1].compare("#CONFIG#") != 0 ||
+            tokens[3].compare("YES")      != 0)
+        {
+            continue;
+        }
 
         // Add definitin to config option map
 
-        if (workStr.empty()) ERROR(std::string("error parsing config file - line ") + std::to_string(lineNum));
+        if (tokens[2].empty()) ERROR(std::string("error parsing config file - line ") + std::to_string(lineNum));
 
-        GLOBAL_ConfigOptions[workStr] = true;
+        GLOBAL_ConfigOptions[tokens[2]] = true;
     }
    
     cnfFile.close();
@@ -1809,7 +1817,7 @@ void writeStrings()
 {
     std::string outputString;
    
-    if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMANDER_X16"])
+    if (GLOBAL_ConfigOptions["PLATFORM_COMMANDER_X16"])
     {
         DataSetX16 dataSetX16;
 
@@ -1824,7 +1832,7 @@ void writeStrings()
        
         outputString = dataSetX16.getOutput();
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_MEGA_65"])
+    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["MB_M65"])
     {
         DataSetM65 dataSetM65;
 
@@ -1841,7 +1849,7 @@ void writeStrings()
        
         outputString = dataSetM65.getOutput();
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["CONFIG_MB_ULTIMATE_64"])
+    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["MB_U64"])
     {
         DataSetU64 dataSetU64;
 
@@ -1856,7 +1864,7 @@ void writeStrings()
        
         outputString = dataSetU64.getOutput();
     }
-    else if (GLOBAL_ConfigOptions["CONFIG_PLATFORM_COMMODORE_64"])
+    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"])
     {
         DataSetSTD dataSetSTD;
 
@@ -1887,7 +1895,7 @@ void writeStrings()
 
     // Write header
 
-    outFile << "//\n// Generated file - do not edit\n//";
+    outFile << ";\n; Generated file - do not edit\n;";
 
     // Write packed strings
 
@@ -1899,7 +1907,7 @@ void writeStrings()
   
     outFile.close();
 
-    std::cout << std::string("Compressed strings written to: ") + CMD_outFile + "\n\n";
+    std::cout << std::string("compressed strings written to: '") + CMD_outFile + "'\n\n";
 }
 
 //

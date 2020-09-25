@@ -1,130 +1,110 @@
 
-.const CONFIG_ID = $02 // should be 1 byte, different for each config file!
-.encoding "petscii_upper"
+;; #CONFIG# ID $02 ; should be 1 byte, different for each config file!
 
-//
-// Please read CONFIG.md before modifying this file!
-//
+;
+; Please read CONFIG.md before modifying this file!
+;
 
-// Idea:
-// - sane defaults for the Mega 65 FPGA computer
-// - do not enable features which are a significant compatibility risk
-
+; Idea:
+; - sane defaults for the MEGA65 FPGA computer
+; - do not enable features which are a significant compatibility risk
 
 
-// Hardware platform
 
-#define CONFIG_PLATFORM_COMMODORE_64
+; --- Hardware platform
 
-#define CONFIG_MB_MEGA_65
-
-// Processor instruction set
-
-// #define CONFIG_CPU_MOS_6502
-// #define CONFIG_CPU_WDC_65C02
-// #define CONFIG_CPU_CSG_65CE02
-#define CONFIG_CPU_M65_45GS02
-// #define CONFIG_CPU_WDC_65816
+;; #CONFIG# PLATFORM_COMMODORE_64      YES
+;; #CONFIG# MB_M65                     YES
 
 
-// Memory model
+; --- Memory model
 
-// #define CONFIG_MEMORY_MODEL_38K
-// #define CONFIG_MEMORY_MODEL_46K
-#define CONFIG_MEMORY_MODEL_50K
-// #define CONFIG_MEMORY_MODEL_60K
-
-
-// I/O devices
-
-#define CONFIG_IEC
-// #define CONFIG_IEC_DOLPHINDOS
-// #define CONFIG_IEC_DOLPHINDOS_FAST
-#define CONFIG_IEC_JIFFYDOS
-#define CONFIG_IEC_JIFFYDOS_BLANK
-
-#define CONFIG_TAPE_NORMAL
-#define CONFIG_TAPE_TURBO
-#define CONFIG_TAPE_AUTODETECT
-#define CONFIG_TAPE_NO_KEY_SENSE
-#define CONFIG_TAPE_NO_MOTOR_CONTROL
+;; #CONFIG# MEMORY_MODEL_38K           NO
+;; #CONFIG# MEMORY_MODEL_46K           NO
+;; #CONFIG# MEMORY_MODEL_50K           YES
 
 
-// Multiple SID support
+; --- IEC bus configuration
 
-// #define CONFIG_SID_2ND
-.const CONFIG_SID_2ND_ADDRESS = $D440
-
-// #define CONFIG_SID_3RD
-.const CONFIG_SID_3RD_ADDRESS = $D480
-
-// #define CONFIG_SID_D4XX
-// #define CONFIG_SID_D5XX
+;; #CONFIG# IEC                        YES
+;; #CONFIG# IEC_DOLPHINDOS             NO
+;; #CONFIG# IEC_DOLPHINDOS_FAST        NO
+;; #CONFIG# IEC_JIFFYDOS               YES
+;; #CONFIG# IEC_JIFFYDOS_BLANK         YES
+;; #CONFIG# IEC_BURST_M65              NO        ; please keep disabled for now
 
 
-// Keyboard settings
+; --- Tape deck configuration
 
-// #define CONFIG_LEGACY_SCNKEY
-// #define CONFIG_KEYBOARD_C128
-// #define CONFIG_KEYBOARD_C128_CAPS_LOCK
-// #define CONFIG_KEYBOARD_C65              // untested
-// #define CONFIG_KEYBOARD_C65_CAPS_LOCK    // untested
-// #define CONFIG_KEY_REPEAT_DEFAULT
-// #define CONFIG_KEY_REPEAT_ALWAYS
-#define CONFIG_KEY_FAST_SCAN
-#define CONFIG_JOY1_CURSOR
-#define CONFIG_JOY2_CURSOR
-
-#define CONFIG_PROGRAMMABLE_KEYS
-
-.const CONFIG_KEYCMD_RUN  = @"\$5FL"
-
-.const CONFIG_KEYCMD_F1   = @"@"
-.const CONFIG_KEYCMD_F2   = @""
-.const CONFIG_KEYCMD_F3   = @"RUN:"
-.const CONFIG_KEYCMD_F4   = @""
-.const CONFIG_KEYCMD_F5   = @"LOAD"
-.const CONFIG_KEYCMD_F6   = @""
-.const CONFIG_KEYCMD_F7   = @"@$"
-.const CONFIG_KEYCMD_F8   = @""
-
-.const CONFIG_KEYCMD_HELP = @"LIST"
-
-.const CONFIG_KEYCMD_F9   = @"BOOT"
-.const CONFIG_KEYCMD_F10  = @"REM F10"
-.const CONFIG_KEYCMD_F11  = @"MONITOR"
-.const CONFIG_KEYCMD_F12  = @"REM F12"
-.const CONFIG_KEYCMD_F13  = @"\$5FH"
-.const CONFIG_KEYCMD_F14  = @"REM F14"
+;; #CONFIG# TAPE_NORMAL                YES
+;; #CONFIG# TAPE_TURBO                 YES
+;; #CONFIG# TAPE_AUTODETECT            YES
+;; #CONFIG# TAPE_NO_KEY_SENSE          YES
+;; #CONFIG# TAPE_NO_MOTOR_CONTROL      YES
 
 
-// Screen editor
+; --- Keyboard settings
 
-#define CONFIG_EDIT_STOPQUOTE
-#define CONFIG_EDIT_TABULATORS
+;; #CONFIG# LEGACY_SCNKEY              NO
+;; #CONFIG# KEYBOARD_C65               NO        ; untested
+;; #CONFIG# KEYBOARD_C65_CAPS_LOCK     NO        ; untested
+;; #CONFIG# KEY_REPEAT_DEFAULT         NO
+;; #CONFIG# KEY_REPEAT_ALWAYS          NO
+;; #CONFIG# KEY_FAST_SCAN              YES
+;; #CONFIG# JOY1_CURSOR                YES
+;; #CONFIG# JOY2_CURSOR                YES
+
+;; #CONFIG# PROGRAMMABLE_KEYS          YES
+
+;; #CONFIG# KEYCMD_RUN                 "RUN"
+
+;; #CONFIG# KEYCMD_F1                  "@8$"
+;; #CONFIG# KEYCMD_F2                  "LOAD"
+;; #CONFIG# KEYCMD_F3                  "@9$"
+;; #CONFIG# KEYCMD_F4                  "RUN:"
+;; #CONFIG# KEYCMD_F5                  "@10$"
+;; #CONFIG# KEYCMD_F6                  NO
+;; #CONFIG# KEYCMD_F7                  "@11$"
+;; #CONFIG# KEYCMD_F8                  NO
+
+;; #CONFIG# KEYCMD_HELP                "LIST"
+
+;; #CONFIG# KEYCMD_F9                  "\5FL"
+;; #CONFIG# KEYCMD_F10                 "REM F10"
+;; #CONFIG# KEYCMD_F11                 "\5FH"
+;; #CONFIG# KEYCMD_F12                 "REM F12"
+;; #CONFIG# KEYCMD_F13                 "REM F13"
+;; #CONFIG# KEYCMD_F14                 "REM F14"
 
 
-// Software features
+; --- Screen editor
 
-#define CONFIG_PANIC_SCREEN
-#define CONFIG_DOS_WEDGE
-#define CONFIG_TAPE_WEDGE
-#define CONFIG_TAPE_HEAD_ALIGN
-#define CONFIG_BCD_SAFE_INTERRUPTS
+;; #CONFIG# EDIT_STOPQUOTE             YES
+;; #CONFIG# EDIT_TABULATORS            NO
 
 
-// Built-in DOS configuration
+; --- Software features
 
-.const CONFIG_UNIT_SDCARD  = 0 // do not change, DOS is not implemented yet
-.const CONFIG_UNIT_FLOPPY  = 0 // do not change, DOS is not implemented yet
-.const CONFIG_UNIT_RAMDISK = 0 // do not change, DOS is not implemented yet
+;; #CONFIG# PANIC_SCREEN               YES
+;; #CONFIG# DOS_WEDGE                  YES
+;; #CONFIG# TAPE_WEDGE                 YES
+;; #CONFIG# TAPE_HEAD_ALIGN            YES
+;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 
-// Debug options
+; --- Built-in DOS configuration
 
-// #define CONFIG_DBG_STUBS_BRK
-// #define CONFIG_DBG_PRINTF
+;; #CONFIG# UNIT_SDCARD                0         ; do not change, DOS is not implemented yet
+;; #CONFIG# UNIT_FLOPPY                0         ; do not change, DOS is not implemented yet
+;; #CONFIG# UNIT_RAMDISK               0         ; do not change, DOS is not implemented yet
 
-// Other
 
-// #define CONFIG_COMPRESSION_LVL_2
+; --- Debug options
+
+;; #CONFIG# DBG_STUBS_BRK              NO
+;; #CONFIG# DBG_PRINTF                 NO
+
+
+; --- Other
+
+;; #CONFIG# COMPRESSION_LVL_2          NO

@@ -1,0 +1,3 @@
+$02 + STA $B9 + RTS + LDA #$00
+
+Storing value on zeropage + end of routine. Next one starts with loading 0 to accumulator. Trivial, not creative - not copyrightable.

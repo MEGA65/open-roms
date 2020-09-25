@@ -1,48 +1,47 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// RS-232 NMI handler part
-//
+;
+; RS-232 NMI handler part
+;
 
-// Based on UP9600 code by Daniel Dallman with Bo Zimmerman adaptations
+; Based on UP9600 code by Daniel Dallman with Bo Zimmerman adaptations
 
 
-#if CONFIG_RS232_UP9600
+!ifdef CONFIG_RS232_UP9600 {
 
 
 up9600_nmi:
-	// XXX integrate with NMI handler
+	; XXX integrate with NMI handler
 
 	pha
-	bit CIA2_ICR // $DD0D; check if CIA caused the interrupt
+	bit CIA2_ICR ; $DD0D; check if CIA caused the interrupt
 	bpl NMIDOBI2; NO STARTBIT RECEIVED, THEN SKIP
 	lda #$13
-	sta CIA2_CRB // $DD0F; START TIMER B (FORCED RELOAD, SIGNAL AT PB7)
-	sta CIA2_ICR // $DD0D; DISABLE TIMER AND FLAG INTERRUPTS
+	sta CIA2_CRB ; $DD0F; START TIMER B (FORCED RELOAD, SIGNAL AT PB7)
+	sta CIA2_ICR ; $DD0D; DISABLE TIMER AND FLAG INTERRUPTS
 	lda #<NMIBYTRY; ON NEXT NMI CALL NMIBYTRY
 	sta NMIVECT; (TRIGGERED BY SDR FULL)
 	lda #>NMIBYTRY
 	sta NMIVECT+1
-NMIDOBI2
+NMIDOBI2:
 	pla; IGNORE, IF NMI WAS TRIGGERED BY RESTORE-KEY
 	rti
-	; 
-NMIBYTRY
+NMIBYTRY:
 	pha
-	bit CIA2_ICR // $DD0D; CHECK BIT 7 (SDR FULL PRINT)
+	bit CIA2_ICR ; $DD0D; CHECK BIT 7 (SDR FULL PRINT)
 	bpl NMIDOBI2; SDR NOT FULL, THEN SKIP (EG. RESTORE-KEY)
 	lda #$92
-	sta CIA2_CRB // $DD0F; STOP TIMER B (KEEP SIGNALLING AT PB7!)
-	sta CIA2_ICR // $DD0D; ENABLE FLAG (AND TIMER) INTERRUPTS
+	sta CIA2_CRB ; $DD0F; STOP TIMER B (KEEP SIGNALLING AT PB7!)
+	sta CIA2_ICR ; $DD0D; ENABLE FLAG (AND TIMER) INTERRUPTS
 	lda #<NMIDOBIT; ON NEXT NMI CALL NMIDOBIT
 	sta NMIVECT; (TRIGGERED BY A STARTBIT)
 	lda #>NMIDOBIT
 	sta NMIVECT+1
-	phx_trash_a
-	phy_trash_a
-	lda CIA2_SDR // $DD0C; READ SDR (BIT0=DATABIT7,...,BIT7=DATABIT0)
+	+phx_trash_a
+	+phy_trash_a
+	lda CIA2_SDR ; $DD0C; READ SDR (BIT0=DATABIT7,...,BIT7=DATABIT0)
 	cmp #128; MOVE BIT7 INTO CARRY-FLAG
 	and #127
 	tax
@@ -57,13 +56,12 @@ NMIBYTRY
 	sbc RIDBS
 	cmp #200
 	bcc NMIBYTR2
-	lda CIA2_PRB // $DD01;; MORE THAN 200 BYTES IN THE RECEIVE BUFFER
+	lda CIA2_PRB ; $DD01;; MORE THAN 200 BYTES IN THE RECEIVE BUFFER
 	and #$FD;; THEN DISABLE RTS
-	sta CIA2_PRB // $DD01
-NMIBYTR2
-	ply_trash_a
-	plx_trash_a
+	sta CIA2_PRB ; $DD01
+NMIBYTR2:
+	+ply_trash_a
+	+plx_trash_a
 	pla
 	rti
-
-#endif // CONFIG_RS232_UP9600
+}

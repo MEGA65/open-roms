@@ -1,48 +1,48 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Math package - normalize FAC1
-//
-// See also:
-// - [CM64] Computes Mapping the Commodore 64 - page 113
-// - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
-// - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
-//
+;
+; Math package - normalize FAC1
+;
+; See also:
+; - [CM64] Computes Mapping the Commodore 64 - page 113
+; - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
+; - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
+;
 
-// XXX test this
+; XXX test this
 
 normal_FAC1:
 
 	lda FAC1_exponent
-	beq normal_FAC1_end                     // branch if our float is 0
+	beq normal_FAC1_end                     ; branch if our float is 0
 	
-	// FALLTROUGH
+	; FALLTROUGH
 
 normal_FAC1_check_mantissa_byte:
 
 	lda FAC1_mantissa+0
-	beq normal_FAC1_by_byte                 // branch if we can move the whole byte
+	beq normal_FAC1_by_byte                 ; branch if we can move the whole byte
 	
-	// FALLTROUGH
+	; FALLTROUGH
 
 normal_FAC1_check_mantissa_bit:
 
-	lda FAC1_mantissa+0                     // XXX optimize for 65CE02?
+	lda FAC1_mantissa+0                     ; XXX optimize for 65CE02?
 	and #$80
-	bne normal_FAC1_end                     // branch if already normalized
+	bne normal_FAC1_end                     ; branch if already normalized
 	
-	// FALLTROUGH
+	; FALLTROUGH
 	
 normal_FAC1_by_bit:
 	
-	// Decrement the exponent
+	; Decrement the exponent
 	
 	dec FAC1_exponent
-	beq normal_FAC1_end                     // exponent reached 0, nothing more to do
+	beq normal_FAC1_end                     ; exponent reached 0, nothing more to do
 
-	// Multiply the mantissa by 2
+	; Multiply the mantissa by 2
 
 	asl FACOV
 	rol FAC1_mantissa+3
@@ -50,23 +50,23 @@ normal_FAC1_by_bit:
 	rol FAC1_mantissa+1
 	rol FAC1_mantissa+0
 	
-	bcc normal_FAC1_check_mantissa_bit      // branch if next iteration needed
+	bcc normal_FAC1_check_mantissa_bit      ; branch if next iteration needed
 	rts
 	
 normal_FAC1_by_byte:
 
-	// First decrement the exponent by 8, but not below 0
+	; First decrement the exponent by 8, but not below 0
 	
 	lda FAC1_exponent
 	sec
 	sbc #$08
-	bcs !+
+	bcs @1
 	lda #$00
-!:
+@1:
 	sta FAC1_exponent
-	beq normal_FAC1_end                      // branch if our float reached 0
+	beq normal_FAC1_end                      ; branch if our float reached 0
 
-	// Now multiply the mantissa by 8 by moving the whole bytes
+	; Now multiply the mantissa by 8 by moving the whole bytes
 	
 	lda FAC1_mantissa+1
 	sta FAC1_mantissa+0
@@ -81,20 +81,20 @@ normal_FAC1_by_byte:
 	lda #$00
 	sta FACOV
 	
-	// Now check if mantissa is not 0
+	; Now check if mantissa is not 0
 	
 	ora FAC1_mantissa+0
 	ora FAC1_mantissa+1
 	ora FAC1_mantissa+2
 	ora FAC1_mantissa+3
 	
-	bne normal_FAC1_check_mantissa_byte     // not 0 - branch to next iteration
+	bne normal_FAC1_check_mantissa_byte     ; not 0 - branch to next iteration
 
-	// Our mantissa reached 0 - mark exponent as 0 and finish
+	; Our mantissa reached 0 - mark exponent as 0 and finish
 	
 	sta FAC1_exponent
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 normal_FAC1_end:
 

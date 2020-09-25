@@ -1,21 +1,21 @@
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
 
 m65_native_meminit:
 
-	// Prepare generic DMAgic list
+	; Prepare generic DMAgic list
 
 	jsr m65_dmagic_init
 
-	// Copy MEGA65 charset to target location - set size
+	; Copy MEGA65 charset to target location - set size
 
 	lda #$00
 	sta M65_DMAJOB_SIZE_0
 	lda #$10
 	sta M65_DMAJOB_SIZE_1
 
-	// Set destination
+	; Set destination
 
 	lda #$00
 	sta M65_DMAJOB_DST_3
@@ -26,7 +26,7 @@ m65_native_meminit:
 	lda #<MEMCONF_CHRBASE
 	sta M65_DMAJOB_DST_0
 
-	// Set source
+	; Set source
 
 	lda #$00
 	sta M65_DMAJOB_SRC_3
@@ -37,6 +37,6 @@ m65_native_meminit:
 	lda #$00
 	sta M65_DMAJOB_SRC_0
 
-	// Launch the DMA job
+	; Launch the DMA job
 
 	jmp m65_dmagic_oper_copy

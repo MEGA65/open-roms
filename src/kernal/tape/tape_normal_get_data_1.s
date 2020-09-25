@@ -1,36 +1,36 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Tape (normal) helper routine - data block (primary) reading
-//
-// Stores data starting from MEMUSS, Carry set means error, on 0 bit .A is 0 too
-// .Y not equal to 0 - returns error if data block is longer (length includes checksum)
+;
+; Tape (normal) helper routine - data block (primary) reading
+;
+; Stores data starting from MEMUSS, Carry set means error, on 0 bit .A is 0 too
+; .Y not equal to 0 - returns error if data block is longer (length includes checksum)
 
 
-#if CONFIG_TAPE_NORMAL
+!ifdef CONFIG_TAPE_NORMAL {
 
 
 tape_normal_get_data_1:
 
-	// Initialize checksum (RIPRTY, see http://sta.c64.org/cbm64mem.html)
-	// and pointers for error log and correction mechanism
+	; Initialize checksum (RIPRTY, see http://sta.c64.org/cbm64mem.html)
+	; and pointers for error log and correction mechanism
 	lda #$00
 	sta RIPRTY
 
 	sta PTR2
 	sta PTR1
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_normal_get_data_1_block:
 
-	//
-	// Read the 1st copy of the block
-	//
+	;
+	; Read the 1st copy of the block
+	;
 
-	// Read sync of the block
+	; Read sync of the block
 	ldy #$89
 	jsr tape_normal_sync
 	bcs tape_normal_get_data_1_fail
@@ -41,11 +41,11 @@ tape_normal_get_data_1_loop:
 	jsr tape_normal_get_byte
 	bcc tape_normal_get_data_1_loop_byte_OK
 
-	// Problem reading a byte, try to add it to the error log
+	; Problem reading a byte, try to add it to the error log
 
 	tsx
-	cpx #$20                           // just to be on a safe side
-	bcc tape_normal_get_data_1_fail    // branch if no more space in error log
+	cpx #$20                           ; just to be on a safe side
+	bcc tape_normal_get_data_1_fail    ; branch if no more space in error log
 
 	ldx PTR1
 	lda MEMUSS+0
@@ -56,7 +56,7 @@ tape_normal_get_data_1_loop:
 	inx
 	stx PTR1 
 
-	// Addres added to error log, check if this was a checksum
+	; Addres added to error log, check if this was a checksum
 	jsr tape_normal_get_marker
 	bcc tape_normal_get_data_1_loop_advance
 	bcs tape_normal_get_data_1_success
@@ -64,33 +64,33 @@ tape_normal_get_data_1_loop:
 tape_normal_get_data_1_loop_byte_OK:
 
 	jsr tape_normal_get_marker
-	bcc !+
+	bcc @1
 
-	// End of the block
+	; End of the block
 	jsr tape_normal_update_checksum
 	jmp tape_normal_get_data_1_success
 
-!:
-	// Store byte, calculate checksum
+@1:
+	; Store byte, calculate checksum
 	lda INBIT
 	ldy #$00
-#if ROM_LAYOUT_M65
+!ifdef CONFIG_MB_M65 {
 	jsr tape_normal_byte_store
-#else
+} else {
 	sta (MEMUSS), y
-#endif
+}
 	jsr tape_normal_update_checksum
 	
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_normal_get_data_1_loop_advance:
 
-	// Advance pointer
-#if !HAS_OPCODES_65CE02
+	; Advance pointer
+!ifndef HAS_OPCODES_65CE02 {
 	jsr lvs_advance_MEMUSS
-#else
+} else {
 	inw MEMUSS+0
-#endif
+}
 
 	jmp tape_normal_get_data_1_loop
 
@@ -104,6 +104,4 @@ tape_normal_get_data_1_fail:
 
 	sec
 	rts
-
-
-#endif
+}

@@ -1,16 +1,16 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Well-known BASIC routine, described in:
-//
-// - [CM64] Computes Mapping the Commodore 64 - page 116, XXX
-//
+;
+; Well-known BASIC routine, described in:
+;
+; - [CM64] Computes Mapping the Commodore 64 - page 116, XXX
+;
 
 
 LINPRT:
-	// XXX This is temporary, to allow some software to work!
-	//     To be replaced by real impleementation.
+	; XXX This is temporary, to allow some software to work!
+	;     To be replaced by real impleementation.
 	jmp print_integer 

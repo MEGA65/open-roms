@@ -1,9 +1,10 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
 
-// XXX provide documentation and implementation
+; XXX provide documentation and implementation
 
 RVECT:
-    STUB_IMPLEMENTATION()
+
+    +STUB_IMPLEMENTATION

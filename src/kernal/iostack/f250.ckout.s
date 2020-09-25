@@ -1,65 +1,65 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Official Kernal routines, described in:
-//
-// - [RG64] C64 Programmers Reference Guide   - page 276
-// - [CM64] Computes Mapping the Commodore 64 - page 229
-//
-// CPU registers that has to be preserved (see [RG64]): .Y, .A (see [CM64], page 213)
-//
+;
+; Official Kernal routines, described in:
+;
+; - [RG64] C64 Programmers Reference Guide   - page 276
+; - [CM64] Computes Mapping the Commodore 64 - page 229
+;
+; CPU registers that has to be preserved (see [RG64]): .Y, .A (see [CM64], page 213)
+;
 
 
 CKOUT:
 
-	// Store registers for preservation
+	; Store registers for preservation
 	pha
-	phy_trash_a
+	+phy_trash_a
 
-	// Reset status
+	; Reset status
 	jsr kernalstatus_reset
 
-	// First retrieve the FAT/LAT/SAT table index (and check if file is open)
+	; First retrieve the FAT/LAT/SAT table index (and check if file is open)
 
 	txa
 	jsr find_fls
-	bcs_16 chkinout_file_not_open
+	+bcs chkinout_file_not_open
 
-	// Now we have table index in Y
+	; Now we have table index in Y
 
 	lda FAT,Y
 
-	// Handle all the devices
+	; Handle all the devices
 
-	beq ckout_file_not_output // 0 - keyboard
+	beq ckout_file_not_output ; 0 - keyboard
 
-	// Tape not supported here
+	; Tape not supported here
 
-#if HAS_RS232
+!ifdef HAS_RS232 {
 
 	cmp #$02
-	beq_16 ckout_rs232
+	+beq ckout_rs232
+}
 
-#endif // HAS_RS232
-
-#if CONFIG_IEC
+!ifdef CONFIG_IEC {
 
 	jsr iec_check_devnum_oc
-	bcc_16 ckout_iec
+	+bcc ckout_iec
+}
 
-#endif // CONFIG_IEC
-
-	cmp #$03 // screen - only legal one left
-	bne_16 chkinout_device_not_present
+	cmp #$03 ; screen - only legal one left
+	+bne chkinout_device_not_present
 
 ckout_set_device:
+
 	lda FAT,Y
 	sta DFLTO
 	jmp chkinout_end
 
 ckout_file_not_output:
-	ply_trash_a
+
+	+ply_trash_a
 	pla
 	jmp kernalerror_FILE_NOT_OUTPUT

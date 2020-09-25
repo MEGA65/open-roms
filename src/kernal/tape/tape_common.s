@@ -1,18 +1,18 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Common routines for tape support
-//
-
-
-#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+;
+; Common routines for tape support
+;
 
 
-//
-// Loading terminated by user
-//
+!ifdef HAS_TAPE {
+
+
+;
+; Loading terminated by user
+;
 
 tape_break_error:
 
@@ -22,31 +22,30 @@ tape_break_error:
 	jmp kernalerror_ROUTINE_TERMINATED
 
 
-//
-// Ask user to press PLAY on tape deck, 
-// Unless user cancelled loading, blank screen and start motor
-//
+;
+; Ask user to press PLAY on tape deck, 
+; Unless user cancelled loading, blank screen and start motor
+;
 
 tape_ask_play:
 
-#if !CONFIG_TAPE_NO_KEY_SENSE
+!ifndef CONFIG_TAPE_NO_KEY_SENSE {
 
-	// First check whether the button is already pressed
+	; First check whether the button is already pressed
 
 	lda CPU_R6510
 	and #$10
 	beq tape_wait_play_done
+}
 
-#endif
-
-	// Display message
+	; Display message
 
 	ldx #__MSG_KERNAL_PRESS_PLAY
 	jsr print_kernal_message
 
-	// FALLTROUGH
+	; FALLTROUGH
 
-#if !CONFIG_TAPE_NO_KEY_SENSE
+!ifndef CONFIG_TAPE_NO_KEY_SENSE {
 
 tape_wait_play_loop:
 
@@ -54,122 +53,118 @@ tape_wait_play_loop:
 	bcs tape_break_error
 
 	lda CPU_R6510
-	and #$10                           // check for pressed button
+	and #$10                           ; check for pressed button
 	bne tape_wait_play_loop
 
-	// FALLTROUGH
+	; FALLTROUGH
 
-#else
+} else {
 
-	// The ROM is configured for tape adapter without the key sense - but it is still
-	// possible, that regular Datasette or Tapuino is connected
+	; The ROM is configured for tape adapter without the key sense - but it is still
+	; possible, that regular Datasette or Tapuino is connected
 
 	lda CPU_R6510
 	and #$10
-	beq tape_wait_first_pulse          // branch if button reported pressed, most likely really no key sense
+	beq tape_wait_first_pulse          ; branch if button reported pressed, most likely really no key sense
 
-	// We have key sense - perform regular waiting
-!:
+	; We have key sense - perform regular waiting
+@1:
 	jsr STOP
 	bcs tape_break_error
 
 	lda CPU_R6510
 	and #$10
-	beq !-
+	beq @1
 
 tape_wait_first_pulse:
 
-	// We have no key sense - so just turn the motor on and wait for the first pulse
+	; We have no key sense - so just turn the motor on and wait for the first pulse
 
 	jsr tape_motor_on
 
-!:
+@2:
 	jsr STOP
 	bcs tape_break_error
 
 	lda #$10
-	bit CIA1_ICR    // $DC0D
-	bne !-
-!:
+	bit CIA1_ICR    ; $DC0D
+	bne @2
+@3:
 	jsr STOP
 	bcs tape_break_error
 	
 	lda #$10
-	bit CIA1_ICR    // $DC0D
-	beq !-
+	bit CIA1_ICR    ; $DC0D
+	beq @3
+}
 
-#endif
-
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_wait_play_done:
 
 	lda #$01
-	sta CAS1                           // set the interlock
+	sta CAS1                           ; set the interlock
 
-#if CONFIG_TAPE_HEAD_ALIGN
+!ifdef CONFIG_TAPE_HEAD_ALIGN {
 
 	rts
 
 tape_prepare_reading:
 
-#endif // CONFIG_TAPE_HEAD_ALIGN
+} ; CONFIG_TAPE_HEAD_ALIGN
 
-#if CONFIG_MB_MEGA_65
+!ifdef CONFIG_MB_M65 {
 
-	// Display confirmation
+	; Display confirmation
 
 	ldx #__MSG_KERNAL_OK_SEARCHING
 	jsr print_kernal_message
+}
 
-#endif
-
-	// Prepare for reading
+	; Prepare for reading
 
 	jsr print_return
 	jmp tape_screen_off_motor_on
 
 
-//
-// Handle file header - display it, decide whether load the file or not, etc.
-//
+;
+; Handle file header - display it, decide whether load the file or not, etc.
+;
 
 tape_handle_header:
 
-#if !CONFIG_TAPE_NO_MOTOR_CONTROL
+!ifndef CONFIG_TAPE_NO_MOTOR_CONTROL {
 
 	jsr tape_screen_on_motor_off
+}
 
-#endif
-
-	// Print FOUND + file name
+	; Print FOUND + file name
 
 	ldx #__MSG_KERNAL_FOUND
 	jsr print_kernal_message
 
 	ldy #$05
-!:
+@4:
 	lda (TAPE1), y
 	jsr JCHROUT
 	iny
 	cpy #$15
-	bne !-
+	bne @4
 
-#if !CONFIG_TAPE_NO_MOTOR_CONTROL
+!ifndef CONFIG_TAPE_NO_MOTOR_CONTROL {
 
-	// Header, wait for user decision
+	; Header, wait for user decision
 
 	jsr tape_header_get_decision
 	bcs tape_break_error
+}
 
-#endif
-
-	// Check if file name matches
+	; Check if file name matches
 
 	jsr tape_match_filename
 	bcs tape_handle_header_skip
 
-	// Setup STAL and EAL
+	; Setup STAL and EAL
 
 	ldy #$01
 	lda (TAPE1), y
@@ -187,12 +182,12 @@ tape_handle_header:
 	lda (TAPE1), y
 	sta EAL+1
 
-	// Handle the secondary address, 0 means loading to location from MEMUSS
+	; Handle the secondary address, 0 means loading to location from MEMUSS
 
 	lda SA
-	bne !+
+	bne @5
 
-	// EAL = EAL - STAL
+	; EAL = EAL - STAL
 
 	sec
 	lda EAL+0
@@ -202,14 +197,14 @@ tape_handle_header:
 	sbc STAL+1
 	sta EAL+1
 	
-	// STAL = MEMUSS
+	; STAL = MEMUSS
 
 	lda MEMUSS+0
 	sta STAL+0
 	lda MEMUSS+1
 	sta STAL+1
 
-	// EAL = EAL + STAL
+	; EAL = EAL + STAL
 
 	clc
 	lda EAL+0
@@ -218,36 +213,34 @@ tape_handle_header:
 	lda EAL+1
 	adc STAL+1
 	sta EAL+1
-!:
-	// Setup MEMUSS (see Mapping the C64, page 36)
+@5:
+	; Setup MEMUSS (see Mapping the C64, page 36)
 
 	jsr lvs_STAL_to_MEMUSS
 
-#if ROM_LAYOUT_M65
+!ifdef CONFIG_MB_M65 {
 
-	// Switch to legacy mode if needed
+	; Switch to legacy mode if needed
 
 	jsr m65_load_autoswitch_tape
+}
 
-#endif
-
-	// Print LOADING and start address
+	; Print LOADING and start address
 
 	jsr lvs_display_loading_verifying
 
-	// FALLTROUGH
+	; FALLTROUGH
 
-#if !CONFIG_TAPE_NO_MOTOR_CONTROL
+!ifndef CONFIG_TAPE_NO_MOTOR_CONTROL {
 
 tape_handle_header_displayed:
 
-	// Load the file
+	; Load the file
 
 	jsr tape_screen_off_motor_on
 
-	// FALLTROUGH
-
-#endif
+	; FALLTROUGH
+}
 
 tape_return_ok:
 
@@ -256,12 +249,12 @@ tape_return_ok:
 
 tape_handle_header_skip:
 
-	// Skip this file
+	; Skip this file
 
 	jsr print_return
 	jsr tape_screen_off_motor_on
 	
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_return_not_ok:
 
@@ -269,24 +262,24 @@ tape_return_not_ok:
 	rts
 
 
-//
-// Check whether file name matches the pattern
-//
+;
+; Check whether file name matches the pattern
+;
 
 tape_match_filename:
 
 	lda FNLEN
-	beq tape_return_ok                 // no pattern to match
+	beq tape_return_ok                 ; no pattern to match
 
 	ldy #$00
 
 tape_match_loop:
 
-	lda #$20                           // default byte, for padding
+	lda #$20                           ; default byte, for padding
 	cpy FNLEN
-	bcs !+                             // end of pattern
-	lda (FNADDR), y                    // byte from pattern
-!:
+	bcs @6                             ; end of pattern
+	lda (FNADDR), y                    ; byte from pattern
+@6:
 	cmp #KEY_ASTERISK
 	beq tape_return_ok
 
@@ -311,31 +304,31 @@ tape_match_loop:
 	rts
 
 
-#if !CONFIG_TAPE_NO_MOTOR_CONTROL
+!ifndef CONFIG_TAPE_NO_MOTOR_CONTROL {
 
-//
-// Get user decision whether to load the file or not
-//
+;
+; Get user decision whether to load the file or not
+;
 
 tape_header_get_decision:
 
 	ldy #$00
-!:
+@7:
 	jsr udtim_keyboard
 	lda STKEY
-	bpl tape_header_wait_stop          // STOP pressed
+	bpl tape_header_wait_stop          ; STOP pressed
 	and #$10
-	beq tape_header_wait_space         // SPACE pressed
+	beq tape_header_wait_space         ; SPACE pressed
 
 	ldx #$80
-	jsr wait_x_bars                    // sets .X to 0
+	jsr wait_x_bars                    ; sets .X to 0
 	dex
 	jsr wait_x_bars
 
 	dey
-	bne !-
+	bne @7
 
-	// FALLTROUGH - timeout
+	; FALLTROUGH - timeout
 
 tape_header_wait_space:
 	
@@ -346,13 +339,12 @@ tape_header_wait_stop:
 	
 	sec
 	rts
+}
 
-#endif
 
-
-//
-// Report that file loading succeeded (or not)
-//
+;
+; Report that file loading succeeded (or not)
+;
 
 tape_load_success:
 
@@ -364,6 +356,4 @@ tape_load_error:
 
 	jsr tape_screen_on_motor_off
 	jmp lvs_load_verify_error
-
-
-#endif
+}

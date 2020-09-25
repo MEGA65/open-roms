@@ -1,16 +1,16 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Print the hex value in .A as two digits
-//
+;
+; Print the hex value in .A as two digits
+;
 
 print_hex_byte:
 
-#if HAS_BCD_SAFE_INTERRUPTS
+!ifdef HAS_BCD_SAFE_INTERRUPTS {
 
-	// Idea by Haubitze
+	; Idea by Haubitze
 
 	sed
 	pha
@@ -30,7 +30,7 @@ print_hex_byte:
 	cld
 	jmp JCHROUT
 
-#else
+} else {
 
 	pha
 	lsr
@@ -39,15 +39,16 @@ print_hex_byte:
 	lsr
 	ora #$30
 	cmp #$3A
-	bcc !+
+	bcc @1
 	adc #6
-!:	jsr JCHROUT
+@1:	
+	jsr JCHROUT
 	pla
 	and #$0f
 	ora #$30
 	cmp #$3A
-	bcc !+
+	bcc @2
 	adc #6
-!:	jmp JCHROUT
-
-#endif
+@2:
+	jmp JCHROUT
+}

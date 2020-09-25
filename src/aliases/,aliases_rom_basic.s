@@ -1,15 +1,14 @@
 
-	// BASIC startup vectors
+	; BASIC startup vectors
 
 
-#if ROM_LAYOUT_X16
+!ifdef CONFIG_PLATFORM_COMMANDER_X16 {
 
-	.label IBASIC_COLD_START  = $C000
-	.label IBASIC_WARM_START  = $C002
+	!addr IBASIC_COLD_START  = $C000
+	!addr IBASIC_WARM_START  = $C002
 
-#else
+} else {
 
-	.label IBASIC_COLD_START  = $A000
-	.label IBASIC_WARM_START  = $A002
-
-#endif
+	!addr IBASIC_COLD_START  = $A000
+	!addr IBASIC_WARM_START  = $A002
+}

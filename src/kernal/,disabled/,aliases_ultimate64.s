@@ -1,37 +1,37 @@
 
-// Registers according to Ultimate 64 Command Interface description,
-// https://1541u-documentation.readthedocs.io/en/latest/command%20interface.html
-// and ultimate_dos_v1.0.pdf and command_interface_v1.0.pdf by Gideon Zweijtzer
+; Registers according to Ultimate 64 Command Interface description,
+; https://1541u-documentation.readthedocs.io/en/latest/command%20interface.html
+; and ultimate_dos_v1.0.pdf and command_interface_v1.0.pdf by Gideon Zweijtzer
 
-	// Command interface registers
-	.label U64_CONTROL_STATUS          = $DF1C // write = CONTROL, read = STATUS
-	.label U64_COMMAND_DATA_IDENTIFY   = $DF1D // write = COMMAND_DATA, read = IDENTIFICATION
-	.label U64_RESPONSE_DATA           = $DF1E // read only
-	.label U64_STATUS_DATA             = $DF1F // read only
+	; Command interface registers
+	.label U64_CONTROL_STATUS          = $DF1C ; write = CONTROL, read = STATUS
+	.label U64_COMMAND_DATA_IDENTIFY   = $DF1D ; write = COMMAND_DATA, read = IDENTIFICATION
+	.label U64_RESPONSE_DATA           = $DF1E ; read only
+	.label U64_STATUS_DATA             = $DF1F ; read only
 
-	// Constant for U64_IDENTIFICATION register
+	; Constant for U64_IDENTIFICATION register
 	.const U64_MAGIC_ID                = $C9
 
-	// Constants for U64_CONTROL register
+	; Constants for U64_CONTROL register
 	.const U64_CTRL_BIT_PUSH_CMD       = $01
 	.const U64_CTRL_BIT_DATA_ACC       = $02
 	.const U64_CTRL_BIT_ABORT          = $04
 	.const U64_CTRL_BIT_CLR_ERR        = $08
 
-	// Constants for U64_STATUS register
+	; Constants for U64_STATUS register
 	.const U64_STAT_BIT_CMD_BUSY       = $01
 	.const U64_STAT_BIT_DATA_ACC       = $02
 	.const U64_STAT_BIT_ABORT_P        = $04
 	.const U64_STAT_BIT_ERROR          = $08
-	.const U64_STAT_MASK_STATE         = $30 // two bits!
+	.const U64_STAT_MASK_STATE         = $30 ; two bits!
 	.const U64_STAT_BIT_STAT_AV        = $40
 	.const U64_STAT_BIT_DATA_AV        = $80
 
-	// Interface targets
+	; Interface targets
 	.const U64_TARGET_DOS1             = $01
 	.const U64_TARGET_DOS2             = $02
 
-	// DOS command codes
+	; DOS command codes
 	.const U64_DOS_CMD_IDENTIFY        = $01
 	.const U64_DOS_CMD_OPEN_FILE       = $02
 	.const U64_DOS_CMD_CLOSE_FILE      = $03
@@ -48,7 +48,7 @@
 	.const U64_DOS_CMD_SAVE_REU        = $22
 	.const U64_DOS_CMD_ECHO            = $F0
 
-	// DOS file opening constants 
+	; DOS file opening constants 
 	.const U64_FA_READ                 = $01
 	.const U64_FA_WRITE                = $02
 	.const U64_FA_CREATE_NEW           = $03

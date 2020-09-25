@@ -1,17 +1,17 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Tape (normal) helper routine - marker reading
-//
-// Reeturns marker type in Carry flag, set = end of data (normal marker) or failure (marker while sync)
-//
+;
+; Tape (normal) helper routine - marker reading
+;
+; Reeturns marker type in Carry flag, set = end of data (normal marker) or failure (marker while sync)
+;
 
 
-#if CONFIG_TAPE_NORMAL
+!ifdef CONFIG_TAPE_NORMAL {
 
-	// (L,M) - end of byte, (L,S) - end of data
+	; (L,M) - end of byte, (L,S) - end of data
 
 
 tape_normal_get_marker: 
@@ -19,9 +19,9 @@ tape_normal_get_marker:
 
 	jsr tape_common_get_pulse
 	cmp __pulse_threshold_ML
-	bcs tape_normal_get_marker                             // too short for a long pulse
+	bcs tape_normal_get_marker                             ; too short for a long pulse
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 tape_normal_get_marker_type:
 
@@ -29,21 +29,21 @@ tape_normal_get_marker_type:
 
 
 
-	// Not an entry point!!!
-!:
-	jsr tape_normal_calibrate_during_pilot                 // while sync use short pulses for calibration
+	; Not an entry point!!!
 
-	// FALLTROUGH
+tape_normal_get_marker_while_sync_loop:
+
+	jsr tape_normal_calibrate_during_pilot                 ; while sync use short pulses for calibration
+
+	; FALLTROUGH
 
 tape_normal_get_marker_while_sync:
 
 	jsr tape_common_get_pulse
-	bcs !-                                                 // branch if short pulse
+	bcs tape_normal_get_marker_while_sync_loop             ; branch if short pulse
 
 	cmp __pulse_threshold_ML
-	bcs tape_normal_get_marker_while_sync                  // too short for a long pulse
+	bcs tape_normal_get_marker_while_sync                  ; too short for a long pulse
 	
-	bcc tape_normal_get_marker_type                        // branch always
-
-
-#endif
+	bcc tape_normal_get_marker_type                        ; branch always
+}

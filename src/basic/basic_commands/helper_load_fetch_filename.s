@@ -1,27 +1,27 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Fetches file name, Carry set if not found
-//
+;
+; Fetches file name, Carry set if not found
+;
 
 
 helper_load_fetch_filename:
 
-	// Check if end of statement
+	; Check if end of statement
 
 	jsr is_end_of_statement
-	bcs !+
+	bcs @1
 
-	// Call the expression parser, make sure it returned a string
+	; Call the expression parser, make sure it returned a string
 
 	jsr FRMEVL
 
 	lda VALTYP
-	bpl_16 do_SYNTAX_error
+	+bpl do_SYNTAX_error
 
-	// Set the filename address and pointer
+	; Set the filename address and pointer
 
 	lda __FAC1+0
 	sta FNLEN
@@ -31,11 +31,11 @@ helper_load_fetch_filename:
 	lda __FAC1+2
 	sta FNADDR+1
 
-	// Mark success
+	; Mark success
 
 	clc
 
-	// FALLTROUGH
+	; FALLTROUGH
 
-!:
+@1:
 	rts

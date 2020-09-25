@@ -1,43 +1,43 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
 
 cmd_save:
 
-	// Set default device and secondary address
+	; Set default device and secondary address
 
 	jsr helper_load_init_params_no_VERCKB
 
-	// Fetch the file name
+	; Fetch the file name
 
 	jsr helper_load_fetch_filename
-	bcs_16 do_MISSING_FILENAME_error
+	+bcs do_MISSING_FILENAME_error
 
-	// Try to fetch device number and secondary address
+	; Try to fetch device number and secondary address
 
 	jsr helper_load_fetch_devnum
-	bcs !+
+	bcs @1
 	jsr helper_load_fetch_secondary
-!:
-	// Setup the start address
+@1:
+	; Setup the start address
 
 	lda #TXTTAB
 
-	// Setup the end address
+	; Setup the end address
 
 	ldx VARTAB+0
 	ldy VARTAB+1
 
-	// FALLTROUGH
+	; FALLTROUGH
 
-cmd_save_do: // entry point for BSAVE
+cmd_save_do: ; entry point for BSAVE
 
-	// Perform saving
+	; Perform saving
 
 	jsr JSAVE
-	bcs_16 do_kernal_error
+	+bcs do_kernal_error
 
-	// Execute next statement
+	; Execute next statement
 
 	rts

@@ -1,62 +1,62 @@
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
 
-// Cursor movement
+; Cursor movement
 
 m65_chrout_screen_CRSR_RIGHT:
 
 	inc M65__TXTCOL
-	skip_2_bytes_trash_nvz
+	+skip_2_bytes_trash_nvz
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 m65_chrout_screen_CRSR_LEFT:
 	
 	dec M65__TXTCOL
-	skip_2_bytes_trash_nvz
+	+skip_2_bytes_trash_nvz
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 m65_chrout_screen_CRSR_DOWN:
 
 	inc M65__TXTROW
-	skip_2_bytes_trash_nvz
+	+skip_2_bytes_trash_nvz
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 m65_chrout_screen_CRSR_UP:
 
 	dec M65__TXTROW
-	jmp_8 m65_chrout_screen_ctrl1_end
+	bra m65_chrout_screen_ctrl1_end
 
 
-// 'RETURN' key
+; 'RETURN' key
 
 m65_chrout_screen_RETURN:
 
-	// RETURN clears quote and insert modes, it also clears reverse flag
+	; RETURN clears quote and insert modes, it also clears reverse flag
 	
 	lda #$00
 	sta QTSW
 	sta INSRT
 	sta RVS
 
-	// Move cursor to the beginning of the next line
+	; Move cursor to the beginning of the next line
 
 	bit M65_SCRWINMODE
-	bpl !+
+	bpl @1
 	lda M65_TXTWIN_X0
-	skip_2_bytes_trash_nvz
-!:
+	+skip_2_bytes_trash_nvz
+@1:
 	lda #$00
 	sta M65__TXTCOL
 	inc M65__TXTROW
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 m65_chrout_screen_ctrl1_end:
 
-	// Correct the column/row values
+	; Correct the column/row values
 
 	jmp m65_chrout_fix_column_row

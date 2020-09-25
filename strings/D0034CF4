@@ -1,0 +1,3 @@
+BNE (skip next instruction) + JMP $xxF4 (address high byte does not match)
+
+Instruction + some part (on other architectures this would be one, not fully matching instruction) - trivial, not copyrightable.

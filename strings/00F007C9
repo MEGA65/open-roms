@@ -1,0 +1,3 @@
+$00 + BEQ (offset matches) + CMP (value does not match)
+
+Instruction + some parts - trivial, not copyrightable.

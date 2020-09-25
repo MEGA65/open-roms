@@ -9,7 +9,7 @@ Here are the features of the Open ROMs not found in the original ROMs from the 8
 * pre-defined function keys
 
 * JiffyDOS and DolphinDOS protocols support
-* DOS wedge (direct mode only) - `@<drive_number>`, `@<command>`, `@$`, `@$<params>`, `@`
+* DOS wedge (direct mode only) - `@<unit_number>`, `@<command>`, `@$[mask]`, `@<unit_number>$`, `@<unit_number>$[mask]` `@`
 * BASIC extensions, see the [documentation](doc/Extended-BASIC.md) 
 * extended / tweaked `LOAD` / `VERIFY` commands
     * start/end addresses are displayed, in the Final cartridge style

@@ -1,9 +1,9 @@
-// #LAYOUT# M65 KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Routine to unhide MEGA65 extra registers
-//
+;
+; Routine to unhide MEGA65 extra registers
+;
 
 
 viciv_unhide:

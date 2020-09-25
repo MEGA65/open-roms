@@ -1,21 +1,21 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Checks if there is enough memory free for array
-//
-// Input:
-// __FAC1+0    - number of dimensions
-// __FAC1+1/+2 - bytes needed for storage
-//
-// Uses INDEX+2/+3, preserves .X and .Y
-//
+;
+; Checks if there is enough memory free for array
+;
+; Input:
+; __FAC1+0    - number of dimensions
+; __FAC1+1/+2 - bytes needed for storage
+;
+; Uses INDEX+2/+3, preserves .X and .Y
+;
 
 
 helper_array_create_checkmem:
 
-	// First calculate FRETOP - STREND
+	; First calculate FRETOP - STREND
 
 	sec
 	lda FRETOP+0
@@ -26,7 +26,7 @@ helper_array_create_checkmem:
 	sta INDEX+3
 	bcc helper_array_create_checkmem_fail
 
-	// INDEX+2/+3 contains the amount of memory left, subtract the space needed for storage
+	; INDEX+2/+3 contains the amount of memory left, subtract the space needed for storage
 
 	lda INDEX+2
 	sbc __FAC1+1
@@ -36,12 +36,12 @@ helper_array_create_checkmem:
 	sta INDEX+3
 	bcc helper_array_create_checkmem_fail
 
-	// If high byte (INDEX+3) > 0, then we certainly have enough space
+	; If high byte (INDEX+3) > 0, then we certainly have enough space
 
 	lda INDEX+3
 	bne helper_array_create_checkmem_success
 
-	// We have very little memory left - we need at least number of dimensions*2 + 5 bytes
+	; We have very little memory left - we need at least number of dimensions*2 + 5 bytes
 
 	lda __FAC1+0
 	asl
@@ -51,7 +51,7 @@ helper_array_create_checkmem:
 	cmp INDEX+2
 	bcs helper_array_create_checkmem_fail
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 helper_array_create_checkmem_success:
 

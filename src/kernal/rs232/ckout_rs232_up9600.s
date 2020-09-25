@@ -1,20 +1,20 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// RS-232 part of the CKOUT routine
-//
+;
+; RS-232 part of the CKOUT routine
+;
 
-// Based on UP9600 code by Daniel Dallman with Bo Zimmerman adaptations
+; Based on UP9600 code by Daniel Dallman with Bo Zimmerman adaptations
 
 
-#if CONFIG_RS232_UP9600
+!ifdef CONFIG_RS232_UP9600 {
 
 
 ckout_rs232:
 
-	// XXX adapt this
+	; XXX adapt this
 
 	lda #$02
 	sta DFLTO
@@ -23,4 +23,4 @@ ckout_rs232:
 	rts
 
 
-#endif // CONFIG_RS232_UP9600
+} ; CONFIG_RS232_UP9600

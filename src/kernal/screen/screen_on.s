@@ -1,14 +1,17 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# X16 *        #IGNORE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# X16 *        #IGNORE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Helper routine to show screen
-//
+;
+; Helper routine to show screen
+;
 
+!set NEEDED = 0
+!ifdef HAS_TAPE                                              { !set NEEDED = 1 }
+!ifdef CONFIG_IEC_JIFFYDOS { !ifndef CONFIG_MEMORY_MODEL_60K { !set NEEDED = 1 } }
 
-#if (CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO) || (CONFIG_IEC_JIFFYDOS && !CONFIG_MEMORY_MODEL_60K)
+!if NEEDED {
 
 
 screen_on:
@@ -18,6 +21,4 @@ screen_on:
 	sta VIC_SCROLY
 
 	rts
-
-
-#endif
+}

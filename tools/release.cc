@@ -22,6 +22,7 @@ typedef struct
     size_t  fileSize;
     size_t  signatureOffset1; // offset to 'OR' string
     size_t  signatureOffset2; // offset to 'OR' string
+    size_t  dosDateOffset;    // offset to date of internal DOS
     size_t  idBasicOffset;    // offset to BASIC identification string
     size_t  idKernalOffset;   // offset to KERNAL identification byte
 
@@ -34,6 +35,7 @@ const std::vector<ROMTypeDescriptionEntry> ROM_DEFINITIONS =
         8192,         // file size
         0x1F52,       // signature offset 1
         0,            // signature offset 2
+        0,            // DOS date offset
         0x0007,       // BASIC ID offset
         0             // KERNAL ID offset
     },
@@ -43,6 +45,7 @@ const std::vector<ROMTypeDescriptionEntry> ROM_DEFINITIONS =
         8192,         // file size
         0x04B9,       // signature offset 1
         0,            // signature offset 2
+        0,            // DOS date offset
         0,            // BASIC ID offset
         0x1F80        // KERNAL ID offset
     },
@@ -52,6 +55,7 @@ const std::vector<ROMTypeDescriptionEntry> ROM_DEFINITIONS =
         128 * 1024,   // file size
         0xBF52,       // signature offset 1
         0xE4B9,       // signature offset 2
+        0x10,          // DOS date offset
         0xA007,       // BASIC ID offset
         0xFF80        // KERNAL ID offset
     },
@@ -64,6 +68,7 @@ const std::vector<uint8_t> STR_OR       = { 0x4F, 0x52 };
 const std::vector<uint8_t> STR_SNAPSHOT = { 0x28, 0x44, 0x45, 0x56, 0x45, 0x4C, 0x20, 0x53, 
                                             0x4E, 0x41, 0x50, 0x53, 0x48, 0x4F, 0x54, 0x29,
                                             0x00 };
+const std::vector<uint8_t> STR_DOSDATE  = { 0x4F, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58 };
 
 const std::string STR_DEV = "DEV.";
 
@@ -78,6 +83,7 @@ std::list<std::string> CMD_fileList;
 
 std::string ENV_developerId;
 std::string ENV_dateString;
+std::string ENV_dateStringExt;
 
 //
 // Common helper functions
@@ -100,7 +106,7 @@ public:
 
     ROMFile(const std::string &baseFileName);
 
-    void embedRevisionStr(const std::string &newRevisionStr);
+    void embedRevisionStr(const std::string &newRevisionStr, const std::string &newRevisionStrDOS);
     void save();
 
     const ROMTypeDescriptionEntry *descPtr;
@@ -194,17 +200,20 @@ void getDate()
     time_t t     = time(NULL);
     struct tm tm = *localtime(&t);
 
-    const std::string year  = std::to_string(tm.tm_year % 100);
-    const std::string month = std::to_string(tm.tm_mon + 1);
-    const std::string day   = std::to_string(tm.tm_mday);
+    const std::string year    = std::to_string(tm.tm_year % 100);
+    const std::string yearExt = std::to_string((tm.tm_year + 1900) / 100);
+    const std::string month   = std::to_string(tm.tm_mon + 1);
+    const std::string day     = std::to_string(tm.tm_mday);
 
-    const std::string zero  = "0";
+    const std::string zero    = "0";
 
-    ENV_dateString = (year.size()  == 2 ? year  : zero + year) +
-                     (month.size() == 2 ? month : zero + month) +
-                     (day.size()   == 2 ? day   : zero + day);
+    ENV_dateString    = (year.size()    == 2 ? year    : zero + year) +
+                        (month.size()   == 2 ? month   : zero + month) +
+                        (day.size()     == 2 ? day     : zero + day);
 
-    if (ENV_dateString.size() != 6) ERROR("could not retrieve date");
+    ENV_dateStringExt = (yearExt.size() == 2 ? yearExt : zero + yearExt);
+
+    if (ENV_dateString.size() != 6 || ENV_dateStringExt.size() != 2) ERROR("could not retrieve date");
 }
 
 void printBanner()
@@ -267,11 +276,12 @@ void saveFiles()
 
     // Create a new revision string
 
-    const std::string newRevStr = STR_DEV + ENV_dateString + "." + ENV_developerId + "." + std::to_string(relId);
+    const std::string newRevStr    = STR_DEV + ENV_dateString + "." + ENV_developerId + "." + std::to_string(relId);
+    const std::string newRevStrDOS = ENV_dateString + ENV_dateStringExt;
 
     for (auto &file : GLOBAL_ROMFiles)
     {
-        file.embedRevisionStr(newRevStr);
+        file.embedRevisionStr(newRevStr, newRevStrDOS);
     }
 
     std::cout << "Files for release '" << newRevStr << "':\n\n";
@@ -404,6 +414,21 @@ void ROMFile::recognizeSrcFile()
         return true;
     };
 
+    auto checkDosDate = [this](size_t dosDateOffset) -> bool
+    {
+        if (dosDateOffset == 0)
+        {
+            return true;
+        }
+
+        if (memcmp(&srcFileContent[dosDateOffset], STR_DOSDATE.data(), STR_DOSDATE.size()) != 0)
+        {
+            return false;
+        }
+
+        return true;
+    };
+
     for (auto &SPEC : ROM_DEFINITIONS)
     {
         if (srcFileContent.size() != SPEC.fileSize) continue;
@@ -415,6 +440,11 @@ void ROMFile::recognizeSrcFile()
         }
 
         if ((SPEC.idKernalOffset != 0) && srcFileContent[SPEC.idKernalOffset] != 0xF0)
+        {
+            continue;
+        }
+
+        if (!checkDosDate(SPEC.dosDateOffset))
         {
             continue;
         }
@@ -468,6 +498,7 @@ void ROMFile::analyzeContent()
 {
     auto revOffset1 = (descPtr->signatureOffset1 != 0) ? (descPtr->signatureOffset1 + 3) : 0;
     auto revOffset2 = (descPtr->signatureOffset2 != 0) ? (descPtr->signatureOffset2 + 3) : 0;
+    auto revOffset3 = (descPtr->dosDateOffset    != 0) ? descPtr->dosDateOffset          : 0;
     
     if (revOffset1 == 0)
     {
@@ -504,6 +535,11 @@ void ROMFile::analyzeContent()
         }
 
         if (revOffset2 != 0 && idx - revOffset2 < 0x10)
+        {
+            continue;
+        }
+
+        if (revOffset3 != 0 && idx - revOffset3 < 0x10)
         {
             continue;
         }
@@ -565,9 +601,9 @@ void ROMFile::analyzeContent()
     oldDailyRelId = dstFileContent[idx + devIdLen + 2] - '0';
 }
 
-void ROMFile::embedRevisionStr(const std::string &newRevisionStr)
+void ROMFile::embedRevisionStr(const std::string &newRevisionStr, const std::string &newRevisionStrDOS)
 {
-    std::string revStr = newRevisionStr;
+    std::string revStr    = newRevisionStr;
 
     while (revStr.length() < 16) revStr = revStr + '\0';
 
@@ -582,6 +618,13 @@ void ROMFile::embedRevisionStr(const std::string &newRevisionStr)
         memcpy(&srcFileContent[descPtr->signatureOffset2 + 3],
                revStr.data(), revStr.size());       
     }
+
+    if (descPtr->dosDateOffset != 0)
+    {
+        memcpy(&srcFileContent[descPtr->dosDateOffset + 1],
+               newRevisionStrDOS.data(), newRevisionStrDOS.size());       
+    }
+
 }
 
 void ROMFile::save()

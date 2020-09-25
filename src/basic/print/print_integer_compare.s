@@ -1,18 +1,18 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Helper compare subroutine for 'print_integer'
-//
+;
+; Helper compare subroutine for 'print_integer'
+;
 
 print_integer_compare:
 
 	lda FAC1_exponent+1
 	cmp print_integer_tab_hi, y
-	bne !+
+	bne @1
 
 	lda FAC1_exponent+0
 	cmp print_integer_tab_lo, y
-!:
+@1:
 	rts

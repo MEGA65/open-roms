@@ -1,33 +1,33 @@
-// #LAYOUT# M65 KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
-//
-// Variables used:
-// - BLNSW (cursor blink switch)
-// - BLNCT (cursor blink countdown)
-// - GDBLN (cursor saved character)
-// - BLNON (if cursor is visible)
-// - GDCOL (colour under cursor)
-//
+;
+; Variables used:
+; - BLNSW (cursor blink switch)
+; - BLNCT (cursor blink countdown)
+; - GDBLN (cursor saved character)
+; - BLNON (if cursor is visible)
+; - GDCOL (colour under cursor)
+;
 
 
 m65_cursor_blink:
 
-	// Preserve .Z
+	; Preserve .Z
 	phz
 
-	// Is the cursor enabled?
+	; Is the cursor enabled?
 	lda BLNSW
 	bne m65_cursor_blink_end
 
-	// Do we need to redraw things?
+	; Do we need to redraw things?
 	dec BLNCT
 	bpl m65_cursor_blink_end
 
-	// Prepare .Z for offset within row
+	; Prepare .Z for offset within row
 	ldz M65__TXTCOL
 
-	// Prepare long pointer to color memory
+	; Prepare long pointer to color memory
 	lda #$0F
 	sta M65_LPNT_IRQ+3
 	lda #$F8
@@ -38,7 +38,7 @@ m65_cursor_blink:
 	lda M65_COLVIEW+0
 	sta M65_LPNT_IRQ+0
 
-	// Add screen row to the address
+	; Add screen row to the address
 	clc
 	lda M65_TXTROW_OFF+0
 	adc M65_LPNT_IRQ+0
@@ -47,38 +47,38 @@ m65_cursor_blink:
 	adc M65_LPNT_IRQ+1
 	sta M65_LPNT_IRQ+1	
 
-	// Check if cursor was visible or not, and toggle
+	; Check if cursor was visible or not, and toggle
 	lda BLNON
 	bne m65_cursor_blink_undraw
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 m65_cursor_blink_draw:
 
 	lda #1
 	sta BLNON
 
-	// Cursor draw - color
-	lda_lp (M65_LPNT_IRQ),z
+	; Cursor draw - color
+	lda [M65_LPNT_IRQ],z
 	sta GDCOL
 	lda COLOR
-	and #$0F                           // take current colour, but not extended attributes
-	sta_lp (M65_LPNT_IRQ),z
+	and #$0F                           ; take current colour, but not extended attributes
+	sta [M65_LPNT_IRQ],z
 
-	// Cursor draw - character
+	; Cursor draw - character
 	jsr m65_cursor_blink_irqpnt_to_screen
-	lda_lp (M65_LPNT_IRQ),z
+	lda [M65_LPNT_IRQ],z
 	sta GDBLN
 	eor #$80
-	sta_lp (M65_LPNT_IRQ),z
+	sta [M65_LPNT_IRQ],z
 
 m65_cursor_blink_timer_reset:
 
-	// Rest blink counter (Mapping the 64, p39-40)
+	; Rest blink counter (Mapping the 64, p39-40)
 	lda #20
 	sta BLNCT
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 m65_cursor_blink_end:
 
@@ -87,17 +87,17 @@ m65_cursor_blink_end:
 
 m65_cursor_blink_undraw:
 
-	// Cursor undraw - color
+	; Cursor undraw - color
 	lda GDCOL
-	sta_lp (M65_LPNT_IRQ),z
+	sta [M65_LPNT_IRQ],z
 
-	// Cursor undraw - character
+	; Cursor undraw - character
 	jsr m65_cursor_blink_irqpnt_to_screen
 	lda GDBLN
-	sta_lp (M65_LPNT_IRQ),z
+	sta [M65_LPNT_IRQ],z
 
-	// Mark cursor as not drawn
+	; Mark cursor as not drawn
 	lda #0
 	sta BLNON
 
-	jmp_8 m65_cursor_blink_timer_reset
+	bra m65_cursor_blink_timer_reset

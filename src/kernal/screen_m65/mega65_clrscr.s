@@ -1,51 +1,51 @@
-// #LAYOUT# M65 KERNAL_1 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# M65 KERNAL_1 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
 
 M65_CLRSCR:
 
-	// Clear additional attributes from the color code
+	; Clear additional attributes from the color code
 
 	jsr m65_screen_clear_colorattr
 
-	// Disable the window mode
+	; Disable the window mode
 
 	lda #$00
 	sta M65_SCRWINMODE
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 m65_clrscr_takeover:
 
-	// Clear the whole screen + colour memory
+	; Clear the whole screen + colour memory
 
-	// Screen size
+	; Screen size
 	lda M65_COLGUARD+0
 	sta M65_DMAJOB_SIZE_0
 	lda M65_COLGUARD+1
 	sta M65_DMAJOB_SIZE_1
 
 
-	// Fill screen memory with spaces
+	; Fill screen memory with spaces
 	jsr m65_screen_dmasrcdst_screen
 	lda #$20
 	jsr m65_dmagic_oper_fill
 
-	// Fill color memory with the current color
+	; Fill color memory with the current color
 	jsr m65_screen_dmasrcdst_color
 	lda COLOR
 	and #$0F
 	jsr m65_dmagic_oper_fill
 
-	// Set the viewport to the beginning of virtual screen
-	// XXX deduplicate with mode setting routine
+	; Set the viewport to the beginning of virtual screen
+	; XXX deduplicate with mode setting routine
 
 	lda #$00
 	sta M65_COLVIEW+0
 	sta M65_COLVIEW+1
 
-	// Set screen+color base address in VIC IV
-	// XXX deduplicate with mode setting routine
+	; Set screen+color base address in VIC IV
+	; XXX deduplicate with mode setting routine
 
 	sta VIC_COLPTR+0
 	sta VIC_COLPTR+1
@@ -57,11 +57,11 @@ m65_clrscr_takeover:
 	lda M65_SCRBASE+1
 	sta VIC_SCRNPTR+1
 
-    // Set logical row length
+    ; Set logical row length
 
     jsr m65_screen_set_indx
 
-    // FALLTROUGH
+    ; FALLTROUGH
 
 M65_HOME:
 
@@ -78,6 +78,6 @@ M65_HOME:
 
 M65_HOME_winmode:
 
-	// XXX provide implementation
+	; XXX provide implementation
 
 	rts

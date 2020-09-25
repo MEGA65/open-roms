@@ -1,49 +1,49 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
-//
-// Fetches unsigned 16-bit integer, stores it in LINNUM, sets Carry to indicate failure (not a number)
-//
-// If value above 65535, error depends on .A opn entry
-//
-// Preserves both .X and .Y
-//
+;
+; Fetches unsigned 16-bit integer, stores it in LINNUM, sets Carry to indicate failure (not a number)
+;
+; If value above 65535, error depends on .A opn entry
+;
+; Preserves both .X and .Y
+;
 
 fetch_uint16:
 
-	// Push the error code to stack
+	; Push the error code to stack
 
 	pha
 
-	// Fetch the first character (skip spaces), check if 0-9
+	; Fetch the first character (skip spaces), check if 0-9
 
 	jsr fetch_character_skip_spaces
 
 	jsr convert_PETSCII_to_digit
 	bcs fetch_uint16_rts
 
-	// First character seems to be correct - store it
+	; First character seems to be correct - store it
 
 	sta LINNUM+0
 	lda #$00
 	sta LINNUM+1
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 fetch_uint16_loop:
 
-	// Try to fetch another digit
+	; Try to fetch another digit
 
 	jsr fetch_character
 	jsr convert_PETSCII_to_digit
 	bcs fetch_uint16_end
 
-	// We got another digit - store it
+	; We got another digit - store it
 
 	pha
 
-	// Multiply current LINNUM by 10 (x * 10 = (x * 2) + (x * 2) * 4)
+	; Multiply current LINNUM by 10 (x * 10 = (x * 2) + (x * 2) * 4)
 
 	jsr fetch_uint16_mul_LINNUM_2
 	bcs fetch_uint16_1PLA_error
@@ -67,7 +67,7 @@ fetch_uint16_loop:
 	sta LINNUM+1
 	bcs fetch_uint16_1PLA_error
 
-	// Add the new digit to LINNUM
+	; Add the new digit to LINNUM
 
 	pla
 	clc
@@ -78,20 +78,20 @@ fetch_uint16_loop:
 	sta LINNUM+1
 	bcs fetch_uint16_error
 
-	// Next iteration
+	; Next iteration
 
-	jmp_8 fetch_uint16_loop
+	+bra fetch_uint16_loop
 
 fetch_uint16_end:
 
-#if !HAS_OPCODES_65CE02
+!ifndef HAS_OPCODES_65CE02 {
 	jsr unconsume_character
-#else
+} else {
 	dew TXTPTR
-#endif
+}
 	clc
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 fetch_uint16_rts:
 
@@ -110,15 +110,15 @@ fetch_uint16_3PLA_error:
 	pla
 	pla
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 fetch_uint16_1PLA_error:
 
 	pla
 
-	// FALLTROUGH
+	; FALLTROUGH
 
 fetch_uint16_error:
 
-	plx_trash_a
+	+plx_trash_a
 	jmp do_basic_error

@@ -1,75 +1,71 @@
-// #LAYOUT# STD *        #TAKE
-// #LAYOUT# *   KERNAL_0 #TAKE
-// #LAYOUT# *   *        #IGNORE
+;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# *   *        #IGNORE
 
 
 default_irq_handler:
 
-#if CONFIG_RS232_UP9600
+!ifdef CONFIG_RS232_UP9600 {
 
 	jsr rs232_count_channels
 	cpx #$00
-	beq !+
+	beq @1
 	jsr up9600_irq
-!:
+@1:
+}
 
-#endif // CONFIG_RS232_UP9600
 
-#if ROM_LAYOUT_M65
+!ifdef CONFIG_MB_M65 {
 
 	jsr M65_MODEGET
-	bcs !+
+	bcs @2
 
 	jsr m65_cursor_blink
 
 	bra default_irq_handler_common
-!:
+@2:
 	jsr cursor_blink
 
 default_irq_handler_common:
 
 	jsr JSCNKEY
-	jsr JUDTIM // update jiffy clock
+	jsr JUDTIM ; update jiffy clock
 
-#else
+} else {
 
 	jsr cursor_blink
 	jsr JSCNKEY
-	jsr JUDTIM // update jiffy clock
+	jsr JUDTIM ; update jiffy clock
+}
 
-#endif
 
+!ifdef HAS_TAPE {
 
-#if CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
-
-	// Turn tape motor on/off depending on the button state
-	// For CAS1 (tape motor interlock) variable description, see Mapping the C64, page 7
+	; Turn tape motor on/off depending on the button state
+	; For CAS1 (tape motor interlock) variable description, see Mapping the C64, page 7
 
 	lda CPU_R6510
 	and #$10
-	beq !+                             // branch if tape button pressed
+	beq @3                             ; branch if tape button pressed
 
 	jsr tape_motor_off
 	lda #$00
 	sta CAS1
-	beq default_irq_handler_end_tape   // branch always
-!:
+	beq @4                             ; branch always
+@3:
 	lda CAS1
-	bne default_irq_handler_end_tape
+	bne @4
 	jsr tape_motor_on
-
-default_irq_handler_end_tape:
-
-#endif // CONFIG_TAPE_NORMAL || CONFIG_TAPE_TURBO
+@4:
+}
 
 
-#if CONFIG_PLATFORM_COMMODORE_64
+!ifdef CONFIG_PLATFORM_COMMODORE_64 {
 
-	// Acknowledge CIA interrupt and return
+	; Acknowledge CIA interrupt and return
 	jmp clear_cia1_interrupt_flag_and_return_from_interrupt
 
-#else
+ } else {
 
 	jmp return_from_interrupt
-
-#endif
+}

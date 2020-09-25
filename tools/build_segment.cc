@@ -20,18 +20,16 @@
 #include <set>
 #include <vector>
 
-const std::string ASM_CMD       = "java -jar ";
-
 const std::string LAB_OUT_START = "__routine_START_";
 const std::string LAB_OUT_END   = "__routine_END_";
-const std::string LAB_IN_START  = ".label __routine_START_";
-const std::string LAB_IN_END    = ".label __routine_END_";
+const std::string LAB_IN_START  = "\t" + LAB_OUT_START;
+const std::string LAB_IN_END    = "\t" + LAB_OUT_END;
 
 //
 // Command line settings
 //
 
-std::string CMD_assFile   = "KickAss.jar";
+std::string CMD_assembler = "./acme";
 std::string CMD_outFile   = "OUT.BIN";
 std::string CMD_outDir    = "./out";
 std::string CMD_segName   = "MAIN";
@@ -49,25 +47,28 @@ std::list<std::string> CMD_inList;
 void printUsage()
 {
     std::cout << "\n" <<
-        "usage: build_segment [-a <assembler jar file>] [-o <out file>] [-d <out dir>]" << "\n" <<
+        "usage: build_segment [-a <assembler command>] [-o <out file>] [-d <out dir>]" << "\n" <<
         "                     [-l <start/low address>] [-h <end/high address>]" << "\n" <<
         "                     [-s <segment name>] [-i <segment display info>]" << "\n" <<
         "                     [-r <rom layout>]" << "\n" <<
         "                     <input dir/file list>" << "\n\n";
 }
 
-void printBannerCollectAnalyse()
+void printBanner()
 {
     printBannerLineTop();
-    std::cout << "// Segment '" << CMD_segInfo << "' - collecting and analysing routines" << "\n";
+    std::cout << "// Building segment '" << CMD_segInfo << "'" << "\n";
     printBannerLineBottom();
 }
 
-void printBannerBinCompile()
+std::string toLabel(const std::string &fileName)
 {
-    printBannerLineTop();
-    std::cout << "// Segment '" << CMD_segInfo << "' - binning and compiling the assembly" << "\n";
-    printBannerLineBottom();
+    std::string retVal = fileName;
+
+    std::replace(retVal.begin(), retVal.end(), ',', '_');
+    std::replace(retVal.begin(), retVal.end(), '.', '_');
+
+    return retVal;
 }
 
 //
@@ -80,7 +81,7 @@ public:
     SourceFile(const std::string &fileName, const std::string &dirName);
 
     void preprocess();
-    bool preprocessLine(const std::string &line);
+
     bool nameMatch(const std::string &token, const std::string &name);
 
     std::string fileName;
@@ -89,6 +90,10 @@ public:
     bool ignore;
     bool floating;
     bool high;
+
+    std::map<std::string, std::list<std::pair<std::string, uint16_t>>> symbolImports;
+    std::map<uint32_t, std::pair<std::string, uint16_t>>               symbolAliases;
+
     std::vector<char> content;
 
     std::string label;
@@ -97,6 +102,26 @@ public:
 
     int testAddrStart; // start address during test run
     int testAddrEnd;   // end address during test run
+
+private:
+
+    bool layoutProcessingDone;
+
+    typedef struct ConfigEntry {
+        std::string          key;
+        std::vector<uint8_t> valBlob;
+        uint32_t             valInt;
+        bool                 valIntValid;
+    } ConfigEntry;
+
+    std::map<uint32_t, ConfigEntry> configEntries;
+
+    void preprocessLine(const std::string &line, uint32_t lineNum);
+    void preprocessLine_Alias(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum);
+    void preprocessLine_Config(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter,
+                               const std::string &line, uint32_t lineNum);
+    void preprocessLine_Import(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
+    void preprocessLine_Layout(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter);
 };
 
 class BinningProblem
@@ -109,10 +134,10 @@ public:
     bool isSolved() const;
 
     void addToProblem(SourceFile *routine);
-    void fillGap(DualStream &logOutput, int gapAddress, const std::list<SourceFile *> &routines);
-    void placeHighRoutines(DualStream &logOutput);
-    void performObviousSteps(DualStream &logOutput);
-    void removeUselessGaps(DualStream &logOutput);
+    void fillGap(std::ofstream &dbgOutput, int gapAddress, const std::list<SourceFile *> &routines);
+    void placeHighRoutines(std::ofstream &dbgOutput);
+    void performObviousSteps(std::ofstream &dbgOutput);
+    void removeUselessGaps(std::ofstream &dbgOutput);
     void sortFloatingRoutinesBySize();
 
     std::map<int, SourceFile *> fixedRoutines;    // routines with location already fixed
@@ -127,7 +152,7 @@ public:
 class Solver
 {
 public:
-    explicit Solver(BinningProblem &problem) : problem(problem), logOutput(logFile, std::cout) {}
+    explicit Solver(BinningProblem &problem) : problem(problem), logOutput(dbgOutput, std::cout) {}
 
     void run();
 
@@ -137,9 +162,9 @@ public:
 private:
 
     BinningProblem &problem;
-    std::ofstream logFile;
 
-    DualStream logOutput;
+    std::ofstream dbgOutput;
+    DualStream    logOutput;
 };
 
 //
@@ -166,7 +191,7 @@ void parseCommandLine(int argc, char **argv)
     {
         switch(opt)
         {
-            case 'a': CMD_assFile   = optarg; break;
+            case 'a': CMD_assembler = optarg; break;
             case 'o': CMD_outFile   = optarg; break;
             case 'd': CMD_outDir    = optarg; break;
             case 's': CMD_segName   = optarg; break;
@@ -291,15 +316,15 @@ void calcRoutineSizes()
     // Start at $100, so that no local data gets accesses using ZP addressing modes
     // during this pass, which would otherwise upset things later
 
-    outFile << "\n" << ".segment " << CMD_segName << " [start=$100, min=$100, max=$FFFF]" << "\n";
-    outFile << "#define SEGMENT_" << CMD_segName << "\n";
-    outFile << "#define ROM_LAYOUT_" << CMD_romLayout << "\n";
+    outFile << "\n" << "*=$100" << "\n";
+    outFile << "!set SEGMENT_" << CMD_segName << " = 1\n";
+    outFile << "!set ROM_LAYOUT_" << CMD_romLayout << " = 1\n";
 
     for (const auto &sourceFile : GLOBAL_sourceFiles)
     {
         outFile << "\n\n\n\n";
-        outFile << "/* Source file: " << sourceFile.fileName << " */" << "\n\n";
-        outFile << ".memblock \"" << sourceFile.fileName << "\"" << "\n";
+        outFile << ";--- Source file " << sourceFile.fileName << "\n\n";
+        outFile << "!zone " << toLabel(sourceFile.fileName) << "\n\n";
         outFile << LAB_OUT_START << sourceFile.label << ":" << "\n\n";
 
         outFile << std::string(sourceFile.content.begin(), sourceFile.content.end());
@@ -313,9 +338,11 @@ void calcRoutineSizes()
 
     // All written - now launch the assembler
 
-    const std::string cmd = "cd " + filePath + " && " + ASM_CMD + CMD_assFile + " " +
-                            outFileNameBare + " -symbolfile -o /dev/null";
-    std::cout << "command: " << cmd << "\n" << std::flush;
+    const std::string cmdParams = std::string(" ") + "--color --outfile /dev/null --symbollist " +
+                                  CMD_segName + "_sizetest.sym " + outFileNameBare;
+    const std::string cmd       = "cd " + filePath + " && " + CMD_assembler + cmdParams;
+
+    std::cout << "asm call:" << cmdParams << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
         ERROR("assembler running failed");
@@ -348,8 +375,8 @@ void calcRoutineSizes()
 
         auto eqPos = line.rfind('=');
 
-        auto address         = strtol(line.substr(eqPos + 2).c_str(), nullptr ,16);
-        std::string refLabel = line.substr(0, eqPos);
+        auto address         = strtol(line.substr(eqPos + 3).c_str(), nullptr , 16);
+        std::string refLabel = line.substr(0, eqPos - 1);
 
         for (auto &sourceFile : GLOBAL_sourceFiles)
         {
@@ -409,8 +436,8 @@ void prepareBinningProblem()
 
     const std::string logFileNamePath = CMD_outDir + DIR_SEPARATOR + CMD_segName + "_binproblem.log";
     unlink(logFileNamePath.c_str());
-    std::ofstream logFile(logFileNamePath, std::fstream::out | std::fstream::trunc);
-    DualStream logOutput(logFile, std::cout);
+    std::ofstream dbgOutput(logFileNamePath, std::fstream::out | std::fstream::trunc);
+    DualStream    logOutput(dbgOutput, std::cout);
 
     // Print out code length information
 
@@ -433,7 +460,7 @@ void prepareBinningProblem()
             floating_high = "                  ";
         }
 
-        logOutput << "file:    " << floating_high << sourceFile.fileName << spacing << "size: " << std::to_string(sourceFile.codeLength) << "\n";
+        dbgOutput << "file:    " << floating_high << sourceFile.fileName << spacing << "size: " << std::to_string(sourceFile.codeLength) << "\n";
     }
 
     // Create the binning problem
@@ -460,22 +487,20 @@ void prepareBinningProblem()
 
     for (auto& gap : GLOBAL_binningProblem.gaps)
     {
-        logOutput << "gap address: $" << std::uppercase << std::hex << gap.first <<
+        dbgOutput << "gap address: $" << std::uppercase << std::hex << gap.first <<
                      "    size: " << std::to_string(gap.second) << "\n";
     }
 
-    logOutput << "\n";
+    dbgOutput << "\n";
 
     // Close the log file
 
-    if (!logFile.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
-    logFile.close();
+    if (!dbgOutput.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
+    dbgOutput.close();
 }
 
 void solveBinningProblem()
 {
-    std::cout << "trying to solve the routine binning problem" << "\n\n";
-
     // Do some routine actions on the binning problem object
 
     Solver solver(GLOBAL_binningProblem);
@@ -494,32 +519,30 @@ void compileSegment()
     // First combine everything into one assembler file
 
     const std::string outFileNameBare = CMD_segName + "_combined.s";
+    const std::string vlfFileNamePath = CMD_segName + "_combined.vs";
+    const std::string symFileNamePath = CMD_segName + "_combined.sym";
     const std::string filePath        = CMD_outDir + DIR_SEPARATOR;
     const std::string outFileNamePath = filePath + outFileNameBare;
     unlink(outFileNamePath.c_str());
+    unlink(vlfFileNamePath.c_str());
+    unlink(symFileNamePath.c_str());
     std::ofstream outFile(outFileNamePath, std::fstream::out | std::fstream::trunc);
     if (!outFile.good()) ERROR(std::string("can't open temporary file '") + outFileNamePath + "'");
 
     // Write the header
 
-    outFile << "\n" <<
-               ".segment " << CMD_segName <<
-               " [start=$" << std::hex << CMD_loAddress <<
-               ", min=$" << std::hex << CMD_loAddress <<
-               ", max=$" << std::hex << CMD_hiAddress <<
-               ", outBin=\"" << CMD_outFile << "\", fill]" <<
-               "\n";
-    outFile << "#define SEGMENT_" << CMD_segName << "\n";
-    outFile << "#define ROM_LAYOUT_" << CMD_romLayout << "\n";
-    outFile << ".namespace " << CMD_segName << " {" << "\n\n";
+    outFile << "!set SEGMENT_" << CMD_segName << " = 1\n";
+    outFile << "!set ROM_LAYOUT_" << CMD_romLayout << " = 1\n\n";
+    outFile << "\t* = $" << std::hex << CMD_loAddress << ", INVISIBLE\n";
+    outFile << "\t!fill $" << std::hex << (CMD_hiAddress + 1 - CMD_loAddress) << "\n\n";
 
     // Write files which only contain definitions (no routines)
 
     for (const auto &sourceFile : GLOBAL_sourceFiles_noCode)
     {
         outFile << "\n\n\n\n";
-        outFile << "/* Source file: " << sourceFile.fileName << " */" << "\n\n";
-        outFile << ".memblock \"" << sourceFile.fileName << "\"" << "\n";
+        outFile << ";--- Source file " << sourceFile.fileName << "\n\n";
+        outFile << "!zone " << toLabel(sourceFile.fileName) << "\n\n";
         outFile << std::string(sourceFile.content.begin(), sourceFile.content.end());
         outFile << "\n";
     }
@@ -529,23 +552,28 @@ void compileSegment()
     for (const auto &routine : GLOBAL_binningProblem.fixedRoutines)
     {
         outFile << "\n\n\n\n";
-        outFile << "/* Source file: " << routine.second->fileName << " */" << "\n\n";
-        outFile << ".memblock \"" << routine.second->fileName << "\"" << "\n";
+        outFile << ";--- Source file " << routine.second->fileName << "\n\n";
+        outFile << "!zone " << toLabel(routine.second->fileName) << "\n\n";
         outFile << "\t* = $" << std::hex << routine.first << "\n\n";
         outFile << std::string(routine.second->content.begin(), routine.second->content.end());
         outFile << "\n";
     }
 
-    outFile << "\n\n" << "} // namespace" << "\n";
+    outFile << "\n\n";
 
     if (!outFile.good()) ERROR(std::string("error writing temporary file '") + outFileNamePath + "'");
     outFile.close();
 
     // All written - now launch the assembler
 
-    const std::string cmd = "cd " + filePath + " && " + ASM_CMD + CMD_assFile + " " +
-                            outFileNameBare + " -symbolfile -vicesymbols -o " + CMD_outFile;
-    std::cout << "command: " << cmd << "\n" << std::flush;
+    const std::string cmdParams = std::string(" ") + "--strict-segments --color" +
+                                  " --outfile "     + CMD_outFile +
+                                  " --symbollist "  + symFileNamePath +
+                                  " --vicelabels "  + vlfFileNamePath +
+                                  " " + outFileNameBare;
+    const std::string cmd = "cd " + filePath + " && " + CMD_assembler + cmdParams;
+
+    std::cout << "asm call:" << cmdParams << "\n" << std::flush;
     if (0 != system(cmd.c_str()))
     {
         ERROR("assembler running failed");
@@ -560,13 +588,11 @@ int main(int argc, char **argv)
 {
     parseCommandLine(argc, argv);
 
-    printBannerCollectAnalyse();
+    printBanner();
 
     readSourceFiles();
     checkInputFileLabels();
     calcRoutineSizes();
-
-    printBannerBinCompile();
 
     prepareBinningProblem();
     solveBinningProblem();
@@ -588,27 +614,27 @@ SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) 
     startAddr(-1),
     codeLength(-1),
     testAddrStart(-1),
-    testAddrEnd(-1)
+    testAddrEnd(-1),
+    layoutProcessingDone(false)
 {
     const std::string fileNameWithPath = dirName + DIR_SEPARATOR + fileName;
-    std::cout << "reading file: " << fileNameWithPath << "\n";
 
     // Open the file
 
     std::ifstream inFile;
     inFile.open(fileNameWithPath);
-    if (!inFile.good()) ERROR("unable to open file");
+    if (!inFile.good()) ERROR(fileNameWithPath + " - unable to open file");
 
     // Read the content
 
     inFile.seekg(0, inFile.end);
     auto fileLength = inFile.tellg();
-    if (fileLength == 0) ERROR("file is empty");
+    if (fileLength == 0) ERROR(fileNameWithPath + " - file is empty");
     content.resize(fileLength);
 
     inFile.seekg(0);
     inFile.read(&content[0], fileLength);
-    if (!inFile.good()) ERROR("error reading file content");
+    if (!inFile.good()) ERROR(fileNameWithPath + " - error reading file content");
     if (content.back() != '\n') content.push_back('\n');
 
     inFile.close();
@@ -638,30 +664,99 @@ SourceFile::SourceFile(const std::string &fileName, const std::string &dirName) 
 
     preprocess();
 
-    // Generate KickAss compatible label from the file name
+    // Generate assembler compatible label from the file name
 
-    label = fileName.substr(0, fileName.length() - 2);
-
-    std::replace(label.begin(), label.end(), '.', '_');
-    std::replace(label.begin(), label.end(), ',', '_');
+    label = toLabel(fileName);
 }
 
 void SourceFile::preprocess()
 {
     std::string contentStr(content.begin(), content.end());
-    std::istringstream stream(contentStr);
+    std::istringstream stream1(contentStr);
+    std::istringstream stream2(contentStr);
     std::string line;
+    uint32_t    lineNum = 0;
 
-    while (std::getline(stream, line))
+    // Preprocess all the lines
+
+    while (std::getline(stream1, line))
     {
+        lineNum++;
+
         if (line.empty()) continue;
         std::replace(line.begin(), line.end(), '\t', ' ');
         line.erase(std::remove(line.begin(), line.end(), '\r'), line.end());
-        if (!preprocessLine(line)) break;
+        preprocessLine(line, lineNum - 1);
     }
+
+    // Replace content with preprocessed one
+
+    std::string spacing;
+    content.clear();
+    lineNum = 0;
+
+    size_t maxSymLen = 0;
+    for (const auto &symbolAlias : symbolAliases) maxSymLen = std::max(maxSymLen, symbolAlias.second.first.length());
+
+    while (std::getline(stream2, line))
+    {
+        std::ostringstream outStream;
+
+        if (symbolAliases.find(lineNum) != symbolAliases.end())
+        {
+            spacing.resize(maxSymLen + 2 - symbolAliases[lineNum].first.length(), ' ');
+            outStream << "!addr " << symbolAliases[lineNum].first << spacing << "= $" <<
+                         std::hex << symbolAliases[lineNum].second << "    " << line;
+
+            const std::string outString = outStream.str();
+            content.insert(content.end(), outString.begin(), outString.end());
+        }
+        else if (configEntries.find(lineNum) != configEntries.end())
+        {
+
+            outStream << "!set CONFIG_" << configEntries[lineNum].key << " = ";
+            if (configEntries[lineNum].valIntValid)
+            {
+                outStream << "$" << std::hex << configEntries[lineNum].valInt;
+            }
+            else
+            {
+                outStream << "1";
+            }
+
+            outStream << "    " << line;
+
+            if (!configEntries[lineNum].valBlob.empty())
+            {
+                outStream << "\n!macro CONFIG_" << configEntries[lineNum].key << " { !byte ";
+
+                bool first = true;
+                for (auto &byte : configEntries[lineNum].valBlob)
+                {
+                    outStream << std::string(first ? "$" : ", $") << std::string((byte < 10) ? "0" : "") <<
+                                 std::hex << (int) byte;
+                    first = false;
+                }
+                outStream << " }";
+            }
+
+            const std::string outString = outStream.str();
+            content.insert(content.end(), outString.begin(), outString.end());
+        }
+        else
+        {
+            content.insert(content.end(), line.begin(), line.end());          
+        }
+
+        content.push_back('\n');
+        lineNum++;
+    }
+
+    symbolAliases.clear();
+    symbolImports.clear();
 }
 
-bool SourceFile::preprocessLine(const std::string &line)
+void SourceFile::preprocessLine(const std::string &line, uint32_t lineNum)
 {
     // Split the line into tokens
 
@@ -674,7 +769,7 @@ bool SourceFile::preprocessLine(const std::string &line)
         if (token.empty()) continue;
         tokens.push_back(token);
     }
-    if (tokens.empty()) return true;
+    if (tokens.empty()) return;
 
     // Now preprocess line using the token list
 
@@ -682,19 +777,208 @@ bool SourceFile::preprocessLine(const std::string &line)
 
     // Injest the comment token
 
-    if ((iter++)->compare("//") != 0 || iter == tokens.end()) return true;
+    if ((iter++)->compare(";;") != 0 || iter == tokens.end()) return;
 
     // Check if supported directive
 
-    if ((iter++)->compare("#LAYOUT#") != 0) return true;
+    if (iter->compare("#ALIAS#") == 0) preprocessLine_Alias(tokens,        ++iter, lineNum);
+    else if (iter->compare("#CONFIG#") == 0) preprocessLine_Config(tokens, ++iter, line, lineNum);
+    else if (iter->compare("#IMPORT#") == 0) preprocessLine_Import(tokens, ++iter);
+    else if (iter->compare("#LAYOUT#") == 0) preprocessLine_Layout(tokens, ++iter);
+}
+
+void SourceFile::preprocessLine_Alias(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter, uint32_t lineNum)
+{
+    if (ignore) return;
+
+    // Extract symbol, namespace, and target
+
+    if (iter == tokens.end()) ERROR("syntax error, missing symbol in '#ALIAS#'");
+    std::string symbol = *(iter++);
+
+    if (iter == tokens.end() || (iter++)->compare("=") != 0) ERROR("syntax error, expected assignment in '#ALIAS#'");
+    if (iter == tokens.end()) ERROR("syntax error, missing namespace/target in '#ALIAS#'");
+
+    auto dotPos = iter->rfind('.');
+    std::string symNameSpace = iter->substr(0, dotPos);
+    std::string symTarget    = iter->substr(dotPos + 1, std::string::npos);
+
+    if (symNameSpace.empty()) ERROR("syntax error, missing namespace in '#ALIAS#'");
+    if (symTarget.empty())    ERROR("syntax error, missing target in '#ALIAS#'");
+
+    // Put the alias - if address found
+
+    for (const auto &alias : symbolImports[symNameSpace])
+    {
+        if (alias.first.compare(symTarget) != 0) continue;
+
+        symbolAliases[lineNum] = std::pair<std::string, uint16_t>(symbol, alias.second);
+        break;
+    }
+}
+
+void SourceFile::preprocessLine_Config(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter,
+                                       const std::string &line, uint32_t lineNum)
+{
+    if (ignore) return;
+
+    if (iter == tokens.end()) ERROR("syntax error, missing key in '#CONFIG#'");
+    std::string key = *(iter++);
+
+    if (iter == tokens.end()) ERROR("syntax error, missing value in '#CONFIG#'");
+    std::string valStr = *(iter++);
+
+    if (valStr.compare("NO") == 0) return;
+    else if (valStr.compare("YES") == 0)
+    {
+        // This is a YES/NO value (bool)
+
+        configEntries[lineNum].key         = key;
+        configEntries[lineNum].valIntValid = false;
+    }
+    else if (valStr.length() > 1 && valStr[0] == '"')
+    {
+        // This is a string value
+
+        auto pos = line.find('"', 0);
+        while (true)
+        {
+            char byte;
+            auto advance = [&byte, &line, &pos]()
+            {
+                if ((line.size() <= ++pos) || (line[pos] == '\n')) ERROR("syntax error, unfinished string in '#CONFIG#'");
+                byte = line[pos];
+            };
+            auto byteToNibble = [&byte]() -> uint8_t
+            {
+                if (byte >= '0' && byte <= '9') return byte - '0';
+                if (byte >= 'a' && byte <= 'f') return byte - 'a' + 10;
+                if (byte >= 'A' && byte <= 'F') return byte - 'A' + 10;
+
+                ERROR("syntax error, improper 2-digit hex value in '#CONFIG#'");
+                return 0;
+            };
+
+            advance();
+
+            // Convert string from ASCII to PETSCII
+
+            if (byte == '"') break;
+            if (byte == '\\')
+            {
+                advance();
+
+                if (byte == '"')
+                {
+                    configEntries[lineNum].valBlob.push_back(byte);
+                }
+                else
+                {
+                    uint8_t val = byteToNibble() * 16;
+                    advance();
+                    val += byteToNibble(); 
+
+                    configEntries[lineNum].valBlob.push_back(val);
+                }
+            }
+            else if ((byte >= 0x20 && byte <= 0x5B) || byte == 0x5D) configEntries[lineNum].valBlob.push_back(byte);
+            else ERROR("syntax error, invalid character in string in '#CONFIG#'");
+        }
+
+        if (configEntries[lineNum].valBlob.empty()) ERROR("syntax error, empty string in '#CONFIG#'");
+
+        configEntries[lineNum].key         = key;
+        configEntries[lineNum].valIntValid = false;
+    }
+    else if (valStr.length() > 1 && valStr[0] == '$')
+    {
+        // This is a hexadecimal value
+
+        for (size_t idx = 1; idx < valStr.length(); idx++)
+        {
+            if (valStr[idx] < '0' && valStr[idx] > '9' &&
+                valStr[idx] < 'A' && valStr[idx] > 'F' &&
+                valStr[idx] < 'a' && valStr[idx] > 'f')
+            {
+                ERROR("syntax error, wrong hex value in '#CONFIG#'");
+            }
+        }
+
+        configEntries[lineNum].key         = key;
+        configEntries[lineNum].valInt      = std::stoul(valStr.substr(1, std::string::npos), nullptr, 16);
+        configEntries[lineNum].valIntValid = true;
+    }
+    else if (valStr.length() > 0 && valStr[0] >= '0' && valStr[0] <= '9')
+    {
+        // This is a decimal value
+
+        for (size_t idx = 0; idx < valStr.length(); idx++)
+        {
+            if (valStr[idx] < '0' && valStr[idx] > '9')
+            {
+                ERROR("syntax error, wrong dec value in '#CONFIG#'");
+            }
+        }
+
+        configEntries[lineNum].key         = key;
+        configEntries[lineNum].valInt      = std::stoul(valStr.substr(0, std::string::npos), nullptr, 10);
+        configEntries[lineNum].valIntValid = true;
+    }
+    else
+    {
+        ERROR("syntax error, unknown key in '#CONFIG#' line ");
+    }
+}
+
+void SourceFile::preprocessLine_Import(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter)
+{
+    if (ignore) return;
+
+    if (iter == tokens.end()) ERROR("syntax error, missing namespace in '#IMPORT#'");
+    std::string symNameSpace = *(iter++);
+
+    if (iter == tokens.end() || iter->compare("=") != 0) ERROR("syntax error, expected assignment in '#IMPORT#'");
+
+    while (++iter != tokens.end())
+    {
+        // Try to import sumbols for the file
+
+        std::ifstream impFile;
+        impFile.open(CMD_outDir + DIR_SEPARATOR + *iter);
+        if (!impFile.good())
+        {
+            impFile.close();
+            continue;
+        }
+
+        std::string line;
+        while (std::getline(impFile, line))
+        {
+            // Import label and address
+
+            auto eqPos = line.rfind('=');
+
+            auto address      = strtol(line.substr(eqPos + 3).c_str(), nullptr , 16);
+            std::string label = line.substr(1, eqPos - 2);
+
+            symbolImports[symNameSpace].push_back(std::pair<std::string, uint16_t>(label, address));
+        }
+
+        impFile.close();
+    }
+}
+
+void SourceFile::preprocessLine_Layout(const std::list<std::string> &tokens, std::list<std::string>::iterator &iter)
+{
+    if (layoutProcessingDone) return;
 
     // Check if segment name and rom layout match
 
     if (iter == tokens.end()) ERROR("syntax error, missing rom layout in '#LAYOUT#'");
-    if (!nameMatch(*(iter++), CMD_romLayout)) return true;
+    if (!nameMatch(*(iter++), CMD_romLayout)) return;
 
     if (iter == tokens.end()) ERROR("syntax error, missing segment name in '#LAYOUT#'");
-    if (!nameMatch(*(iter++), CMD_segName)) return true;
+    if (!nameMatch(*(iter++), CMD_segName)) return;
 
     // Retrieve and apply action
 
@@ -720,13 +1004,14 @@ bool SourceFile::preprocessLine(const std::string &line)
     }
     else if (iter->compare("#TAKE") != 0)
     {
-        ERROR(std::string("syntax error, unsupported action '") + token + "' in '#LAYOUT#'");
+        ERROR(std::string("syntax error, unsupported action '") + *iter + "' in '#LAYOUT#'");
     }
 
-    // Tell the caller to finish processing the file
+    // Mark the file - to tell that layout processing is finished
 
-    return false;
+    layoutProcessingDone = true;
 }
+
 
 bool SourceFile::nameMatch(const std::string &token, const std::string &name)
 {
@@ -824,7 +1109,7 @@ void BinningProblem::addToProblem(SourceFile *routine)
     }
 }
 
-void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::list<SourceFile *> &routines)
+void BinningProblem::fillGap(std::ofstream &dbgOutput, int gapAddress, const std::list<SourceFile *> &routines)
 {
     int offset = 0;
     std::string spacing;
@@ -834,7 +1119,7 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
         int targetAddr = gapAddress + offset;
 
         spacing.resize(GLOBAL_maxFileNameLen + 4 - routine->fileName.length(), ' ');
-        logOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
+        dbgOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
                      routine->fileName << spacing << "size: " << routine->codeLength << "\n";
 
         fixedRoutines[targetAddr] = routine;
@@ -850,22 +1135,22 @@ void BinningProblem::fillGap(DualStream &logOutput, int gapAddress, const std::l
 
     if (offset == gaps[gapAddress])
     {
-        logOutput << "filled to the last byte" << "\n";
+        dbgOutput << "filled to the last byte" << "\n";
     }
     else if (!isSolved())
     {
-        logOutput << "filled in - dropped bytes: " << gaps[gapAddress] - offset << "\n";
+        dbgOutput << "filled in - dropped bytes: " << gaps[gapAddress] - offset << "\n";
         statWasted += gaps[gapAddress] - offset;
     }
     else
     {
-        logOutput << "out of routines" << "\n";
+        dbgOutput << "out of routines" << "\n";
     }
 
     gaps.erase(gapAddress);
 }
 
-void BinningProblem::placeHighRoutines(DualStream &logOutput)
+void BinningProblem::placeHighRoutines(std::ofstream &dbgOutput)
 {
     // Place routines which has to be stored in the high ROM area
     // It is expected there will be very few of them, so no complicated algorithms here
@@ -929,11 +1214,11 @@ void BinningProblem::placeHighRoutines(DualStream &logOutput)
         fixedRoutines[targetAddr] = *iterRoutine;
         statFree   -= routineSize;
 
-        logOutput << "reducing gap $" << std::hex << gapAddress << std::dec <<
+        dbgOutput << "reducing gap $" << std::hex << gapAddress << std::dec <<
                     " to size " << gaps[gapAddress] << "\n";
 
         spacing.resize(GLOBAL_maxFileNameLen + 4 - (*iterRoutine)->fileName.length(), ' ');
-        logOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
+        dbgOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
                      (*iterRoutine)->fileName << spacing << "size: " <<
                      (*iterRoutine)->codeLength << "\n";
 
@@ -942,7 +1227,7 @@ void BinningProblem::placeHighRoutines(DualStream &logOutput)
     }
 }
 
-void BinningProblem::performObviousSteps(DualStream &logOutput)
+void BinningProblem::performObviousSteps(std::ofstream &dbgOutput)
 {
     // Get the size of the biggest routine; if there is just one gap which
     // can handle it - put the routine exactly there
@@ -971,7 +1256,7 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
         if (!lastGap && gaps.size() == 1)
         {
             lastGap = true;
-            logOutput << "selected gap: $" << std::hex << gapAddress << std::dec <<
+            dbgOutput << "selected gap: $" << std::hex << gapAddress << std::dec <<
                          " (size: " << gaps[gapAddress] << ") - the last remaining" << "\n";
         }
 
@@ -986,12 +1271,12 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
 
             if (gaps.size() > 1)
             {
-                logOutput << "forced reducing gap $" << std::hex << gapAddress << std::dec <<
+                dbgOutput << "forced reducing gap $" << std::hex << gapAddress << std::dec <<
                              " to size " << gaps[gapAddress] << "\n";
             }
 
             spacing.resize(GLOBAL_maxFileNameLen + 4 - floatingRoutines.back()->fileName.length(), ' ');
-            logOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
+            dbgOutput << "    $" << std::hex << targetAddr << std::dec << ": " <<
                          floatingRoutines.back()->fileName << spacing << "size: " <<
                          floatingRoutines.back()->codeLength << "\n";
 
@@ -1003,7 +1288,7 @@ void BinningProblem::performObviousSteps(DualStream &logOutput)
     }
 }
 
-void BinningProblem::removeUselessGaps(DualStream &logOutput)
+void BinningProblem::removeUselessGaps(std::ofstream &dbgOutput)
 {
     // Get the size of the smallest floating routine,
     // remove all the gaps which are smaller in size
@@ -1018,7 +1303,7 @@ void BinningProblem::removeUselessGaps(DualStream &logOutput)
         {
             if (gap.second < minUsefulSize)
             {
-                logOutput << "dropping gap: $" << std::hex << gap.first << std::dec << " (size: " << gap.second << ")" << "\n";
+                dbgOutput << "dropping gap: $" << std::hex << gap.first << std::dec << " (size: " << gap.second << ")" << "\n";
                 statWasted += gap.second;
                 gaps.erase(gap.first);
                 repeat = true;
@@ -1046,7 +1331,7 @@ void Solver::run()
 
     const std::string logFileNamePath = CMD_outDir + DIR_SEPARATOR + CMD_segName + "_binsolution.log";
     unlink(logFileNamePath.c_str());
-    logFile.open(logFileNamePath, std::fstream::out | std::fstream::trunc);
+    dbgOutput.open(logFileNamePath, std::fstream::out | std::fstream::trunc);
 
     // Sort the floating routines, just to be extra sure
 
@@ -1054,42 +1339,43 @@ void Solver::run()
 
     // Place routines which should be stored in high-ROM
 
-    problem.placeHighRoutines(logOutput);
+    problem.placeHighRoutines(dbgOutput);
 
     // Run the solver until all is done
 
     while (!problem.gaps.empty() && !problem.floatingRoutines.empty())
     {
-        problem.performObviousSteps(logOutput);
-        problem.removeUselessGaps(logOutput);
+        problem.performObviousSteps(dbgOutput);
+        problem.removeUselessGaps(dbgOutput);
 
         if (problem.gaps.empty() || problem.floatingRoutines.empty()) break;
 
         int gapAddr = selectGapToFill();
 
-        logOutput << "selected gap: $" << std::hex << gapAddr << std::dec << " (size: " << problem.gaps[gapAddr] << ")" << "\n";
+        dbgOutput << "selected gap: $" << std::hex << gapAddr << std::dec << " (size: " << problem.gaps[gapAddr] << ")" << "\n";
 
         std::list<SourceFile *> partialSolution;
         findPartialSolution(problem.gaps[gapAddr], partialSolution);
-        problem.fillGap(logOutput, gapAddr, partialSolution);
+        problem.fillGap(dbgOutput, gapAddr, partialSolution);
     }
 
     // Print out the result
 
     if (problem.isSolved())
     {
-        logOutput << "\n" << "all the routines sucessfully placed" << "\n\n";
-
+        dbgOutput << "\n";
+        logOutput << "all routines sucessfully placed" << "\n";
+        dbgOutput << "\n";
         logOutput << "segment statistics:" << "\n";
         // logOutput << "    - total size:   " << problem.statSize << "\n"; - for BASIC contains filling gap too
         logOutput << "    - wasted bytes: " << problem.statWasted << "\n";
-        logOutput << "    - still free:   " << problem.statFree - problem.statWasted << "\n\n";
+        logOutput << "    - still free:   " << problem.statFree - problem.statWasted << "\n";
     }
 
     // Close the log file
 
-    if (!logFile.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
-    logFile.close();
+    if (!dbgOutput.good()) ERROR(std::string("error writing log file '") + logFileNamePath + "'");
+    dbgOutput.close();
 }
 
 int Solver::selectGapToFill()

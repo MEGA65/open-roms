@@ -1,0 +1,3 @@
+BIT (to skip 2 bytes) + LDA #$02 + BIT (to skip 2 bytes) + LDA #$03 + BIT ...
+
+A common 6502 trick to put value to .A depending on target jump address with small amount of code. Not creative - not copyrightable.

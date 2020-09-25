@@ -202,7 +202,7 @@ std::string toAssemblerString(const std::string &constName, double constValue)
 		outFloat[4],
 		constValue);
 
-	std::string outDef = std::string("\n.macro put_const_") + constName + "()\n{\n\t.byte " + buf + "\n}\n";
+	std::string outDef = std::string("\n!macro PUT_CONST_") + constName + " {\n\t!byte " + buf + "\n}\n";
 
 	return outDef;
 } 
@@ -248,7 +248,7 @@ void writeConstants()
    
     outFile.close();
 
-    std::cout << std::string("Constants written to: ") + CMD_outFile + "\n\n";
+    std::cout << std::string("floating point constants written to: ") + CMD_outFile + "\n\n";
 }
 
 

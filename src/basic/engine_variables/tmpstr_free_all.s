@@ -1,25 +1,25 @@
-// #LAYOUT# STD *       #TAKE
-// #LAYOUT# *   BASIC_0 #TAKE
-// #LAYOUT# *   *       #IGNORE
+;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
+;; #LAYOUT# *   *       #IGNORE
 
 
 tmpstr_free_all:
 
-	// Go through all the temporary descriptors and free everything
+	; Go through all the temporary descriptors and free everything
 
 	ldx #$19
 
-	//FALLTROUGH
+	;FALLTROUGH
 
 tmpstr_free_all_loop:
 
-	// Free all the temporary strings, one by one
+	; Free all the temporary strings, one by one
 
 	cpx TEMPPT
 	beq tmpstr_free_all_reset
 
 	lda $00, x
-	beq !+
+	beq @1
 
 	sta DSCPNT+0
 	lda $01, x	
@@ -27,18 +27,18 @@ tmpstr_free_all_loop:
 	lda $02, x	
 	sta DSCPNT+2
 
-	phx_trash_a
+	+phx_trash_a
 	jsr varstr_free_no_checks
-	plx_trash_a
-!:
+	+plx_trash_a
+@1:
 	inx
 	inx
 	inx
-	bne tmpstr_free_all_loop           // branch always
+	bne tmpstr_free_all_loop           ; branch always
 
-tmpstr_free_all_reset: // entry point for CLR
+tmpstr_free_all_reset: ; entry point for CLR
 
-	// RESET TEMPPT and LASTPT to default values
+	; RESET TEMPPT and LASTPT to default values
 
 	lda #$19
 	sta TEMPPT

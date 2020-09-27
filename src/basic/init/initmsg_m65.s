@@ -108,16 +108,3 @@ INITMSG_revision:
 	lda #<rom_revision_basic_string
 	ldy #>rom_revision_basic_string
 	jmp STROUT
-
-
-
-!ifdef HAS_NOLGPL3_WARN {
-
-str_nonlgpl3_warn:
-
-	!byte $0D, $0D, $0D, $0D
-	!pet "build contains non-lgpl3 code"
-	!byte $0D
-	!pet "  *** do not distribute ***"
-	!byte $0D, $0D, $00
-}

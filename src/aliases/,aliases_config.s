@@ -241,6 +241,13 @@
 
 
 
+; Check that internal DOS configuration is correct
+
+!ifdef CONFIG_CMDRDOS { !ifndef CONFIG_MB_M65 {
+	!error "CONFIG_CMDRDOS requires CONFIG_MB_M65"
+} }
+
+
 ; Check that startup banner configuration is correct
 
 !set counter = 0
@@ -412,6 +419,12 @@
 		!set CONFIG_COLOR_TXT = $01
 	}
 }
+
+
+
+; Handle non-LGPL3 code
+
+!ifdef CONFIG_CMDRDOS { !set HAS_NOLGPL3_WARN = 1 }
 
 
 

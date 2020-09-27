@@ -35,6 +35,8 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
 
 SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
                  src/dos_m65 \
+                 # src/dos_m65/cmdrdos \
+                 src/dos_m65/sdcard
 
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal \

@@ -59,9 +59,18 @@ INITMSG_end:
 
 	jsr initmsg_bytes_free
 
+!ifdef HAS_NOLGPL3_WARN {
+
+	lda #<str_nonlgpl3_warn
+	ldy #>str_nonlgpl3_warn
+	jmp STROUT
+
+} else {
+
 	ldx #$09
 	ldy #$00
 	jmp plot_set
+}
 
 INITMSG_main_banner:
 
@@ -99,3 +108,16 @@ INITMSG_revision:
 	lda #<rom_revision_basic_string
 	ldy #>rom_revision_basic_string
 	jmp STROUT
+
+
+
+!ifdef HAS_NOLGPL3_WARN {
+
+str_nonlgpl3_warn:
+
+	!byte $0D, $0D, $0D, $0D
+	!pet "build contains non-lgpl3 code"
+	!byte $0D
+	!pet "  *** do not distribute ***"
+	!byte $0D, $0D, $00
+}

@@ -94,6 +94,8 @@
 
 ; --- Built-in DOS configuration
 
+;; #CONFIG# CMDRDOS                    NO        ; do not change, DOS is not implemented yet
+
 ;; #CONFIG# UNIT_SDCARD                0         ; do not change, DOS is not implemented yet
 ;; #CONFIG# UNIT_FLOPPY                0         ; do not change, DOS is not implemented yet
 ;; #CONFIG# UNIT_RAMDISK               0         ; do not change, DOS is not implemented yet

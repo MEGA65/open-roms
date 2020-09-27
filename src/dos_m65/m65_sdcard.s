@@ -12,15 +12,15 @@
 !addr CARD_IS_SDHC = $80 ; $00 = SD, $80 = SDHC
 !addr CARD_SIZE    = $81 ; 4 bytes
 !addr CARD_SECNUM  = $85 ; 4 bytes - sector number
+!addr CARD_BUFPNT  = $89 ; 4 bytes - pointer to hardware sector buffer
 
 
 ; Temporary data XXX addresses are temporary
 
-!addr TMP_STEP     = $89  ; 4 bytes
-!addr TMP_RETRIES  = $8D  ; 1 byte
+!addr TMP_STEP     = $8D  ; 4 bytes
+!addr TMP_RETRIES  = $8E  ; 1 byte
 
-
-; XXX hardware address SD_SECTORBUF = 0xffd6e00L;
+!addr CARD_BUF     = $8100 ; 512 bytes, up to $82FF
 
 
 ; External entry points:
@@ -31,8 +31,21 @@
 
 m65_sdcard_init:
 
+	; Initialize most important variables
+
 	lda #$00
 	sta CARD_IS_SDHC
+
+	lda #SD_SECBUF_0
+	sta CARD_BUFPNT+0
+	lda #SD_SECBUF_1
+	sta CARD_BUFPNT+1
+	lda #SD_SECBUF_2
+	sta CARD_BUFPNT+2
+	lda #SD_SECBUF_3
+	sta CARD_BUFPNT+3
+
+	; Reset the card
 
 	jsr m65_sdcard_reset
 	
@@ -72,28 +85,6 @@ m65_sdcard_init_sdhc:
 	lda #$80
 	sta CARD_IS_SDHC
 
-	; Prepare data for determining card size - put $00200000 to TMP_STEP and CARD_SECNUM
-
-    ; SDHC claims 32GB limit, and reading from beyond that might cause
-    ; trouble. However, 32bits x 512byte sectors = 16TB addressable.
-    ; It thus seems that the top byte of the address may not be safe to use,
-    ; or at least the top few bits.
-
-	; XXX this should be initialized to 0 in a loop
-	; XXX is it needed for anything
-
-	lda #$00
-	sta CARD_SECNUM+0
-	sta TMP_STEP+0
-	sta CARD_SECNUM+1
-	sta TMP_STEP+1
-	sta CARD_SECNUM+2
-	sta TMP_STEP+2
-
-	lda #$02
-	sta CARD_SECNUM+3
-	sta TMP_STEP+3
-
 	bra m65_sdcard_init_getsize
 
 m65_sdcard_init_sdsc:
@@ -102,23 +93,6 @@ m65_sdcard_init_sdsc:
 	sta CARD_IS_SDHC
 	lda #$40                           ; use byte addressing
 	sta SD_CTL
-
-	; Prepare data for determining card size - put $00200000 to TMP_STEP and CARD_SECNUM
-
-	; XXX this should be initialized to 0 in a loop
-	; XXX is it needed for anything
-
-	lda #$00
-	sta CARD_SECNUM+0
-	sta TMP_STEP+0
-	sta CARD_SECNUM+1
-	sta TMP_STEP+1
-	sta CARD_SECNUM+3
-	sta TMP_STEP+3
-
-	lda #$02
-	sta CARD_SECNUM+2
-	sta TMP_STEP+2
 
 	; FALLTROUGH
 
@@ -152,6 +126,8 @@ m65_sdcard_init_getsize:
 
 
 
+; -------------------------------------
+
 
 
 
@@ -178,7 +154,6 @@ m65_sdcard_readsector_sdhc:
 
 	bra m65_sdcard_readsector_read
 
-
 m65_sdcard_readsector_sdsc: ; multiply sector number by 512
 
 	lda #$00
@@ -201,30 +176,75 @@ m65_sdcard_readsector_sdsc: ; multiply sector number by 512
 
 m65_sdcard_readsector_read:
 
-	; Wait till card is ready
-
-
-
-
-
-
 	; Set number of retries
 
 	lda #$0A
 	sta TMP_RETRIES
 
-	; XXX
+	; FALLTROUGH
+
+m65_sdcard_readsector_try_loop:
+
+	; Wait till card is ready
+
+	jsr m65_sdcard_readsector_wait
+	bcs m65_sdcard_readsector_fail
+
+	; Read command
+
+	lda #$02
+	sta SD_CTL
+
+	; Wait for command completion
+
+	jsr m65_sdcard_readsector_wait
+	bcs m65_sdcard_readsector_fail
 
 
+	lda SD_CTL
+	and #$67
+	bne m65_sdcard_readsector_copy_data
 
+	jsr m65_sdcard_reset
+	dec TMP_RETRIES
+	bne m65_sdcard_readsector_try_loop
 
-
-
-
+	; FALLTROUGH
 
 m65_sdcard_readsector_fail:
 
 	sec
+	rts
+
+m65_sdcard_readsector_copy_data:
+
+	; XXX this should be a separate routine
+	; XXX use DMAgic for this
+
+	phz
+	phx
+
+	ldx #$00
+	ldz #$00
+
+@RL1:
+	lda [CARD_BUFPNT],z
+	sta CARD_BUF,x
+	inc CARD_BUFPNT+1
+	lda [CARD_BUFPNT],z
+	sta CARD_BUF+$100,x
+	dec CARD_BUFPNT+1	
+
+	inz
+	inx
+	bne @RL1
+
+	; Restore registers and quit
+
+	plx
+	plz
+
+	clc
 	rts
 
 
@@ -233,6 +253,40 @@ m65_sdcard_readsector_fail:
 
 
 
+
+
+; -------------------------------------
+
+
+m65_sdcard_readsector_wait:
+
+	; Wait till card is ready
+
+	lda SD_CTL
+	; Sometimes we see this result, i.e., sdcard.vhdl thinks it is done,
+	; but sdcardio.vhdl thinks not. This means a read error.
+	cmp #$01
+	beq m65_sdcard_readsector_wait_fail
+	tax
+	and #$40
+	bne m65_sdcard_readsector_wait_fail
+	txa
+	and #$03
+	bne m65_sdcard_readsector_wait
+
+	clc
+	rts
+
+m65_sdcard_readsector_wait_fail:
+
+	sec
+	rts
+
+
+
+
+
+; -------------------------------------
 
 
 
@@ -268,6 +322,8 @@ m65_sdcard_read:
 
 
 
+; -------------------------------------
+
 
 
 m65_sdcard_reset:
@@ -294,6 +350,9 @@ m65_sdcard_reset:
 @4:
 	rts
 
+
+
+; -------------------------------------
 
 
 m65_sdcard_wait_16000_usec:

@@ -38,6 +38,13 @@
 	!addr SD_ADDR         = $D681 ; 4 bytes
 	!addr SD_ERRCODE      = $D6DA
 
+	; SD card sector buffer, $FFFD6E00
+
+	!set  SD_SECBUF_0     = $00
+	!set  SD_SECBUF_1     = $6E
+	!set  SD_SECBUF_2     = $FD
+	!set  SD_SECBUF_3     = $0F
+
 	; DMAgic
 
 	!addr DMA_ADDRLSBTRIG = $D700

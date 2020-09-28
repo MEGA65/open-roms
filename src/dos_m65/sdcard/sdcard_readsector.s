@@ -13,41 +13,10 @@ sdcard_readsector:
 
 	; XXX check if card initialized and operable
 
-	; Set read address, depending on card type
+	; Set read address
 
-	bit CARD_IS_SDHC
-	bpl sdcard_readsector_sdsc
-
-sdcard_readsector_sdhc:
-
-	lda CARD_SECNUM+0
-	sta SD_ADDR+0
-	lda CARD_SECNUM+1
-	sta SD_ADDR+1
-	lda CARD_SECNUM+2
-	sta SD_ADDR+2
-	lda CARD_SECNUM+3
-	sta SD_ADDR+3
-
-	bra sdcard_readsector_read
-
-sdcard_readsector_sdsc: ; multiply sector number by 512
-
-	lda #$00
-	sta SD_ADDR+0
-	clc
-	lda CARD_SECNUM+0
-	rol
-	sta SD_ADDR+1
-	lda CARD_SECNUM+1
-	rol
-	sta SD_ADDR+2
-	lda CARD_SECNUM+2
-	rol
-	sta SD_ADDR+3
-	bcs sdcard_readsector_fail               ; branch if sector number too large for SD card
-	lda CARD_SECNUM+3
-	bne sdcard_readsector_fail               ; branch if sector number too large for SD card
+	jsr sdcard_set_addr
+	bcs sdcard_readsector_fail 
 
 	; FALLTROUGH
 
@@ -100,7 +69,6 @@ sdcard_readsector_fail:
 
 sdcard_readsector_copy_data:
 
-	; XXX this should be a separate routine
 	; XXX use DMAgic for this
 
 	phz

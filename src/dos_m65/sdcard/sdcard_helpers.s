@@ -54,13 +54,38 @@ sdcard_set_addr_sdsc:
 	lda CARD_SECNUM+2
 	rol
 	sta SD_ADDR+3
-	bcs sdcard_set_addr_fail                 ; branch if sector number too large for SD card
+	bcs sdcard_helper_fail                   ; branch if sector number too large for SD card
 	lda CARD_SECNUM+3
 	beq sdcard_set_addr_done                 ; do not branch if sector number too large for SD card
 
 	; FALLTROUGH
 
-sdcard_set_addr_fail:
+sdcard_helper_fail:
 
 	sec
+	rts
+
+
+;
+; Wait till card is ready
+;
+; Input: none
+; Output: Carry set = error
+; Preserves: .Y, .Z
+
+sdcard_wait_ready:
+
+	lda SD_CTL
+	; Sometimes we see this result, i.e., sdcard.vhdl thinks it is done,
+	; but sdcardio.vhdl thinks not. This means a read error.
+	cmp #$01
+	beq sdcard_helper_fail
+	tax
+	and #$40
+	bne sdcard_helper_fail
+	txa
+	and #$03
+	bne sdcard_wait_ready
+
+	clc
 	rts

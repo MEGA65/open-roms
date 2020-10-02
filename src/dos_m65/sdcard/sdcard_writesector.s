@@ -17,7 +17,7 @@ sdcard_writesector:
 	and #$03
 	bne sdcard_writesector             ; XXX add a timer here
 
-	; End reset
+	; End reset XXX should this be done for sector reading too?
 
 	lda #$01
 	sta SD_CTL
@@ -25,12 +25,20 @@ sdcard_writesector:
 	; Set write address
 
 	jsr sdcard_set_addr
+	bcs sdcard_writesector_fail
 
+	; FALLTROUGH
 
+sdcard_writesector_write:
 
+	; Set number of retries
 
+	lda #$0A
+	sta CARD_TMP_RETRIES
 
+	; FALLTROUGH
 
+sdcard_writesector_try_loop:
 
 	jsr sdcard_writesector_copy_data
 
@@ -38,6 +46,18 @@ sdcard_writesector:
 
 
 
+
+
+
+
+
+
+
+
+sdcard_writesector_fail:
+
+	sec
+	rts
 
 
 

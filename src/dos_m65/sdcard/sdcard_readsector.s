@@ -16,7 +16,7 @@ sdcard_readsector:
 	; Set read address
 
 	jsr sdcard_set_addr
-	bcs sdcard_readsector_fail 
+	bcs sdcard_readsector_fail
 
 	; FALLTROUGH
 
@@ -33,7 +33,7 @@ sdcard_readsector_try_loop:
 
 	; Wait till card is ready
 
-	jsr sdcard_readsector_wait
+	jsr sdcard_wait_ready
 	bcs sdcard_readsector_fail
 
 	; Read command
@@ -43,7 +43,7 @@ sdcard_readsector_try_loop:
 
 	; Wait for command completion
 
-	jsr sdcard_readsector_wait
+	jsr sdcard_wait_ready
 	bcs sdcard_readsector_fail
 
 
@@ -95,28 +95,4 @@ sdcard_readsector_copy_data:
 	plz
 
 	clc
-	rts
-
-sdcard_readsector_wait:
-
-	; Wait till card is ready
-
-	lda SD_CTL
-	; Sometimes we see this result, i.e., sdcard.vhdl thinks it is done,
-	; but sdcardio.vhdl thinks not. This means a read error.
-	cmp #$01
-	beq sdcard_readsector_wait_fail
-	tax
-	and #$40
-	bne sdcard_readsector_wait_fail
-	txa
-	and #$03
-	bne sdcard_readsector_wait
-
-	clc
-	rts
-
-sdcard_readsector_wait_fail:
-
-	sec
 	rts

@@ -36,7 +36,7 @@ NOTE: extra features and their syntax can change in the future!
 
 The following ROM features are currently missing and are not planned due to space considerations:
 
-* full tape support - VERIFY, SAVE, sequential files; tape is considered a legacy medium, so it's support is going to be limited
+* full tape support - VERIFY, SAVE, sequential files; tape is considered a legacy medium, so its support is going to be limited
 * mock 6551 emulation - this only complicates the RS-232 support for original ROMs, probably noone needs it
 
 The following ROM features are currently missing:

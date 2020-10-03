@@ -38,7 +38,7 @@ sdcard_readsector_try_loop:
 
 	; Read command
 
-	lda #$02
+	lda #CARD_CMD_READ                 ; $02
 	sta SD_CTL
 
 	; Wait for command completion

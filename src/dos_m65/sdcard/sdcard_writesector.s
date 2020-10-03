@@ -17,9 +17,9 @@ sdcard_writesector:
 	and #$03
 	bne sdcard_writesector             ; XXX add a timer here
 
-	; End reset XXX should this be done for sector reading too?
+	; End reset XXX is this needed? should this be done for sector reading too?
 
-	lda #$01
+	lda #CARD_CMD_END_RESET            ; $01
 	sta SD_CTL
 
 	; Set write address

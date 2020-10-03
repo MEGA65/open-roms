@@ -72,7 +72,7 @@ sdcard_init_sdsc:
 
 	lda #$00
 	sta CARD_IS_SDHC
-	lda #$40                           ; use byte addressing
+	lda #CARD_CMD_SDHC_OFF             ; $40 - use byte addressing
 	sta SD_CTL
 
 	; FALLTROUGH
@@ -111,7 +111,7 @@ sdcard_init_read:
 
 	; Trigger read
 
-	lda #$02
+	lda #CARD_CMD_READ                 ; $02
 	sta SD_CTL
 
 	; Wait for result

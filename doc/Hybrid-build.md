@@ -3,7 +3,9 @@ The C64 ROM is typically distributed in 2 files 8 KB each, one called *kernal*, 
 
 But it is still possible to combine them:
 * copy the *kernal* file to the *open-roms* main directory
-* from the Linux command line type `make test_hybrid` - this will crate the hybrid Kernal file, *open-roms/bin/kernal_hybrid.rom*, and launch VICE emulator with it
+* from the Linux command line type `make test_hybrid` on `make test_hybrid_u64` (for Ultimate 64 based Kernal build- this will crate the hybrid Kernal file, *open-roms/bin/kernal_hybrid.rom* or *open-roms/bin/kernal_hybrid_u64.rom*, and launch VICE emulator with it
+
+Unfortunately, some features will be lost this way - for example, the Open ROMs DOS Wedge is BASIC based, so it won't be available in the hybrid ROM.
 
 Sorry, no Windows support (but it should work under *Windows Subsystem for Linux* if GCC and libpng devel packages are installed), and no macOS support (I don't have a machine to test).
 

@@ -6,8 +6,8 @@ Follow these rules, or bad things will happen!
 
 * Don't mix these ROMs with any other ROMs; exceptions:
 
-   - kernal_hybrid.rom, which is meant to be used (and has to be used) with the original BASIC ROM;
-     however, this hybrid ROM cannot be distributed due to legal/copyright reasons; see [here](./../doc/Hybrid-build.md) for instruction how to create it
+   - kernal_hybrid\*.rom, which is meant to be used (and has to be used) with the original BASIC ROM;
+     however, these hybrid ROMs cannot be distributed due to legal/copyright reasons; see [here](./../doc/Hybrid-build.md) for instruction how to create them
 
    - chargen_*.rom - these ones are fully interchangeable
 

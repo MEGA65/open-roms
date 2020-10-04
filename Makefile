@@ -471,6 +471,18 @@ build/kernal_hybrid.rom: kernal $(DIR_GEN)/OUTK_x.BIN
 build/symbols_hybrid.vs: $(DIR_GEN)/KERNAL_combined.vs
 	@sort $(DIR_GEN)/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
+build/kernal_hybrid_u64.rom: kernal $(DIR_U64)/OUTK_x.BIN
+	@echo
+	@echo $(HYBRID_WARNING)
+	@echo
+	(dd if=kernal bs=1140 count=1 skip=0        ; \
+	echo "    > HYBRID ROM, DON'T DISTRIBUTE <" ; \
+	dd if=kernal bs=1 count=58 skip=1176        ; \
+	cat $(DIR_U64)/OUTK_x.BIN) > $@
+
+build/symbols_hybrid_u64.vs: $(DIR_U64)/KERNAL_combined.vs
+	@sort $(DIR_U64)/KERNAL_combined.vs | uniq | grep -v "__" > $@
+
 # Rules - MEGA65 platform specific
 
 build/padding_64_KB:
@@ -559,6 +571,15 @@ test_hybrid: build/kernal_hybrid.rom build/symbols_hybrid.vs
 	@echo $(HYBRID_WARNING)
 	@echo
 	x64 -kernal build/kernal_hybrid.rom -moncommands build/symbols_hybrid.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+	@echo
+	@echo $(HYBRID_WARNING)
+	@echo
+
+test_hybrid_u64: build/kernal_hybrid_u64.rom build/symbols_hybrid_u64.vs
+	@echo
+	@echo $(HYBRID_WARNING)
+	@echo
+	x64 -kernal build/kernal_hybrid_u64.rom -moncommands build/symbols_hybrid_u64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 	@echo
 	@echo $(HYBRID_WARNING)
 	@echo

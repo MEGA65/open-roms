@@ -201,6 +201,20 @@ updatebin:
 	@$(TOOL_RELEASE) -i ./build -o ./bin $(patsubst build/%,%,$(REL_TARGET_LIST))
 	@cp build/chargen_openroms.rom bin/chargen_openroms.rom
 
+# Rules - external blobs
+
+kernal:
+	@echo
+	@echo Please copy \'kernal\' file from the original ROM set to the \'open-roms\' directory
+	@echo
+	@exit 1
+
+basic:
+	@echo
+	@echo Please copy \'basic\' file from the original ROM set to the \'open-roms\' directory
+	@echo
+	@exit 1
+
 # Rules - tools
 
 $(DIR_ACME) $(SRC_ACME):

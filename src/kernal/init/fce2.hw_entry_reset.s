@@ -16,6 +16,9 @@ hw_entry_reset:
 
 	cld                      ; required for all CPUs - due to possibility of manual call
 
+	lda #$00
+	sta NMINV+1              ; soft-disable custom NMI interrupt handler
+
 !ifdef HAS_OPCODES_65CE02 {
 
 	see                      ; disable extended stack
@@ -49,6 +52,15 @@ hw_entry_reset:
 	; Initialising IO is obviously required. Also indicated by c64 prg p269.
 	jsr JIOINIT
 
+!ifdef CONFIG_MB_M65 {
+
+	jsr m65_reset_common     ; RAMTAS, RESTOR, CINT
+
+	clc
+	jsr M65_MODESET          ; on MEGA65 go to native mode by default
+
+} else {
+
 	; Setting up the screen and testing ram is obviously required
 	; also affirmed by p269 of c64 prg
 	jsr JRAMTAS ; called RANTAM on Codebase64 wiki
@@ -59,12 +71,8 @@ hw_entry_reset:
 
 	; "Compute's Mapping the 64" p236
 	jsr JCINT
-
-!ifdef CONFIG_MB_M65 {
-
-	clc
-	jsr M65_MODESET          ; on MEGA65 go to native mode by default
 }
+
 	; What do we do when finished?  A C64 jumps into the BASIC ROM
 	cli ; allow interrupts to happen
 

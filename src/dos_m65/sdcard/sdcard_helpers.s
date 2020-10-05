@@ -75,6 +75,8 @@ sdcard_helper_fail:
 
 sdcard_wait_ready:
 
+	; XXX if card does not get ready, try to reset it
+
 	lda SD_CTL
 	; Sometimes we see this result, i.e., sdcard.vhdl thinks it is done,
 	; but sdcardio.vhdl thinks not. This means a read error.

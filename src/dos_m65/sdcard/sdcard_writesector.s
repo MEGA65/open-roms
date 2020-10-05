@@ -42,22 +42,49 @@ sdcard_writesector_try_loop:
 
 	jsr sdcard_writesector_copy_data
 
+	; Wait till card is ready
 
+	jsr sdcard_wait_ready
+	bcs sdcard_writesector_fail
 
+	; Write command
 
+	lda #CARD_CMD_WRITE                ; $03
+	sta SD_CTL
 
+	; Wait for command completion
 
+	jsr sdcard_wait_ready
+	bcs sdcard_writesector_fail
 
+	; Check result
 
+	lda SD_CTL
+	and #$67
+	bne sdcard_writesector_verify
 
+	; Write failed - retry
 
+	jsr sdcard_reset
+	dec CARD_TMP_RETRIES
+	bne sdcard_writesector_try_loop
 
-
+	; FALLTROUGH
 
 sdcard_writesector_fail:
 
 	sec
 	rts
+
+sdcard_writesector_verify:
+
+	; There is a bug in the SD controller; you have to read between writes,
+	; or it gets really upset
+
+	; XXX
+
+
+
 
 
 

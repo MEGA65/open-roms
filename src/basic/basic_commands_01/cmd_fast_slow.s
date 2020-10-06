@@ -9,17 +9,27 @@
 
 } else ifdef CONFIG_MB_U64 {
 
-	; Command implementation for Ultimate 64 - SuperCPU compatible way should be enough
+	; Command implementation for Ultimate 64
 
 cmd_slow:
 
-	sta SCPU_SPEED_NORMAL
+	lda #$00                           ; for U64_TURBOCTL - badlines, 1MHz
+	sta SCPU_SPEED_NORMAL              ; any value will do
+
+	; FALLTROUGH
+
+cmd_slow_fast_common:
+
+	sta U64_TURBOBIT                   ; only bit 0 matters
+	sta U64_TURBOCTL
 	rts
 
 cmd_fast:
 
-	sta SCPU_SPEED_TURBO
-	rts
+	lda #$0F                           ; for U64_TURBOCTL - badlines, 48MHz
+	sta SCPU_SPEED_TURBO               ; any value will do
+
+	bne cmd_slow_fast_common           ; bramnch always
 
 } else ifdef CONFIG_PLATFORM_COMMODORE_64 {
 

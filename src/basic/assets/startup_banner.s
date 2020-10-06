@@ -16,7 +16,7 @@
 	!pet "open roms generic build"
 } else ifdef CONFIG_BRAND_TESTING {
 	!pet "open roms testing build"
-} else ifdef CONFIG_BRAND_ULTIMATE_64 {
+} else ifdef CONFIG_MB_U64 {
 	!pet "open roms for ultimate 64"
 }
 
@@ -43,9 +43,21 @@ rainbow_logo:
 	!set SET_COLOR_3 = $1E
 	!set SET_COLOR_4 = $9F
 
+!ifdef CONFIG_MB_U64 {
+
+	!byte SET_COLOR_1, $B8, $B8, $B8, $B8, $B8, $B8, $B8, $0D
+    !byte SET_COLOR_2, $B8, $B8, $B8, $B8, $B8, $B8, $B8, $0D
+    !byte SET_COLOR_3, $B8, $B8, $B8, $B8, $B8, $B8, $B8, $0D
+    !byte SET_COLOR_4, $B8, $B8, $B8, $B8, $B8, $B8, $B8, $0D
+    !byte SET_COLOR_0, $00
+
+} else {
+
 	!byte SET_COLOR_1, $12, $A4, $A4, $A4, $A4, $A4, $A4, $A4, $0D
     !byte SET_COLOR_2, $12, $A4, $A4, $A4, $A4, $A4, $A4, $0D
     !byte SET_COLOR_3, $12, $A4, $A4, $A4, $A4, $A4, $0D
     !byte SET_COLOR_4, $12, $A4, $A4, $A4, $A4, $92
     !byte SET_COLOR_0, $00
+}
+
 }

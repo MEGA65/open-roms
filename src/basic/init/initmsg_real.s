@@ -60,7 +60,7 @@ initmsg_real:
 	jsr STROUT
 
 	ldx #$00
-	ldy #$0A
+	ldy #BANNER_SPACING
 	jsr plot_set
 
 	lda #<startup_banner
@@ -70,7 +70,7 @@ initmsg_real:
 !ifndef CONFIG_BRAND_CUSTOM {
 
 	ldx #$01
-	ldy #$0A
+	ldy #BANNER_SPACING
 	jsr plot_set
 
 	ldx #IDX__STR_PRE_REV
@@ -87,7 +87,7 @@ initmsg_real:
 } else {
 	ldx #$02
 }
-	ldy #$0A
+	ldy #BANNER_SPACING
 	jsr plot_set
 
 	jsr initmsg_bytes_free

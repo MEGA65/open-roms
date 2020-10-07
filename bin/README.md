@@ -14,14 +14,17 @@ Follow these rules, or bad things will happen!
 
 * The generic ROM set should be compatible with any C64-compatible machine; platform-specific ROMs might not work on other platforms.
 
+<br />
 
 For Ultimate 64 the following settinghs are recommended:
 
 * U64 Specific Settings -> Turbo Control -> U64 Turbo Registers
 
+<br />
 
 Have fun!
 
+<br />
 
 ------
 

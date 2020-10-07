@@ -81,7 +81,25 @@ sdcard_writesector_verify:
 	; There is a bug in the SD controller; you have to read between writes,
 	; or it gets really upset
 
-	; XXX
+@1:
+	lda SD_CTL
+	and #$03
+	bne @1
+
+	lda #CARD_CMD_READ                 ; $02
+	sta SD_CTL
+
+@2:
+	lda SD_CTL
+	and #$03
+	beq @2
+
+@3:                                    ; XXX deduplicate this ppart
+	lda SD_CTL
+	and #$03
+	bne @3
+
+	; XXX verify - compare buffer
 
 
 

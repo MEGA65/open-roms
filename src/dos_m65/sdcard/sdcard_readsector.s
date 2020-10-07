@@ -46,7 +46,6 @@ sdcard_readsector_try_loop:
 	jsr sdcard_wait_ready
 	bcs sdcard_readsector_fail
 
-
 	lda SD_CTL
 	and #$67
 	bne sdcard_readsector_copy_data

@@ -19,6 +19,30 @@
 
 jiffydos_load:
 
+
+!ifdef CONFIG_IEC_JD_TEST {
+
+	; XXX test implementation, not ready yet
+
+	; Switch to optimized LOAD protocol
+	jsr UNTLK
+	lda FA
+	jsr TALK
+	bcs jiffydos_load_error
+	lda #$61
+	jsr TKSA
+
+	; XXX finish the implementation
+
+	rts
+
+jiffydos_load_error:
+	
+	; XXX finish the implementation
+
+
+} else {
+
 	; XXX implement JiffyDOS optimized LOAD protocol, this one is ineffective
 
 
@@ -53,7 +77,7 @@ jiffydos_load:
 	; Blank screen to make sure no sprite/badline will interrupt
 	jsr screen_off
 @2:
-	; Preserve 3 lowest bits of CIA2_PRA  XXX deduplicate this
+	; Preserve 3 lowest bits of CIA2_PRA
 	jsr jiffydos_preserve_bits
 
 } else {
@@ -207,3 +231,5 @@ jiffydos_load_end:
 
 
 } } ; CONFIG_IEC_JIFFYDOS and not CONFIG_MEMORY_MODEL_60K
+
+}

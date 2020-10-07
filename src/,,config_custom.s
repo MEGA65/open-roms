@@ -39,12 +39,14 @@
 
 ;; #CONFIG# IEC                        YES
 ;; #CONFIG# IEC_DOLPHINDOS             YES
-;; #CONFIG# IEC_DOLPHINDOS_FAST        YES
+;; #CONFIG# IEC_DOLPHINDOS_FAST        NO
 ;; #CONFIG# IEC_JIFFYDOS               YES
 ;; #CONFIG# IEC_JIFFYDOS_BLANK         NO
 ;; #CONFIG# IEC_BURST_CIA1             NO        ; please keep disabled for now
 ;; #CONFIG# IEC_BURST_CIA2             NO        ; please keep disabled for now
  
+;; #CONFIG# IEC_JD_TEST                NO        ; temporary setting, for JiffyDOS development
+
 
 ; --- Tape deck configuration
 

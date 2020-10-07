@@ -16,7 +16,7 @@ Follow these rules, or bad things will happen!
 
 <br />
 
-For Ultimate 64 the following settinghs are recommended:
+For Ultimate 64 motherboard the following settings are recommended:
 
 * U64 Specific Settings -> Turbo Control -> U64 Turbo Registers
 

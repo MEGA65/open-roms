@@ -20,7 +20,6 @@ cmd_slow:
 
 cmd_slow_fast_common:
 
-	sta U64_TURBOBIT                   ; only bit 0 matters
 	sta U64_TURBOCTL
 	rts
 
@@ -29,7 +28,7 @@ cmd_fast:
 	lda #$0F                           ; for U64_TURBOCTL - badlines, 48MHz
 	sta SCPU_SPEED_TURBO               ; any value will do
 
-	bne cmd_slow_fast_common           ; bramnch always
+	bne cmd_slow_fast_common           ; branch always
 
 } else ifdef CONFIG_PLATFORM_COMMODORE_64 {
 

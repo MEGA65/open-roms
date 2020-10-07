@@ -12,12 +12,11 @@
 
 jiffydos_prepare:
 
-	; We need to preserve 3 lowest bits of CIA2_PRA, they contain important
-	; data - fortunately, the bits are never changed by external devices
-	; Use C3PO for this, as afterwards we have to set there 0 nevertheless
-	lda CIA2_PRA
-	and #%00000111
-	sta C3PO
+	jsr jiffydos_preserve_bits
+
+	; FALLTROUGH
+
+jiffydos_prepare_no_preserve_bits:
 
 	; Hide sprites; JiffyDOS timing regime is very strict, before transmitting
 	; anything we need to make sure nothing will steal the cycles

@@ -139,7 +139,7 @@ Needs about 430 bytes in KERNAL segment. If unsure - enable.
 
 ### `IEC_JIFFYDOS_BLANK`
 
-Causes screen blanking during JiffyDOS file loading to increase performance.
+Causes screen blanking during JiffyDOS file loading to increase performance. On Ultimate 64 motherboard, if possible, screen blanking is substituted by disabling badlines.
 
 ## Tape deck
 

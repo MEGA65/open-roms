@@ -29,6 +29,8 @@ jiffydos_load:
 
 !ifdef CONFIG_MB_U64 {
 
+	; XXX implement for non-blank mode, use jiffydos_prepare_no_preserve_bits
+
 	; Check if turbo register is available
 	lda U64_TURBOCTL
 	cmp #$FF
@@ -52,10 +54,7 @@ jiffydos_load:
 	jsr screen_off
 @2:
 	; Preserve 3 lowest bits of CIA2_PRA  XXX deduplicate this
-
-	lda CIA2_PRA
-	and #%00000111
-	sta C3PO
+	jsr jiffydos_preserve_bits
 
 } else {
 
@@ -66,7 +65,6 @@ jiffydos_load:
 @2:
 
 }
-
 	; A trick to shorten EAL update time
 	ldy #$FF
 

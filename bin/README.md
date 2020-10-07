@@ -1,7 +1,6 @@
 
 Follow these rules, or bad things will happen!
 
-
 * Don't mix ROMs for different platforms - use generic BASIC with generic KERNAL, Ultimate64 BASIC with Ultimate64 KERNAL, etc.
 
 * Don't mix these ROMs with any other ROMs; exceptions:
@@ -11,9 +10,14 @@ Follow these rules, or bad things will happen!
 
    - chargen_*.rom - these ones are fully interchangeable
 
-- Don't mix ROMs from different builds/versions (again, CHARGEN is an exception).
+* Don't mix ROMs from different builds/versions (again, CHARGEN is an exception).
 
-- The generic ROM set should be compatible with any C64-compatible machine; platform-specific ROMs might not work on other platforms.
+* The generic ROM set should be compatible with any C64-compatible machine; platform-specific ROMs might not work on other platforms.
+
+
+For Ultimate 64 the following settinghs are recommended:
+
+* U64 Specific Settings -> Turbo Control -> U64 Turbo Registers
 
 
 Have fun!

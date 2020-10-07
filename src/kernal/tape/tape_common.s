@@ -113,13 +113,10 @@ tape_prepare_reading:
 
 } ; CONFIG_TAPE_HEAD_ALIGN
 
-!ifdef CONFIG_MB_M65 {
-
 	; Display confirmation
 
-	ldx #__MSG_KERNAL_OK_SEARCHING
+	ldx #__MSG_KERNAL_OK
 	jsr print_kernal_message
-}
 
 	; Prepare for reading
 

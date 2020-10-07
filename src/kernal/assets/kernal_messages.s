@@ -19,9 +19,8 @@
 !ifdef HAS_TAPE {
 !addr __MSG_KERNAL_PRESS_PLAY         = __msg_kernalplay               - __msg_kernal_first
 !addr __MSG_KERNAL_FOUND              = __msg_kernalfound              - __msg_kernal_first
-!ifdef CONFIG_MB_M65 {
-!addr __MSG_KERNAL_OK_SEARCHING       = __msg_kernaloksearching        - __msg_kernal_first
-} }
+!addr __MSG_KERNAL_OK                 = __msg_kernalok                 - __msg_kernal_first
+}
 
 !ifdef CONFIG_PANIC_SCREEN {
 !addr __MSG_KERNAL_PANIC              = __msg_kernalpanic              - __msg_kernal_first
@@ -70,14 +69,10 @@ __msg_kernalfound:
 	!pet  "found"
 	!byte $80 + $20 ; end of string mark + space
 
-!ifdef CONFIG_MB_M65 {
-
-__msg_kernaloksearching:
+__msg_kernalok:
 	!pet  "ok"
-	!byte $0D, $0D
-	!pet  "searchin"
-	!byte $80 + $47 ; end of string mark + 'G'
-} }
+	!byte $80 + $0D ; end of string mark + return
+}
 
 !ifdef CONFIG_PANIC_SCREEN {
 

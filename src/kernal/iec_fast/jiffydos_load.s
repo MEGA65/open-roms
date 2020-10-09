@@ -32,13 +32,101 @@ jiffydos_load:
 	lda #$61
 	jsr TKSA
 
+	; XXX flow below most likely takes too much time...
+
+	; Timing is critical, do not allow interrupts
+	sei
+
+!ifdef CONFIG_IEC_JIFFYDOS_BLANK {
+
+!ifdef CONFIG_MB_U64 {
+
+	; XXX implement for non-blank mode, use jiffydos_prepare_no_preserve_bits
+
+	; Check if turbo register is available
+	lda U64_TURBOCTL
+	cmp #$FF
+	beq @1
+
+	; Store turbo register content, disable badlines
+	sta TBTCNT
+	lda #$80
+	sta U64_TURBOCTL
+	bne @2
+
+	; Normal flow - no turbo register
+}
+
+@1:
+	; Preserve register with screen status (blank/visible)
+	lda VIC_SCROLY
+	sta TBTCNT
+
+	; Blank screen to make sure no sprite/badline will interrupt
+	jsr screen_off
+@2:
+	; Preserve 3 lowest bits of CIA2_PRA
+	jsr jiffydos_preserve_bits
+
+} else {
+
+@1:
+	; Store previous sprite status in temporary variable
+	jsr jiffydos_prepare
+	sta TBTCNT
+@2:
+
+}
+	; A trick to shorten EAL update time
+	ldy #$FF
+
+	; FALLTROUGH
+
+jiffydos_load_loop_esc:
+
+	; We are now in 'escape mode' - release DATA, wait till receiver releases CLK
+	jsr iec_release_clk_data
+	jsr iec_wait_for_clk_release
+
+	; Check DATA line
+	bmi jiffydos_load_check_status
+
+	+panic $01
+
 	; XXX finish the implementation
 
-	rts
+
+
+
+jiffydos_load_check_status:
+
+	; Check if a device pulls CLK within the next 1100us (at least 1125 cycles, to be sure for NTSC)
+	ldx #$67                         ; 2 cycles
+
+	; FALLTROUGH
+
+jiffydos_load_check_loop:
+
+	lda CIA2_PRA                     ; 4 cycles
+	bvc jiffydos_load_end            ; 2 cycles if not taken
+	dex                              ; 2 cycles
+	bne jiffydos_load_check_loop     ; 3 cycles if taken
+
+	; FALLTROUGH
 
 jiffydos_load_error:
 	
+	+panic $03
+
 	; XXX finish the implementation
+
+
+jiffydos_load_end:
+
+	+panic $FF
+
+	; XXX finish the implementation
+
 
 
 } else {

@@ -276,7 +276,9 @@ const StringEntryList GLOBAL_Errors =  { ListType::STRINGS_BASIC, "errors",
     { true,  true,  true,  true,  "EV7_28", "NOT IMPLEMENTED"          }, // this message actually differs from the CBM one
     { false, false, false, false, "EV7_29", "FILE READ"                }, // not used for now
     // STD    M65    U64    X16   --- error strings specific to Open ROMs, not present in CBM BASIC dialects
-    { true,  true,  true,  true,  "EOR_2A", "MEMORY CORRUPT"           },   
+    { true,  true,  true,  true,  "EOR_2A", "MEMORY CORRUPT"           },
+    { false, true,  false, false, "EOR_2B", "NATIVE MODE ONLY"         },   
+    { false, true,  false, false, "EOR_2C", "LEGACY MODE ONLY"         },   
 } };
 
 // BASIC errors - miscelaneous strings

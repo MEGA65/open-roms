@@ -67,13 +67,9 @@ Saves the binary data from the given memory area. NOTE: for now syntax differs f
 
 Resets the machine. In direct mode asks for confirmation first.
 
-### `FAST` (all)
+### `FAST`, `SLOW` (all)
 
-Tries to switch the machine to turbo mode - details differ depending on the configured machine / motherboard.
-
-### `SLOW` (all)
-
-Tries to switch the machine back to 1 MHz operation mode.
+Tries to switch the machine to turbo mode (or back to 1MHz operation mode) - details differ depending on the configured machine / motherboard. On MEGA65 motherboard this is not available in native mode, it is not designed to run in 1MHz due to using compound CPU instructions.
 
 ### `OLD` (all)
 

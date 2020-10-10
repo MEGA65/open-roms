@@ -52,6 +52,14 @@ do_kernal_error:                       ; .A = KERNAL error code, also almost mat
 
 	; Error messages specific to Open ROMs BASIC dialect
 
+!ifdef CONFIG_MB_M65 {
+
+do_LEGACY_MODE_ONLY_error:
+	!byte $E6
+do_NATIVE_MODE_ONLY_error:
+	!byte $E6
+}
+
 do_MEMORY_CORRUPT_error:
 	!byte $E6
 

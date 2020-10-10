@@ -9,8 +9,6 @@
 
 ;; #ALIAS# CHROUT                          = KERNAL_0.proxy_K1_CHROUT
 ;; #ALIAS# STOP                            = KERNAL_0.STOP
-;; #ALIAS# M65_SLOW                        = KERNAL_0.M65_SLOW
-;; #ALIAS# M65_FAST                        = KERNAL_0.M65_FAST
 ;; #ALIAS# M65_MODEGET                     = KERNAL_0.M65_MODEGET
 ;; #ALIAS# M65_SETWIN_XY                   = KERNAL_0.M65_SETWIN_XY
 ;; #ALIAS# M65_SETWIN_WH                   = KERNAL_0.M65_SETWIN_WH

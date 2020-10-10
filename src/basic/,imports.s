@@ -29,11 +29,13 @@
 
 ;; #ALIAS# SELDEV              = KERNAL_0.SELDEV
 
+;
+; MEGA65 specific parts
+;
+
 ;; #ALIAS# map_end             = KERNAL_0.map_end
 ;; #ALIAS# map_NORMAL          = KERNAL_0.map_NORMAL
 
 ;; #ALIAS# M65_MODEGET         = KERNAL_0.M65_MODEGET
 ;; #ALIAS# M65_MODESET         = KERNAL_0.M65_MODESET
-;; #ALIAS# M65_SLOW            = KERNAL_0.M65_SLOW
-;; #ALIAS# M65_FAST            = KERNAL_0.M65_FAST
 ;; #ALIAS# M65_SETWIN_Y        = KERNAL_0.M65_SETWIN_Y

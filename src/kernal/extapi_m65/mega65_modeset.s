@@ -25,13 +25,15 @@ m65_mode64:
 	jsr viciv_shutdown
 	jsr vicii_init
 
-	; Reenable interrupts
+	; Switch CPU speed back to normal
+
+	lda #$40
+	sta CPU_D6510
+
+	; Reenable interrupts and quit
 
 	cli
-
-	; Switch CPU speed back to slow and quit
-
-	jmp M65_SLOW
+	rts
 
 
 m65_mode65:
@@ -42,7 +44,8 @@ m65_mode65:
 
 	; Switch CPU speed to fast
 
-	jsr M65_FAST
+	lda #$41
+	sta CPU_D6510
 
 	; Set the magic string to mark native mode
 

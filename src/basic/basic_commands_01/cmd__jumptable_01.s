@@ -6,18 +6,9 @@
 ; Jumptable for BASIC commands with tokens prefixed by $01
 ;
 
-!ifdef CONFIG_MB_M65 {
-
-!set ITEM_00 = M65_SLOW
-!set ITEM_01 = M65_FAST
-
-} else {
 
 !set ITEM_00 = cmd_slow
 !set ITEM_01 = cmd_fast
-
-}
-
 !set ITEM_02 = cmd_old
 
 	; NOTE! These commands are temporarily placed here, they should be a part of list 02!

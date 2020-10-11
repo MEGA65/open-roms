@@ -31,18 +31,6 @@ vicii_init:
  	dex
  	bpl @1
 
-!ifndef CONFIG_MB_M65 { !ifndef CONFIG_MB_U64 {
-
- 	; Disable C128 extra keys - just to be sure they will not interfere with anything
-
- 	stx VIC_XSCAN                      ; store $FF
-
- 	; Disable the C128 2MHz mode, it prevents VIC-II display from working correctly
-
- 	inx
-	stx VIC_CLKRATE                    ; store $00
-} }
-
 	; Set up default IO values
 	; - [CM64] page 129       - VIC_SCROLY
 	; - [CM64] pages 140-144  - VIC_SCROLX

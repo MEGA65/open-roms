@@ -269,6 +269,13 @@
 ;
 
 
+; Handle platform/mothjerboard configuration
+
+
+!ifdef PLATFORM_COMMODORE_64 { !ifndef CONFIG_MB_M65 { !ifndef CONFIG_MB_U64 {
+	!set HAS_128_POSSIBILITY     = 1
+} } }
+
 
 ; Handle CPU configuration
 

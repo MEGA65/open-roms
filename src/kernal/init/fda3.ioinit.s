@@ -62,7 +62,7 @@ IOINIT_skip_DOS:
 	stx CIA1_PRA ; $DC00
 
 	;
-	; Now silence the SID chip(s), depending on the configuration - we want them silent ASAP
+	; Silence the SID chip(s), depending on the configuration - we want them silent ASAP
 	;
 
 	lda #$00
@@ -134,6 +134,18 @@ IOINIT_skip_DOS:
 	inx
 	stx CIA1_DDRB    ; $DC03
 	stx CIA2_DDRB    ; $DD03  ; XXX this port is used for RS-232, value here is most likely wrong!
+
+!ifdef HAS_128_POSSIBILITY {
+
+ 	; Disable C128 extra keys - just to be sure they will not interfere with anything
+
+ 	stx VIC_XSCAN                      ; store $FF
+
+ 	; Disable the C128 2MHz mode, it prevents VIC-II display from working correctly
+
+ 	inx
+	stx VIC_CLKRATE                    ; store $00
+}
 
 !ifdef CONFIG_KEYBOARD_C65_OR_CAPS_LOCK {
 

@@ -16,6 +16,11 @@
 
 iec_rx_dispatch:
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_slow
+}
+
 	lda IECPROTO
 	cmp #IEC_JIFFY
 	+beq jiffydos_rx_byte
@@ -26,6 +31,11 @@ iec_rx_dispatch:
 
 
 iec_rx_byte:
+
+!ifdef CONFIG_MB_M65 { !ifndef CONFIG_IEC_JIFFYDOS {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_slow
+} }
 
 	; Store .X and .Y on the stack - preserve them
 	+phx_trash_a
@@ -60,7 +70,7 @@ iec_rx_byte:
 	; For DolphinDOS just fetch the byte from parallel port
 	lda CIA2_PRB
 	pha
-	jmp iec_rx_acknowledge
+	+bra iec_rx_acknowledge
 
 iec_rx_no_dolphindos:
 
@@ -124,7 +134,7 @@ iec_rx_clk_wait2:
 	jsr kernalstatus_EOI
 	pla
 
-	jmp iec_rx_end
+	+bra iec_rx_end
 @2:
 	; More bits?
 	dex
@@ -149,6 +159,11 @@ iec_rx_acknowledge:
 	; FALLTROUGH
 
 iec_rx_end:
+
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch back to fast mode
+	jsr m65_iec_fast
+}
 
 	+ply_trash_a
 	+plx_trash_a

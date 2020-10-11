@@ -90,5 +90,9 @@ kernalerror_TOP_MEM_RS232:
 
 	lda #K_ERR_TOP_MEM_RS232
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch back to fast mode
+	jsr m65_iec_fast
+}
 	sec
 	rts

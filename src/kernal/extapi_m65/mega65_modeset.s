@@ -25,7 +25,7 @@ m65_mode64:
 	jsr viciv_shutdown
 	jsr vicii_init
 
-	; Switch CPU speed back to normal
+	; Switch CPU speed to normal
 
 	lda #$40
 	sta CPU_D6510
@@ -42,9 +42,9 @@ m65_mode65:
 
 	sei
 
-	; Switch CPU speed to fast
+	; Switch CPU speed to normal; VIC-IV register will be used to set the maximum one
 
-	lda #$41
+	lda #$40
 	sta CPU_D6510
 
 	; Set the magic string to mark native mode

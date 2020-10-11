@@ -27,6 +27,11 @@ dolphindos_load:
 	ora #BIT_CIA2_PRA_DAT_OUT
 	sta TBTCNT                         ; pull DATA
 }
+
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_slow
+}
 	; FALLTROUGH
 
 dolphindos_load_loop:
@@ -80,7 +85,7 @@ dolphindos_load_loop:
 	sta IECPROTO
 
 	; End of load loop
-	jmp load_iec_loop_end
+	+bra load_iec_loop_end
 
 dolphindos_load_no_eoi:
 
@@ -103,12 +108,16 @@ dolphindos_load_no_eoi:
 	iny
 	bne dolphindos_load_loop
 	inc EAL+1
-	jmp dolphindos_load_loop
+	+bra dolphindos_load_loop
 
 !ifndef CONFIG_IEC_DOLPHINDOS_FAST {
 
 dolphindos_load_end:
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch back to fast mode
+	jsr m65_iec_fast
+}
 	; Update EAL
 	clc
 	jsr iec_update_EAL_by_Y

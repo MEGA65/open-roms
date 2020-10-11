@@ -80,6 +80,10 @@ jiffydos_load:
 	; A trick to shorten EAL update time
 	ldy #$FF
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_fast
+}
 	; FALLTROUGH
 
 jiffydos_load_loop_esc:
@@ -180,6 +184,10 @@ jiffydos_load_end:
 	; A trick to shorten EAL update time
 	ldy #$FF
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_slow
+}
 	; FALLTROUGH
 
 jiffydos_load_loop:
@@ -257,10 +265,14 @@ jiffydos_load_loop:
 	cpy #$FF
 	bne jiffydos_load_loop
 	inc EAL+1
-	jmp jiffydos_load_loop
+	+bra jiffydos_load_loop
 
 jiffydos_load_end:
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch back to fast mode
+	jsr m65_iec_fast
+}
 	; Save last byte
 	tax
 

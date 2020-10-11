@@ -18,6 +18,12 @@
 iec_tx_dispatch:
 
 	php                                ; preserve C flag for EOI indication
+
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_slow
+}
+
 	lda IECPROTO
 	cmp #IEC_JIFFY
 	bne @1
@@ -33,6 +39,11 @@ iec_tx_dispatch:
 
 
 iec_tx_byte:
+
+!ifdef CONFIG_MB_M65 { !ifndef CONFIG_IEC_JIFFYDOS {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_slow
+} }
 
 	; Store .X and .Y on the stack - preserve them
 	+phx_trash_a
@@ -84,7 +95,7 @@ iec_tx_common:
 	jsr iec_pull_clk_release_data_oneshot
 
 	; Finish the flow
-	jmp iec_tx_common_finalize
+	+bra iec_tx_common_finalize
 
 iec_tx_no_dolphindos:
 
@@ -122,7 +133,7 @@ iec_tx_common_sendbit:
 
 	; Bit is 0
 	jsr iec_release_clk_pull_data
-	jmp iec_tx_common_bit_is_sent
+	+bra iec_tx_common_bit_is_sent
 @4:
 	; Bit is 1
 	jsr iec_release_clk_data

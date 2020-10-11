@@ -20,9 +20,16 @@ iec_return_success:
 	; BSOUR is certainly not valid anymore
 	lda #$00
 	sta C3PO
+
 	; Restore registers
 	+ply_trash_a
 	+plx_trash_a
+
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch back to fast mode
+	jsr m65_iec_fast
+}
+
 	; Report success
 	clc
 	rts
@@ -31,12 +38,15 @@ iec_return_DEVICE_NOT_FOUND:
 
 	; Set IEC line to normal idle state
 	jsr iec_set_idle
+
 	; BSOUR is certainly not valid anymore
 	lda #$00
 	sta C3PO
+
 	; Restore registers
 	+ply_trash_a
 	+plx_trash_a
+
 	; Report error
 	jmp kernalerror_DEVICE_NOT_FOUND
 }

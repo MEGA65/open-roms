@@ -35,11 +35,12 @@ vicii_init:
 
  	; Disable C128 extra keys - just to be sure they will not interfere with anything
 
- 	stx VIC_XSCAN
+ 	stx VIC_XSCAN                      ; store $FF
 
  	; Disable the C128 2MHz mode, it prevents VIC-II display from working correctly
 
- 	stx VIC_CLKRATE
+ 	inx
+	stx VIC_CLKRATE                    ; store $00
 } }
 
 	; Set up default IO values

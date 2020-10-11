@@ -23,6 +23,10 @@ viciv_shutdown:
 	sta VIC_CTRLA  ; enable C64 character set
 	sta VIC_CTRLB  ; disable extended resolution and attributes
 
+	lda VIC_CTRLC
+	and #%00101000 ; disable fast mode and various VIC-IV extensions
+	sta VIC_CTRLC
+
 	; Reenable hot registers
 
 	jsr viciv_hotregs_on

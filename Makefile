@@ -168,9 +168,6 @@ TARGET_LIST = build/chargen_openroms.rom \
                   $(TARGET_LIST_U64) \
                   $(TARGET_X16_x)
 
-SEG_LIST_CRT =    $(DIR_X16)/basic.seg_0  \
-                  $(DIR_X16)/kernal.seg_0
-
 SEG_LIST_M65 =    $(DIR_M65)/basic.seg_0  \
                   $(DIR_M65)/basic.seg_1  \
                   $(DIR_M65)/dos.seg_1    \
@@ -290,9 +287,9 @@ $(DIR_TST)/OUTK_x.BIN $(DIR_TST)/KERNAL_combined.vs $(DIR_TST)/KERNAL_combined.s
 $(DIR_U64)/OUTK_x.BIN $(DIR_U64)/KERNAL_combined.vs $(DIR_U64)/KERNAL_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_U64) $(GEN_STR_U64)
 
-$(DIR_CRT)/OUTB_0.BIN $(DIR_CRT)/BASIC_combined.vs: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_CRT) $(CRT_STR_GEN) $(DIR_CRT)/KERNAL_combined.sym
-$(DIR_CRT)/OUTK_0.BIN $(DIR_CRT)/KERNAL_combined.vs $(DIR_CRT)/KERNAL_combined.sym: \
+$(DIR_CRT)/OUTB_0.BIN $(DIR_CRT)/BASIC_0_combined.vs: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_CRT) $(CRT_STR_CRT) $(DIR_CRT)/KERNAL_0_combined.sym
+$(DIR_CRT)/OUTK_0.BIN $(DIR_CRT)/KERNAL_0_combined.vs $(DIR_CRT)/KERNAL_0_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_CRT) $(GEN_STR_CRT)
 
 $(DIR_M65)/OUTB_0.BIN $(DIR_M65)/BASIC_0_combined.vs  $(DIR_M65)/BASIC_0_combined.sym: \
@@ -337,6 +334,7 @@ $(TARGET_U64_K):    $(DIR_U64)/OUTx_x.BIN
 
 build/symbols_custom.vs:          $(DIR_CUS)/BASIC_combined.vs    $(DIR_CUS)/KERNAL_combined.vs
 build/symbols_generic.vs:         $(DIR_GEN)/BASIC_combined.vs    $(DIR_GEN)/KERNAL_combined.vs
+build/symbols_generic_crt.vs:     $(DIR_CRT)/BASIC_0_combined.vs  $(DIR_CRT)/KERNAL_0_combined.vs
 build/symbols_testing.vs:         $(DIR_TST)/BASIC_combined.vs    $(DIR_TST)/KERNAL_combined.vs
 build/symbols_ultimate64.vs:      $(DIR_U64)/BASIC_combined.vs    $(DIR_U64)/KERNAL_combined.vs
 
@@ -500,11 +498,14 @@ $(DIR_X16)/kernal.seg_0: $(DIR_X16)/OUTx_0.BIN
 $(DIR_X16)/basic.seg_0: $(DIR_X16)/OUTx_0.BIN
 	@dd if=$(DIR_X16)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
 
-build/kernal_generic_crt.rom: $(DIR_CRT)/OUTx_0.BIN 
+build/kernal0_generic_crt.rom: $(DIR_CRT)/OUTx_0.BIN 
 	@dd if=$(DIR_CRT)/OUTx_0.BIN bs=8192 count=1 skip=2 of=$@ status=none
 
-build/basic_generic_crt.rom: $(DIR_CRT)/OUTx_0.BIN 
+build/basic0_generic_crt.rom: $(DIR_CRT)/OUTx_0.BIN 
 	@dd if=$(DIR_CRT)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
+
+build/symbols0_generic_crt.vs:
+	@sort $(DIR_CRT)/BASIC_0_combined.vs $(DIR_CRT)/KERNAL_0_combined.vs | uniq | grep -v "__" > $@
 
 build/kernal_hybrid.rom: kernal $(DIR_GEN)/OUTK_x.BIN
 	@echo
@@ -601,8 +602,8 @@ test_generic: build/kernal_generic.rom build/basic_generic.rom build/symbols_gen
 test_generic_x128: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
 	x128 -go64 -kernal64 build/kernal_generic.rom -basic64 build/basic_generic.rom -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_generic_crt: build/kernal_generic_crt.rom build/basic_generic_crt.rom build/symbols_generic_crt.vs
-	x64 -kernal build/kernal_generic_crt.rom -basic build/basic_generic_crt.rom -moncommands build/symbols_generic_crt.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_generic_crt: build/kernal0_generic_crt.rom build/basic0_generic_crt.rom build/symbols0_generic_crt.vs
+	x64 -kernal build/kernal0_generic_crt.rom -basic build/basic0_generic_crt.rom -moncommands build/symbols0_generic_crt.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_testing: build/kernal_testing.rom build/basic_testing.rom build/symbols_testing.vs
 	x64 -kernal build/kernal_testing.rom -basic build/basic_testing.rom -moncommands build/symbols_testing.vs -1 $(TESTTAPE) -8 $(TESTDISK)

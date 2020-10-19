@@ -29,8 +29,15 @@ jiffydos_load:
 	lda FA
 	jsr TALK
 	bcs jiffydos_load_error
+
+	lda #$01
+	sta CIA2_DDRB ; XXX for test only
+
 	lda #$61
 	jsr TKSA
+
+	lda #$02
+	sta CIA2_DDRB ; XXX for test only
 
 	; XXX flow below most likely takes too much time...
 
@@ -120,6 +127,9 @@ jiffydos_load_check_loop:
 
 jiffydos_load_error:
 	
+	lda #$F3
+	sta CIA2_DDRB ; XXX for test only
+
 	+panic $03
 
 	; XXX finish the implementation

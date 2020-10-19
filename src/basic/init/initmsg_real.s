@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# CRT BASIC_0 #TAKE
 ;; #LAYOUT# X16 BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 

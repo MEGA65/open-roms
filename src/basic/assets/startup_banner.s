@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# CRT BASIC_0 #TAKE
 ;; #LAYOUT# X16 BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
@@ -14,6 +15,8 @@
 	+CONFIG_BRAND_CUSTOM
 } else ifdef CONFIG_BRAND_GENERIC {
 	!pet "open roms generic build"
+} else ifdef CONFIG_BRAND_GENERIC_CRT {
+	!pet "open roms generic rom+crt build"
 } else ifdef CONFIG_BRAND_TESTING {
 	!pet "open roms testing build"
 } else ifdef CONFIG_MB_U64 {

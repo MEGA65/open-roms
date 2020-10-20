@@ -63,18 +63,24 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal/tape \
                  src/kernal/time
 
-SRC_BASIC   = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
-SRC_DOS_M65 = $(foreach dir,$(SRCDIR_DOS_M65),$(wildcard $(dir)/*.s))
-SRC_KERNAL  = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
-SRC_TOOLS   = $(wildcard tools/*.c,tools/*.cc)
+SRC_BASIC    = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+SRC_DOS_M65  = $(foreach dir,$(SRCDIR_DOS_M65),$(wildcard $(dir)/*.s))
+SRC_KERNAL   = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+SRC_TOOLS    = $(wildcard tools/*.c,tools/*.cc)
 
-DIR_ACME    = assembler/acme/src
-HDR_ACME    = $(filter-out $(wildcard $(DIR_ACME)/_*.h),$(wildcard $(DIR_ACME)/*.h))
-SRC_ACME    = $(DIR_ACME)/acme.c $(DIR_ACME)/platform.c $(DIR_ACME)/alu.c $(DIR_ACME)/typesystem.c \
-              $(DIR_ACME)/cliargs.c $(DIR_ACME)/global.c $(DIR_ACME)/output.c $(DIR_ACME)/flow.c \
-              $(DIR_ACME)/macro.c $(DIR_ACME)/cpu.c $(DIR_ACME)/encoding.c $(DIR_ACME)/pseudoopcodes.c \
-              $(DIR_ACME)/dynabuf.c $(DIR_ACME)/mnemo.c $(DIR_ACME)/input.c $(DIR_ACME)/section.c \
-              $(DIR_ACME)/symbol.c $(DIR_ACME)/tree.c
+DIR_ACME     = assembler/acme/src
+HDR_ACME     = $(filter-out $(wildcard $(DIR_ACME)/_*.h),$(wildcard $(DIR_ACME)/*.h))
+SRC_ACME     = $(DIR_ACME)/acme.c $(DIR_ACME)/platform.c $(DIR_ACME)/alu.c $(DIR_ACME)/typesystem.c \
+               $(DIR_ACME)/cliargs.c $(DIR_ACME)/global.c $(DIR_ACME)/output.c $(DIR_ACME)/flow.c \
+               $(DIR_ACME)/macro.c $(DIR_ACME)/cpu.c $(DIR_ACME)/encoding.c $(DIR_ACME)/pseudoopcodes.c \
+               $(DIR_ACME)/dynabuf.c $(DIR_ACME)/mnemo.c $(DIR_ACME)/input.c $(DIR_ACME)/section.c \
+               $(DIR_ACME)/symbol.c $(DIR_ACME)/tree.c
+
+CRT_HDR_LIST = assets/cartridge/header-cart.bin \
+               assets/cartridge/header-seg0.bin \
+               assets/cartridge/header-seg1.bin \
+               assets/cartridge/header-seg2.bin \
+               assets/cartridge/header-seg3.bin
 
 # Generated files
 
@@ -557,7 +563,7 @@ build/padding_8_KB:
 	@mkdir -p build
 	@dd if=/dev/zero bs=8192 count=1 of=$@ status=none
 
-build/external_generic.crt: $(SEG_LIST_CRT) build/padding_8_KB
+build/external_generic.crt: $(SEG_LIST_CRT) $(CRT_HDR_LIST) build/padding_8_KB
 	@echo
 	@echo
 	@echo

@@ -531,11 +531,35 @@ build/kernal_hybrid_u64.rom: kernal $(DIR_U64)/OUTK_x.BIN
 build/symbols_hybrid_u64.vs: $(DIR_U64)/KERNAL_combined.vs
 	@sort $(DIR_U64)/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
+# Rules - external CRT image
+
+build/padding_8_KB:
+	@mkdir -p build
+	@dd if=/dev/zero bs=8192 count=1 of=$@ status=none
+
+build/external_generic.crt: build/padding_8_KB
+	@echo
+	@echo
+	@echo
+	@echo //-------------------------------------------------------------------------------------------
+	@echo // Making external CRT ROM image
+	@echo //-------------------------------------------------------------------------------------------
+	@cat assets/cartridge/header-cart.bin    > $@
+	@cat assets/cartridge/header-seg0.bin   >> $@
+	@cat build/padding_8_KB                 >> $@
+	@cat assets/cartridge/header-seg1.bin   >> $@
+	@cat build/padding_8_KB                 >> $@
+	@cat assets/cartridge/header-seg2.bin   >> $@
+	@cat build/padding_8_KB                 >> $@
+	@cat assets/cartridge/header-seg3.bin   >> $@
+	@cat build/padding_8_KB                 >> $@
+	@echo
+
 # Rules - MEGA65 platform specific
 
 build/padding_64_KB:
 	@mkdir -p build
-	@dd if=/dev/zero bs=8192 count=8 of=build/padding_64_KB status=none
+	@dd if=/dev/zero bs=8192 count=8 of=$@ status=none
 
 $(TARGET_M65_x) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB build/chargen_openroms.rom build/chargen_openroms.patched build/chargen_pxlfont.rom build/chargen_pxlfont.patched
 	@echo
@@ -602,8 +626,8 @@ test_generic: build/kernal_generic.rom build/basic_generic.rom build/symbols_gen
 test_generic_x128: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
 	x128 -go64 -kernal64 build/kernal_generic.rom -basic64 build/basic_generic.rom -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_generic_crt: build/kernal_generic_crt.rom build/basic_generic_crt.rom build/symbols_generic_crt.vs
-	x64 -kernal build/kernal_generic_crt.rom -basic build/basic_generic_crt.rom -moncommands build/symbols_generic_crt.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_generic_crt: build/kernal_generic_crt.rom build/basic_generic_crt.rom  build/external_generic.crt build/symbols_generic_crt.vs
+	x64 -kernal build/kernal_generic_crt.rom -basic build/basic_generic_crt.rom -cartcrt build/external_generic.crt -moncommands build/symbols_generic_crt.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_testing: build/kernal_testing.rom build/basic_testing.rom build/symbols_testing.vs
 	x64 -kernal build/kernal_testing.rom -basic build/basic_testing.rom -moncommands build/symbols_testing.vs -1 $(TESTTAPE) -8 $(TESTDISK)

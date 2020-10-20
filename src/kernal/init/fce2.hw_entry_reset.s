@@ -39,12 +39,14 @@ hw_entry_reset:
 	; Also, https://codebase64.org/doku.php?id=base:assembling_your_own_cart_rom_image was used
 	; as it shows example startup sequence, to be followe by cartridge creators
 
+!ifndef ROM_LAYOUT_CRT {
+
 	; C64 PRG p269
 	jsr cartridge_check
 	bne @1
 	jmp (ICART_COLD_START)
 @1:
-
+}
 	; Disable the screen (and set 40 columns) to prevent visual glitches later
 	ldx #$28
 	stx VIC_SCROLX
@@ -71,6 +73,12 @@ hw_entry_reset:
 
 	; "Compute's Mapping the 64" p236
 	jsr JCINT
+}
+
+!ifdef ROM_LAYOUT_CRT {
+
+	; Init external ROM
+	jsr crt_init
 }
 
 	; What do we do when finished?  A C64 jumps into the BASIC ROM

@@ -19,6 +19,7 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  src/basic/basic_commands_03_m65 \
                  src/basic/basic_operators \
                  src/basic/basic_functions \
+                 src/basic/board_crt \
                  src/basic/board_m65 \
                  src/basic/board_x16 \
                  src/basic/engine_editor \
@@ -42,6 +43,7 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal \
                  src/kernal/,stubs \
                  src/kernal/assets \
+                 src/kernal/board_crt \
                  src/kernal/board_m65 \
                  src/kernal/board_x16 \
                  src/kernal/extapi_m65 \
@@ -167,6 +169,9 @@ TARGET_LIST = build/chargen_openroms.rom \
                   $(TARGET_M65_x_PXL) \
                   $(TARGET_LIST_U64) \
                   $(TARGET_X16_x)
+
+SEG_LIST_CRT =    $(DIR_CRT)/basic.seg_1  \
+                  $(DIR_CRT)/kernal.seg_1
 
 SEG_LIST_M65 =    $(DIR_M65)/basic.seg_0  \
                   $(DIR_M65)/basic.seg_1  \
@@ -302,6 +307,11 @@ $(DIR_X16)/OUTB_0.BIN $(DIR_X16)/BASIC_0_combined.vs  $(DIR_X16)/BASIC_0_combine
 $(DIR_X16)/OUTK_0.BIN $(DIR_X16)/KERNAL_0_combined.vs $(DIR_X16)/KERNAL_0_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_X16) $(GEN_STR_X16)
 
+$(DIR_CRT)/basic.seg_1  $(DIR_CRT)/BASIC_1_combined.vs  $(DIR_CRT)/BASIC_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_CRT) $(GEN_STR_CRT) $(DIR_CRT)/KERNAL_0_combined.sym $(DIR_CRT)/BASIC_0_combined.sym
+$(DIR_CRT)/kernal.seg_1 $(DIR_CRT)/KERNAL_1_combined.vs $(DIR_CRT)/KERNAL_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_CRT) $(GEN_STR_CRT) $(DIR_CRT)/KERNAL_0_combined.sym
+
 $(DIR_M65)/basic.seg_1  $(DIR_M65)/BASIC_1_combined.vs  $(DIR_M65)/BASIC_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_M65)/BASIC_0_combined.sym
 $(DIR_M65)/dos.seg_1    $(DIR_M65)/DOS_1_combined.vs    $(DIR_M65)/DOS_1_combined.sym: \
@@ -403,6 +413,16 @@ $(DIR_CRT)/OUTK_0.BIN $(DIR_CRT)/KERNAL_0_combined.vs $(DIR_CRT)/KERNAL_0_combin
 	@mkdir -p $(DIR_CRT)
 	@rm -f $@* $(DIR_CRT)/KERNAL_0*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s KERNAL_0 -i KERNAL_0-generic-crt -o OUTK_0.BIN -d $(DIR_CRT) -l e4d3 -h ffff $(CFG_CRT) $(GEN_STR_CRT) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+
+$(DIR_CRT)/basic.seg_1 $(DIR_CRT)/BASIC_1_combined.vs $(DIR_CRT)/BASIC_1_combined.sym:
+	@mkdir -p $(DIR_CRT)
+	@rm -f $@* $(DIR_CRT)/basic.seg_1 $(DIR_CRT)/BASIC_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s BASIC_1 -i BASIC_1-generic-crt -o basic.seg_1 -d $(DIR_CRT) -l 8000 -h 9fff $(CFG_CRT) $(GEN_STR_CRT) $(SRCDIR_BASIC) $(GEN_BASIC)
+
+$(DIR_CRT)/kernal.seg_1 $(DIR_CRT)/KERNAL_1_combined.vs $(DIR_CRT)/KERNAL_1_combined.sym:
+	@mkdir -p $(DIR_CRT)
+	@rm -f $@* $(DIR_CRT)/kernal.seg_1 $(DIR_CRT)/KERNAL_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s KERNAL_1 -i KERNAL_1-generic-crt -o kernal.seg_1 -d $(DIR_CRT) -l 8000 -h 9fff $(CFG_CRT) $(GEN_STR_CRT) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 # Rules - BASIC and KERNAL intermediate files, for MEGA65
 
@@ -537,7 +557,7 @@ build/padding_8_KB:
 	@mkdir -p build
 	@dd if=/dev/zero bs=8192 count=1 of=$@ status=none
 
-build/external_generic.crt: build/padding_8_KB
+build/external_generic.crt: $(SEG_LIST_CRT) build/padding_8_KB
 	@echo
 	@echo
 	@echo
@@ -546,11 +566,11 @@ build/external_generic.crt: build/padding_8_KB
 	@echo //-------------------------------------------------------------------------------------------
 	@cat assets/cartridge/header-cart.bin    > $@
 	@cat assets/cartridge/header-seg0.bin   >> $@
-	@cat build/padding_8_KB                 >> $@
+	@cat $(DIR_CRT)/basic.seg_1             >> $@
 	@cat assets/cartridge/header-seg1.bin   >> $@
 	@cat build/padding_8_KB                 >> $@
 	@cat assets/cartridge/header-seg2.bin   >> $@
-	@cat build/padding_8_KB                 >> $@
+	@cat $(DIR_CRT)/kernal.seg_1            >> $@
 	@cat assets/cartridge/header-seg3.bin   >> $@
 	@cat build/padding_8_KB                 >> $@
 	@echo

@@ -35,6 +35,10 @@
 ; bit 0 - 1 = flash mode activated by jumper
 
 
+crt_init_fail:
+
+	+panic P_ERR_ROM_MISMATCH
+
 crt_init:
 
 	; Setup the cart
@@ -44,8 +48,7 @@ crt_init:
 
 	; Bank-in the first ROM bank
 
-	lda #%00000000
-	sta $DE00
+	jsr map_BASIC_1
 
 	; Check if ROM revision matches the cartridge
 	
@@ -53,18 +56,45 @@ crt_init:
 @1:
 	iny
 	lda $E4B9, y            ; Kernal ROM revision address
-	cmp $9FEC, y
+	cmp $9FEC, y            ; cartridge ROM revision address
 	bne crt_init_fail
 	cmp #$00
 	bne @1
 
-	; Unmap cartridge memory     XXX provide separate map functions
+	; FALLTROUGH
+
+map_NORMAL:
+
+	; Unmap cartridge memory
+
+	php
+	pha
 
 	lda #%00000010
+
+	; FALLTROUGH
+
+map_NORMAL_common:
+
 	sta $DE00
+
+	pla
+	plp
 
 	rts
 
-crt_init_fail:
+map_BASIC_1:
 
-	+panic P_ERR_ROM_MISMATCH
+	php
+	pha
+
+	lda #%00000000
+	beq map_NORMAL_common
+
+map_KERNAL_1:
+
+	php
+	pha
+
+	lda #%00010000
+	bne map_NORMAL_common

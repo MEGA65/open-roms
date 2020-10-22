@@ -70,7 +70,7 @@
 ;; #ALIAS# print_return                    = KERNAL_0.proxy_K1_print_return
 
 ;; #ALIAS# __MSG_KERNAL_PRESS_PLAY         = KERNAL_0.__MSG_KERNAL_PRESS_PLAY
-;; #ALIAS# __MSG_KERNAL_OK                 = KERNAL_0.__MSG_KERNAL_OK
+;; #ALIAS# __MSG_KERNAL_OK_SEARCH          = KERNAL_0.__MSG_KERNAL_OK_SEARCH
 ;; #ALIAS# __MSG_KERNAL_FOUND              = KERNAL_0.__MSG_KERNAL_FOUND
 
 ;; #ALIAS# tape_normal_byte_store          = KERNAL_0.tape_normal_byte_store

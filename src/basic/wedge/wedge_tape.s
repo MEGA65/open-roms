@@ -28,6 +28,10 @@ wedge_tape:
 	beq wedge_arrow_H
 }
 
+	; FALLTROUGH
+
+wedge_tape_syntax_error:
+
 	jmp do_SYNTAX_error
 
 !ifdef CONFIG_TAPE_HEAD_ALIGN {
@@ -39,7 +43,16 @@ wedge_arrow_H:
 	jsr fetch_character_skip_spaces
 
 	cmp #$00
-	+bne do_SYNTAX_error
+	beq wedge_arrow_H_or_HF
+	cmp #$46                           ; 'F'
+	bne wedge_tape_syntax_error
+
+	jsr fetch_character_skip_spaces
+
+	cmp #$00
+	bne wedge_tape_syntax_error
+
+wedge_arrow_H_or_HF:
 
 	jsr tape_head_align
 

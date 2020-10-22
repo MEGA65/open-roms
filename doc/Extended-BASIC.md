@@ -1,7 +1,7 @@
 
 # Extended BASIC
 
-NOTE: Command syntax, behaviour details, and tokens are still subject to change! Currently the availability of some depends on the build configuration, in the future most (if not all) extended commands will be available only on machines with extended ROM, like the MEGA65 or Ultimate 64.
+NOTE: Command syntax, behaviour details, and tokens are still subject to change! Currently the availability of some depends on the build configuration, in the future most (if not all) extended commands will be available only on machines with extended ROM, like the *MEGA65* or *Ultimate 64*.
 
 ## DOS Wedge
 
@@ -29,21 +29,29 @@ Sends the DOS command to the current unit.
 
 ## Tape Wedge
 
-The Tape Wedge commands are only available in direct mode, and they have to start from the first character of the line.
+The Tape Wedge commands are only available in direct mode, and they have to start from the first character of the line. It is designed to ressemble wedge from *BlackBox* series of cartridges and several tape turbo implementations.
 
 ### `←L ["file_name"]` (all)
 
-Loads the file from tape. Depending on the configuration, it tries to load the file in TurboTape 64 format, in the standard CBM format, or autodetects the file format.
+Loads the file from tape. Depending on the configuration, it tries to load the file:
+* in any format (standard/turbo) - if format autodetection is compiled in
+* in *TurboTape 64* format - if turbo support is compiled in
+* in the normal CBM format - if only this one is compiled in
 
 ### `←M ["file_name"]` (all)
 
 Like above, but merges a BASIC program to the one already stored in memory.
 
-### `←H` (MEGA65, cartridge)
+### `←H` or `←HF` (MEGA65, cartridge)
 
-Launches a built-in tape head alignment tool. Destroys program in memory. Press `RUN/STOP` to terminate the tool.
+Launches a built-in tape head alignment tool. Destroys program in memory. Press `RUN/STOP` to terminate the tool. `←HF` is for compatibility with the *BlackBox v3/v4/v8* cartridges.
 
 ## Additional BASIC commands - I/O
+
+### Device numbers
+
+* if tape format autodetection is compiled-in, you can load file from tape using either device #1 (CBM compatible way) or from device #7 (in a way compatible with *Final* and *Action Replay* cartridges)
+* if autodetection is not available, than device #1 means normal CBM format, and device #7 means *Turbo Tape 64* format
 
 ### `MERGE "file_name" [, device_number]` (all)
 
@@ -106,4 +114,4 @@ Switches machine to C64 compatibility mode or to MEGA65 native mode. Performs `C
 
 ### `IF MEGA65 THEN`, `IF MEGA65 GOTO` (MEGA65)
 
-Special check for running under MEGA65. The `MEGA65` string is not tokenized, therefore it will be listed properly even under original BASIC V2. `MEGA65` is not a variable here - it is still possible to normally use the `ME` variable.
+Special check for running on *MEGA65* motherboard. The `MEGA65` string is not tokenized, therefore it will be listed properly even under original BASIC V2. `MEGA65` is not a variable here - it is still possible to normally use the `ME` variable.

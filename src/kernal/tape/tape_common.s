@@ -116,7 +116,7 @@ tape_prepare_reading:
 
 	; Display confirmation
 
-	ldx #__MSG_KERNAL_OK
+	ldx #__MSG_KERNAL_OK_SEARCH
 	jsr print_kernal_message
 
 	; Prepare for reading

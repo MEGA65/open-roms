@@ -451,11 +451,15 @@
 
 
 
-; Determine if it is OK to include tape autocalibration routines
+; Determine if it is OK to include tape autocalibration routines; they are too slow to be safely used at 1 MHz CPU speed
 
-!ifndef CONFIG_MB_M65 {
-	!set HAS_TAPE_AUTOCALIBRATE = 1
+!ifdef HAS_TAPE {
+	!ifdef CONFIG_MB_M65 {
+	    !set HAS_TAPE_AUTOCALIBRATE = 1
+    }
 }
+
+; XXX adapt autocalibration to Ultimate64 once additional Kernal bank is available
 
 
 

@@ -193,7 +193,7 @@ SEG_LIST_X16 =    $(DIR_X16)/basic.seg_0  \
                   $(DIR_X16)/kernal.seg_0 \
                   $(DIR_X16)/kernal.seg_1
 
-REL_TARGET_LIST = $(TARGET_LIST_GEN) $(TARGET_M65_x) $(TARGET_M65_x_PXL) $(TARGET_LIST_U64)
+REL_TARGET_LIST = $(TARGET_LIST_GEN) $(TARGET_LIST_CRT) $(TARGET_M65_x) $(TARGET_M65_x_PXL) $(TARGET_LIST_U64)
 
 # Misc strings
 

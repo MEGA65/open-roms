@@ -51,6 +51,16 @@ const std::vector<ROMTypeDescriptionEntry> ROM_DEFINITIONS =
     },
 
     {
+        "CART",
+        32896,        // file size
+        0x203C,       // signature offset 1
+        0,            // signature offset 2
+        0,            // DOS date offset
+        0,            // BASIC ID offset
+        0             // KERNAL ID offset
+    },
+
+    {
         "MEGA65",
         128 * 1024,   // file size
         0xBF52,       // signature offset 1

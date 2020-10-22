@@ -39,7 +39,7 @@ Loads the file from tape. Depending on the configuration, it tries to load the f
 
 Like above, but merges a BASIC program to the one already stored in memory.
 
-### `←H` (MEGA65)
+### `←H` (MEGA65, cartridge)
 
 Launches a built-in tape head alignment tool. Destroys program in memory. Press `RUN/STOP` to terminate the tool.
 

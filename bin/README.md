@@ -13,12 +13,16 @@ Follow these rules, or bad things will happen!
 * Don't mix ROMs from different builds/versions (again, CHARGEN is an exception).
 
 * The generic ROM set should be compatible with any C64-compatible machine; platform-specific ROMs might not work on other platforms.
-
+ 
 <br />
 
 For Ultimate 64 motherboard the following settings are recommended:
 
 * U64 Specific Settings -> Turbo Control -> U64 Turbo Registers
+
+<br />
+
+The generic_crt ROM set is a special version of generic set, with some code moved to external ROM on the cartridge - thus, more features could be enabled. It needs all the 3 files (BASIC, Kernal, cartridge) to be operable.
 
 <br />
 

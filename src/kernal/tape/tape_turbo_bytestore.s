@@ -1,5 +1,5 @@
 ;; #LAYOUT# STD *        #TAKE
-;; #LAYOUT# CRT KERNAL_0 #TAKE
+;; #LAYOUT# CRT KERNAL_1 #TAKE
 ;; #LAYOUT# M65 KERNAL_1 #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
@@ -21,6 +21,8 @@
 
 !ifdef CONFIG_MB_M65 {
 !addr __tape_turbo_bytestore_defmap  = __tape_turbo_bytestore + 10
+} else ifdef ROM_LAYOUT_CRT {
+!addr __tape_turbo_bytestore_defmap  = __tape_turbo_bytestore + 12
 } else {
 !addr __tape_turbo_bytestore_defmap  = __tape_turbo_bytestore + 7
 }
@@ -31,8 +33,11 @@ tape_turbo_bytestore_source:
 
 !ifdef CONFIG_MB_M65 {
 	jsr map_NORMAL
+} else ifdef ROM_LAYOUT_CRT {
+	; 'jsr map_NORMAL' would take too much time
+	ldx #%00000010
+	stx $DE00
 }
-
 	; Set all memory as RAM, tape motor ON
 	ldx #$00
 	stx CPU_R6510
@@ -41,12 +46,17 @@ tape_turbo_bytestore_source:
 	sta (MEMUSS), y
 
 	; Restore default memory layout
-	ldx #$00                           ; value will be determined later, offset from start: 7 bytes
+	ldx #$00                           ; value will be determined later, offset from start: 7/10/12 bytes
 	stx CPU_R6510
 
 !ifdef CONFIG_MB_M65 {
 	; Restore default map and quit
 	jmp map_KERNAL_1
+} else ifdef ROM_LAYOUT_CRT {
+	; Restore default map and quit; 'jsr map_KERNAL_1' would take too much time
+	ldx #%00010000
+	stx $DE00
+	rts
 } else {
 	; Go back
 	rts

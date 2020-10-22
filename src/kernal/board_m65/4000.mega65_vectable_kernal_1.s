@@ -43,7 +43,6 @@
 	!word load_tape_turbo
 } else { !word $0000 } } else { !word $0000 }
 
-
 !ifdef CONFIG_TAPE_AUTODETECT {
 	!word load_tape_auto
 } else { !word $0000 }

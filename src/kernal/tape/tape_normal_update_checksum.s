@@ -1,5 +1,5 @@
 ;; #LAYOUT# STD *        #TAKE
-;; #LAYOUT# CRT KERNAL_0 #TAKE
+;; #LAYOUT# CRT KERNAL_1 #TAKE
 ;; #LAYOUT# M65 KERNAL_1 #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 

@@ -109,7 +109,7 @@
 ;; #CONFIG# PANIC_SCREEN               YES
 ;; #CONFIG# DOS_WEDGE                  YES
 ;; #CONFIG# TAPE_WEDGE                 YES
-;; #CONFIG# TAPE_HEAD_ALIGN            NO
+;; #CONFIG# TAPE_HEAD_ALIGN            YES
 ;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 

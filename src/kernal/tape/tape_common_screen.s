@@ -30,8 +30,7 @@ tape_screen_on_motor_off:
 	lda #$03
 	sta MISC_EMU
 
-	lda VIC_CTRLB
-	and #%10111111
+	lda NXTBIT
 	sta VIC_CTRLB
 
 	sta VIC_KEY
@@ -70,18 +69,7 @@ tape_screen_off_motor_on:
 	; to be handled by 1 MHz CPU - so in case of compatibility mode, switch CPU to fast speed
 	; (and disable badlines, so we will not have to blank the screen)
 
-	jsr M65_MODEGET
-	bcc @2
-	
-	jsr viciv_unhide
-
-	lda VIC_CTRLB
-	ora #%01000000
-	sta VIC_CTRLB
-
-	lda #$00
-	sta MISC_EMU
-@2:
+	jsr tape_fast_cpu
 
 } else ifdef CONFIG_MB_U64 {
 
@@ -90,10 +78,8 @@ tape_screen_off_motor_on:
 	cmp #$FF
 	beq @2                             ; branch if no turbo control available
 
-	lda #$8F                           ; max speed, no badlines
-	sta U64_TURBOCTL
+	jsr U64_FAST                       ; max speed, no badlines
 	bne @3                             ; branch always
-
 @2:
 	jsr screen_off
 @3:

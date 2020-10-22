@@ -121,7 +121,7 @@
 !ifndef CONFIG_LEGACY_SCNKEY {
 	!addr BITTS     = $B4  ;          -- NOT IMPLEMENTED --
 }
-	!addr NXTBIT    = $B5  ;          -- NOT IMPLEMENTED -- [!] also used by tape routine, we use it only for Ultimate 64 turbo handling
+	!addr NXTBIT    = $B5  ;          -- NOT IMPLEMENTED -- [!] also used by tape routine to store CPU turbo settings
 !ifndef CONFIG_LEGACY_SCNKEY {
 	!addr RODATA    = $B6  ;          -- NOT IMPLEMENTED --
 }

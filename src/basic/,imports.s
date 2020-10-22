@@ -41,3 +41,10 @@
 ;; #ALIAS# M65_MODEGET         = KERNAL_0.M65_MODEGET
 ;; #ALIAS# M65_MODESET         = KERNAL_0.M65_MODESET
 ;; #ALIAS# M65_SETWIN_Y        = KERNAL_0.M65_SETWIN_Y
+
+;
+; Ultimate 64 specific parts
+;
+
+;; #ALIAS# U64_SLOW            = KERNAL_0.U64_SLOW
+;; #ALIAS# U64_FAST            = KERNAL_0.U64_FAST

@@ -39,22 +39,13 @@ cmd_slow_fast_common:
 
 cmd_slow:
 
-	lda #$00                           ; for U64_TURBOCTL - badlines, 1MHz
 	sta SCPU_SPEED_NORMAL              ; any value will do
-
-	; FALLTROUGH
-
-cmd_slow_fast_common:
-
-	sta U64_TURBOCTL
-	rts
+	jmp U64_SLOW                       ; to set turbo in $D031 too
 
 cmd_fast:
 
-	lda #$0F                           ; for U64_TURBOCTL - badlines, 48MHz
 	sta SCPU_SPEED_TURBO               ; any value will do
-
-	bne cmd_slow_fast_common           ; branch always
+	jmp U64_FAST                       ; to set turbo in $D031 too
 
 } else ifdef CONFIG_PLATFORM_COMMODORE_64 {
 

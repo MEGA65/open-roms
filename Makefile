@@ -45,6 +45,7 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal/assets \
                  src/kernal/board_crt \
                  src/kernal/board_m65 \
+                 src/kernal/board_u64 \
                  src/kernal/board_x16 \
                  src/kernal/extapi_m65 \
                  src/kernal/iec \

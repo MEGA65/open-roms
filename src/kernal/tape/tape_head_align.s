@@ -45,6 +45,17 @@ tape_head_align:
 
 	jsr nmi_lock
 
+	; Switch CPU to fast mode
+
+!ifdef CONFIG_MB_M65 {
+	jsr tape_fast_cpu
+}
+
+!ifdef CONFIG_MB_U64 {
+	jsr U64_FAST
+	sta SCPU_SPEED_TURBO
+}
+
 	; Prepare CIA timers
 
 	ldx #$02                  ; set timer A to 3 ticks

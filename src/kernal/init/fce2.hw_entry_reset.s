@@ -32,6 +32,12 @@ hw_entry_reset:
 	jsr m65_reset_part
 }
 
+!ifdef CONFIG_MB_U64 {
+
+	jsr U64_SLOW
+	sta SCPU_SPEED_NORMAL
+}
+
 !ifdef CONFIG_PLATFORM_COMMODORE_64 {
 
 	; The following routine is based on reading the public KERNAL jumptable routine

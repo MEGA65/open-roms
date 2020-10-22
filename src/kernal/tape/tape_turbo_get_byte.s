@@ -27,6 +27,8 @@ tape_turbo_get_byte:
 	bcc @1	                           ; is the initial 1 shifted into carry already?
 	+plx_trash_a
 
+!ifdef HAS_TAPE_AUTOCALIBRATE {
+
 	; Compensate for tape speed variations
 
 	lda __turbo_half_S                 ; half of the last value for bit '0'
@@ -51,6 +53,7 @@ tape_turbo_get_byte:
 	beq tape_turbo_get_byte_done       ; do not increase threshold too far no matter what
 
 	inc __pulse_threshold
+}
 
 tape_turbo_get_byte_done:
 

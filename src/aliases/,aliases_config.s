@@ -451,6 +451,14 @@
 
 
 
+; Determine if it is OK to include tape autocalibration routines
+
+!ifndef CONFIG_MB_M65 {
+	!set HAS_TAPE_AUTOCALIBRATE = 1
+}
+
+
+
 ; Defines for multi-segment ROMs
 
 !ifdef CONFIG_MB_M65 {

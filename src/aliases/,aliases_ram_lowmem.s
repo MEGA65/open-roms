@@ -310,11 +310,14 @@
 
 !ifdef HAS_TAPE {
 
+!ifdef HAS_TAPE_AUTOCALIBRATE {
+
 	!addr __normal_time_S             = IRQTMP+0          ; duration of the short pulse
 	!addr __normal_time_M             = IRQTMP+1          ; duration of the medium pulse
 
 	!addr __turbo_half_S              = IRQTMP+0          ; half-duration of the short pulse
 	!addr __turbo_half_L              = IRQTMP+1          ; half-duration of the long pulse
+}
 
 	!addr __pulse_threshold           = SVXT              ; pulse classification threshold
 	!addr __pulse_threshold_ML        = SYNO              ; M/L pulse classification threshold, for normal only

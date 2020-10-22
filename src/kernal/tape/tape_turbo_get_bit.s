@@ -19,9 +19,12 @@ tape_turbo_get_bit:
 	jsr tape_common_get_pulse
 	bcs @1
 
+!ifdef HAS_TAPE_AUTOCALIBRATE {
+
 	clc
 	ror
 	sta __turbo_half_S                 ; store half of the last measurement result for short pulse
+}
 
 	lda #$01
 !ifdef CONFIG_MB_M65 {
@@ -34,10 +37,15 @@ tape_turbo_get_bit:
 	sta VIC_EXTCOL
 	sec
 	rts
+
 @1:
+
+!ifdef HAS_TAPE_AUTOCALIBRATE {
+
 	clc
 	ror
 	sta __turbo_half_L                 ; store half of the last measurement result for long pulse
+}
 
 	lda #$00
 !ifdef CONFIG_MB_M65 {

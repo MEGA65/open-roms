@@ -13,10 +13,10 @@ U64_SLOW:
 
 	; FALLTROUGH
 
-U64_FAST:
+U64_FAST: ; clears zero flag - important for tape code
 
 	lda #$0F                           ; for U64_TURBOCTL - badlines, 48MHz
-	sta SCPU_SPEED_TURBO               ; any value will do
+	sta U64_TURBOCTL
 
 	rts
 }

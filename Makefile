@@ -157,13 +157,15 @@ TARGET_CRT_K     = build/kernal_generic_crt.rom
 TARGET_TST_K     = build/kernal_testing.rom
 TARGET_U64_K     = build/kernal_ultimate64.rom
 
+TARGET_CRT_X     = build/external_generic.crt 
+
 TARGET_M65_x     = build/mega65.rom
 TARGET_M65_x_PXL = build/mega65_pxlfont.rom
 TARGET_X16_x     = build/cx16-dummy.rom
 
 TARGET_LIST_CUS  = $(TARGET_CUS_B) $(TARGET_CUS_K)
 TARGET_LIST_GEN  = $(TARGET_GEN_B) $(TARGET_GEN_K)
-TARGET_LIST_CRT  = $(TARGET_CRT_B) $(TARGET_CRT_K)
+TARGET_LIST_CRT  = $(TARGET_CRT_B) $(TARGET_CRT_K) $(TARGET_CRT_X)
 TARGET_LIST_TST  = $(TARGET_TST_B) $(TARGET_TST_K)
 TARGET_LIST_U64  = $(TARGET_U64_B) $(TARGET_U64_K)
 
@@ -171,6 +173,7 @@ TARGET_LIST = build/chargen_openroms.rom \
                   $(TARGET_LIST_CUS) \
                   $(TARGET_LIST_GEN) \
                   $(TARGET_LIST_TST) \
+                  $(TARGET_LIST_CRT) \
                   $(TARGET_M65_x) \
                   $(TARGET_M65_x_PXL) \
                   $(TARGET_LIST_U64) \
@@ -524,10 +527,10 @@ $(DIR_X16)/kernal.seg_0: $(DIR_X16)/OUTx_0.BIN
 $(DIR_X16)/basic.seg_0: $(DIR_X16)/OUTx_0.BIN
 	@dd if=$(DIR_X16)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
 
-build/kernal_generic_crt.rom: $(DIR_CRT)/OUTx_0.BIN 
+$(TARGET_CRT_K): $(DIR_CRT)/OUTx_0.BIN 
 	@dd if=$(DIR_CRT)/OUTx_0.BIN bs=8192 count=1 skip=2 of=$@ status=none
 
-build/basic_generic_crt.rom: $(DIR_CRT)/OUTx_0.BIN 
+$(TARGET_CRT_B): $(DIR_CRT)/OUTx_0.BIN 
 	@dd if=$(DIR_CRT)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
 
 build/symbols_generic_crt.vs:
@@ -563,7 +566,7 @@ build/padding_8_KB:
 	@mkdir -p build
 	@dd if=/dev/zero bs=8192 count=1 of=$@ status=none
 
-build/external_generic.crt: $(SEG_LIST_CRT) $(CRT_HDR_LIST) build/padding_8_KB
+$(TARGET_CRT_X): $(SEG_LIST_CRT) $(CRT_HDR_LIST) build/padding_8_KB
 	@echo
 	@echo
 	@echo
@@ -643,23 +646,23 @@ $(TARGET_X16_x): $(SEG_LIST_X16) build/chargen_openroms.rom
 test:     test_custom
 test_crt: test_generic_crt
 
-test_custom: build/kernal_custom.rom build/basic_custom.rom build/symbols_custom.vs
-	x64 -kernal build/kernal_custom.rom -basic build/basic_custom.rom -moncommands build/symbols_custom.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_custom: $(TARGET_LIST_CUS) build/symbols_custom.vs
+	x64 -kernal $(TARGET_CUS_K) -basic $(TARGET_CUS_B) -moncommands build/symbols_custom.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_generic: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
-	x64 -kernal build/kernal_generic.rom -basic build/basic_generic.rom -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_generic: $(TARGET_LIST_GEN) build/symbols_generic.vs
+	x64 -kernal $(TARGET_GEN_K) -basic $(TARGET_GEN_B) -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_generic_x128: build/kernal_generic.rom build/basic_generic.rom build/symbols_generic.vs
-	x128 -go64 -kernal64 build/kernal_generic.rom -basic64 build/basic_generic.rom -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_generic_x128: $(TARGET_LIST_GEN) build/symbols_generic.vs
+	x128 -go64 -kernal64 $(TARGET_GEN_K) -basic64 $(TARGET_GEN_B) -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_generic_crt: build/kernal_generic_crt.rom build/basic_generic_crt.rom  build/external_generic.crt build/symbols_generic_crt.vs
-	x64 -kernal build/kernal_generic_crt.rom -basic build/basic_generic_crt.rom -cartcrt build/external_generic.crt -moncommands build/symbols_generic_crt.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_generic_crt: $(TARGET_LIST_CRT) build/symbols_generic_crt.vs
+	x64 -kernal $(TARGET_CRT_K) -basic $(TARGET_CRT_B) -cartcrt $(TARGET_CRT_X) -moncommands build/symbols_generic_crt.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_testing: build/kernal_testing.rom build/basic_testing.rom build/symbols_testing.vs
-	x64 -kernal build/kernal_testing.rom -basic build/basic_testing.rom -moncommands build/symbols_testing.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_testing: $(TARGET_LIST_TST) build/symbols_testing.vs
+	x64 -kernal $(TARGET_TST_K) -basic $(TARGET_TST_B) -moncommands build/symbols_testing.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_ultimate64: build/kernal_ultimate64.rom build/basic_ultimate64.rom build/symbols_ultimate64.vs
-	x64 -kernal build/kernal_ultimate64.rom -basic build/basic_ultimate64.rom -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_ultimate64: $(TARGET_LIST_U64) build/symbols_ultimate64.vs
+	x64 -kernal $(TARGET_U64_K) -basic $(TARGET_U64_B) -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_mega65: $(TARGET_M65_x) $(TARGET_M65_x_PXL)
 	../xemu/build/bin/xmega65.native -dmarev 2 -besure -fontrefresh -forcerom -loadrom $(TARGET_M65_x_PXL)

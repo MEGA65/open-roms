@@ -1685,7 +1685,6 @@ void DataSet::prepareOutput()
     // Convert our encoded strings to a KickAssembler source
 
     std::ostringstream stream;
-    stream << std::endl << "!ifdef ROM_LAYOUT_" << layoutName() << " {"<< std::endl;
 
     // Export 1-nibble and 3-nibble encoding data
 
@@ -1724,7 +1723,7 @@ void DataSet::prepareOutput()
 
     // Finalize the file stream
 
-    stream << std::endl << "} ; ROM_LAYOUT_" << layoutName() << std::endl;
+    stream << std::endl;
     outFileContent = stream.str();
 }
 
@@ -1856,22 +1855,7 @@ void writeStrings()
        
         outputString = dataSetM65.getOutput();
     }
-    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["MB_U64"])
-    {
-        DataSetU64 dataSetU64;
-
-        // Add input data to computation objects
-
-        dataSetU64.addStrings(GLOBAL_Keywords_V2);
-        dataSetU64.addStrings(GLOBAL_Keywords_01);
-        dataSetU64.addStrings(GLOBAL_Errors);
-        dataSetU64.addStrings(GLOBAL_MiscStrings);
-       
-        // Retrieve the results
-       
-        outputString = dataSetU64.getOutput();
-    }
-    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["BRAND_GENERIC_CRT"])
+    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["ROM_CRT"])
     {
         DataSetCRT dataSetCRT;
 
@@ -1886,6 +1870,21 @@ void writeStrings()
         // Retrieve the results
 
         outputString = dataSetCRT.getOutput();   
+    }
+    else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"] && GLOBAL_ConfigOptions["MB_U64"])
+    {
+        DataSetU64 dataSetU64;
+
+        // Add input data to computation objects
+
+        dataSetU64.addStrings(GLOBAL_Keywords_V2);
+        dataSetU64.addStrings(GLOBAL_Keywords_01);
+        dataSetU64.addStrings(GLOBAL_Errors);
+        dataSetU64.addStrings(GLOBAL_MiscStrings);
+       
+        // Retrieve the results
+       
+        outputString = dataSetU64.getOutput();
     }
     else if (GLOBAL_ConfigOptions["PLATFORM_COMMODORE_64"])
     {

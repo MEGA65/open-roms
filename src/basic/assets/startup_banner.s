@@ -20,7 +20,11 @@
 } else ifdef CONFIG_BRAND_TESTING {
 	!pet "open roms testing build"
 } else ifdef CONFIG_MB_U64 {
-	!pet "open roms for ultimate 64"
+	!ifdef CONFIG_ROM_CRT {
+	    !pet "open roms crt for ultimate 64"
+	} else {
+	    !pet "open roms for ultimate 64"
+    }
 }
 
 }

@@ -77,7 +77,7 @@ SRC_ACME     = $(DIR_ACME)/acme.c $(DIR_ACME)/platform.c $(DIR_ACME)/alu.c $(DIR
                $(DIR_ACME)/dynabuf.c $(DIR_ACME)/mnemo.c $(DIR_ACME)/input.c $(DIR_ACME)/section.c \
                $(DIR_ACME)/symbol.c $(DIR_ACME)/tree.c
 
-CRT_HDR_LIST = assets/cartridge/header-cart.bin \
+CRT_BIN_LIST = assets/cartridge/header-cart.bin \
                assets/cartridge/header-seg0.bin \
                assets/cartridge/header-seg1.bin \
                assets/cartridge/header-seg2.bin \
@@ -96,6 +96,7 @@ DIR_GENCRT = build/target_generic_crt
 DIR_TST    = build/target_testing
 DIR_M65    = build/target_mega65
 DIR_U64    = build/target_ultimate64
+DIR_U64CRT = build/target_ultimate64_crt
 DIR_X16    = build/target_cx16
 
 # List of config files
@@ -107,6 +108,7 @@ CFG_TST    = src/,,config_testing.s
 CFG_M65    = src/,,config_mega65.s
 CFG_U64    = src/,,config_ultimate64.s
 CFG_X16    = src/,,config_cx16.s
+CFG_U64CRT = src/,,config_ultimate64_crt.s
 
 # List of files with generated strings
 
@@ -116,6 +118,7 @@ GEN_STR_GENCRT = $(DIR_GENCRT)/,generated/,packed_strings.s
 GEN_STR_TST    = $(DIR_TST)/,generated/,packed_strings.s
 GEN_STR_M65    = $(DIR_M65)/,generated/,packed_strings.s
 GEN_STR_U64    = $(DIR_U64)/,generated/,packed_strings.s
+GEN_STR_U64CRT = $(DIR_U64CRT)/,generated/,packed_strings.s
 GEN_STR_X16    = $(DIR_X16)/,generated/,packed_strings.s
 
 # Dependencies - helper variables
@@ -154,14 +157,17 @@ TARGET_GEN_B       = build/basic_generic.rom
 TARGET_GENCRT_B    = build/basic_generic_crt.rom
 TARGET_TST_B       = build/basic_testing.rom
 TARGET_U64_B       = build/basic_ultimate64.rom
+TARGET_U64CRT_B    = build/basic_ultimate64_crt.rom
 
 TARGET_CUS_K       = build/kernal_custom.rom
 TARGET_GEN_K       = build/kernal_generic.rom
 TARGET_GENCRT_K    = build/kernal_generic_crt.rom
 TARGET_TST_K       = build/kernal_testing.rom
 TARGET_U64_K       = build/kernal_ultimate64.rom
+TARGET_U64CRT_K    = build/kernal_ultimate64_crt.rom
 
 TARGET_GENCRT_X    = build/extrom_generic_crt.crt 
+TARGET_U64CRT_X    = build/extrom_ultimate64_crt.crt 
 
 TARGET_M65_x_ORF   = build/mega65.rom
 TARGET_M65_x_PXL   = build/mega65_pxlfont.rom
@@ -172,19 +178,25 @@ TARGET_LIST_GEN    = $(TARGET_GEN_B) $(TARGET_GEN_K)
 TARGET_LIST_GENCRT = $(TARGET_GENCRT_B) $(TARGET_GENCRT_K) $(TARGET_GENCRT_X)
 TARGET_LIST_TST    = $(TARGET_TST_B) $(TARGET_TST_K)
 TARGET_LIST_U64    = $(TARGET_U64_B) $(TARGET_U64_K)
+TARGET_LIST_U64CRT = $(TARGET_U64CRT_B) $(TARGET_U64CRT_K) $(TARGET_U64CRT_X)
 
-TARGET_LIST        = build/chargen_openroms.rom \
-                     $(TARGET_LIST_CUS)  \
-                     $(TARGET_LIST_GEN)  \
-                     $(TARGET_LIST_TST)  \
-                     $(TARGET_LIST_CRT)  \
-                     $(TARGET_M65_x_ORF) \
-                     $(TARGET_M65_x_PXL) \
-                     $(TARGET_LIST_U64)  \
+
+TARGET_LIST        = $(TARGET_CHR_ORF)     \
+                     $(TARGET_LIST_CUS)    \
+                     $(TARGET_LIST_GEN)    \
+                     $(TARGET_LIST_GENCRT) \
+                     $(TARGET_LIST_TST)    \
+                     $(TARGET_M65_x_ORF)   \
+                     $(TARGET_M65_x_PXL)   \
+                     $(TARGET_LIST_U64)    \
+                     $(TARGET_LIST_U64CRT) \
                      $(TARGET_X16_x)
 
 SEG_LIST_GENCRT    = $(DIR_GENCRT)/basic.seg_1  \
                      $(DIR_GENCRT)/kernal.seg_1
+
+SEG_LIST_U64CRT    = $(DIR_U64CRT)/basic.seg_1  \
+                     $(DIR_U64CRT)/kernal.seg_1
 
 SEG_LIST_M65       = $(DIR_M65)/basic.seg_0  \
                      $(DIR_M65)/basic.seg_1  \
@@ -197,7 +209,12 @@ SEG_LIST_X16       = $(DIR_X16)/basic.seg_0  \
                      $(DIR_X16)/kernal.seg_0 \
                      $(DIR_X16)/kernal.seg_1
 
-REL_TARGET_LIST = $(TARGET_LIST_GEN) $(TARGET_LIST_GENCRT) $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL) $(TARGET_LIST_U64)
+REL_TARGET_LIST    = $(TARGET_LIST_GEN)    \
+                     $(TARGET_LIST_GENCRT) \
+                     $(TARGET_M65_x_ORF)   \
+                     $(TARGET_M65_x_PXL)   \
+                     $(TARGET_LIST_U64)    \
+                     $(TARGET_LIST_U64CRT)
 
 # Misc strings
 
@@ -310,6 +327,11 @@ $(DIR_GENCRT)/OUTB_0.BIN $(DIR_GENCRT)/BASIC_0_combined.vs: \
 $(DIR_GENCRT)/OUTK_0.BIN $(DIR_GENCRT)/KERNAL_0_combined.vs $(DIR_GENCRT)/KERNAL_0_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_GENCRT) $(GEN_STR_GENCRT)
 
+$(DIR_U64CRT)/OUTB_0.BIN $(DIR_U64CRT)/BASIC_0_combined.vs: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_U64CRT) $(CRT_STR_U64CRT) $(DIR_U64CRT)/KERNAL_0_combined.sym
+$(DIR_U64CRT)/OUTK_0.BIN $(DIR_U64CRT)/KERNAL_0_combined.vs $(DIR_U64CRT)/KERNAL_0_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_U64CRT) $(GEN_STR_U64CRT)
+
 $(DIR_M65)/OUTB_0.BIN $(DIR_M65)/BASIC_0_combined.vs  $(DIR_M65)/BASIC_0_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym
 $(DIR_M65)/OUTK_0.BIN $(DIR_M65)/KERNAL_0_combined.vs $(DIR_M65)/KERNAL_0_combined.sym: \
@@ -325,6 +347,11 @@ $(DIR_GENCRT)/basic.seg_1  $(DIR_GENCRT)/BASIC_1_combined.vs  $(DIR_GENCRT)/BASI
 $(DIR_GENCRT)/kernal.seg_1 $(DIR_GENCRT)/KERNAL_1_combined.vs $(DIR_GENCRT)/KERNAL_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_GENCRT) $(GEN_STR_GENCRT) $(DIR_GENCRT)/KERNAL_0_combined.sym
 
+$(DIR_U64CRT)/basic.seg_1  $(DIR_U64CRT)/BASIC_1_combined.vs  $(DIR_U64CRT)/BASIC_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_U64CRT) $(GEN_STR_U64CRT) $(DIR_U64CRT)/KERNAL_0_combined.sym $(DIR_U64CRT)/BASIC_0_combined.sym
+$(DIR_U64CRT)/kernal.seg_1 $(DIR_U64CRT)/KERNAL_1_combined.vs $(DIR_U64CRT)/KERNAL_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_U64CRT) $(GEN_STR_U64CRT) $(DIR_U64CRT)/KERNAL_0_combined.sym
+
 $(DIR_M65)/basic.seg_1  $(DIR_M65)/BASIC_1_combined.vs  $(DIR_M65)/BASIC_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_M65)/BASIC_0_combined.sym
 $(DIR_M65)/dos.seg_1    $(DIR_M65)/DOS_1_combined.vs    $(DIR_M65)/DOS_1_combined.sym: \
@@ -337,13 +364,14 @@ $(DIR_X16)/basic.seg_1  $(DIR_X16)/BASIC_1_combined.vs  $(DIR_X16)/BASIC_1_combi
 $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1_combined.vs $(DIR_X16)/KERNAL_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_X16) $(GEN_STR_X16) $(DIR_X16)/KERNAL_0_combined.sym
 
-$(DIR_CUS)/OUTx_x.BIN:     $(DIR_CUS)/OUTB_x.BIN  $(DIR_CUS)/OUTK_x.BIN
-$(DIR_GEN)/OUTx_x.BIN:     $(DIR_GEN)/OUTB_x.BIN  $(DIR_GEN)/OUTK_x.BIN
+$(DIR_CUS)/OUTx_x.BIN:     $(DIR_CUS)/OUTB_x.BIN     $(DIR_CUS)/OUTK_x.BIN
+$(DIR_GEN)/OUTx_x.BIN:     $(DIR_GEN)/OUTB_x.BIN     $(DIR_GEN)/OUTK_x.BIN
 $(DIR_GENCRT)/OUTx_0.BIN:  $(DIR_GENCRT)/OUTB_0.BIN  $(DIR_GENCRT)/OUTK_0.BIN
-$(DIR_TST)/OUTx_x.BIN:     $(DIR_TST)/OUTB_x.BIN  $(DIR_TST)/OUTK_x.BIN
-$(DIR_M65)/OUTx_0.BIN:     $(DIR_M65)/OUTB_0.BIN  $(DIR_M65)/OUTK_0.BIN
-$(DIR_U64)/OUTx_x.BIN:     $(DIR_U64)/OUTB_x.BIN  $(DIR_U64)/OUTK_x.BIN
-$(DIR_X16)/OUTx_0.BIN:     $(DIR_X16)/OUTB_0.BIN  $(DIR_X16)/OUTK_0.BIN
+$(DIR_TST)/OUTx_x.BIN:     $(DIR_TST)/OUTB_x.BIN     $(DIR_TST)/OUTK_x.BIN
+$(DIR_M65)/OUTx_0.BIN:     $(DIR_M65)/OUTB_0.BIN     $(DIR_M65)/OUTK_0.BIN
+$(DIR_U64)/OUTx_x.BIN:     $(DIR_U64)/OUTB_x.BIN     $(DIR_U64)/OUTK_x.BIN
+$(DIR_U64CRT)/OUTx_0.BIN:  $(DIR_U64CRT)/OUTB_0.BIN  $(DIR_U64CRT)/OUTK_0.BIN
+$(DIR_X16)/OUTx_0.BIN:     $(DIR_X16)/OUTB_0.BIN     $(DIR_X16)/OUTK_0.BIN
 
 $(TARGET_CUS_B):    $(DIR_CUS)/OUTx_x.BIN
 $(TARGET_GEN_B):    $(DIR_GEN)/OUTx_x.BIN
@@ -360,6 +388,7 @@ build/symbols_generic.vs:         $(DIR_GEN)/BASIC_combined.vs       $(DIR_GEN)/
 build/symbols_generic_crt.vs:     $(DIR_GENCRT)/BASIC_0_combined.vs  $(DIR_GENCRT)/KERNAL_0_combined.vs
 build/symbols_testing.vs:         $(DIR_TST)/BASIC_combined.vs       $(DIR_TST)/KERNAL_combined.vs
 build/symbols_ultimate64.vs:      $(DIR_U64)/BASIC_combined.vs       $(DIR_U64)/KERNAL_combined.vs
+build/symbols_ultimate64_crt.vs:  $(DIR_U64CRT)/BASIC_0_combined.vs  $(DIR_U64CRT)/KERNAL_0_combined.vs
 
 # Rules - BASIC and KERNAL intermediate files
 
@@ -387,6 +416,10 @@ $(GEN_STR_U64): $(TOOL_GENERATE_STRINGS) $(CFG_U64)
 	@mkdir -p $(DIR_U64)/,generated
 	$(TOOL_GENERATE_STRINGS) -o $@ -c $(CFG_U64)
 
+$(GEN_STR_U64CRT): $(TOOL_GENERATE_STRINGS) $(CFG_U64CRT)
+	@mkdir -p $(DIR_U64CRT)/,generated
+	$(TOOL_GENERATE_STRINGS) -o $@ -c $(CFG_U64CRT)
+
 $(GEN_STR_X16): $(TOOL_GENERATE_STRINGS) $(CFG_X16)
 	@mkdir -p $(DIR_X16)/,generated
 	$(TOOL_GENERATE_STRINGS) -o $@ -c $(CFG_X16)
@@ -395,13 +428,14 @@ build/,generated/,float_constants.s: $(TOOL_GENERATE_CONSTANTS)
 	@mkdir -p build/,generated
 	$(TOOL_GENERATE_CONSTANTS) -o build/,generated/,float_constants.s
 
-GEN_STR_custom      = $(GEN_STR_CUS)
-GEN_STR_generic     = $(GEN_STR_GEN)
-GEN_STR_generic_crt = $(GEN_STR_GENCRT)
-GEN_STR_testing     = $(GEN_STR_TST)
-GEN_STR_mega65      = $(GEN_STR_M65)
-GEN_STR_ultimate64  = $(GEN_STR_U64)
-GEN_STR_cx16        = $(GEN_STR_X16)
+GEN_STR_custom         = $(GEN_STR_CUS)
+GEN_STR_generic        = $(GEN_STR_GEN)
+GEN_STR_generic_crt    = $(GEN_STR_GENCRT)
+GEN_STR_testing        = $(GEN_STR_TST)
+GEN_STR_mega65         = $(GEN_STR_M65)
+GEN_STR_ultimate64     = $(GEN_STR_U64)
+GEN_STR_ultimate64_crt = $(GEN_STR_U64CRT)
+GEN_STR_cx16           = $(GEN_STR_X16)
 
 .PRECIOUS: build/target_%/OUTB_x.BIN build/target_%/BASIC_combined.vs
 build/target_%/OUTB_x.BIN build/target_%/BASIC_combined.vs:
@@ -436,6 +470,26 @@ $(DIR_GENCRT)/kernal.seg_1 $(DIR_GENCRT)/KERNAL_1_combined.vs $(DIR_GENCRT)/KERN
 	@mkdir -p $(DIR_GENCRT)
 	@rm -f $@* $(DIR_GENCRT)/kernal.seg_1 $(DIR_GENCRT)/KERNAL_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s KERNAL_1 -i KERNAL_1-generic-crt -o kernal.seg_1 -d $(DIR_GENCRT) -l 8000 -h 9fff $(CFG_GENCRT) $(GEN_STR_GENCRT) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+
+$(DIR_U64CRT)/OUTB_0.BIN $(DIR_U64CRT)/BASIC_0_combined.vs $(DIR_U64CRT)/BASIC_0_combined.sym:
+	@mkdir -p $(DIR_U64CRT)
+	@rm -f $@* $(DIR_U64CRT)/BASIC_0*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s BASIC_0 -i BASIC_0-ultimate64-crt -o OUTB_0.BIN -d $(DIR_U64CRT) -l a000 -h e4d2 $(CFG_U64CRT) $(GEN_STR_U64CRT) $(SRCDIR_BASIC) $(GEN_BASIC)
+
+$(DIR_U64CRT)/OUTK_0.BIN $(DIR_U64CRT)/KERNAL_0_combined.vs $(DIR_U64CRT)/KERNAL_0_combined.sym:
+	@mkdir -p $(DIR_U64CRT)
+	@rm -f $@* $(DIR_U64CRT)/KERNAL_0*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s KERNAL_0 -i KERNAL_0-ultimate64-crt -o OUTK_0.BIN -d $(DIR_U64CRT) -l e4d3 -h ffff $(CFG_U64CRT) $(GEN_STR_U64CRT) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+
+$(DIR_U64CRT)/basic.seg_1 $(DIR_U64CRT)/BASIC_1_combined.vs $(DIR_U64CRT)/BASIC_1_combined.sym:
+	@mkdir -p $(DIR_U64CRT)
+	@rm -f $@* $(DIR_U64CRT)/basic.seg_1 $(DIR_U64CRT)/BASIC_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s BASIC_1 -i BASIC_1-ultimate64-crt -o basic.seg_1 -d $(DIR_U64CRT) -l 8000 -h 9fff $(CFG_U64CRT) $(GEN_STR_U64CRT) $(SRCDIR_BASIC) $(GEN_BASIC)
+
+$(DIR_U64CRT)/kernal.seg_1 $(DIR_U64CRT)/KERNAL_1_combined.vs $(DIR_U64CRT)/KERNAL_1_combined.sym:
+	@mkdir -p $(DIR_U64CRT)
+	@rm -f $@* $(DIR_U64CRT)/kernal.seg_1 $(DIR_U64CRT)/KERNAL_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s KERNAL_1 -i KERNAL_1-ultimate64-crt -o kernal.seg_1 -d $(DIR_U64CRT) -l 8000 -h 9fff $(CFG_U64CRT) $(GEN_STR_U64CRT) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 # Rules - BASIC and KERNAL intermediate files, for MEGA65
 
@@ -513,6 +567,15 @@ $(DIR_GENCRT)/kernal.seg_0: $(DIR_GENCRT)/OUTx_0.BIN
 $(DIR_GENCRT)/basic.seg_0: $(DIR_GENCRT)/OUTx_0.BIN
 	@dd if=$(DIR_GENCRT)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
 
+$(DIR_U64CRT)/OUTx_0.BIN:
+	@cat $(DIR_U64CRT)/OUTB_0.BIN $(DIR_U64CRT)/OUTK_0.BIN > $@
+
+$(DIR_U64CRT)/kernal.seg_0: $(DIR_U64CRT)/OUTx_0.BIN
+	@dd if=$(DIR_U64CRT)/OUTx_0.BIN bs=8192 count=1 skip=2 of=$@ status=none
+
+$(DIR_U64CRT)/basic.seg_0: $(DIR_U64CRT)/OUTx_0.BIN
+	@dd if=$(DIR_U64CRT)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
+
 $(DIR_M65)/OUTx_0.BIN:
 	@cat $(DIR_M65)/OUTB_0.BIN $(DIR_M65)/OUTK_0.BIN > $@
 
@@ -537,8 +600,17 @@ $(TARGET_GENCRT_K): $(DIR_GENCRT)/OUTx_0.BIN
 $(TARGET_GENCRT_B): $(DIR_GENCRT)/OUTx_0.BIN 
 	@dd if=$(DIR_GENCRT)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
 
+$(TARGET_U64CRT_K): $(DIR_U64CRT)/OUTx_0.BIN 
+	@dd if=$(DIR_U64CRT)/OUTx_0.BIN bs=8192 count=1 skip=2 of=$@ status=none
+
+$(TARGET_U64CRT_B): $(DIR_U64CRT)/OUTx_0.BIN 
+	@dd if=$(DIR_U64CRT)/OUTx_0.BIN bs=8192 count=1 skip=0 of=$@ status=none
+
 build/symbols_generic_crt.vs:
 	@sort $(DIR_GENCRT)/BASIC_0_combined.vs $(DIR_GENCRT)/KERNAL_0_combined.vs | uniq | grep -v "__" > $@
+
+build/symbols_ultimate64_crt.vs:
+	@sort $(DIR_U64CRT)/BASIC_0_combined.vs $(DIR_U64CRT)/KERNAL_0_combined.vs | uniq | grep -v "__" > $@
 
 build/kernal_hybrid.rom: kernal $(DIR_GEN)/OUTK_x.BIN
 	@echo
@@ -564,18 +636,18 @@ build/kernal_hybrid_u64.rom: kernal $(DIR_U64)/OUTK_x.BIN
 build/symbols_hybrid_u64.vs: $(DIR_U64)/KERNAL_combined.vs
 	@sort $(DIR_U64)/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
-# Rules - external CRT image
+# Rules - external CRT images
 
 build/padding_8_KB:
 	@mkdir -p build
 	@dd if=/dev/zero bs=8192 count=1 of=$@ status=none
 
-$(TARGET_GENCRT_X): $(SEG_LIST_GENCRT) $(CRT_HDR_LIST) build/padding_8_KB
+$(TARGET_GENCRT_X): $(SEG_LIST_GENCRT) $(CRT_BIN_LIST) build/padding_8_KB
 	@echo
 	@echo
 	@echo
 	@echo //-------------------------------------------------------------------------------------------
-	@echo // Making external CRT ROM image
+	@echo // Making external CRT ROM image - generic
 	@echo //-------------------------------------------------------------------------------------------
 	@cat assets/cartridge/header-cart.bin    > $@
 	@cat assets/cartridge/header-seg0.bin   >> $@
@@ -584,6 +656,24 @@ $(TARGET_GENCRT_X): $(SEG_LIST_GENCRT) $(CRT_HDR_LIST) build/padding_8_KB
 	@cat build/padding_8_KB                 >> $@
 	@cat assets/cartridge/header-seg2.bin   >> $@
 	@cat $(DIR_GENCRT)/kernal.seg_1         >> $@
+	@cat assets/cartridge/header-seg3.bin   >> $@
+	@cat build/padding_8_KB                 >> $@
+	@echo
+
+$(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
+	@echo
+	@echo
+	@echo
+	@echo //-------------------------------------------------------------------------------------------
+	@echo // Making external CRT ROM image - Ultimate 64
+	@echo //-------------------------------------------------------------------------------------------
+	@cat assets/cartridge/header-cart.bin    > $@
+	@cat assets/cartridge/header-seg0.bin   >> $@
+	@cat $(DIR_U64CRT)/basic.seg_1          >> $@
+	@cat assets/cartridge/header-seg1.bin   >> $@
+	@cat build/padding_8_KB                 >> $@
+	@cat assets/cartridge/header-seg2.bin   >> $@
+	@cat $(DIR_U64CRT)/kernal.seg_1         >> $@
 	@cat assets/cartridge/header-seg3.bin   >> $@
 	@cat build/padding_8_KB                 >> $@
 	@echo
@@ -667,6 +757,9 @@ test_testing: $(TARGET_LIST_TST) $(TARGET_CHR_PXL) build/symbols_testing.vs
 
 test_ultimate64: $(TARGET_LIST_U64) $(TARGET_CHR_PXL) build/symbols_ultimate64.vs
 	x64 -kernal $(TARGET_U64_K) -basic $(TARGET_U64_B) -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+
+test_ultimate64_crt: $(TARGET_LIST_U64CRT) $(TARGET_CHR_PXL) build/symbols_ultimate64_crt.vs
+	x64 -kernal $(TARGET_U64CRT_K) -basic $(TARGET_U64CRT_B) -chargen $(TARGET_CHR_PXL) -cartcrt $(TARGET_U64CRT_X) -moncommands build/symbols_ultimate64_crt.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_mega65: $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL)
 	../xemu/build/bin/xmega65.native -dmarev 2 -besure -fontrefresh -forcerom -loadrom $(TARGET_M65_x_PXL)

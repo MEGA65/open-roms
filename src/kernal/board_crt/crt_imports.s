@@ -9,7 +9,6 @@
 
 ;; #ALIAS# STOP                            = KERNAL_0.STOP
 ;; #ALIAS# IOINIT                          = KERNAL_0.proxy_K1_IOINIT
-;; #ALIAS# xxx                             = KERNAL_0.xxx
 
 ;; #ALIAS# map_NORMAL                      = KERNAL_0.map_NORMAL
 ;; #ALIAS# map_KERNAL_1                    = KERNAL_0.map_KERNAL_1
@@ -47,3 +46,10 @@
 
 ;; #ALIAS# CLALL                           = KERNAL_0.proxy_K1_CLALL
 ;; #ALIAS# nmi_lock                        = KERNAL_0.nmi_lock
+
+;
+; Ultimate 64 specific entries
+;
+
+;; #ALIAS# U64_SLOW                        = KERNAL_0.U64_SLOW
+;; #ALIAS# U64_FAST                        = KERNAL_0.U64_FAST

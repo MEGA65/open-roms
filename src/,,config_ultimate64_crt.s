@@ -1,13 +1,12 @@
 
-;; #CONFIG# ID $11 ; should be 1 byte, different for each config file!
+;; #CONFIG# ID $13 ; should be 1 byte, different for each config file!
 
 ;
 ; Please read CONFIG.md before modifying this file!
 ;
 
 ; Idea:
-; - sane defaults for the Commodore 64/128 emulators
-; - use RetroRelplay cartridge image as a ROM extension
+; - sane defaults for the Ultimate 64 FPGA computer
 ; - do not enable features which are a significant compatibility risk
 
 
@@ -15,18 +14,8 @@
 ; --- Hardware platform and brand
 
 ;; #CONFIG# PLATFORM_COMMODORE_64      YES
+;; #CONFIG# MB_U64                     YES
 ;; #CONFIG# ROM_CRT                    YES
-;; #CONFIG# BRAND_GENERIC_CRT          YES
-
-
-; --- Processor instruction set
-
-;; #CONFIG# CPU_MOS_6502               YES
-;; #CONFIG# CPU_DTV_6502               NO
-;; #CONFIG# CPU_RCW_65C02              NO
-;; #CONFIG# CPU_WDC_65C02              NO
-;; #CONFIG# CPU_WDC_65816              NO
-;; #CONFIG# CPU_CSG_65CE02             NO
 
 
 ; --- Memory model
@@ -59,8 +48,8 @@
 
 ;; #CONFIG# SID_2ND_ADDRESS            NO
 ;; #CONFIG# SID_3RD_ADDRESS            NO
-;; #CONFIG# SID_D4XX                   NO
-;; #CONFIG# SID_D5XX                   NO
+;; #CONFIG# SID_D4XX                   YES
+;; #CONFIG# SID_D5XX                   YES
 ;; #CONFIG# SID_D6XX                   NO
 ;; #CONFIG# SID_D7XX                   NO
 

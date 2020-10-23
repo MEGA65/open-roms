@@ -1,7 +1,7 @@
 
 # Extended BASIC
 
-NOTE: Command syntax, behaviour details, and tokens are still subject to change! Currently the availability of some depends on the build configuration, in the future most (if not all) extended commands will be available only on machines with extended ROM, like the *MEGA65* or *Ultimate 64*.
+NOTE: Command syntax, behaviour details, and tokens are still subject to change! Currently the availability of some depends on the build configuration, in the future most (if not all) extended commands will be available only on machines with extended ROM, like the *MEGA65*, *Ultimate 64*, or a build utilizing cartridge with external ROM (build marked as *cart*).
 
 ## DOS Wedge
 
@@ -42,7 +42,7 @@ Loads the file from tape. Depending on the configuration, it tries to load the f
 
 Like above, but merges a BASIC program to the one already stored in memory.
 
-### `←H` or `←HF` (MEGA65, cartridge)
+### `←H` or `←HF` (cart, MEGA65)
 
 Launches a built-in tape head alignment tool. Destroys program in memory. Press `RUN/STOP` to terminate the tool. `←HF` is for compatibility with the *BlackBox v3/v4/v8* cartridges.
 
@@ -71,7 +71,7 @@ Saves the binary data from the given memory area. NOTE: for now syntax differs f
 
 ## Additional BASIC commands - misc
 
-### `COLD` (MEGA65)
+### `COLD` (cart, MEGA65)
 
 Resets the machine. In direct mode asks for confirmation first.
 
@@ -83,7 +83,7 @@ Tries to switch the machine to turbo mode (or back to 1MHz operation mode) - det
 
 Tries to restore program destroyed by the `NEW` command or a reset.
 
-### `MEM` (MEGA65)
+### `MEM` (cart, MEGA65)
 
 Displays BASIC memory usage information:
 * `TEXT` - size of BASIC program text, always at least 2 bytes are used

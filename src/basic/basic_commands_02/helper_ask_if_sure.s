@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
 ;; #LAYOUT# M65 BASIC_1 #TAKE
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
@@ -17,6 +18,12 @@ helper_ask_if_sure:
 
 	jsr map_BASIC_1
 	jsr (VB1__helper_ask_if_sure)
+	jmp map_NORMAL
+
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+	jsr map_BASIC_1
+	jsr JB1__helper_ask_if_sure
 	jmp map_NORMAL
 
 } else {

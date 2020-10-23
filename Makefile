@@ -146,6 +146,9 @@ TOOLS_LIST = $(TOOL_GENERATE_CONSTANTS) \
 
 # List of targets
 
+TARGET_CHR_OR    = build/chargen_openroms.rom 
+TARGET_CHR_PXL   = build/chargen_pxlfont.rom 
+
 TARGET_CUS_B     = build/basic_custom.rom
 TARGET_GEN_B     = build/basic_generic.rom
 TARGET_CRT_B     = build/basic_generic_crt.rom
@@ -270,17 +273,17 @@ build/tools/%: tools/%.cc tools/common.h
 
 # Rules - CHARGEN
 
-build/chargen_openroms.rom: $(TOOL_PNGPREPARE) assets/8x8font.png
+$(TARGET_CHR_OR): $(TOOL_PNGPREPARE) assets/8x8font.png
 	@$(TOOL_PNGPREPARE) charrom assets/8x8font.png $@ 1>build/pngprepare.log
 
-build/chargen_pxlfont.rom: bin/chargen_pxlfont_2.3.rom
+$(TARGET_CHR_PXL): bin/chargen_pxlfont_2.3.rom
 	@cp $< $@
 
-build/chargen_openroms.patched: $(TOOL_PATCH_CHARGEN) build/chargen_openroms.rom
-	@$(TOOL_PATCH_CHARGEN) -i build/chargen_openroms.rom -o $@ -n 7px-OpenROMs
+build/chargen_openroms.patched: $(TOOL_PATCH_CHARGEN) $(TARGET_CHR_OR)
+	@$(TOOL_PATCH_CHARGEN) -i $(TARGET_CHR_OR) -o $@ -n 7px-OpenROMs
 
-build/chargen_pxlfont.patched: $(TOOL_PATCH_CHARGEN) build/chargen_pxlfont.rom
-	@$(TOOL_PATCH_CHARGEN) -i build/chargen_pxlfont.rom -o $@ -n 6px-PXLfont
+build/chargen_pxlfont.patched: $(TOOL_PATCH_CHARGEN) $(TARGET_CHR_PXL)
+	@$(TOOL_PATCH_CHARGEN) -i $(TARGET_CHR_PXL) -o $@ -n 6px-PXLfont
 
 # Dependencies - BASIC, DOS, and KERNAL
 
@@ -591,7 +594,7 @@ build/padding_64_KB:
 	@mkdir -p build
 	@dd if=/dev/zero bs=8192 count=8 of=$@ status=none
 
-$(TARGET_M65_x) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB build/chargen_openroms.rom build/chargen_openroms.patched build/chargen_pxlfont.rom build/chargen_pxlfont.patched
+$(TARGET_M65_x) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB $(TARGET_CHR_OR) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
 	@echo
 	@echo
 	@echo
@@ -602,7 +605,7 @@ $(TARGET_M65_x) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB build/c
 	@cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x)
 	@cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x)
 	@cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x)
-	@cat build/chargen_openroms.rom          >> $(TARGET_M65_x)
+	@cat $(TARGET_CHR_OR)          >> $(TARGET_M65_x)
 	@cat build/chargen_openroms.patched      >> $(TARGET_M65_x)
 	@cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x)
 	@cat build/padding_64_KB                 >> $(TARGET_M65_x)
@@ -616,7 +619,7 @@ $(TARGET_M65_x) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB build/c
 	@cat $(DIR_M65)/kernal.seg_1    >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/basic.seg_1     >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/basic.seg_0     >> $(TARGET_M65_x_PXL)
-	@cat build/chargen_pxlfont.rom           >> $(TARGET_M65_x_PXL)
+	@cat $(TARGET_CHR_PXL)           >> $(TARGET_M65_x_PXL)
 	@cat build/chargen_pxlfont.patched       >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/kernal.seg_0    >> $(TARGET_M65_x_PXL)
 	@cat build/padding_64_KB                 >> $(TARGET_M65_x_PXL)
@@ -647,23 +650,23 @@ $(TARGET_X16_x): $(SEG_LIST_X16) build/chargen_openroms.rom
 test:     test_custom
 test_crt: test_generic_crt
 
-test_custom: $(TARGET_LIST_CUS) build/symbols_custom.vs
-	x64 -kernal $(TARGET_CUS_K) -basic $(TARGET_CUS_B) -moncommands build/symbols_custom.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_custom: $(TARGET_LIST_CUS) $(TARGET_CHR_PXL) build/symbols_custom.vs
+	x64 -kernal $(TARGET_CUS_K) -basic $(TARGET_CUS_B) -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_custom.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_generic: $(TARGET_LIST_GEN) build/symbols_generic.vs
-	x64 -kernal $(TARGET_GEN_K) -basic $(TARGET_GEN_B) -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_generic: $(TARGET_LIST_GEN)$(TARGET_CHR_PXL) build/symbols_generic.vs
+	x64 -kernal $(TARGET_GEN_K) -basic $(TARGET_GEN_B) -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_generic_x128: $(TARGET_LIST_GEN) build/symbols_generic.vs
-	x128 -go64 -kernal64 $(TARGET_GEN_K) -basic64 $(TARGET_GEN_B) -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_generic_x128: $(TARGET_LIST_GEN) $(TARGET_CHR_PXL) build/symbols_generic.vs
+	x128 -go64 -kernal64 $(TARGET_GEN_K) -basic64 $(TARGET_GEN_B) -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_generic.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_generic_crt: $(TARGET_LIST_CRT) build/symbols_generic_crt.vs
-	x64 -kernal $(TARGET_CRT_K) -basic $(TARGET_CRT_B) -cartcrt $(TARGET_CRT_X) -moncommands build/symbols_generic_crt.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_generic_crt: $(TARGET_LIST_CRT) $(TARGET_CHR_PXL) build/symbols_generic_crt.vs
+	x64 -kernal $(TARGET_CRT_K) -basic $(TARGET_CRT_B) -chargen $(TARGET_CHR_PXL) -cartcrt $(TARGET_CRT_X) -moncommands build/symbols_generic_crt.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_testing: $(TARGET_LIST_TST) build/symbols_testing.vs
-	x64 -kernal $(TARGET_TST_K) -basic $(TARGET_TST_B) -moncommands build/symbols_testing.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_testing: $(TARGET_LIST_TST) $(TARGET_CHR_PXL) build/symbols_testing.vs
+	x64 -kernal $(TARGET_TST_K) -basic $(TARGET_TST_B) -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_testing.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
-test_ultimate64: $(TARGET_LIST_U64) build/symbols_ultimate64.vs
-	x64 -kernal $(TARGET_U64_K) -basic $(TARGET_U64_B) -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+test_ultimate64: $(TARGET_LIST_U64) $(TARGET_CHR_PXL) build/symbols_ultimate64.vs
+	x64 -kernal $(TARGET_U64_K) -basic $(TARGET_U64_B) -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_ultimate64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 
 test_mega65: $(TARGET_M65_x) $(TARGET_M65_x_PXL)
 	../xemu/build/bin/xmega65.native -dmarev 2 -besure -fontrefresh -forcerom -loadrom $(TARGET_M65_x_PXL)
@@ -671,20 +674,20 @@ test_mega65: $(TARGET_M65_x) $(TARGET_M65_x_PXL)
 test_cx16: $(TARGET_X16_x)
 	../x16-emulator/x16emu -rom $(TARGET_X16_x)
 
-test_hybrid: build/kernal_hybrid.rom build/symbols_hybrid.vs
+test_hybrid: build/kernal_hybrid.rom $(TARGET_CHR_PXL) build/symbols_hybrid.vs
 	@echo
 	@echo $(HYBRID_WARNING)
 	@echo
-	x64 -kernal build/kernal_hybrid.rom -moncommands build/symbols_hybrid.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+	x64 -kernal build/kernal_hybrid.rom -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_hybrid.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 	@echo
 	@echo $(HYBRID_WARNING)
 	@echo
 
-test_hybrid_u64: build/kernal_hybrid_u64.rom build/symbols_hybrid_u64.vs
+test_hybrid_u64: build/kernal_hybrid_u64.rom $(TARGET_CHR_PXL) build/symbols_hybrid_u64.vs
 	@echo
 	@echo $(HYBRID_WARNING)
 	@echo
-	x64 -kernal build/kernal_hybrid_u64.rom -moncommands build/symbols_hybrid_u64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
+	x64 -kernal build/kernal_hybrid_u64.rom -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_hybrid_u64.vs -1 $(TESTTAPE) -8 $(TESTDISK)
 	@echo
 	@echo $(HYBRID_WARNING)
 	@echo
@@ -692,8 +695,8 @@ test_hybrid_u64: build/kernal_hybrid_u64.rom build/symbols_hybrid_u64.vs
 test_m65: build/mega65.rom
 	m65 -b ../mega65-core/bin/mega65r1.bit -k ../mega65-core/bin/KICKUP.M65 -R build/mega65.rom -4
 
-testremote: build/kernal_custom.rom build/basic_custom.rom build/symbols_custom.vs
-	x64 -kernal build/kernal_custom.rom -basic build/basic_custom.rom -moncommands build/symbols_custom.vs -remotemonitor
+testremote: build/kernal_custom.rom build/basic_custom.rom $(TARGET_CHR_PXL) build/symbols_custom.vs
+	x64 -kernal build/kernal_custom.rom -basic build/basic_custom.rom -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_custom.vs -remotemonitor
 
 testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN kernal basic
 	$(TOOL_SIMILARITY) kernal $(DIR_GEN)/OUTx_x.BIN

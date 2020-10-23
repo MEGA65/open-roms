@@ -1,7 +1,7 @@
 ;; #LAYOUT# STD *       #TAKE
-;; #LAYOUT# CRT BASIC_0 #TAKE
-;; #LAYOUT# M65 *       #TAKE
-;; #LAYOUT# X16 BASIC_0 #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
+;; #LAYOUT# M65 BASIC_1 #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
 ; This routine prints strings that have been packed using the 'generate_trings' tool.
@@ -20,6 +20,20 @@ print_packed_misc_str:
 
 	jsr map_BASIC_1
 	jsr (VB1__print_packed_misc_str)
+	jmp map_NORMAL
+
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+print_packed_error:
+
+	jsr map_BASIC_1
+	jsr JB1__print_packed_error
+	jmp map_NORMAL
+
+print_packed_misc_str:
+
+	jsr map_BASIC_1
+	jsr JB1__print_packed_misc_str
 	jmp map_NORMAL
 
 } else {

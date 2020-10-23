@@ -1,5 +1,6 @@
 ;; #LAYOUT# STD *       #TAKE
 ;; #LAYOUT# CRT BASIC_0 #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE-FLOAT
 ;; #LAYOUT# M65 BASIC_0 #TAKE
 ;; #LAYOUT# M65 BASIC_1 #TAKE-FLOAT
 ;; #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
@@ -20,6 +21,12 @@ LINKPRG:
 	jsr (VB1__LINKPRG)
 	jmp map_NORMAL
 
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+	jsr map_BASIC_1
+	jsr JB1__LINKPRG
+	jmp map_NORMAL
+
 } else {
 
 	; Start by getting pointer to the first line
@@ -30,6 +37,8 @@ linkprg_loop:
 	ldy #1
 
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	ldx #<OLDTXT+0
@@ -54,6 +63,8 @@ linkprg_loop:
 linkprg_end_of_line_search:
 
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	ldx #<OLDTXT+0
@@ -91,6 +102,8 @@ linkprg_end_of_line_search:
 
 !ifdef CONFIG_MB_M65 {
 	jsr poke_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
+	jsr poke_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	ldx #<OLDTXT+0
 	jsr poke_under_roms
@@ -104,6 +117,8 @@ linkprg_end_of_line_search:
 	ldy #1
 
 !ifdef CONFIG_MB_M65 {
+	jsr poke_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr poke_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	jsr poke_under_roms

@@ -1,25 +1,39 @@
 ;; #LAYOUT# STD *       #TAKE
-;; #LAYOUT# M65 *       #TAKE
-;; #LAYOUT# X16 BASIC_0 #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
+;; #LAYOUT# M65 BASIC_1 #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
 
 !ifndef HAS_SMALL_BASIC {
 
+	; First perform the garbage collection - to be able to determine real values
+
 !ifdef SEGMENT_M65_BASIC_0 {
 
 cmd_mem:
 
-	; First perform the garbage collection - to be able to determine real values
-
 	jsr varstr_garbage_collect
-
 
 	jsr map_BASIC_1
 	jsr (VB1__cmd_mem_cont)
 	jmp map_NORMAL
 
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+cmd_mem:
+
+	jsr varstr_garbage_collect
+
+	jsr map_BASIC_1
+	jsr JB1__cmd_mem_cont
+	jmp map_NORMAL
+
 } else ifdef SEGMENT_M65_BASIC_1 {
+
+cmd_mem_cont:
+
+} else ifdef SEGMENT_CRT_BASIC_1 {
 
 cmd_mem_cont:
 
@@ -27,12 +41,10 @@ cmd_mem_cont:
 
 cmd_mem:
 
-	; First perform the garbage collection - to be able to determine real values
-
 	jsr varstr_garbage_collect
 }
 
-!ifndef SEGMENT_M65_BASIC_0 {
+!ifndef SEGMENT_BASIC_0 {
 
 	; Print header
 

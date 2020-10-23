@@ -94,6 +94,9 @@
 !ifdef CONFIG_MB_M65 {
 	!ifdef CONFIG_MEMORY_MODEL_60K { !error "Do not use CONFIG_MEMORY_MODEL_60K options for MEGA65 motherboard" }
 }
+!ifdef ROM_LAYOUT_CRT {
+	!ifdef CONFIG_MEMORY_MODEL_60K { !error "Do not use CONFIG_MEMORY_MODEL_60K options for CRT ROM layout" }
+}
 !ifdef CONFIG_PLATFORM_COMMANDER_X16 {
 	!ifndef CONFIG_MEMORY_MODEL_38K { !error "Select CONFIG_MEMORY_MODEL_38K options for Commander X16 platform" }
 }
@@ -445,9 +448,9 @@
 
 ; Determine if we need space-savings in BASIC code
 
-!ifndef CONFIG_MB_M65 {
+!ifndef CONFIG_MB_M65 { !ifndef ROM_LAYOUT_CRT {
 	!set HAS_SMALL_BASIC = 1
-}
+} }
 
 
 
@@ -469,4 +472,12 @@
 	!ifdef SEGMENT_BASIC_0  { !set SEGMENT_M65_BASIC_0  = 1 }
 	!ifdef SEGMENT_BASIC_1  { !set SEGMENT_M65_BASIC_1  = 1 }
 	!ifdef SEGMENT_KERNAL_0 { !set SEGMENT_M65_KERNAL_0 = 1 }
+	!ifdef SEGMENT_KERNAL_1 { !set SEGMENT_M65_KERNAL_1 = 1 }
+}
+
+!ifdef ROM_LAYOUT_CRT {
+	!ifdef SEGMENT_BASIC_0  { !set SEGMENT_CRT_BASIC_0  = 1 }
+	!ifdef SEGMENT_BASIC_1  { !set SEGMENT_CRT_BASIC_1  = 1 }
+	!ifdef SEGMENT_KERNAL_0 { !set SEGMENT_CRT_KERNAL_0 = 1 }
+	!ifdef SEGMENT_KERNAL_1 { !set SEGMENT_CRT_KERNAL_1 = 1 }
 }

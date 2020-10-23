@@ -1,7 +1,7 @@
 ;; #LAYOUT# STD *       #TAKE
-;; #LAYOUT# CRT BASIC_0 #TAKE
-;; #LAYOUT# M65 *       #TAKE
-;; #LAYOUT# X16 BASIC_0 #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
+;; #LAYOUT# M65 BASIC_1 #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
 
@@ -13,6 +13,12 @@ list_single_line:
 	jsr (VB1__list_single_line)
 	jmp map_NORMAL
 
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+	jsr map_BASIC_1
+	jsr JB1__list_single_line
+	jmp map_NORMAL
+
 } else {
 
 	; Print line number - in a new line
@@ -20,6 +26,8 @@ list_single_line:
 	ldy #3
 
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	jsr peek_under_roms
@@ -33,6 +41,8 @@ list_single_line:
 	dey
 
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	jsr peek_under_roms
@@ -57,6 +67,8 @@ list_single_line:
 list_print_loop:
 
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	ldx #<OLDTXT
@@ -260,6 +272,8 @@ list_fetch_subtoken:
 
 	iny
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	ldx #<OLDTXT

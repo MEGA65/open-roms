@@ -1,6 +1,8 @@
 ;; #LAYOUT# STD *       #TAKE
 ;; #LAYOUT# CRT BASIC_0 #TAKE
-;; #LAYOUT# M65 *       #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
+;; #LAYOUT# M65 BASIC_0 #TAKE
+;; #LAYOUT# M65 BASIC_1 #TAKE
 ;; #LAYOUT# X16 BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
@@ -18,6 +20,12 @@ tokenise_line:
 
 	jsr map_BASIC_1
 	jsr (VB1__tokenise_line)
+	jmp map_NORMAL
+
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+	jsr map_BASIC_1
+	jsr JB1__tokenise_line
 	jmp map_NORMAL
 
 } else {

@@ -200,8 +200,8 @@ const StringEntryList GLOBAL_Keywords_01 =  { ListType::KEYWORDS, "keywords_01",
 const StringEntryList GLOBAL_Keywords_02 =  { ListType::KEYWORDS, "keywords_02",
 {
     // STD    CRT     M65    U64    X16
-    { false, false, true,  false, false, "K02_07",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-    { false, false, true,  false, false, "K02_08",   "MEM",          }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { false, true,  true,  false, false, "K02_07",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { false, true,  true,  false, false, "K02_08",   "MEM",          }, // Not present in CBM BASIC dialects, Open ROMs specific
     { false, false, true,  false, false, "K02_09",   "SYSINFO",      }, // Not present in CBM BASIC dialects, Open ROMs specific
 
     // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
@@ -290,7 +290,7 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { true,  true,  true,  true,  true,  "STR_READY",        "\rREADY.\r"         }, // https://www.ibm.com/support/knowledgecenter/zosbasics/com.ibm.zos.zconcepts/zconc_whatistsonative.htm https://github.com/stefanhaustein/expressionparser
     { true,  true,  true,  true,  true,  "STR_ERROR",        " ERROR"             }, // simply the word error that is attached to the other parts of messages https://fjkraan.home.xs4all.nl/comp/apple2faq/app2asoftfaq.html
     { true,  true,  true,  true,  true,  "STR_IN",           " IN "               },
-    { false, false, true,  false, false, "STR_IF_SURE",      "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
+    { false, true,  true,  false, false, "STR_IF_SURE",      "\rARE YOU SURE? "   }, // https://docs.microsoft.com/en-us/windows/win32/uxguide/mess-confirm
     // STD    CRT    M65    U64    X16   --- misc strings specific to Open ROMs, not present in CBM ROMs
     { true,  true,  true,  true,  true,  "STR_BRK_AT",       "\rBRK AT $"         },
 
@@ -298,14 +298,14 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { false, false, true,  false, false, "STR_ORS_LEGACY_1", "OPEN ROMS "         },
     { false, false, true,  false, false, "STR_ORS_LEGACY_2", "\r\rLEGACY MODE   " },
 
-    { false, false, true,  false, false, "STR_MEM_HDR",      "\r\x12 AREA   START   SIZE  \r" },
-    { false, false, true,  false, false, "STR_MEM_1",        "   $"               },
-    { false, false, true,  false, false, "STR_MEM_2",        "   "                },
-    { false, false, true,  false, false, "STR_MEM_TEXT",     "\r TEXT"            },
-    { false, false, true,  false, false, "STR_MEM_VARS",     "\r VARS"            },
-    { false, false, true,  false, false, "STR_MEM_ARRS",     "\r ARRS"            },
-    { false, false, true,  false, false, "STR_MEM_STRS",     "\r STRS"            },
-    { false, false, true,  false, false, "STR_MEM_FREE",     "\r\r FREE"          },
+    { false, true,  true,  false, false, "STR_MEM_HDR",      "\r\x12 AREA   START   SIZE  \r" },
+    { false, true,  true,  false, false, "STR_MEM_1",        "   $"               },
+    { false, true,  true,  false, false, "STR_MEM_2",        "   "                },
+    { false, true,  true,  false, false, "STR_MEM_TEXT",     "\r TEXT"            },
+    { false, true,  true,  false, false, "STR_MEM_VARS",     "\r VARS"            },
+    { false, true,  true,  false, false, "STR_MEM_ARRS",     "\r ARRS"            },
+    { false, true,  true,  false, false, "STR_MEM_STRS",     "\r STRS"            },
+    { false, true,  true,  false, false, "STR_MEM_FREE",     "\r\r FREE"          },
 
     { false, false, true,  false, false, "STR_SI_HEADER",    "OPEN ROMS, "        },
     { false, false, true,  false, false, "STR_SI_MODE64",    "LEGACY MODE"        },
@@ -1879,6 +1879,7 @@ void writeStrings()
 
         dataSetCRT.addStrings(GLOBAL_Keywords_V2);
         dataSetCRT.addStrings(GLOBAL_Keywords_01);
+        dataSetCRT.addStrings(GLOBAL_Keywords_02);
         dataSetCRT.addStrings(GLOBAL_Errors);
         dataSetCRT.addStrings(GLOBAL_MiscStrings);
 

@@ -1,6 +1,8 @@
 ;; #LAYOUT# STD *       #TAKE
 ;; #LAYOUT# CRT BASIC_0 #TAKE
-;; #LAYOUT# M65 *       #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
+;; #LAYOUT# M65 BASIC_0 #TAKE
+;; #LAYOUT# M65 BASIC_1 #TAKE
 ;; #LAYOUT# X16 BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
@@ -31,6 +33,24 @@ do_restore:
 	
 do_restore_end:
 
+	jmp map_NORMAL
+
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+	jsr map_BASIC_1
+	jsr JB1__do_new
+	jmp map_NORMAL
+
+do_clr:
+
+	jsr map_BASIC_1
+	jsr JB1__do_clr
+	jmp map_NORMAL
+
+do_restore:
+
+	jsr map_BASIC_1
+	jsr JB1__do_restore
 	jmp map_NORMAL
 
 } else {

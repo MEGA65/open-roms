@@ -1,5 +1,5 @@
 ;; #LAYOUT# STD *       #TAKE
-;; #LAYOUT# CRT BASIC_0 #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
 ;; #LAYOUT# X16 BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
@@ -7,7 +7,15 @@
 ; Routine is too long to fit in the original location
 
 
+!ifdef ROM_LAYOUT_CRT {
+
+INITMSG:
+
+} else {
+
 initmsg_real:
+
+}
 
 	; Clear the screen first, some cartridges (like IEEE-488) are leaving a mess on the screen
 	lda #147

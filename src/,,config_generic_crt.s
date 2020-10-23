@@ -16,7 +16,7 @@
 
 ;; #CONFIG# PLATFORM_COMMODORE_64      YES
 ;; #CONFIG# ROM_CRT                    YES
-;; #CONFIG# BRAND_GENERIC_CRT          YES
+;; #CONFIG# BRAND_GENERIC              YES
 
 
 ; --- Processor instruction set

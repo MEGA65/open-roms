@@ -39,7 +39,6 @@
 !set counter = 0
 !ifdef CONFIG_BRAND_CUSTOM       { !set counter = counter + 1 }
 !ifdef CONFIG_BRAND_GENERIC      { !set counter = counter + 1 }
-!ifdef CONFIG_BRAND_GENERIC_CRT  { !set counter = counter + 1 }
 !ifdef CONFIG_BRAND_TESTING      { !set counter = counter + 1 }
 
 !ifndef CONFIG_PLATFORM_COMMODORE_64 {
@@ -52,13 +51,12 @@
 	!error "Please select exactly one CONFIG_BRAND_* option"	
 }
 
-!ifdef CONFIG_BRAND_GENERIC_CRT { !ifndef ROM_LAYOUT_CRT {
-	!error "CONFIG_BRAND_GENERIC_CRT needs cartridge extended ROM set and vice-versa"
+!ifdef CONFIG_ROM_CRT { !ifndef ROM_LAYOUT_CRT {
+	!error "ROM_LAYOUT_CRT needs standard CONFIG_ROM_CRT set and vice-versa"
 }}
-!ifdef CONFIG_BRAND_GENERIC { !ifndef ROM_LAYOUT_STD {
-	!error "CONFIG_BRAND_GENERIC needs standard ROM set and vice-versa"
+!ifdef ROM_LAYOUT_CRT { !ifndef CONFIG_ROM_CRT {
+	!error "ROM_LAYOUT_CRT needs standard CONFIG_ROM_CRT set and vice-versa"
 }}
-
 
 
 ; Check that processor configuration is correct

@@ -14,9 +14,11 @@
 	!pet "open roms "
 	+CONFIG_BRAND_CUSTOM
 } else ifdef CONFIG_BRAND_GENERIC {
-	!pet "open roms generic build"
-} else ifdef CONFIG_BRAND_GENERIC_CRT {
-	!pet "open roms crt generic build"
+	!ifdef CONFIG_ROM_CRT {
+	    !pet "open roms crt generic build"
+	} else {
+	    !pet "open roms generic build"
+    }
 } else ifdef CONFIG_BRAND_TESTING {
 	!pet "open roms testing build"
 } else ifdef CONFIG_MB_U64 {

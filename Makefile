@@ -213,8 +213,7 @@ REL_TARGET_LIST    = $(TARGET_LIST_GEN)    \
                      $(TARGET_LIST_GENCRT) \
                      $(TARGET_M65_x_ORF)   \
                      $(TARGET_M65_x_PXL)   \
-                     $(TARGET_LIST_U64)    \
-                     $(TARGET_LIST_U64CRT)
+                     $(TARGET_LIST_U64)
 
 # Misc strings
 

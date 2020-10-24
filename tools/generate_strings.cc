@@ -174,7 +174,7 @@ const StringEntryList GLOBAL_Keywords_V2 = { ListType::KEYWORDS, "keywords_V2",
     { true,  true,  true,  true,  true,  "KV2_CB",   "GO",         0 }, // https://en.wikipedia.org/wiki/Goto
 } };
 
-// extended BASIC keywords - list reserved for small BASIC commands, suitable for inclusion in non-extended ROMs
+// extended BASIC keywords - list reserved for small BASIC commands, suitable for inclusion in all machines with extended ROM
 
 const StringEntryList GLOBAL_Keywords_01 =  { ListType::KEYWORDS, "keywords_01",
 {
@@ -182,37 +182,33 @@ const StringEntryList GLOBAL_Keywords_01 =  { ListType::KEYWORDS, "keywords_01",
     { true,  true,  true,  true,  true,  "K01_01",   "SLOW",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
     { true,  true,  true,  true,  true,  "K01_02",   "FAST",         }, // https://en.wikipedia.org/wiki/Sinclair_BASIC - ZX81 variant
     { true,  true,  true,  true,  true,  "K01_03",   "OLD",          }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-
-    // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
-
-    // NOTE! These commands are temporarily placed here, they should be a part of list 02!
-
-    { true,  true,  true,  true,  true,  "K02_01",   "MERGE",        }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-    { true,  true,  true,  true,  true,  "K02_02",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
-    { true,  true,  true,  true,  true,  "K02_03",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
-    { true,  true,  true,  true,  true,  "K02_04",   "BVERIFY",      },
-    { true,  true,  true,  true,  true,  "K02_05",   "CLEAR",        }, // Not present in CBM BASIC dialects, Open ROMs specific
-    { true,  true,  true,  true,  true,  "K02_06",   "DISPOSE",      }, // Not present in CBM BASIC dialects, Open ROMs specific
-} };
-
-// extended BASIC keywords - list reserved for generic (mostly hardware independent) BASIC commands
-
-const StringEntryList GLOBAL_Keywords_02 =  { ListType::KEYWORDS, "keywords_02",
-{
-    // STD    CRT     M65    U64    X16
-    { false, true,  true,  false, false, "K02_07",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
-    { false, true,  true,  false, false, "K02_08",   "MEM",          }, // Not present in CBM BASIC dialects, Open ROMs specific
-    { false, false, true,  false, false, "K02_09",   "SYSINFO",      }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { false, true,  true,  true,  false, "K01_04",   "CLEAR",        }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { false, true,  true,  true,  false, "K01_05",   "DISPOSE",      }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { false, true,  true,  true,  false, "K01_06",   "MERGE",        }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { false, true,  true,  true,  false, "K01_07",   "BLOAD",        }, // http://www.antonis.de/qbebooks/gwbasman/bload.html
+    { false, true,  true,  true,  false, "K01_08",   "BSAVE",        }, // http://www.antonis.de/qbebooks/gwbasman/bsave.html
+    { false, true,  true,  true,  false, "K01_09",   "BVERIFY",      },
+    { false, true,  true,  true,  false, "K01_0A",   "COLD",         }, // Not present in CBM BASIC dialects, but common to some extensions (*)
+    { false, true,  true,  true,  false, "K01_0B",   "MEM",          }, // Not present in CBM BASIC dialects, Open ROMs specific
 
     // (*) see https://sourceforge.net/p/vice-emu/code/HEAD/tree/trunk/vice/src/petcat.c
 } };
 
 // extended BASIC keywords - list reserved for hardware dependent BASIC commands
 
-const StringEntryList GLOBAL_Keywords_03_M65 =  { ListType::KEYWORDS, "keywords_03",
+const StringEntryList GLOBAL_Keywords_04 =  { ListType::KEYWORDS, "keywords_04",
 {
     // STD    CRT    M65    U64    X16
-    { false, false, true,  false, false, "K03_01",   "TEST",         }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { false, false, true,  false, false, "K04_01",   "SYSINFO",      }, // Not present in CBM BASIC dialects, Open ROMs specific
+
+} };
+
+// extended BASIC keywords - list reserved for functions
+
+const StringEntryList GLOBAL_Keywords_06 =  { ListType::KEYWORDS, "keywords_06",
+{
+    // STD    CRT    M65    U64    X16
+    { false, false, true,  false, false, "K06_01",   "TEST",         }, // Not present in CBM BASIC dialects, Open ROMs specific
 
 } };
 
@@ -1846,8 +1842,8 @@ void writeStrings()
 
         dataSetM65.addStrings(GLOBAL_Keywords_V2);
         dataSetM65.addStrings(GLOBAL_Keywords_01);
-        dataSetM65.addStrings(GLOBAL_Keywords_02);
-        dataSetM65.addStrings(GLOBAL_Keywords_03_M65);
+        dataSetM65.addStrings(GLOBAL_Keywords_04);
+        dataSetM65.addStrings(GLOBAL_Keywords_06);
         dataSetM65.addStrings(GLOBAL_Errors);
         dataSetM65.addStrings(GLOBAL_MiscStrings);
        
@@ -1863,7 +1859,6 @@ void writeStrings()
 
         dataSetCRT.addStrings(GLOBAL_Keywords_V2);
         dataSetCRT.addStrings(GLOBAL_Keywords_01);
-        dataSetCRT.addStrings(GLOBAL_Keywords_02);
         dataSetCRT.addStrings(GLOBAL_Errors);
         dataSetCRT.addStrings(GLOBAL_MiscStrings);
 

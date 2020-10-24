@@ -53,19 +53,19 @@ Launches a built-in tape head alignment tool. Destroys program in memory. Press 
 * if tape format autodetection is compiled-in, you can load file from tape using either device #1 (CBM compatible way) or from device #7 (in a way compatible with *Final* and *Action Replay* cartridges)
 * if autodetection is not available, than device #1 means normal CBM format, and device #7 means *Turbo Tape 64* format
 
-### `MERGE "file_name" [, device_number]` (all)
+### `MERGE "file_name" [, device_number]` (cart, MEGA65)
 
 Appends the BASIC program from a storage medium to the one currently present in memory.
 
-### `BLOAD "file_name", device_number, start_address` (all)
+### `BLOAD "file_name", device_number, start_address` (cart, MEGA65)
 
 Loads a binary file starting from the given memory location. Does not clear variables, does not perform BASIC program relinking, etc. NOTE: for now syntax differs from the BASIC V3.5+ - this will be changed once the necessary BASIC infrastructure is implemented.
 
-### `BVERIFY "file_name", device_number, start_address` (all)
+### `BVERIFY "file_name", device_number, start_address` (cart, MEGA65)
 
 Verify operation for the binary data starting from a given addres. NOTE: for now syntax differs from the BASIC V3.5+ - this will be changed once the necessary BASIC infrastructure is implemented.
 
-### `BSAVE "file_name", device_number, start_address, end_address` (all)
+### `BSAVE "file_name", device_number, start_address, end_address` (cart, MEGA65)
 
 Saves the binary data from the given memory area. NOTE: for now syntax differs from the BASIC V3.5+ - this will be changed once the necessary BASIC infrastructure is implemented.
 
@@ -77,7 +77,7 @@ Resets the machine. In direct mode asks for confirmation first.
 
 ### `FAST`, `SLOW` (all)
 
-Tries to switch the machine to turbo mode (or back to 1MHz operation mode) - details differ depending on the configured machine / motherboard. On MEGA65 motherboard this is not available in native mode, it is not designed to run in 1MHz due to using compound CPU instructions.
+Tries to switch the machine to turbo mode (or back to 1MHz operation mode) - details differ depending on the configured machine / motherboard. On MEGA65 motherboard this is not available in native mode, it is not designed to run in 1MHz due to using compound CPU instructions usage.
 
 ### `OLD` (all)
 
@@ -96,11 +96,11 @@ Displays BASIC memory usage information:
 
 Displays various system information.
 
-### `CLEAR` (all)
+### `CLEAR` (cart, MEGA65)
 
 Clears the screen content.
 
-### `DISPOSE` (all)
+### `DISPOSE` (cart, MEGA65)
 
 Runs the garbage collector - disposes outdated strings.
 

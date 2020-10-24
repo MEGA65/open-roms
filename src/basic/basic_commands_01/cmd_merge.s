@@ -3,6 +3,8 @@
 ;; #LAYOUT# *   *       #IGNORE
 
 
+!ifndef HAS_SMALL_BASIC {
+
 cmd_merge:
 
 	lda #$00                           ; mark operation as LOAD
@@ -45,3 +47,4 @@ cmd_merge_no_error:
 	; Relink loaded program, clear variables, execute next statement
 
 	jmp update_LINKPRG_VARTAB_do_clr
+}

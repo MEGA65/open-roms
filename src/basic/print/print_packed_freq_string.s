@@ -59,21 +59,18 @@ print_packed_keyword_01:               ; .X - token number
 	ldy #>packed_freq_keywords_01
 	bne print_freq_packed_string       ; branch always
 
-!ifndef HAS_SMALL_BASIC {
-
-print_packed_keyword_02:               ; .X - token number
-
-	lda #<packed_freq_keywords_02
-	ldy #>packed_freq_keywords_02
-	bne print_freq_packed_string       ; branch always
-}
-
 !ifdef CONFIG_MB_M65 {
 
-print_packed_keyword_03:               ; .X - token number
+print_packed_keyword_04:               ; .X - token number
 
-	lda #<packed_freq_keywords_03
-	ldy #>packed_freq_keywords_03
+	lda #<packed_freq_keywords_04
+	ldy #>packed_freq_keywords_04
+	bne print_freq_packed_string       ; branch always
+
+print_packed_keyword_06:               ; .X - token number
+
+	lda #<packed_freq_keywords_06
+	ldy #>packed_freq_keywords_06
 	bne print_freq_packed_string       ; branch always
 }
 

@@ -3,6 +3,8 @@
 ;; #LAYOUT# *   *       #IGNORE
 
 
+!ifndef HAS_SMALL_BASIC {
+
 cmd_bsave:
 
 	; Set default device and secondary address
@@ -40,3 +42,4 @@ cmd_bsave:
 	; Perform SAVE - reuse regular command
 
 	jmp cmd_save_do
+}

@@ -7,6 +7,7 @@
 
 ; Idea:
 ; - sane defaults for the Ultimate 64 FPGA computer
+; - use RetroRelplay cartridge image as a ROM extension
 ; - do not enable features which are a significant compatibility risk
 
 

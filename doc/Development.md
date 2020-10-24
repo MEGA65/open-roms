@@ -78,19 +78,21 @@ Make sure to read the main [README](../README.md) first - although any help with
 
 List of the most important make targets:
 
-| target              | description                                                                     |
-| :------------------ | :------------------------------------------------------------------------------ |
-| `all`               | builds all ROMs, places them in 'build' subdirectory                            |
-| `clean`             | removes all the compilation results and intermediate files                      |
-| `updatebin`         | upates ROMs in 'bin' subdirectory - with embedded version string, for release   |
-| `testsimilarity`    | launches the similarity tool, see [README](../README.md)                        |
-| `test`              | builds the 'custom' configuration, launches it using VICE emulator              |
-| `test_generic`      | builds the default ROMs, for generic C64/C128, launches using VICE              | 
-| `test_generic_x128` | as above, but launches C128 emulator instead                                    |
-| `test_mega65`       | builds the MEGA65 ROM, launches it using XEMU emulator                          |
-| `test_ultimate64`   | builds the Ultimate 64 configuration, launches it using VICE emulator           |
-| `test_hybrid`       | builds a hybrid ROM (Open ROMs Kernal + original BASIC), launches it using VICE |
-| `test_testing`      | builds a rather odd testing configuration, launches it using VICE emulator      |
+| target                | description                                                                     |
+| :-------------------- | :------------------------------------------------------------------------------ |
+| `all`                 | builds all ROMs, places them in 'build' subdirectory                            |
+| `clean`               | removes all the compilation results and intermediate files                      |
+| `updatebin`           | upates ROMs in 'bin' subdirectory - with embedded version string, for release   |
+| `testsimilarity`      | launches the similarity tool, see [README](../README.md)                        |
+| `test`                | builds the 'custom' configuration, launches it using VICE emulator              |
+| `test_generic`        | builds the default ROMs, for generic C64/C128, launches using VICE              | 
+| `test_generic_x128`   | as above, but launches C128 emulator instead                                    |
+| `test_generic_crt`    | builds the default ROM with extended cartridge image, launches using VICE       |
+| `test_mega65`         | builds the MEGA65 ROM, launches it using XEMU emulator                          |
+| `test_ultimate64`     | builds the Ultimate 64 configuration, launches it using VICE                    |
+| `test_ultimate64_crt` | as above, ROM with extended cartriodge image                                    |
+| `test_hybrid`         | builds a hybrid ROM (Open ROMs Kernal + original BASIC), launches it using VICE |
+| `test_testing`        | builds a rather odd testing configuration, launches it using VICE               |
 
 
 ### Code segments and ROM layouts

@@ -7,6 +7,8 @@
 ;
 
 
+!ifndef HAS_SMALL_BASIC {
+
 helper_bload_fetch_address:
 
 	jsr injest_comma
@@ -20,3 +22,4 @@ helper_bload_fetch_address:
 	ldy LINNUM+1
 
 	rts
+}

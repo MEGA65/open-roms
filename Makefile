@@ -15,10 +15,10 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  src/basic/assets \
                  src/basic/basic_commands \
                  src/basic/basic_commands_01 \
-                 src/basic/basic_commands_02 \
-                 src/basic/basic_commands_03_m65 \
+                 src/basic/basic_commands_04 \
                  src/basic/basic_operators \
                  src/basic/basic_functions \
+                 src/basic/basic_functions_06 \
                  src/basic/board_crt \
                  src/basic/board_m65 \
                  src/basic/board_x16 \

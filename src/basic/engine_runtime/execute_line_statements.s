@@ -39,23 +39,19 @@ execute_statements:
 
 	; Check if token is valid for execution
 
-!ifdef HAS_SMALL_BASIC {
+!ifndef CONFIG_MB_M65 {
 
 	cpx #$01
 	beq execute_statements_01
 
 } else {
 
-!ifdef CONFIG_MB_M65 {
-	cpx #$04
-} else {
-	cpx #$03
-}
+	cpx #$05
 	bcc execute_statements_extended
 }
 
 	cpx #$CB                                     
-	+beq cmd_go                                  ; 'GO' command has a strange token, placed after function tokens
+	+beq cmd_go                                ; 'GO' command has a strange token, placed after function tokens
 
 	cpx #$7F
 	+bcc execute_statements_var_assign         ; not a token - try variable assign
@@ -84,25 +80,17 @@ execute_statements:
 	jmp (command_jumptable, x)
 }
 
-!ifndef HAS_SMALL_BASIC {
+!ifdef CONFIG_MB_M65 {
 
 execute_statements_extended:
 
 	; Support for extended BASIC commands
 
-	; XXX consider jumpable here
-
 	cpx #$01
 	beq execute_statements_01
 
-	cpx #$02
-	beq execute_statements_02
-
-!ifdef CONGIH_MB_M65 {
-
-	cpx #$03
-	beq execute_statements_03
-}
+	cpx #$04
+	beq execute_statements_04
 
 	jmp do_SYNTAX_error
 }
@@ -141,9 +129,9 @@ execute_statements_01:
 	jmp (command_01_jumptable - 2, x)
 }
 
-!ifndef HAS_SMALL_BASIC {
+!ifdef CONFIG_MB_M65 {
 
-execute_statements_02:
+execute_statements_04:
 
 	; Get the sub-token, check that it is valid
 
@@ -151,7 +139,7 @@ execute_statements_02:
 	cmp #$00
 	+beq do_SYNTAX_error
 
-	cmp #(TK__MAXTOKEN_keywords_02+1)
+	cmp #(TK__MAXTOKEN_keywords_04+1)
 	+bcs do_SYNTAX_error
 
 	; Execute command
@@ -161,9 +149,9 @@ execute_statements_02:
 	; Get the jump table entry for it, push it on the stack, and then RTS to start it.
 
 	tax
-	lda command_02_jumptable_hi - 1, x
+	lda command_04_jumptable_hi - 1, x
 	pha
-	lda command_02_jumptable_lo - 1, x
+	lda command_04_jumptable_lo - 1, x
 	pha
 	
 	rts
@@ -174,31 +162,10 @@ execute_statements_02:
 
 	asl
 	tax
-	jmp (command_02_jumptable - 2, x)
+	jmp (command_04_jumptable - 2, x)
 }
 
-} ; !HAS_SMALL_BASIC
-
-!ifdef CONFIG_MB_M65 {
-
-execute_statements_03:
-
-	; Get the sub-token, check that it is valid
-
-	jsr fetch_character
-	cmp #$00
-	+beq do_SYNTAX_error
-
-	cmp #(TK__MAXTOKEN_keywords_03+1)
-	+bcs do_SYNTAX_error
-
-	; Use jumptable to go to the command routine
-
-	asl
-	tax
-	jmp (command_03_jumptable - 2, x)
-
-} ; CONFIG_MB_M65
+}
 
 execute_statements_end_of_line:
 

@@ -31,6 +31,10 @@ Since Open ROMs is highly modular, it should be possible to add other platforms 
 
 Select if the ROM is going to be used exclusively on the specified motherboard. It prevents from enabling options not having sense, skips initialization of C128-only registers, and enables motherboard-specific features.
 
+### `ROM_CRT`
+
+Has to be set for builds utilizing cartridge image as a ROM extension.
+
 ## Brand
 
 Branding is only allowed for C64 platform, if no motherboard is specified.

@@ -7,6 +7,8 @@
 ;
 
 
+!ifndef HAS_SMALL_BASIC {
+
 helper_bload_fetch_filename:
 
 	; Fetch the file name
@@ -24,3 +26,4 @@ helper_bload_fetch_filename:
 	sta FNLEN
 @1:
 	rts
+}

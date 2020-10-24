@@ -22,7 +22,7 @@ For Ultimate 64 motherboard the following settings are recommended:
 
 <br />
 
-The generic_crt ROM set is a special version of generic set, with some code moved to external ROM on the cartridge - thus, more features could be enabled. It needs all the 3 files (BASIC, Kernal, cartridge) to be operable.
+The \*\_crt ROM set is a special version, with some code moved to external ROM on the cartridge - thus, more features could be enabled. It needs all the 3 files (BASIC, Kernal, cartridge) to be operable.
 
 <br />
 

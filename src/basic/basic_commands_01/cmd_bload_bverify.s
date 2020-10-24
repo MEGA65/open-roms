@@ -3,6 +3,8 @@
 ;; #LAYOUT# *   *       #IGNORE
 
 
+!ifndef HAS_SMALL_BASIC {
+
 cmd_bverify:
 
 	; LOAD and VERIFY are very similar, from BASIC perspective there is almost no difference;
@@ -40,3 +42,4 @@ cmd_bload:
 	; Execute next statement
 
 	rts
+}

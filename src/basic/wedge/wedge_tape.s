@@ -19,8 +19,12 @@ wedge_tape:
 
 	cmp #$4C                           ; 'L'
 	beq wedge_arrow_L
+
+!ifndef HAS_SMALL_BASIC {
+
 	cmp #$4D                           ; 'M'
 	beq wedge_arrow_M
+}
 
 !ifdef CONFIG_TAPE_HEAD_ALIGN {
 
@@ -68,6 +72,9 @@ wedge_arrow_L:
 
 	jmp cmd_load_got_params
 
+
+!ifndef HAS_SMALL_BASIC {
+
 wedge_arrow_M:
 
 	jsr wedge_tape_prepare_load
@@ -77,5 +84,6 @@ wedge_arrow_M:
 	; Perform merging
 
 	jmp cmd_merge_got_params
+}
 
 } ; CONFIG_TAPE_WEDGE

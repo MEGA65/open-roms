@@ -71,6 +71,14 @@
 	!addr VIC_CLKRATE  = $D030 ; C128 only
 } }
 
+!ifdef CONFIG_MB_U64 {
+
+	; Ultimate 64 registers
+
+	!addr U64_TURBOBIT = $D030 ; 0 = 1 MHz + badlines, 1 = settings from menu
+	!addr U64_TURBOCTL = $D031 ; bit 0-3 = CPU speed (index), bit 7 = disable badlines, $FF = not available
+}
+
 	; SID registers
 
 	!addr __SID_BASE   = $D400  ; base address of the chip

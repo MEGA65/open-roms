@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
 ;; #LAYOUT# M65 BASIC_1 #TAKE
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
@@ -15,6 +16,12 @@ wedge_dos:
 
 	jsr map_BASIC_1
 	jsr (VB1__wedge_dos)
+	jmp map_NORMAL
+
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+	jsr map_BASIC_1
+	jsr JB1__wedge_dos
 	jmp map_NORMAL
 
 } else {

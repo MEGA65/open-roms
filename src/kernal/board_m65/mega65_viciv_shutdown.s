@@ -20,8 +20,8 @@ viciv_shutdown:
 	; Set misc VIC-IV flags
 
 	lda #%00000000
-	sta VIC_CTRLA  ; enable C64 character set
-	sta VIC_CTRLB  ; disable extended resolution and attributes
+	sta VIC_CTRLB                      ; disable extended resolution and attributes, disable 3.5 MHz mode
+	jsr mega65_viciv_setctrl_AC        ; enable C64 character set, initialize remaining CTRLA / CTRLC bits
 
 	; Reenable hot registers
 

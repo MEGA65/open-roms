@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
 ;; #LAYOUT# M65 BASIC_1 #TAKE
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
@@ -46,11 +47,21 @@ do_kernal_error:                       ; .A = KERNAL error code, also almost mat
 	dex
 !ifdef SEGMENT_M65_BASIC_1 {
 	jmp do_basic_error
+} else ifdef SEGMENT_CRT_BASIC_1 {
+	jmp do_basic_error
 } else {
 	bpl do_basic_error                 ; branch always
 }
 
 	; Error messages specific to Open ROMs BASIC dialect
+
+!ifdef CONFIG_MB_M65 {
+
+do_LEGACY_MODE_ONLY_error:
+	!byte $E6
+do_NATIVE_MODE_ONLY_error:
+	!byte $E6
+}
 
 do_MEMORY_CORRUPT_error:
 	!byte $E6
@@ -144,9 +155,9 @@ do_TO_MANY_FILES_error:
 	!byte $EA
 
 !ifdef SEGMENT_M65_BASIC_1 {
-
 	jmp do_error_fetch
-
+} else ifdef SEGMENT_CRT_BASIC_1 {
+	jmp do_error_fetch
 } else {
 
 	; FALLTROUGH
@@ -177,8 +188,11 @@ do_error_fetch:
 
 do_basic_error:                        ; error code in .X
 
-!ifdef ROM_LAYOUT_M65 {
 	; Make sure we are back with normal memory map
+
+!ifdef ROM_LAYOUT_M65 {
+	jsr map_NORMAL
+} else ifdef ROM_LAYOUT_CRT {
 	jsr map_NORMAL
 }
 

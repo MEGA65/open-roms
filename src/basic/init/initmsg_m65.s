@@ -59,9 +59,18 @@ INITMSG_end:
 
 	jsr initmsg_bytes_free
 
+!ifdef HAS_NOLGPL3_WARN {
+
+	lda #<str_nonlgpl3_warn
+	ldy #>str_nonlgpl3_warn
+	jmp STROUT
+
+} else {
+
 	ldx #$09
 	ldy #$00
 	jmp plot_set
+}
 
 INITMSG_main_banner:
 

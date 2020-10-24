@@ -17,10 +17,10 @@ viciv_init:
 	lda #$00
 	sta MISC_EMU
 
-	; Set misc VIC-IV flags
+	; Set VIC-IV CTRL registers
 
-	lda #%01000000  ; enable C65 character set
-	sta VIC_CTRLA
+	lda #%01000000                     ; enable C65 character set
+	jsr mega65_viciv_setctrl_AC        ; also initialize remaining CTRLA / CTRLC bits; CTRLB will be set by screen editor
 
 	; Disable hot registers
 

@@ -3,8 +3,6 @@
 
 ; Reset (hardware initialization) to be used when Open ROMs is used under hypervisor
 
-; XXX size-optimize this; share code with regular reset
-
 
 m65_hypervisor_reset:
 
@@ -13,6 +11,9 @@ m65_hypervisor_reset:
 	sei                      ; disable the interrupts, as fast as possible
 	cld                      ; Kernal is not designed to operate in decimal mode
 
+	lda #$00
+	sta NMINV+1              ; soft-disable custom NMI interrupt handler
+
 	; Do not reset the stack (see, ldx #$FF, txs) - we need to know where to return
 	
 	jsr m65_reset_part       ; init MEGA65 specific hardware, shutdown VIC-IV, clear native mode mark
@@ -20,9 +21,7 @@ m65_hypervisor_reset:
 	stx VIC_SCROLX
 
 	jsr IOINIT_skip_DOS      ; better not to initialize DOS under hypervisor, risk of incompatibility
-	jsr JRAMTAS
-	jsr JRESTOR
-	jsr JCINT
+	jsr m65_reset_common     ; RAMTAS, RESTOR, CINT
 
 	; Restore hypervisor memory mapping and quit
 
@@ -42,3 +41,9 @@ m65_hypervisor_reset:
 
 	cli
 	rts
+
+m65_reset_common:
+
+	jsr JRAMTAS
+	jsr JRESTOR
+	jmp JCINT

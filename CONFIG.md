@@ -31,6 +31,10 @@ Since Open ROMs is highly modular, it should be possible to add other platforms 
 
 Select if the ROM is going to be used exclusively on the specified motherboard. It prevents from enabling options not having sense, skips initialization of C128-only registers, and enables motherboard-specific features.
 
+### `ROM_CRT`
+
+Has to be set for builds utilizing cartridge image as a ROM extension.
+
 ## Brand
 
 Branding is only allowed for C64 platform, if no motherboard is specified.
@@ -139,7 +143,7 @@ Needs about 430 bytes in KERNAL segment. If unsure - enable.
 
 ### `IEC_JIFFYDOS_BLANK`
 
-Causes screen blanking during JiffyDOS file loading to increase performance.
+Causes screen blanking during JiffyDOS file loading to increase performance. On Ultimate 64 motherboard, if possible, screen blanking is substituted by disabling badlines.
 
 ## Tape deck
 

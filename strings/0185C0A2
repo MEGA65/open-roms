@@ -1,0 +1,3 @@
+$01 + STA $C0 + LDX#(value does not match)
+
+Instruction + some parts. Trivial - not copyrightable.

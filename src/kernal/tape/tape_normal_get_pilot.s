@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# CRT KERNAL_1 #TAKE
 ;; #LAYOUT# M65 KERNAL_1 #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
@@ -95,8 +96,9 @@ tape_normal_get_pilot_common_loop_inner:
 @1:
 }
 
+!ifdef HAS_TAPE_AUTOCALIBRATE {
 	jsr tape_normal_calibrate_during_pilot
-
+}
 	dey
 	bne tape_normal_get_pilot_common_loop_inner
 

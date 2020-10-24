@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# CRT KERNAL_1 #TAKE
 ;; #LAYOUT# M65 KERNAL_1 #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
@@ -43,6 +44,17 @@ tape_head_align:
 	; jsr CINT
 
 	jsr nmi_lock
+
+	; Switch CPU to fast mode
+
+!ifdef CONFIG_MB_M65 {
+	jsr tape_fast_cpu
+}
+
+!ifdef CONFIG_MB_U64 {
+	jsr U64_FAST
+	sta SCPU_SPEED_TURBO
+}
 
 	; Prepare CIA timers
 

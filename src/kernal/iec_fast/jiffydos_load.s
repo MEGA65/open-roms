@@ -19,6 +19,132 @@
 
 jiffydos_load:
 
+
+!ifdef CONFIG_IEC_JD_TEST {
+
+	; XXX test implementation, not ready yet
+
+	; Switch to optimized LOAD protocol
+	jsr UNTLK
+	lda FA
+	jsr TALK
+	bcs jiffydos_load_error
+
+	lda #$01
+	sta CIA2_DDRB ; XXX for test only
+
+	lda #$61
+	jsr TKSA
+
+	lda #$02
+	sta CIA2_DDRB ; XXX for test only
+
+	; XXX flow below most likely takes too much time...
+
+	; Timing is critical, do not allow interrupts
+	sei
+
+!ifdef CONFIG_IEC_JIFFYDOS_BLANK {
+
+!ifdef CONFIG_MB_U64 {
+
+	; XXX implement for non-blank mode, use jiffydos_prepare_no_preserve_bits
+
+	; Check if turbo register is available
+	lda U64_TURBOCTL
+	cmp #$FF
+	beq @1
+
+	; Store turbo register content, disable badlines
+	sta TBTCNT
+	lda #$80
+	sta U64_TURBOCTL
+	bne @2
+
+	; Normal flow - no turbo register
+}
+
+@1:
+	; Preserve register with screen status (blank/visible)
+	lda VIC_SCROLY
+	sta TBTCNT
+
+	; Blank screen to make sure no sprite/badline will interrupt
+	jsr screen_off
+@2:
+	; Preserve 3 lowest bits of CIA2_PRA
+	jsr jiffydos_preserve_bits
+
+} else {
+
+@1:
+	; Store previous sprite status in temporary variable
+	jsr jiffydos_prepare
+	sta TBTCNT
+@2:
+
+}
+	; A trick to shorten EAL update time
+	ldy #$FF
+
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_fast
+}
+	; FALLTROUGH
+
+jiffydos_load_loop_esc:
+
+	; We are now in 'escape mode' - release DATA, wait till receiver releases CLK
+	jsr iec_release_clk_data
+	jsr iec_wait_for_clk_release
+
+	; Check DATA line
+	bmi jiffydos_load_check_status
+
+	+panic $01
+
+	; XXX finish the implementation
+
+
+
+
+jiffydos_load_check_status:
+
+	; Check if a device pulls CLK within the next 1100us (at least 1125 cycles, to be sure for NTSC)
+	ldx #$67                         ; 2 cycles
+
+	; FALLTROUGH
+
+jiffydos_load_check_loop:
+
+	lda CIA2_PRA                     ; 4 cycles
+	bvc jiffydos_load_end            ; 2 cycles if not taken
+	dex                              ; 2 cycles
+	bne jiffydos_load_check_loop     ; 3 cycles if taken
+
+	; FALLTROUGH
+
+jiffydos_load_error:
+	
+	lda #$F3
+	sta CIA2_DDRB ; XXX for test only
+
+	+panic $03
+
+	; XXX finish the implementation
+
+
+jiffydos_load_end:
+
+	+panic $FF
+
+	; XXX finish the implementation
+
+
+
+} else {
+
 	; XXX implement JiffyDOS optimized LOAD protocol, this one is ineffective
 
 
@@ -27,29 +153,51 @@ jiffydos_load:
 
 !ifdef CONFIG_IEC_JIFFYDOS_BLANK {
 
+!ifdef CONFIG_MB_U64 {
+
+	; XXX implement for non-blank mode, use jiffydos_prepare_no_preserve_bits
+
+	; Check if turbo register is available
+	lda U64_TURBOCTL
+	cmp #$FF
+	beq @1
+
+	; Store turbo register content, disable badlines
+	sta TBTCNT
+	lda #$80
+	sta U64_TURBOCTL
+	bne @2
+
+	; Normal flow - no turbo register
+}
+
+@1:
 	; Preserve register with screen status (blank/visible)
 	lda VIC_SCROLY
 	sta TBTCNT
 
 	; Blank screen to make sure no sprite/badline will interrupt
 	jsr screen_off
-
-	; Preserve 3 lowest bits of CIA2_PRA  XXX deduplicate this
-
-	lda CIA2_PRA
-	and #%00000111
-	sta C3PO
+@2:
+	; Preserve 3 lowest bits of CIA2_PRA
+	jsr jiffydos_preserve_bits
 
 } else {
 
+@1:
 	; Store previous sprite status in temporary variable
 	jsr jiffydos_prepare
 	sta TBTCNT
-}
+@2:
 
+}
 	; A trick to shorten EAL update time
 	ldy #$FF
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_slow
+}
 	; FALLTROUGH
 
 jiffydos_load_loop:
@@ -127,10 +275,14 @@ jiffydos_load_loop:
 	cpy #$FF
 	bne jiffydos_load_loop
 	inc EAL+1
-	jmp jiffydos_load_loop
+	+bra jiffydos_load_loop
 
 jiffydos_load_end:
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch back to fast mode
+	jsr m65_iec_fast
+}
 	; Save last byte
 	tax
 
@@ -148,15 +300,34 @@ jiffydos_load_end:
 
 !ifdef CONFIG_IEC_JIFFYDOS_BLANK {
 
+!ifdef CONFIG_MB_U64 {
+
+	; Check if turbo register is available
+	lda U64_TURBOCTL
+	cmp #$FF
+	beq @3
+
+	; Restore turbo register content
+	lda TBTCNT
+	sta U64_TURBOCTL
+	jmp @4
+
+	; Normal flow - no turbo register
+}
+
+@3:
 	; Restore screen state
 	lda TBTCNT
 	sta VIC_SCROLY
+@4:
 
 } else {
 
+@3:
 	; Re-enable sprites
 	lda TBTCNT
 	sta VIC_SPENA
+@4:
 }
 
 	; Store last byte as unoptimized LOAD routine would
@@ -170,3 +341,5 @@ jiffydos_load_end:
 
 
 } } ; CONFIG_IEC_JIFFYDOS and not CONFIG_MEMORY_MODEL_60K
+
+}

@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
 ;; #LAYOUT# M65 BASIC_1 #TAKE
 ;; #LAYOUT# X16 BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
@@ -28,7 +29,7 @@ initmsg_bytes_free:
 
 	sec			; Read, not write value
 	jsr JMEMTOP
-	cpx #$80
+	cpy #$80
 	beq @1
 !ifdef CONFIG_MEMORY_MODEL_60K {
 	lda #>$F7FF

@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# CRT KERNAL_1 #TAKE
 ;; #LAYOUT# M65 KERNAL_1 #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
@@ -31,16 +32,17 @@ tape_normal_get_marker_type:
 
 	; Not an entry point!!!
 
-tape_normal_get_marker_while_sync_loop:
+tape_normal_get_marker_while_sync__loop:
 
+!ifdef HAS_TAPE_AUTOCALIBRATE {
 	jsr tape_normal_calibrate_during_pilot                 ; while sync use short pulses for calibration
-
+}
 	; FALLTROUGH
 
 tape_normal_get_marker_while_sync:
 
 	jsr tape_common_get_pulse
-	bcs tape_normal_get_marker_while_sync_loop             ; branch if short pulse
+	bcs tape_normal_get_marker_while_sync__loop             ; branch if short pulse
 
 	cmp __pulse_threshold_ML
 	bcs tape_normal_get_marker_while_sync                  ; too short for a long pulse

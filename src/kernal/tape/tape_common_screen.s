@@ -1,9 +1,10 @@
 ;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# CRT KERNAL_1 #TAKE
 ;; #LAYOUT# M65 KERNAL_1 #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
 ;
-; Handle screen (visible/blanked) + tape deck motor (on/off),
+; Handle screen (visible/blanked; on some hardware disable badlines instead) + tape deck motor (on/off),
 ; store/restore screen color
 ;
 
@@ -19,15 +20,32 @@ tape_screen_on_motor_off:
 	lda COLSTORE
 	sta VIC_EXTCOL
 
-!ifndef CONFIG_MB_M65 {
+!ifdef CONFIG_MB_M65 {
 
+	jsr M65_MODEGET
+	bcc @1
+
+	; For compatibility mode, restore normal speed settings and hide VIC-IV
+
+	lda #$03
+	sta MISC_EMU
+
+	lda NXTBIT
+	sta VIC_CTRLB
+
+	sta VIC_KEY
+@1:
+	rts
+
+} else ifdef CONFIG_MB_U64 {
+
+	lda NXTBIT
+	sta U64_TURBOCTL                 ; restore turbo control settings
 	jmp screen_on
 
 } else {
 
-	jsr M65_MODEGET
-	+bcs screen_on                   ; MEGA65 native mode does not have badlines, no need to enable/disable screen
-	rts
+	jmp screen_on
 }
 
 
@@ -44,18 +62,31 @@ tape_screen_off_motor_on:
 	lda VIC_EXTCOL
 	sta COLSTORE
 
-!ifndef CONFIG_MB_M65 {
+!ifdef CONFIG_MB_M65 {
 
+	; On MEGA65 we need to switch banks everytim we retrieve byte to be stored in memory,
+	; additionally we perform advanced tape speed autocallibration - this is all too expensive
+	; to be handled by 1 MHz CPU - so in case of compatibility mode, switch CPU to fast speed
+	; (and disable badlines, so we will not have to blank the screen)
+
+	jsr tape_fast_cpu
+
+} else ifdef CONFIG_MB_U64 {
+
+	lda U64_TURBOCTL
+	sta NXTBIT
+	cmp #$FF
+	beq @2                             ; branch if no turbo control available
+
+	jsr U64_FAST                       ; max speed, no badlines
+	bne @3                             ; branch always
+@2:
 	jsr screen_off
+@3:
 
 } else {
 
-	jsr M65_MODEGET
-	; XXX optimize this
-	bcs @1                    	       ; MEGA65 native mode does not have badlines, no need to enable/disable screen
 	jsr screen_off
-@1:
-
 }
 
 	jmp tape_motor_on

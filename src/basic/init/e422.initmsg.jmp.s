@@ -29,6 +29,12 @@ INITMSG_autoswitch:
 	jsr (VB1__INITMSG_autoswitch)
 	bra INITMSG_end
 
+} else ifdef ROM_LAYOUT_CRT {
+
+	jsr map_BASIC_1
+	jsr JB1__INITMSG
+	jmp map_NORMAL
+
 } else {
 
 	jmp initmsg_real

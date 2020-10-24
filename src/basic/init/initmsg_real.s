@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
 ;; #LAYOUT# X16 BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
@@ -6,7 +7,15 @@
 ; Routine is too long to fit in the original location
 
 
+!ifdef ROM_LAYOUT_CRT {
+
+INITMSG:
+
+} else {
+
 initmsg_real:
+
+}
 
 	; Clear the screen first, some cartridges (like IEEE-488) are leaving a mess on the screen
 	lda #147
@@ -60,7 +69,7 @@ initmsg_real:
 	jsr STROUT
 
 	ldx #$00
-	ldy #$0A
+	ldy #BANNER_SPACING
 	jsr plot_set
 
 	lda #<startup_banner
@@ -70,7 +79,7 @@ initmsg_real:
 !ifndef CONFIG_BRAND_CUSTOM {
 
 	ldx #$01
-	ldy #$0A
+	ldy #BANNER_SPACING
 	jsr plot_set
 
 	ldx #IDX__STR_PRE_REV
@@ -87,7 +96,7 @@ initmsg_real:
 } else {
 	ldx #$02
 }
-	ldy #$0A
+	ldy #BANNER_SPACING
 	jsr plot_set
 
 	jsr initmsg_bytes_free
@@ -106,3 +115,5 @@ initmsg_real:
 }
 
 }
+
+!ifdef HAS_NOLGPL3_WARN { !error "HAS_NOLGPL3_WARN not implemented" }

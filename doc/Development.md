@@ -78,26 +78,29 @@ Make sure to read the main [README](../README.md) first - although any help with
 
 List of the most important make targets:
 
-| target              | description                                                                     |
-| :------------------ | :------------------------------------------------------------------------------ |
-| `all`               | builds all ROMs, places them in 'build' subdirectory                            |
-| `clean`             | removes all the compilation results and intermediate files                      |
-| `updatebin`         | upates ROMs in 'bin' subdirectory - with embedded version string, for release   |
-| `testsimilarity`    | launches the similarity tool, see [README](../README.md)                        |
-| `test`              | builds the 'custom' configuration, launches it using VICE emulator              |
-| `test_generic`      | builds the default ROMs, for generic C64/C128, launches using VICE              | 
-| `test_generic_x128` | as above, but launches C128 emulator instead                                    |
-| `test_mega65`       | builds the MEGA65 ROM, launches it using XEMU emulator                          |
-| `test_ultimate64`   | builds the Ultimate 64 configuration, launches it using VICE emulator           |
-| `test_hybrid`       | builds a hybrid ROM (Open ROMs Kernal + original BASIC), launches it using VICE |
-| `test_testing`      | builds a rather odd testing configuration, launches it using VICE emulator      |
+| target                | description                                                                     |
+| :-------------------- | :------------------------------------------------------------------------------ |
+| `all`                 | builds all ROMs, places them in 'build' subdirectory                            |
+| `clean`               | removes all the compilation results and intermediate files                      |
+| `updatebin`           | upates ROMs in 'bin' subdirectory - with embedded version string, for release   |
+| `testsimilarity`      | launches the similarity tool, see [README](../README.md)                        |
+| `test`                | builds the 'custom' configuration, launches it using VICE emulator              |
+| `test_generic`        | builds the default ROMs, for generic C64/C128, launches using VICE              | 
+| `test_generic_x128`   | as above, but launches C128 emulator instead                                    |
+| `test_generic_crt`    | builds the default ROM with extended cartridge image, launches using VICE       |
+| `test_mega65`         | builds the MEGA65 ROM, launches it using XEMU emulator                          |
+| `test_ultimate64`     | builds the Ultimate 64 configuration, launches it using VICE                    |
+| `test_ultimate64_crt` | as above, ROM with extended cartriodge image                                    |
+| `test_hybrid`         | builds a hybrid ROM (Open ROMs Kernal + original BASIC), launches it using VICE |
+| `test_testing`        | builds a rather odd testing configuration, launches it using VICE               |
 
 
 ### Code segments and ROM layouts
 
-Currently there are 3 ROM layouts defined:
+Currently there are 4 ROM layouts defined:
 
 - `STD` - with 2 code segments: `BASIC` (`$A000-$E4D2`, where `$C000-$DFFF` is a skip-gap for RAM and I/O area) and `KERNAL` (`$E4D3 - $FFFF`)
+- `CRT` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, with additional `BASIC`/`KERNAL` segments are placed on the required cartridge image
 - `M65` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, additional segments might be added to the build system in the future; at the moment of writing this document additional 16KB of ROM is defined as `BASIC_1` segment and additional 8KB of ROM is defined as `KERNAL_1` segment
 - `X16` - memory layout for the Commander X16 machine
 

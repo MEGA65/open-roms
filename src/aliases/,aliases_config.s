@@ -24,7 +24,7 @@
 !if (counter > 1) { !error "Please select at most one CONFIG_MB_* option" }
 
 !ifdef ROM_LAYOUT_M65 { !ifndef CONFIG_MB_M65 { !error "ROM layout requires CONFIG_MB_M65 option" } }
-!ifdef ROM_LAYOUT_U16 { !ifndef CONFIG_MB_U64 { !error "ROM layout requires CONFIG_MB_U64 option" } }
+!ifdef ROM_LAYOUT_U64 { !ifndef CONFIG_MB_U64 { !error "ROM layout requires CONFIG_MB_U64 option" } }
 
 !ifdef CONFIG_MB_M65 { !ifndef ROM_LAYOUT_M65 { !error "CONFIG_MB_M65 can only be used with appropriate ROM layout" } }
 ; !ifdef CONFIG_MB_U64 { !ifndef ROM_LAYOUT_U64 { !error "CONFIG_MB_U64 can only be used with appropriate ROM layout" } }
@@ -51,6 +51,12 @@
 	!error "Please select exactly one CONFIG_BRAND_* option"	
 }
 
+!ifdef CONFIG_ROM_CRT { !ifndef ROM_LAYOUT_CRT {
+	!error "ROM_LAYOUT_CRT needs standard CONFIG_ROM_CRT set and vice-versa"
+}}
+!ifdef ROM_LAYOUT_CRT { !ifndef CONFIG_ROM_CRT {
+	!error "ROM_LAYOUT_CRT needs standard CONFIG_ROM_CRT set and vice-versa"
+}}
 
 
 ; Check that processor configuration is correct
@@ -85,6 +91,9 @@
 
 !ifdef CONFIG_MB_M65 {
 	!ifdef CONFIG_MEMORY_MODEL_60K { !error "Do not use CONFIG_MEMORY_MODEL_60K options for MEGA65 motherboard" }
+}
+!ifdef ROM_LAYOUT_CRT {
+	!ifdef CONFIG_MEMORY_MODEL_60K { !error "Do not use CONFIG_MEMORY_MODEL_60K options for CRT ROM layout" }
 }
 !ifdef CONFIG_PLATFORM_COMMANDER_X16 {
 	!ifndef CONFIG_MEMORY_MODEL_38K { !error "Select CONFIG_MEMORY_MODEL_38K options for Commander X16 platform" }
@@ -241,6 +250,13 @@
 
 
 
+; Check that internal DOS configuration is correct
+
+!ifdef CONFIG_CMDRDOS { !ifndef CONFIG_MB_M65 {
+	!error "CONFIG_CMDRDOS requires CONFIG_MB_M65"
+} }
+
+
 ; Check that startup banner configuration is correct
 
 !set counter = 0
@@ -261,6 +277,13 @@
 ; Define some macros depending on the configuration
 ;
 
+
+; Handle platform/mothjerboard configuration
+
+
+!ifdef PLATFORM_COMMODORE_64 { !ifndef CONFIG_MB_M65 { !ifndef CONFIG_MB_U64 {
+	!set HAS_128_POSSIBILITY     = 1
+} } }
 
 
 ; Handle CPU configuration
@@ -415,11 +438,29 @@
 
 
 
+; Handle non-LGPL3 code
+
+!ifdef CONFIG_CMDRDOS { !set HAS_NOLGPL3_WARN = 1 }
+
+
+
 ; Determine if we need space-savings in BASIC code
 
-!ifndef CONFIG_MB_M65 {
+!ifndef CONFIG_MB_M65 { !ifndef ROM_LAYOUT_CRT {
 	!set HAS_SMALL_BASIC = 1
+} }
+
+
+
+; Determine if it is OK to include tape autocalibration routines; they are too slow to be safely used at 1 MHz CPU speed
+
+!ifdef HAS_TAPE {
+	!ifdef CONFIG_MB_M65 {
+	    !set HAS_TAPE_AUTOCALIBRATE = 1
+    }
 }
+
+; XXX adapt autocalibration to Ultimate64 once additional Kernal bank is available
 
 
 
@@ -429,4 +470,12 @@
 	!ifdef SEGMENT_BASIC_0  { !set SEGMENT_M65_BASIC_0  = 1 }
 	!ifdef SEGMENT_BASIC_1  { !set SEGMENT_M65_BASIC_1  = 1 }
 	!ifdef SEGMENT_KERNAL_0 { !set SEGMENT_M65_KERNAL_0 = 1 }
+	!ifdef SEGMENT_KERNAL_1 { !set SEGMENT_M65_KERNAL_1 = 1 }
+}
+
+!ifdef ROM_LAYOUT_CRT {
+	!ifdef SEGMENT_BASIC_0  { !set SEGMENT_CRT_BASIC_0  = 1 }
+	!ifdef SEGMENT_BASIC_1  { !set SEGMENT_CRT_BASIC_1  = 1 }
+	!ifdef SEGMENT_KERNAL_0 { !set SEGMENT_CRT_KERNAL_0 = 1 }
+	!ifdef SEGMENT_KERNAL_1 { !set SEGMENT_CRT_KERNAL_1 = 1 }
 }

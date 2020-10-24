@@ -9,8 +9,6 @@
 
 ;; #ALIAS# CHROUT                          = KERNAL_0.proxy_K1_CHROUT
 ;; #ALIAS# STOP                            = KERNAL_0.STOP
-;; #ALIAS# M65_SLOW                        = KERNAL_0.M65_SLOW
-;; #ALIAS# M65_FAST                        = KERNAL_0.M65_FAST
 ;; #ALIAS# M65_MODEGET                     = KERNAL_0.M65_MODEGET
 ;; #ALIAS# M65_SETWIN_XY                   = KERNAL_0.M65_SETWIN_XY
 ;; #ALIAS# M65_SETWIN_WH                   = KERNAL_0.M65_SETWIN_WH
@@ -72,7 +70,7 @@
 ;; #ALIAS# print_return                    = KERNAL_0.proxy_K1_print_return
 
 ;; #ALIAS# __MSG_KERNAL_PRESS_PLAY         = KERNAL_0.__MSG_KERNAL_PRESS_PLAY
-;; #ALIAS# __MSG_KERNAL_OK_SEARCHING       = KERNAL_0.__MSG_KERNAL_OK_SEARCHING
+;; #ALIAS# __MSG_KERNAL_OK_SEARCH          = KERNAL_0.__MSG_KERNAL_OK_SEARCH
 ;; #ALIAS# __MSG_KERNAL_FOUND              = KERNAL_0.__MSG_KERNAL_FOUND
 
 ;; #ALIAS# tape_normal_byte_store          = KERNAL_0.tape_normal_byte_store

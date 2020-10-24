@@ -5,21 +5,47 @@
 
 !ifdef CONFIG_MB_M65 {
 
+; NOTE: In native mode the system should not run at 1 MHz speed - it's dangerous,
+;       as it uses compound instructions, which are not safe in 1MHz mode
+
+cmd_slow: ; set CPU speed to 1 MHz
+
+	jsr helper_ensure_legacy_mode
+
+	lda #$40
+	bra cmd_slow_fast_common
+
+	; FALLTROUGH
+
+cmd_fast: ; set CPU speed to 40 MHz
+
+	jsr helper_ensure_legacy_mode
+
+	lda #$41
+
+	; FALLTROUGH
+
+cmd_slow_fast_common:
+
+	sta CPU_D6510
+	rts
+
+
 	; For MEGA65 Kernal routines are called directly
 
 } else ifdef CONFIG_MB_U64 {
 
-	; Command implementation for Ultimate 64 - SuperCPU compatible way should be enough
+	; Command implementation for Ultimate 64
 
 cmd_slow:
 
-	sta SCPU_SPEED_NORMAL
-	rts
+	sta SCPU_SPEED_NORMAL              ; any value will do
+	jmp U64_SLOW                       ; to set turbo in $D031 too
 
 cmd_fast:
 
-	sta SCPU_SPEED_TURBO
-	rts
+	sta SCPU_SPEED_TURBO               ; any value will do
+	jmp U64_FAST                       ; to set turbo in $D031 too
 
 } else ifdef CONFIG_PLATFORM_COMMODORE_64 {
 

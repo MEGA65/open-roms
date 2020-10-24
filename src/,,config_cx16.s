@@ -1,5 +1,5 @@
 
-;; #CONFIG# ID $04 ; should be 1 byte, different for each config file!
+;; #CONFIG# ID $E0 ; should be 1 byte, different for each config file!
 
 ;
 ; Please read CONFIG.md before modifying this file!

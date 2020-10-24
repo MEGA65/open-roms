@@ -1,5 +1,8 @@
 ;; #LAYOUT# STD *       #TAKE
-;; #LAYOUT# M65 *       #TAKE
+;; #LAYOUT# CRT BASIC_0 #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
+;; #LAYOUT# M65 BASIC_0 #TAKE
+;; #LAYOUT# M65 BASIC_1 #TAKE
 ;; #LAYOUT# X16 BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
@@ -17,6 +20,12 @@ tokenise_line:
 
 	jsr map_BASIC_1
 	jsr (VB1__tokenise_line)
+	jmp map_NORMAL
+
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+	jsr map_BASIC_1
+	jsr JB1__tokenise_line
 	jmp map_NORMAL
 
 } else {
@@ -83,26 +92,23 @@ tokenise_line_loop:
 	jsr tk_search
 	bcc tokenise_line_keyword_01                 ; branch if keyword identified
 
-!ifndef HAS_SMALL_BASIC {
-
-	lda #<packed_freq_keywords_02
-	sta FRESPC+0
-	lda #>packed_freq_keywords_02
-	sta FRESPC+1
-
-	jsr tk_search
-	bcc tokenise_line_keyword_02                 ; branch if keyword identified
-}
-
 !ifdef CONFIG_MB_M65 {
 
-	lda #<packed_freq_keywords_03
+	lda #<packed_freq_keywords_04
 	sta FRESPC+0
-	lda #>packed_freq_keywords_03
+	lda #>packed_freq_keywords_04
 	sta FRESPC+1
 
 	jsr tk_search
-	bcc tokenise_line_keyword_03                 ; branch if keyword identified
+	bcc tokenise_line_keyword_04                 ; branch if keyword identified
+
+	lda #<packed_freq_keywords_06
+	sta FRESPC+0
+	lda #>packed_freq_keywords_06
+	sta FRESPC+1
+
+	jsr tk_search
+	bcc tokenise_line_keyword_06                 ; branch if keyword identified
 }
 
 	; Shorten packed keyword candidate and try again
@@ -180,23 +186,18 @@ tokenise_line_char:
 
 !ifdef CONFIG_MB_M65 {
 
-tokenise_line_keyword_03:
+tokenise_line_keyword_04:
 
 	; Store the token list index
 
-	lda #$03
+	lda #$04
 	+skip_2_bytes_trash_nvz
 
-	; FALLTROUGH
-}
-
-!ifndef HAS_SMALL_BASIC {
-
-tokenise_line_keyword_02:
+tokenise_line_keyword_06:
 
 	; Store the token list index
 
-	lda #$02
+	lda #$06
 	+skip_2_bytes_trash_nvz
 
 	; FALLTROUGH

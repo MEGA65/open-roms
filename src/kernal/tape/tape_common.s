@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# CRT KERNAL_1 #TAKE
 ;; #LAYOUT# M65 KERNAL_1 #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
@@ -113,13 +114,10 @@ tape_prepare_reading:
 
 } ; CONFIG_TAPE_HEAD_ALIGN
 
-!ifdef CONFIG_MB_M65 {
-
 	; Display confirmation
 
-	ldx #__MSG_KERNAL_OK_SEARCHING
+	ldx #__MSG_KERNAL_OK_SEARCH
 	jsr print_kernal_message
-}
 
 	; Prepare for reading
 

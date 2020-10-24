@@ -1,6 +1,7 @@
 ;; #LAYOUT# STD *       #TAKE
-;; #LAYOUT# M65 *       #TAKE
-;; #LAYOUT# X16 BASIC_0 #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
+;; #LAYOUT# M65 BASIC_1 #TAKE
+;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
 
@@ -12,6 +13,12 @@ list_single_line:
 	jsr (VB1__list_single_line)
 	jmp map_NORMAL
 
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+	jsr map_BASIC_1
+	jsr JB1__list_single_line
+	jmp map_NORMAL
+
 } else {
 
 	; Print line number - in a new line
@@ -19,6 +26,8 @@ list_single_line:
 	ldy #3
 
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	jsr peek_under_roms
@@ -32,6 +41,8 @@ list_single_line:
 	dey
 
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	jsr peek_under_roms
@@ -56,6 +67,8 @@ list_single_line:
 list_print_loop:
 
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	ldx #<OLDTXT
@@ -91,13 +104,11 @@ list_not_quote:
 	; Check for extended BASIC tokens
 	cmp #$01
 	beq list_display_token_01
-!ifndef HAS_SMALL_BASIC {
-	cmp #$02
-	beq list_display_token_02
-}
 !ifdef CONFIG_MB_M65 {
-	cmp #$03
-	beq list_display_token_03
+	cmp #$04
+	beq list_display_token_04
+	cmp #$06
+	beq list_display_token_06
 }
 
 	; Check for literals
@@ -219,37 +230,34 @@ list_display_token_ext_done:
 	; Next iteration
 	+bra list_not_rem
 
-!ifndef HAS_SMALL_BASIC {
-
-list_display_token_02:
-
-	; Display a 2-byte token - for extended BASIC
-	jsr list_fetch_subtoken
-
-	; Check if token is known
-	cpx #TK__MAXTOKEN_keywords_02
-	bcs list_is_unknown
-
-	; Now ask for it to be printed
-	+phy_trash_a
-	jsr print_packed_keyword_02
-	+bra list_display_token_ext_done
-}
-
 !ifdef CONFIG_MB_M65 {
 
-list_display_token_03:
+list_display_token_04:
 
 	; Display a 2-byte token - for extended BASIC
 	jsr list_fetch_subtoken
 
 	; Check if token is known
-	cpx #TK__MAXTOKEN_keywords_03
+	cpx #TK__MAXTOKEN_keywords_04
 	bcs list_is_unknown
 
 	; Now ask for it to be printed
 	+phy_trash_a
-	jsr print_packed_keyword_03
+	jsr print_packed_keyword_04
+	+bra list_display_token_ext_done
+
+list_display_token_06:
+
+	; Display a 2-byte token - for extended BASIC
+	jsr list_fetch_subtoken
+
+	; Check if token is known
+	cpx #TK__MAXTOKEN_keywords_06
+	bcs list_is_unknown
+
+	; Now ask for it to be printed
+	+phy_trash_a
+	jsr print_packed_keyword_06
 	+bra list_display_token_ext_done
 }
 
@@ -259,6 +267,8 @@ list_fetch_subtoken:
 
 	iny
 !ifdef CONFIG_MB_M65 {
+	jsr peek_via_OLDTXT
+} else ifdef ROM_LAYOUT_CRT {
 	jsr peek_via_OLDTXT
 } else ifdef CONFIG_MEMORY_MODEL_60K {
 	ldx #<OLDTXT

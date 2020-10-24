@@ -51,6 +51,16 @@ const std::vector<ROMTypeDescriptionEntry> ROM_DEFINITIONS =
     },
 
     {
+        "CART",
+        32896,        // file size
+        0x203C,       // signature offset 1
+        0,            // signature offset 2
+        0,            // DOS date offset
+        0,            // BASIC ID offset
+        0             // KERNAL ID offset
+    },
+
+    {
         "MEGA65",
         128 * 1024,   // file size
         0xBF52,       // signature offset 1
@@ -70,7 +80,8 @@ const std::vector<uint8_t> STR_SNAPSHOT = { 0x28, 0x44, 0x45, 0x56, 0x45, 0x4C, 
                                             0x00 };
 const std::vector<uint8_t> STR_DOSDATE  = { 0x4F, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58, 0x58 };
 
-const std::string STR_DEV = "DEV.";
+const std::string STR_DEV   = "DEV.";
+const std::string STR_BLOCK = "DO NOT DISTRIBUTE";
 
 //
 // Command and enviroment line settings
@@ -357,6 +368,16 @@ void ROMFile::readSrcFile()
 
     if (!srcFile.good()) ERROR(std::string("unable to read ROM file '") + srcFileNamePath + "'");
     srcFile.close();   
+
+    // Check if it is OK to distribute the file
+
+    for (size_t idx = 0; idx < srcFileContent.size() - STR_BLOCK.size(); idx++)
+    {
+        if (memcmp(&srcFileContent[idx], STR_BLOCK.c_str(), STR_BLOCK.size()) == 0)
+        {
+            ERROR(std::string("not allowed to distribute ROM file '") + srcFileNamePath + "'");
+        }
+    }
 }
 
 void ROMFile::readDstFile()

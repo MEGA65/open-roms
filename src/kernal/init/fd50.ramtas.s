@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# CRT KERNAL_0 #TAKE
 ;; #LAYOUT# M65 KERNAL_0 #TAKE
 ;; #LAYOUT# M65 KERNAL_1 #TAKE-FLOAT
 ;; #LAYOUT# X16 KERNAL_0 #TAKE
@@ -64,6 +65,17 @@ RAMTAS:
 	ldx #>$0800
 	stx MEMSTR+1
 
+
+!ifdef ROM_LAYOUT_CRT {
+
+	; Set RAM size in MEMSIZEK - skip memory test
+
+	ldy #$A0
+	sty MEMSIZK+1
+	rts
+
+} else {
+
 	; Work out RAM size and put in MEMSIZK
 	; Try to modify $8000, if it fails then RAM ends at $7FFF, else $9FFF
 
@@ -100,6 +112,7 @@ ramtas_32k:
 
 	ldy #$80
 	bne ramtas_xxk ; branch always
+}
 
 } else ifdef CONFIG_PLATFORM_COMMANDER_X16 {
 

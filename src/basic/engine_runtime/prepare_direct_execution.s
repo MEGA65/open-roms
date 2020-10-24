@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# CRT BASIC_1 #TAKE
 ;; #LAYOUT# M65 BASIC_1 #TAKE
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
@@ -13,6 +14,12 @@ prepare_direct_execution:
 
 	jsr map_BASIC_1
 	jsr (VB1__prepare_direct_execution)
+	jmp map_NORMAL
+
+} else ifdef SEGMENT_CRT_BASIC_0 {
+
+	jsr map_BASIC_1
+	jsr JB1__prepare_direct_execution
 	jmp map_NORMAL
 
 } else {

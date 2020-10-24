@@ -1,4 +1,5 @@
 ;; #LAYOUT# STD *        #TAKE
+;; #LAYOUT# CRT KERNAL_0 #TAKE
 ;; #LAYOUT# M65 KERNAL_0 #TAKE
 ;; #LAYOUT# M65 KERNAL_1 #TAKE-FLOAT
 ;; #LAYOUT# X16 *        #IGNORE
@@ -30,17 +31,6 @@ vicii_init:
  	sta __VIC_BASE, x
  	dex
  	bpl @1
-
-!ifndef CONFIG_MB_M65 { !ifndef CONFIG_MB_U64 {
-
- 	; Disable C128 extra keys - just to be sure they will not interfere with anything
-
- 	stx VIC_XSCAN
-
- 	; Disable the C128 2MHz mode, it prevents VIC-II display from working correctly
-
- 	stx VIC_CLKRATE
-} }
 
 	; Set up default IO values
 	; - [CM64] page 129       - VIC_SCROLY

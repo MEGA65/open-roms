@@ -21,7 +21,7 @@ Timing is no more strict than standard IEC protocol - I have checked using VICE 
 
 Detection happens after `OPEN` (0xF0 - 0xFF) or `REOPEN` (0x60 - 0x6F) IEC command is sent from the controller and is very simple.
 
-The CIA2 port B has to be set for reading (interrupts for the port are disabled by writing $7F to $DD0D). The controller constantly reads (not sure if there is a countdown or timeout in the original DolphinDOS ROM, countdoown started from $20 seems more than enough) the CIA2 interrupt control and port B registers; when ICR reads $10 (again - not sure if just the bit is checked, or the whole register), bus controller assumes the receiver talks the DolphinDOS protocol.
+The CIA2 port B has to be set for reading (interrupts for the port are disabled by writing $7F to $DD0D). The controller constantly reads (not sure if there is a countdown or timeout in the original DolphinDOS ROM, countdown started from $20 seems more than enough) the CIA2 interrupt control and port B registers; when ICR reads $10 (again - not sure if just the bit is checked, or the whole register), bus controller assumes the receiver talks the DolphinDOS protocol.
 
 Note: detection only works under ATN, should be performed before the controller performs a turnover to listener!
 

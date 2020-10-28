@@ -18,13 +18,18 @@ sdcard_init:
 	sta CARD_IS_SDHC
 
 	lda #SD_SECBUF_0
-	sta CARD_BUFPNT+0
+	sta CARD_BUFPNT1+0
+	sta CARD_BUFPNT2+0
 	lda #SD_SECBUF_1
-	sta CARD_BUFPNT+1
+	sta CARD_BUFPNT1+1
+	inc
+	sta CARD_BUFPNT2+1
 	lda #SD_SECBUF_2
-	sta CARD_BUFPNT+2
+	sta CARD_BUFPNT1+2
+	sta CARD_BUFPNT2+2
 	lda #SD_SECBUF_3
-	sta CARD_BUFPNT+3
+	sta CARD_BUFPNT1+3
+	sta CARD_BUFPNT2+3
 
 	; Reset the card
 

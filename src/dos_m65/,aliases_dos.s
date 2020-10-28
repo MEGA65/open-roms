@@ -31,8 +31,8 @@
     !addr CARD_TMP_STEP    = $12 ; 4 bytes
     !addr CARD_TMP_RETRIES = $16 ; 1 byte
 
-    !addr CARD_BUFPNT      = $FC ; 4 bytes - pointer to hardware sector buffer  XXX replace copy routines with DMAgic
-
+    !addr CARD_BUFPNT1     = $17 ; 4 bytes - pointer to hardware sector buffer  XXX replace copy routines with DMAgic
+    !addr CARD_BUFPNT2     = $1B ; 4 bytes - as above, but points to the 2nd page of the hardware buffer
 
 
 	;

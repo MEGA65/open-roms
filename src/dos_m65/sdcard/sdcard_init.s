@@ -44,11 +44,7 @@ sdcard_init:
 	sta SD_ADDR+3
 
 	jsr sdcard_init_read
-	bcc sdcard_init_operable
-
-	; XXX if we are here, mark card as not operable and quit
-
-sdcard_init_operable:
+	bcs sdcard_init_getsize_fail       ; if failure, mark card as not operable and quit
 
 	; Work out if this is SD or SDHC card - SD cards can't read at non-sector aligned addresses
 
@@ -88,22 +84,128 @@ sdcard_init_getsize:
 	; (binary search of sector numbers is NOT safe for some reason.
 	; It frequently reports bigger than the size of the card)
 
-	lda #$00
+	; step (and first sector) = 16*2048
+
+	sta CARD_TMP_STEP+0
+	sta CARD_SECNUM+0
+	sta CARD_TMP_STEP+2
+	sta CARD_SECNUM+2
+	sta CARD_TMP_STEP+3
+	sta CARD_SECNUM+3
+	lda #$08
+	sta CARD_TMP_STEP+1
+	sta CARD_SECNUM+1
+
+	; FALLTROUGH
+
+sdcard_init_getsize_read:
+
+	; Try to read sector
+
+	jsr sdcard_readsector
+	bcc sdcard_init_getsize_next          ; XXX original code checks PEEK(sd_ctl)&0x63;...
+
+	; Failed to read - restore card state and sector number
+
+	jsr sdcard_reset
+
+	sec
+	lda CARD_SECNUM+0
+	sbc CARD_TMP_STEP+0
+	sta CARD_SECNUM+0
+	lda CARD_SECNUM+1
+	sbc CARD_TMP_STEP+1
+	sta CARD_SECNUM+1
+	lda CARD_SECNUM+2
+	sbc CARD_TMP_STEP+2
+	sta CARD_SECNUM+2
+	lda CARD_SECNUM+3
+	sbc CARD_TMP_STEP+3
+	sta CARD_SECNUM+3
+
+	; Divide step by 2, skip bytes which are always 0
+
+	clc
+	; ror CARD_TMP_STEP+3
+	; ror CARD_TMP_STEP+2
+	ror CARD_TMP_STEP+1
+	ror CARD_TMP_STEP+0
+
+	; FALLTROUGH
+
+sdcard_init_getsize_next:
+
+	; Increment sector number by step
+
+	clc
+	lda CARD_SECNUM+0
+	adc CARD_TMP_STEP+0
+	sta CARD_SECNUM+0
+	lda CARD_SECNUM+1
+	adc CARD_TMP_STEP+1
+	sta CARD_SECNUM+1
+	lda CARD_SECNUM+2
+	adc CARD_TMP_STEP+2
+	sta CARD_SECNUM+2
+	lda CARD_SECNUM+3
+	adc CARD_TMP_STEP+3
+	sta CARD_SECNUM+3
+
+	; If sector number is 0 - report failure
+
+	lda CARD_SECNUM+0
+	ora CARD_SECNUM+1
+	ora CARD_SECNUM+2
+	ora CARD_SECNUM+3
+	beq sdcard_init_getsize_fail
+
+	; If step is 0 - this is the end, we know maximum size
+
+	lda CARD_TMP_STEP+0
+	ora CARD_TMP_STEP+1
+	ora CARD_TMP_STEP+2
+	ora CARD_TMP_STEP+3
+	beq sdcard_init_getsize_done
+
+	; Check sector number, should be below $10:$00:$00:$00
+
+	lda CARD_SECNUM+3
+	and #$F0
+	bne sdcard_init_getsize_read
+
+	; It is not - report maximum size
+
+	lda #$FF
 	sta CARD_SECNUM+0
 	sta CARD_SECNUM+1
 	sta CARD_SECNUM+2
+	lda #$0F
 	sta CARD_SECNUM+3
 
-	; step = 16*2048
+	; FALLTROUGH
 
-	sta CARD_TMP_STEP+0
-	sta CARD_TMP_STEP+2
-	sta CARD_TMP_STEP+3
-	lda #$08
-	sta CARD_TMP_STEP+1
+sdcard_init_getsize_done:
 
-	; XXX finish the implementation
+	; Return sector number as maximum readable sector
 
+	lda CARD_SECNUM+0
+	sta CARD_SIZE+0
+	lda CARD_SECNUM+1
+	sta CARD_SIZE+1
+	lda CARD_SECNUM+2
+	sta CARD_SIZE+2
+	lda CARD_SECNUM+3
+	sta CARD_SIZE+3
+
+	clc
+	rts
+
+sdcard_init_getsize_fail:
+
+	; XXX mark card as inoperable
+
+	sec
+	rts
 
 
 

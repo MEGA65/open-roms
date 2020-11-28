@@ -34,6 +34,12 @@
 
 SCNKEY:
 
+!ifdef CONFIG_MB_M65 { !ifdef CONFIG_M65_KB_DEV {
+
+	jsr M65_MODEGET
+	+bcc m65_scnkey
+} }
+
 	; Prepare for SHFLAG update
 
 	lda SHFLAG

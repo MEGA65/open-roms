@@ -55,6 +55,7 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal/iostack \
                  src/kernal/jumptable \
                  src/kernal/keyboard \
+                 src/kernal/keyboard_m65 \
                  src/kernal/memory \
                  src/kernal/print \
                  src/kernal/rom_revision \

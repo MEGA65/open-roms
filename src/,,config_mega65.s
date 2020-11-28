@@ -114,4 +114,4 @@
 
 ; --- Temporary hotfixes
 
-;; #CONFIG# HOTFIX_CHARPTR             YES
+;; #CONFIG# HOTFIX_CHARPTR             YES       ; workaround for https://github.com/MEGA65/mega65-core/issues/308

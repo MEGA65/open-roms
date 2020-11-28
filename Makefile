@@ -679,11 +679,24 @@ $(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
 
 # Rules - MEGA65 platform specific
 
+# $0:$0000 - 16 KB - DOS
+# $0:$4000 -  8 KB - KERNAL segment 1
+# $0:$6000 - 16 KB - BASIC  segment 1 (wrong, $9000 should be alternative chargen)
+# $0:$A000 -  8 KB - BASIC  segment 0
+# $0:$C000 -  4 KB - C64 mode charset (wrong)
+# $0:$D000 -  4 KB - native mode charset (wrong, should be C64 mode charset)
+# $0:$E000 -  9 KB - KERNAL segment 0
+# $1:$0000 - 64 KB - unused for now, padding
+
 build/padding_64_KB:
 	@mkdir -p build
 	@dd if=/dev/zero bs=8192 count=8 of=$@ status=none
 
-$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB $(TARGET_CHR_ORF) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
+build/padding_4_KB:
+	@mkdir -p build
+	@dd if=/dev/zero bs=4096 count=1 of=$@ status=none
+
+$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB build/padding_4_KB $(TARGET_CHR_ORF) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
 	@echo
 	@echo
 	@echo

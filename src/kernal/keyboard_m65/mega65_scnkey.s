@@ -4,109 +4,120 @@
 
 m65_scnkey:
 
-	; First scan the whole keyboard
+	; Read the key from automatic scanner
 
 	lda KBSCN_BUCKY
-	sta M65_KB_BUCKY
+	ldy KBSCN_KEYCODE
+	sty KBSCN_KEYCODE
 
-	ldx #$08
-@1:
-	stx KBSCN_SELECT
-	lda KBSCN_PEEK
-	eor #$FF                           ; let bit 1 mean 'pressed', not the otherwise
-	sta M65_KB_COLSCAN, x
+	; Update the SHFLAG in a way that preserves .Y
+
+	and #%01111111
+
+	ldx SHFLAG
+	stx LSTSHF                         ; needed for SHIFT+VENDOR support
+
+	ldx #$00
+	stx SHFLAG
 	dex
-	bpl @1
-
-	; Update the SHFLAG
-
-	lda SHFLAG
-	sta LSTSHF                         ; needed for SHIFT+VENDOR support
-
-	ldy #$00                           ; the new SHFLAG will be constructed in .Y
-	ldx M65_KB_BUCKY
-	beq m65_scnkey_SHFLAG_ready
 
 	; FALLTROUGH
 
-m65_scnkey_detect_SHIFT:
+m65_scnkey_SHFLAG_loop:
 
-	txa
-	and #%00000011
-	beq m65_scnkey_detect_VENDOR
+	inx
+	asr
+	bcc m65_scnkey_SHFLAG_next
+
+	; Bucky key pressed
+
+	pha
+	lda m65_kb_matrix_bucky, x
+	ora SHFLAG
+	sta SHFLAG
+	pla
+
+	; FALLTROUGH
+
+m65_scnkey_SHFLAG_next:
+
+	bne m65_scnkey_SHFLAG_loop
+
+	; We have the key code in .Y - check if same as the last one
+
+	cpy LSTX
+	beq m65_scnkey_try_repeat
+
+	; Not the same key - store the key code, reset delay counter
+
+	sty LSTX
+!ifndef CONFIG_RS232_UP9600 {
+	lda #$16
+} else {
+	lda #$18
+}
+	sta DELAY
+
+	; FALLTROUGH
+
+m65_scnkey_output_key:
+
+	; Check if we have free space in the keyboard buffer
+
+	lda NDX
+	cmp XMAX
+	+bcs scnkey_early_repeat           ; branch if no free space in buffer
+
+	; Reinitialize secondary counter
+
+	lda #$03
+	sta KOUNT
+
+	; Output PETSCII code to the keyboard buffer
+
+m65_scnkey_got_petscii:
+
+	; XXX if no key pressed, try joysticks
 
 	tya
-	ora #KEY_FLAG_SHIFT
-	tay
+	beq m65_scnkey_done                ; branch if no key was pressed
+	ldy NDX
+	sta KEYD, y
+	inc NDX
 
 	; FALLTROUGH
 
-m65_scnkey_detect_VENDOR:
-	
-	txa
-	and #%00001000
-	beq m65_scnkey_detect_CTRL
+m65_scnkey_done:
 
-	tya
-	ora #KEY_FLAG_VENDOR
-	tay
+	rts
 
-	; FALLTROUGH
+m65_scnkey_try_repeat:
 
-m65_scnkey_detect_CTRL:
-	
-	txa
-	and #%00000100
-	beq m65_scnkey_detect_ALT
+!ifndef CONFIG_KEY_REPEAT_ALWAYS {
 
-	tya
-	ora #KEY_FLAG_CTRL
-	tay
+	; Check whether we should repeat keys - first the flag, afterwards hardcoded list
 
-	; FALLTROUGH
+	lda RPTFLG
+	bmi m65_scnkey_handle_repeat           ; branch if we should repeat always
 
-m65_scnkey_detect_ALT:
-	
-	txa
-	and #%00010000
-	beq m65_scnkey_detect_CAPS_LOCK
+	; XXX if key to be repeated - go to m65_scnkey_handle_repeat, otherwise to m65_scnkey_done
 
-	tya
-	ora #KEY_FLAG_ALT
-	tay
+m65_scnkey_handle_repeat:
 
-	; FALLTROUGH
+} ; no CONFIG_KEY_REPEAT_ALWAYS
 
-m65_scnkey_detect_CAPS_LOCK:
-	
-	txa
-	and #%01000000
-	beq m65_scnkey_detect_NO_SCRL
+	; Countdown before first repeat
 
-	tya
-	ora #KEY_FLAG_NO_SCRL
-	tay
+	lda DELAY
+	beq @10
+	dec DELAY
 
-	; FALLTROUGH
+	rts
+@10:
+	; Countdown before subsequent repeats
 
-m65_scnkey_detect_NO_SCRL:
-	
-	txa
-	and #%00100000
-	beq m65_scnkey_SHFLAG_ready
-
-	tya
-	ora #KEY_FLAG_CAPSL
-	tay
-
-	; FALLTROUGH
-
-m65_scnkey_SHFLAG_ready:
-
-	sty SHFLAG
-	
-
-	; XXX
-
+	lda KOUNT
+	beq m65_scnkey_output_key           ; if second counter is also 0, we can repeat the key
+	dec KOUNT
 
 	rts

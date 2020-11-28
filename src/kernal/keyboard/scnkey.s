@@ -317,7 +317,7 @@ scnkey_output_key:
 
 	lda NDX
 	cmp XMAX
-	bcs scnkey_early_repeat            ; no space in buffer
+	bcs scnkey_early_repeat            ; branch if no free space in buffer
 
 	; Reinitialize secondary counter
 

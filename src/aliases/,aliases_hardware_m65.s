@@ -32,7 +32,6 @@
 	!addr C65_EXTKEYS_PR  = $D607
 	!addr C65_EXTKEYS_DDR = $D608
 
-	!addr KBSCN_KEYCODE   = $D610	
 	!addr KBSCN_BUCKY     = $D611	
 	!addr KBSCN_PEEK      = $D613
 	!addr KBSCN_SELECT    = $D614

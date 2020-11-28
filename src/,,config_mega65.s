@@ -46,15 +46,15 @@
 ; --- Keyboard settings
 
 ;; #CONFIG# LEGACY_SCNKEY              NO
-;; #CONFIG# KEYBOARD_C65               NO        ; untested
-;; #CONFIG# KEYBOARD_C65_CAPS_LOCK     NO        ; untested
+;; #CONFIG# KEYBOARD_C65               NO        ; does not work
+;; #CONFIG# KEYBOARD_C65_CAPS_LOCK     NO        ; does not work
 ;; #CONFIG# KEY_REPEAT_DEFAULT         NO
 ;; #CONFIG# KEY_REPEAT_ALWAYS          NO
 ;; #CONFIG# KEY_FAST_SCAN              YES
 ;; #CONFIG# JOY1_CURSOR                NO
 ;; #CONFIG# JOY2_CURSOR                NO
 
-;; #CONFIG# CONFIG_M65_KB_DEV          NO        ; for development, keep disabled
+;; #CONFIG# M65_KB_DEV                 NO        ; for development, keep disabled
 
 ;; #CONFIG# PROGRAMMABLE_KEYS          YES
 

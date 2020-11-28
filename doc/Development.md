@@ -53,9 +53,9 @@ There is no official PETSCII code for `TAB` - we can't utilize the ones from C12
 
 `SHFLAG` (`$028D`) variable is extended to support additional bucky keys on C128 and C65 keyboards:
 
-| bits 7-5 | bit 4       | bit 3    | bit 2    | bit 1    | bit 0    |
-| :------: | :---------: | :------: | :------: | :------: | :------: |
-| reserved | `CAPS LOCK` | `ALT`    | `CTRL`   | `VENDOR` | `SHIFT`  |
+| bits 7-6 | bit 5     | bit 4       | bit 3    | bit 2    | bit 1    | bit 0    |
+| :------: | :-------: | :---------: | :------: | :------: | :------: | :------: |
+| reserved | `NO SCRL` | `CAPS LOCK` | `ALT`    | `CTRL`   | `VENDOR` | `SHIFT`  |
 
 Bits 3 and 4 are extension to the original variable, compatible with the C128 ROMs API. There is no official way to retrieve `NO_SCRL` status as of yet. The `40/80` key status cannot be retrieved in C64 mode at all (C128 hardware limitation).
 

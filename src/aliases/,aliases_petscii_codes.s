@@ -16,6 +16,7 @@
 !ifdef CONFIG_KEYBOARD_C128_CAPS_LOCK { !set _NEED_CAPS_LOCK  = 1 }
 !ifdef CONFIG_KEYBOARD_C65            { !set _NEED_EXTENDED   = 1 }
 !ifdef CONFIG_KEYBOARD_C65_CAPS_LOCK  { !set _NEED_CAPS_LOCK  = 1 }
+!ifdef CONFIG_MB_M65                  { !set _NEED_CAPS_LOCK  = 1 }
 !ifdef CONFIG_MB_M65                  { !set _NEED_EXTENDED   = 1 }
 !ifdef CONFIG_KEYBOARD_C65            { !set _NEED_C65KB      = 1 }
 !ifdef CONFIG_MB_M65                  { !set _NEED_C65KB      = 1 }
@@ -34,7 +35,7 @@
 	!set KEY_FLAG_NO_SCRL = %00100000  
 }
 !ifdef _NEED_CAPS_LOCK {
-	!set KEY_CAPS_LOCK    = %00010000
+	!set KEY_FLAG_CAPSL   = %00010000
 }
 
 

@@ -78,7 +78,7 @@ SCNKEY:
 	and #$40
 	bne @1                             ; branch if no CAPS LOCK
 
-	lda #KEY_CAPS_LOCK
+	lda #KEY_FLAG_CAPSL
 	sta SHFLAG
 @1:
 
@@ -92,7 +92,7 @@ SCNKEY:
 	and #$01
 	bne @2                             ; branch if no CAPS LOCK
 
-	lda #KEY_CAPS_LOCK
+	lda #KEY_FLAG_CAPSL
 	sta SHFLAG
 @2:
 
@@ -374,8 +374,8 @@ scnkey_handle_caps_lock:
 }
 	tax 
 	lda SHFLAG
-	and #(%00000111 + KEY_CAPS_LOCK)
-	cmp #KEY_CAPS_LOCK
+	and #(%00000111 + KEY_FLAG_CAPSL)
+	cmp #KEY_FLAG_CAPSL
 	bne @7                             ; branch if no special CAPS LOCK handling needed
 
 	cpx #$41                           ; 'A'

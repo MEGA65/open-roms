@@ -110,3 +110,8 @@
 ; --- Other
 
 ;; #CONFIG# COMPRESSION_LVL_2          NO
+
+
+; --- Temporary hotfixes
+
+;; #CONFIG# HOTFIX_CHARPTR             YES       ; workaround for https://github.com/MEGA65/mega65-core/issues/308

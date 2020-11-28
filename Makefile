@@ -169,8 +169,8 @@ TARGET_U64CRT_K    = build/kernal_ultimate64_crt.rom
 TARGET_GENCRT_X    = build/extrom_generic_crt.crt 
 TARGET_U64CRT_X    = build/extrom_ultimate64_crt.crt 
 
-TARGET_M65_x_ORF   = build/mega65.rom
-TARGET_M65_x_PXL   = build/mega65_pxlfont.rom
+TARGET_M65_x_ORF   = build/mega65_orfont.rom
+TARGET_M65_x_PXL   = build/mega65.rom
 TARGET_X16_x       = build/cx16-dummy.rom
 
 TARGET_LIST_CUS    = $(TARGET_CUS_B) $(TARGET_CUS_K)
@@ -505,7 +505,7 @@ $(DIR_M65)/OUTK_0.BIN $(DIR_M65)/KERNAL_0_combined.vs $(DIR_M65)/KERNAL_0_combin
 $(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1_combined.vs $(DIR_M65)/BASIC_1_combined.sym:
 	@mkdir -p $(DIR_M65)
 	@rm -f $@* $(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_M65) -l 4000 -h 7fff $(CFG_M65) $(GEN_STR_M65) $(SRCDIR_BASIC) $(GEN_BASIC)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_M65) -l 4000 -h 6fff $(CFG_M65) $(GEN_STR_M65) $(SRCDIR_BASIC) $(GEN_BASIC)
 
 $(DIR_M65)/dos.seg_1 $(DIR_M65)/DOS_1_combined.vs $(DIR_M65)/DOS_1_combined.sym:
 	@mkdir -p $(DIR_M65)
@@ -679,11 +679,25 @@ $(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
 
 # Rules - MEGA65 platform specific
 
+# $0:$0000 - 16 KB - DOS
+# $0:$4000 -  8 KB - KERNAL segment 1
+# $0:$6000 - 12 KB - BASIC  segment 1
+# $0:$9000 -  4 KB - native mode chargen
+# $0:$A000 -  8 KB - BASIC  segment 0
+# $0:$C000 -  4 KB - unused for now, padding
+# $0:$D000 -  4 KB - legacy mode chargen
+# $0:$E000 -  9 KB - KERNAL segment 0
+# $1:$0000 - 64 KB - unused for now, padding
+
 build/padding_64_KB:
 	@mkdir -p build
 	@dd if=/dev/zero bs=8192 count=8 of=$@ status=none
 
-$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB $(TARGET_CHR_ORF) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
+build/padding_4_KB:
+	@mkdir -p build
+	@dd if=/dev/zero bs=4096 count=1 of=$@ status=none
+
+$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB build/padding_4_KB $(TARGET_CHR_ORF) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
 	@echo
 	@echo
 	@echo
@@ -693,9 +707,10 @@ $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB $(T
 	@cat $(DIR_M65)/dos.seg_1             > $(TARGET_M65_x_ORF)
 	@cat $(DIR_M65)/kernal.seg_1         >> $(TARGET_M65_x_ORF)
 	@cat $(DIR_M65)/basic.seg_1          >> $(TARGET_M65_x_ORF)
-	@cat $(DIR_M65)/basic.seg_0          >> $(TARGET_M65_x_ORF)
-	@cat $(TARGET_CHR_ORF)               >> $(TARGET_M65_x_ORF)
 	@cat build/chargen_openroms.patched  >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/basic.seg_0          >> $(TARGET_M65_x_ORF)
+	@cat build/padding_4_KB              >> $(TARGET_M65_x_ORF)
+	@cat $(TARGET_CHR_ORF)               >> $(TARGET_M65_x_ORF)
 	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_ORF)
 	@cat build/padding_64_KB             >> $(TARGET_M65_x_ORF)
 	@echo
@@ -707,9 +722,10 @@ $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB $(T
 	@cat $(DIR_M65)/dos.seg_1             > $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/kernal.seg_1         >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/basic.seg_1          >> $(TARGET_M65_x_PXL)
-	@cat $(DIR_M65)/basic.seg_0          >> $(TARGET_M65_x_PXL)
-	@cat $(TARGET_CHR_PXL)               >> $(TARGET_M65_x_PXL)
 	@cat build/chargen_pxlfont.patched   >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/basic.seg_0          >> $(TARGET_M65_x_PXL)
+	@cat build/padding_4_KB              >> $(TARGET_M65_x_PXL)
+	@cat $(TARGET_CHR_PXL)               >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_PXL)
 	@cat build/padding_64_KB             >> $(TARGET_M65_x_PXL)
 	@echo

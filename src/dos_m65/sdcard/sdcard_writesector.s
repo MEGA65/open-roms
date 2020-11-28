@@ -99,13 +99,47 @@ sdcard_writesector_verify:
 	and #$03
 	bne @3
 
-	; XXX verify - compare buffer
+	; FALLTROUGH
 
+sdcard_writesector_verify_loop:
 
+	; Compare buffers
 
+	phx
+	phz
 
+	ldx #$00
+	ldz #$00
 
+	lda [CARD_BUFPNT1],z
+	cmp CARD_BUF, x
+	bne sdcard_writesector_verify_fail
+	
+	lda [CARD_BUFPNT2],z
+	cmp CARD_BUF+$100, x
+	bne sdcard_writesector_verify_fail
 
+	inz
+	inx
+	bne sdcard_writesector_verify_loop
+
+	; FALLTROUGH
+
+sdcard_writesector_verify_success:
+
+	plz
+	plx
+
+	clc
+	rts
+
+sdcard_writesector_verify_fail:
+
+	plz
+	plx
+
+	sec
+	rts
 
 
 ;
@@ -124,11 +158,9 @@ sdcard_writesector_copy_data:
 
 @1:
 	lda CARD_BUF,x
-	sta [CARD_BUFPNT],z
-	inc CARD_BUFPNT+1
+	sta [CARD_BUFPNT1],z
 	lda CARD_BUF+$100,x
-	sta [CARD_BUFPNT],z
-	dec CARD_BUFPNT+1	
+	sta [CARD_BUFPNT2],z
 
 	inz
 	inx

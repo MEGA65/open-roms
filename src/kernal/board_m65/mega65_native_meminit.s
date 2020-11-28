@@ -32,7 +32,7 @@ m65_native_meminit:
 	sta M65_DMAJOB_SRC_3
 	lda #$02
 	sta M65_DMAJOB_SRC_2
-	lda #$D0
+	lda #$90
 	sta M65_DMAJOB_SRC_1
 	lda #$00
 	sta M65_DMAJOB_SRC_0

@@ -169,8 +169,8 @@ TARGET_U64CRT_K    = build/kernal_ultimate64_crt.rom
 TARGET_GENCRT_X    = build/extrom_generic_crt.crt 
 TARGET_U64CRT_X    = build/extrom_ultimate64_crt.crt 
 
-TARGET_M65_x_ORF   = build/mega65.rom
-TARGET_M65_x_PXL   = build/mega65_pxlfont.rom
+TARGET_M65_x_ORF   = build/mega65_orfont.rom
+TARGET_M65_x_PXL   = build/mega65.rom
 TARGET_X16_x       = build/cx16-dummy.rom
 
 TARGET_LIST_CUS    = $(TARGET_CUS_B) $(TARGET_CUS_K)

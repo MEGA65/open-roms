@@ -158,8 +158,6 @@ m65_scnkey_output_key:
 
 	; Put the key into the keyboard buffer
 
-	inc $D020
-
 	tya
 	ldy NDX
 	sta KEYD, y

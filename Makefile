@@ -693,7 +693,7 @@ $(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
 # $0:$6000 - 12 KB - BASIC  segment 1
 # $0:$9000 -  4 KB - native mode chargen
 # $0:$A000 -  8 KB - BASIC  segment 0
-# $0:$C000 -  4 KB - unused for now, padding
+# $0:$C000 -  4 KB - KERNAL segment C
 # $0:$D000 -  4 KB - legacy mode chargen
 # $0:$E000 -  9 KB - KERNAL segment 0
 # $1:$0000 - 64 KB - unused for now, padding

@@ -37,7 +37,28 @@ SCNKEY:
 !ifdef CONFIG_MB_M65 { !ifdef CONFIG_M65_KB_DEV {
 
 	jsr M65_MODEGET
-	+bcc m65_scnkey
+	bcs scnkey_legacy_mode
+
+	; Map KERNAL_C segment
+
+	lda VIC_CTRLA
+	pha
+	ora #%00100000
+	sta VIC_CTRLA
+
+	; Call the native mode routine
+
+	jsr (VKC__m65_scnkey)
+
+	; Restore mapping and quit
+
+	pla
+	sta VIC_CTRLA
+
+	rts
+
+scnkey_legacy_mode:
+
 } }
 
 	; Prepare for SHFLAG update

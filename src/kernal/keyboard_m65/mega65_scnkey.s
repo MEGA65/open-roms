@@ -1,4 +1,4 @@
-;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# M65 KERNAL_C #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
 
@@ -127,6 +127,8 @@ m65_scnkey_next_1:
 	dex
 	bpl m65_scnkey_loop_1
 
+	rts
+
 	;
 	; Analyze currently and previously pressed keys
 	;
@@ -155,6 +157,8 @@ m65_scnkey_output_key:
 	+bcs scnkey_buffer_full
 
 	; Put the key into the keyboard buffer
+
+	inc $D020
 
 	tya
 	ldy NDX

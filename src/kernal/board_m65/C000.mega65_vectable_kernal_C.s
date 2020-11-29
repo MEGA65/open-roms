@@ -17,5 +17,5 @@
 
 	; Vector table (Open ROMs private!)
 
-	!word $0000
+	!word m65_scnkey
 }

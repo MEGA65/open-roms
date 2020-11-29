@@ -29,6 +29,7 @@
 ;; #ALIAS# colour_codes                    = KERNAL_0.colour_codes
 ;; #ALIAS# screen_check_toggle_quote       = KERNAL_0.screen_check_toggle_quote
 ;; #ALIAS# screen_code_to_petscii          = KERNAL_0.screen_code_to_petscii
+;; #ALIAS# m65_scnkey_init_pressed         = KERNAL_0.m65_scnkey_init_pressed
 
 ;; #ALIAS# setup_irq_timer                 = KERNAL_0.setup_irq_timer
 ;; #ALIAS# wait_x_bars                     = KERNAL_0.wait_x_bars

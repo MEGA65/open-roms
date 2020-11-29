@@ -4,11 +4,17 @@
 
 m65_native_meminit:
 
+	; Initialize variables for keyboard scanning
+
+	jsr m65_scnkey_init_pressed
+
 	; Prepare generic DMAgic list
 
 	jsr m65_dmagic_init
 
+	;
 	; Copy MEGA65 charset to target location - set size
+	;
 
 	lda #$00
 	sta M65_DMAJOB_SIZE_0

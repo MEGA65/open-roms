@@ -317,7 +317,7 @@ scnkey_output_key:
 
 	lda NDX
 	cmp XMAX
-	bcs scnkey_early_repeat            ; no space in buffer
+	bcs scnkey_buffer_full             ; no space in buffer
 
 	; Reinitialize secondary counter
 
@@ -466,7 +466,7 @@ scnkey_handle_repeat:
 
 	rts
 
-scnkey_early_repeat:
+scnkey_buffer_full:
 
 	; Keyboard buffer was full - at least make sure the key
 	; will be repeated as soon as possible

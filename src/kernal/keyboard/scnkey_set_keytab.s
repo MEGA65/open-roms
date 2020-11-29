@@ -61,6 +61,8 @@ scnkey_valid_offset_cont:
 
 	; FALLTROUGH
 
+} ; no CONFIG_LEGACY_SCNKEY
+
 scnkey_toggle_if_needed: ; entry for SCNKEY (TWW/CTR version)
 
 	; Check if we should toggle the character set
@@ -105,7 +107,4 @@ scnkey_toggle_if_needed: ; entry for SCNKEY (TWW/CTR version)
 	sta VIC_YMCSB
 @1:
 	rts
-
 }
-
-} ; no CONFIG_LEGACY_SCNKEY

@@ -29,7 +29,7 @@ programmable_keys_codes:
 
 	!ifdef CONFIG_KEYCMD_HELP { !byte KEY_HELP }
 
-} else ifdef CONFIG_KEYBOARD_C65 {
+} else ifdef CONFIG_MB_M65 {
 
 	!ifdef CONFIG_KEYCMD_HELP { !byte KEY_HELP }
 
@@ -76,7 +76,7 @@ __str_offset_F8:      !ifdef CONFIG_KEYCMD_F8   { +CONFIG_KEYCMD_F8
 __str_offset_HELP:    !ifdef CONFIG_KEYCMD_HELP { +CONFIG_KEYCMD_HELP
 	!byte $00 }
 
-} else ifdef CONFIG_KEYBOARD_C65 {
+} else ifdef CONFIG_MB_M65 {
 
 __str_offset_HELP:    !ifdef CONFIG_KEYCMD_HELP { +CONFIG_KEYCMD_HELP
 	!byte $00 }
@@ -123,7 +123,7 @@ programmable_keys_offsets:
 
 	!ifdef CONFIG_KEYCMD_HELP { !byte __str_offset_HELP - programmable_keys_strings }
 
-} else ifdef CONFIG_KEYBOARD_C65 {
+} else ifdef CONFIG_MB_M65 {
 	
 	!ifdef CONFIG_KEYCMD_HELP { !byte __str_offset_HELP - programmable_keys_strings }
 

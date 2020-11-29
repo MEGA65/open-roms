@@ -36,13 +36,6 @@
 
 ;; #CONFIG# KEYCMD_HELP                NO
 
-;; #CONFIG# KEYCMD_F9                  NO
-;; #CONFIG# KEYCMD_F10                 NO
-;; #CONFIG# KEYCMD_F11                 NO
-;; #CONFIG# KEYCMD_F12                 NO
-;; #CONFIG# KEYCMD_F13                 NO
-;; #CONFIG# KEYCMD_F14                 NO
-
 
 ; --- Screen editor
 

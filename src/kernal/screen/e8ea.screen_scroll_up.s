@@ -14,7 +14,7 @@ screen_scroll_up:
 
 	; First handle CTRL and NO_SCRL keys
 
-!ifdef CONFIG_KEYBOARD_C128_OR_C65 {
+!ifdef CONFIG_KEYBOARD_C128 {
 
 	; Do not scroll if NO_SCRL is pressed and interrupts are enabled
 @1:

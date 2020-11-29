@@ -70,7 +70,7 @@ udtim_keyboard:
 	; key press. But something as simple as this would have created warm restart
 	; with M+N+SPACE+RESTORE due to ghosting - so the original ROM has to provide
 	; some protection here. I do not know what the mechanism there exactly does,
-	; but I hope the mechanism below will be compatible enough.
+	; but I hope the code below will be compatible enough.
 
 	lda #$80
 	sta CIA1_PRA             ; select all the rows except the last one
@@ -78,9 +78,9 @@ udtim_keyboard:
 	ldx #$00
 	stx VIC_XSCAN            ; connect all the extra C128 keys
 }
-!ifdef CONFIG_KEYBOARD_C65 {
+!ifdef CONFIG_MB_M65 {
 	ldx #$00
-	stx C65_EXTKEYS_PR       ; connect all the extra C65 keys
+	stx C65_EXTKEYS_PR       ; connect all the extra C65 keys      XXX test this
 }
 
 	lda CIA1_PRB             ; read the keys
@@ -91,9 +91,9 @@ udtim_keyboard:
 	dex                      ; puts $FF
 	stx VIC_XSCAN            ; disconnect the extra C128 keys
 }
-!ifdef CONFIG_KEYBOARD_C65 {
+!ifdef CONFIG_MB_M65 {
 	dex                      ; puts $FF
-	stx C65_EXTKEYS_PR       ; disconnect the extra C65 keys
+	stx C65_EXTKEYS_PR       ; disconnect the extra C65 keys       XXX test this
 }
 	lda #$7F
 	sta CIA1_PRA             ; select the last row (bit to 0)

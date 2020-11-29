@@ -1223,7 +1223,6 @@ void DataSet::generateConfigDepStrings()
     // Keyboard support features
    
     if (GLOBAL_ConfigOptions["KEYBOARD_C128"]) featureStr += "KBD 128\r";
-    if (GLOBAL_ConfigOptions["KEYBOARD_C65"])  featureStr += "KBD 65\r";
 
     // Add strings to appropriate list
    

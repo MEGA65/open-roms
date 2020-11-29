@@ -65,6 +65,11 @@ m65_mode65:
 
 	jsr m65_native_meminit
 
+	; Set C65 keybord handling - XXX check this before enabling
+
+	; lda #$02
+	; sta C65_EXTKEYS_DDR ; output for most keys, input for CAPS LOCK bit
+
 	; Set screen mode to 80x50
 
 	lda #$02

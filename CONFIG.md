@@ -215,10 +215,6 @@ Allows to use CAPS LOCK key on the C128 keyboard, this is independent from `KEYB
 
 Needs about 50 bytes more space in KERNAL segment. If unsure - disable.
 
-### `KEYBOARD_C65`, `KEYBOARD_C65_CAPS_LOCK`
-
-Similar, but for C65 keyboard. Please note - the C65 keyboard support is (as of yet) completely untested!
-
 ### `KEY_REPEAT_DEFAULT`
 
 Enables key repetition by default during the startup (sets `RPTFLG`).

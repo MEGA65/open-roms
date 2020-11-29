@@ -233,8 +233,6 @@
 	!ifdef CONFIG_TAPE_NORMAL             { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_TAPE_NORMAL"                }
 	!ifdef CONFIG_KEYBOARD_C128           { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_KEYBOARD_C128"              }
 	!ifdef CONFIG_KEYBOARD_C128_CAPS_LOCK { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_KEYBOARD_C128_CAPS_LOCK"    }
-	!ifdef CONFIG_KEYBOARD_C65            { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_KEYBOARD_C65"               }
-	!ifdef CONFIG_KEYBOARD_C65_CAPS_LOCK  { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_KEYBOARD_C65_CAPS_LOCK"     }
 }
 !ifdef CONFIG_MB_M65 {
 	!ifdef CONFIG_KEYBOARD_C128           { !error "MEGA65 motherboard is not compatible with CONFIG_KEYBOARD_C128"                }
@@ -244,8 +242,6 @@
 !ifdef CONFIG_MB_U64 {
 	!ifdef CONFIG_KEYBOARD_C128           { !error "Ultimate 64 motherboard is not compatible with CONFIG_KEYBOARD_C128"           }
 	!ifdef CONFIG_KEYBOARD_C128_CAPS_LOCK { !error "Ultimate 64 motherboard is not compatible with CONFIG_KEYBOARD_C128_CAPS_LOCK" }
-	!ifdef CONFIG_KEYBOARD_C65            { !error "Ultimate 64 motherboard is not compatible with CONFIG_KEYBOARD_C65"            }
-	!ifdef CONFIG_KEYBOARD_C65_CAPS_LOCK  { !error "Ultimate 64 motherboard is not compatible with CONFIG_KEYBOARD_C65_CAPS_LOCK"  }
 }
 
 
@@ -389,15 +385,6 @@
 
 
 ; Handle keyboard configuration
-
-!ifdef CONFIG_KEYBOARD_C128           { !set CONFIG_KEYBOARD_C128_OR_C65 = 1 }
-!ifdef CONFIG_KEYBOARD_C65            { !set CONFIG_KEYBOARD_C128_OR_C65 = 1 }
-
-!ifdef CONFIG_KEYBOARD_C65            { !set CONFIG_KEYBOARD_C65_OR_CAPS_LOCK = 1 }
-!ifdef CONFIG_KEYBOARD_C65_CAPS_LOCK  { !set CONFIG_KEYBOARD_C65_OR_CAPS_LOCK = 1 }
-
-!ifdef CONFIG_KEYBOARD_C128_CAPS_LOCK { !set CONFIG_KEYBOARD_CAPS_LOCK = 1 }
-!ifdef CONFIG_KEYBOARD_C65_CAPS_LOCK  { !set CONFIG_KEYBOARD_CAPS_LOCK = 1 }
 
 !ifdef CONFIG_JOY1_CURSOR             { !set CONFIG_JOY1_OR_JOY2_CURSOR = 1 }
 !ifdef CONFIG_JOY2_CURSOR             { !set CONFIG_JOY1_OR_JOY2_CURSOR = 1 }

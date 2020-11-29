@@ -203,6 +203,7 @@ SEG_LIST_M65       = $(DIR_M65)/basic.seg_0  \
                      $(DIR_M65)/basic.seg_1  \
                      $(DIR_M65)/dos.seg_1    \
                      $(DIR_M65)/kernal.seg_0 \
+                     $(DIR_M65)/kernal.seg_C \
                      $(DIR_M65)/kernal.seg_1
 
 SEG_LIST_X16       = $(DIR_X16)/basic.seg_0  \
@@ -356,6 +357,8 @@ $(DIR_M65)/basic.seg_1  $(DIR_M65)/BASIC_1_combined.vs  $(DIR_M65)/BASIC_1_combi
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_M65)/BASIC_0_combined.sym
 $(DIR_M65)/dos.seg_1    $(DIR_M65)/DOS_1_combined.vs    $(DIR_M65)/DOS_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_DOS_M65) $(CFG_M65)
+$(DIR_M65)/kernal.seg_C $(DIR_M65)/KERNAL_C_combined.vs $(DIR_M65)/KERNAL_C_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym
 $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym
 
@@ -512,6 +515,11 @@ $(DIR_M65)/dos.seg_1 $(DIR_M65)/DOS_1_combined.vs $(DIR_M65)/DOS_1_combined.sym:
 	@mkdir -p $(DIR_M65)
 	@rm -f $@* $(DIR_M65)/dos.seg_1 $(DIR_M65)/DOS_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s DOS_1 -i DOS_1-mega65 -o dos.seg_1 -d $(DIR_M65) -l 4000 -h 7fff $(CFG_M65) $(SRCDIR_DOS_M65)
+
+$(DIR_M65)/kernal.seg_C $(DIR_M65)/KERNAL_C_combined.vs $(DIR_M65)/KERNAL_C_combined.sym:
+	@mkdir -p $(DIR_M65)
+	@rm -f $@* $(DIR_M65)/kernal.seg_C $(DIR_M65)/KERNAL_C*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_C -i KERNAL_C-mega65 -o kernal.seg_C -d $(DIR_M65) -l c000 -h cfff $(CFG_M65) $(GEN_STR_M65) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
 $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym:
 	@mkdir -p $(DIR_M65)
@@ -710,7 +718,7 @@ $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB bui
 	@cat $(DIR_M65)/basic.seg_1          >> $(TARGET_M65_x_ORF)
 	@cat build/chargen_openroms.patched  >> $(TARGET_M65_x_ORF)
 	@cat $(DIR_M65)/basic.seg_0          >> $(TARGET_M65_x_ORF)
-	@cat build/padding_4_KB              >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/kernal.seg_C         >> $(TARGET_M65_x_ORF)
 	@cat $(TARGET_CHR_ORF)               >> $(TARGET_M65_x_ORF)
 	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_ORF)
 	@cat build/padding_64_KB             >> $(TARGET_M65_x_ORF)
@@ -725,7 +733,7 @@ $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB bui
 	@cat $(DIR_M65)/basic.seg_1          >> $(TARGET_M65_x_PXL)
 	@cat build/chargen_pxlfont.patched   >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/basic.seg_0          >> $(TARGET_M65_x_PXL)
-	@cat build/padding_4_KB              >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/kernal.seg_C         >> $(TARGET_M65_x_PXL)
 	@cat $(TARGET_CHR_PXL)               >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_PXL)
 	@cat build/padding_64_KB             >> $(TARGET_M65_x_PXL)

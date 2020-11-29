@@ -4,107 +4,84 @@
 
 m65_scnkey:
 
-	; First scan the whole keyboard
+	;
+	; Scan the whole keyboard, store results in memory
+	;
 
-	lda KBSCN_BUCKY
-	sta M65_KB_BUCKY
+	lda #$00
+	sta M65_KB_COLSUM
 
 	ldx #$08
-@1:
+
+	lda #%01111111
+	and KBSCN_BUCKY
+	sta M65_KB_BUCKY
+
+	; FALLTROUGH
+
+m65_scnkey_loop:
+
 	stx KBSCN_SELECT
 	lda KBSCN_PEEK
 	eor #$FF                           ; let bit 1 mean 'pressed', not the otherwise
 	sta M65_KB_COLSCAN, x
+	ora M65_KB_COLSUM
+	sta M65_KB_COLSUM
 	dex
-	bpl @1
+	bpl m65_scnkey_loop
 
-	; Update the SHFLAG
+	;
+	; Retrieve SHIFT / VENDOR / CTRL / ALT / NO SCROLL / CAPS LOCK status
+	;
 
 	lda SHFLAG
 	sta LSTSHF                         ; needed for SHIFT+VENDOR support
 
-	ldy #$00                           ; the new SHFLAG will be constructed in .Y
-	ldx M65_KB_BUCKY
-	beq m65_scnkey_SHFLAG_ready
+	ldx #$00
+	stx SHFLAG
+
+	lda M65_KB_BUCKY
+	dex                                ; index into kb_matrix_bucky_shflag
 
 	; FALLTROUGH
 
-m65_scnkey_detect_SHIFT:
+m65_scnkey_shflag_loop:
 
-	txa
-	and #%00000011
-	beq m65_scnkey_detect_VENDOR
+	inx
+	asr
+	bcc m65_scnkey_shflag_next
 
-	tya
-	ora #KEY_FLAG_SHIFT
-	tay
+	; Bucky key pressed
 
-	; FALLTROUGH
+	pha
+	lda kb_matrix_bucky_shflag, x
+	ora SHFLAG
+	sta SHFLAG
+	pla
 
-m65_scnkey_detect_VENDOR:
+    ; FALLTROUGH
+
+m65_scnkey_shflag_next:
+
+	bne m65_scnkey_shflag_loop
+
+	;
+	; Scan the keyboard matrix stored in memory to determine which keys were pressed
+	;
+
+	lda M65_KB_COLSUM
+	beq m65_scnkey_no_key
+
+	; XXX
+
+
+
+
 	
-	txa
-	and #%00001000
-	beq m65_scnkey_detect_CTRL
 
-	tya
-	ora #KEY_FLAG_VENDOR
-	tay
+m65_scnkey_no_key:
 
-	; FALLTROUGH
 
-m65_scnkey_detect_CTRL:
-	
-	txa
-	and #%00000100
-	beq m65_scnkey_detect_ALT
-
-	tya
-	ora #KEY_FLAG_CTRL
-	tay
-
-	; FALLTROUGH
-
-m65_scnkey_detect_ALT:
-	
-	txa
-	and #%00010000
-	beq m65_scnkey_detect_CAPS_LOCK
-
-	tya
-	ora #KEY_FLAG_ALT
-	tay
-
-	; FALLTROUGH
-
-m65_scnkey_detect_CAPS_LOCK:
-	
-	txa
-	and #%01000000
-	beq m65_scnkey_detect_NO_SCRL
-
-	tya
-	ora #KEY_FLAG_NO_SCRL
-	tay
-
-	; FALLTROUGH
-
-m65_scnkey_detect_NO_SCRL:
-	
-	txa
-	and #%00100000
-	beq m65_scnkey_SHFLAG_ready
-
-	tya
-	ora #KEY_FLAG_CAPSL
-	tay
-
-	; FALLTROUGH
-
-m65_scnkey_SHFLAG_ready:
-
-	sty SHFLAG
-	
 
 	; XXX
 

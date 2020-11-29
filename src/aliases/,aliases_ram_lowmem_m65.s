@@ -55,8 +55,9 @@
 	!addr M65_SCRCOLMAX    = $594 ;            maximum allowed column
 	!addr M65_KB_BUCKY     = $595 ;            result of bucky keys scan
 	!addr M65_KB_COLSCAN   = $596 ; $596-$59E  results of keyboard scan, columns 0-8
+	!addr M65_KB_COLSUM    = $59F ;            sum (OR) of the M65_KB_COLSCAN
 
-	                              ; $59F-$5EB  -- UNUSED --
+	                              ; $560-$5EB  -- UNUSED --
 	!addr M65_DMAGIC_LIST  = $5F1 ; $5EF-$5FF  reserved for DMAgic list, 15 bytes (modulo bytes are not needed)
 	!addr M65_RS232_INBUF  = $600 ; $600-$6FF  -- reserved for RS-232 input buffer --
 	!addr M65_RS232_OUTBUF = $700 ; $700-$7FF  -- reserved for RS-232 output buffer --

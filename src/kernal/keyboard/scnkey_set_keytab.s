@@ -80,10 +80,8 @@ scnkey_toggle_if_needed: ; entry for SCNKEY (TWW/CTR version)
 
 !ifdef CONFIG_MB_M65 {
 
-!ifndef HOTFIX_CHARPTR {
 	jsr M65_MODEGET
 	bcc @2
-}
 
 	; Toggling charsets for C64 mode
 
@@ -93,15 +91,12 @@ scnkey_toggle_if_needed: ; entry for SCNKEY (TWW/CTR version)
 @1:
 	rts
 
-!ifndef HOTFIX_CHARPTR {
-
 	; Toggling charsets for M65 mode
 @2:
 	lda VIC_CHARPTR+1
 	eor #%00001000
 	sta VIC_CHARPTR+1
 	rts
-}
 
 } else {
 

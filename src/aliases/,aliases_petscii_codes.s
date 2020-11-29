@@ -46,18 +46,18 @@
 ; PETSCII codes for certain C128 and C65 functionalities
 
 !ifdef _NEED_EXTENDED {
-	!set KEY_BELL           = $07  ; no key, originally CTRL+G ; XXX implement
+	!set KEY_BELL           = $07  ; CTRL+G
 	!set KEY_ESC            = $1B
 }
 
 !ifdef _NEED_C65KB {
 	!set KEY_TAB            = $09
-	!set KEY_LINE_FEED      = $0A
-	!set KEY_TAB_SET_CLR    = $18
-	!set KEY_UNDERLINE_ON   = $02
-	!set KEY_UNDERLINE_OFF  = $82
-	!set KEY_FLASHING_ON    = $0F
-	!set KEY_FLASHING_OFF   = $8F
+	!set KEY_LINE_FEED      = $0A ; XXX add to M65 matrix
+	!set KEY_TAB_SET_CLR    = $18 ; XXX add to M65 matrix
+	!set KEY_UNDERLINE_ON   = $02 ; XXX add to M65 matrix
+	!set KEY_UNDERLINE_OFF  = $82 ; XXX add to M65 matrix
+	!set KEY_FLASHING_ON    = $0F ; XXX add to M65 matrix
+	!set KEY_FLASHING_OFF   = $8F ; XXX add to M65 matrix
 }
 
 

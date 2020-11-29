@@ -661,7 +661,7 @@ void ROMFile::save()
 
     if (sameContent)
     {
-        spacing.resize(10 - descPtr->romTypeName.length());
+        spacing.resize(10 - descPtr->romTypeName.length(), ' ');
         std::cout << spacing << "(unchanged)";
     }
 

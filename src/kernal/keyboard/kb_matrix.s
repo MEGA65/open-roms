@@ -1,6 +1,7 @@
 ;; #LAYOUT# STD *        #TAKE
 ;; #LAYOUT# X16 *        #IGNORE
 ;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# M65 KERNAL_C #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
 ;
@@ -28,7 +29,7 @@ __kb_matrix_normal:
 	!byte $2B,$50,$4C,$2D,$2E,$3A,$40,$2C
 	!byte $5C,$2A,$3B,$13,$00,$3D,$5E,$2F
 	!byte $31,$5F,$00,$32,$20,$00,$51,$03
-!ifdef CONFIG_MB_M65 {
+!ifdef SEGMENT_KERNAL_C {
 	!byte $00,$09,$00,$84,$10,$16,$19,$1B
 }
 
@@ -41,7 +42,7 @@ __kb_matrix_shift:
 	!byte $DB,$70,$6C,$DD,$3E,$5B,$BA,$3C
 	!byte $A9,$C0,$5D,$93,$00,$3D,$DE,$3F
 	!byte $21,$5F,$00,$22,$A0,$00,$71,$83
-!ifdef CONFIG_MB_M65 {
+!ifdef SEGMENT_KERNAL_C {
 	; XXX
 	!byte $00,$00,$00,$00,$15,$17,$1A,$00 ; XXX SHIFT+HELP?, SHIFT+ESC?
 }
@@ -55,12 +56,13 @@ __kb_matrix_vendor:
 	!byte $A6,$AF,$B6,$DC,$3E,$5B,$A4,$3C
 	!byte $A8,$DF,$5D,$93,$00,$3D,$DE,$3F
 	!byte $81,$5F,$00,$95,$a0,$00,$AB,$83
-!ifdef CONFIG_MB_M65 {
+!ifdef SEGMENT_KERNAL_C {
 	; XXX
 	!byte $00,$00,$00,$00,$15,$17,$1A,$00 ; XXX VENDOR+HELP?, VENDOR+ESC?
 }
 
 __kb_matrix_ctrl:
+!ifndef SEGMENT_KERNAL_C {
 	!byte $00,$00,$00,$00,$00,$00,$00,$00
 	!byte $1C,$17,$01,$9F,$1A,$13,$05,$00
 	!byte $9C,$12,$04,$1E,$03,$06,$14,$18
@@ -69,10 +71,7 @@ __kb_matrix_ctrl:
 	!byte $00,$10,$0C,$00,$00,$1B,$00,$00
 	!byte $1C,$00,$1D,$00,$00,$1F,$1E,$00
 	!byte $90,$06,$00,$05,$00,$00,$11,$00
-
-!ifdef CONFIG_MB_M65 {
-
-__kb_matrix_ctrl_m65:
+} else {
 	!byte $00,$00,$00,$00,$00,$00,$00,$00
 	!byte $1C,$17,$01,$9F,$1A,$13,$05,$00
 	!byte $9C,$12,$04,$1E,$03,$06,$14,$18

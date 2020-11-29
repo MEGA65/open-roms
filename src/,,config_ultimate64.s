@@ -90,7 +90,6 @@
 ; --- Screen editor
 
 ;; #CONFIG# EDIT_STOPQUOTE             YES
-;; #CONFIG# EDIT_TABULATORS            NO
 
 
 ; --- Software features

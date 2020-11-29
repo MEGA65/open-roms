@@ -401,22 +401,6 @@ scnkey_handle_caps_lock:
 
 scnkey_got_petscii:
 
-!ifdef CONFIG_KEYBOARD_C128 { !ifdef CONFIG_EDIT_TABULATORS {
-
-	; Special handling for SHIFT+TAB; it is easier than creating new matrix
-
-	tax
-	cmp #KEY_C64_TAB_FW
-	bne @8
-	lda SHFLAG
-	and #KEY_FLAG_SHIFT
-	beq @8
-	ldx #KEY_C64_TAB_BW
-@8:
-	txa
-
-} } ; CONFIG_KEYBOARD_C128 and CONFIG_EDIT_TABULATORS
-
 	beq scnkey_no_keys                 ; branch if we have no PETSCII code for this key
 	ldy NDX
 	sta KEYD, y

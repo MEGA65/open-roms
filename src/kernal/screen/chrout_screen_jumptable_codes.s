@@ -30,10 +30,6 @@ __chrout_screen_jumptable_quote_guard:
 !ifdef CONFIG_EDIT_STOPQUOTE {
 	!byte KEY_STOP
 }
-!ifdef CONFIG_EDIT_TABULATORS {
-	!byte KEY_C64_TAB_BW
-	!byte KEY_C64_TAB_FW
-}
 	!byte KEY_DEL
 	!byte KEY_RETURN
 
@@ -61,10 +57,6 @@ chrout_screen_jumptable_lo:
 !ifdef CONFIG_EDIT_STOPQUOTE {
 	!byte <(chrout_screen_STOP-1)
 }
-!ifdef CONFIG_EDIT_TABULATORS {
-	!byte <(chrout_screen_TAB_BW-1)
-	!byte <(chrout_screen_TAB_FW-1)
-}
 	!byte <(chrout_screen_DEL-1)
 	!byte <(chrout_screen_RETURN-1)
 
@@ -85,10 +77,6 @@ chrout_screen_jumptable_hi:
 	!byte >(chrout_screen_INS-1)
 !ifdef CONFIG_EDIT_STOPQUOTE {
 	!byte >(chrout_screen_STOP-1)
-}
-!ifdef CONFIG_EDIT_TABULATORS {
-	!byte >(chrout_screen_TAB_BW-1)
-	!byte >(chrout_screen_TAB_FW-1)
 }
 	!byte >(chrout_screen_DEL-1)
 	!byte >(chrout_screen_RETURN-1)
@@ -114,10 +102,6 @@ chrout_screen_jumptable:
 	!word chrout_screen_INS
 !ifdef CONFIG_EDIT_STOPQUOTE {
 	!word chrout_screen_STOP
-}
-!ifdef CONFIG_EDIT_TABULATORS {
-	!word chrout_screen_TAB_BW
-	!word chrout_screen_TAB_FW
 }
 	!word chrout_screen_DEL
 	!word chrout_screen_RETURN

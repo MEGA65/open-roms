@@ -257,12 +257,6 @@ If enabled, STOP key terminates insert/quote mode (like on some _Black Box_ cart
 
 Feature needs 12 bytes in KERNAL segment. If unsure - enable.
 
-### `EDIT_TABULATORS`
-
-If enabled, allows use of TAB (or CTRL+>) and SHIFT+TAB (or CTRL+<) to switch between predefined tabulator positions.
-
-Feature needs 35-45 bytes in KERNAL segment. If unsure - enable.
-
 ## Software features
 
 ### `PANIC_SCREEN`

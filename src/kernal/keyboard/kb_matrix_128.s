@@ -16,7 +16,7 @@
 
 kb_matrix_128:
 
-	!byte KEY_HELP,$38,$35,KEY_C64_TAB_FW,$32,$34,$37,$31
+	!byte KEY_HELP,$38,$35,$00,$32,$34,$37,$31 ; $00 replaces TAB key
 	!byte KEY_ESC,$2B,$2D,$8D,$0D,$36,$39,$33
 	!byte $00,$30,$2E,$91,$11,$9D,$1D,$00
 

@@ -31,23 +31,17 @@ Open ROMs interrupt handlers do not touch the ROM mapping, range `0x4000-0xBFFF`
 
 ### API extensions
 
-#### PETSCII
+#### PETSCII - C128
 
-Open ROMs provides support for several additional PETSCII codes (all compatible with C128 and/or C65):
+When C128 keyboard support is compiled-in, Open ROMs provides support for a few PETSCII codes:
 
-| PETSCII code | description                                         |
-| :----------: | :-------------------------------------------------- |
-| `$07`        | bell (C128 and C65 compatible), not implemented yet |
-| `$1B`        | `ESC` key (C128 and C65 compatible)                 |
-| `$84`        | `HELP` key (C128 and C65 compatible)                |
-| `$10`        | `F9` key (C65 compatible)                           |
-| `$15`        | `F10` key (C65 compatible)                          |
-| `$16`        | `F11` key (C65 compatible)                          |
-| `$17`        | `F12` key (C65 compatible)                          |
-| `$19`        | `F13` key (C65 compatible)                          |
-| `$1A`        | `F14` key (C65 compatible)                          |
+| PETSCII code | description            |
+| :----------: | :--------------------- |
+| `$07`        | bell                   |
+| `$1B`        | `ESC` key              |
+| `$84`        | `HELP` key             |
 
-There is no official PETSCII code for `TAB` - we can't utilize the ones from C128 or C65 because it conflicts with some C64 codes.
+There is no PETSCII code for `TAB` key - we can't utilize the ones from C128 or C65 because it conflicts with some C64 codes.
 
 #### Bucky keys
 

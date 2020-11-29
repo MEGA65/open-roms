@@ -98,7 +98,7 @@ m65_scnkey_loop_2:
 	iny
 	pla
 	beq m65_scnkey_next_1
-	asl
+	asr
 	pha
 	bcc m65_scnkey_loop_2
 

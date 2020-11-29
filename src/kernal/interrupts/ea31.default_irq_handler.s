@@ -20,7 +20,21 @@ default_irq_handler:
 	jsr M65_MODEGET
 	bcs @2
 
-	jsr m65_cursor_blink
+	; Map KERNAL_C segment
+
+	lda VIC_CTRLA
+	pha
+	ora #%00100000
+	sta VIC_CTRLA
+
+	; Call the native mode blink routine
+
+	jsr (VKC__m65_cursor_blink)
+
+	; Restore mapping and quit
+
+	pla
+	sta VIC_CTRLA
 
 	bra default_irq_handler_common
 @2:

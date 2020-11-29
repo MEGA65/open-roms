@@ -11,11 +11,13 @@
 
 	; Label definitions
 
-	!addr VKC__m65_scnkey                = $C000 + 2 * 0
+	!addr VKC__m65_cursor_blink          = $C000 + 2 * 0
+	!addr VKC__m65_scnkey                = $C000 + 2 * 1
 
 } else {
 
 	; Vector table (Open ROMs private!)
 
+	!word m65_cursor_blink
 	!word m65_scnkey
 }

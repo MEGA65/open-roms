@@ -9,6 +9,7 @@
 * enthusi/Onslaught - for his example Turbo Tape 64 compatible loader
 * djmips - for fast 8x8 multiplication routine
 * Verz - for the integer division routine
+* Mike Barry - for his PRIMM implementation
 
 ## for documentation
 

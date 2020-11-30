@@ -397,3 +397,16 @@ Not all of them - only these we want to have implemented.
 | `$FF80`   | revision byte                | DONE     |                                                    |
 
 <br />
+
+### API extensions - MEGA65 build
+
+Not all of them - only these we want to have implemented. Note: this is likely to change in the future!
+
+<br />
+
+| Address   | Name     | Status   |  Remarks                                                               |
+| :-------: | :------- | :------: | :--------------------------------------------------------------------: |
+| `$FF7D`   | PRIMM    | DONE     | print immediate, address compatible with C128 and C65 ROMs             |
+| `$FFF8`   |          | DONE     | reset vector for usage within hypervisor, starts in legacy mode        |
+
+<br />

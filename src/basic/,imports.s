@@ -18,6 +18,7 @@
 ;; #ALIAS# clear_screen        = KERNAL_0.clear_screen
 
 ;; #ALIAS# printf              = KERNAL_0.printf
+;; #ALIAS# PRIMM               = KERNAL_0.PRIMM
 
 ;; #ALIAS# plot_set            = KERNAL_0.plot_set
 ;; #ALIAS# print_hex_byte      = KERNAL_0.print_hex_byte

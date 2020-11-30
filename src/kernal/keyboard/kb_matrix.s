@@ -43,8 +43,7 @@ __kb_matrix_shift:
 	!byte $A9,$C0,$5D,$93,$00,$3D,$DE,$3F
 	!byte $21,$5F,$00,$22,$A0,$00,$71,$83
 !ifdef SEGMENT_KERNAL_C {
-	; XXX
-	!byte $00,$00,$00,$00,$15,$17,$1A,$00 ; XXX SHIFT+HELP?, SHIFT+ESC?
+	!byte $00,$00,$00,$84,$15,$17,$1A,$1B
 }
 
 __kb_matrix_vendor:
@@ -57,8 +56,7 @@ __kb_matrix_vendor:
 	!byte $A8,$DF,$5D,$93,$00,$3D,$DE,$3F
 	!byte $81,$5F,$00,$95,$a0,$00,$AB,$83
 !ifdef SEGMENT_KERNAL_C {
-	; XXX
-	!byte $00,$00,$00,$00,$15,$17,$1A,$00 ; XXX VENDOR+HELP?, VENDOR+ESC?
+	!byte $00,$00,$00,$84,$15,$17,$1A,$1B
 }
 
 __kb_matrix_ctrl:
@@ -80,6 +78,5 @@ __kb_matrix_ctrl:
 	!byte $00,$10,$0C,$00,$00,$1B,$00,$00
 	!byte $1C,$00,$1D,$00,$00,$1F,$1E,$00
 	!byte $90,$06,$00,$05,$00,$00,$11,$00
-	; XXX
-	!byte $00,$00,$00,$00,$00,$00,$00,$00 ; XXX CTRL+HELP?, CTRL+ESC?
+	!byte $00,$00,$00,$84,$00,$00,$00,$1B
 }

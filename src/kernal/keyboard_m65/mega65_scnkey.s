@@ -21,8 +21,8 @@ m65_scnkey:
 
 m65_scnkey_loop:
 
-	stx KBSCN_SELECT
-	lda KBSCN_PEEK
+	stx $D614
+	lda $D613
 	eor #$FF                           ; let bit 1 mean 'pressed', not the otherwise
 	sta M65_KB_COLSCAN, x
 	ora M65_KB_COLSUM
@@ -116,8 +116,7 @@ m65_scnkey_loop_2:
 	asl
 	asl
 	asl
-	clc
-	adc M65_KB_PRESSED+0
+	adc M65_KB_PRESSED+0               ; Carry already cleared by ASL
 	sta M65_KB_PRESSED+0
 
 	bra m65_scnkey_loop_2
@@ -184,3 +183,7 @@ m65_scnkey_no_key:
 	; XXX
 
 	rts
+
+
+
+m65_scnkey_is_new:

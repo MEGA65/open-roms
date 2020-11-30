@@ -48,7 +48,7 @@ m65_scnkey_loop:
 m65_scnkey_shflag_loop:
 
 	inx
-	asr
+	asr                                ; ASR preserves most significant bit, but in our case it is 0
 	bcc m65_scnkey_shflag_next
 
 	; Bucky key pressed
@@ -98,7 +98,8 @@ m65_scnkey_loop_2:
 	iny
 	pla
 	beq m65_scnkey_next_1
-	asr
+	clc
+	ror                                ; can't use ASR here, as it preserves most significant bit
 	pha
 	bcc m65_scnkey_loop_2
 

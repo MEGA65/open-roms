@@ -127,8 +127,6 @@ m65_scnkey_next_1:
 	dex
 	bpl m65_scnkey_loop_1
 
-	rts
-
 	;
 	; Analyze currently and previously pressed keys
 	;
@@ -174,6 +172,8 @@ m65_scnkey_output_key:
 
 
 m65_scnkey_jam:
+
+	pla
 
 	; XXX
 

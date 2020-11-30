@@ -47,13 +47,13 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal/board_m65 \
                  src/kernal/board_u64 \
                  src/kernal/board_x16 \
-                 src/kernal/extapi_m65 \
                  src/kernal/iec \
                  src/kernal/iec_fast \
                  src/kernal/init \
                  src/kernal/interrupts \
                  src/kernal/iostack \
                  src/kernal/jumptable \
+                 src/kernal/jumptable_m65 \
                  src/kernal/keyboard \
                  src/kernal/keyboard_m65 \
                  src/kernal/memory \

@@ -4,8 +4,7 @@
 ;
 ; Not this is not an official Kernal API extension (yet)! It is subject to change!
 ;
-; XXX consider turning this into vector table, the only jumptable extension
-; would copy the vector table to given memory location
+; XXX assign addresses
 
 
 M65_JMODEGET:

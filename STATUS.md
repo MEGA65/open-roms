@@ -400,12 +400,13 @@ Not all of them - only these we want to have implemented.
 
 ### API extensions - MEGA65 build
 
-Not all of them - only these we want to have implemented. Note: this is likely to change in the future!
+Note: this is likely to change in the future, possibly in an incompatible way!
 
 <br />
 
 | Address   | Name     | Status   |  Remarks                                                               |
 | :-------: | :------- | :------: | :--------------------------------------------------------------------: |
+| ?         | PRHEX    | DONE     | print hex value from .A                                                |
 | `$FF7D`   | PRIMM    | DONE     | print immediate, address compatible with C128 and C65 ROMs             |
 | `$FFF8`   |          | DONE     | reset vector for usage within hypervisor, starts in legacy mode        |
 

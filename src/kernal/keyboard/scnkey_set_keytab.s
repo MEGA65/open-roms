@@ -21,16 +21,14 @@ scnkey_set_keytab:
 
 
 	; Set initial KEYTAB value
-
 	lda #<kb_matrix
 	sta KEYTAB+0
 	lda #>kb_matrix
 	sta KEYTAB+1
 
 	; Calculate table index
-
 	lda SHFLAG
-	and #$07 ; we are only interested in SHIFT / CTRL / VENDOR keys
+	and #$07                     ; we are interested in SHIFT, VENDOR and CTRL keys only
 	tax
 
 	; Retrieve table offset

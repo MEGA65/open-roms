@@ -52,7 +52,7 @@
 ;; #CONFIG# JOY1_CURSOR                NO
 ;; #CONFIG# JOY2_CURSOR                NO
 
-;; #CONFIG# M65_KB_DEV                 NO        ; for development, keep disabled for release builds
+;; #CONFIG# M65_KB_DEV                 NO         ; for development, keep disabled for release builds
 
 ;; #CONFIG# PROGRAMMABLE_KEYS          YES
 
@@ -63,15 +63,15 @@
 ;; #CONFIG# KEYCMD_F3                  "@9$"
 ;; #CONFIG# KEYCMD_F4                  "RUN:"
 ;; #CONFIG# KEYCMD_F5                  "@10$"
-;; #CONFIG# KEYCMD_F6                  NO
+;; #CONFIG# KEYCMD_F6                  "\5FL"
 ;; #CONFIG# KEYCMD_F7                  "@11$"
-;; #CONFIG# KEYCMD_F8                  NO
+;; #CONFIG# KEYCMD_F8                  "\5FHF"
 
 ;; #CONFIG# KEYCMD_HELP                "LIST"
 
-;; #CONFIG# KEYCMD_F9                  "\5FL"
+;; #CONFIG# KEYCMD_F9                  "REM F9"
 ;; #CONFIG# KEYCMD_F10                 "REM F10"
-;; #CONFIG# KEYCMD_F11                 "\5FH"
+;; #CONFIG# KEYCMD_F11                 "REM F11"
 ;; #CONFIG# KEYCMD_F12                 "REM F12"
 ;; #CONFIG# KEYCMD_F13                 "REM F13"
 ;; #CONFIG# KEYCMD_F14                 "REM F14"

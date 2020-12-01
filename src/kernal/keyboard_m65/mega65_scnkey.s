@@ -132,15 +132,20 @@ m65_scnkey_next_1:
 	;
 
 	; XXX add proper implementation
-	ldx M65_KB_PRESSED+0
+	ldy M65_KB_PRESSED+0
+
+	; FALLTROUGH
+
+m65_scnkey_got_key: ; .Y should now contain the key offset in matrix pointed by KEYTAB
 
 	;
 	; Convert the key coordinates to key code
 	;
 
-	; XXX add proper implementation
-	ldy __kb_matrix_normal, x
+	ldy __kb_matrix_normal, x ; XXX select matrix
 	beq m65_scnkey_no_key
+
+	; FALLTROUGH
 
 m65_scnkey_output_key:
 
@@ -153,6 +158,11 @@ m65_scnkey_output_key:
 	lda NDX
 	cmp XMAX
 	+bcs scnkey_buffer_full
+
+	; Reinitialize secondary counter
+
+	lda #$03
+	sta KOUNT
 
 	; Put the key into the keyboard buffer
 

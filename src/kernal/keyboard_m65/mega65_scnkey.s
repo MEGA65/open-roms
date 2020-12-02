@@ -184,6 +184,11 @@ m65_scnkey_output_key:
 	lda #$03
 	sta KOUNT
 
+	; Check if KEYTAB is valid
+
+	lda KEYTAB+1
+	beq m65_scnkey_jam
+
 	; Retrieve the PETSCII code
 
 	lda (KEYTAB), y

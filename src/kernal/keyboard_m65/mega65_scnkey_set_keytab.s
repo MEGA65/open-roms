@@ -22,6 +22,7 @@ m65_scnkey_set_keytab:
 	ora #%00001000           ; apply CAPS lock bit at convenient position
 @1:
 	asl                      ; multiply by 2 - we have a list of addresses
+	tax
 
 	; Set KEYTAB
 

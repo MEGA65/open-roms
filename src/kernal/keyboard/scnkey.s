@@ -34,7 +34,7 @@
 
 SCNKEY:
 
-!ifdef CONFIG_MB_M65 { !ifdef CONFIG_M65_KB_DEV {
+!ifdef CONFIG_MB_M65 {
 
 	jsr M65_MODEGET
 	bcs scnkey_legacy_mode
@@ -59,7 +59,7 @@ SCNKEY:
 
 scnkey_legacy_mode:
 
-} }
+}
 
 	; Prepare for SHFLAG update
 

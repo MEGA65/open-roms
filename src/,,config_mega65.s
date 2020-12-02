@@ -52,8 +52,6 @@
 ;; #CONFIG# JOY1_CURSOR                NO
 ;; #CONFIG# JOY2_CURSOR                NO
 
-;; #CONFIG# M65_KB_DEV                 NO         ; for development, keep disabled for release builds
-
 ;; #CONFIG# PROGRAMMABLE_KEYS          YES
 
 ;; #CONFIG# KEYCMD_RUN                 "RUN"

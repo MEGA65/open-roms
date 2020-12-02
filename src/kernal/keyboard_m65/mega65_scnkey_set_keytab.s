@@ -13,21 +13,21 @@ m65_scnkey_set_keytab:
 	; Calculate table index
 
 	lda SHFLAG
-	asl                          ; multiply by 2 - keyboard matrix lookup table consists of words
-	and #$2E                     ; we are interested in SHIFT, VENDOR, CTRL and CAPS LOCK keys only
-	tax
-	and #$20                     ; isolate CAPS LOCK bit
+	and #KEY_FLAG_CAPSL      ; isolate CAPS LOCK bit
+	php
+	lda SHFLAG
+	and #%00000111           ; take SHIFT, VENDOR, CTRL, cancel the rest
+	plp
 	beq @1
-	txa                          ; we have to move the CAPS LOCK bit (only) by one position down
-	and #$0E
-	ora #$10
-	tax
+	ora #%00001000           ; apply CAPS lock bit at convenient position
 @1:
+	asl                      ; multiply by 2 - we have a list of addresses
+
 	; Set KEYTAB
 
-	ldx kb_matrix_lookup+0, x
+	lda kb_matrix_lookup+0, x
 	sta KEYTAB+0	
-	ldx kb_matrix_lookup+1, x
+	lda kb_matrix_lookup+1, x
 	sta KEYTAB+1
 
 	; Fall back to original routine

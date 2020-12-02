@@ -389,6 +389,8 @@
 !ifdef CONFIG_JOY1_CURSOR             { !set CONFIG_JOY1_OR_JOY2_CURSOR = 1 }
 !ifdef CONFIG_JOY2_CURSOR             { !set CONFIG_JOY1_OR_JOY2_CURSOR = 1 }
 
+!ifdef CONFIG_RS232_UP9600 { !set CONFIG_KEY_DELAY = $18 } else { !set CONFIG_KEY_DELAY = $16 }
+
 
 ; Handle debug configuration
 

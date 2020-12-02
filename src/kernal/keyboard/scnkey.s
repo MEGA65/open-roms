@@ -298,11 +298,7 @@ scnkey_got_key: ; .Y should now contain the key offset in matrix pointed by KEYT
 	;
 	; Besides - since I am the one who writes the code, I will make the values exactly how I like them :D
 
-!ifndef CONFIG_RS232_UP9600 {
-	lda #$16
-} else {
-	lda #$18
-}
+	lda #CONFIG_KEY_DELAY
 	sta DELAY
 
 	; FALLTROUGH

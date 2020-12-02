@@ -90,7 +90,7 @@ m65_scnkey_keytab_set_done:
 	jsr m65_scnkey_init_pressed
 
 	lda M65_KB_COLSUM
-	+beq m65_scnkey_no_keys             ; branch if no key was pressed   XXX try joystick
+	beq m65_scnkey_no_keys              ; branch if no key was pressed   XXX try joystick
 
 	ldx #$08
 
@@ -162,11 +162,7 @@ m65_scnkey_got_key: ; .Y should now contain the key offset in matrix pointed by 
 
 	; Reset key repeat counters  XXX turn values into constants
 
-!ifndef CONFIG_RS232_UP9600 {
-	lda #$16
-} else {
-	lda #$18
-}
+	lda #CONFIG_KEY_DELAY
 	sta DELAY
 
 	; FALLTROUGH
@@ -209,6 +205,21 @@ m65_scnkey_done:
 
 	rts
 
+m65_scnkey_jam:
+
+	pla
+	jsr m65_scnkey_init_pressed
+
+	; FALLTROUGH
+
+m65_scnkey_no_keys:
+
+	; Mark no key press
+
+	lda #$48
+	sta LSTX
+	rts
+
 m65_scnkey_try_repeat:
 
 !ifndef CONFIG_KEY_REPEAT_ALWAYS {
@@ -246,22 +257,5 @@ m65_scnkey_handle_repeat:
 	lda KOUNT
 	beq m65_scnkey_output_key          ; if second counter is also 0, we can repeat the key
 	dec KOUNT
-
-	rts
-
-
-
-
-m65_scnkey_jam:
-
-	pla
-
-	; XXX
-
-	jmp m65_scnkey_init_pressed
-
-m65_scnkey_no_keys:
-
-	; XXX
 
 	rts

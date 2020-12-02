@@ -25,6 +25,13 @@ m65_mode64:
 	jsr viciv_shutdown
 	jsr vicii_init
 
+	; Restore KEYLOG
+
+	lda #<scnkey_set_keytab
+	sta KEYLOG+0
+	lda #>scnkey_set_keytab
+	sta KEYLOG+1
+
 	; Switch CPU speed to normal
 
 	lda #$40

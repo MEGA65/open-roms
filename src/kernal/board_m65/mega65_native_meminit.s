@@ -8,6 +8,16 @@ m65_native_meminit:
 
 	jsr m65_scnkey_init_pressed
 
+	lda VIC_CTRLA
+	pha
+	ora #%00100000
+	sta VIC_CTRLA
+
+	jsr (VKC__m65_scnkey_init_keylog)
+
+	pla
+	sta VIC_CTRLA
+
 	; Prepare generic DMAgic list
 
 	jsr m65_dmagic_init

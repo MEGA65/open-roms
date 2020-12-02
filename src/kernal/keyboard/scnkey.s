@@ -406,6 +406,8 @@ scnkey_try_repeat:
 	bpl @9
 	bmi scnkey_done
 
+	; FALLTROUGH
+
 scnkey_handle_repeat:
 
 } ; no CONFIG_KEY_REPEAT_ALWAYS

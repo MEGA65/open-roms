@@ -160,7 +160,7 @@ m65_scnkey_got_key: ; .Y should now contain the key offset in matrix pointed by 
 	beq m65_scnkey_try_repeat          ; branch if the same key as previously
 	sty LSTX
 
-	; Reset key repeat counters  XXX turn values into constants
+	; Reset key repeat counters
 
 	lda #CONFIG_KEY_DELAY
 	sta DELAY

@@ -10,13 +10,8 @@
 
 m65_scnkey_set_keytab:
 
-	; Set initial KEYTAB value
-	lda #<kb_matrix
-	sta KEYTAB+0
-	lda #>kb_matrix
-	sta KEYTAB+1
-
 	; Calculate table index
+
 	lda SHFLAG
 	asl                          ; multiply by 2 - keyboard matrix lookup table consists of words
 	and #$2E                     ; we are interested in SHIFT, VENDOR, CTRL and CAPS LOCK keys only
@@ -28,8 +23,13 @@ m65_scnkey_set_keytab:
 	ora #$10
 	tax
 @1:
+	; Set KEYTAB
 
-	; XXX finish the implementation
+	ldx kb_matrix_lookup+0, x
+	sta KEYTAB+0	
+	ldx kb_matrix_lookup+1, x
+	sta KEYTAB+1
 
+	; Fall back to original routine
 
 	jmp scnkey_toggle_if_needed

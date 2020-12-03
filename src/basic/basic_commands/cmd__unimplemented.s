@@ -31,8 +31,6 @@ cmd_wait:
 	+nop
 cmd_def:
 	+nop
-cmd_poke:
-	+nop
 cmd_printhash:
 	+nop
 cmd_cont:

@@ -21,8 +21,8 @@ m65_scnkey:
 
 m65_scnkey_fetch_loop:
 
-	stx $D614
-	lda $D613
+	stx KBSCN_SELECT
+	lda KBSCN_PEEK
 	eor #$FF                           ; let bit 1 mean 'pressed', not the otherwise
 	sta M65_KB_COLSCAN, x
 	ora M65_KB_COLSUM
@@ -37,7 +37,7 @@ m65_scnkey_fetch_loop:
 	lda SHFLAG
 	sta LSTSHF                         ; needed for SHIFT+VENDOR support
 
-	ldx #$00
+	inx                                ; .X goes from $FF to $00
 	stx SHFLAG
 
 	lda M65_KB_BUCKY
@@ -80,17 +80,17 @@ m65_scnkey_keytab_set_done:
 	; Scan the keyboard matrix stored in memory to determine which keys were pressed
 	;
 
-	ldx #$02
-@1:
-	lda M65_KB_PRESSED, x
-	sta M65_KB_PRESSED_OLD, x
-	dex
-	bpl @1
+	lda M65_KB_PRESSED+0
+	sta M65_KB_PRESSED_OLD+0
+	lda M65_KB_PRESSED+1
+	sta M65_KB_PRESSED_OLD+1
+	lda M65_KB_PRESSED+2
+	sta M65_KB_PRESSED_OLD+2
 
 	jsr m65_scnkey_init_pressed
 
 	lda M65_KB_COLSUM
-	beq m65_scnkey_no_keys              ; branch if no key was pressed   XXX try joystick
+	beq m65_scnkey_try_joystick        ; branch if no key was pressed
 
 	ldx #$08
 
@@ -117,7 +117,7 @@ m65_scnkey_loop_2:
 	; Found a pressed key - add it to the list
 
 	lda M65_KB_PRESSED+2
-	bpl m65_scnkey_jam                 ; branch if too many keys pressed
+	+bpl m65_scnkey_pla_jam            ; branch if too many keys pressed
 	lda M65_KB_PRESSED+1
 	sta M65_KB_PRESSED+2
 	lda M65_KB_PRESSED+0
@@ -142,23 +142,78 @@ m65_scnkey_next_1:
 	; Analyze currently and previously pressed keys
 	;
 
-	; XXX add proper implementation
-	ldy M65_KB_PRESSED+0
+	; First select the new keys
 
+	lda M65_KB_PRESSED+0
+	jsr m65_scnkey_compare_with_old
+	jsr m65_scnkey_add_if_new_valid
 
+	lda M65_KB_PRESSED+1
+	jsr m65_scnkey_compare_with_old
+	jsr m65_scnkey_add_if_new_valid
 
+	lda M65_KB_PRESSED+2
+	jsr m65_scnkey_compare_with_old
+	jsr m65_scnkey_add_if_new_valid
 
+	; If we have more than one key - consider it jam
 
+	lda M65_KB_PRESSED_NEW+1
+	bmi m65_scnkey_jam
 
+	; If we have exactly one new key - this is our key
 
+	ldy M65_KB_PRESSED_NEW+0
+	bpl m65_scnkey_got_key
+
+	; No new key - check if the last one is still pressed
+
+	ldy LSTX
+	cmp M65_KB_PRESSED+0
+	beq m65_scnkey_got_key_skip_cmp
+	cmp M65_KB_PRESSED+1
+	beq m65_scnkey_got_key_skip_cmp
+	cmp M65_KB_PRESSED+2
+	beq m65_scnkey_got_key_skip_cmp
+
+	; Nope, previous key is not pressed
 
 	; FALLTROUGH
+
+m65_scnkey_try_joystick:
+
+	lda M65_JOYCRSR
+	cmp #$02
+	beq m65_scnkey_try_joy2
+	cmp #$01
+	bne m65_scnkey_no_keys
+
+	; FALLTROUGH
+
+m65_scnkey_try_joy1:
+
+	+nop
+	; XXX provide implementation
+
+m65_scnkey_try_joy2:
+
+	+nop
+	; XXX provide implementation
+
+m65_scnkey_try_joy_common:
+
+	; XXX provide implementation
+	bra m65_scnkey_no_keys
 
 m65_scnkey_got_key: ; .Y should now contain the key offset in matrix pointed by KEYTAB
 
 	cpy LSTX
 	beq m65_scnkey_try_repeat          ; branch if the same key as previously
 	sty LSTX
+
+	; FALLTROUGH
+
+m65_scnkey_got_key_skip_cmp:
 
 	; Reset key repeat counters
 
@@ -187,7 +242,7 @@ m65_scnkey_output_key:
 	; Check if KEYTAB is valid
 
 	lda KEYTAB+1
-	beq m65_scnkey_jam
+	beq m65_scnkey_no_keys
 
 	; Retrieve the PETSCII code
 
@@ -210,9 +265,14 @@ m65_scnkey_done:
 
 	rts
 
-m65_scnkey_jam:
+m65_scnkey_pla_jam:
 
 	pla
+
+	; FALLTROUGH
+
+m65_scnkey_jam:
+
 	jsr m65_scnkey_init_pressed
 
 	; FALLTROUGH
@@ -263,4 +323,46 @@ m65_scnkey_handle_repeat:
 	beq m65_scnkey_output_key          ; if second counter is also 0, we can repeat the key
 	dec KOUNT
 
+	rts
+
+
+
+m65_scnkey_compare_with_old:
+
+	; Compare key index with the ones from previous scan
+
+	cmp M65_KB_PRESSED+0
+	beq @1
+	cmp M65_KB_PRESSED+1
+	beq @1
+	cmp M65_KB_PRESSED+2
+@1:
+	rts
+
+m65_scnkey_add_if_new_valid:
+
+	beq @1
+	cmp #$FF                           ; invalid key code
+	beq @1
+	
+	; XXX filter-out SHIFT, VENDOR, etc.
+	;cmp $xx                            ; left SHIFT
+	;beq @1
+	;cmp $xx                            ; right SHIFT
+	;beq @1
+	;cmp $xx                            ; VENDOR
+	;beq @1
+	;cmp $xx                            ; CAPS LOCK
+	;beq @1
+	;cmp $xx                            ; ALT
+	;beq @1
+
+	; New, valid key index
+
+	ldx M65_KB_PRESSED_NEW+1
+	stx M65_KB_PRESSED_NEW+2
+	ldx M65_KB_PRESSED_NEW+0
+	stx M65_KB_PRESSED_NEW+1
+	sta M65_KB_PRESSED_NEW+0
+@1
 	rts

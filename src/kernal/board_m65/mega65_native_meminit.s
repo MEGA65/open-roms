@@ -4,6 +4,18 @@
 
 m65_native_meminit:
 
+	; Clear pages 4-7
+
+	lda #$00
+	tax
+@1:
+	sta $0400, x
+	sta $0500, x
+	sta $0600, x
+	sta $0700, x
+	inx
+	bne @1
+
 	; Initialize variables for keyboard scanning
 
 	jsr m65_scnkey_init_pressed

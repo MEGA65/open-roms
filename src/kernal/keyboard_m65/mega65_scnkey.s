@@ -159,7 +159,7 @@ m65_scnkey_next_1:
 	; If we have more than one key - consider it jam
 
 	lda M65_KB_PRESSED_NEW+1
-	bmi m65_scnkey_jam
+	bpl m65_scnkey_jam
 
 	; If we have exactly one new key - this is our key
 

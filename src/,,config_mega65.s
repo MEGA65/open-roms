@@ -71,8 +71,8 @@
 ;; #CONFIG# KEYCMD_F10                 "REM F10"
 ;; #CONFIG# KEYCMD_F11                 "REM F11"
 ;; #CONFIG# KEYCMD_F12                 "REM F12"
-;; #CONFIG# KEYCMD_F13                 "REM F13"
-;; #CONFIG# KEYCMD_F14                 "REM F14"
+;; #CONFIG# KEYCMD_F13                 "JOYCRSR 2"
+;; #CONFIG# KEYCMD_F14                 "JOYCRSR 0"
 
 
 ; --- Screen editor

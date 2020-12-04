@@ -345,17 +345,20 @@ m65_scnkey_add_if_new_valid:
 	cmp #$FF                           ; invalid key code
 	beq @1
 	
-	; XXX filter-out SHIFT, VENDOR, etc.
-	;cmp $xx                            ; left SHIFT
-	;beq @1
-	;cmp $xx                            ; right SHIFT
-	;beq @1
-	;cmp $xx                            ; VENDOR
-	;beq @1
-	;cmp $xx                            ; CAPS LOCK
-	;beq @1
-	;cmp $xx                            ; ALT
-	;beq @1
+	; Filter-out SHIFT, VENDOR, etc.
+
+	cmp #$0F                           ; left SHIFT
+	beq @1
+	cmp #$34                           ; right SHIFT
+	beq @1
+	cmp #$3A                           ; CONTROL
+	beq @1
+	cmp #$3D                           ; VENDOR
+	beq @1
+	cmp #$40                           ; NO SCROLL
+	beq @1
+	cmp #$42                           ; ALT
+	beq @1
 
 	; New, valid key index
 

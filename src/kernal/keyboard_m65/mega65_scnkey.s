@@ -4,12 +4,20 @@
 
 m65_scnkey:
 
+	; Initialize work variables for scanning the keyboard
+
+	lda M65_KB_PRESSED+0
+	sta M65_KB_PRESSED_OLD+0
+	lda M65_KB_PRESSED+1
+	sta M65_KB_PRESSED_OLD+1
+	lda M65_KB_PRESSED+2
+	sta M65_KB_PRESSED_OLD+2
+
+	jsr m65_scnkey_init_pressed
+
 	;
 	; Scan the whole keyboard, store results in memory
 	;
-
-	lda #$00
-	sta M65_KB_COLSUM
 
 	ldx #$08
 
@@ -25,8 +33,6 @@ m65_scnkey_fetch_loop:
 	lda KBSCN_PEEK
 	eor #$FF                           ; let bit 1 mean 'pressed', not the otherwise
 	sta M65_KB_COLSCAN, x
-	ora M65_KB_COLSUM
-	sta M65_KB_COLSUM
 	dex
 	bpl m65_scnkey_fetch_loop
 
@@ -80,16 +86,15 @@ m65_scnkey_keytab_set_done:
 	; Scan the keyboard matrix stored in memory to determine which keys were pressed
 	;
 
-	lda M65_KB_PRESSED+0
-	sta M65_KB_PRESSED_OLD+0
-	lda M65_KB_PRESSED+1
-	sta M65_KB_PRESSED_OLD+1
-	lda M65_KB_PRESSED+2
-	sta M65_KB_PRESSED_OLD+2
-
-	jsr m65_scnkey_init_pressed
-
-	lda M65_KB_COLSUM
+	lda M65_KB_COLSCAN+0               ; no loop here - for performance purposes
+	ora M65_KB_COLSCAN+1
+	ora M65_KB_COLSCAN+2
+	ora M65_KB_COLSCAN+3
+	ora M65_KB_COLSCAN+4
+	ora M65_KB_COLSCAN+5
+	ora M65_KB_COLSCAN+6
+	ora M65_KB_COLSCAN+7
+	ora M65_KB_COLSCAN+8
 	beq m65_scnkey_try_joystick        ; branch if no key was pressed
 
 	ldx #$08

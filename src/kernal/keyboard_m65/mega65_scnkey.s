@@ -88,6 +88,7 @@ m65_scnkey:
 	stx SHFLAG                         ; .X is $00 here
 
 	lda M65_KB_BUCKY
+	beq m65_scnkey_bucky_done
 	dex                                ; index into kb_matrix_bucky_shflag
 
 	; FALLTROUGH
@@ -96,21 +97,21 @@ m65_scnkey_bucky_loop:
 
 	inx
 	asr                                ; ASR preserves most significant bit, but in our case it is 0
-	bcc m65_scnkey_bucky_next
+	bcc @1
 
 	; Bucky key pressed
 
-	pha
+	tay
 	lda kb_matrix_bucky_shflag, x
 	ora SHFLAG
 	sta SHFLAG
-	pla
-
-    ; FALLTROUGH
-
-m65_scnkey_bucky_next:
-
+	tya
+@1:
 	bne m65_scnkey_bucky_loop
+
+	; FALLTROUGH
+
+m65_scnkey_bucky_done:
 
 	; Set KEYTAB vector
 

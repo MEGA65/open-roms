@@ -34,6 +34,22 @@ wait_x_bars: ; additional entry point for delay in screen and tape support
 	dex
 	bne @1
 
+	; Alternative implementation, using CIA#1 timer B
+
+;	lda #%00001000      ; stop timer B, load latch once
+;	sta CIA1_CRB
+
+;	lda #$40
+;	sta CIA1_TIMBLO     ; timer B - low byte
+;	stx CIA1_TIMBHI     ; timer B - high byte
+
+;	lda #%00001001      ; start timer B, load latch once
+;	sta CIA1_CRB
+;@1:
+;	lda CIA1_ICR
+;	and #%00000010
+;	beq @1
+
 	; FALLTROUGH
 
 iec_wait_rts: ; dummy RTS, for very short waits

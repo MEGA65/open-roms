@@ -29,8 +29,8 @@
 ;; #CONFIG# IEC                        YES
 ;; #CONFIG# IEC_DOLPHINDOS             NO
 ;; #CONFIG# IEC_DOLPHINDOS_FAST        NO
-;; #CONFIG# IEC_JIFFYDOS               YES
-;; #CONFIG# IEC_JIFFYDOS_BLANK         YES
+;; #CONFIG# IEC_JIFFYDOS               NO        ; fastloaders do not work on MEGA65 yet!
+;; #CONFIG# IEC_JIFFYDOS_BLANK         NO
 ;; #CONFIG# IEC_BURST_M65              NO        ; please keep disabled for now
 
 

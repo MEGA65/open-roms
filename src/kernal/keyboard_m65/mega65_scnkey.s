@@ -209,11 +209,12 @@ m65_scnkey_got_key: ; .Y should now contain the key offset in matrix pointed by 
 
 	cpy LSTX
 	beq m65_scnkey_try_repeat          ; branch if the same key as previously
-	sty LSTX
 
 	; FALLTROUGH
 
 m65_scnkey_got_key_skip_cmp:
+
+	sty LSTX
 
 	; Reset key repeat counters
 

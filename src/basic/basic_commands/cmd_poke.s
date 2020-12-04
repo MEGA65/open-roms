@@ -5,7 +5,6 @@
 
 cmd_poke:
 
-
 	; Fetch address, store it on the stack
 
 	jsr fetch_uint16

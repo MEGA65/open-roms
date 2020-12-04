@@ -27,8 +27,6 @@ cmd_return:
 	+nop
 cmd_on:
 	+nop
-cmd_wait:
-	+nop
 cmd_def:
 	+nop
 cmd_printhash:

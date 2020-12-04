@@ -10,7 +10,7 @@ cmd_joycrsr:
 
 	; Fetch joystick ID
 
-	jsr fetch_coma_uint8
+	jsr fetch_uint8
 	+bcs do_SYNTAX_error
 
 	; Check if joystick ID is valid

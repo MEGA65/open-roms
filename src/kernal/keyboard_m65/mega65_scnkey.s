@@ -25,26 +25,67 @@ m65_scnkey:
 	and KBSCN_BUCKY
 	sta M65_KB_BUCKY
 
-	; FALLTROUGH
-
-m65_scnkey_fetch_loop:
-
-	stx KBSCN_SELECT
+	stx KBSCN_SELECT                   ; no loop here, for performance and accuracy purposes
 	lda KBSCN_PEEK
 	eor #$FF                           ; let bit 1 mean 'pressed', not the otherwise
-	sta M65_KB_COLSCAN, x
+	sta M65_KB_COLSCAN+8
+
 	dex
-	bpl m65_scnkey_fetch_loop
+	stx KBSCN_SELECT
+	lda KBSCN_PEEK
+	eor #$FF
+	sta M65_KB_COLSCAN+7
+
+	dex
+	stx KBSCN_SELECT
+	lda KBSCN_PEEK
+	eor #$FF
+	sta M65_KB_COLSCAN+6
+
+	dex
+	stx KBSCN_SELECT
+	lda KBSCN_PEEK
+	eor #$FF
+	sta M65_KB_COLSCAN+5
+
+	dex
+	stx KBSCN_SELECT
+	lda KBSCN_PEEK
+	eor #$FF
+	sta M65_KB_COLSCAN+4
+
+	dex
+	stx KBSCN_SELECT
+	lda KBSCN_PEEK
+	eor #$FF
+	sta M65_KB_COLSCAN+3
+
+	dex
+	stx KBSCN_SELECT
+	lda KBSCN_PEEK
+	eor #$FF
+	sta M65_KB_COLSCAN+2
+
+	dex
+	stx KBSCN_SELECT
+	lda KBSCN_PEEK
+	eor #$FF
+	sta M65_KB_COLSCAN+1
+
+	dex
+	stx KBSCN_SELECT
+	lda KBSCN_PEEK
+	eor #$FF
+	sta M65_KB_COLSCAN+0
 
 	;
-	; Retrieve SHIFT / VENDOR / CTRL / ALT / NO SCROLL / CAPS LOCK status
+	; Calculate SHIFT / VENDOR / CTRL / ALT / NO SCROLL / CAPS LOCK status
 	;
 
 	lda SHFLAG
 	sta LSTSHF                         ; needed for SHIFT+VENDOR support
 
-	inx                                ; .X goes from $FF to $00
-	stx SHFLAG
+	stx SHFLAG                         ; .X is $00 here
 
 	lda M65_KB_BUCKY
 	dex                                ; index into kb_matrix_bucky_shflag

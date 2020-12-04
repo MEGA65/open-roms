@@ -169,11 +169,11 @@ m65_scnkey_next_1:
 	; No new key - check if the last one is still pressed
 
 	ldy LSTX
-	cmp M65_KB_PRESSED+0
+	cpy M65_KB_PRESSED+0
 	beq m65_scnkey_got_key_skip_cmp
-	cmp M65_KB_PRESSED+1
+	cpy M65_KB_PRESSED+1
 	beq m65_scnkey_got_key_skip_cmp
-	cmp M65_KB_PRESSED+2
+	cpy M65_KB_PRESSED+2
 	beq m65_scnkey_got_key_skip_cmp
 
 	; Nope, previous key is not pressed
@@ -331,11 +331,11 @@ m65_scnkey_compare_with_old:
 
 	; Compare key index with the ones from previous scan
 
-	cmp M65_KB_PRESSED+0
+	cmp M65_KB_PRESSED_OLD+0
 	beq @1
-	cmp M65_KB_PRESSED+1
+	cmp M65_KB_PRESSED_OLD+1
 	beq @1
-	cmp M65_KB_PRESSED+2
+	cmp M65_KB_PRESSED_OLD+2
 @1:
 	rts
 

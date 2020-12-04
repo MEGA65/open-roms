@@ -1,0 +1,2 @@
+This routine is pointed by a vector - it has to be available at the same location as in the original ROM,
+otherwise programs frozem with (for example) Action Replay might crash after loading.

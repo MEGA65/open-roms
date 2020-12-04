@@ -386,6 +386,7 @@ Not all of them - only these we want to have implemented.
 | `$EA31`   | default IRQ                  | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below             | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI             | DONE     |                                                    |
+| `$EB48`   | set keyboard mapping table   | DONE     |                                                    |
 | `$F142`   | get key from buffer          | DONE     |                                                    |
 | `$F3F6`   | (unknown)                    | NOT DONE |                                                    |
 | `$F646`   | IEC close                    | NOT DONE |                                                    |

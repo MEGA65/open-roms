@@ -11,7 +11,6 @@
 ;; #ALIAS# scnkey_buffer_full              = KERNAL_0.scnkey_buffer_full
 ;; #ALIAS# scnkey_toggle_if_needed         = KERNAL_0.scnkey_toggle_if_needed
 
-;; #ALIAS# kb_matrix_bucky_shflag          = KERNAL_0.kb_matrix_bucky_shflag
 ;; #ALIAS# kb_matrix_alwaysrepeat          = KERNAL_0.kb_matrix_alwaysrepeat
 ;; #ALIAS# __kb_matrix_alwaysrepeat_end    = KERNAL_0.__kb_matrix_alwaysrepeat_end
 

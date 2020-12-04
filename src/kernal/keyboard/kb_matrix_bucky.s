@@ -61,11 +61,7 @@ kb_matrix_bucky_shflag: ; mask to be ORed to SHFLAG to mark key status
 	!byte KEY_FLAG_SHIFT
 	!byte KEY_FLAG_VENDOR
 	!byte KEY_FLAG_CTRL
-!ifdef CONFIG_MB_M65 {
-	!byte KEY_FLAG_ALT
-	!byte KEY_FLAG_NO_SCRL
-	!byte KEY_FLAG_CAPSL
-} else ifdef CONFIG_KEYBOARD_C128 {
+!ifdef CONFIG_KEYBOARD_C128 {
 	!byte KEY_FLAG_ALT
 	!byte KEY_FLAG_NO_SCRL
 }

@@ -137,53 +137,72 @@ m65_scnkey_keytab_set_done:
 	ora M65_KB_COLSCAN+6
 	ora M65_KB_COLSCAN+7
 	ora M65_KB_COLSCAN+8
-	beq m65_scnkey_try_joystick        ; branch if no key was pressed
+	+beq m65_scnkey_try_joystick       ; branch if no key was pressed
 
 	ldx #$08
 
 	; FALLTROUGH
 
-m65_scnkey_loop_1:
+m65_scnkey_loop:
 
 	lda M65_KB_COLSCAN, x
-	pha
-	ldy #$FF
+@8:	
+	asl                                ; no loop here, for performance resons
+	bcc @7
 
-	; FALLTROUGH
-
-m65_scnkey_loop_2:
-
-	iny
-	pla
-	beq m65_scnkey_next_1
-	clc
-	ror                                ; can't use ASR here, as it preserves most significant bit
-	pha
-	bcc m65_scnkey_loop_2
-
-	; Found a pressed key - add it to the list
-
-	lda M65_KB_PRESSED+2
-	+bpl m65_scnkey_pla_jam            ; branch if too many keys pressed
-	lda M65_KB_PRESSED+1
-	sta M65_KB_PRESSED+2
-	lda M65_KB_PRESSED+0
-	sta M65_KB_PRESSED+1
-
-	sty M65_KB_PRESSED+0
-	txa
+	ldy #$07
+	jsr m65_scnkey_add_pressed
+@7:
 	asl
+	bcc @6
+
+	ldy #$06
+	jsr m65_scnkey_add_pressed
+	beq @0
+@6:
 	asl
+	bcc @5
+
+	ldy #$05
+	jsr m65_scnkey_add_pressed
+	beq @0
+@5:
 	asl
-	adc M65_KB_PRESSED+0               ; Carry already cleared by ASL
-	sta M65_KB_PRESSED+0
+	bcc @4
 
-	bra m65_scnkey_loop_2
+	ldy #$04
+	jsr m65_scnkey_add_pressed
+	beq @0
+@4:
+	asl
+	bcc @3
 
-m65_scnkey_next_1:
+	ldy #$03
+	jsr m65_scnkey_add_pressed
+	beq @0
+@3:
+	asl
+	bcc @2
 
+	ldy #$02
+	jsr m65_scnkey_add_pressed
+	beq @0
+@2:
+	asl
+	bcc @1
+
+	ldy #$01
+	jsr m65_scnkey_add_pressed
+	beq @0
+@1:
+	asl
+	bcc @0
+
+	ldy #$00
+	jsr m65_scnkey_add_pressed
+@0:
 	dex
-	bpl m65_scnkey_loop_1
+	bpl m65_scnkey_loop
 
 	;
 	; Analyze currently and previously pressed keys
@@ -344,6 +363,8 @@ m65_scnkey_done:
 m65_scnkey_pla_jam:
 
 	pla
+	pla
+	pla
 
 	; FALLTROUGH
 
@@ -402,6 +423,36 @@ m65_scnkey_handle_repeat:
 	rts
 
 
+
+m65_scnkey_add_pressed:
+
+	; Add pressed key to the 'M65_KB_PRESSED' list, first preserve .A
+
+	pha
+
+	; Make space on the list
+
+	lda M65_KB_PRESSED+2
+	+bpl m65_scnkey_pla_jam            ; branch if too many keys pressed
+	lda M65_KB_PRESSED+1
+	sta M65_KB_PRESSED+2
+	lda M65_KB_PRESSED+0
+	sta M65_KB_PRESSED+1
+
+	; Store key scan code
+
+	sty M65_KB_PRESSED+0
+	txa
+	asl
+	asl
+	asl
+	adc M65_KB_PRESSED+0               ; Carry already cleared by ASL
+	sta M65_KB_PRESSED+0
+
+	; Restore .A and uit
+
+	pla
+	rts
 
 m65_scnkey_compare_with_old:
 

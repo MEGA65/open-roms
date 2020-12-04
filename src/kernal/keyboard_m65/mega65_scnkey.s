@@ -222,12 +222,12 @@ m65_scnkey_loop:
 	jsr m65_scnkey_compare_with_old
 	jsr m65_scnkey_add_if_new_valid
 
-	; If we have more than one key - consider it jam
+	; If we have more than one key - consider it a jam
 
 	lda M65_KB_PRESSED_NEW+1
 	bpl m65_scnkey_jam
 
-	; If we have exactly one new key - this is our key
+	; If we have exactly one new key - this is our key to output
 
 	ldy M65_KB_PRESSED_NEW+0
 	bpl m65_scnkey_got_key
@@ -236,11 +236,11 @@ m65_scnkey_loop:
 
 	ldy LSTX
 	cpy M65_KB_PRESSED+0
-	beq m65_scnkey_got_key_skip_cmp
+	beq m65_scnkey_try_repeat
 	cpy M65_KB_PRESSED+1
-	beq m65_scnkey_got_key_skip_cmp
+	beq m65_scnkey_try_repeat
 	cpy M65_KB_PRESSED+2
-	beq m65_scnkey_got_key_skip_cmp
+	beq m65_scnkey_try_repeat
 
 	; Nope, previous key is not pressed
 
@@ -303,11 +303,6 @@ m65_scnkey_got_key: ; .Y should now contain the key offset in matrix pointed by 
 
 	cpy LSTX
 	beq m65_scnkey_try_repeat          ; branch if the same key as previously
-
-	; FALLTROUGH
-
-m65_scnkey_got_key_skip_cmp:
-
 	sty LSTX
 
 	; Reset key repeat counters
@@ -378,7 +373,7 @@ m65_scnkey_no_keys:
 
 	; Mark no key press
 
-	lda #$48
+	lda #$80
 	sta LSTX
 	rts
 

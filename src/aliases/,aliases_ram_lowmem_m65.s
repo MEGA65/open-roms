@@ -60,10 +60,10 @@
 	!addr M65_KB_PRESSED_OLD = $563 ; $563-$565  keys pressed during previous scan
 	!addr M65_KB_PRESSED_NEW = $566 ; $566-$568  set of M65_KB_PRESSED minus M65_KB_PRESSED_OLD
 	!addr M65_JOYCRSR        = $569 ;            joystick to be used for cursor movement
-	                              ; $56A-$5EB  -- UNUSED --
-	!addr M65_DMAGIC_LIST  = $5F1 ; $5EF-$5FF  reserved for DMAgic list, 15 bytes (modulo bytes are not needed)
-	!addr M65_RS232_INBUF  = $600 ; $600-$6FF  -- reserved for RS-232 input buffer --
-	!addr M65_RS232_OUTBUF = $700 ; $700-$7FF  -- reserved for RS-232 output buffer --
+	                                ; $56A-$5EB  -- UNUSED --
+	!addr M65_DMAGIC_LIST    = $5F1 ; $5EF-$5FF  reserved for DMAgic list, 15 bytes (modulo bytes are not needed)
+	!addr M65_RS232_INBUF    = $600 ; $600-$6FF  -- reserved for RS-232 input buffer --
+	!addr M65_RS232_OUTBUF   = $700 ; $700-$7FF  -- reserved for RS-232 output buffer --
 
 	;
 	; Addresses for configuring the DMA job

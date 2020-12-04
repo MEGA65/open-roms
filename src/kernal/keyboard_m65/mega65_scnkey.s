@@ -192,18 +192,46 @@ m65_scnkey_try_joystick:
 
 m65_scnkey_try_joy1:
 
-	+nop
-	; XXX provide implementation
+	lda #$FF
+	sta CIA1_PRA                       ; disconnect all the rows to prevent keyboard interference
+
+	lda CIA1_PRB
+	bra m65_scnkey_try_joy_common
 
 m65_scnkey_try_joy2:
 
-	+nop
-	; XXX provide implementation
+	lda CIA1_PRA
+
+	; FALLTROUGH
 
 m65_scnkey_try_joy_common:
 
-	; XXX provide implementation
+	and #%00001111                     ; filter out anything but joystick movement
+	beq m65_scnkey_no_keys             ; branch if no joystick movement detected
+
+	; Decode joystick event using appropriate matrix
+
+	ldy #$03
+@1:
+	cmp kb_matrix_joy_status, y
+	beq @2
+	dey
+	bpl @1
+
+	; Not found
+
 	bra m65_scnkey_no_keys
+@2:
+	; Found joystick movement
+
+	lda kb_matrix_joy_keytab_lo, y
+	sta KEYTAB+0
+	lda kb_matrix_joy_keytab_hi, y
+	sta KEYTAB+1
+	lda kb_matrix_joy_keytab_idx, y
+	tay
+
+	; FALLTROUGH
 
 m65_scnkey_got_key: ; .Y should now contain the key offset in matrix pointed by KEYTAB
 

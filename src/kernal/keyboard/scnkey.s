@@ -259,7 +259,7 @@ scnkey_joystick_1:
 
 scnkey_joystick_filtered:
 
-	; Set appropriate keyboard matrix and key code for joystick event
+	; Decode joystick event using appropriate matrix
 
 	ldy #$03
 @5:

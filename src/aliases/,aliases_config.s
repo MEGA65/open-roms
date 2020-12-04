@@ -227,17 +227,9 @@
 
 ; Check that keyboard settings are correct
 
-!ifdef CONFIG_LEGACY_SCNKEY {
-	!ifdef CONFIG_RS232_UP2400            { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_RS232_UP2400"               }
-	!ifdef CONFIG_RS232_UP9600            { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_RS232_UP9600"               }
-	!ifdef CONFIG_TAPE_NORMAL             { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_TAPE_NORMAL"                }
-	!ifdef CONFIG_KEYBOARD_C128           { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_KEYBOARD_C128"              }
-	!ifdef CONFIG_KEYBOARD_C128_CAPS_LOCK { !error "CONFIG_LEGACY_SCNKEY is not compatible with CONFIG_KEYBOARD_C128_CAPS_LOCK"    }
-}
 !ifdef CONFIG_MB_M65 {
 	!ifdef CONFIG_KEYBOARD_C128           { !error "MEGA65 motherboard is not compatible with CONFIG_KEYBOARD_C128"                }
 	!ifdef CONFIG_KEYBOARD_C128_CAPS_LOCK { !error "MEGA65 motherboard is not compatible with CONFIG_KEYBOARD_C128_CAPS_LOCK"      }
-	!ifdef CONFIG_LEGACY_SCNKEY           { !error "MEGA65 motherboard is not compatible with CONFIG_LEGACY_SCNKEY"                }
 }
 !ifdef CONFIG_MB_U64 {
 	!ifdef CONFIG_KEYBOARD_C128           { !error "Ultimate 64 motherboard is not compatible with CONFIG_KEYBOARD_C128"           }

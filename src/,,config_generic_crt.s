@@ -67,7 +67,6 @@
 
 ; --- Keyboard settings
 
-;; #CONFIG# LEGACY_SCNKEY              NO
 ;; #CONFIG# KEYBOARD_C128              NO
 ;; #CONFIG# KEYBOARD_C128_CAPS_LOCK    NO
 ;; #CONFIG# KEY_REPEAT_DEFAULT         NO

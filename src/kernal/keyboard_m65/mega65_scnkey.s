@@ -2,6 +2,10 @@
 ;; #LAYOUT# *   *        #IGNORE
 
 
+; Routine takes many ideas from TWW/CTR proposal, see here:
+; - http://codebase64.org/doku.php?id=base:scanning_the_keyboard_the_correct_and_non_kernal_way
+
+
 m65_scnkey:
 
 	; Initialize work variables for scanning the keyboard

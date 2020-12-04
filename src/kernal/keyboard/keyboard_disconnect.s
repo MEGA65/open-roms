@@ -9,9 +9,6 @@
 ;
 
 
-!ifndef CONFIG_LEGACY_SCNKEY {
-
-
 keyboard_disconnect:
 
 	ldx #$FF
@@ -21,4 +18,3 @@ keyboard_disconnect:
 }
 
 	rts
-}

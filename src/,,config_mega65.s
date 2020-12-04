@@ -45,7 +45,6 @@
 
 ; --- Keyboard settings
 
-;; #CONFIG# LEGACY_SCNKEY              NO
 ;; #CONFIG# KEY_REPEAT_DEFAULT         NO
 ;; #CONFIG# KEY_REPEAT_ALWAYS          NO
 ;; #CONFIG# KEY_FAST_SCAN              YES

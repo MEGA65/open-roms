@@ -11,7 +11,7 @@
 ;
 
 
-!ifdef CONFIG_KEYBOARD_C128 { !ifndef CONFIG_LEGACY_SCNKEY {
+!ifdef CONFIG_KEYBOARD_C128 {
 
 
 kb_matrix_128:
@@ -28,6 +28,4 @@ kb_matrix_128_bucky_filter:
 	!byte %00000000
 	!byte %00000000 
 	!byte %10000001 ; ALT, NO_SCRL
-
-
-} } ; CONFIG_KEYBOARD_C128 and no CONFIG_LEGACY_SCNKEY
+}

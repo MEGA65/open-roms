@@ -34,30 +34,6 @@ cint_screen_keyboard:
 	sta RPTFLG
 } }
 
-	; Set keyboard decode vector  (Computes Mapping the 64 p215)
-
-!ifdef CONFIG_LEGACY_SCNKEY {
-
-	; Set initial variables for our improved keyboard scan routine
-	lda #$FF
-	ldx #6
-@1:	
-	sta BufferOld,x
-	dex
-	bpl @1
-	sta BufferQuantity
-
-	; Set key repeat delay (Computes Mapping the 64 p215)
-	; Making some numbers up here: Repeat every ~1/10th sec
-	; But require key to be held for ~1/3sec before
-	; repeating (Computes Mapping the 64 p58)
-
-	; Not needed for default keyboard scanning code
-
-	ldx #22-2 		; Fudge factor to match speed
-	stx DELAY
-}
-
 	; Set current colour for text (Computes Mapping the 64 p215)
 	ldx #CONFIG_COLOR_TXT
 	stx COLOR

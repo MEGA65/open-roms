@@ -25,9 +25,6 @@
 ; - RPTFLG  - whether key repeat is allowed
 
 
-
-!ifndef CONFIG_LEGACY_SCNKEY {
-
 ; Routine takes some ideas from TWW/CTR proposal, see here:
 ; - http://codebase64.org/doku.php?id=base:scanning_the_keyboard_the_correct_and_non_kernal_way
 
@@ -434,5 +431,3 @@ scnkey_buffer_full:
 	sta KOUNT
 
 	rts
-
-} ; no CONFIG_LEGACY_SCNKEY

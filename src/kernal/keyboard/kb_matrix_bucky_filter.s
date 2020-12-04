@@ -11,9 +11,6 @@
 ;
 
 
-!ifndef CONFIG_LEGACY_SCNKEY {
-
-
 kb_matrix_bucky_filter:
 
 	; values for OR with CIA1_PRB content to filter out bucky keys
@@ -26,4 +23,3 @@ kb_matrix_bucky_filter:
 	!byte %00000000
 	!byte %00010000 ; SHIFT (right)
 	!byte %00100100 ; VENDOR + CONTROL
-}

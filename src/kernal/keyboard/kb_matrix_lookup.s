@@ -12,8 +12,6 @@
 ;
 
 
-!ifndef CONFIG_LEGACY_SCNKEY {
-
 kb_matrix_lookup:
 
 !ifndef SEGMENT_KERNAL_C {
@@ -50,6 +48,4 @@ kb_matrix_lookup:
 	!word $0000                             ; %1.101 SHIFT+CTRL
 	!word $0000                             ; %1.110 VENDOR+CTRL
 	!word $0000                             ; %1.111 SHIFT+VENDOR+CTRL
-}
-
 }

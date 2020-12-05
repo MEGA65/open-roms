@@ -121,7 +121,7 @@ shell_process_line:
 	lda BUF
 	cmp #$30
 	bcc shell_execute_line
-	cmp #$39
+	cmp #$3A
 	bcs shell_execute_line
 
 	; Yes, the line begins with a number - parse it and check validity

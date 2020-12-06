@@ -69,6 +69,12 @@ Verify operation for the binary data starting from a given addres. NOTE: for now
 
 Saves the binary data from the given memory area. NOTE: for now syntax differs from the BASIC V3.5+ - this will be changed once the necessary BASIC infrastructure is implemented.
 
+## Additional BASIC commands - screen/keyboard
+
+### `JOYCRSR joy_number` (MEGA65)
+
+Sets the joystick (1 or 2) which moves the screen cursor. Native mode only.
+
 ## Additional BASIC commands - misc
 
 ### `COLD` (cart, MEGA65)

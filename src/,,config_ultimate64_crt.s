@@ -57,7 +57,6 @@
 
 ; --- Keyboard settings
 
-;; #CONFIG# LEGACY_SCNKEY              NO
 ;; #CONFIG# KEYBOARD_C128              NO
 ;; #CONFIG# KEYBOARD_C128_CAPS_LOCK    NO
 ;; #CONFIG# KEY_REPEAT_DEFAULT         NO
@@ -81,18 +80,10 @@
 
 ;; #CONFIG# KEYCMD_HELP                "LIST"
 
-;; #CONFIG# KEYCMD_F9                  NO
-;; #CONFIG# KEYCMD_F10                 NO
-;; #CONFIG# KEYCMD_F11                 NO
-;; #CONFIG# KEYCMD_F12                 NO
-;; #CONFIG# KEYCMD_F13                 NO
-;; #CONFIG# KEYCMD_F14                 NO
-
 
 ; --- Screen editor
 
 ;; #CONFIG# EDIT_STOPQUOTE             YES
-;; #CONFIG# EDIT_TABULATORS            NO
 
 
 ; --- Software features

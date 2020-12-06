@@ -148,12 +148,6 @@ IOINIT_skip_DOS:
 	stx VIC_CLKRATE                    ; store $00
 }
 
-!ifdef CONFIG_KEYBOARD_C65_OR_CAPS_LOCK {
-
-	lda #$02
-	sta C65_EXTKEYS_DDR ; output for most keys, input for CAPS LOCK bit
-}
-
 	; Set DDR on CIA2 for IEC bus, VIC-II banking (see [CM64], $DDOO description on page 193)
 	lda #$3F
 	sta CIA2_DDRA    ; $DD02

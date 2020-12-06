@@ -13,24 +13,15 @@
 scnkey_set_keytab:
 
 
-!ifdef CONFIG_LEGACY_SCNKEY { ; routine not compatible with legacy SCNKEY
-
-	rts
-
-} else {
-
-
 	; Set initial KEYTAB value
-
 	lda #<kb_matrix
 	sta KEYTAB+0
 	lda #>kb_matrix
 	sta KEYTAB+1
 
 	; Calculate table index
-
 	lda SHFLAG
-	and #$07 ; we are only interested in SHIFT / CTRL / VENDOR keys
+	and #$07                     ; we are interested in SHIFT, VENDOR and CTRL keys only
 	tax
 
 	; Retrieve table offset
@@ -60,10 +51,6 @@ scnkey_valid_offset_cont:
 	sta KEYTAB+1
 
 	; FALLTROUGH
-
-
-} ; no CONFIG_LEGACY_SCNKEY
-
 
 scnkey_toggle_if_needed: ; entry for SCNKEY (TWW/CTR version)
 
@@ -109,5 +96,4 @@ scnkey_toggle_if_needed: ; entry for SCNKEY (TWW/CTR version)
 	sta VIC_YMCSB
 @1:
 	rts
-
 }

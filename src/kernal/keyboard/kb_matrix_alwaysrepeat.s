@@ -11,7 +11,7 @@
 ;
 
 
-!ifndef CONFIG_LEGACY_SCNKEY { !ifndef CONFIG_KEY_REPEAT_ALWAYS {
+!ifndef CONFIG_KEY_REPEAT_ALWAYS {
 
 
 kb_matrix_alwaysrepeat:
@@ -24,4 +24,4 @@ kb_matrix_alwaysrepeat:
 __kb_matrix_alwaysrepeat_end:
 
 
-} } ; no CONFIG_LEGACY_SCNKEY and no CONFIG_KEY_REPEAT_ALWAYS
+}

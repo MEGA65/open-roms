@@ -1,0 +1,4 @@
+ $D011 + ORA #$10 + STA $D011
+ 
+ Part of code setting a bit in documented hardware register. Trivial - not copyrightable.
+ 

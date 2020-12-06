@@ -1,6 +1,7 @@
 ;; #LAYOUT# STD *        #TAKE
 ;; #LAYOUT# X16 *        #IGNORE
 ;; #LAYOUT# *   KERNAL_0 #TAKE
+;; #LAYOUT# M65 KERNAL_C #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
 ;
@@ -28,6 +29,22 @@ __kb_matrix_normal:
 	!byte $2B,$50,$4C,$2D,$2E,$3A,$40,$2C
 	!byte $5C,$2A,$3B,$13,$00,$3D,$5E,$2F
 	!byte $31,$5F,$00,$32,$20,$00,$51,$03
+!ifdef SEGMENT_KERNAL_C {
+	!byte $00,$09,$00,$84,$10,$16,$19,$1B
+}
+
+!ifdef SEGMENT_KERNAL_C {
+__kb_matrix_caps:
+	!byte $14,$0D,$1D,$88,$85,$86,$87,$11
+	!byte $33,$77,$61,$34,$7A,$73,$65,$00
+	!byte $35,$72,$64,$36,$63,$66,$74,$78
+	!byte $37,$79,$67,$38,$62,$68,$75,$76
+	!byte $39,$69,$6A,$30,$6D,$6B,$6F,$6E
+	!byte $2B,$70,$6C,$2D,$2E,$3A,$40,$2C
+	!byte $5C,$2A,$3B,$13,$00,$3D,$5E,$2F
+	!byte $31,$5F,$00,$32,$20,$00,$71,$03
+	!byte $00,$09,$00,$84,$10,$16,$19,$1B
+}
 
 __kb_matrix_shift:
 	!byte $94,$8D,$9D,$8C,$89,$8A,$8B,$91
@@ -38,6 +55,9 @@ __kb_matrix_shift:
 	!byte $DB,$70,$6C,$DD,$3E,$5B,$BA,$3C
 	!byte $A9,$C0,$5D,$93,$00,$3D,$DE,$3F
 	!byte $21,$5F,$00,$22,$A0,$00,$71,$83
+!ifdef SEGMENT_KERNAL_C {
+	!byte $00,$00,$00,$84,$15,$17,$1A,$1B
+}
 
 __kb_matrix_vendor:
 	!byte $94,$8D,$9D,$8C,$89,$8A,$8B,$91
@@ -48,17 +68,28 @@ __kb_matrix_vendor:
 	!byte $A6,$AF,$B6,$DC,$3E,$5B,$A4,$3C
 	!byte $A8,$DF,$5D,$93,$00,$3D,$DE,$3F
 	!byte $81,$5F,$00,$95,$a0,$00,$AB,$83
+!ifdef SEGMENT_KERNAL_C {
+	!byte $00,$00,$00,$84,$15,$17,$1A,$1B
+}
 
 __kb_matrix_ctrl:
+!ifndef SEGMENT_KERNAL_C {
 	!byte $00,$00,$00,$00,$00,$00,$00,$00
 	!byte $1C,$17,$01,$9F,$1A,$13,$05,$00
 	!byte $9C,$12,$04,$1E,$03,$06,$14,$18
 	!byte $1F,$19,$07,$9E,$02,$08,$15,$16
 	!byte $12,$09,$0A,$92,$0D,$0B,$0F,$0E
-!ifdef CONFIG_EDIT_TABULATORS {
-	!byte $00,$10,$0C,$00,KEY_C64_TAB_FW,$1B,$00,KEY_C64_TAB_BW
-} else  {
 	!byte $00,$10,$0C,$00,$00,$1B,$00,$00
-}
 	!byte $1C,$00,$1D,$00,$00,$1F,$1E,$00
 	!byte $90,$06,$00,$05,$00,$00,$11,$00
+} else {
+	!byte $00,$00,$00,$00,$00,$00,$00,$00
+	!byte $1C,$17,$01,$9F,$1A,$13,$05,$00
+	!byte $9C,$12,$04,$1E,$03,$06,$14,$18
+	!byte $1F,$19,$07,$9E,$02,$0B,$15,$16
+	!byte $12,$0C,$0A,$92,$0D,$0B,$0F,$0E
+	!byte $00,$10,$0C,$00,$00,$1B,$00,$00
+	!byte $1C,$00,$1D,$00,$00,$1F,$1E,$00
+	!byte $90,$06,$00,$05,$00,$00,$11,$00
+	!byte $00,$00,$00,$84,$00,$00,$00,$1B
+}

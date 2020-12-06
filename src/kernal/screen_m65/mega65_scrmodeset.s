@@ -91,8 +91,6 @@ m65_scrmodeset_internal: ; entry point for M65_MODE65
 	stx VIC_COLPTR+0
 	stx VIC_COLPTR+1
 
-!ifndef CONFIG_HOTFIX_CHARPTR {
-
 	; Set the following location:
 	; - VIC_CHARPTR                   - for character generator location
 	
@@ -102,7 +100,6 @@ m65_scrmodeset_internal: ; entry point for M65_MODE65
 	sta VIC_CHARPTR+1
 	lda #$01
 	sta VIC_CHARPTR+2
-}
 
 	; Set the following locations:
 	; - M65_SCRGUARD, M65_COLGUARD    - guards for virtual screen end

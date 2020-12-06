@@ -17,9 +17,16 @@ viciv_shutdown:
 	lda #$03
 	sta MISC_EMU
 
-	; Set misc VIC-IV flags
+	; Restore chargen location
+	
+	lda #$10
+	sta VIC_CHARPTR+1
+	lda #$00
+	sta VIC_CHARPTR+0
+	sta VIC_CHARPTR+2
 
-	lda #%00000000
+	; Set misc VIC-IV flags
+                                       ; .A is %00000000 here
 	sta VIC_CTRLB                      ; disable extended resolution and attributes, disable 3.5 MHz mode
 	jsr mega65_viciv_setctrl_AC        ; enable C64 character set, initialize remaining CTRLA / CTRLC bits
 

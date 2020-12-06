@@ -1,0 +1,3 @@
+LDA $6C + SBC $64 + STA (zeropage address does not match)
+
+Small part of floating point mantissa manipulation - subtraction of 2 values. Trivial - not copyrightable.

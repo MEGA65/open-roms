@@ -1,0 +1,3 @@
+STX $70 + RTS + LDA $61 + BEQ (offset does not match)
+
+One routine ends by storing value in a well-known zaropage location, followed by other which starts by checking whether another location is zero or not. Not creative - not copyrightable.

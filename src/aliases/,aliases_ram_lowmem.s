@@ -100,31 +100,25 @@
     !addr COLSTORE  = $9C  ;          [!] screen border storage for tape routines 
 }
 	!addr MSGFLG    = $9D  ;          bit 6 = error messages, bit 7 = control message
-	!addr PTR1      = $9E  ;          for tape support, counter of errorneous bytes
-	!addr PTR2      = $9F  ;          for tape support, counter for errorneous bytes correction
+	!addr PTR1      = $9E  ;          for tape support, counter of errorneous bytes             [!] also used by PRIMM
+	!addr PTR2      = $9F  ;          for tape support, counter for errorneous bytes correction [!] also used by PRIMM
 	!addr TIME      = $A0  ; $A0-$A2  jiffy clock
 	!addr IECPROTO  = $A3  ;          [!] IEC or pseudo-IEC protocol, >= $80 for unknown; originally named TSFCNT
 	!addr TBTCNT    = $A4  ;          temporary variable for tape and IEC, [!] our usage probably differs in details
 	!addr CNTDN     = $A5  ;          -- NOT IMPLEMENTED --
 	!addr BUFPNT    = $A6  ;          -- NOT IMPLEMENTED --
 	!addr INBIT     = $A7  ;          temporary storage for tape / RS-232 received bits
-!ifndef CONFIG_LEGACY_SCNKEY {
 	!addr BITCI     = $A8  ;          -- NOT IMPLEMENTED --
 	!addr RINONE    = $A9  ;          -- WIP -- (UP9600 only) RS-232 check for start bit flag
 	!addr RIDDATA   = $AA  ;          -- NOT IMPLEMENTED --
 	!addr RIPRTY    = $AB  ;          -- WIP -- checksum while reading tape
-}
 	!addr SAL       = $AC  ; $AC-$AD  -- XXX: describe -- (implemented screen part)
 	!addr EAL       = $AE  ; $AE-$AF  -- XXX: describe -- [!] used also by screen editor, for temporary color storage when scrolling
 	!addr CMP0      = $B0  ; $B0-$B1  temporary tape storage, [!] here used for BRK instruction address
 	!addr TAPE1     = $B2  ; $B2-$B3  tape buffer pointer
-!ifndef CONFIG_LEGACY_SCNKEY {
 	!addr BITTS     = $B4  ;          -- NOT IMPLEMENTED --
-}
 	!addr NXTBIT    = $B5  ;          -- NOT IMPLEMENTED -- [!] also used by tape routine to store CPU turbo settings
-!ifndef CONFIG_LEGACY_SCNKEY {
 	!addr RODATA    = $B6  ;          -- NOT IMPLEMENTED --
-}
 	!addr FNLEN     = $B7  ;          current file name length
 	!addr LA        = $B8  ;          current logical_file number
 	!addr SA        = $B9  ;          current secondary address
@@ -175,7 +169,6 @@
 	!addr BUF       = $200  ; $200-$250, BASIC line editor input buffer (81 bytes)
 
 	; $250-$258 is the 81st - 88th characters in BASIC input, a carry over from VIC-20
-	; and not used on C64 - they are used if CONFIG_LEGACY_SCNKEY is enabled.
 
 	; [!] XXX document $251-$258 usage
 	!addr LAT       = $259  ; $259-$262, logical file numbers (table, 10 bytes)
@@ -197,14 +190,12 @@
 	!addr KEYLOG    = $28F  ; $28F-$290  routine to setup keyboard decoding
 	!addr MODE      = $291  ;            flag, is case switch allowed
 	!addr AUTODN    = $292  ;            -- NOT IMPLEMENTED -- screen scroll disable
-!ifndef CONFIG_LEGACY_SCNKEY {
 	!addr M51CRT    = $293  ;            -- NOT IMPLEMENTED -- mock 6551
 	!addr M51CDR    = $294  ;            -- NOT IMPLEMENTED -- mock 6551
 	!addr M51AJB    = $295  ; $295-$296  -- NOT IMPLEMENTED -- mock 6551
 	!addr RSSTAT    = $297  ;            -- WIP -- (UP9600 only) mock 6551, RS-232 status
 	!addr BITNUM    = $298  ;            -- NOT IMPLEMENTED --
 	!addr BAUDOF    = $299  ; $299-$29A  -- NOT IMPLEMENTED --
-}
 	!addr RIDBE     = $29B  ;            -- WIP -- write pointer into RS-232 receive buffer
 	!addr RIDBS     = $29C  ;            -- WIP -- read pointer into RS-232 receive buffer
 	!addr RODBS     = $29D  ;            -- WIP -- read pointer into RS-232 send buffer

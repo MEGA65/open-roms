@@ -31,31 +31,25 @@ Open ROMs interrupt handlers do not touch the ROM mapping, range `0x4000-0xBFFF`
 
 ### API extensions
 
-#### PETSCII
+#### PETSCII - C128
 
-Open ROMs provides support for several additional PETSCII codes (all compatible with C128 and/or C65):
+When C128 keyboard support is compiled-in, Open ROMs provides support for a few PETSCII codes:
 
-| PETSCII code | description                                         |
-| :----------: | :-------------------------------------------------- |
-| `$07`        | bell (C128 and C65 compatible), not implemented yet |
-| `$1B`        | `ESC` key (C128 and C65 compatible)                 |
-| `$84`        | `HELP` key (C128 and C65 compatible)                |
-| `$10`        | `F9` key (C65 compatible)                           |
-| `$15`        | `F10` key (C65 compatible)                          |
-| `$16`        | `F11` key (C65 compatible)                          |
-| `$17`        | `F12` key (C65 compatible)                          |
-| `$19`        | `F13` key (C65 compatible)                          |
-| `$1A`        | `F14` key (C65 compatible)                          |
+| PETSCII code | description            |
+| :----------: | :--------------------- |
+| `$07`        | bell                   |
+| `$1B`        | `ESC` key              |
+| `$84`        | `HELP` key             |
 
-There is no official PETSCII code for `TAB` - we can't utilize the ones from C128 or C65 because it conflicts with some C64 codes.
+There is no PETSCII code for `TAB` key - we can't utilize the ones from C128 or C65 because it conflicts with some C64 codes.
 
 #### Bucky keys
 
 `SHFLAG` (`$028D`) variable is extended to support additional bucky keys on C128 and C65 keyboards:
 
-| bits 7-5 | bit 4       | bit 3    | bit 2    | bit 1    | bit 0    |
-| :------: | :---------: | :------: | :------: | :------: | :------: |
-| reserved | `CAPS LOCK` | `ALT`    | `CTRL`   | `VENDOR` | `SHIFT`  |
+| bits 7-6 | bit 5     | bit 4       | bit 3    | bit 2    | bit 1    | bit 0    |
+| :------: | :-------: | :---------: | :------: | :------: | :------: | :------: |
+| reserved | `NO SCRL` | `CAPS LOCK` | `ALT`    | `CTRL`   | `VENDOR` | `SHIFT`  |
 
 Bits 3 and 4 are extension to the original variable, compatible with the C128 ROMs API. There is no official way to retrieve `NO_SCRL` status as of yet. The `40/80` key status cannot be retrieved in C64 mode at all (C128 hardware limitation).
 
@@ -101,7 +95,7 @@ Currently there are 4 ROM layouts defined:
 
 - `STD` - with 2 code segments: `BASIC` (`$A000-$E4D2`, where `$C000-$DFFF` is a skip-gap for RAM and I/O area) and `KERNAL` (`$E4D3 - $FFFF`)
 - `CRT` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, with additional `BASIC`/`KERNAL` segments are placed on the required cartridge image
-- `M65` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, additional segments might be added to the build system in the future; at the moment of writing this document additional 12KB of ROM is defined as `BASIC_1` segment and additional 8KB of ROM is defined as `KERNAL_1` segment
+- `M65` - where `BASIC` becames `BASIC_0` and `KERNAL` becames `KERNAL_0`, additional segments might be added to the build system in the future; at the moment of writing this document additional 12KB of ROM is defined as `BASIC_1` segment, additional 4KB of ROM is defined as `KERNAL_C` segment, and additional 8KB of ROM is defined as `KERNAL_1` segment
 - `X16` - memory layout for the Commander X16 machine
 
 Expect at least one more, `U64`, if the planned additional ROM banks support for Ultimate 64 gets implemented. To check for current ROM layout or code segment use KickAssembler preprocessor defines, like `ROM_LAYOUT_STD`, `SEGMENT_M65_BASIC_0`, `SEGMENT_X16_KERNAL_1`.

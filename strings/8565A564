@@ -1,0 +1,3 @@
+STA $65 + LDA $64
+
+Part of the code multiplying floating point mantissa by 8, by shifting it 8 bit left. Trivial - not copyrightable.

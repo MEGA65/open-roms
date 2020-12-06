@@ -10,7 +10,7 @@
 ;
 
 
-!ifdef CONFIG_KEYBOARD_C128 { !ifndef CONFIG_LEGACY_SCNKEY {
+!ifdef CONFIG_KEYBOARD_C128 {
 
 
 ; Inlining this within SCNKEY would both overcomplicate the implementation
@@ -66,6 +66,4 @@ scnkey_128_no_keys:
 	pla
 
 	jmp scnkey_no_keys             ; pass controll to original routine
-
-
-} } ; CONFIG_KEYBOARD_C128 and no CONFIG_LEGACY_SCNKEY
+}

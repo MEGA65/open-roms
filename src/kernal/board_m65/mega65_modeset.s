@@ -25,6 +25,13 @@ m65_mode64:
 	jsr viciv_shutdown
 	jsr vicii_init
 
+	; Restore KEYLOG
+
+	lda #<scnkey_set_keytab
+	sta KEYLOG+0
+	lda #>scnkey_set_keytab
+	sta KEYLOG+1
+
 	; Switch CPU speed to normal
 
 	lda #$40
@@ -64,6 +71,11 @@ m65_mode65:
 	; Initialize various memory structures
 
 	jsr m65_native_meminit
+
+	; Set C65 keybord handling - XXX check this before enabling
+
+	; lda #$02
+	; sta C65_EXTKEYS_DDR ; output for most keys, input for CAPS LOCK bit
 
 	; Set screen mode to 80x50
 

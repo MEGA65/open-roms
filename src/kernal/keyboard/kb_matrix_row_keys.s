@@ -11,9 +11,6 @@
 ;
 
 
-!ifndef CONFIG_LEGACY_SCNKEY {
-
-
 kb_matrix_row_keys:
 
 	; - values for CIA1_PRA to connect only the given row
@@ -28,5 +25,3 @@ kb_matrix_row_keys:
 	!byte %11011111
 	!byte %10111111
 	!byte %01111111
-
-} ; no CONFIG_LEGACY_SCNKEY

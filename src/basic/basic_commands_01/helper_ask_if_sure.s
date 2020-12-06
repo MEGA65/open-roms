@@ -55,6 +55,7 @@ helper_ask_if_sure:
 
 	; Check if 'Y'
 
+	and #%01111111                               ; allow 'Y' + SHIFT (or CAPS LOCK) too
 	cmp #$59
 	beq @2
 

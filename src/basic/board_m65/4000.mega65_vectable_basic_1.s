@@ -26,9 +26,10 @@
 	!addr VB1__cmd_sysinfo              = $4000 + 2 * 11
 	!addr VB1__prepare_direct_execution = $4000 + 2 * 12
 	!addr VB1__helper_ask_if_sure       = $4000 + 2 * 13
+	!addr VB1__helper_eggshell          = $4000 + 2 * 14
 
 !ifdef CONFIG_DOS_WEDGE {
-	!addr VB1__wedge_dos                = $4000 + 2 * 14      
+	!addr VB1__wedge_dos                = $4000 + 2 * 15      
 }
 
 } else {
@@ -49,6 +50,7 @@
 	!word cmd_sysinfo
 	!word prepare_direct_execution
 	!word helper_ask_if_sure
+	!word helper_eggshell
 
 !ifdef CONFIG_DOS_WEDGE {
 	!word wedge_dos

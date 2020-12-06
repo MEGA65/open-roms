@@ -27,6 +27,10 @@ default_brk_handler:
 	; Make sure we have normal memory mapping
 
 	jsr map_NORMAL
+
+	lda VIC_CTRLA
+	and #%01000111
+	sta VIC_CTRLA
 }
 
 	jsr JRESTOR

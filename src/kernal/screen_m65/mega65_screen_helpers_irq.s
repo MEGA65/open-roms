@@ -1,4 +1,4 @@
-;; #LAYOUT# M65 KERNAL_0 #TAKE
+;; #LAYOUT# M65 KERNAL_C #TAKE
 ;; #LAYOUT# *   *        #IGNORE
 
 

@@ -23,13 +23,11 @@ programmable_keys_codes:
 	!ifdef CONFIG_KEYCMD_F7   { !byte KEY_F7  }
 	!ifdef CONFIG_KEYCMD_F8   { !byte KEY_F8  }
 
-!ifndef CONFIG_LEGACY_SCNKEY {
-
 !ifdef CONFIG_KEYBOARD_C128 {
 
 	!ifdef CONFIG_KEYCMD_HELP { !byte KEY_HELP }
 
-} else ifdef CONFIG_KEYBOARD_C65 {
+} else ifdef CONFIG_MB_M65 {
 
 	!ifdef CONFIG_KEYCMD_HELP { !byte KEY_HELP }
 
@@ -39,9 +37,7 @@ programmable_keys_codes:
 	!ifdef CONFIG_KEYCMD_F12  { !byte KEY_F12 }
 	!ifdef CONFIG_KEYCMD_F13  { !byte KEY_F13 }
 	!ifdef CONFIG_KEYCMD_F14  { !byte KEY_F14 }
-
-
-} }
+}
 
 
 __programmable_keys_codes_end:
@@ -69,14 +65,12 @@ __str_offset_F7:      !ifdef CONFIG_KEYCMD_F7   { +CONFIG_KEYCMD_F7
 __str_offset_F8:      !ifdef CONFIG_KEYCMD_F8   { +CONFIG_KEYCMD_F8
 	!byte $00 }
 
-!ifndef CONFIG_LEGACY_SCNKEY {
-
 !ifdef CONFIG_KEYBOARD_C128 {
 
 __str_offset_HELP:    !ifdef CONFIG_KEYCMD_HELP { +CONFIG_KEYCMD_HELP
 	!byte $00 }
 
-} else ifdef CONFIG_KEYBOARD_C65 {
+} else ifdef CONFIG_MB_M65 {
 
 __str_offset_HELP:    !ifdef CONFIG_KEYCMD_HELP { +CONFIG_KEYCMD_HELP
 	!byte $00 }
@@ -94,7 +88,7 @@ __str_offset_F13:     !ifdef CONFIG_KEYCMD_F13  { +CONFIG_KEYCMD_F13
 __str_offset_F14:     !ifdef CONFIG_KEYCMD_F14  { +CONFIG_KEYCMD_F14
 	!byte $00 }
 
-} }
+}
 
 
 __programmable_keys_strings_end:
@@ -117,13 +111,11 @@ programmable_keys_offsets:
 	!ifdef CONFIG_KEYCMD_F7   { !byte __str_offset_F7   - programmable_keys_strings }
 	!ifdef CONFIG_KEYCMD_F8   { !byte __str_offset_F8   - programmable_keys_strings }
 
-!ifndef CONFIG_LEGACY_SCNKEY {
-
 !ifdef CONFIG_KEYBOARD_C128 {
 
 	!ifdef CONFIG_KEYCMD_HELP { !byte __str_offset_HELP - programmable_keys_strings }
 
-} else ifdef CONFIG_KEYBOARD_C65 {
+} else ifdef CONFIG_MB_M65 {
 	
 	!ifdef CONFIG_KEYCMD_HELP { !byte __str_offset_HELP - programmable_keys_strings }
 
@@ -135,5 +127,3 @@ programmable_keys_offsets:
 	!ifdef CONFIG_KEYCMD_F14  { !byte __str_offset_F14  - programmable_keys_strings }
 
 } }
-
-}

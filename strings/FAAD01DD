@@ -1,0 +1,3 @@
+$FA + LDA $DD01
+
+Instruction (reading hardware register) + some part. Trivial - not copyrightable.

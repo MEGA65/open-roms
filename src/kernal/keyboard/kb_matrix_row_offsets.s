@@ -8,9 +8,6 @@
 ;
 
 
-!ifndef CONFIG_LEGACY_SCNKEY {
-
-
 kb_matrix_row_offsets:
 
 	; - offsets (in bytes) to the first bytes of keyboard matrix rows
@@ -23,4 +20,3 @@ kb_matrix_row_offsets:
 	!byte 5*8
 	!byte 6*8
 	!byte 7*8
-}

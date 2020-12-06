@@ -8,7 +8,7 @@
 ;
 
 
-!ifndef CONFIG_LEGACY_SCNKEY { !ifdef CONFIG_JOY1_OR_JOY2_CURSOR {
+!ifdef CONFIG_JOY1_OR_JOY2_CURSOR {
 
 
 kb_matrix_joy_status:
@@ -39,4 +39,4 @@ kb_matrix_joy_keytab_hi:
 	!byte >__kb_matrix_shift       ; left
 	!byte >__kb_matrix_normal      ; right
 
-} }
+}

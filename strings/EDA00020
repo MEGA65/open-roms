@@ -1,0 +1,3 @@
+$ED + LDY #$00 + JSR (address does not match)
+
+Instruction + some parts. Trivial - not copyrightable.

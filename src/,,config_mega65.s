@@ -29,8 +29,8 @@
 ;; #CONFIG# IEC                        YES
 ;; #CONFIG# IEC_DOLPHINDOS             NO
 ;; #CONFIG# IEC_DOLPHINDOS_FAST        NO
-;; #CONFIG# IEC_JIFFYDOS               YES
-;; #CONFIG# IEC_JIFFYDOS_BLANK         YES
+;; #CONFIG# IEC_JIFFYDOS               NO        ; fastloaders do not work on MEGA65 yet!
+;; #CONFIG# IEC_JIFFYDOS_BLANK         NO
 ;; #CONFIG# IEC_BURST_M65              NO        ; please keep disabled for now
 
 
@@ -45,9 +45,6 @@
 
 ; --- Keyboard settings
 
-;; #CONFIG# LEGACY_SCNKEY              NO
-;; #CONFIG# KEYBOARD_C65               NO        ; untested
-;; #CONFIG# KEYBOARD_C65_CAPS_LOCK     NO        ; untested
 ;; #CONFIG# KEY_REPEAT_DEFAULT         NO
 ;; #CONFIG# KEY_REPEAT_ALWAYS          NO
 ;; #CONFIG# KEY_FAST_SCAN              YES
@@ -63,24 +60,23 @@
 ;; #CONFIG# KEYCMD_F3                  "@9$"
 ;; #CONFIG# KEYCMD_F4                  "RUN:"
 ;; #CONFIG# KEYCMD_F5                  "@10$"
-;; #CONFIG# KEYCMD_F6                  NO
+;; #CONFIG# KEYCMD_F6                  "\5FL"
 ;; #CONFIG# KEYCMD_F7                  "@11$"
-;; #CONFIG# KEYCMD_F8                  NO
+;; #CONFIG# KEYCMD_F8                  "\5FHF"
 
 ;; #CONFIG# KEYCMD_HELP                "LIST"
 
-;; #CONFIG# KEYCMD_F9                  "\5FL"
+;; #CONFIG# KEYCMD_F9                  "REM F9"
 ;; #CONFIG# KEYCMD_F10                 "REM F10"
-;; #CONFIG# KEYCMD_F11                 "\5FH"
+;; #CONFIG# KEYCMD_F11                 "REM F11"
 ;; #CONFIG# KEYCMD_F12                 "REM F12"
-;; #CONFIG# KEYCMD_F13                 "REM F13"
-;; #CONFIG# KEYCMD_F14                 "REM F14"
+;; #CONFIG# KEYCMD_F13                 "JOYCRSR 2"
+;; #CONFIG# KEYCMD_F14                 "JOYCRSR 0"
 
 
 ; --- Screen editor
 
 ;; #CONFIG# EDIT_STOPQUOTE             YES
-;; #CONFIG# EDIT_TABULATORS            NO
 
 
 ; --- Software features
@@ -110,8 +106,3 @@
 ; --- Other
 
 ;; #CONFIG# COMPRESSION_LVL_2          NO
-
-
-; --- Temporary hotfixes
-
-;; #CONFIG# HOTFIX_CHARPTR             YES       ; workaround for https://github.com/MEGA65/mega65-core/issues/308

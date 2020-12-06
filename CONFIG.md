@@ -197,12 +197,6 @@ Each of them needs a couple of bytes in KERNAL segment - but they can share some
 
 Original keyboard support routine is just horrible. It does nothing to prevent ghosting - press A+S+D at the same time - it prints F. Try to use joystick connected to control port 1 - it outputs phantom characters. The Open ROMs provides much more sophisticated routines to prevent such problems.
 
-### `LEGACY_SCNKEY`
-
-Uses old Open ROMs keyboard scanning routine, which is basically the example routine by TWW/CTR, hacked to work within Kernal. It's greatest advantage is multi-key rollover, it's disadvantages - it's much less compatible (uses several bytes of memory which are normally free for user software - thus, it is considered legacy for now), does not support all the system variables (`RPTFLG` and `KEYLOG` are unsupported), and ignores the configuration options - this can be changed, but it requires some effort.
-
-Needs 30-250 more space in KERNAL segment (depending on the features enabled for current default routine). If unsure - disable.
-
 ### `KEYBOARD_C128`
 
 Allows to use additional keys found on the C128 keyboard.
@@ -214,10 +208,6 @@ Needs about 130 bytes more space in KERNAL segment. If unsure - disable.
 Allows to use CAPS LOCK key on the C128 keyboard, this is independent from `KEYBOARD_C128`. Support is C64-safe (there is a protection against false-positive reading on the C64).
 
 Needs about 50 bytes more space in KERNAL segment. If unsure - disable.
-
-### `KEYBOARD_C65`, `KEYBOARD_C65_CAPS_LOCK`
-
-Similar, but for C65 keyboard. Please note - the C65 keyboard support is (as of yet) completely untested!
 
 ### `KEY_REPEAT_DEFAULT`
 
@@ -239,7 +229,7 @@ Needs 13 bytes more space in KERNAL segment. Only disable if you are running out
 
 ### `JOY1_CURSOR` and `JOY2_CURSOR`
 
-Joystick movement also moves the cursor.
+Use joystick to move the cursor. On MEGA65 applies to legacy mode only (on native mode there is BASIC command available to set this option in runtime).
 
 Needs about 65 bytes of ROM space in KERNAL segment to handle both joysticks.
 
@@ -256,12 +246,6 @@ Needs 25 bytes more space in KERNAL segment for the code. In addition, each conf
 If enabled, STOP key terminates insert/quote mode (like on some _Black Box_ cartridges).
 
 Feature needs 12 bytes in KERNAL segment. If unsure - enable.
-
-### `EDIT_TABULATORS`
-
-If enabled, allows use of TAB (or CTRL+>) and SHIFT+TAB (or CTRL+<) to switch between predefined tabulator positions.
-
-Feature needs 35-45 bytes in KERNAL segment. If unsure - enable.
 
 ## Software features
 

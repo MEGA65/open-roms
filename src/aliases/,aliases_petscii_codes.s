@@ -14,10 +14,8 @@
 
 !ifdef CONFIG_KEYBOARD_C128           { !set _NEED_EXTENDED   = 1 }
 !ifdef CONFIG_KEYBOARD_C128_CAPS_LOCK { !set _NEED_CAPS_LOCK  = 1 }
-!ifdef CONFIG_KEYBOARD_C65            { !set _NEED_EXTENDED   = 1 }
-!ifdef CONFIG_KEYBOARD_C65_CAPS_LOCK  { !set _NEED_CAPS_LOCK  = 1 }
+!ifdef CONFIG_MB_M65                  { !set _NEED_CAPS_LOCK  = 1 }
 !ifdef CONFIG_MB_M65                  { !set _NEED_EXTENDED   = 1 }
-!ifdef CONFIG_KEYBOARD_C65            { !set _NEED_C65KB      = 1 }
 !ifdef CONFIG_MB_M65                  { !set _NEED_C65KB      = 1 }
 
 
@@ -34,39 +32,32 @@
 	!set KEY_FLAG_NO_SCRL = %00100000  
 }
 !ifdef _NEED_CAPS_LOCK {
-	!set KEY_CAPS_LOCK    = %00010000
+	!set KEY_FLAG_CAPSL   = %00010000
 }
 
 
 
-; Note - the following PETSCII codes are currently unassigned, can be used for further extensions: $01, $04, $06, ($80 ?)
+; Note - the following PETSCII codes are currently unassigned, can be used for further extensions: $01, $04, $06, $80, $8F
 
 
 
 !set KEY_NA                 = $00  ; to indicate that no key is presed
 
-
-; PETSCII codes for our extended screen editor
-
-!set KEY_C64_TAB_FW         = $8F  ; CTRL+>, TAB       - Open ROMs unofficial, original TAB conflicts with C64 PETSCII, XXX remove?
-!set KEY_C64_TAB_BW         = $80  ; CTRL+<, SHIFT+TAB - Open ROMs unofficial, original TAB conflicts with C64 PETSCII, XXX remove?
-
-
 ; PETSCII codes for certain C128 and C65 functionalities
 
 !ifdef _NEED_EXTENDED {
-	!set KEY_BELL           = $07  ; no key, originally CTRL+G ; XXX implement, add to C65 keyboard matrix
+	!set KEY_BELL           = $07  ; CTRL+G
 	!set KEY_ESC            = $1B
 }
 
 !ifdef _NEED_C65KB {
-	!set KEY_TAB            = $09  ; XXX add to C65 keyboard matrix
-	!set KEY_LINE_FEED      = $0A  ; XXX add to C65 keyboard matrix
-	!set KEY_TAB_SET_CLR    = $18  ; XXX add to C65 keyboard matrix
-	!set KEY_UNDERLINE_ON   = $02  ; XXX add to C65 keyboard matrix
-	!set KEY_UNDERLINE_OFF  = $82  ; XXX add to C65 keyboard matrix
-	!set KEY_FLASHING_ON    = $0F  ; XXX add to C65 keyboard matrix
-	!set KEY_FLASHING_OFF   = $8F  ; XXX add to C65 keyboard matrix
+	!set KEY_TAB            = $09
+	!set KEY_LINE_FEED      = $0A ; XXX add to M65 matrix
+	!set KEY_TAB_SET_CLR    = $18 ; XXX add to M65 matrix
+	!set KEY_UNDERLINE_ON   = $02 ; XXX add to M65 matrix
+	!set KEY_UNDERLINE_OFF  = $82 ; XXX add to M65 matrix
+	!set KEY_FLASHING_ON    = $0F ; XXX add to M65 matrix
+	!set KEY_FLASHING_OFF   = $8F ; XXX add to M65 matrix
 }
 
 

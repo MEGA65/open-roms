@@ -1,0 +1,3 @@
+$BA + LDA #$00 + STA $26 + STA $27 + STA $28 + STA $29
+
+Zeroying a well-known temporary workarea. Trivial - not copyrightable.

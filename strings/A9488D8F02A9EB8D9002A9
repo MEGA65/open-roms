@@ -1,0 +1,3 @@
+LDA #$48 + STA $028F + LDA #$EB + STA $0290 + LDA (value does not match)
+
+Initializing a documented function pointer with the only value compatible with existing software. Trivial and not creative - not copyrightable.

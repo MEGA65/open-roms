@@ -25,14 +25,38 @@
 ; - RPTFLG  - whether key repeat is allowed
 
 
-
-!ifndef CONFIG_LEGACY_SCNKEY {
-
 ; Routine takes some ideas from TWW/CTR proposal, see here:
 ; - http://codebase64.org/doku.php?id=base:scanning_the_keyboard_the_correct_and_non_kernal_way
 
 
 SCNKEY:
+
+!ifdef CONFIG_MB_M65 {
+
+	jsr M65_MODEGET
+	bcs scnkey_legacy_mode
+
+	; Map KERNAL_C segment
+
+	lda VIC_CTRLA
+	pha
+	ora #%00100000
+	sta VIC_CTRLA
+
+	; Call the native mode routine
+
+	jsr (VKC__m65_scnkey)
+
+	; Restore mapping and quit
+
+	pla
+	sta VIC_CTRLA
+
+	rts
+
+scnkey_legacy_mode:
+
+}
 
 	; Prepare for SHFLAG update
 
@@ -72,27 +96,12 @@ SCNKEY:
 	and #$40
 	bne @1                             ; branch if no CAPS LOCK
 
-	lda #KEY_CAPS_LOCK
+	lda #KEY_FLAG_CAPSL
 	sta SHFLAG
 @1:
 
 !ifndef !CONFIG_KEYBOARD_C128 {
 	stx VIC_XSCAN                      ; disconnect C128 keys if no C128 keyboard is supported
-} }
-
-!ifdef CONFIG_KEYBOARD_C65_CAPS_LOCK {
-
-	lda C65_EXTKEYS_PR
-	and #$01
-	bne @2                             ; branch if no CAPS LOCK
-
-	lda #KEY_CAPS_LOCK
-	sta SHFLAG
-@2:
-
-!ifndef CONFIG_KEYBOARD_C65 {
-	ldx #$FF
-	stx C65_EXTKEYS_PR                 ; disconnect C65 keys if no C65 keyboard is supported
 } }
 
 	ldy #(__kb_matrix_bucky_confmask_end - kb_matrix_bucky_confmask - 1)
@@ -102,10 +111,6 @@ scnkey_bucky_loop:
 !ifdef CONFIG_KEYBOARD_C128 {
 	lda kb_matrix_bucky_confmask_c128, y
 	sta VIC_XSCAN
-}
-!ifdef CONFIG_KEYBOARD_C65 {
-	lda kb_matrix_bucky_confmask_c65, y
-	sta C65_EXTKEYS_PR
 }
 	lda kb_matrix_bucky_testmask, y
 	and CIA1_PRB
@@ -157,9 +162,6 @@ scnkey_keytab_set_done:
 !ifdef CONFIG_KEYBOARD_C128 {
 	stx VIC_XSCAN
 }
-!ifdef CONFIG_KEYBOARD_C65 {
-	stx C65_EXTKEYS_PR
-}
 	dex                                ; puts $FF
 	cpx CIA1_PRB
 	beq scnkey_no_keys
@@ -188,9 +190,6 @@ scnkey_keytab_set_done:
 	ldy #$FF                           ; offset in key matrix table, $FF for not found yet
 !ifdef CONFIG_KEYBOARD_C128 {
 	jsr scnkey_128
-}
-!ifdef CONFIG_KEYBOARD_C65 {
-	jsr scnkey_65
 }
 	ldx #$07
 scnkey_matrix_loop:
@@ -257,7 +256,7 @@ scnkey_joystick_1:
 
 scnkey_joystick_filtered:
 
-	; Set appropriate keyboard matrix and key code for joystick event
+	; Decode joystick event using appropriate matrix
 
 	ldy #$03
 @5:
@@ -296,11 +295,7 @@ scnkey_got_key: ; .Y should now contain the key offset in matrix pointed by KEYT
 	;
 	; Besides - since I am the one who writes the code, I will make the values exactly how I like them :D
 
-!ifndef CONFIG_RS232_UP9600 {
-	lda #$16
-} else {
-	lda #$18
-}
+	lda #CONFIG_KEY_DELAY
 	sta DELAY
 
 	; FALLTROUGH
@@ -311,7 +306,7 @@ scnkey_output_key:
 
 	lda NDX
 	cmp XMAX
-	bcs scnkey_early_repeat            ; no space in buffer
+	bcs scnkey_buffer_full             ; no space in buffer
 
 	; Reinitialize secondary counter
 
@@ -320,32 +315,12 @@ scnkey_output_key:
 
 	; Retrieve the PETSCII code
 
-!ifdef CONFIG_KEYBOARD_C128_OR_C65 {
+!ifdef CONFIG_KEYBOARD_C128 {
 
 	cpy #$40
 	bcc scnkey_output_get_keycode
 
-!ifdef CONFIG_KEYBOARD_C128 {
 	lda kb_matrix_128 - $41, y         ; retrieve key code from C128 extended matrix
-} else ifdef CONFIG_KEYBOARD_C65 {
-
-	; Select key matrix (normal or shifted) for extended C65 keys
-
-	lda SHFLAG
-	and #%00000111 ; KEY_FLAG_SHIFT + KEY_FLAG_VENDOR + KEY_FLAG_CTRL
-	beq scnkey_output_65_no_shift
-	cmp #KEY_FLAG_SHIFT
-	; XXX how to behave on VENDOR/CTRL key? Harmonize this with clasic keys behavior
-	bne scnkey_no_keys                 ; no scanning for this bucky key combination
-
-	lda kb_matrix_65_shifted - $41, y
-	jmp scnkey_got_petscii
-
-scnkey_output_65_no_shift:
-
-	lda kb_matrix_65 - $41, y 
-}
-
 	jmp scnkey_got_petscii
 
 	; FALLTROUGH
@@ -354,22 +329,22 @@ scnkey_output_get_keycode:
 
 	lda (KEYTAB), y	                   ; retrieve key code from standard matrix
 
-} ; CONFIG_KEYBOARD_C128 or CONFIG_KEYBOARD_C65
+} ; CONFIG_KEYBOARD_C128
 
-!ifdef CONFIG_KEYBOARD_CAPS_LOCK {
+!ifdef CONFIG_KEYBOARD_C128_CAPS_LOCK {
 
 	; Check if we need special handling for a CAPS LOCK key
 	; This is shorter than a separate set of tables
 
 scnkey_handle_caps_lock:
 
-!ifndef CONFIG_KEYBOARD_C128_OR_C65 {
+!ifndef CONFIG_KEYBOARD_C128 {
 	lda (KEYTAB), y
 }
 	tax 
 	lda SHFLAG
-	and #(%00000111 + KEY_CAPS_LOCK)
-	cmp #KEY_CAPS_LOCK
+	and #(%00000111 + KEY_FLAG_CAPSL)
+	cmp #KEY_FLAG_CAPSL
 	bne @7                             ; branch if no special CAPS LOCK handling needed
 
 	cpx #$41                           ; 'A'
@@ -384,9 +359,9 @@ scnkey_handle_caps_lock:
 @7:
 	txa
 
-} ; CONFIG_KEYBOARD_C128_CAPS_LOCK or CONFIG_KEYBOARD_C65_CAPS_LOCK
+} ; CONFIG_KEYBOARD_C128_CAPS_LOCK
 
-!ifndef CONFIG_KEYBOARD_C128_OR_C65 { !ifndef CONFIG_KEYBOARD_CAPS_LOCK {
+!ifndef CONFIG_KEYBOARD_C128 { !ifndef CONFIG_KEYBOARD_C128_CAPS_LOCK {
 
 	lda (KEYTAB), y
 } }
@@ -394,22 +369,6 @@ scnkey_handle_caps_lock:
 	; Output PETSCII code to the keyboard buffer
 
 scnkey_got_petscii:
-
-!ifdef CONFIG_KEYBOARD_C128 { !ifdef CONFIG_EDIT_TABULATORS {
-
-	; Special handling for SHIFT+TAB; it is easier than creating new matrix
-
-	tax
-	cmp #KEY_C64_TAB_FW
-	bne @8
-	lda SHFLAG
-	and #KEY_FLAG_SHIFT
-	beq @8
-	ldx #KEY_C64_TAB_BW
-@8:
-	txa
-
-} } ; CONFIG_KEYBOARD_C128 and CONFIG_EDIT_TABULATORS
 
 	beq scnkey_no_keys                 ; branch if we have no PETSCII code for this key
 	ldy NDX
@@ -440,6 +399,8 @@ scnkey_try_repeat:
 	bpl @9
 	bmi scnkey_done
 
+	; FALLTROUGH
+
 scnkey_handle_repeat:
 
 } ; no CONFIG_KEY_REPEAT_ALWAYS
@@ -460,7 +421,7 @@ scnkey_handle_repeat:
 
 	rts
 
-scnkey_early_repeat:
+scnkey_buffer_full:
 
 	; Keyboard buffer was full - at least make sure the key
 	; will be repeated as soon as possible
@@ -470,5 +431,3 @@ scnkey_early_repeat:
 	sta KOUNT
 
 	rts
-
-} ; no CONFIG_LEGACY_SCNKEY

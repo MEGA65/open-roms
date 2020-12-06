@@ -4,7 +4,7 @@
 Here are the features of the Open ROMs not found in the original ROMs from the 80s (many of them are [configurable](CONFIG.md) during compilation):
 
 
-* improved keyboard scanning, resistant to ghosting and joystick interference (one variant even supports multi-key rollover), supports additional C128 keys
+* improved keyboard scanning, resistant to ghosting and joystick interference, supports additional C128 keys
 * joystick can be used to move text cursor
 * pre-defined function keys
 
@@ -386,6 +386,7 @@ Not all of them - only these we want to have implemented.
 | `$EA31`   | default IRQ                  | PARTIAL  |                                                    |
 | `$EA7E`   | ack CIA1 + below             | DONE     |                                                    |
 | `$EA81`   | ret from IRQ/NMI             | DONE     |                                                    |
+| `$EB48`   | set keyboard mapping table   | DONE     |                                                    |
 | `$F142`   | get key from buffer          | DONE     |                                                    |
 | `$F3F6`   | (unknown)                    | NOT DONE |                                                    |
 | `$F646`   | IEC close                    | NOT DONE |                                                    |
@@ -395,5 +396,19 @@ Not all of them - only these we want to have implemented.
 | `$FE47`   | default NMI                  | PARTIAL  |                                                    |
 | `$FE66`   | default BRK                  | DONE     |                                                    |
 | `$FF80`   | revision byte                | DONE     |                                                    |
+
+<br />
+
+### API extensions - MEGA65 build
+
+Note: this is likely to change in the future, possibly in an incompatible way!
+
+<br />
+
+| Address   | Name     | Status   |  Remarks                                                               |
+| :-------: | :------- | :------: | :--------------------------------------------------------------------: |
+| ?         | PRHEX    | DONE     | print hex value from .A                                                |
+| `$FF7D`   | PRIMM    | DONE     | print immediate, address compatible with C128 and C65 ROMs             |
+| `$FFF8`   |          | DONE     | reset vector for usage within hypervisor, starts in legacy mode        |
 
 <br />

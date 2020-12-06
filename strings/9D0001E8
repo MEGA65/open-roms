@@ -1,0 +1,4 @@
+STA $0100,X + INX
+
+Small part of the loop iterating over memory area. Trivial - not copyrightable.
+

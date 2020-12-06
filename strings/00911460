@@ -1,0 +1,3 @@
+$00 + STA ($14),Y + RTS
+
+Routine ends by storing value in memory via pointer. Trivial - not copyrightable.

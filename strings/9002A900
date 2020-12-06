@@ -1,0 +1,3 @@
+BCC (skip next instruction) + LDA #$00
+
+Load 0 into .A if carry is set. Trivial - not copyrightable.

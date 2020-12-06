@@ -1,0 +1,3 @@
+LDA #$00 + RTS + LDA (zeropage address does not match)
+
+Routine returning 0 in .A followed by other which starts from fetching zeropage variable. Trivial - not copyrightable.

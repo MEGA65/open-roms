@@ -1,0 +1,3 @@
+LDY #$00 + LDA ($22),Y
+
+Reading content of memory pointed by pointer in RAM. Would be one instruction os some CPUs. Trivial - not copyrightable.

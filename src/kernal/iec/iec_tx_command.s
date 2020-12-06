@@ -38,6 +38,10 @@ iec_tx_command:
 	; Common part of iec_txbyte and iec_tx_common - waits for devices
 	; and transmits a byte
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_slow
+}
 	clc ; Carry flag set is used for EOI mark
 	jmp iec_tx_common
 }

@@ -13,9 +13,6 @@
 load_iec_dev_not_found:
 	jmp lvs_device_not_found_error
 
-load_iec_file_not_found:
-	jmp kernalerror_FILE_NOT_FOUND
-
 load_iec_error:
 	lda FA
 	jsr iec_close_load
@@ -199,6 +196,11 @@ load_iec_get_addr_byte:
 @4:
 	pla
 	pla
+
+	; FALLTROUGH
+
+load_iec_file_not_found:
+
 	jmp load_iec_file_not_found
 
 

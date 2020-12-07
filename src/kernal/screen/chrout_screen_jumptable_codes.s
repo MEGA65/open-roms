@@ -32,6 +32,7 @@ __chrout_screen_jumptable_quote_guard:
 }
 	!byte KEY_DEL
 	!byte KEY_RETURN
+	!byte KEY_SHIFT_RETURN
 
 __chrout_screen_jumptable_codes_end:
 
@@ -59,6 +60,7 @@ chrout_screen_jumptable_lo:
 }
 	!byte <(chrout_screen_DEL-1)
 	!byte <(chrout_screen_RETURN-1)
+	!byte <(chrout_screen_RETURN-1)
 
 chrout_screen_jumptable_hi:
 
@@ -79,6 +81,7 @@ chrout_screen_jumptable_hi:
 	!byte >(chrout_screen_STOP-1)
 }
 	!byte >(chrout_screen_DEL-1)
+	!byte >(chrout_screen_RETURN-1)
 	!byte >(chrout_screen_RETURN-1)
 
 } else { ; HAS_OPCODES_65C02
@@ -104,5 +107,6 @@ chrout_screen_jumptable:
 	!word chrout_screen_STOP
 }
 	!word chrout_screen_DEL
+	!word chrout_screen_RETURN
 	!word chrout_screen_RETURN
 }

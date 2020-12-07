@@ -75,6 +75,7 @@ __m65_chrout_screen_jumptable_quote_guard:
 	!byte KEY_STOP
 	!byte KEY_DEL
 	!byte KEY_RETURN
+	!byte KEY_SHIFT_RETURN
 
 __m65_chrout_screen_jumptable_codes_end:
 
@@ -107,4 +108,5 @@ m65_chrout_screen_jumptable:
 	!word m65_chrout_screen_INS
 	!word m65_chrout_screen_STOP
 	!word m65_chrout_screen_DEL
+	!word m65_chrout_screen_RETURN
 	!word m65_chrout_screen_RETURN

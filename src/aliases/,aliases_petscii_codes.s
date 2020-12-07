@@ -136,6 +136,7 @@
 ; PETSCII codes for other non-printable characters
 
 !set KEY_RETURN            = $0D
+!set KEY_SHIFT_RETURN      = $8D
 !set KEY_CLR               = $93
 !set KEY_HOME              = $13
 !set KEY_INS               = $94

@@ -23,8 +23,8 @@ m65_scrtab_colviewmax_hi:       ; maximum allowed color viewport start - high by
 m65_scrtab_scrolx:           ; values for VIC_SCROLX
 
 	!byte $C8
-	!byte $CA
-	!byte $CA
+	!byte $C9
+	!byte $C9
 
 m65_scrtab_rowoffset_lo:     ; row offsets - low bytes
 

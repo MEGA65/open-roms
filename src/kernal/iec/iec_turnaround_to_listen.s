@@ -20,6 +20,11 @@ iec_turnaround_to_listen:
 	php
 	sei
 
+!ifdef CONFIG_MB_M65 {
+	; If in native mode, switch to 1 MHz
+	jsr m65_iec_slow
+}
+
 	; Pull DATA, release CLK and ATN (we are not sending commands)
 	jsr iec_pull_data_release_atn_clk
 

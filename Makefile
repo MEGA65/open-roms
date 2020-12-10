@@ -34,11 +34,6 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  src/basic/rom_revision \
                  src/basic/wedge
 
-SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
-                 src/dos_m65 \
-                 # src/dos_m65/cmdrdos \
-                 src/dos_m65/sdcard
-
 SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal \
                  src/kernal/,stubs \
@@ -65,9 +60,18 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal/tape \
                  src/kernal/time
 
+SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
+                 src/dos_m65 \
+                 # src/dos_m65/cmdrdos \
+                 src/dos_m65/sdcard
+
+SRCDIR_MON_M65 = $(SRCDIR_COMMON) \
+                 src/mon_m65
+
 SRC_BASIC    = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
-SRC_DOS_M65  = $(foreach dir,$(SRCDIR_DOS_M65),$(wildcard $(dir)/*.s))
 SRC_KERNAL   = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+SRC_DOS_M65  = $(foreach dir,$(SRCDIR_DOS_M65),$(wildcard $(dir)/*.s))
+SRC_MON_M65  = $(foreach dir,$(SRCDIR_MON_M65),$(wildcard $(dir)/*.s))
 SRC_TOOLS    = $(wildcard tools/*.c,tools/*.cc)
 
 DIR_ACME     = assembler/acme/src
@@ -125,8 +129,9 @@ GEN_STR_X16    = $(DIR_X16)/,generated/,packed_strings.s
 # Dependencies - helper variables
 
 DEP_BASIC   = $(SRC_BASIC)   $(SRCDIR_BASIC)   $(GEN_BASIC)
-DEP_DOS_M65 = $(SRC_DOS_M65) $(SRCDIR_DOS_M65)
 DEP_KERNAL  = $(SRC_KERNAL)  $(SRCDIR_KERNAL)  $(GEN_KERNAL)
+DEP_DOS_M65 = $(SRC_DOS_M65) $(SRCDIR_DOS_M65)
+DEP_MON_M65 = $(SRC_MON_M65) $(SRCDIR_MON_M65)
 
 # List of tools
 
@@ -201,10 +206,11 @@ SEG_LIST_U64CRT    = $(DIR_U64CRT)/basic.seg_1  \
 
 SEG_LIST_M65       = $(DIR_M65)/basic.seg_0  \
                      $(DIR_M65)/basic.seg_1  \
-                     $(DIR_M65)/dos.seg_1    \
                      $(DIR_M65)/kernal.seg_0 \
                      $(DIR_M65)/kernal.seg_C \
-                     $(DIR_M65)/kernal.seg_1
+                     $(DIR_M65)/kernal.seg_1 \
+                     $(DIR_M65)/dos.seg_1    \
+                     $(DIR_M65)/mon.seg_1
 
 SEG_LIST_X16       = $(DIR_X16)/basic.seg_0  \
                      $(DIR_X16)/basic.seg_1  \
@@ -355,12 +361,14 @@ $(DIR_U64CRT)/kernal.seg_1 $(DIR_U64CRT)/KERNAL_1_combined.vs $(DIR_U64CRT)/KERN
 
 $(DIR_M65)/basic.seg_1  $(DIR_M65)/BASIC_1_combined.vs  $(DIR_M65)/BASIC_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_M65)/BASIC_0_combined.sym
-$(DIR_M65)/dos.seg_1    $(DIR_M65)/DOS_1_combined.vs    $(DIR_M65)/DOS_1_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_DOS_M65) $(CFG_M65)
 $(DIR_M65)/kernal.seg_C $(DIR_M65)/KERNAL_C_combined.vs $(DIR_M65)/KERNAL_C_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym
 $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym
+$(DIR_M65)/dos.seg_1    $(DIR_M65)/DOS_1_combined.vs    $(DIR_M65)/DOS_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_DOS_M65) $(CFG_M65)
+$(DIR_M65)/mon.seg_1    $(DIR_M65)/MON_1_combined.vs    $(DIR_M65)/MON_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_MON_M65) $(CFG_M65)
 
 $(DIR_X16)/basic.seg_1  $(DIR_X16)/BASIC_1_combined.vs  $(DIR_X16)/BASIC_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_X16) $(GEN_STR_X16) $(DIR_X16)/KERNAL_0_combined.sym $(DIR_X16)/BASIC_0_combined.sym
@@ -494,7 +502,7 @@ $(DIR_U64CRT)/kernal.seg_1 $(DIR_U64CRT)/KERNAL_1_combined.vs $(DIR_U64CRT)/KERN
 	@rm -f $@* $(DIR_U64CRT)/kernal.seg_1 $(DIR_U64CRT)/KERNAL_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s KERNAL_1 -i KERNAL_1-ultimate64-crt -o kernal.seg_1 -d $(DIR_U64CRT) -l 8000 -h 9fff $(CFG_U64CRT) $(GEN_STR_U64CRT) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
-# Rules - BASIC and KERNAL intermediate files, for MEGA65
+# Rules - BASIC, KERNAL, DOS and MON intermediate files, for MEGA65
 
 $(DIR_M65)/OUTB_0.BIN $(DIR_M65)/BASIC_0_combined.vs $(DIR_M65)/BASIC_0_combined.sym:
 	@mkdir -p $(DIR_M65)
@@ -511,11 +519,6 @@ $(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1_combined.vs $(DIR_M65)/BASIC_1_combine
 	@rm -f $@* $(DIR_M65)/basic.seg_1 $(DIR_M65)/BASIC_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s BASIC_1 -i BASIC_1-mega65 -o basic.seg_1 -d $(DIR_M65) -l 4000 -h 6fff $(CFG_M65) $(GEN_STR_M65) $(SRCDIR_BASIC) $(GEN_BASIC)
 
-$(DIR_M65)/dos.seg_1 $(DIR_M65)/DOS_1_combined.vs $(DIR_M65)/DOS_1_combined.sym:
-	@mkdir -p $(DIR_M65)
-	@rm -f $@* $(DIR_M65)/dos.seg_1 $(DIR_M65)/DOS_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s DOS_1 -i DOS_1-mega65 -o dos.seg_1 -d $(DIR_M65) -l 4000 -h 7fff $(CFG_M65) $(SRCDIR_DOS_M65)
-
 $(DIR_M65)/kernal.seg_C $(DIR_M65)/KERNAL_C_combined.vs $(DIR_M65)/KERNAL_C_combined.sym:
 	@mkdir -p $(DIR_M65)
 	@rm -f $@* $(DIR_M65)/kernal.seg_C $(DIR_M65)/KERNAL_C*
@@ -525,6 +528,16 @@ $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_comb
 	@mkdir -p $(DIR_M65)
 	@rm -f $@* $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s KERNAL_1 -i KERNAL_1-mega65 -o kernal.seg_1 -d $(DIR_M65) -l 4000 -h 5fff $(CFG_M65) $(GEN_STR_M65) $(SRCDIR_KERNAL) $(GEN_KERNAL)
+
+$(DIR_M65)/dos.seg_1 $(DIR_M65)/DOS_1_combined.vs $(DIR_M65)/DOS_1_combined.sym:
+	@mkdir -p $(DIR_M65)
+	@rm -f $@* $(DIR_M65)/dos.seg_1 $(DIR_M65)/DOS_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s DOS_1 -i DOS_1-mega65 -o dos.seg_1 -d $(DIR_M65) -l 4000 -h 7fff $(CFG_M65) $(SRCDIR_DOS_M65)
+
+$(DIR_M65)/mon.seg_1 $(DIR_M65)/MON_1_combined.vs $(DIR_M65)/MON_1_combined.sym:
+	@mkdir -p $(DIR_M65)
+	@rm -f $@* $(DIR_M65)/mon.seg_1 $(DIR_M65)/MON_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s MON_1 -i MON_1-mega65 -o mon.seg_1 -d $(DIR_M65) -l 4000 -h 5fff $(CFG_M65) $(SRCDIR_MON_M65)
 
 # Rules - BASIC and KERNAL intermediate files, for Commander X16
 
@@ -644,11 +657,21 @@ build/kernal_hybrid_u64.rom: kernal $(DIR_U64)/OUTK_x.BIN
 build/symbols_hybrid_u64.vs: $(DIR_U64)/KERNAL_combined.vs
 	@sort $(DIR_U64)/KERNAL_combined.vs | uniq | grep -v "__" > $@
 
-# Rules - external CRT images
+# Rules - padding files
+
+build/padding_4_KB:
+	@mkdir -p build
+	@dd if=/dev/zero bs=4096 count=1 of=$@ status=none
 
 build/padding_8_KB:
 	@mkdir -p build
 	@dd if=/dev/zero bs=8192 count=1 of=$@ status=none
+
+build/padding_16_KB:
+	@mkdir -p build
+	@dd if=/dev/zero bs=8192 count=2 of=$@ status=none
+
+# Rules - external CRT images
 
 $(TARGET_GENCRT_X): $(SEG_LIST_GENCRT) $(CRT_BIN_LIST) build/padding_8_KB
 	@echo
@@ -688,7 +711,7 @@ $(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
 
 # Rules - MEGA65 platform specific
 
-# $0:$0000 - 16 KB - DOS
+# $0:$0000 - 16 KB - Computer Based DOS
 # $0:$4000 -  8 KB - KERNAL segment 1
 # $0:$6000 - 12 KB - BASIC  segment 1
 # $0:$9000 -  4 KB - native mode chargen
@@ -696,17 +719,10 @@ $(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
 # $0:$C000 -  4 KB - KERNAL segment C
 # $0:$D000 -  4 KB - legacy mode chargen
 # $0:$E000 -  9 KB - KERNAL segment 0
-# $1:$0000 - 64 KB - unused for now, padding
+# $1:$0000 -  8 KB - Machine Language MONITOR
+# $1:$2000 - 56 KB - unused for now, padding
 
-build/padding_64_KB:
-	@mkdir -p build
-	@dd if=/dev/zero bs=8192 count=8 of=$@ status=none
-
-build/padding_4_KB:
-	@mkdir -p build
-	@dd if=/dev/zero bs=4096 count=1 of=$@ status=none
-
-$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB build/padding_4_KB $(TARGET_CHR_ORF) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
+$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_16_KB build/padding_4_KB $(TARGET_CHR_ORF) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
 	@echo
 	@echo
 	@echo
@@ -721,7 +737,11 @@ $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB bui
 	@cat $(DIR_M65)/kernal.seg_C         >> $(TARGET_M65_x_ORF)
 	@cat $(TARGET_CHR_ORF)               >> $(TARGET_M65_x_ORF)
 	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_ORF)
-	@cat build/padding_64_KB             >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/mon.seg_1             > $(TARGET_M65_x_ORF)
+	@cat build/padding_8_KB              >> $(TARGET_M65_x_ORF)
+	@cat build/padding_16_KB             >> $(TARGET_M65_x_ORF)
+	@cat build/padding_16_KB             >> $(TARGET_M65_x_ORF)
+	@cat build/padding_16_KB             >> $(TARGET_M65_x_ORF)
 	@echo
 	@echo
 	@echo
@@ -736,7 +756,11 @@ $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_64_KB bui
 	@cat $(DIR_M65)/kernal.seg_C         >> $(TARGET_M65_x_PXL)
 	@cat $(TARGET_CHR_PXL)               >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_PXL)
-	@cat build/padding_64_KB             >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/mon.seg_1             > $(TARGET_M65_x_PXL)
+	@cat build/padding_8_KB              >> $(TARGET_M65_x_PXL)
+	@cat build/padding_16_KB             >> $(TARGET_M65_x_PXL)
+	@cat build/padding_16_KB             >> $(TARGET_M65_x_PXL)
+	@cat build/padding_16_KB             >> $(TARGET_M65_x_PXL)
 	@echo
 
 # Rules - platform 'Commander X16' specific

@@ -7,6 +7,7 @@
 
 !set ITEM_01 = cmd_sysinfo
 !set ITEM_02 = cmd_joycrsr
+!set ITEM_03 = cmd_monitor
 
 
 !ifndef HAS_OPCODES_65C02 {
@@ -15,12 +16,13 @@ command_04_jumptable_lo:
 
 	!byte <(ITEM_01-1)
 	!byte <(ITEM_02-1)
+	!byte <(ITEM_03-1)
 
 command_04_jumptable_hi:
 
 	!byte >(ITEM_01-1)
 	!byte >(ITEM_02-1)
-
+	!byte >(ITEM_03-1)
 
 } else { ; HAS_OPCODES_65C02
 
@@ -30,4 +32,5 @@ command_04_jumptable:
 
 	!word ITEM_01
 	!word ITEM_02
+	!word ITEM_03
 }

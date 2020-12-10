@@ -60,16 +60,16 @@
 ;; #CONFIG# KEYCMD_F3                  "@9$"
 ;; #CONFIG# KEYCMD_F4                  "RUN:"
 ;; #CONFIG# KEYCMD_F5                  "@10$"
-;; #CONFIG# KEYCMD_F6                  "\5FL"
+;; #CONFIG# KEYCMD_F6                  "REM F6"
 ;; #CONFIG# KEYCMD_F7                  "@11$"
-;; #CONFIG# KEYCMD_F8                  "\5FHF"
+;; #CONFIG# KEYCMD_F8                  "MONITOR"
 
 ;; #CONFIG# KEYCMD_HELP                "LIST"
 
 ;; #CONFIG# KEYCMD_F9                  "REM F9"
-;; #CONFIG# KEYCMD_F10                 "REM F10"
+;; #CONFIG# KEYCMD_F10                 "\5FL"
 ;; #CONFIG# KEYCMD_F11                 "REM F11"
-;; #CONFIG# KEYCMD_F12                 "REM F12"
+;; #CONFIG# KEYCMD_F12                 "\5FHF"
 ;; #CONFIG# KEYCMD_F13                 "JOYCRSR 2"
 ;; #CONFIG# KEYCMD_F14                 "JOYCRSR 0"
 

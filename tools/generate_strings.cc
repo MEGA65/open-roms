@@ -201,7 +201,7 @@ const StringEntryList GLOBAL_Keywords_04 =  { ListType::KEYWORDS, "keywords_04",
     // STD    CRT    M65    U64    X16
     { false, false, true,  false, false, "K04_01",   "SYSINFO",      }, // Not present in CBM BASIC dialects, Open ROMs specific
     { false, false, true,  false, false, "K04_02",   "JOYCRSR",      }, // Not present in CBM BASIC dialects, Open ROMs specific
-
+    { false, false, true,  false, false, "K04_03",   "MONITOR",      }, // Amos Professional Manual, Command Index
 
 } };
 

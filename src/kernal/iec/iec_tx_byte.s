@@ -42,7 +42,9 @@ iec_tx_byte:
 
 !ifdef CONFIG_MB_M65 { !ifndef CONFIG_IEC_JIFFYDOS {
 	; If in native mode, switch to 1 MHz
+	php
 	jsr m65_iec_slow
+	plp
 } }
 
 	; Store .X and .Y on the stack - preserve them

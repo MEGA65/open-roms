@@ -2746,199 +2746,43 @@ Close_Disk_Buffer
 !set ENC_TYA = ENC_T * 64 * 64 + ENC_Y * 64 + ENC_A
 !set ENC_TYS = ENC_T * 64 * 64 + ENC_Y * 64 + ENC_S
 !set ENC_TZA = ENC_T * 64 * 64 + ENC_Z * 64 + ENC_A
-		 
+
 
 ; ***
 MNE_L
 ; ***
 
-         .BYTE >"ADC"
-         .BYTE >"AND"
-         .BYTE >"ASL"
-         .BYTE >"ASR"
-         .BYTE >"ASW"
-         .BYTE >"BBR"
-         .BYTE >"BBS"
-         .BYTE >"BCC"
-         .BYTE >"BCS"
-         .BYTE >"BEQ"
-         .BYTE >"BIT"
-         .BYTE >"BMI"
-         .BYTE >"BNE"
-         .BYTE >"BPL"
-         .BYTE >"BRA"
-         .BYTE >"BRK"
-         .BYTE >"BSR"
-         .BYTE >"BVC"
-         .BYTE >"BVS" 
-         .BYTE >"CLC"
-         .BYTE >"CLD"
-         .BYTE >"CLE"
-         .BYTE >"CLI"
-         .BYTE >"CLV"
-         .BYTE >"CMP"
-         .BYTE >"CPX"
-         .BYTE >"CPY"
-         .BYTE >"CPZ"
-         .BYTE >"DEC"
-         .BYTE >"DEW"
-         .BYTE >"DEX"
-         .BYTE >"DEY"
-         .BYTE >"DEZ"
-         .BYTE >"EOR"
-         .BYTE >"INC"
-         .BYTE >"INW"
-         .BYTE >"INX"
-         .BYTE >"INY"
-         .BYTE >"INZ"
-         .BYTE >"JMP"
-         .BYTE >"JSR"
-         .BYTE >"LDA"
-         .BYTE >"LDX"
-         .BYTE >"LDY"
-         .BYTE >"LDZ"
-         .BYTE >"LSR"
-         .BYTE >"MAP"
-         .BYTE >"NEG"
-         .BYTE >"NOP"
-         .BYTE >"ORA"
-         .BYTE >"PHA"
-         .BYTE >"PHP"
-         .BYTE >"PHW"
-         .BYTE >"PHX"
-         .BYTE >"PHY"
-         .BYTE >"PHZ"
-         .BYTE >"PLA"
-         .BYTE >"PLP"
-         .BYTE >"PLX"
-         .BYTE >"PLY"
-         .BYTE >"PLZ"
-         .BYTE >"RMB"
-         .BYTE >"ROL"
-         .BYTE >"ROR"
-         .BYTE >"ROW"
-         .BYTE >"RTI"
-         .BYTE >"RTS"
-         .BYTE >"SBC"
-         .BYTE >"SEC"
-         .BYTE >"SED"
-         .BYTE >"SEE"
-         .BYTE >"SEI"
-         .BYTE >"SMB"
-         .BYTE >"STA"
-         .BYTE >"STX"
-         .BYTE >"STY"
-         .BYTE >"STZ"
-         .BYTE >"TAB"
-         .BYTE >"TAX"
-         .BYTE >"TAY"
-         .BYTE >"TAZ"
-         .BYTE >"TBA"
-         .BYTE >"TRB"
-         .BYTE >"TSB"
-         .BYTE >"TSX"
-         .BYTE >"TSY"
-         .BYTE >"TXA"
-         .BYTE >"TXS"
-         .BYTE >"TYA"
-         .BYTE >"TYS"
-         .BYTE >"TZA"
+         !byte <ENC_ADC, <ENC_AND, <ENC_ASL, <ENC_ASR, <ENC_ASW, <ENC_BBR, <ENC_BBS, <ENC_BCC
+         !byte <ENC_BCS, <ENC_BEQ, <ENC_BIT, <ENC_BMI, <ENC_BNE, <ENC_BPL, <ENC_BRA, <ENC_BRK
+         !byte <ENC_BSR, <ENC_BVC, <ENC_BVS, <ENC_CLC, <ENC_CLD, <ENC_CLE, <ENC_CLI, <ENC_CLV
+         !byte <ENC_CMP, <ENC_CPX, <ENC_CPY, <ENC_CPZ, <ENC_DEC, <ENC_DEW, <ENC_DEX, <ENC_DEY
+         !byte <ENC_DEZ, <ENC_EOR, <ENC_INC, <ENC_INW, <ENC_INX, <ENC_INY, <ENC_INZ, <ENC_JMP
+         !byte <ENC_JSR, <ENC_LDA, <ENC_LDX, <ENC_LDY, <ENC_LDZ, <ENC_LSR, <ENC_MAP, <ENC_NEG
+         !byte <ENC_NOP, <ENC_ORA, <ENC_PHA, <ENC_PHP, <ENC_PHW, <ENC_PHX, <ENC_PHY, <ENC_PHZ
+         !byte <ENC_PLA, <ENC_PLP, <ENC_PLX, <ENC_PLY, <ENC_PLZ, <ENC_RMB, <ENC_ROL, <ENC_ROR
+         !byte <ENC_ROW, <ENC_RTI, <ENC_RTS, <ENC_SBC, <ENC_SEC, <ENC_SED, <ENC_SEE, <ENC_SEI
+         !byte <ENC_SMB, <ENC_STA, <ENC_STX, <ENC_STY, <ENC_STZ, <ENC_TAB, <ENC_TAX, <ENC_TAY
+         !byte <ENC_TAZ, <ENC_TBA, <ENC_TRB, <ENC_TSB, <ENC_TSX, <ENC_TSY, <ENC_TXA, <ENC_TXS
+         !byte <ENC_TYA, <ENC_TYS, <ENC_TZA
+
 
 ; ***
 MNE_R
 ; ***
 
-         .BYTE <"ADC" ; 00
-         .BYTE <"AND" ; 01
-         .BYTE <"ASL" ; 02
-         .BYTE <"ASR" ; 03
-         .BYTE <"ASW" ; 04
-         .BYTE <"BBR" ; 05
-         .BYTE <"BBS" ; 06
-         .BYTE <"BCC" ; 07
-         .BYTE <"BCS" ; 08
-         .BYTE <"BEQ" ; 09
-         .BYTE <"BIT" ; 0a
-         .BYTE <"BMI" ; 0b
-         .BYTE <"BNE" ; 0c
-         .BYTE <"BPL" ; 0d
-         .BYTE <"BRA" ; 0e
-         .BYTE <"BRK" ; 0f
-         .BYTE <"BSR" ; 10
-         .BYTE <"BVC" ; 11
-         .BYTE <"BVS" ; 12
-         .BYTE <"CLC" ; 13
-         .BYTE <"CLD" ; 14
-         .BYTE <"CLE" ; 15
-         .BYTE <"CLI" ; 16
-         .BYTE <"CLV" ; 17
-         .BYTE <"CMP" ; 18
-         .BYTE <"CPX" ; 19
-         .BYTE <"CPY" ; 1a
-         .BYTE <"CPZ" ; 1b
-         .BYTE <"DEC" ; 1c
-         .BYTE <"DEW" ; 1d
-         .BYTE <"DEX" ; 1e
-         .BYTE <"DEY" ; 1f
-         .BYTE <"DEZ"
-         .BYTE <"EOR"
-         .BYTE <"INC"
-         .BYTE <"INW"
-         .BYTE <"INX"
-         .BYTE <"INY"
-         .BYTE <"INZ"
-         .BYTE <"JMP"
-         .BYTE <"JSR"
-         .BYTE <"LDA"
-         .BYTE <"LDX"
-         .BYTE <"LDY"
-         .BYTE <"LDZ"
-         .BYTE <"LSR"
-         .BYTE <"MAP"
-         .BYTE <"NEG"
-         .BYTE <"NOP"
-         .BYTE <"ORA"
-         .BYTE <"PHA"
-         .BYTE <"PHP"
-         .BYTE <"PHW"
-         .BYTE <"PHX"
-         .BYTE <"PHY"
-         .BYTE <"PHZ"
-         .BYTE <"PLA"
-         .BYTE <"PLP"
-         .BYTE <"PLX"
-         .BYTE <"PLY"
-         .BYTE <"PLZ"
-         .BYTE <"RMB"
-         .BYTE <"ROL"
-         .BYTE <"ROR"
-         .BYTE <"ROW"
-         .BYTE <"RTI"
-         .BYTE <"RTS"
-         .BYTE <"SBC"
-         .BYTE <"SEC"
-         .BYTE <"SED"
-         .BYTE <"SEE"
-         .BYTE <"SEI"
-         .BYTE <"SMB"
-         .BYTE <"STA"
-         .BYTE <"STX"
-         .BYTE <"STY"
-         .BYTE <"STZ"
-         .BYTE <"TAB"
-         .BYTE <"TAX"
-         .BYTE <"TAY"
-         .BYTE <"TAZ"
-         .BYTE <"TBA"
-         .BYTE <"TRB"
-         .BYTE <"TSB"
-         .BYTE <"TSX"
-         .BYTE <"TSY"
-         .BYTE <"TXA"
-         .BYTE <"TXS"
-         .BYTE <"TYA"
-         .BYTE <"TYS"
-         .BYTE <"TZA"
+         !byte >ENC_ADC, >ENC_AND, >ENC_ASL, >ENC_ASR, >ENC_ASW, >ENC_BBR, >ENC_BBS, >ENC_BCC
+         !byte >ENC_BCS, >ENC_BEQ, >ENC_BIT, >ENC_BMI, >ENC_BNE, >ENC_BPL, >ENC_BRA, >ENC_BRK
+         !byte >ENC_BSR, >ENC_BVC, >ENC_BVS, >ENC_CLC, >ENC_CLD, >ENC_CLE, >ENC_CLI, >ENC_CLV
+         !byte >ENC_CMP, >ENC_CPX, >ENC_CPY, >ENC_CPZ, >ENC_DEC, >ENC_DEW, >ENC_DEX, >ENC_DEY
+         !byte >ENC_DEZ, >ENC_EOR, >ENC_INC, >ENC_INW, >ENC_INX, >ENC_INY, >ENC_INZ, >ENC_JMP
+         !byte >ENC_JSR, >ENC_LDA, >ENC_LDX, >ENC_LDY, >ENC_LDZ, >ENC_LSR, >ENC_MAP, >ENC_NEG
+         !byte >ENC_NOP, >ENC_ORA, >ENC_PHA, >ENC_PHP, >ENC_PHW, >ENC_PHX, >ENC_PHY, >ENC_PHZ
+         !byte >ENC_PLA, >ENC_PLP, >ENC_PLX, >ENC_PLY, >ENC_PLZ, >ENC_RMB, >ENC_ROL, >ENC_ROR
+         !byte >ENC_ROW, >ENC_RTI, >ENC_RTS, >ENC_SBC, >ENC_SEC, >ENC_SED, >ENC_SEE, >ENC_SEI
+         !byte >ENC_SMB, >ENC_STA, >ENC_STX, >ENC_STY, >ENC_STZ, >ENC_TAB, >ENC_TAX, >ENC_TAY
+         !byte >ENC_TAZ, >ENC_TBA, >ENC_TRB, >ENC_TSB, >ENC_TSX, >ENC_TSY, >ENC_TXA, >ENC_TXS
+         !byte >ENC_TYA, >ENC_TYS, >ENC_TZA
+
 
 ; *******
 MNE_Index

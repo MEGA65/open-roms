@@ -5,5 +5,6 @@
 MONITOR:
 
 	jsr map_MON_1
-	jsr ($4000)
-	jmp map_NORMAL
+	jmp ($4000)
+
+	; Monitor knows, that it should exit via map_NORMAL

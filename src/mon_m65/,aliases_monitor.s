@@ -1,3 +1,0 @@
-
-
-!macro NOP { eom }

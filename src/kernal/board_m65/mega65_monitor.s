@@ -5,5 +5,5 @@
 MONITOR:
 
 	jsr map_MON_1
-	; XXX call the monitor here
+	jsr ($4000)
 	jmp map_NORMAL

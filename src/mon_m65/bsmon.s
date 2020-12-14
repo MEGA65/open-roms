@@ -4,7 +4,6 @@
 ; * (adaped for the Open ROMs)  *
 ; *******************************
 
-!ifdef CONFIG_DEV_BSMON {
 
 ; XXX adapt all the addresses/constants!
 
@@ -2941,5 +2940,3 @@ Mon_Help
    !pet KEY_LT_RED,"?",KEY_WHITE,"help        - ?",KEY_RETURN
    !pet 0
    JMP Main
-
-}

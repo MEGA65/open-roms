@@ -106,6 +106,3 @@
 ; --- Other
 
 ;; #CONFIG# COMPRESSION_LVL_2          NO
-
-
-;; #CONFIG# DEV_BSMON                  NO       ; do not change, BSMON is not integrated yet

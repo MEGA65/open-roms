@@ -5,14 +5,16 @@
 ; *******************************
 
 
+!macro NOP { eom }             ; ACME does not allow NOP for MEGA65 CPU
+
 ; XXX adapt all the addresses/constants!
 
 
-; ************************************************
-; * Register storage for JMPFAR and JSRFAR calls *
-; ************************************************
+; ********************
+; * Register storage *
+; ********************
 
-!addr Bank        =  2
+!addr Bank        =  2 ; XXX get rid of it!
 !addr PCH         =  3
 !addr PCL         =  4
 !addr SR          =  5
@@ -48,10 +50,10 @@
 !addr Adr_Flags   = $69
 !addr Mode_Flags  = $6a
 !addr Op_Code     = $6b
-!addr Op_Flag     = $6c ; 7: two operands
-                        ; 6: long branch
-                        ; 5: 32 bit address
-                        ; 4: Q register
+!addr Op_Flag     = $6c        ; 7: two operands
+                               ; 6: long branch
+                               ; 5: 32 bit address
+                               ; 4: Q register
 !addr Op_Size     = $6d
 !addr Dig_Cnt     = $6e
 !addr Buf_Index   = $6f
@@ -100,17 +102,12 @@
 Mon_Break
 ; *******
 
-         JSR  PRIMM
-         !pet KEY_RETURN, "break",0 ; ; XXX what is '\a'?
          JSR  Print_Commands
 
 ; pull BP, Z, Y, X, A,SR,PCL,PCH
 ;       7  6  5  4  3  2  1  0
 
          LDX  #7
-         BIT  EXIT      ; version
-         BPL  @loop
-         DEX
 @loop    PLA
          STA  PCH,X
          DEX

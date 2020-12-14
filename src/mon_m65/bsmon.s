@@ -83,7 +83,6 @@
 !addr EXIT_OLD    = $cf2e      ; exit address for ROM 910110
 !addr EXIT        = $cfa4      ; exit address for ROM 911001
 
-!addr PRIMM       = $ff7d
 !addr CINT        = $ff81
 !addr SETMSG      = $ff90
 !addr SECOND      = $ff93
@@ -96,8 +95,6 @@
 !addr TALK        = $ffb4
 !addr OPEN        = $ffc0
 !addr CLOSE       = $ffc3
-!addr CHRIN       = $ffcf
-!addr CHROUT      = $ffd2
 !addr STOP        = $ffe1
 
 

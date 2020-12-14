@@ -3,7 +3,6 @@
 
 !ifdef CONFIG_DEV_BSMON {
 
-!word xtest
 !word Mon_Call
 !word Mon_Break
 !word Mon_Switch

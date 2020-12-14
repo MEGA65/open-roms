@@ -58,17 +58,8 @@
 !addr Dig_Cnt     = $6e
 !addr Buf_Index   = $6f
 
-; operating system variables
-
-
 !addr MODE_80     = $d7        ; 80 column / 40 volumn flag
 
-!addr IIRQ        = $0314
-!addr IBRK        = $0316
-!addr EXMON       = $032e
-
-                               ; bottom of BASIC runtime stack
-                               ; should be a safe space
 !addr X_Vector    = $400       ; exit vector (ROM version dependent)
 !addr Ix_Mne      = $402       ; index to mnemonics table
 !addr Op_Mne      = $403       ; 3 bytes for mnemonic
@@ -82,8 +73,6 @@
 !addr Mon_Data    = $410       ; 40 bytes, buffer for hunt and filename
 !addr Disk_Msg    = $440       ; 40 bytes, disk status as text message
 
-!addr EXIT        = $cfa4      ; exit address for ROM 911001
-
 !addr SETMSG      = $ff90
 !addr SECOND      = $ff93
 !addr TKSA        = $ff96
@@ -93,8 +82,6 @@
 !addr UNLSN       = $ffae
 !addr LISTEN      = $ffb1
 !addr TALK        = $ffb4
-!addr OPEN        = $ffc0
-!addr CLOSE       = $ffc3
 !addr STOP        = $ffe1
 
 
@@ -618,7 +605,7 @@ Mon_Go
 ; ****
 
          ; XXX to be rewritten for Open ROMs!
-         rts
+         jmp Main
          ; JSR  Get_LAC           ; get 1st. parameter
          ; JSR  LAC_To_PC
          ; LDX  SPL
@@ -630,7 +617,7 @@ Mon_JSR
 ; *****
 
          ; XXX to be rewritten for Open ROMs!
-         rts
+         jmp Main
          ; JSR  Get_LAC           ; get 1st. parameter
          ; JSR  LAC_To_PC
          ; LDX  SPL
@@ -822,8 +809,8 @@ Mon_Hunt
 Load_Save
 ; *******
 
-         ; XXX to be rewritten for OpenROMs!
-         rts
+         ; XXX to be rewritten for Open ROMs!
+         jmp Main
 
          ; LDY  Disk_Unit
          ; STY  FA
@@ -2197,33 +2184,6 @@ Print_BCD
          BNE  @loopa
          RTS
 
-; ******
-Mon_Disk
-; ******
-
-         DEC  Buf_Index
-         LDX  Buf_Index
-         LDA  BUF,X
-         BEQ  Print_Disk_Status
-         STA  Long_CT           ; dir marker
-         LDY  #$ff              ; SA = 15
-         CMP  #'$'
-         BNE  @lab
-         LDY  #$f0              ; SA =  0
-@lab     LDA  FA
-         JSR  LISTEN
-         TYA                    ; SA
-         JSR  SECOND
-@loop    LDA  BUF,X
-         BEQ  @close
-         JSR  CIOUT
-         INX
-         BRA  @loop
-@close   JSR  UNLSN
-         LDA  Long_CT
-         CMP  #'$'
-         BNE  Print_Disk_Status
-         JMP  Directory
 
 ; *************
 Get_Disk_Status
@@ -2277,87 +2237,19 @@ Print_Disk_Msg
          BRA  @loop
 @exit    JMP  Print_CR
 
-; @[u] : print disk status for unit u
-; @[u],$[=pattern] : print directory
-; @[u],command : send disk command and read status
-; @[u],U1 mem track startsec [endsec] : read  disk sector(s)
-; @[u],U2 mem track startsec [endsec] : write disk sector(s)
-
 ; *****
 Mon_DOS
 ; *****
 
-         LDX  #8                ; default device
-         JSR  Get_Glyph
-         CMP  #'0'
-         BCC  @unit
-         CMP  #':'
-         BCS  @unit
-         DEC  Buf_Index
-         JSR  Read_Number
-         BCS  @unit
-         LDX  Long_AC           ; unit
-         CPX  #4
-         LBCC Mon_Error
-         CPX  #31
-         LBCS Mon_Error
-@unit    STX  FA
-         DEC  Buf_Index
-@next    JSR  Get_Char
-         BEQ  @status           ; only @u
-         CMP  #' '
-         BEQ  @next
-         CMP  #','
-         BEQ  @next
-         CMP  #'U'              ; sector read/write
-         BEQ  DOS_U
-@status  JSR  Mon_Disk
-         JMP  Main
-
-; *******
-Directory
-; *******
-
-         LDA  FA
-         JSR  TALK
-         LDA  #$60
-         STA  SA
-         JSR  TKSA
-         LDA  #0
-         STA  IOSTATUS
-
-         LDZ  #6                ; load address, pseudo link, pseudo number
-@loopb   TAX                    ; X = previous byte
-         JSR  ACPTR             ; A = current  byte
-         LDY  IOSTATUS
-         BNE  @exit
-         DEZ
-         BNE  @loopb            ; X/A = last read word
-
-         STX  Long_AC
-         STA  Long_AC+1
-         STZ  Long_AC+2
-         STZ  Long_AC+3
-         JSR  Print_Decimal     ; file size
-         JSR  Print_Blank
-
-@loopc   JSR  ACPTR             ; print file entry
-         BEQ  @cr
-         LDY  IOSTATUS
-         BNE  @exit
-         JSR  CHROUT
-         BCC  @loopc
-
-@cr      JSR  Print_CR
-         JSR  STOP
-         BEQ  @exit
-         LDZ  #4
-         BRA  @loopb            ; next file
-@exit    JMP  UNTALK
+         ; XXX for Open ROMs it should invoke internal DOS wedge!
+         jmp Main
 
 ; ***
-DOS_U
+DOS_U ; XXX connect it somehow to command list
 ; ***
+
+; @[u],U1 mem track startsec [endsec] : read  disk sector(s)
+; @[u],U2 mem track startsec [endsec] : write disk sector(s)
 
          JSR  Get_Char
          CMP  #'1'            ; U1: read

@@ -23,6 +23,6 @@ map_BASIC_1:
 	taz
 
 	lda #$20
-	ldx #$C2    ; $4000 <- map 16KB from $22000
+	ldx #$C2    ; $4000 <- map 16KB from $26000
 
 	jmp map_end

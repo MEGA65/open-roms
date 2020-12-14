@@ -60,16 +60,7 @@
 ; operating system variables
 
 
-!addr STATUS      = $90
-!addr VERCK       = $93
-!addr FNLEN       = $b7
-!addr SA          = $b9
-!addr FA          = $ba
-!addr FNADR       = $bb
-
 !addr MODE_80     = $d7        ; 80 column / 40 volumn flag
-
-!addr Buffer      = $0200      ; input buffer
 
 !addr IIRQ        = $0314
 !addr IBRK        = $0316
@@ -244,7 +235,7 @@ Main_A
 ; ****
 
 @loop    JSR  CHRIN
-         STA  Buffer,X
+         STA  BUF,X
          INX
          CPX  #80
          BCS  Mon_Error         ; input too long
@@ -253,7 +244,7 @@ Main_A
 
          LDA  #0
          STA  Buf_Index
-         STA  Buffer-1,X        ; terminate buffer
+         STA  BUF-1,X        ; terminate buffer
 @getcomm JSR  Get_Char
          BEQ  Main
          CMP  #' '
@@ -287,7 +278,7 @@ Mon_Error
 Mon_Select
 ; ********
 
-         STA  VERCK
+         STA  VERCKK
          CPX  #22
          LBCS  Load_Save
          TXA
@@ -858,7 +849,7 @@ Load_Save
          ; STY  BA
          ; STY  FNLEN
          ; STY  FNBANK
-         ; STY  STATUS
+         ; STY  IOSTATUS
          ; LDA  #>Mon_Data
          ; STA  FNADR+1
          ; LDA  #<Mon_Data
@@ -871,7 +862,7 @@ Load_Save
          ; LBNE Mon_Error
 
          ; LDX  Buf_Index
-; @copyfn  LDA  Buffer,X          ; copy filename
+; @copyfn  LDA  BUF,X             ; copy filename
          ; BEQ  @do               ; no more input
          ; INX
          ; CMP  #KEY_QUOTE
@@ -899,7 +890,7 @@ Load_Save
          ; JSR  Print_CR
          ; LDX  Long_AC           ; X/Y = end address
          ; LDY  Long_AC+1
-         ; LDA  VERCK             ; A = load/verify/save
+         ; LDA  VERCKK            ; A = load/verify/save
          ; CMP  #'S'
          ; LBNE Mon_Error         ; must be Save
          ; LDA  #0
@@ -908,15 +899,15 @@ Load_Save
          ; JSR  SAVE
 ; @exit    JMP  Main
 
-; @do      LDA  VERCK
+; @do      LDA  VERCKK
          ; CMP  #'V'              ; Verify
          ; BEQ  @exec
          ; CMP  #'L'              ; Load
          ; LBNE Mon_Error
          ; LDA  #0                ; 0 = LOAD
 ; @exec    JSR  LOAD              ; A == 0 : LOAD else VERIFY
-         ; BBR4 STATUS,@exit
-         ; LDA  VERCK
+         ; BBR4 IOSTATUS,@exit
+         ; LDA  VERCKK
          ; LBEQ Mon_Error
          ; LBCS Main
          ; JSR  PRIMM
@@ -1323,9 +1314,9 @@ Mon_Assemble
          !pet KEY_RETURN,"a ",0
 
          LDA  #'A'
-         STA  Buffer
+         STA  BUF
          LDA  #' '
-         STA  Buffer+1
+         STA  BUF+1
          LDY  #2
          LDX  #2                ; 6 digits
          LDA  Long_PC,X
@@ -1334,11 +1325,11 @@ Mon_Assemble
 @auto    PHX
          LDA  Long_PC,X
          JSR  A_To_Hex
-         STA  Buffer,Y
+         STA  BUF,Y
          JSR  CHROUT
          INY
          TXA
-         STA  Buffer,Y
+         STA  BUF,Y
          JSR  CHROUT
          INY
          PLX
@@ -1346,7 +1337,7 @@ Mon_Assemble
          BPL  @auto
 
          LDA  #' '
-         STA  Buffer,Y
+         STA  BUF,Y
          JSR  CHROUT
          INY
          TYA
@@ -1992,7 +1983,7 @@ Get_Glyph
          LDA  #' '
 @loop    LDX  Buf_Index
          INC  Buf_Index
-         CMP  Buffer,X
+         CMP  BUF,X
          BEQ  @loop
          PLX                    ; fall through
 
@@ -2009,7 +2000,7 @@ Get_Char
          PHX
          LDX  Buf_Index
          INC  Buf_Index
-         LDA  Buffer,X
+         LDA  BUF,X
          CPX  #1
          PLX
          BCC  @regc
@@ -2228,7 +2219,7 @@ Mon_Disk
 
          DEC  Buf_Index
          LDX  Buf_Index
-         LDA  Buffer,X
+         LDA  BUF,X
          BEQ  Print_Disk_Status
          STA  Long_CT           ; dir marker
          LDY  #$ff              ; SA = 15
@@ -2239,7 +2230,7 @@ Mon_Disk
          JSR  LISTEN
          TYA                    ; SA
          JSR  SECOND
-@loop    LDA  Buffer,X
+@loop    LDA  BUF,X
          BEQ  @close
          JSR  CIOUT
          INX
@@ -2349,12 +2340,12 @@ Directory
          STA  SA
          JSR  TKSA
          LDA  #0
-         STA  STATUS
+         STA  IOSTATUS
 
          LDZ  #6                ; load address, pseudo link, pseudo number
 @loopb   TAX                    ; X = previous byte
          JSR  ACPTR             ; A = current  byte
-         LDY  STATUS
+         LDY  IOSTATUS
          BNE  @exit
          DEZ
          BNE  @loopb            ; X/A = last read word
@@ -2368,7 +2359,7 @@ Directory
 
 @loopc   JSR  ACPTR             ; print file entry
          BEQ  @cr
-         LDY  STATUS
+         LDY  IOSTATUS
          BNE  @exit
          JSR  CHROUT
          BCC  @loopc
@@ -2462,7 +2453,7 @@ Open_Command_Channel
          LDA  #$ff
          JSR  SECOND
          LDY  #0
-         STY  STATUS
+         STY  IOSTATUS
          RTS
 
 ; ******
@@ -2498,7 +2489,7 @@ Read_Sector
          LDA  #$69              ; SA = 9
          JSR  TKSA
          LDZ  #0
-         STZ  STATUS
+         STZ  IOSTATUS
 @loop    JSR  ACPTR
          STA  [Long_PC],Z
          INZ
@@ -2515,7 +2506,7 @@ Write_Sector
          LDA  #$69              ; SA = 9
          JSR  TKSA
          LDZ  #0
-         STZ  STATUS
+         STZ  IOSTATUS
 @loop    LDA  [Long_PC],Z
          JSR  CIOUT
          INZ
@@ -2572,7 +2563,7 @@ Open_Disk_Buffer
 ; **************
 
          LDA  #0
-         STA  STATUS
+         STA  IOSTATUS
          LDA  FA
          JSR  LISTEN          ; open fa,9,"#"
          LDA  #$f9            ; sa = 9
@@ -2580,7 +2571,7 @@ Open_Disk_Buffer
          LDA  #'#'            ; open buffer
          JSR  CIOUT
          JSR  UNLSN
-         LDA  STATUS
+         LDA  IOSTATUS
          LBNE Print_Disk_Status
          RTS
 
@@ -2589,13 +2580,13 @@ Close_Disk_Buffer
 ; ***************
 
          LDA  #0
-         STA  STATUS
+         STA  IOSTATUS
          LDA  FA
          JSR  LISTEN          ; open fa,9,"#"
          LDA  #$e9            ; sa = 9
          JSR  SECOND
          JSR  UNLSN
-         LDA  STATUS
+         LDA  IOSTATUS
          LBNE Print_Disk_Status
          RTS
 

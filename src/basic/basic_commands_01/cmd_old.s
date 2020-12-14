@@ -7,9 +7,7 @@ cmd_old:
 
 	; First make sure we are in direct mode
 
-	ldx CURLIN+1
-	inx
-	+bne do_DIRECT_MODE_ONLY_error
+	jsr helper_ensure_direct_mode
 
 	; Now try to restore program linkage and VARTAB
 

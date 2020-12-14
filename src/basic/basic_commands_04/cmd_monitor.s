@@ -4,6 +4,7 @@
 
 cmd_monitor:
 
-	; XXX implement this
+	jsr helper_ensure_native_mode
+	jsr helper_ensure_direct_mode
 
-	jmp do_NOT_IMPLEMENTED_error
+	jmp MONITOR

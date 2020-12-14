@@ -83,7 +83,6 @@
 !addr EXIT_OLD    = $cf2e      ; exit address for ROM 910110
 !addr EXIT        = $cfa4      ; exit address for ROM 911001
 
-!addr CINT        = $ff81
 !addr SETMSG      = $ff90
 !addr SECOND      = $ff93
 !addr TKSA        = $ff96
@@ -287,7 +286,7 @@ Print_Commands
 ; ************
 
          JSR  PRIMM
-         !pet KEY_RETURN,KEY_YELLOW,KEY_RVS_ON,"bs monitor commands:"
+         !pet KEY_RETURN,KEY_YELLOW,KEY_RVS_ON,"commands: "
 
 ; **********
 Command_Char
@@ -2913,27 +2912,29 @@ Reg_Text
 ; ******
 Mon_Help
 ; ******
-   JSR PRIMM
+         JSR  PRIMM
+         
+         !pet KEY_RETURN
+         !pet KEY_LT_RED,"a",KEY_WHITE,"ssemble     - a address mnemonic operand",KEY_RETURN
+         !pet KEY_LT_RED,"b",KEY_WHITE,"itmaps      - b [from [to]]",KEY_RETURN
+         !pet KEY_LT_RED,"c",KEY_WHITE,"ompare      - c from to with",KEY_RETURN
+         !pet KEY_LT_RED,"d",KEY_WHITE,"isassemble  - d [from [to]]",KEY_RETURN
+         !pet KEY_LT_RED,"f",KEY_WHITE,"ill         - f from to fillbyte",KEY_RETURN
+         !pet KEY_LT_RED,"g",KEY_WHITE,"o           - g [address]",KEY_RETURN
+         !pet KEY_LT_RED,"h",KEY_WHITE,"unt         - h from to (string or bytes)",KEY_RETURN
+         !pet KEY_LT_RED,"j",KEY_WHITE,"sr          - j address",KEY_RETURN
+         !pet KEY_LT_RED,"l",KEY_WHITE,"oad         - l filename [uniy [address]]",KEY_RETURN
+         !pet KEY_LT_RED,"m",KEY_WHITE,"emory       - m [from [to]]",KEY_RETURN
+         !pet KEY_LT_RED,"r",KEY_WHITE,"egisters    - r",KEY_RETURN
+         !pet KEY_LT_RED,"s",KEY_WHITE,"ave         - s filename unit from to",KEY_RETURN
+         !pet KEY_LT_RED,"t",KEY_WHITE,"ransfer     - t from to target",KEY_RETURN
+         !pet KEY_LT_RED,"v",KEY_WHITE,"erify       - v filename [unit [address]]",KEY_RETURN
+         !pet "e",KEY_LT_RED,"x",KEY_WHITE,"it         - x",KEY_RETURN
+         !pet KEY_LT_RED,".",KEY_WHITE,"<dot>       - . address mnemonic operand",KEY_RETURN
+         !pet KEY_LT_RED,">",KEY_WHITE,"<greater>   - > address byte sequence",KEY_RETURN
+         !pet KEY_LT_RED,";",KEY_WHITE,"<semicolon> - ; register contents",KEY_RETURN
+         !pet KEY_LT_RED,"@",KEY_WHITE,"dos         - @ [dos command]",KEY_RETURN
+         !pet KEY_LT_RED,"?",KEY_WHITE,"help        - ?",KEY_RETURN
+         !pet 0
 
-   !pet KEY_LT_RED,"a",KEY_WHITE,"ssemble     - a address mnemonic operand",KEY_RETURN
-   !pet KEY_LT_RED,"b",KEY_WHITE,"itmaps      - b [from [to]]",KEY_RETURN
-   !pet KEY_LT_RED,"c",KEY_WHITE,"ompare      - c from to with",KEY_RETURN
-   !pet KEY_LT_RED,"d",KEY_WHITE,"isassemble  - d [from [to]]",KEY_RETURN
-   !pet KEY_LT_RED,"f",KEY_WHITE,"ill         - f from to fillbyte",KEY_RETURN
-   !pet KEY_LT_RED,"g",KEY_WHITE,"o           - g [address]",KEY_RETURN
-   !pet KEY_LT_RED,"h",KEY_WHITE,"unt         - h from to (string or bytes)",KEY_RETURN
-   !pet KEY_LT_RED,"j",KEY_WHITE,"sr          - j address",KEY_RETURN
-   !pet KEY_LT_RED,"l",KEY_WHITE,"oad         - l filename [uniy [address]]",KEY_RETURN
-   !pet KEY_LT_RED,"m",KEY_WHITE,"emory       - m [from [to]]",KEY_RETURN
-   !pet KEY_LT_RED,"r",KEY_WHITE,"egisters    - r",KEY_RETURN
-   !pet KEY_LT_RED,"s",KEY_WHITE,"ave         - s filename unit from to",KEY_RETURN
-   !pet KEY_LT_RED,"t",KEY_WHITE,"ransfer     - t from to target",KEY_RETURN
-   !pet KEY_LT_RED,"v",KEY_WHITE,"erify       - v filename [unit [address]]",KEY_RETURN
-   !pet "e",KEY_LT_RED,"x",KEY_WHITE,"it         - x",KEY_RETURN
-   !pet KEY_LT_RED,".",KEY_WHITE,"<dot>       - . address mnemonic operand",KEY_RETURN
-   !pet KEY_LT_RED,">",KEY_WHITE,"<greater>   - > address byte sequence",KEY_RETURN
-   !pet KEY_LT_RED,";",KEY_WHITE,"<semicolon> - ; register contents",KEY_RETURN
-   !pet KEY_LT_RED,"@",KEY_WHITE,"dos         - @ [dos command]",KEY_RETURN
-   !pet KEY_LT_RED,"?",KEY_WHITE,"help        - ?",KEY_RETURN
-   !pet 0
-   JMP Main
+         JMP Main

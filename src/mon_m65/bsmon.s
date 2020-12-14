@@ -80,7 +80,6 @@
 !addr Mon_Data    = $410       ; 40 bytes, buffer for hunt and filename
 !addr Disk_Msg    = $440       ; 40 bytes, disk status as text message
 
-!addr EXIT_OLD    = $cf2e      ; exit address for ROM 910110
 !addr EXIT        = $cfa4      ; exit address for ROM 911001
 
 !addr SETMSG      = $ff90
@@ -145,15 +144,11 @@ Mon_Call
          DEX
          BPL  @loop
 
-;        set default PC to "exit to BASIC"
+;        set default PC to monitor exit point
 
-         LDA  #<EXIT     ; ROM 911110
-         LDX  #>EXIT
-         BIT  EXIT       ; $20 (JSR) or $ff ?
-         BPL  @store
-         LDA  #<EXIT_OLD ; ROM 910111
-         LDX  #>EXIT_OLD
-@store   STA  PCL
+         LDA  #<map_NORMAL
+         LDX  #>map_NORMAL
+         STA  PCL
          STA  X_Vector
          STX  PCH
          STX  X_Vector+1
@@ -178,21 +173,18 @@ Mon_Register
 
          JSR  Reg_Text
 
-; print Bank,PCH
+; print PCH
+
+         LDA  PCH
+         JSR  Print_Hex
+
+; print PCL,SR,PCL,A,X,Y,Z,BP
 
          LDY  #0
-@loopa   LDA  Bank,Y
-         JSR  Print_Hex
-         INY
-         CPY  #2
-         BCC  @loopa
-
-; print SR,PCL,A,X,Y,Z,BP
-
-@loopb   LDA  Bank,Y
+@loopb   LDA  PCL,Y
          JSR  Print_Hex_Blank
          INY
-         CPY  #9
+         CPY  #7
          BCC  @loopb
 
 ; print 16 bit stack pointer
@@ -286,7 +278,7 @@ Print_Commands
 ; ************
 
          JSR  PRIMM
-         !pet KEY_RETURN,KEY_YELLOW,KEY_RVS_ON,"commands: "
+         !pet KEY_RETURN,KEY_YELLOW,KEY_RVS_ON," commands:  "
 
 ; **********
 Command_Char
@@ -305,7 +297,7 @@ Cons_Prefix
 Load_Save_Verify
 ; **************
 
-         !pet "lsv",KEY_WHITE,0
+         !pet "lsv ",KEY_WHITE,KEY_RETURN,0
          RTS
 
 ; ********
@@ -2906,7 +2898,7 @@ BP_ZERO   !pet "b-p 9 0",0        ; set buffer pointer to 0
 Reg_Text
 ; ******
          JSR  PRIMM
-         !pet KEY_RETURN, "    pc   sr ac xr yr zr bp  sp  nvebdizc", KEY_RETURN, "; ", KEY_ESC, "q",0
+         !pet KEY_RETURN, "   pc  sr ac xr yr zr bp  sp  nvebdizc", KEY_RETURN, "; ", KEY_ESC, "q",0
          RTS
 
 ; ******
@@ -2914,7 +2906,7 @@ Mon_Help
 ; ******
          JSR  PRIMM
          
-         !pet KEY_RETURN
+         !pet KEY_RETURN, KEY_RETURN
          !pet KEY_LT_RED,"a",KEY_WHITE,"ssemble     - a address mnemonic operand",KEY_RETURN
          !pet KEY_LT_RED,"b",KEY_WHITE,"itmaps      - b [from [to]]",KEY_RETURN
          !pet KEY_LT_RED,"c",KEY_WHITE,"ompare      - c from to with",KEY_RETURN

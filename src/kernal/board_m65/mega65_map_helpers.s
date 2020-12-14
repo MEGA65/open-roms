@@ -112,7 +112,7 @@ map_MON_1:
 	tay
 	taz
 
-	lda #$E0
+	lda #$C0
 	ldx #$42                 ; $4000 <- map 8KB from $30000
 
 	map

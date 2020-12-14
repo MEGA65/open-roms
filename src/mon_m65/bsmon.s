@@ -1325,7 +1325,7 @@ Mon_Assemble
          STA  [Long_PC],Z
 
 @print   JSR  PRIMM
-         .BYTE 13,$91,"A \eQ",0
+         !byte 13,$91,"A ", KEY_ESC, "Q",0
          JSR  Print_Code
          INC  Op_Size
          LDA  Op_Size
@@ -1336,7 +1336,7 @@ Mon_Assemble
 ; for easy entry of next assembler instruction
 
          JSR  PRIMM
-         .BYTE CR,"A ",0
+         !pet CR,"a ",0
 
          LDA  #'A'
          STA  Buffer
@@ -1473,7 +1473,7 @@ Dis_Code
 ; ******
 
          JSR  PRIMM
-         .BYTE ". ",0
+         !pet ". ",0
 
 ; ********
 Print_Code
@@ -1555,7 +1555,7 @@ Print_Code
 @lpfill  CPY  #3
          BCS  @long
          JSR  PRIMM
-         .BYTE "   ",0
+         !pet "   ",0
          INY
          BRA  @lpfill
 
@@ -1967,7 +1967,7 @@ CR_Erase
 ; ******
 
          JSR  PRIMM
-         .BYTE "\r\eQ",0
+         !pet KEY_RETURN, KEY_ESC, "q",0
          RTS
 
 ; *******
@@ -2925,17 +2925,17 @@ ACCUMODE !byte $0a,$1a,$2a,$3a,$4a,$6a,$42,$43
 Num_Base !byte 16,10, 8, 2 ; hex, dec, oct, bin
 Num_Bits !byte  4, 3, 3, 1 ; hex, dec, oct, bin
 
-Index_Char .BYTE "XYZ"
+Index_Char !pet "xyz"
 
-;                0123456789abcd
-U1        .BYTE "U1:9 0 000 000",0 ; channel 9, drive, track, sector
-BP_ZERO   .BYTE "B-P 9 0",0        ; set buffer pointer to 0
+;               0123456789abcd
+U1        !pet "u1:9 0 000 000",0 ; channel 9, drive, track, sector
+BP_ZERO   !pet "b-p 9 0",0        ; set buffer pointer to 0
 
 ; ******
 Reg_Text
 ; ******
          JSR  PRIMM
-         .BYTE "\r    PC   SR AC XR YR ZR BP  SP  NVEBDIZC\r; \eQ",0
+         !pet KEY_RETURN, "    pc   sr ac xr yr zr bp  sp  nvebdizc", KEY_RETURN, "; ", KEY_ESC, "q",0
          RTS
 
 ; ******
@@ -2943,27 +2943,27 @@ Mon_Help
 ; ******
    JSR PRIMM
 
-   .BYTE LRED,"A",WHITE,"SSEMBLE     - A ADDRESS MNEMONIC OPERAND",CR
-   .BYTE LRED,"B",WHITE,"ITMAPS      - B [FROM [TO]]",CR
-   .BYTE LRED,"C",WHITE,"OMPARE      - C FROM TO WITH",CR
-   .BYTE LRED,"D",WHITE,"ISASSEMBLE  - D [FROM [TO]]",CR
-   .BYTE LRED,"F",WHITE,"ILL         - F FROM TO FILLBYTE",CR
-   .BYTE LRED,"G",WHITE,"O           - G [ADDRESS]",CR
-   .BYTE LRED,"H",WHITE,"UNT         - H FROM TO (STRING OR BYTES)",CR
-   .BYTE LRED,"J",WHITE,"SR          - J ADDRESS",CR
-   .BYTE LRED,"L",WHITE,"OAD         - L FILENAME [UNIT [ADDRESS]]",CR
-   .BYTE LRED,"M",WHITE,"EMORY       - M [FROM [TO]]",CR
-   .BYTE LRED,"R",WHITE,"EGISTERS    - R",CR
-   .BYTE LRED,"S",WHITE,"AVE         - S FILENAME UNIT FROM TO",CR
-   .BYTE LRED,"T",WHITE,"RANSFER     - T FROM TO TARGET",CR
-   .BYTE LRED,"V",WHITE,"ERIFY       - V FILENAME [UNIT [ADDRESS]]",CR
-   .BYTE "E",LRED,"X",WHITE,"IT         - X",CR
-   .BYTE LRED,".",WHITE,"<DOT>       - . ADDRESS MNEMONIC OPERAND",CR
-   .BYTE LRED,">",WHITE,"<GREATER>   - > ADDRESS BYTE SEQUENCE",CR
-   .BYTE LRED,";",WHITE,"<SEMICOLON> - ; REGISTER CONTENTS",CR
-   .BYTE LRED,"@",WHITE,"DOS         - @ [DOS COMMAND]",CR
-   .BYTE LRED,"?",WHITE,"HELP        - ?",CR
-   .BYTE 0
+   !pet LRED,"a",WHITE,"ssemble     - a address mnemonic operand",CR
+   !pet LRED,"b",WHITE,"itmaps      - b [from [to]]",CR
+   !pet LRED,"c",WHITE,"ompare      - c from to with",CR
+   !pet LRED,"d",WHITE,"isassemble  - d [from [to]]",CR
+   !pet LRED,"f",WHITE,"ill         - f from to fillbyte",CR
+   !pet LRED,"g",WHITE,"o           - g [address]",CR
+   !pet LRED,"h",WHITE,"unt         - h from to (string or bytes)",CR
+   !pet LRED,"j",WHITE,"sr          - j address",CR
+   !pet LRED,"l",WHITE,"oad         - l filename [uniy [address]]",CR
+   !pet LRED,"m",WHITE,"emory       - m [from [to]]",CR
+   !pet LRED,"r",WHITE,"egisters    - r",CR
+   !pet LRED,"s",WHITE,"ave         - s filename unit from to",CR
+   !pet LRED,"t",WHITE,"ransfer     - t from to target",CR
+   !pet LRED,"v",WHITE,"erify       - v filename [unit [address]]",CR
+   !pet "e",LRED,"x",WHITE,"it         - x",CR
+   !pet LRED,".",WHITE,"<dot>       - . address mnemonic operand",CR
+   !pet LRED,">",WHITE,"<greater>   - > address byte sequence",CR
+   !pet LRED,";",WHITE,"<semicolon> - ; register contents",CR
+   !pet LRED,"@",WHITE,"dos         - @ [dos command]",CR
+   !pet LRED,"?",WHITE,"help        - ?",CR
+   !pet 0
    JMP Main
 
 }

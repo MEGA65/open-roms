@@ -62,7 +62,7 @@ map_KERNAL_1:
 	tay
 	taz
 
-	ldx #$42                 ; $4000 <- map 8KB from $20000
+	ldx #$42                 ; $4000 <- map 8KB from $24000
 
 	bra map_end
 
@@ -85,7 +85,7 @@ map_DOS_1:
 	ldx #$C1                 ; $4000 <- map 16KB ROM from $20000
 
 	map
-	bra map_end_no_eom      ; no EOM, we do not want interrupts within DOS!
+	bra map_end_no_eom       ; no EOM, we do not want interrupts within DOS!
 
 map_NORMAL_from_DOS_1:
 
@@ -99,3 +99,21 @@ map_NORMAL_from_DOS_1:
 	tab
 
 	bra map_NORMAL_common
+
+map_MON_1:
+
+	php
+	pha
+	phx
+	phy
+	phz
+
+	lda #$00
+	tay
+	taz
+
+	lda #$E0
+	ldx #$42                 ; $4000 <- map 8KB from $30000
+
+	map
+	bra map_end

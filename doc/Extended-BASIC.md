@@ -98,6 +98,10 @@ Displays BASIC memory usage information:
 * `STRS` - bytes occupied by strings, also the ones belonging to arrays
 * `FREE` - unused space
 
+### `MONITOR` (MEGA65)
+
+Invokes a machine language monitor
+
 ### `SYSINFO` (MEGA65)
 
 Displays various system information.

@@ -9,20 +9,6 @@
 ; XXX adapt all the addresses/constants!
 
 
-; *************
-; * Constants *
-; *************
-
-!set WHITE  = $05
-!set YELLOW = $9e
-!set LRED   = $96
-
-!set CR     = $0d
-!set REV    = $12
-!set CRIGHT = $1d
-!set QUOTE  = $22
-!set APOSTR = $27
-
 ; ************************************************
 ; * Register storage for JMPFAR and JSRFAR calls *
 ; ************************************************
@@ -80,8 +66,6 @@
 !addr SA          = $b9
 !addr FA          = $ba
 !addr FNADR       = $bb
-!addr BA          = $bd
-!addr FNBANK      = $be
 
 !addr MODE_80     = $d7        ; 80 column / 40 volumn flag
 
@@ -103,32 +87,28 @@
 !addr Disk_Sector = $40A       ; logical sector 0 -> 255
 !addr Disk_Status = $40B       ; BCD value of status
 
-Mon_Data          = $410       ; 40 bytes, buffer for hunt and filename
-Disk_Msg          = $440       ; 40 bytes, disk status as text message
+!addr Mon_Data    = $410       ; 40 bytes, buffer for hunt and filename
+!addr Disk_Msg    = $440       ; 40 bytes, disk status as text message
 
-!addr EXIT_OLD   = $cf2e       ; exit address for ROM 910110
-!addr EXIT       = $cfa4       ; exit address for ROM 911001
+!addr EXIT_OLD    = $cf2e      ; exit address for ROM 910110
+!addr EXIT        = $cfa4      ; exit address for ROM 911001
 
-!addr PRIMM      = $ff7d
-!addr CINT       = $ff81
-!addr IOINIT     = $ff84
-!addr SETMSG     = $ff90
-!addr SECOND     = $ff93
-!addr TKSA       = $ff96
-!addr KEY        = $ff9f
-!addr ACPTR      = $ffa5
-!addr CIOUT      = $ffa8
-!addr UNTALK     = $ffab
-!addr UNLSN      = $ffae
-!addr LISTEN     = $ffb1
-!addr TALK       = $ffb4
-!addr OPEN       = $ffc0
-!addr CLOSE      = $ffc3
-!addr CHRIN      = $ffcf
-!addr CHROUT     = $ffd2
-!addr LOAD       = $ffd5
-!addr SAVE       = $ffd8
-!addr STOP       = $ffe1
+!addr PRIMM       = $ff7d
+!addr CINT        = $ff81
+!addr SETMSG      = $ff90
+!addr SECOND      = $ff93
+!addr TKSA        = $ff96
+!addr ACPTR       = $ffa5
+!addr CIOUT       = $ffa8
+!addr UNTALK      = $ffab
+!addr UNLSN       = $ffae
+!addr LISTEN      = $ffb1
+!addr TALK        = $ffb4
+!addr OPEN        = $ffc0
+!addr CLOSE       = $ffc3
+!addr CHRIN       = $ffcf
+!addr CHROUT      = $ffd2
+!addr STOP        = $ffe1
 
 
 ; *******
@@ -268,7 +248,7 @@ Main_A
          INX
          CPX  #80
          BCS  Mon_Error         ; input too long
-         CMP  #CR
+         CMP  #KEY_RETURN
          BNE  @loop
 
          LDA  #0
@@ -298,7 +278,7 @@ Mon_Error
 ; put a question mark at the end of the text
 
          JSR  PRIMM
-         !pet KEY_ESC, "o",CRIGHT,'?',0
+         !pet KEY_ESC, "o",KEY_CRSR_RIGHT,'?',0
          LDX  #$f8              ; reset stack pointer
          TXS
          BRA  Main
@@ -320,7 +300,7 @@ Print_Commands
 ; ************
 
          JSR  PRIMM
-         !pet CR,YELLOW,REV,"bs monitor commands:"
+         !pet KEY_RETURN,KEY_YELLOW,KEY_RVS_ON,"bs monitor commands:"
 
 ; **********
 Command_Char
@@ -339,7 +319,7 @@ Cons_Prefix
 Load_Save_Verify
 ; **************
 
-         !pet "lsv",WHITE,0
+         !pet "lsv",KEY_WHITE,0
          RTS
 
 ; ********
@@ -589,7 +569,7 @@ Mon_Bits
          BCS  @lab
          JSR  LAC_To_LPC        ; Long_PC = start address
 @lab     JSR  Print_CR
-         LDA  #WHITE
+         LDA  #KEY_WHITE
          STA  Long_DA+1
 
          LDX  #8
@@ -597,7 +577,7 @@ Mon_Bits
          JSR  Hex_LPC
          LDZ  #0
 @col     SEC
-         LDA  #WHITE+LRED       ; toggle colour
+         LDA  #KEY_WHITE+KEY_LT_RED   ; toggle colour
          SBC  Long_DA+1
          STA  Long_DA+1
          JSR  CHROUT
@@ -736,9 +716,9 @@ Dump_Row
          LDX  #2                ; 2 blocks in 80 columns
          BBR7 MODE_80,@loop
          DEX                    ; 1 block  in 40 columns
-@loop    LDA  #LRED
+@loop    LDA  #KEY_LT_RED
          JSR  Dump_4_Bytes
-         LDA  #WHITE
+         LDA  #KEY_WHITE
          JSR  Dump_4_Bytes
          DEX
          BNE  @loop
@@ -750,9 +730,9 @@ Dump_Row
          LDX  #2                ; 4 blocks in 80 columns
          BBR7 MODE_80,@lchr
          DEX                    ; 2 blocks in 40 columns
-@lchr    LDA  #LRED
+@lchr    LDA  #KEY_LT_RED
          JSR  Dump_4_Chars
-         LDA  #WHITE
+         LDA  #KEY_WHITE
          JSR  Dump_4_Chars
          DEX
          BNE  @lchr
@@ -822,7 +802,7 @@ Mon_Hunt
          LBCS Mon_Error         ; Long_CT = count
          LDY  #0
          JSR  Get_Char
-         CMP  #APOSTR
+         CMP  #KEY_APOSTROPHE
          BNE  @bin
          JSR  Get_Char          ; string hunt
          CMP  #0
@@ -867,84 +847,87 @@ Mon_Hunt
 Load_Save
 ; *******
 
-         LDY  Disk_Unit
-         STY  FA
-         LDY  #8
-         STY  SA
-         LDY  #0
-         STY  BA
-         STY  FNLEN
-         STY  FNBANK
-         STY  STATUS
-         LDA  #>Mon_Data
-         STA  FNADR+1
-         LDA  #<Mon_Data
-         STA  FNADR
-@skip    JSR  Get_Char          ; skip blanks
-         LBEQ Mon_Error
-         CMP  #' '
-         BEQ  @skip
-         CMP  #QUOTE            ; must be quote
-         LBNE Mon_Error
+         ; XXX to be rewritten for OpenROMs!
+         rts
 
-         LDX  Buf_Index
-@copyfn  LDA  Buffer,X          ; copy filename
-         BEQ  @do               ; no more input
-         INX
-         CMP  #QUOTE
-         BEQ  @unit             ; end of filename
-         STA  (FNADR),Y         ; store to filename
-         INC  FNLEN
-         INY
-         CPY  #19               ; max = 16 plus prefix "@0:"
-         BCC  @copyfn
-         JMP  Mon_Error         ; filename too long
+         ; LDY  Disk_Unit
+         ; STY  FA
+         ; LDY  #8
+         ; STY  SA
+         ; LDY  #0
+         ; STY  BA
+         ; STY  FNLEN
+         ; STY  FNBANK
+         ; STY  STATUS
+         ; LDA  #>Mon_Data
+         ; STA  FNADR+1
+         ; LDA  #<Mon_Data
+         ; STA  FNADR
+; @skip    JSR  Get_Char          ; skip blanks
+         ; LBEQ Mon_Error
+         ; CMP  #' '
+         ; BEQ  @skip
+         ; CMP  #KEY_QUOTE        ; must be quote
+         ; LBNE Mon_Error
 
-@unit    STX  Buf_Index         ; update read position
-         JSR  Get_Char
-         BEQ  @do               ; no more parameter
-         JSR  Get_LAC
-         BCS  @do
-         LDA  Long_AC           ; unit #
-         STA  FA
-         JSR  Get_LAC
-         BCS  @do
-         JSR  LAC_To_LPC        ; Long_PC = start address
-         STA  BA                ; Bank
-         JSR  Get_LAC           ; Long_AC = end address + 1
-         BCS  @load             ; no end address -> load/verify
-         JSR  Print_CR
-         LDX  Long_AC           ; X/Y = end address
-         LDY  Long_AC+1
-         LDA  VERCK             ; A = load/verify/save
-         CMP  #'S'
-         LBNE Mon_Error         ; must be Save
-         LDA  #0
-         STA  SA                ; set SA for PRG
-         LDA  #Long_PC          ; Long_PC = start address
-         JSR  SAVE
-@exit    JMP  Main
+         ; LDX  Buf_Index
+; @copyfn  LDA  Buffer,X          ; copy filename
+         ; BEQ  @do               ; no more input
+         ; INX
+         ; CMP  #KEY_QUOTE
+         ; BEQ  @unit             ; end of filename
+         ; STA  (FNADR),Y         ; store to filename
+         ; INC  FNLEN
+         ; INY
+         ; CPY  #19               ; max = 16 plus prefix "@0:"
+         ; BCC  @copyfn
+         ; JMP  Mon_Error         ; filename too long
 
-@do      LDA  VERCK
-         CMP  #'V'              ; Verify
-         BEQ  @exec
-         CMP  #'L'              ; Load
-         LBNE Mon_Error
-         LDA  #0                ; 0 = LOAD
-@exec    JSR  LOAD              ; A == 0 : LOAD else VERIFY
-         BBR4 STATUS,@exit
-         LDA  VERCK
-         LBEQ Mon_Error
-         LBCS Main
-         JSR  PRIMM
-         !pet " error",0
-         JMP  Main
+; @unit    STX  Buf_Index         ; update read position
+         ; JSR  Get_Char
+         ; BEQ  @do               ; no more parameter
+         ; JSR  Get_LAC
+         ; BCS  @do
+         ; LDA  Long_AC           ; unit #
+         ; STA  FA
+         ; JSR  Get_LAC
+         ; BCS  @do
+         ; JSR  LAC_To_LPC        ; Long_PC = start address
+         ; STA  BA                ; Bank
+         ; JSR  Get_LAC           ; Long_AC = end address + 1
+         ; BCS  @load             ; no end address -> load/verify
+         ; JSR  Print_CR
+         ; LDX  Long_AC           ; X/Y = end address
+         ; LDY  Long_AC+1
+         ; LDA  VERCK             ; A = load/verify/save
+         ; CMP  #'S'
+         ; LBNE Mon_Error         ; must be Save
+         ; LDA  #0
+         ; STA  SA                ; set SA for PRG
+         ; LDA  #Long_PC          ; Long_PC = start address
+         ; JSR  SAVE
+; @exit    JMP  Main
 
-@load    LDX  Long_PC
-         LDY  Long_PC+1
-         LDA  #0                ; 0 = use X/Y as load address
-         STA  SA                ; and ignore load address from file
-         BRA  @do
+; @do      LDA  VERCK
+         ; CMP  #'V'              ; Verify
+         ; BEQ  @exec
+         ; CMP  #'L'              ; Load
+         ; LBNE Mon_Error
+         ; LDA  #0                ; 0 = LOAD
+; @exec    JSR  LOAD              ; A == 0 : LOAD else VERIFY
+         ; BBR4 STATUS,@exit
+         ; LDA  VERCK
+         ; LBEQ Mon_Error
+         ; LBCS Main
+         ; JSR  PRIMM
+         ; !pet " error",0
+         ; JMP  Main
+
+; @load    LDX  Long_PC
+         ; LDY  Long_PC+1
+         ; LDA  #0                ; 0 = use X/Y as load address
+         ; STA  SA                ; and ignore load address from file
+         ; BRA  @do
 
 ; ******
 Mon_Fill
@@ -1337,7 +1320,7 @@ Mon_Assemble
 ; for easy entry of next assembler instruction
 
          JSR  PRIMM
-         !pet CR,"a ",0
+         !pet KEY_RETURN,"a ",0
 
          LDA  #'A'
          STA  Buffer
@@ -1562,7 +1545,7 @@ Print_Code
 
 ;        detect long branches
 
-@long    LDA  #YELLOW
+@long    LDA  #KEY_YELLOW
          JSR  CHROUT
          LDX  Op_Code
          LDA  LEN_ADM,X
@@ -1640,7 +1623,7 @@ Print_Code
 
 @mne4    JSR  Print_Blank
 @mne5    JSR  Print_Blank
-         LDA  #WHITE
+         LDA  #KEY_WHITE
          JSR  CHROUT
 
 ;        check for accumulator operand
@@ -1832,7 +1815,7 @@ Read_Number
 
          JSR  Get_Glyph         ; get 1st. character
          BEQ  @exit
-         CMP  #APOSTR           ; character entry 'C
+         CMP  #KEY_APOSTROPHE   ; character entry 'C
          BNE  @numeric
          JSR  Get_Char          ; character after '
          STA  Long_AC
@@ -1919,13 +1902,13 @@ Hex_LPC
 
          LDX  Long_PC+3
          BEQ  @laba
-         LDA  #YELLOW
+         LDA  #KEY_YELLOW
          JSR  CHROUT
          TXA
          JSR  Print_Hex
          LDA  Long_PC+2
          JSR  Print_Hex
-         LDA  #WHITE
+         LDA  #KEY_WHITE
          JSR  CHROUT
          BRA  @labb
 @laba    LDA  Long_PC+2
@@ -2945,26 +2928,26 @@ Mon_Help
 ; ******
    JSR PRIMM
 
-   !pet LRED,"a",WHITE,"ssemble     - a address mnemonic operand",CR
-   !pet LRED,"b",WHITE,"itmaps      - b [from [to]]",CR
-   !pet LRED,"c",WHITE,"ompare      - c from to with",CR
-   !pet LRED,"d",WHITE,"isassemble  - d [from [to]]",CR
-   !pet LRED,"f",WHITE,"ill         - f from to fillbyte",CR
-   !pet LRED,"g",WHITE,"o           - g [address]",CR
-   !pet LRED,"h",WHITE,"unt         - h from to (string or bytes)",CR
-   !pet LRED,"j",WHITE,"sr          - j address",CR
-   !pet LRED,"l",WHITE,"oad         - l filename [uniy [address]]",CR
-   !pet LRED,"m",WHITE,"emory       - m [from [to]]",CR
-   !pet LRED,"r",WHITE,"egisters    - r",CR
-   !pet LRED,"s",WHITE,"ave         - s filename unit from to",CR
-   !pet LRED,"t",WHITE,"ransfer     - t from to target",CR
-   !pet LRED,"v",WHITE,"erify       - v filename [unit [address]]",CR
-   !pet "e",LRED,"x",WHITE,"it         - x",CR
-   !pet LRED,".",WHITE,"<dot>       - . address mnemonic operand",CR
-   !pet LRED,">",WHITE,"<greater>   - > address byte sequence",CR
-   !pet LRED,";",WHITE,"<semicolon> - ; register contents",CR
-   !pet LRED,"@",WHITE,"dos         - @ [dos command]",CR
-   !pet LRED,"?",WHITE,"help        - ?",CR
+   !pet KEY_LT_RED,"a",KEY_WHITE,"ssemble     - a address mnemonic operand",KEY_RETURN
+   !pet KEY_LT_RED,"b",KEY_WHITE,"itmaps      - b [from [to]]",KEY_RETURN
+   !pet KEY_LT_RED,"c",KEY_WHITE,"ompare      - c from to with",KEY_RETURN
+   !pet KEY_LT_RED,"d",KEY_WHITE,"isassemble  - d [from [to]]",KEY_RETURN
+   !pet KEY_LT_RED,"f",KEY_WHITE,"ill         - f from to fillbyte",KEY_RETURN
+   !pet KEY_LT_RED,"g",KEY_WHITE,"o           - g [address]",KEY_RETURN
+   !pet KEY_LT_RED,"h",KEY_WHITE,"unt         - h from to (string or bytes)",KEY_RETURN
+   !pet KEY_LT_RED,"j",KEY_WHITE,"sr          - j address",KEY_RETURN
+   !pet KEY_LT_RED,"l",KEY_WHITE,"oad         - l filename [uniy [address]]",KEY_RETURN
+   !pet KEY_LT_RED,"m",KEY_WHITE,"emory       - m [from [to]]",KEY_RETURN
+   !pet KEY_LT_RED,"r",KEY_WHITE,"egisters    - r",KEY_RETURN
+   !pet KEY_LT_RED,"s",KEY_WHITE,"ave         - s filename unit from to",KEY_RETURN
+   !pet KEY_LT_RED,"t",KEY_WHITE,"ransfer     - t from to target",KEY_RETURN
+   !pet KEY_LT_RED,"v",KEY_WHITE,"erify       - v filename [unit [address]]",KEY_RETURN
+   !pet "e",KEY_LT_RED,"x",KEY_WHITE,"it         - x",KEY_RETURN
+   !pet KEY_LT_RED,".",KEY_WHITE,"<dot>       - . address mnemonic operand",KEY_RETURN
+   !pet KEY_LT_RED,">",KEY_WHITE,"<greater>   - > address byte sequence",KEY_RETURN
+   !pet KEY_LT_RED,";",KEY_WHITE,"<semicolon> - ; register contents",KEY_RETURN
+   !pet KEY_LT_RED,"@",KEY_WHITE,"dos         - @ [dos command]",KEY_RETURN
+   !pet KEY_LT_RED,"?",KEY_WHITE,"help        - ?",KEY_RETURN
    !pet 0
    JMP Main
 

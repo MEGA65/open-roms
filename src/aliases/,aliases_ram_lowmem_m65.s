@@ -35,7 +35,18 @@
 
 	; $400-$57F - reserved for BASIC
 
-	                               ; $400-$57F  -- UNUSED -- reserved for BASIC
+	                                ; $400-$54F   -- UNUSED -- reserved for BASIC
+
+	; $558-$57F - reserved for MONITOR
+
+	!addr MON_XVEC           = $550 ; $550-$551  monitor exit vector
+	!addr MON_Ix_Mne         = $552 ;            index to mnemonics table
+	!addr MON_Op_Mne         = $553 ;            3 bytes for mnemonic
+	!addr MON_Op_Ix          = $554 ;            type of constant
+	!addr MON_Op_Len         = $555 ;            length of operand
+	!addr MON_Disk_Track     = $556 ;            logical track  1 -> 255
+	!addr MON_Disk_Sector    = $557 ;            logical sector 0 -> 255
+	!addr MON_DATA           = $558 ; $558-$57F  40 bytes, buffer for hunt and filename
 
 	; $580-$5FF - reserved for KERNAL
 

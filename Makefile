@@ -68,52 +68,56 @@ SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
 SRCDIR_MON_M65 = $(SRCDIR_COMMON) \
                  src/mon_m65
 
-SRC_BASIC    = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
-SRC_KERNAL   = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
-SRC_DOS_M65  = $(foreach dir,$(SRCDIR_DOS_M65),$(wildcard $(dir)/*.s))
-SRC_MON_M65  = $(foreach dir,$(SRCDIR_MON_M65),$(wildcard $(dir)/*.s))
-SRC_TOOLS    = $(wildcard tools/*.c,tools/*.cc)
+SRCDIR_ZVM_M65 = $(SRCDIR_COMMON) \
+                 src/zvm_m65
 
-DIR_ACME     = assembler/acme/src
-HDR_ACME     = $(filter-out $(wildcard $(DIR_ACME)/_*.h),$(wildcard $(DIR_ACME)/*.h))
-SRC_ACME     = $(DIR_ACME)/acme.c $(DIR_ACME)/platform.c $(DIR_ACME)/alu.c $(DIR_ACME)/typesystem.c \
-               $(DIR_ACME)/cliargs.c $(DIR_ACME)/global.c $(DIR_ACME)/output.c $(DIR_ACME)/flow.c \
-               $(DIR_ACME)/macro.c $(DIR_ACME)/cpu.c $(DIR_ACME)/encoding.c $(DIR_ACME)/pseudoopcodes.c \
-               $(DIR_ACME)/dynabuf.c $(DIR_ACME)/mnemo.c $(DIR_ACME)/input.c $(DIR_ACME)/section.c \
-               $(DIR_ACME)/symbol.c $(DIR_ACME)/tree.c
+SRC_BASIC      = $(foreach dir,$(SRCDIR_BASIC),$(wildcard $(dir)/*.s))
+SRC_KERNAL     = $(foreach dir,$(SRCDIR_KERNAL),$(wildcard $(dir)/*.s))
+SRC_DOS_M65    = $(foreach dir,$(SRCDIR_DOS_M65),$(wildcard $(dir)/*.s))
+SRC_MON_M65    = $(foreach dir,$(SRCDIR_MON_M65),$(wildcard $(dir)/*.s))
+SRC_ZVM_M65    = $(foreach dir,$(SRCDIR_ZVM_M65),$(wildcard $(dir)/*.s))
+SRC_TOOLS      = $(wildcard tools/*.c,tools/*.cc)
 
-CRT_BIN_LIST = assets/cartridge/header-cart.bin \
-               assets/cartridge/header-seg0.bin \
-               assets/cartridge/header-seg1.bin \
-               assets/cartridge/header-seg2.bin \
-               assets/cartridge/header-seg3.bin
+DIR_ACME       = assembler/acme/src
+HDR_ACME       = $(filter-out $(wildcard $(DIR_ACME)/_*.h),$(wildcard $(DIR_ACME)/*.h))
+SRC_ACME       = $(DIR_ACME)/acme.c $(DIR_ACME)/platform.c $(DIR_ACME)/alu.c $(DIR_ACME)/typesystem.c \
+                 $(DIR_ACME)/cliargs.c $(DIR_ACME)/global.c $(DIR_ACME)/output.c $(DIR_ACME)/flow.c \
+                 $(DIR_ACME)/macro.c $(DIR_ACME)/cpu.c $(DIR_ACME)/encoding.c $(DIR_ACME)/pseudoopcodes.c \
+                 $(DIR_ACME)/dynabuf.c $(DIR_ACME)/mnemo.c $(DIR_ACME)/input.c $(DIR_ACME)/section.c \
+                 $(DIR_ACME)/symbol.c $(DIR_ACME)/tree.c
+
+CRT_BIN_LIST   = assets/cartridge/header-cart.bin \
+                 assets/cartridge/header-seg0.bin \
+                 assets/cartridge/header-seg1.bin \
+                 assets/cartridge/header-seg2.bin \
+                 assets/cartridge/header-seg3.bin
 
 # Generated files
 
-GEN_BASIC   = build/,generated/,float_constants.s
-GEN_KERNAL  =
+GEN_BASIC      = build/,generated/,float_constants.s
+GEN_KERNAL     =
 
 # List of build directories
 
-DIR_CUS    = build/target_custom
-DIR_GEN    = build/target_generic
-DIR_GENCRT = build/target_generic_crt
-DIR_TST    = build/target_testing
-DIR_M65    = build/target_mega65
-DIR_U64    = build/target_ultimate64
-DIR_U64CRT = build/target_ultimate64_crt
-DIR_X16    = build/target_cx16
+DIR_CUS        = build/target_custom
+DIR_GEN        = build/target_generic
+DIR_GENCRT     = build/target_generic_crt
+DIR_TST        = build/target_testing
+DIR_M65        = build/target_mega65
+DIR_U64        = build/target_ultimate64
+DIR_U64CRT     = build/target_ultimate64_crt
+DIR_X16        = build/target_cx16
 
 # List of config files
 
-CFG_CUS    = src/,,config_custom.s 
-CFG_GEN    = src/,,config_generic.s
-CFG_GENCRT = src/,,config_generic_crt.s
-CFG_TST    = src/,,config_testing.s
-CFG_M65    = src/,,config_mega65.s
-CFG_U64    = src/,,config_ultimate64.s
-CFG_X16    = src/,,config_cx16.s
-CFG_U64CRT = src/,,config_ultimate64_crt.s
+CFG_CUS        = src/,,config_custom.s 
+CFG_GEN        = src/,,config_generic.s
+CFG_GENCRT     = src/,,config_generic_crt.s
+CFG_TST        = src/,,config_testing.s
+CFG_M65        = src/,,config_mega65.s
+CFG_U64        = src/,,config_ultimate64.s
+CFG_X16        = src/,,config_cx16.s
+CFG_U64CRT     = src/,,config_ultimate64_crt.s
 
 # List of files with generated strings
 
@@ -128,10 +132,11 @@ GEN_STR_X16    = $(DIR_X16)/,generated/,packed_strings.s
 
 # Dependencies - helper variables
 
-DEP_BASIC   = $(SRC_BASIC)   $(SRCDIR_BASIC)   $(GEN_BASIC)
-DEP_KERNAL  = $(SRC_KERNAL)  $(SRCDIR_KERNAL)  $(GEN_KERNAL)
-DEP_DOS_M65 = $(SRC_DOS_M65) $(SRCDIR_DOS_M65)
-DEP_MON_M65 = $(SRC_MON_M65) $(SRCDIR_MON_M65)
+DEP_BASIC      = $(SRC_BASIC)   $(SRCDIR_BASIC)   $(GEN_BASIC)
+DEP_KERNAL     = $(SRC_KERNAL)  $(SRCDIR_KERNAL)  $(GEN_KERNAL)
+DEP_DOS_M65    = $(SRC_DOS_M65) $(SRCDIR_DOS_M65)
+DEP_MON_M65    = $(SRC_MON_M65) $(SRCDIR_MON_M65)
+DEP_ZVM_M65    = $(SRC_ZVM_M65) $(SRCDIR_ZVM_M65)
 
 # List of tools
 
@@ -210,7 +215,8 @@ SEG_LIST_M65       = $(DIR_M65)/basic.seg_0  \
                      $(DIR_M65)/kernal.seg_C \
                      $(DIR_M65)/kernal.seg_1 \
                      $(DIR_M65)/dos.seg_1    \
-                     $(DIR_M65)/mon.seg_1
+                     $(DIR_M65)/mon.seg_1    \
+                     $(DIR_M65)/zvm.seg_1
 
 SEG_LIST_X16       = $(DIR_X16)/basic.seg_0  \
                      $(DIR_X16)/basic.seg_1  \
@@ -368,7 +374,9 @@ $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_comb
 $(DIR_M65)/dos.seg_1    $(DIR_M65)/DOS_1_combined.vs    $(DIR_M65)/DOS_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_DOS_M65) $(CFG_M65)
 $(DIR_M65)/mon.seg_1    $(DIR_M65)/MON_1_combined.vs    $(DIR_M65)/MON_1_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_MON_M65) $(CFG_M65)
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_MON_M65) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym
+$(DIR_M65)/zvm.seg_1    $(DIR_M65)/ZVM_1_combined.vs    $(DIR_M65)/ZVM_1_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_ZVM_M65) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym
 
 $(DIR_X16)/basic.seg_1  $(DIR_X16)/BASIC_1_combined.vs  $(DIR_X16)/BASIC_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_X16) $(GEN_STR_X16) $(DIR_X16)/KERNAL_0_combined.sym $(DIR_X16)/BASIC_0_combined.sym
@@ -502,7 +510,7 @@ $(DIR_U64CRT)/kernal.seg_1 $(DIR_U64CRT)/KERNAL_1_combined.vs $(DIR_U64CRT)/KERN
 	@rm -f $@* $(DIR_U64CRT)/kernal.seg_1 $(DIR_U64CRT)/KERNAL_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r CRT -s KERNAL_1 -i KERNAL_1-ultimate64-crt -o kernal.seg_1 -d $(DIR_U64CRT) -l 8000 -h 9fff $(CFG_U64CRT) $(GEN_STR_U64CRT) $(SRCDIR_KERNAL) $(GEN_KERNAL)
 
-# Rules - BASIC, KERNAL, DOS and MON intermediate files, for MEGA65
+# Rules - BASIC, KERNAL, DOS, MON, and ZVM  intermediate files, for MEGA65
 
 $(DIR_M65)/OUTB_0.BIN $(DIR_M65)/BASIC_0_combined.vs $(DIR_M65)/BASIC_0_combined.sym:
 	@mkdir -p $(DIR_M65)
@@ -538,6 +546,11 @@ $(DIR_M65)/mon.seg_1 $(DIR_M65)/MON_1_combined.vs $(DIR_M65)/MON_1_combined.sym:
 	@mkdir -p $(DIR_M65)
 	@rm -f $@* $(DIR_M65)/mon.seg_1 $(DIR_M65)/MON_1*
 	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s MON_1 -i MON_1-mega65 -o mon.seg_1 -d $(DIR_M65) -l 4000 -h 5fff $(CFG_M65) $(SRCDIR_MON_M65)
+
+$(DIR_M65)/zvm.seg_1 $(DIR_M65)/ZVM_1_combined.vs $(DIR_M65)/ZVM_1_combined.sym:
+	@mkdir -p $(DIR_M65)
+	@rm -f $@* $(DIR_M65)/zvm.seg_1 $(DIR_M65)/ZVM_1*
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s ZVM_1 -i ZVM_1-mega65 -o zvm.seg_1 -d $(DIR_M65) -l 2000 -h 7fff $(CFG_M65) $(SRCDIR_ZVM_M65)
 
 # Rules - BASIC and KERNAL intermediate files, for Commander X16
 
@@ -720,9 +733,10 @@ $(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
 # $0:$D000 -  4 KB - legacy mode chargen
 # $0:$E000 -  8 KB - KERNAL segment 0
 # $1:$0000 -  8 KB - Machine Language MONITOR
-# $1:$2000 - 56 KB - unused for now, padding
+# $1:$2000 - 24 KB - Z80 Virtual Machine for CP/M
+# $1:$8000 - 32 KB - unused for now, padding; most likely will be used for BASIC extensions
 
-$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_16_KB build/padding_4_KB $(TARGET_CHR_ORF) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
+$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_16_KB $(TARGET_CHR_ORF) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
 	@echo
 	@echo
 	@echo
@@ -738,8 +752,7 @@ $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_16_KB bui
 	@cat $(TARGET_CHR_ORF)               >> $(TARGET_M65_x_ORF)
 	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_ORF)
 	@cat $(DIR_M65)/mon.seg_1            >> $(TARGET_M65_x_ORF)
-	@cat build/padding_8_KB              >> $(TARGET_M65_x_ORF)
-	@cat build/padding_16_KB             >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/zvm.seg_1            >> $(TARGET_M65_x_ORF)
 	@cat build/padding_16_KB             >> $(TARGET_M65_x_ORF)
 	@cat build/padding_16_KB             >> $(TARGET_M65_x_ORF)
 	@echo
@@ -757,8 +770,7 @@ $(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_16_KB bui
 	@cat $(TARGET_CHR_PXL)               >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_PXL)
 	@cat $(DIR_M65)/mon.seg_1            >> $(TARGET_M65_x_PXL)
-	@cat build/padding_8_KB              >> $(TARGET_M65_x_PXL)
-	@cat build/padding_16_KB             >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/zvm.seg_1            >> $(TARGET_M65_x_PXL)
 	@cat build/padding_16_KB             >> $(TARGET_M65_x_PXL)
 	@cat build/padding_16_KB             >> $(TARGET_M65_x_PXL)
 	@echo

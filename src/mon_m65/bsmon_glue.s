@@ -1,4 +1,4 @@
-; 'Print immediate', original implementation by Mike Barry, adapted to 65CE02
+; 'Print immediate', original implementation by Mike Barry, adapted to 65CE02, modified to preserve .Y
 ; see http://www.6502.org/source/io/primm.htm
 
 PRIMM:
@@ -7,9 +7,10 @@ PRIMM:
 	sta PTR1
 	pla            ; get high part of (string address-1)
 	sta PTR2
+	phy
 	+bra @2
 @1:
-	jsr CHROUT    ; output a string char
+	jsr CHROUT     ; output a string char
 @2:
 	inc PTR1       ; advance the string pointer
 	bne @3
@@ -18,6 +19,7 @@ PRIMM:
 	ldy #$00
 	lda (PTR1), y  ; get string char
 	bne @1         ; output and continue if not NUL
+	ply
 	lda PTR2
 	pha
 	lda PTR1

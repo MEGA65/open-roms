@@ -2486,119 +2486,101 @@ Close_Disk_Buffer
 !set ENC_Y = %00011110
 !set ENC_Z = %00011111
 
-!set ENC_ADC = ENC_A * 64 * 64 + ENC_D * 64 + ENC_C
-!set ENC_AND = ENC_A * 64 * 64 + ENC_N * 64 + ENC_D
-!set ENC_ASL = ENC_A * 64 * 64 + ENC_S * 64 + ENC_L
-!set ENC_ASR = ENC_A * 64 * 64 + ENC_S * 64 + ENC_R
-!set ENC_ASW = ENC_A * 64 * 64 + ENC_S * 64 + ENC_W
-!set ENC_BBR = ENC_B * 64 * 64 + ENC_B * 64 + ENC_R
-!set ENC_BBS = ENC_B * 64 * 64 + ENC_B * 64 + ENC_S
-!set ENC_BCC = ENC_B * 64 * 64 + ENC_C * 64 + ENC_C
-!set ENC_BCS = ENC_B * 64 * 64 + ENC_C * 64 + ENC_S
-!set ENC_BEQ = ENC_B * 64 * 64 + ENC_E * 64 + ENC_Q
-!set ENC_BIT = ENC_B * 64 * 64 + ENC_I * 64 + ENC_T
-!set ENC_BMI = ENC_B * 64 * 64 + ENC_M * 64 + ENC_I
-!set ENC_BNE = ENC_B * 64 * 64 + ENC_N * 64 + ENC_E
-!set ENC_BPL = ENC_B * 64 * 64 + ENC_P * 64 + ENC_L
-!set ENC_BRA = ENC_B * 64 * 64 + ENC_R * 64 + ENC_A
-!set ENC_BRK = ENC_B * 64 * 64 + ENC_R * 64 + ENC_K
-!set ENC_BSR = ENC_B * 64 * 64 + ENC_S * 64 + ENC_R
-!set ENC_BVC = ENC_B * 64 * 64 + ENC_V * 64 + ENC_C
-!set ENC_BVS = ENC_B * 64 * 64 + ENC_V * 64 + ENC_S
-!set ENC_CLC = ENC_C * 64 * 64 + ENC_L * 64 + ENC_C
-!set ENC_CLD = ENC_C * 64 * 64 + ENC_L * 64 + ENC_D
-!set ENC_CLE = ENC_C * 64 * 64 + ENC_L * 64 + ENC_E
-!set ENC_CLI = ENC_C * 64 * 64 + ENC_L * 64 + ENC_I
-!set ENC_CLV = ENC_C * 64 * 64 + ENC_L * 64 + ENC_V
-!set ENC_CMP = ENC_C * 64 * 64 + ENC_M * 64 + ENC_P
-!set ENC_CPX = ENC_C * 64 * 64 + ENC_P * 64 + ENC_X
-!set ENC_CPY = ENC_C * 64 * 64 + ENC_P * 64 + ENC_Y
-!set ENC_CPZ = ENC_C * 64 * 64 + ENC_P * 64 + ENC_Z
-!set ENC_DEC = ENC_D * 64 * 64 + ENC_E * 64 + ENC_C
-!set ENC_DEW = ENC_D * 64 * 64 + ENC_E * 64 + ENC_W
-!set ENC_DEX = ENC_D * 64 * 64 + ENC_E * 64 + ENC_X
-!set ENC_DEY = ENC_D * 64 * 64 + ENC_E * 64 + ENC_Y
-!set ENC_DEZ = ENC_D * 64 * 64 + ENC_E * 64 + ENC_Z
-!set ENC_EOR = ENC_E * 64 * 64 + ENC_O * 64 + ENC_R
-!set ENC_INC = ENC_I * 64 * 64 + ENC_N * 64 + ENC_C
-!set ENC_INW = ENC_I * 64 * 64 + ENC_N * 64 + ENC_W
-!set ENC_INX = ENC_I * 64 * 64 + ENC_N * 64 + ENC_X
-!set ENC_INY = ENC_I * 64 * 64 + ENC_N * 64 + ENC_Y
-!set ENC_INZ = ENC_I * 64 * 64 + ENC_N * 64 + ENC_Z
-!set ENC_JMP = ENC_J * 64 * 64 + ENC_M * 64 + ENC_P
-!set ENC_JSR = ENC_J * 64 * 64 + ENC_S * 64 + ENC_R
-!set ENC_LDA = ENC_L * 64 * 64 + ENC_D * 64 + ENC_A
-!set ENC_LDX = ENC_L * 64 * 64 + ENC_D * 64 + ENC_X
-!set ENC_LDY = ENC_L * 64 * 64 + ENC_D * 64 + ENC_Y
-!set ENC_LDZ = ENC_L * 64 * 64 + ENC_D * 64 + ENC_Z
-!set ENC_LSR = ENC_L * 64 * 64 + ENC_S * 64 + ENC_R
-!set ENC_MAP = ENC_M * 64 * 64 + ENC_A * 64 + ENC_P
-!set ENC_NEG = ENC_N * 64 * 64 + ENC_E * 64 + ENC_G
-!set ENC_NOP = ENC_N * 64 * 64 + ENC_O * 64 + ENC_P
-!set ENC_ORA = ENC_O * 64 * 64 + ENC_R * 64 + ENC_A
-!set ENC_PHA = ENC_P * 64 * 64 + ENC_H * 64 + ENC_A
-!set ENC_PHP = ENC_P * 64 * 64 + ENC_H * 64 + ENC_P
-!set ENC_PHW = ENC_P * 64 * 64 + ENC_H * 64 + ENC_W
-!set ENC_PHX = ENC_P * 64 * 64 + ENC_H * 64 + ENC_X
-!set ENC_PHY = ENC_P * 64 * 64 + ENC_H * 64 + ENC_Y
-!set ENC_PHZ = ENC_P * 64 * 64 + ENC_H * 64 + ENC_Z
-!set ENC_PLA = ENC_P * 64 * 64 + ENC_L * 64 + ENC_A
-!set ENC_PLP = ENC_P * 64 * 64 + ENC_L * 64 + ENC_P
-!set ENC_PLX = ENC_P * 64 * 64 + ENC_L * 64 + ENC_X
-!set ENC_PLY = ENC_P * 64 * 64 + ENC_L * 64 + ENC_Y
-!set ENC_PLZ = ENC_P * 64 * 64 + ENC_L * 64 + ENC_Z
-!set ENC_RMB = ENC_R * 64 * 64 + ENC_M * 64 + ENC_B
-!set ENC_ROL = ENC_R * 64 * 64 + ENC_O * 64 + ENC_L
-!set ENC_ROR = ENC_R * 64 * 64 + ENC_O * 64 + ENC_R
-!set ENC_ROW = ENC_R * 64 * 64 + ENC_O * 64 + ENC_W
-!set ENC_RTI = ENC_R * 64 * 64 + ENC_T * 64 + ENC_I
-!set ENC_RTS = ENC_R * 64 * 64 + ENC_T * 64 + ENC_S
-!set ENC_SBC = ENC_S * 64 * 64 + ENC_B * 64 + ENC_C
-!set ENC_SEC = ENC_S * 64 * 64 + ENC_E * 64 + ENC_C
-!set ENC_SED = ENC_S * 64 * 64 + ENC_E * 64 + ENC_D
-!set ENC_SEE = ENC_S * 64 * 64 + ENC_E * 64 + ENC_E
-!set ENC_SEI = ENC_S * 64 * 64 + ENC_E * 64 + ENC_I
-!set ENC_SMB = ENC_S * 64 * 64 + ENC_M * 64 + ENC_B
-!set ENC_STA = ENC_S * 64 * 64 + ENC_T * 64 + ENC_A
-!set ENC_STX = ENC_S * 64 * 64 + ENC_T * 64 + ENC_X
-!set ENC_STY = ENC_S * 64 * 64 + ENC_T * 64 + ENC_Y
-!set ENC_STZ = ENC_S * 64 * 64 + ENC_T * 64 + ENC_Z
-!set ENC_TAB = ENC_T * 64 * 64 + ENC_A * 64 + ENC_B
-!set ENC_TAX = ENC_T * 64 * 64 + ENC_A * 64 + ENC_X
-!set ENC_TAY = ENC_T * 64 * 64 + ENC_A * 64 + ENC_Y
-!set ENC_TAZ = ENC_T * 64 * 64 + ENC_A * 64 + ENC_Z
-!set ENC_TBA = ENC_T * 64 * 64 + ENC_B * 64 + ENC_A
-!set ENC_TRB = ENC_T * 64 * 64 + ENC_R * 64 + ENC_B
-!set ENC_TSB = ENC_T * 64 * 64 + ENC_S * 64 + ENC_B
-!set ENC_TSX = ENC_T * 64 * 64 + ENC_S * 64 + ENC_X
-!set ENC_TSY = ENC_T * 64 * 64 + ENC_S * 64 + ENC_Y
-!set ENC_TXA = ENC_T * 64 * 64 + ENC_X * 64 + ENC_A
-!set ENC_TXS = ENC_T * 64 * 64 + ENC_X * 64 + ENC_S
-!set ENC_TYA = ENC_T * 64 * 64 + ENC_Y * 64 + ENC_A
-!set ENC_TYS = ENC_T * 64 * 64 + ENC_Y * 64 + ENC_S
-!set ENC_TZA = ENC_T * 64 * 64 + ENC_Z * 64 + ENC_A
+!set ENC_ADC = (ENC_A * 32 * 32 + ENC_D * 32 + ENC_C) * 2
+!set ENC_AND = (ENC_A * 32 * 32 + ENC_N * 32 + ENC_D) * 2
+!set ENC_ASL = (ENC_A * 32 * 32 + ENC_S * 32 + ENC_L) * 2
+!set ENC_ASR = (ENC_A * 32 * 32 + ENC_S * 32 + ENC_R) * 2
+!set ENC_ASW = (ENC_A * 32 * 32 + ENC_S * 32 + ENC_W) * 2
+!set ENC_BBR = (ENC_B * 32 * 32 + ENC_B * 32 + ENC_R) * 2
+!set ENC_BBS = (ENC_B * 32 * 32 + ENC_B * 32 + ENC_S) * 2
+!set ENC_BCC = (ENC_B * 32 * 32 + ENC_C * 32 + ENC_C) * 2
+!set ENC_BCS = (ENC_B * 32 * 32 + ENC_C * 32 + ENC_S) * 2
+!set ENC_BEQ = (ENC_B * 32 * 32 + ENC_E * 32 + ENC_Q) * 2
+!set ENC_BIT = (ENC_B * 32 * 32 + ENC_I * 32 + ENC_T) * 2
+!set ENC_BMI = (ENC_B * 32 * 32 + ENC_M * 32 + ENC_I) * 2
+!set ENC_BNE = (ENC_B * 32 * 32 + ENC_N * 32 + ENC_E) * 2
+!set ENC_BPL = (ENC_B * 32 * 32 + ENC_P * 32 + ENC_L) * 2
+!set ENC_BRA = (ENC_B * 32 * 32 + ENC_R * 32 + ENC_A) * 2
+!set ENC_BRK = (ENC_B * 32 * 32 + ENC_R * 32 + ENC_K) * 2
+!set ENC_BSR = (ENC_B * 32 * 32 + ENC_S * 32 + ENC_R) * 2
+!set ENC_BVC = (ENC_B * 32 * 32 + ENC_V * 32 + ENC_C) * 2
+!set ENC_BVS = (ENC_B * 32 * 32 + ENC_V * 32 + ENC_S) * 2
+!set ENC_CLC = (ENC_C * 32 * 32 + ENC_L * 32 + ENC_C) * 2
+!set ENC_CLD = (ENC_C * 32 * 32 + ENC_L * 32 + ENC_D) * 2
+!set ENC_CLE = (ENC_C * 32 * 32 + ENC_L * 32 + ENC_E) * 2
+!set ENC_CLI = (ENC_C * 32 * 32 + ENC_L * 32 + ENC_I) * 2
+!set ENC_CLV = (ENC_C * 32 * 32 + ENC_L * 32 + ENC_V) * 2
+!set ENC_CMP = (ENC_C * 32 * 32 + ENC_M * 32 + ENC_P) * 2
+!set ENC_CPX = (ENC_C * 32 * 32 + ENC_P * 32 + ENC_X) * 2
+!set ENC_CPY = (ENC_C * 32 * 32 + ENC_P * 32 + ENC_Y) * 2
+!set ENC_CPZ = (ENC_C * 32 * 32 + ENC_P * 32 + ENC_Z) * 2
+!set ENC_DEC = (ENC_D * 32 * 32 + ENC_E * 32 + ENC_C) * 2
+!set ENC_DEW = (ENC_D * 32 * 32 + ENC_E * 32 + ENC_W) * 2
+!set ENC_DEX = (ENC_D * 32 * 32 + ENC_E * 32 + ENC_X) * 2
+!set ENC_DEY = (ENC_D * 32 * 32 + ENC_E * 32 + ENC_Y) * 2
+!set ENC_DEZ = (ENC_D * 32 * 32 + ENC_E * 32 + ENC_Z) * 2
+!set ENC_EOR = (ENC_E * 32 * 32 + ENC_O * 32 + ENC_R) * 2
+!set ENC_INC = (ENC_I * 32 * 32 + ENC_N * 32 + ENC_C) * 2
+!set ENC_INW = (ENC_I * 32 * 32 + ENC_N * 32 + ENC_W) * 2
+!set ENC_INX = (ENC_I * 32 * 32 + ENC_N * 32 + ENC_X) * 2
+!set ENC_INY = (ENC_I * 32 * 32 + ENC_N * 32 + ENC_Y) * 2
+!set ENC_INZ = (ENC_I * 32 * 32 + ENC_N * 32 + ENC_Z) * 2
+!set ENC_JMP = (ENC_J * 32 * 32 + ENC_M * 32 + ENC_P) * 2
+!set ENC_JSR = (ENC_J * 32 * 32 + ENC_S * 32 + ENC_R) * 2
+!set ENC_LDA = (ENC_L * 32 * 32 + ENC_D * 32 + ENC_A) * 2
+!set ENC_LDX = (ENC_L * 32 * 32 + ENC_D * 32 + ENC_X) * 2
+!set ENC_LDY = (ENC_L * 32 * 32 + ENC_D * 32 + ENC_Y) * 2
+!set ENC_LDZ = (ENC_L * 32 * 32 + ENC_D * 32 + ENC_Z) * 2
+!set ENC_LSR = (ENC_L * 32 * 32 + ENC_S * 32 + ENC_R) * 2
+!set ENC_MAP = (ENC_M * 32 * 32 + ENC_A * 32 + ENC_P) * 2
+!set ENC_NEG = (ENC_N * 32 * 32 + ENC_E * 32 + ENC_G) * 2
+!set ENC_NOP = (ENC_N * 32 * 32 + ENC_O * 32 + ENC_P) * 2
+!set ENC_ORA = (ENC_O * 32 * 32 + ENC_R * 32 + ENC_A) * 2
+!set ENC_PHA = (ENC_P * 32 * 32 + ENC_H * 32 + ENC_A) * 2
+!set ENC_PHP = (ENC_P * 32 * 32 + ENC_H * 32 + ENC_P) * 2
+!set ENC_PHW = (ENC_P * 32 * 32 + ENC_H * 32 + ENC_W) * 2
+!set ENC_PHX = (ENC_P * 32 * 32 + ENC_H * 32 + ENC_X) * 2
+!set ENC_PHY = (ENC_P * 32 * 32 + ENC_H * 32 + ENC_Y) * 2
+!set ENC_PHZ = (ENC_P * 32 * 32 + ENC_H * 32 + ENC_Z) * 2
+!set ENC_PLA = (ENC_P * 32 * 32 + ENC_L * 32 + ENC_A) * 2
+!set ENC_PLP = (ENC_P * 32 * 32 + ENC_L * 32 + ENC_P) * 2
+!set ENC_PLX = (ENC_P * 32 * 32 + ENC_L * 32 + ENC_X) * 2
+!set ENC_PLY = (ENC_P * 32 * 32 + ENC_L * 32 + ENC_Y) * 2
+!set ENC_PLZ = (ENC_P * 32 * 32 + ENC_L * 32 + ENC_Z) * 2
+!set ENC_RMB = (ENC_R * 32 * 32 + ENC_M * 32 + ENC_B) * 2
+!set ENC_ROL = (ENC_R * 32 * 32 + ENC_O * 32 + ENC_L) * 2
+!set ENC_ROR = (ENC_R * 32 * 32 + ENC_O * 32 + ENC_R) * 2
+!set ENC_ROW = (ENC_R * 32 * 32 + ENC_O * 32 + ENC_W) * 2
+!set ENC_RTI = (ENC_R * 32 * 32 + ENC_T * 32 + ENC_I) * 2
+!set ENC_RTS = (ENC_R * 32 * 32 + ENC_T * 32 + ENC_S) * 2
+!set ENC_SBC = (ENC_S * 32 * 32 + ENC_B * 32 + ENC_C) * 2
+!set ENC_SEC = (ENC_S * 32 * 32 + ENC_E * 32 + ENC_C) * 2
+!set ENC_SED = (ENC_S * 32 * 32 + ENC_E * 32 + ENC_D) * 2
+!set ENC_SEE = (ENC_S * 32 * 32 + ENC_E * 32 + ENC_E) * 2
+!set ENC_SEI = (ENC_S * 32 * 32 + ENC_E * 32 + ENC_I) * 2
+!set ENC_SMB = (ENC_S * 32 * 32 + ENC_M * 32 + ENC_B) * 2
+!set ENC_STA = (ENC_S * 32 * 32 + ENC_T * 32 + ENC_A) * 2
+!set ENC_STX = (ENC_S * 32 * 32 + ENC_T * 32 + ENC_X) * 2
+!set ENC_STY = (ENC_S * 32 * 32 + ENC_T * 32 + ENC_Y) * 2
+!set ENC_STZ = (ENC_S * 32 * 32 + ENC_T * 32 + ENC_Z) * 2
+!set ENC_TAB = (ENC_T * 32 * 32 + ENC_A * 32 + ENC_B) * 2
+!set ENC_TAX = (ENC_T * 32 * 32 + ENC_A * 32 + ENC_X) * 2
+!set ENC_TAY = (ENC_T * 32 * 32 + ENC_A * 32 + ENC_Y) * 2
+!set ENC_TAZ = (ENC_T * 32 * 32 + ENC_A * 32 + ENC_Z) * 2
+!set ENC_TBA = (ENC_T * 32 * 32 + ENC_B * 32 + ENC_A) * 2
+!set ENC_TRB = (ENC_T * 32 * 32 + ENC_R * 32 + ENC_B) * 2
+!set ENC_TSB = (ENC_T * 32 * 32 + ENC_S * 32 + ENC_B) * 2
+!set ENC_TSX = (ENC_T * 32 * 32 + ENC_S * 32 + ENC_X) * 2
+!set ENC_TSY = (ENC_T * 32 * 32 + ENC_S * 32 + ENC_Y) * 2
+!set ENC_TXA = (ENC_T * 32 * 32 + ENC_X * 32 + ENC_A) * 2
+!set ENC_TXS = (ENC_T * 32 * 32 + ENC_X * 32 + ENC_S) * 2
+!set ENC_TYA = (ENC_T * 32 * 32 + ENC_Y * 32 + ENC_A) * 2
+!set ENC_TYS = (ENC_T * 32 * 32 + ENC_Y * 32 + ENC_S) * 2
+!set ENC_TZA = (ENC_T * 32 * 32 + ENC_Z * 32 + ENC_A) * 2
 
 
 ; ***
 MNE_L
-; ***
-
-         !byte <ENC_ADC, <ENC_AND, <ENC_ASL, <ENC_ASR, <ENC_ASW, <ENC_BBR, <ENC_BBS, <ENC_BCC
-         !byte <ENC_BCS, <ENC_BEQ, <ENC_BIT, <ENC_BMI, <ENC_BNE, <ENC_BPL, <ENC_BRA, <ENC_BRK
-         !byte <ENC_BSR, <ENC_BVC, <ENC_BVS, <ENC_CLC, <ENC_CLD, <ENC_CLE, <ENC_CLI, <ENC_CLV
-         !byte <ENC_CMP, <ENC_CPX, <ENC_CPY, <ENC_CPZ, <ENC_DEC, <ENC_DEW, <ENC_DEX, <ENC_DEY
-         !byte <ENC_DEZ, <ENC_EOR, <ENC_INC, <ENC_INW, <ENC_INX, <ENC_INY, <ENC_INZ, <ENC_JMP
-         !byte <ENC_JSR, <ENC_LDA, <ENC_LDX, <ENC_LDY, <ENC_LDZ, <ENC_LSR, <ENC_MAP, <ENC_NEG
-         !byte <ENC_NOP, <ENC_ORA, <ENC_PHA, <ENC_PHP, <ENC_PHW, <ENC_PHX, <ENC_PHY, <ENC_PHZ
-         !byte <ENC_PLA, <ENC_PLP, <ENC_PLX, <ENC_PLY, <ENC_PLZ, <ENC_RMB, <ENC_ROL, <ENC_ROR
-         !byte <ENC_ROW, <ENC_RTI, <ENC_RTS, <ENC_SBC, <ENC_SEC, <ENC_SED, <ENC_SEE, <ENC_SEI
-         !byte <ENC_SMB, <ENC_STA, <ENC_STX, <ENC_STY, <ENC_STZ, <ENC_TAB, <ENC_TAX, <ENC_TAY
-         !byte <ENC_TAZ, <ENC_TBA, <ENC_TRB, <ENC_TSB, <ENC_TSX, <ENC_TSY, <ENC_TXA, <ENC_TXS
-         !byte <ENC_TYA, <ENC_TYS, <ENC_TZA
-
-
-; ***
-MNE_R
 ; ***
 
          !byte >ENC_ADC, >ENC_AND, >ENC_ASL, >ENC_ASR, >ENC_ASW, >ENC_BBR, >ENC_BBS, >ENC_BCC
@@ -2613,6 +2595,24 @@ MNE_R
          !byte >ENC_SMB, >ENC_STA, >ENC_STX, >ENC_STY, >ENC_STZ, >ENC_TAB, >ENC_TAX, >ENC_TAY
          !byte >ENC_TAZ, >ENC_TBA, >ENC_TRB, >ENC_TSB, >ENC_TSX, >ENC_TSY, >ENC_TXA, >ENC_TXS
          !byte >ENC_TYA, >ENC_TYS, >ENC_TZA
+
+
+; ***
+MNE_R
+; ***
+
+         !byte <ENC_ADC, <ENC_AND, <ENC_ASL, <ENC_ASR, <ENC_ASW, <ENC_BBR, <ENC_BBS, <ENC_BCC
+         !byte <ENC_BCS, <ENC_BEQ, <ENC_BIT, <ENC_BMI, <ENC_BNE, <ENC_BPL, <ENC_BRA, <ENC_BRK
+         !byte <ENC_BSR, <ENC_BVC, <ENC_BVS, <ENC_CLC, <ENC_CLD, <ENC_CLE, <ENC_CLI, <ENC_CLV
+         !byte <ENC_CMP, <ENC_CPX, <ENC_CPY, <ENC_CPZ, <ENC_DEC, <ENC_DEW, <ENC_DEX, <ENC_DEY
+         !byte <ENC_DEZ, <ENC_EOR, <ENC_INC, <ENC_INW, <ENC_INX, <ENC_INY, <ENC_INZ, <ENC_JMP
+         !byte <ENC_JSR, <ENC_LDA, <ENC_LDX, <ENC_LDY, <ENC_LDZ, <ENC_LSR, <ENC_MAP, <ENC_NEG
+         !byte <ENC_NOP, <ENC_ORA, <ENC_PHA, <ENC_PHP, <ENC_PHW, <ENC_PHX, <ENC_PHY, <ENC_PHZ
+         !byte <ENC_PLA, <ENC_PLP, <ENC_PLX, <ENC_PLY, <ENC_PLZ, <ENC_RMB, <ENC_ROL, <ENC_ROR
+         !byte <ENC_ROW, <ENC_RTI, <ENC_RTS, <ENC_SBC, <ENC_SEC, <ENC_SED, <ENC_SEE, <ENC_SEI
+         !byte <ENC_SMB, <ENC_STA, <ENC_STX, <ENC_STY, <ENC_STZ, <ENC_TAB, <ENC_TAX, <ENC_TAY
+         !byte <ENC_TAZ, <ENC_TBA, <ENC_TRB, <ENC_TSB, <ENC_TSX, <ENC_TSY, <ENC_TXA, <ENC_TXS
+         !byte <ENC_TYA, <ENC_TYS, <ENC_TZA
 
 
 ; *******

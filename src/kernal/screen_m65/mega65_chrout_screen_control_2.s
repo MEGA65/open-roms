@@ -2,6 +2,15 @@
 ;; #LAYOUT# *   *        #IGNORE
 
 
+; Escape mode support
+
+m65_chrout_screen_ESC:
+	
+	lda #$FF
+	sta M65_ESCMODE
+	bra m65_chrout_screen_ctrl2_end
+
+
 ; 'REVERSE' mode support
 
 m65_chrout_screen_RVS_ON:
@@ -14,7 +23,6 @@ m65_chrout_screen_RVS_ON:
 m65_chrout_screen_RVS_OFF:
 
 	lda #$00
-
 	sta RVS
 
 	; FALLTROUGH

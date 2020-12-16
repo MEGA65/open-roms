@@ -89,12 +89,6 @@ m65_chrout_screen_FLASHING_OFF:
 	+nop
 m65_chrout_screen_TAB_SET_CLR:
 	+nop
-m65_chrout_screen_ESC:
-	+nop
 m65_chrout_screen_BELL:
 
 	jmp m65_chrout_screen_done
-
-; XXX: implement the following functionalities according to MEGA65 book:
-; CTRL +T +Z +E +Q +G +J +U +W +B +N +M +] +I +X +K +L +[
-; ESC +@ +A +B +C +D +E +F +G +H +I +J +K +L +M +N +O +P +Q +S +T +U +V +W +X +Y +Z +1..8 

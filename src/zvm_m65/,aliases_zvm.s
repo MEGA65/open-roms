@@ -10,12 +10,12 @@
 
 !addr REG_A_SH           = $0A    ; shadow registers
 !addr REG_F_SH           = $0B
-!addr REG_B_SH           = $0C
-!addr REG_C_SH           = $0D
-!addr REG_D_SH           = $0E
-!addr REG_E_SH           = $0F
-!addr REG_H_SH           = $10
-!addr REG_L_SH           = $11
+!addr REG_C_SH           = $0C
+!addr REG_B_SH           = $0D
+!addr REG_E_SH           = $0E
+!addr REG_D_SH           = $0F
+!addr REG_L_SH           = $10
+!addr REG_H_SH           = $11
 
 !addr REG_IX             = $12    ; 16-bit index register
 !addr REG_IY             = $14    ; 16-bit index register
@@ -38,3 +38,13 @@
 !addr VEC_store_via_IY_d = $72
 !addr VEC_fetch_via_nn   = $74
 !addr VEC_store_via_nn   = $76
+
+; Masks for Z80 flag (F) register
+
+!set Z80FLG_S = %10000000 ; sign 
+!set Z80FLG_Z = %01000000 ; zero
+!set Z80FLG_H = %00010000 ; half carry
+!set Z80FLG_P = %00000100 ; parity
+!set Z80FLG_O = %00000100 ; overflow
+!set Z80FLG_A = %00000010 ; add/subtract
+!set Z80FLG_C = %00000001 ; carry

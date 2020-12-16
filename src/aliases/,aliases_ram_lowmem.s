@@ -153,7 +153,7 @@
 	!addr KEYTAB    = $F5  ; $F5-$F6  pointer to keyboard lookup table
 	!addr RIBUF     = $F7  ; $F7-$F8  -- WIP -- RS-232 receive buffer pointer
 	!addr ROBUF     = $F9  ; $F9-$FA  -- WIP -- RS-232 send buffer pointer
-	;                 $FB     $FB-$FE  -- UNUSED --          free for user software
+	;                 $FB    $FB-$FE  -- UNUSED --          free for user software
 	!addr BASZPT    = $FF  ;          -- NOT IMPLEMENTED --
 
 	;

@@ -20,5 +20,12 @@
 	;                (2KB) - color RAM mirror, not useable
 	; $20000-$2FFFF (64KB) - ROM, the essential part
 	; $30000-$4FFFF (64KB) - ROM, additions
-	; $50000-$57FFF (32KB) - reserved for graphics screen
+	; $50000-$57F71 (32KB) - reserved for graphics screen
+	; $57F72-$57FFF        - shadow location for BASIC zeropage
+
+!set MEMCONF_SHADOW_BZP_0 = $72
+!set MEMCONF_SHADOW_BZP_1 = $7F
+!set MEMCONF_SHADOW_BZP_2 = $05
+!set MEMCONF_SHADOW_BZP_3 = $00
+
 	; $58000-...           - extended BASIC variables, RAM disk, etc.

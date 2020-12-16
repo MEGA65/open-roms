@@ -60,8 +60,8 @@
 
 !addr MODE_80     = $d7        ; 80 column / 40 volumn flag ; XXX add routine to detect this
 
-!addr Disk_Status     = $40A       ; BCD value of status
-!addr Disk_Msg        = $410       ; 40 bytes, disk status as text message ; XXX get rid of this buffer
+!addr Disk_Status = $40A       ; BCD value of status
+!addr Disk_Msg    = $410       ; 40 bytes, disk status as text message ; XXX get rid of this buffer
 
 
 ; *******
@@ -109,8 +109,8 @@ Mon_Call
 
 ;        set default PC to monitor exit point
 
-         LDA  #<map_NORMAL
-         LDX  #>map_NORMAL
+         LDA  #<m65_shadow_BZP
+         LDX  #>m65_shadow_BZP
          STA  PCL
          STA  MON_XVEC
          STX  PCH

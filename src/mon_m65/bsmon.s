@@ -219,8 +219,8 @@ Mon_Error
 ; put a question mark at the end of the text
 
          JSR  PRIMM
-         !pet KEY_ESC, "o",KEY_CRSR_RIGHT,'?',0
-         LDX  #$f8              ; reset stack pointer
+         !pet KEY_ESC, 'o', KEY_CRSR_RIGHT, '?', 0
+         LDX  #$f8              ; reset stack pointer XXX probably would be better to restore original
          TXS
          BRA  Main
 
@@ -574,7 +574,7 @@ Mon_Set_Memory
 @next    BCC  @loop
 
 @exit    JSR  PRIMM
-         !pet KEY_ESC, "o"
+         !pet KEY_ESC, 'o'
          !pet $91,$00
          JSR  Dump_Row
          JMP  Main
@@ -1250,7 +1250,7 @@ Mon_Assemble
          STA  [Long_PC],Z
 
 @print   JSR  PRIMM
-         !pet 13,$91,"a ", KEY_ESC, "q",0
+         !pet 13,$91,"a ", KEY_ESC, 'q', 0
          JSR  Print_Code
          INC  Op_Size
          LDA  Op_Size
@@ -1892,7 +1892,7 @@ CR_Erase
 ; ******
 
          JSR  PRIMM
-         !pet KEY_RETURN, KEY_ESC, "q",0
+         !pet KEY_RETURN, KEY_ESC, 'q', 0
          RTS
 
 ; *******
@@ -2766,7 +2766,7 @@ BP_ZERO   !pet "b-p 9 0",0        ; set buffer pointer to 0
 Reg_Text
 ; ******
          JSR  PRIMM
-         !pet KEY_RETURN, "   pc  sr ac xr yr zr bp  sp  nvebdizc", KEY_RETURN, "; ",0
+         !pet KEY_RETURN, "   pc  sr ac xr yr zr bp  sp  nvebdizc", KEY_RETURN, "; ", KEY_ESC, 'q', 0
          RTS
 
 ; ******

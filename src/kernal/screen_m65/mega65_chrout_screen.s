@@ -15,6 +15,11 @@ m65_chrout_screen:
 	lda SCHAR
 	tax
 
+	; Check for escape mode
+
+	bit M65_ESCMODE
+	+bmi m65_chrout_screen_escmode
+
 	; All the PETSCII control codes are within $0x, $1x, $8x, $9x, remaining
 	; ones are always printable characters; separate away control codes
 

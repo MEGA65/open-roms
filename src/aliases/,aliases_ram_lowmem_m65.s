@@ -64,13 +64,14 @@
 	!addr M65_TXTWIN_Y1      = $591 ;            text window - bottom-right Y coordinate + 1
 	!addr M65_TXTROW_OFF     = $592 ; $592-$593  offset to the current text row from the viewport start
 	!addr M65_SCRCOLMAX      = $594 ;            maximum allowed column
-	!addr M65_KB_BUCKY       = $595 ;            result of bucky keys scan
-	!addr M65_KB_COLSCAN     = $596 ; $596-$59E  results of keyboard scan, columns 0-8
-	!addr M65_JOYCRSR        = $59F ;            joystick to be used for cursor movement
-	!addr M65_KB_PRESSED     = $560 ; $560-$562  keys pressed, used during scanning keyboard
-	!addr M65_KB_PRESSED_OLD = $563 ; $563-$565  keys pressed during previous scan
-	!addr M65_KB_PRESSED_NEW = $566 ; $566-$568  set of M65_KB_PRESSED minus M65_KB_PRESSED_OLD
-	                                ; $569-$5EB  -- UNUSED --
+	!addr M65_ESCMODE        = $595 ;            flag - if set, escape mode is in effect
+	!addr M65_KB_BUCKY       = $596 ;            result of bucky keys scan
+	!addr M65_KB_COLSCAN     = $597 ; $597-$59F  results of keyboard scan, columns 0-8
+	!addr M65_KB_PRESSED     = $5A0 ; $5A0-$5A2  keys pressed, used during scanning keyboard
+	!addr M65_KB_PRESSED_OLD = $5A3 ; $5A3-$5A5  keys pressed during previous scan
+	!addr M65_KB_PRESSED_NEW = $5A6 ; $5A6-$5A8  set of M65_KB_PRESSED minus M65_KB_PRESSED_OLD
+	!addr M65_JOYCRSR        = $5A9 ;            joystick to be used for cursor movement
+	                                ; $5AA-$5EB  -- UNUSED --
 	!addr M65_DMAGIC_LIST    = $5F1 ; $5EF-$5FF  reserved for DMAgic list, 15 bytes (modulo bytes are not needed)
 	!addr M65_RS232_INBUF    = $600 ; $600-$6FF  -- reserved for RS-232 input buffer --
 	!addr M65_RS232_OUTBUF   = $700 ; $700-$7FF  -- reserved for RS-232 output buffer --

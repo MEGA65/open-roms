@@ -26,6 +26,7 @@
 	!addr VK1__M65_CLRSCR                = $4000 + 2 * 12
 	!addr VK1__M65_CLRWIN                = $4000 + 2 * 13
 	!addr VK1__m65_screen_upd_txtrow_off = $4000 + 2 * 14
+	!addr VK1__m65_shadow_BZP            = $4000 + 2 * 15
 
 } else {
 
@@ -60,4 +61,5 @@
 	!word M65_CLRSCR	
 	!word M65_CLRWIN
 	!word m65_screen_upd_txtrow_off
+	!word m65_shadow_BZP
 }

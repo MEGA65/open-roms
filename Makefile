@@ -96,6 +96,7 @@ CRT_BIN_LIST   = assets/cartridge/header-cart.bin \
 
 GEN_BASIC      = build/,generated/,float_constants.s
 GEN_KERNAL     =
+GEN_ZVM        = build/,generated/,z80_tables.s
 
 # List of build directories
 
@@ -136,21 +137,23 @@ DEP_BASIC      = $(SRC_BASIC)   $(SRCDIR_BASIC)   $(GEN_BASIC)
 DEP_KERNAL     = $(SRC_KERNAL)  $(SRCDIR_KERNAL)  $(GEN_KERNAL)
 DEP_DOS_M65    = $(SRC_DOS_M65) $(SRCDIR_DOS_M65)
 DEP_MON_M65    = $(SRC_MON_M65) $(SRCDIR_MON_M65)
-DEP_ZVM_M65    = $(SRC_ZVM_M65) $(SRCDIR_ZVM_M65)
+DEP_ZVM_M65    = $(SRC_ZVM_M65) $(SRCDIR_ZVM_M65) $(GEN_ZVM)
 
 # List of tools
 
-TOOL_GENERATE_CONSTANTS = build/tools/generate_constants
-TOOL_GENERATE_STRINGS   = build/tools/generate_strings
-TOOL_PATCH_CHARGEN      = build/tools/patch_chargen
-TOOL_PNGPREPARE         = build/tools/pngprepare
-TOOL_BUILD_SEGMENT      = build/tools/build_segment
-TOOL_RELEASE            = build/tools/release
-TOOL_SIMILARITY         = build/tools/similarity
-TOOL_ASSEMBLER          = build/tools/acme
+TOOL_GENERATE_CONSTANTS  = build/tools/generate_constants
+TOOL_GENERATE_STRINGS    = build/tools/generate_strings
+TOOL_GENERATE_Z80_TABLES = build/tools/generate_z80_tables
+TOOL_PATCH_CHARGEN       = build/tools/patch_chargen
+TOOL_PNGPREPARE          = build/tools/pngprepare
+TOOL_BUILD_SEGMENT       = build/tools/build_segment
+TOOL_RELEASE             = build/tools/release
+TOOL_SIMILARITY          = build/tools/similarity
+TOOL_ASSEMBLER           = build/tools/acme
 
 TOOLS_LIST = $(TOOL_GENERATE_CONSTANTS) \
              $(TOOL_GENERATE_STRINGS) \
+             $(TOOL_GENERATE_Z80_TABLES) \
              $(TOOL_PATCH_CHARGEN) \
              $(TOOL_PNGPREPARE) \
              $(TOOL_BUILD_SEGMENT) \
@@ -447,6 +450,10 @@ build/,generated/,float_constants.s: $(TOOL_GENERATE_CONSTANTS)
 	@mkdir -p build/,generated
 	$(TOOL_GENERATE_CONSTANTS) -o build/,generated/,float_constants.s
 
+build/,generated/,z80_tables.s: $(TOOL_GENERATE_Z80_TABLES)
+	@mkdir -p build/,generated
+	$(TOOL_GENERATE_Z80_TABLES) -o build/,generated/,z80_tables.s
+
 GEN_STR_custom         = $(GEN_STR_CUS)
 GEN_STR_generic        = $(GEN_STR_GEN)
 GEN_STR_generic_crt    = $(GEN_STR_GENCRT)
@@ -550,7 +557,7 @@ $(DIR_M65)/mon.seg_1 $(DIR_M65)/MON_1_combined.vs $(DIR_M65)/MON_1_combined.sym:
 $(DIR_M65)/zvm.seg_1 $(DIR_M65)/ZVM_1_combined.vs $(DIR_M65)/ZVM_1_combined.sym:
 	@mkdir -p $(DIR_M65)
 	@rm -f $@* $(DIR_M65)/zvm.seg_1 $(DIR_M65)/ZVM_1*
-	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s ZVM_1 -i ZVM_1-mega65 -o zvm.seg_1 -d $(DIR_M65) -l 2000 -h 7fff $(CFG_M65) $(SRCDIR_ZVM_M65)
+	@$(TOOL_BUILD_SEGMENT) -a ../../$(TOOL_ASSEMBLER) -r M65 -s ZVM_1 -i ZVM_1-mega65 -o zvm.seg_1 -d $(DIR_M65) -l 2000 -h 7fff $(CFG_M65) $(SRCDIR_ZVM_M65) $(GEN_ZVM)
 
 # Rules - BASIC and KERNAL intermediate files, for Commander X16
 

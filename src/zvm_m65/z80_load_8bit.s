@@ -4,6 +4,10 @@
 ;
 
 
+;
+; load register with other register
+;
+
 Z80_instr_41:      ; LD B,C
 
 	lda REG_C
@@ -31,12 +35,6 @@ Z80_instr_44:      ; LD B,H
 Z80_instr_45:      ; LD B,L
 
 	lda REG_L
-	sta REG_B
-	rts
-
-Z80_instr_46:      ; LD B,(HL)
-
-	jsr (VEC_fetch_via_HL)
 	sta REG_B
 	rts
 
@@ -76,15 +74,9 @@ Z80_instr_4D:      ; LD C,L
 	sta REG_C
 	rts
 
-Z80_instr_4E:      ; LD C,(HL)
-
-	jsr (VEC_fetch_via_HL)
-	sta REG_C
-	rts
-
 Z80_instr_4F:      ; LD C,A
 
-	lda REG_Z
+	lda REG_A
 	sta REG_C
 	rts
 
@@ -115,12 +107,6 @@ Z80_instr_54:      ; LD D,H
 Z80_instr_55:      ; LD D,L
 
 	lda REG_L
-	sta REG_D
-	rts
-
-Z80_instr_56:      ; LD D,(HL)
-
-	jsr (VEC_fetch_via_HL)
 	sta REG_D
 	rts
 
@@ -160,12 +146,6 @@ Z80_instr_5D:      ; LD E,L
 	sta REG_E
 	rts
 
-Z80_instr_5E:      ; LD E,(HL)
-
-	jsr (VEC_fetch_via_HL)
-	sta REG_E
-	rts
-
 Z80_instr_5F:      ; LD E,A
 
 	lda REG_A
@@ -199,12 +179,6 @@ Z80_instr_63:      ; LD H,E
 Z80_instr_65:      ; LD H,L
 
 	lda REG_L
-	sta REG_H
-	rts
-
-Z80_instr_66:      ; LD H,(HL)
-
-	jsr (VEC_fetch_via_HL)
 	sta REG_H
 	rts
 
@@ -244,52 +218,11 @@ Z80_instr_6C:      ; LD L,H
 	sta REG_L
 	rts
 
-Z80_instr_6E:      ; LD L,(HL)
-
-	jsr (VEC_fetch_via_HL)
-	sta REG_L
-	rts
-
 Z80_instr_6F:      ; LD L,A
 
 	lda REG_A
 	sta REG_L
 	rts
-
-Z80_instr_70:      ; LD (HL),B
-
-	lda REG_B
-	jmp (VEC_store_via_HL)
-
-Z80_instr_71:      ; LD (HL),C
-
-	lda REG_C
-	jmp (VEC_store_via_HL)
-
-Z80_instr_72:      ; LD (HL),D
-
-	lda REG_D
-	jmp (VEC_store_via_HL)
-
-Z80_instr_73:      ; LD (HL),E
-
-	lda REG_E
-	jmp (VEC_store_via_HL)
-
-Z80_instr_74:      ; LD (HL),H
-
-	lda REG_H
-	jmp (VEC_store_via_HL)
-
-Z80_instr_75:      ; LD (HL),L
-
-	lda REG_L
-	jmp (VEC_store_via_HL)
-
-Z80_instr_77:      ; LD (HL),A
-
-	lda REG_A
-	jmp (VEC_store_via_HL)
 
 Z80_instr_78:      ; LD A,B
 
@@ -327,8 +260,154 @@ Z80_instr_7D:      ; LD A,L
 	sta REG_A
 	rts
 
+;
+; load register with immediate value
+;
+
+Z80_instr_06:      ; LD B,n
+
+	jsr VEC_fetch_value
+	sta REG_B
+	rts
+
+Z80_instr_0E:      ; LD C,n
+
+	jsr VEC_fetch_value
+	sta REG_C
+	rts
+
+Z80_instr_16:      ; LD D,n
+
+	jsr VEC_fetch_value
+	sta REG_D
+	rts
+
+Z80_instr_1E:      ; LD E,n
+
+	jsr VEC_fetch_value
+	sta REG_E
+	rts
+
+Z80_instr_26:      ; LD H,n
+
+	jsr VEC_fetch_value
+	sta REG_H
+	rts
+
+Z80_instr_2E:      ; LD L,n
+
+	jsr VEC_fetch_value
+	sta REG_L
+	rts
+
+Z80_instr_3E:      ; LD A,n
+
+	jsr VEC_fetch_value
+	sta REG_A
+	rts
+
+;
+; load register with memory content (via HL)
+;
+
+Z80_instr_46:      ; LD B,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	sta REG_B
+	rts
+
+Z80_instr_4E:      ; LD C,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	sta REG_C
+	rts
+
+Z80_instr_56:      ; LD D,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	sta REG_D
+	rts
+
+Z80_instr_5E:      ; LD E,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	sta REG_E
+	rts
+
+Z80_instr_66:      ; LD H,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	sta REG_H
+	rts
+
+Z80_instr_6E:      ; LD L,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	sta REG_L
+	rts
+
 Z80_instr_7E:      ; LD A,(HL)
 
 	jsr (VEC_fetch_via_HL)
 	sta REG_A
 	rts
+
+; XXX put here LD r,(IX+d) family
+; XXX put here LD r,(IY+d) family
+
+;
+; load memory content (via HL) with register
+;
+
+Z80_instr_70:      ; LD (HL),B
+
+	lda REG_B
+	jmp (VEC_store_via_HL)
+
+Z80_instr_71:      ; LD (HL),C
+
+	lda REG_C
+	jmp (VEC_store_via_HL)
+
+Z80_instr_72:      ; LD (HL),D
+
+	lda REG_D
+	jmp (VEC_store_via_HL)
+
+Z80_instr_73:      ; LD (HL),E
+
+	lda REG_E
+	jmp (VEC_store_via_HL)
+
+Z80_instr_74:      ; LD (HL),H
+
+	lda REG_H
+	jmp (VEC_store_via_HL)
+
+Z80_instr_75:      ; LD (HL),L
+
+	lda REG_L
+	jmp (VEC_store_via_HL)
+
+Z80_instr_77:      ; LD (HL),A
+
+	lda REG_A
+	jmp (VEC_store_via_HL)
+
+; XXX put here LD (IX+d),r family
+; XXX put here LD (IY+d),r family
+
+;
+; load memory content (via HL) with immediate value
+;
+
+Z80_instr_36:      ; LD (HL),n
+
+	jsr VEC_fetch_value
+	jmp (VEC_store_via_HL)
+
+; XXX put here LD (IX+d),n family
+; XXX put here LD (IY+d),n family
+; XXX put here LD A,(BC) / LD A,(DE) / LD A,(nn) / LD (BC), A / LD (DE),A / LD (nn),A
+; XXX put here LD A,I / LD A,R
+; XXX put here LD I,A / LD R,A

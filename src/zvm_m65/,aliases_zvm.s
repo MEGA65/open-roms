@@ -41,10 +41,12 @@
 
 ; Masks for Z80 flag (F) register
 
-!set Z80FLG_S = %10000000 ; sign 
-!set Z80FLG_Z = %01000000 ; zero
-!set Z80FLG_H = %00010000 ; half carry
-!set Z80FLG_P = %00000100 ; parity
-!set Z80FLG_O = %00000100 ; overflow
-!set Z80FLG_A = %00000010 ; add/subtract
-!set Z80FLG_C = %00000001 ; carry
+!set Z80_SF = %10000000 ; sign 
+!set Z80_ZF = %01000000 ; zero
+!set Z80_YF = %00100000 ; bit 5 result
+!set Z80_HF = %00010000 ; half carry
+!set Z80_XF = %00001000 ; bit 3 result
+!set Z80_PF = %00000100 ; parity
+!set Z80_OF = %00000100 ; overflow
+!set Z80_AF = %00000010 ; add/subtract
+!set Z80_CF = %00000001 ; carry

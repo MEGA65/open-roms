@@ -3,35 +3,36 @@
 ; Z80 Virtual Machine core routines
 ;
 
-!addr REG_A           = $02    ; 8-bit accumulator
-!addr REG_F           = $03    ; 8-bit flag register
-!addr REG_B           = $04    ; general purpose 8-bit registers
-!addr REG_C           = $05
-!addr REG_D           = $06
-!addr REG_E           = $07
-!addr REG_H           = $08
-!addr REG_L           = $09
+!addr REG_A            = $02    ; 8-bit accumulator
+!addr REG_F            = $03    ; 8-bit flag register
+!addr REG_B            = $04    ; general purpose 8-bit registers
+!addr REG_C            = $05
+!addr REG_D            = $06
+!addr REG_E            = $07
+!addr REG_H            = $08
+!addr REG_L            = $09
 
-!addr REG_A_SH        = $0A    ; shadow registers
-!addr REG_F_SH        = $0B
-!addr REG_B_SH        = $0C
-!addr REG_C_SH        = $0D
-!addr REG_D_SH        = $0E
-!addr REG_E_SH        = $0F
-!addr REG_H_SH        = $10
-!addr REG_L_SH        = $11
+!addr REG_A_SH         = $0A    ; shadow registers
+!addr REG_F_SH         = $0B
+!addr REG_B_SH         = $0C
+!addr REG_C_SH         = $0D
+!addr REG_D_SH         = $0E
+!addr REG_E_SH         = $0F
+!addr REG_H_SH         = $10
+!addr REG_L_SH         = $11
 
-!addr REG_IX          = $12    ; 16-bit index register
-!addr REG_IY          = $14    ; 16-bit index register
-!addr REG_SP          = $16    ; 16-bit stack pointer
-!addr REG_PC          = $18    ; 16-bit program counter
+!addr REG_IX           = $12    ; 16-bit index register
+!addr REG_IY           = $14    ; 16-bit index register
+!addr REG_SP           = $16    ; 16-bit stack pointer
+!addr REG_PC           = $18    ; 16-bit program counter
 
-!addr REG_I           = $1A    ; 8-bit interrupt vector base
-!addr REG_R06         = $1B    ; refresh counter, bits 0-6 (bit 7 is garbage)
-!addr REG_R7          = $1C    ; refresh counter, bit 7 (bits 0-6 are 0's)
+!addr REG_I            = $1A    ; 8-bit interrupt vector base
+!addr REG_R06          = $1B    ; refresh counter, bits 0-6 (bit 7 is garbage)
+!addr REG_R7           = $1C    ; refresh counter, bit 7 (bits 0-6 are 0's)
 
-!addr VEC_fetch_instr = $1D    ; vector to instruction-fetch function
-
+!addr VEC_fetch_opcode = $1D
+!addr VEC_fetch_via_HL = $1F
+!addr VEC_store_via_HL = $21
 
 
 ZVM_entry:
@@ -60,26 +61,26 @@ ZVM_init:
 ZVM_bank_0:
 
 	lda #<ZVM_fetch_instr_bank_0
-	sta VEC_fetch_instr+0
+	sta VEC_fetch_opcode+0
 	lda #>ZVM_fetch_instr_bank_0
-	sta VEC_fetch_instr+1
+	sta VEC_fetch_opcode+1
 	
 	rts
 
 ZVM_bank_1:
 
 	lda #<ZVM_fetch_instr_bank_1
-	sta VEC_fetch_instr+0
+	sta VEC_fetch_opcode+0
 	lda #>ZVM_fetch_instr_bank_1
-	sta VEC_fetch_instr+1
+	sta VEC_fetch_opcode+1
 	
 	rts
 
-ZVM_fetch_instr_bank_0:
+ZVM_fetch_opcode_bank_0:
 
 	; XXX implement, should return byte in .A
 
-ZVM_fetch_instr_bank_1:
+ZVM_fetch_opcode_bank_1:
 
 	; XXX implement, should return byte in .A
 
@@ -98,6 +99,7 @@ ZVM_run:
 	; Execute mnemonic $80-$FF
 
 	; XXX
+
 
 
 
@@ -179,70 +181,7 @@ Z80_instr_3C:      ; INC A
 Z80_instr_3D:      ; DEC A
 Z80_instr_3E:      ; LD A,n
 Z80_instr_3F:      ; CCF
-Z80_instr_40:      ; LD B,B
-Z80_instr_41:      ; LD B,C
-Z80_instr_42:      ; LD B,D
-Z80_instr_43:      ; LD B,e
-Z80_instr_44:      ; LD B,H
-Z80_instr_45:      ; LD B,L
-Z80_instr_46:      ; LD B,(HL)
-Z80_instr_47:      ; LD B,A
-Z80_instr_48:      ; LD C,B
-Z80_instr_49:      ; LD C,C
-Z80_instr_4A:      ; LD C,D
-Z80_instr_4B:      ; LD C,E
-Z80_instr_4C:      ; LD C,H
-Z80_instr_4D:      ; LD C,L
-Z80_instr_4E:      ; LD C,(HL)
-Z80_instr_4F:      ; LD C,A
-Z80_instr_50:      ; LD D,B
-Z80_instr_51:      ; LD D,C
-Z80_instr_52:      ; LD D,D
-Z80_instr_53:      ; LD D,E
-Z80_instr_54:      ; LD D,H
-Z80_instr_55:      ; LD D,L
-Z80_instr_56:      ; LD D,(HL)
-Z80_instr_57:      ; LD D,A
-Z80_instr_58:      ; LD E,B
-Z80_instr_59:      ; LD E,C
-Z80_instr_5A:      ; LD E,D
-Z80_instr_5B:      ; LD E,E
-Z80_instr_5C:      ; LD E,H
-Z80_instr_5D:      ; LD E,L
-Z80_instr_5E:      ; LD E,(HL)
-Z80_instr_5F:      ; LD E,A
-Z80_instr_60:      ; LD H,B
-Z80_instr_61:      ; LD H,C
-Z80_instr_62:      ; LD H,D
-Z80_instr_63:      ; LD H,E
-Z80_instr_64:      ; LH H,H
-Z80_instr_65:      ; LH H,L
-Z80_instr_66:      ; LH H,(HL)
-Z80_instr_67:      ; LD H,A
-Z80_instr_68:      ; LD L,B
-Z80_instr_69:      ; LD L,C
-Z80_instr_6A:      ; LD L,D
-Z80_instr_6B:      ; LD L,E
-Z80_instr_6C:      ; LD L,H
-Z80_instr_6D:      ; LD L,L
-Z80_instr_6E:      ; LD L,(HL)
-Z80_instr_6F:      ; LD L,A
-Z80_instr_70:      ; LD (HL),B
-Z80_instr_71:      ; LD (HL),C
-Z80_instr_72:      ; LD (HL),D
-Z80_instr_73:      ; LD (HL),E
-Z80_instr_74:      ; LD (HL),H
-Z80_instr_75:      ; LD (HL),L
 Z80_instr_76:      ; HALT
-Z80_instr_77:      ; LD (HL),A
-Z80_instr_78:      ; LD A,B
-Z80_instr_79:      ; LD A,C
-Z80_instr_7A:      ; LD A,D
-Z80_instr_7B:      ; LD A,E
-Z80_instr_7C:      ; LD A,H
-Z80_instr_7D:      ; LD A,L
-Z80_instr_7E:      ; LD A,(HL)
-Z80_instr_7F:      ; LD A,A
 Z80_instr_80:      ; ADD A,B
 Z80_instr_81:      ; ADD A,C
 Z80_instr_82:      ; ADD A,D
@@ -371,7 +310,6 @@ Z80_instr_FC:      ; CALL M,nn
 Z80_instr_FD:      ; #FD
 Z80_instr_FE:      ; CP n
 Z80_instr_FF:      ; RST 38H
-
 Z80_instr_CB_00:   ; RLC B
 Z80_instr_CB_01:   ; RLC C
 Z80_instr_CB_02:   ; RLC D
@@ -620,7 +558,6 @@ Z80_instr_CB_FC:   ; SET 7,H
 Z80_instr_CB_FD:   ; SET 7,L
 Z80_instr_CB_FE:   ; SET 7,(HL)
 Z80_instr_CB_FF:   ; SET 7,A
-
 Z80_instr_DD_09:   ; ADD IX,BC
 Z80_instr_DD_19:   ; ADD IX,DE
 Z80_instr_DD_21:   ; LD IX,nn
@@ -660,7 +597,6 @@ Z80_instr_DD_E3:   ; EX (SP),IX
 Z80_instr_DD_E5:   ; PUSH IX
 Z80_instr_DD_E9:   ; JP (IX)
 Z80_instr_DD_F9:   ; LD SP,IX
-
 Z80_instr_ED_40:   ; IN B,(C)
 Z80_instr_ED_41:   ; OUT (C),B
 Z80_instr_ED_42:   ; SBC HL,BC
@@ -717,7 +653,6 @@ Z80_instr_ED_B8:   ; LDDR
 Z80_instr_ED_B9:   ; CPDR
 Z80_instr_ED_BA:   ; INDR
 Z80_instr_ED_BB:   ; OTDR
-
 Z80_instr_FD_09:   ; ADD IY,BC
 Z80_instr_FD_19:   ; ADD IY,DE
 Z80_instr_FD_21:   ; LD IY,nn
@@ -757,7 +692,6 @@ Z80_instr_FD_E3:   ; EX (SP),IY
 Z80_instr_FD_E5:   ; PUSH IY
 Z80_instr_FD_E9:   ; JP (IY)
 Z80_instr_FD_F9:   ; LD SP,IY
-
 Z80_instr_DDCB_06: ; RLC (IX+d)
 Z80_instr_DDCB_0E: ; RRC (IX+d)
 Z80_instr_DDCB_16: ; RL (IX+d)
@@ -789,7 +723,6 @@ Z80_instr_DDCB_E6: ; SET 4,(IX+d)
 Z80_instr_DDCB_EE: ; SET 5,(IX+d)
 Z80_instr_DDCB_F6: ; SET 6,(IX+d)
 Z80_instr_DDCB_FE: ; SET 7,(IX+d)
-
 Z80_instr_FDCB_06: ; RLC (IY+d)
 Z80_instr_FDCB_0E: ; RRC (IY+d)
 Z80_instr_FDCB_16: ; RL (IY+d)

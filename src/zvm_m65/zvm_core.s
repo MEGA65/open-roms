@@ -3,38 +3,6 @@
 ; Z80 Virtual Machine core routines
 ;
 
-!addr REG_A            = $02    ; 8-bit accumulator
-!addr REG_F            = $03    ; 8-bit flag register
-!addr REG_B            = $04    ; general purpose 8-bit registers
-!addr REG_C            = $05
-!addr REG_D            = $06
-!addr REG_E            = $07
-!addr REG_H            = $08
-!addr REG_L            = $09
-
-!addr REG_A_SH         = $0A    ; shadow registers
-!addr REG_F_SH         = $0B
-!addr REG_B_SH         = $0C
-!addr REG_C_SH         = $0D
-!addr REG_D_SH         = $0E
-!addr REG_E_SH         = $0F
-!addr REG_H_SH         = $10
-!addr REG_L_SH         = $11
-
-!addr REG_IX           = $12    ; 16-bit index register
-!addr REG_IY           = $14    ; 16-bit index register
-!addr REG_SP           = $16    ; 16-bit stack pointer
-!addr REG_PC           = $18    ; 16-bit program counter
-
-!addr REG_I            = $1A    ; 8-bit interrupt vector base
-!addr REG_R06          = $1B    ; refresh counter, bits 0-6 (bit 7 is garbage)
-!addr REG_R7           = $1C    ; refresh counter, bit 7 (bits 0-6 are 0's)
-
-!addr VEC_fetch_opcode = $1D
-!addr VEC_fetch_via_HL = $1F
-!addr VEC_store_via_HL = $21
-
-
 ZVM_entry:
 
 	jsr ZVM_init
@@ -56,39 +24,13 @@ ZVM_init:
 	; XXX what is the initial SP value?
 	; XXX clean memory
 
-	; FALLTROUGH
+	jmp ZVM_set_bank_0
 	
-ZVM_bank_0:
-
-	lda #<ZVM_fetch_instr_bank_0
-	sta VEC_fetch_opcode+0
-	lda #>ZVM_fetch_instr_bank_0
-	sta VEC_fetch_opcode+1
-	
-	rts
-
-ZVM_bank_1:
-
-	lda #<ZVM_fetch_instr_bank_1
-	sta VEC_fetch_opcode+0
-	lda #>ZVM_fetch_instr_bank_1
-	sta VEC_fetch_opcode+1
-	
-	rts
-
-ZVM_fetch_opcode_bank_0:
-
-	; XXX implement, should return byte in .A
-
-ZVM_fetch_opcode_bank_1:
-
-	; XXX implement, should return byte in .A
-
 ZVM_run:
 
 	; CPU main loop
 	
-	jsr (VEC_fetch_instr)
+	jsr (VEC_fetch_opcode)
 	asl
 	bcs @1
 	
@@ -102,18 +44,6 @@ ZVM_run:
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 ;
 ; Not implemented yet - XXX implement them!
 ;
@@ -123,15 +53,12 @@ Z80_instr_02:      ; LD (BC),A
 Z80_instr_03:      ; INC BC
 Z80_instr_04:      ; INC B
 Z80_instr_05:      ; DEC B
-Z80_instr_06:      ; LD B,n
 Z80_instr_07:      ; RLCA
-Z80_instr_08:      ; EX AF,AF''
 Z80_instr_09:      ; ADD HL,BC
 Z80_instr_0A:      ; LD A,(BC)	
 Z80_instr_0B:      ; DEC BC
 Z80_instr_0C:      ; INC C
 Z80_instr_0D:      ; DEC C
-Z80_instr_0E:      ; LD C,n
 Z80_instr_0F:      ; RRCA
 Z80_instr_10:      ; DJNZ e
 Z80_instr_11:      ; LD DE,nn
@@ -139,7 +66,6 @@ Z80_instr_12:      ; LD (DE),A
 Z80_instr_13:      ; INC DE
 Z80_instr_14:      ; INC D
 Z80_instr_15:      ; DEC D
-Z80_instr_16:      ; LD D,n
 Z80_instr_17:      ; RLA
 Z80_instr_18:      ; JR e
 Z80_instr_19:      ; ADD HL,DE
@@ -147,7 +73,6 @@ Z80_instr_1A:      ; LD A,(DE)
 Z80_instr_1B:      ; DEC DE
 Z80_instr_1C:      ; INC E
 Z80_instr_1D:      ; DEC E
-Z80_instr_1E:      ; LD E,n
 Z80_instr_1F:      ; RRA
 Z80_instr_20:      ; JR NZ,e
 Z80_instr_21:      ; LD HL,nn
@@ -155,7 +80,6 @@ Z80_instr_22:      ; LD (nn),HL
 Z80_instr_23:      ; INC HL
 Z80_instr_24:      ; INC H
 Z80_instr_25:      ; DEC H
-Z80_instr_26:      ; LD H,n
 Z80_instr_27:      ; DAA
 Z80_instr_28:      ; JR Z,e
 Z80_instr_29:      ; ADD HL,HL
@@ -163,7 +87,6 @@ Z80_instr_2A:      ; LD HL,(nn)
 Z80_instr_2B:      ; DEC HL
 Z80_instr_2C:      ; INC L
 Z80_instr_2D:      ; DEC L
-Z80_instr_2E:      ; LD L,n
 Z80_instr_2F:      ; CPL
 Z80_instr_30:      ; JR NC,e
 Z80_instr_31:      ; LD SP,nn
@@ -171,7 +94,6 @@ Z80_instr_32:      ; LD (nn),A
 Z80_instr_33:      ; INC SP
 Z80_instr_34:      ; INC (HL)
 Z80_instr_35:      ; DEC (HL)
-Z80_instr_36:      ; LD (HL),n
 Z80_instr_37:      ; SCF
 Z80_instr_38:      ; JR C,e
 Z80_instr_39:      ; ADD HL,SP
@@ -179,7 +101,6 @@ Z80_instr_3A:      ; LD A,(nn)
 Z80_instr_3B:      ; DEC SP
 Z80_instr_3C:      ; INC A
 Z80_instr_3D:      ; DEC A
-Z80_instr_3E:      ; LD A,n
 Z80_instr_3F:      ; CCF
 Z80_instr_76:      ; HALT
 Z80_instr_80:      ; ADD A,B
@@ -271,7 +192,6 @@ Z80_instr_D5:      ; PUSH DE
 Z80_instr_D6:      ; SUB n
 Z80_instr_D7:      ; RST 10H
 Z80_instr_D8:      ; RET C
-Z80_instr_D9:      ; EXX
 Z80_instr_DA:      ; JP C,nn
 Z80_instr_DB:      ; IN A,(n)
 Z80_instr_DC:      ; CALL C,nn
@@ -289,7 +209,6 @@ Z80_instr_E7:      ; RST 20H
 Z80_instr_E8:      ; RET PE
 Z80_instr_E9:      ; JP (HL)
 Z80_instr_EA:      ; JP PE,nn
-Z80_instr_EB:      ; EX DE,HL
 Z80_instr_EC:      ; CALL PE,nn
 Z80_instr_ED:      ; #ED
 Z80_instr_EE:      ; XOR n

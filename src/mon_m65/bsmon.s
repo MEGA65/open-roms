@@ -16,7 +16,7 @@
 ; * Register storage *
 ; ********************
 
-!addr Bank        =  2 ; $00 = C64 address space, $FF = M65 flat address space  XXX adapt the implementation
+!addr Bank        =  2         ; $00 = C64 address, $FF = M65 flat address ; XXX adapt the implementation
 !addr PCH         =  3
 !addr PCL         =  4
 !addr SR          =  5
@@ -67,7 +67,7 @@
 
                                ; $32-$3F - free space, unused for now
 
-!addr Disk_Msg    = $40        ; 40 bytes, disk status as text message
+!addr Disk_Msg    = $40        ; 40 bytes, disk status as text message ; XXX rework code to make it not needed
 !addr Mon_Data    = $68        ; 40 bytes, buffer for hunt and filename
 
 
@@ -116,8 +116,8 @@ Mon_Call
 
 ;        set default PC to monitor exit point
 
-         LDA  #<m65_shadow_BZP
-         LDX  #>m65_shadow_BZP
+         LDA  #<monitor_exit
+         LDX  #>monitor_exit
          STA  PCL
          STA  X_Vector
          STX  PCH

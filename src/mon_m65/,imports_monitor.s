@@ -7,9 +7,7 @@
 ;; #ALIAS# SETMSG            = KERNAL_0.SETMSG
 ;; #ALIAS# STOP              = KERNAL_0.STOP
 
-;; #ALIAS# map_NORMAL        = KERNAL_0.map_NORMAL
-;; #ALIAS# map_MON_1         = KERNAL_0.map_MON_1
-;; #ALIAS# m65_shadow_BZP    = KERNAL_0.m65_shadow_BZP
+;; #ALIAS# monitor_exit      = KERNAL_0.m65_shadow_BZP
 
 ;; #ALIAS# CHRIN             = KERNAL_0.proxy_M1_CHRIN
 ;; #ALIAS# CHROUT            = KERNAL_0.proxy_M1_CHROUT

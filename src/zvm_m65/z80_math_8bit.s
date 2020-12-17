@@ -445,8 +445,101 @@ Z80_instr_CB_FE:   ; SET 7,(HL)
 	ora #%10000000
 	jmp ZVM_store_back
 
-; XXX put SET b,(IX+d) instructions here
-; XXX put SET b,(IY+d) instructions here
+Z80_instr_DDCB_C6: ; SET 0,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	ora #%00000001
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_CE: ; SET 1,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	ora #%00000010
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_D6: ; SET 2,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	ora #%00000100
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_DE: ; SET 3,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	ora #%00001000
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_E6: ; SET 4,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	ora #%00010000
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_EE: ; SET 5,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	ora #%00100000
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_F6: ; SET 6,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	ora #%01000000
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_FE: ; SET 7,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	ora #%10000000
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_C6: ; SET 0,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	ora #%00000001
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_CE: ; SET 1,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	ora #%00000010
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_D6: ; SET 2,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	ora #%00000100
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_DE: ; SET 3,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	ora #%00001000
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_E6: ; SET 4,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	ora #%00010000
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_EE: ; SET 5,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	ora #%00100000
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_F6: ; SET 6,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	ora #%01000000
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_FE: ; SET 7,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	ora #%10000000
+	jmp ZVM_store_back
 
 Z80_instr_CB_80:   ; RES 0,B
 
@@ -888,5 +981,98 @@ Z80_instr_CB_BE:   ; RES 7,(HL)
 	and #%01111111
 	jmp ZVM_store_back
 
-; XXX put RES b,(IX+d) instructions here
-; XXX put RES b,(IY+d) instructions here
+Z80_instr_DDCB_86: ; RES 0,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%11111110
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_8E: ; RES 1,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%11111101
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_96: ; RES 2,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%11111011
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_9E: ; RES 3,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%11110111
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_A6: ; RES 4,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%11101111
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_AE: ; RES 5,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%11011111
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_B6: ; RES 6,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%10111111
+	jmp ZVM_store_back
+
+Z80_instr_DDCB_BE: ; RES 7,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%01111111
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_86: ; RES 0,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%11111110
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_8E: ; RES 1,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%11111101
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_96: ; RES 2,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%11111011
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_9E: ; RES 3,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%11110111
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_A6: ; RES 4,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%11101111
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_AE: ; RES 5,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%11011111
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_B6: ; RES 6,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%10111111
+	jmp ZVM_store_back
+
+Z80_instr_FDCB_BE: ; RES 7,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%01111111
+	jmp ZVM_store_back

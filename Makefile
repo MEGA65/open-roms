@@ -78,7 +78,7 @@ SRC_MON_M65    = $(foreach dir,$(SRCDIR_MON_M65),$(wildcard $(dir)/*.s))
 SRC_ZVM_M65    = $(foreach dir,$(SRCDIR_ZVM_M65),$(wildcard $(dir)/*.s))
 SRC_TOOLS      = $(wildcard tools/*.c,tools/*.cc)
 
-DIR_ACME       = assembler/acme/src
+DIR_ACME       = 3rdparty/acme/src
 HDR_ACME       = $(filter-out $(wildcard $(DIR_ACME)/_*.h),$(wildcard $(DIR_ACME)/*.h))
 SRC_ACME       = $(DIR_ACME)/acme.c $(DIR_ACME)/platform.c $(DIR_ACME)/alu.c $(DIR_ACME)/typesystem.c \
                  $(DIR_ACME)/cliargs.c $(DIR_ACME)/global.c $(DIR_ACME)/output.c $(DIR_ACME)/flow.c \
@@ -284,7 +284,7 @@ $(TOOL_ASSEMBLER): $(DIR_ACME) $(SRC_ACME) $(HDR_ACME)
 	@echo
 	@echo Compiling tool $@ ...
 	@mkdir -p build/tools
-	@$(CC) -o $(TOOL_ASSEMBLER) $(SRC_ACME) -lm -w -I./assembler/acme/src
+	@$(CC) -o $(TOOL_ASSEMBLER) $(SRC_ACME) -lm -w -I./3rdparty/acme/src
 
 $(TOOL_PNGPREPARE): tools/pngprepare.c
 	@echo

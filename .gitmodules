@@ -1,3 +1,6 @@
 [submodule "assembler/acme"]
 	path = assembler/acme
 	url = https://github.com/MEGA65/acme
+[submodule "3rdparty/acme"]
+	path = 3rdparty/acme
+	url = https://github.com/MEGA65/acme

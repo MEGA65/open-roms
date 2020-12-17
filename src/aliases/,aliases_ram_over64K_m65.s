@@ -15,17 +15,19 @@
 !set MEMCONF_SCRROWS = 128
 
 	; $1B800-$1DFFF (10KB) - reserved for a color RAM backup when switchin between text/graphics modes
-	;                (4KB) - reserved for sprites
-	;                (2KB) - reserved for future use
-	;                (2KB) - color RAM mirror, not useable
+	; $1E000-$1EFFF  (4KB) - reserved for sprites
+
+	; $1F000-$1F08D        - shadow location for BASIC zeropage
+	; $1F08E-$1F7FF        - reserved for future use
+
+!set MEMCONF_SHADOW_BZP_0 = $00
+!set MEMCONF_SHADOW_BZP_1 = $F0
+!set MEMCONF_SHADOW_BZP_2 = $01
+!set MEMCONF_SHADOW_BZP_3 = $00
+
+	; $1F800-$1FFFF  (2KB) - color RAM mirror, not useable
 	; $20000-$2FFFF (64KB) - ROM, the essential part
 	; $30000-$4FFFF (64KB) - ROM, additions
-	; $50000-$57F71 (32KB) - reserved for graphics screen
-	; $57F72-$57FFF        - shadow location for BASIC zeropage
-
-!set MEMCONF_SHADOW_BZP_0 = $72
-!set MEMCONF_SHADOW_BZP_1 = $7F
-!set MEMCONF_SHADOW_BZP_2 = $05
-!set MEMCONF_SHADOW_BZP_3 = $00
+	; $50000-$57FFF (32KB) - reserved for graphics screen
 
 	; $58000-...           - extended BASIC variables, RAM disk, etc.

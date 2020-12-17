@@ -44,6 +44,56 @@ ZVM_run:
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ;
 ; Not implemented yet - XXX implement them!
 ;
@@ -181,7 +231,7 @@ Z80_instr_CA:      ; JP Z,nn
 Z80_instr_CB:      ; #CB
 Z80_instr_CC:      ; CALL Z,nn
 Z80_instr_CD:      ; CALL nn
-Z80_instr_CE:      ;  ADC A,n
+Z80_instr_CE:      ; ADC A,n
 Z80_instr_CF:      ; RST 08H
 Z80_instr_D0:      ; RET NC
 Z80_instr_D1:      ; POP DE
@@ -498,22 +548,6 @@ Z80_instr_DDCB_66: ; BIT 4,(IX+d)
 Z80_instr_DDCB_6E: ; BIT 5,(IX+d)
 Z80_instr_DDCB_76: ; BIT 6,(IX+d)
 Z80_instr_DDCB_7E: ; BIT 7,(IX+d)
-Z80_instr_DDCB_86: ; RES 0,(IX+d)
-Z80_instr_DDCB_8E: ; RES 1,(IX+d)
-Z80_instr_DDCB_96: ; RES 2,(IX+d)
-Z80_instr_DDCB_9E: ; RES 3,(IX+d)
-Z80_instr_DDCB_A6: ; RES 4,(IX+d)
-Z80_instr_DDCB_AE: ; RES 5,(IX+d)
-Z80_instr_DDCB_B6: ; RES 6,(IX+d)
-Z80_instr_DDCB_BE: ; RES 7,(IX+d)
-Z80_instr_DDCB_C6: ; SET 0,(IX+d)
-Z80_instr_DDCB_CE: ; SET 1,(IX+d)
-Z80_instr_DDCB_D6: ; SET 2,(IX+d)
-Z80_instr_DDCB_DE: ; SET 3,(IX+d)
-Z80_instr_DDCB_E6: ; SET 4,(IX+d)
-Z80_instr_DDCB_EE: ; SET 5,(IX+d)
-Z80_instr_DDCB_F6: ; SET 6,(IX+d)
-Z80_instr_DDCB_FE: ; SET 7,(IX+d)
 Z80_instr_FDCB_06: ; RLC (IY+d)
 Z80_instr_FDCB_0E: ; RRC (IY+d)
 Z80_instr_FDCB_16: ; RL (IY+d)
@@ -529,22 +563,7 @@ Z80_instr_FDCB_66: ; BIT 4,(IY+d)
 Z80_instr_FDCB_6E: ; BIT 5,(IY+d)
 Z80_instr_FDCB_76: ; BIT 6,(IY+d)
 Z80_instr_FDCB_7E: ; BIT 7,(IY+d)
-Z80_instr_FDCB_86: ; RES 0,(IY+d)
-Z80_instr_FDCB_8E: ; RES 1,(IY+d)
-Z80_instr_FDCB_96: ; RES 2,(IY+d)
-Z80_instr_FDCB_9E: ; RES 3,(IY+d)
-Z80_instr_FDCB_A6: ; RES 4,(IY+d)
-Z80_instr_FDCB_AE: ; RES 5,(IY+d)
-Z80_instr_FDCB_B6: ; RES 6,(IY+d)
-Z80_instr_FDCB_BE: ; RES 7,(IY+d)
-Z80_instr_FDCB_C6: ; SET 0,(IY+d)
-Z80_instr_FDCB_CE: ; SET 1,(IY+d)
-Z80_instr_FDCB_D6: ; SET 2,(IY+d)
-Z80_instr_FDCB_DE: ; SET 3,(IY+d)
-Z80_instr_FDCB_E6: ; SET 4,(IY+d)
-Z80_instr_FDCB_EE: ; SET 5,(IY+d)
-Z80_instr_FDCB_F6: ; SET 6,(IY+d)
-Z80_instr_FDCB_FE: ; SET 7,(IY+d)
+
 
 	rts ; XXX
 	; XXX add 'illegal' instructions

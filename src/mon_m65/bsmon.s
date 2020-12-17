@@ -7,14 +7,16 @@
 
 !macro NOP { eom }             ; ACME does not allow NOP for MEGA65 CPU
 
-; XXX adapt all the addresses/constants!
+
+; Due to shadowing mechanism, we are free to use zeropage addresses $02-$8F
+; for any purpose - they won't conflict with BASIC interpreter varaibles
 
 
 ; ********************
 ; * Register storage *
 ; ********************
 
-!addr Bank        =  2 ; XXX get rid of it!
+!addr Bank        =  2 ; $00 = C64 address space, $FF = M65 flat address space  XXX adapt the implementation
 !addr PCH         =  3
 !addr PCL         =  4
 !addr SR          =  5
@@ -22,46 +24,51 @@
 !addr XR          =  7
 !addr YR          =  8
 !addr ZR          =  9
-
-; *************************************
-; * Used direct (zero) page addresses *
-; *************************************
-
 !addr BP          = 10
 !addr SPH         = 11
 !addr SPL         = 12
 
-; following variables overlap with the BASIC floating point area
 
-; $59 - $5d : temporary floating point accumulator
-; $5e - $62 : temporary floating point accumulator
-; $63 - $69 : primary   floating point accumulator
-; $6a - $6f : secondary floating point accumulator
+; *******************
+; * Other variables *
+; *******************
+
 
 ; A set of 32 bit variables also used as 32 bit pointer
 
-!addr Long_AC     = $59 ; 32 bit accumulator
-!addr Long_CT     = $5d ; 32 bit counter
-!addr Long_PC     = $61 ; 32 bit program counter
-!addr Long_DA     = $65 ; 32 bit data pointer
+!addr Long_AC     = $10        ; 32 bit accumulator
+!addr Long_CT     = $14        ; 32 bit counter
+!addr Long_PC     = $18        ; 32 bit program counter
+!addr Long_DA     = $1C        ; 32 bit data pointer
 
 ; Flags are used in BBR BBS instructions
 
-!addr Adr_Flags   = $69
-!addr Mode_Flags  = $6a
-!addr Op_Code     = $6b
-!addr Op_Flag     = $6c        ; 7: two operands
+!addr Adr_Flags   = $20
+!addr Mode_Flags  = $21
+!addr Op_Code     = $22
+!addr Op_Flag     = $23        ; 7: two operands
                                ; 6: long branch
                                ; 5: 32 bit address
                                ; 4: Q register
-!addr Op_Size     = $6d
-!addr Dig_Cnt     = $6e
-!addr Buf_Index   = $6f
+!addr Op_Size     = $24
+!addr Dig_Cnt     = $25
+!addr Buf_Index   = $26
 
-!addr MODE_80     = $d7        ; 80 column / 40 volumn flag ; XXX add routine to detect this
+!addr MODE_80     = $27        ; 80 column / 40 volumn flag ; XXX add routine to detect this
 
-!addr Disk_Status = $40A       ; BCD value of status
-!addr Disk_Msg    = $410       ; 40 bytes, disk status as text message ; XXX get rid of this buffer
+!addr X_Vector    = $28        ; monitor exit vector
+!addr Ix_Mne      = $29        ; index to mnemonics table
+!addr Op_Mne      = $2A        ; 3 bytes for mnemonic
+!addr Op_Ix       = $2D        ; type of constant
+!addr Op_Len      = $2E        ; length of operand
+!addr Disk_Track  = $2F        ; logical track  1 -> 255
+!addr Disk_Sector = $30        ; logical sector 0 -> 255
+!addr Disk_Status = $31        ; BCD value of status
+
+                               ; $32-$3F - free space, unused for now
+
+!addr Disk_Msg    = $40        ; 40 bytes, disk status as text message
+!addr Mon_Data    = $68        ; 40 bytes, buffer for hunt and filename
 
 
 ; *******
@@ -112,9 +119,9 @@ Mon_Call
          LDA  #<m65_shadow_BZP
          LDX  #>m65_shadow_BZP
          STA  PCL
-         STA  MON_XVEC
+         STA  X_Vector
          STX  PCH
-         STX  MON_XVEC+1
+         STX  X_Vector+1
 
 ; *******
 Mon_Start
@@ -294,7 +301,7 @@ Jump_Table
 Mon_Exit
 ; ******
 
-         JMP  (MON_XVEC)
+         JMP  (X_Vector)
 
 ; *******
 LAC_To_PC
@@ -749,7 +756,7 @@ Mon_Hunt
          CMP  #0
          LBEQ Mon_Error         ; null string
 
-@lpstr   STA  MON_DATA,Y
+@lpstr   STA  Mon_Data,Y
          INY
          JSR  Get_Char
          BEQ  @hunt
@@ -759,7 +766,7 @@ Mon_Hunt
 
 @bin     JSR  Got_LAC
 @lpbin   LDA  Long_AC
-         STA  MON_DATA,Y
+         STA  Mon_Data,Y
          INY
          JSR  Get_LAC
          BCS  @hunt
@@ -771,7 +778,7 @@ Mon_Hunt
 
 @lpstart LDY  #0
 @lpins   JSR  Fetch
-         CMP  MON_DATA,Y
+         CMP  Mon_Data,Y
          BNE  @next
          INY
          CPY  Long_DA
@@ -800,9 +807,9 @@ Load_Save
          ; STY  FNLEN
          ; STY  FNBANK
          ; STY  IOSTATUS
-         ; LDA  #>MON_DATA
+         ; LDA  #>Mon_Data
          ; STA  FNADR+1
-         ; LDA  #<MON_DATA
+         ; LDA  #<Mon_Data
          ; STA  FNADR
 ; @skip    JSR  Get_Char          ; skip blanks
          ; LBEQ Mon_Error
@@ -898,8 +905,8 @@ Mon_Assemble
 @start   LDX  #0                ; mne letter counter
          STX  Long_DA+1         ; clear encoded MNE
          STX  Op_Flag           ; 6:long branch 5:32 bit
-         STX  MON_Op_Ix         ; operand byte index
-         STX  MON_Op_Len        ; operand length
+         STX  Op_Ix             ; operand byte index
+         STX  Op_Len            ; operand length
 @getin   JSR  Get_Char
          BNE  @laba
          CPX  #0
@@ -914,20 +921,20 @@ Mon_Assemble
          BNE  @labb             ; -> not 2nd. char
          CMP  #'B'
          BNE  @labb             ; 2nd. char != 'B'
-         LDZ  MON_Op_Mne
+         LDZ  Op_Mne
          CPZ  #'L'
          BNE  @labb             ; 1st. Char != 'L'
          SMB6 Op_Flag           ; flag long branch
          DEX                    ; skip 'L'
 
-@labb    STA  MON_Op_Mne,X      ; next mne character
+@labb    STA  Op_Mne,X          ; next mne character
          INX
          CPX  #3
          BNE  @getin
 
 ;        encode 3 letter mnemonic
 
-@lpenc   LDA  MON_Op_Mne-1,X
+@lpenc   LDA  Op_Mne-1,X
          SEC
          SBC  #$3f              ; offset
          LDY  #5                ; 5 bit code
@@ -952,7 +959,7 @@ Mon_Assemble
          BPL  @lpfind
          JMP  Mon_Error
 
-@found   STX  MON_Ix_Mne
+@found   STX  Ix_Mne
 
 ;        find 1st. opcode for this mnemonic
 
@@ -1000,10 +1007,10 @@ Mon_Assemble
          LDA  Long_AC+1
          BNE  @labf             ; high byte not zero
          DEY                    ; Y=1 byte operand
-@labf    LDX  MON_Op_Ix         ; X = operand value #
+@labf    LDX  Op_Ix             ; X = operand value #
          TYA                    ; A = 1:byte or 2:word
-         STA  MON_Op_Len,X      ; store operand length
-         INC  MON_Op_Ix         ; ++index to operand value
+         STA  Op_Len,X          ; store operand length
+         INC  Op_Ix             ; ++index to operand value
          TXA                    ; A = current index
          BNE  @labg             ; -> at 2nd. byte
          JSR  LAC_To_LCT        ; Long_CT = 1st. operand
@@ -1046,7 +1053,7 @@ Mon_Assemble
 
 @comma   CMP  #','
          BNE  @stack
-         LDA  MON_Op_Ix         ; operand value #
+         LDA  Op_Ix             ; operand value #
          BEQ  @error
          LDX  #4                ; outside comma
          LDA  Mode_Flags
@@ -1080,7 +1087,7 @@ Mon_Assemble
 @rbra    CMP  #']'
          BNE  @right
          BBR5 Op_Flag,@error
-         LDA  MON_Op_Ix
+         LDA  Op_Ix
          LBEQ Mon_Error         ; no value
          LDA  Mode_Flags
          CMP  #$40              ; (
@@ -1094,7 +1101,7 @@ Mon_Assemble
 
 @right   CMP  #')'
          BNE  @X
-         LDA  MON_Op_Ix
+         LDA  Op_Ix
          LBEQ Mon_Error         ; no value
          LDA  Mode_Flags
          CMP  #$40              ; (
@@ -1108,7 +1115,7 @@ Mon_Assemble
 
 @X       CMP  #'X'
          BNE  @Y
-         LDA  MON_Op_Ix
+         LDA  Op_Ix
          LBEQ Mon_Error
          LDA  Mode_Flags
          CMP  #$60
@@ -1122,7 +1129,7 @@ Mon_Assemble
 
 @Y       CMP  #'Y'
          BNE  @Z
-         LDA  MON_Op_Ix
+         LDA  Op_Ix
          LBEQ Mon_Error
          LDA  Mode_Flags
          CMP  #$4c             ; ($nn),
@@ -1138,7 +1145,7 @@ Mon_Assemble
 
 @Z       CMP  #'Z'
          LBNE Mon_Error
-         LDA  MON_Op_Ix
+         LDA  Op_Ix
          LBEQ Mon_Error
          LDA  Mode_Flags
          CMP  #$4c              ; $nn,
@@ -1148,8 +1155,8 @@ Mon_Assemble
 
 ;        BBR BBS RMB SMB  two operands
 
-@adjust  LDA  MON_Ix_Mne
-         LDX  MON_Op_Ix         ; # if values
+@adjust  LDA  Ix_Mne
+         LDX  Op_Ix             ; # if values
          BEQ  @match            ; -> no operand
          DEX
          BEQ  @one              ; ->  one operand
@@ -1202,16 +1209,16 @@ Mon_Assemble
 @match   JSR  Mode_Index
 @lpmatch JSR  Match_Mode
          BEQ  @okmat
-         LDA  MON_Op_Len
+         LDA  Op_Len
          LBEQ Mon_Error
          LDA  Mode_Flags
          LBMI Mon_Error
          AND  #%00111111
          STA  Mode_Flags
-         INC  MON_Op_Len
+         INC  Op_Len
          JSR  Size_To_Mode
          BRA  @lpmatch
-@okmat   LDY  MON_Op_Len
+@okmat   LDY  Op_Len
          TXA
 
 ;        store instruction bytes
@@ -1329,7 +1336,7 @@ Match_Mode
 @next    INX                    ; next opcode
          BEQ @error
          LDY  MNE_Index,X
-         CPY  MON_Ix_Mne        ; same mnemonic ?
+         CPY  Ix_Mne            ; same mnemonic ?
          BEQ  @loop             ; -> compare again
          BRA  @next
 
@@ -1355,7 +1362,7 @@ Mode_Index
 Size_To_Mode
 ; **********
 
-         LDA  MON_Op_Len
+         LDA  Op_Len
          LSR
          ROR
          ROR
@@ -2235,7 +2242,7 @@ DOS_U ; XXX connect it somehow to command list
          LBCC Mon_Error
          CMP  #'3'            ; U2: write
          LBCS Mon_Error
-         STA  MON_DATA+1      ; U type
+         STA  Mon_Data+1      ; U type
          INC  Buf_Index
          JSR  Get_LAC
          LBCS Mon_Error
@@ -2244,12 +2251,12 @@ DOS_U ; XXX connect it somehow to command list
          JSR  Get_LAC
          LBCS Mon_Error
          LDA  Long_AC
-         STA  MON_Disk_Track
+         STA  Disk_Track
 
          JSR  Get_LAC
          LBCS Mon_Error
          LDA  Long_AC
-         STA  MON_Disk_Sector
+         STA  Disk_Sector
 
          JSR  Get_LAC
          JSR  LAC_To_LCT        ; Long_CT = sector count
@@ -2257,7 +2264,7 @@ DOS_U ; XXX connect it somehow to command list
 
          JSR  Open_Disk_Buffer
 
-@loop    LDA  MON_DATA+1
+@loop    LDA  Mon_Data+1
          LSR
          BEQ  @write
          JSR  Find_next_Sector
@@ -2270,7 +2277,7 @@ DOS_U ; XXX connect it somehow to command list
          BNE  @error
 
 @next    JSR  Inc_LPC_Page
-         INC  MON_Disk_Sector
+         INC  Disk_Sector
          DEW  Long_CT
          BPL  @loop
 
@@ -2289,8 +2296,8 @@ Find_next_Sector
          CMP  #$66              ; illegal track or sector
          BNE  @error            ; error
          LDA  #0
-         STA  MON_Disk_Sector
-         INC  MON_Disk_Track    ; try next track
+         STA  Disk_Sector
+         INC  Disk_Track        ; try next track
          JSR  Build_U_String
          JSR  Send_Disk_Command
          JSR  Get_Disk_Status
@@ -2328,7 +2335,7 @@ Send_Disk_Command
 ; ***************
 
          JSR  Open_Command_Channel
-@loop    LDA  MON_DATA,Y
+@loop    LDA  Mon_Data,Y
          BEQ  @end
          JSR  CIOUT
          INY
@@ -2378,16 +2385,16 @@ Set_TS
 
 @100      CMP  #100
           BCC  @10
-          INC  MON_DATA,X
+          INC  Mon_Data,X
           SBC  #100
           BRA  @100
 @10       CMP  #10
           BCC  @1
-          INC  MON_DATA+1,X
+          INC  Mon_Data+1,X
           SBC  #10
           BRA  @10
 @1        ORA  #'0'
-          STA  MON_DATA+2,X
+          STA  Mon_Data+2,X
           RTS
 
 ; @[u],U1 mem track startsec [endsec] : read  disk sector(s)
@@ -2400,16 +2407,16 @@ Build_U_String
 
          LDX  #14
 @loop    LDA  U1,X
-         STA  MON_DATA,X
+         STA  Mon_Data,X
          DEX
          CPX  #2
          BCS  @loop
          LDA  #'U'
-         STA  MON_DATA
-         LDA  MON_Disk_Track
+         STA  Mon_Data
+         LDA  Disk_Track
          LDX  #7
          JSR  Set_TS
-         LDA  MON_Disk_Sector
+         LDA  Disk_Sector
          LDX  #11
          JMP  Set_TS
 

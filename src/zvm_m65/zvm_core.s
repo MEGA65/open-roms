@@ -101,56 +101,40 @@ ZVM_run:
 Z80_instr_01:      ; LD BC,nn
 Z80_instr_02:      ; LD (BC),A
 Z80_instr_03:      ; INC BC
-Z80_instr_04:      ; INC B
-Z80_instr_05:      ; DEC B
 Z80_instr_07:      ; RLCA
 Z80_instr_09:      ; ADD HL,BC
 Z80_instr_0A:      ; LD A,(BC)	
 Z80_instr_0B:      ; DEC BC
-Z80_instr_0C:      ; INC C
-Z80_instr_0D:      ; DEC C
 Z80_instr_0F:      ; RRCA
 Z80_instr_10:      ; DJNZ e
 Z80_instr_11:      ; LD DE,nn
 Z80_instr_12:      ; LD (DE),A
 Z80_instr_13:      ; INC DE
-Z80_instr_14:      ; INC D
-Z80_instr_15:      ; DEC D
 Z80_instr_17:      ; RLA
 Z80_instr_18:      ; JR e
 Z80_instr_19:      ; ADD HL,DE
 Z80_instr_1A:      ; LD A,(DE)	
 Z80_instr_1B:      ; DEC DE
-Z80_instr_1C:      ; INC E
-Z80_instr_1D:      ; DEC E
 Z80_instr_1F:      ; RRA
 Z80_instr_20:      ; JR NZ,e
 Z80_instr_21:      ; LD HL,nn
 Z80_instr_22:      ; LD (nn),HL
 Z80_instr_23:      ; INC HL
-Z80_instr_24:      ; INC H
-Z80_instr_25:      ; DEC H
 Z80_instr_27:      ; DAA
 Z80_instr_28:      ; JR Z,e
 Z80_instr_29:      ; ADD HL,HL
 Z80_instr_2A:      ; LD HL,(nn)
 Z80_instr_2B:      ; DEC HL
-Z80_instr_2C:      ; INC L
-Z80_instr_2D:      ; DEC L
 Z80_instr_2F:      ; CPL
 Z80_instr_30:      ; JR NC,e
 Z80_instr_31:      ; LD SP,nn
 Z80_instr_32:      ; LD (nn),A
 Z80_instr_33:      ; INC SP
-Z80_instr_34:      ; INC (HL)
-Z80_instr_35:      ; DEC (HL)
 Z80_instr_37:      ; SCF
 Z80_instr_38:      ; JR C,e
 Z80_instr_39:      ; ADD HL,SP
 Z80_instr_3A:      ; LD A,(nn)
 Z80_instr_3B:      ; DEC SP
-Z80_instr_3C:      ; INC A
-Z80_instr_3D:      ; DEC A
 Z80_instr_3F:      ; CCF
 Z80_instr_76:      ; HALT
 Z80_instr_80:      ; ADD A,B
@@ -407,8 +391,6 @@ Z80_instr_DD_23:   ; DEC IX
 Z80_instr_DD_29:   ; ADD IX,IX
 Z80_instr_DD_2A:   ; LD IX,(nn)
 Z80_instr_DD_2B:   ; DEC IX
-Z80_instr_DD_34:   ; INC (IX+d)
-Z80_instr_DD_35:   ; DEC (IX+d)
 Z80_instr_DD_39:   ; ADD IX,SP
 Z80_instr_DD_46:   ; LD B,(IX+d)
 Z80_instr_DD_4E:   ; LD C,(IX+d)
@@ -502,8 +484,6 @@ Z80_instr_FD_23:   ; INC IY
 Z80_instr_FD_29:   ; ADD IY,IY
 Z80_instr_FD_2A:   ; LD IY,(nn)
 Z80_instr_FD_2B:   ; DEC IY
-Z80_instr_FD_34:   ; INC (IY+d)
-Z80_instr_FD_35:   ; DEC (IY+d)
 Z80_instr_FD_39:   ; ADD IY,SP
 Z80_instr_FD_46:   ; LD B,(IY+d)
 Z80_instr_FD_4E:   ; LD C,(IY+d)

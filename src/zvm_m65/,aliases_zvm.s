@@ -47,6 +47,6 @@
 !set Z80_HF = %00010000 ; half carry
 !set Z80_XF = %00001000 ; bit 3 result
 !set Z80_PF = %00000100 ; parity
-!set Z80_OF = %00000100 ; overflow
-!set Z80_AF = %00000010 ; add/subtract
+!set Z80_VF = %00000100 ; overflow
+!set Z80_NF = %00000010 ; subtract
 !set Z80_CF = %00000001 ; carry

@@ -92,6 +92,9 @@ CRT_BIN_LIST   = assets/cartridge/header-cart.bin \
                  assets/cartridge/header-seg2.bin \
                  assets/cartridge/header-seg3.bin
 
+ROM_CBM_BASIC  = 3rdparty/ROMs/basic
+ROM_CBM_KERNAL = 3rdparty/ROMs/kernal
+
 # Generated files
 
 GEN_BASIC      = build/,generated/,float_constants.s
@@ -260,15 +263,15 @@ updatebin:
 
 # Rules - external blobs
 
-kernal:
+$(ROM_CBM_KERNAL):
 	@echo
-	@echo Please copy \'kernal\' file from the original ROM set to the \'open-roms\' directory
+	@echo Please copy \'kernal\' file from the original ROM set to the \'3rdparty/ROMs\' directory
 	@echo
 	@exit 1
 
-basic:
+$(ROM_CBM_BASIC):
 	@echo
-	@echo Please copy \'basic\' file from the original ROM set to the \'open-roms\' directory
+	@echo Please copy \'basic\' file from the original ROM set to the \'3rdparty/ROMs\' directory
 	@echo
 	@exit 1
 
@@ -653,13 +656,13 @@ build/symbols_generic_crt.vs:
 build/symbols_ultimate64_crt.vs:
 	@sort $(DIR_U64CRT)/BASIC_0_combined.vs $(DIR_U64CRT)/KERNAL_0_combined.vs | uniq | grep -v "__" > $@
 
-build/kernal_hybrid.rom: kernal $(DIR_GEN)/OUTK_x.BIN
+build/kernal_hybrid.rom: $(ROM_CBM_KERNAL) $(DIR_GEN)/OUTK_x.BIN
 	@echo
 	@echo $(HYBRID_WARNING)
 	@echo
-	(dd if=kernal bs=1140 count=1 skip=0        ; \
-	echo "    > HYBRID ROM, DON'T DISTRIBUTE <" ; \
-	dd if=kernal bs=1 count=58 skip=1176        ; \
+	(dd if=$(ROM_CBM_KERNAL) bs=1140 count=1 skip=0  ; \
+	echo "    > HYBRID ROM, DON'T DISTRIBUTE <"      ; \
+	dd if=$(ROM_CBM_KERNAL) bs=1 count=58 skip=1176  ; \
 	cat $(DIR_GEN)/OUTK_x.BIN) > $@
 
 build/symbols_hybrid.vs: $(DIR_GEN)/KERNAL_combined.vs
@@ -858,6 +861,6 @@ test_m65: build/mega65.rom
 testremote: build/kernal_custom.rom build/basic_custom.rom $(TARGET_CHR_PXL) build/symbols_custom.vs
 	x64 -kernal build/kernal_custom.rom -basic build/basic_custom.rom -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_custom.vs -remotemonitor
 
-testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN kernal basic
-	$(TOOL_SIMILARITY) kernal $(DIR_GEN)/OUTx_x.BIN
-	$(TOOL_SIMILARITY) basic  $(DIR_GEN)/OUTx_x.BIN
+testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN $(ROM_CBM_KERNAL) $(ROM_CBM_BASIC)
+	$(TOOL_SIMILARITY) $(ROM_CBM_KERNAL) $(DIR_GEN)/OUTx_x.BIN
+	$(TOOL_SIMILARITY) $(ROM_CBM_BASIC)  $(DIR_GEN)/OUTx_x.BIN

@@ -11,6 +11,7 @@ build/*
 
 /basic
 /kernal
+/3rdparty/ROMs/*
 
 # Various IDE project files, temporary files, etc.
 

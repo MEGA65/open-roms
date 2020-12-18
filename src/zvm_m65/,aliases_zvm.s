@@ -26,6 +26,11 @@
 !addr REG_R06            = $1B    ; refresh counter, bits 0-6 (bit 7 is garbage)
 !addr REG_R7             = $1C    ; refresh counter, bit 7 (bits 0-6 are 0's)
 
+!addr ADDR_IXY_d         = $1D    ; 16-bit calculated address IX+d / IY+d  XXX - important!!!
+
+!addr REG_IFF1           = $1F    ; interrupt flip-flop flag 1
+!addr REG_IFF2           = $20    ; interrupt flip-flop flag 2
+
 !addr VEC_fetch_opcode   = $60
 !addr VEC_fetch_value    = $62
 !addr VEC_fetch_stack    = $64

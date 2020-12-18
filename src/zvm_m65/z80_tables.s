@@ -4,9 +4,9 @@
 ;
 
 
-z80_ftable_parity:
-
-	+PUT_Z80_FTABLE_PARITY
+; z80_ftable_parity:
+;
+; 	+PUT_Z80_FTABLE_PARITY
 
 z80_ftable_INC:
 

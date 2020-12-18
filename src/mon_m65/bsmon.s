@@ -55,17 +55,18 @@
 !addr Buf_Index   = $26
 
 !addr MODE_80     = $27        ; 80 column / 40 volumn flag ; XXX add routine to detect this
+!addr SP_Storage  = $28        ; location to preserve stack pointer
 
-!addr X_Vector    = $28        ; monitor exit vector
-!addr Ix_Mne      = $29        ; index to mnemonics table
-!addr Op_Mne      = $2A        ; 3 bytes for mnemonic
-!addr Op_Ix       = $2D        ; type of constant
-!addr Op_Len      = $2E        ; length of operand
-!addr Disk_Track  = $2F        ; logical track  1 -> 255
-!addr Disk_Sector = $30        ; logical sector 0 -> 255
-!addr Disk_Status = $31        ; BCD value of status
+!addr X_Vector    = $29        ; monitor exit vector
+!addr Ix_Mne      = $2B        ; index to mnemonics table
+!addr Op_Mne      = $2C        ; 3 bytes for mnemonic
+!addr Op_Ix       = $2F        ; type of constant
+!addr Op_Len      = $30        ; length of operand
+!addr Disk_Track  = $31        ; logical track  1 -> 255
+!addr Disk_Sector = $32        ; logical sector 0 -> 255
+!addr Disk_Status = $33        ; BCD value of status
 
-                               ; $32-$3F - free space, unused for now
+                               ; $34-$3F - free space, unused for now
 
 !addr Disk_Msg    = $40        ; 40 bytes, disk status as text message ; XXX rework code to make it not needed
 !addr Mon_Data    = $68        ; 40 bytes, buffer for hunt and filename
@@ -132,6 +133,7 @@ Mon_Start
          STY  SPH
          TSX
          STX  SPL
+         STX  SP_Storage
          LDA  #$c0
          JSR  SETMSG
          CLI
@@ -227,7 +229,7 @@ Mon_Error
 
          JSR  PRIMM
          !pet KEY_ESC, 'o', KEY_CRSR_RIGHT, '?', 0
-         LDX  #$f8              ; reset stack pointer XXX probably would be better to restore original
+         LDX  SP_Storage        ; reset stack pointer
          TXS
          BRA  Main
 
@@ -1761,7 +1763,7 @@ Read_Number
          PHY
          PHZ
          LDA  #0
-         STA  Dig_Cnt               ; count columns read
+         STA  Dig_Cnt           ; count columns read
          STA  Long_AC           ; clear result Long_AC
          STA  Long_AC+1
          STA  Long_AC+2

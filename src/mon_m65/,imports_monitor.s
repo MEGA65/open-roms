@@ -6,6 +6,7 @@
 
 ;; #ALIAS# SETMSG            = KERNAL_0.SETMSG
 ;; #ALIAS# STOP              = KERNAL_0.STOP
+;; #ALIAS# SCREEN            = KERNAL_0.SCREEN
 
 ;; #ALIAS# monitor_exit      = KERNAL_0.m65_shadow_BZP
 

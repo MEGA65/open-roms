@@ -98,43 +98,41 @@ ZVM_run:
 ; Not implemented yet - XXX implement them!
 ;
 
+Z80_instr_CB:      ; #CB
+Z80_instr_DD:      ; #DD
+Z80_instr_ED:      ; #ED
+Z80_instr_FD:      ; #FD
+Z80_instr_DD_CB:   ; #DDCB
+Z80_instr_FD_CB:   ; #FDCB
 Z80_instr_01:      ; LD BC,nn
 Z80_instr_02:      ; LD (BC),A
-Z80_instr_03:      ; INC BC
 Z80_instr_07:      ; RLCA
 Z80_instr_09:      ; ADD HL,BC
 Z80_instr_0A:      ; LD A,(BC)	
-Z80_instr_0B:      ; DEC BC
 Z80_instr_0F:      ; RRCA
 Z80_instr_10:      ; DJNZ e
 Z80_instr_11:      ; LD DE,nn
 Z80_instr_12:      ; LD (DE),A
-Z80_instr_13:      ; INC DE
 Z80_instr_17:      ; RLA
 Z80_instr_18:      ; JR e
 Z80_instr_19:      ; ADD HL,DE
 Z80_instr_1A:      ; LD A,(DE)	
-Z80_instr_1B:      ; DEC DE
 Z80_instr_1F:      ; RRA
 Z80_instr_20:      ; JR NZ,e
 Z80_instr_21:      ; LD HL,nn
 Z80_instr_22:      ; LD (nn),HL
-Z80_instr_23:      ; INC HL
 Z80_instr_27:      ; DAA
 Z80_instr_28:      ; JR Z,e
 Z80_instr_29:      ; ADD HL,HL
 Z80_instr_2A:      ; LD HL,(nn)
-Z80_instr_2B:      ; DEC HL
 Z80_instr_2F:      ; CPL
 Z80_instr_30:      ; JR NC,e
 Z80_instr_31:      ; LD SP,nn
 Z80_instr_32:      ; LD (nn),A
-Z80_instr_33:      ; INC SP
 Z80_instr_37:      ; SCF
 Z80_instr_38:      ; JR C,e
 Z80_instr_39:      ; ADD HL,SP
 Z80_instr_3A:      ; LD A,(nn)
-Z80_instr_3B:      ; DEC SP
 Z80_instr_3F:      ; CCF
 Z80_instr_76:      ; HALT
 Z80_instr_80:      ; ADD A,B
@@ -203,38 +201,30 @@ Z80_instr_BE:      ; CP (HL)
 Z80_instr_BF:      ; CP A
 Z80_instr_C0:      ; RET NZ
 Z80_instr_C1:      ; POP BC
-Z80_instr_C2:      ; JP NZ,nn
-Z80_instr_C3:      ; JP nn
 Z80_instr_C4:      ; CALL NZ,nn
 Z80_instr_C5:      ; PUSH BC
 Z80_instr_C6:      ; ADD A,n
 Z80_instr_C7:      ; RST 00H
 Z80_instr_C8:      ; RET z
 Z80_instr_C9:      ; RET
-Z80_instr_CA:      ; JP Z,nn
-Z80_instr_CB:      ; #CB
 Z80_instr_CC:      ; CALL Z,nn
 Z80_instr_CD:      ; CALL nn
 Z80_instr_CE:      ; ADC A,n
 Z80_instr_CF:      ; RST 08H
 Z80_instr_D0:      ; RET NC
 Z80_instr_D1:      ; POP DE
-Z80_instr_D2:      ; JP NC,nn
 Z80_instr_D3:      ; OUT (n), A
 Z80_instr_D4:      ; CALL NC,nn
 Z80_instr_D5:      ; PUSH DE
 Z80_instr_D6:      ; SUB n
 Z80_instr_D7:      ; RST 10H
 Z80_instr_D8:      ; RET C
-Z80_instr_DA:      ; JP C,nn
 Z80_instr_DB:      ; IN A,(n)
 Z80_instr_DC:      ; CALL C,nn
-Z80_instr_DD:      ; #DD
 Z80_instr_DE:      ; SBC A,n
 Z80_instr_DF:      ; RST 18H
 Z80_instr_E0:      ; RET PO
 Z80_instr_E1:      ; POP HL
-Z80_instr_E2:      ; JP PO,nn
 Z80_instr_E3:      ; EX (SP),HL
 Z80_instr_E4:      ; CALL PO,nn
 Z80_instr_E5:      ; PUSH HL
@@ -242,25 +232,18 @@ Z80_instr_E6:      ; AND n
 Z80_instr_E7:      ; RST 20H
 Z80_instr_E8:      ; RET PE
 Z80_instr_E9:      ; JP (HL)
-Z80_instr_EA:      ; JP PE,nn
 Z80_instr_EC:      ; CALL PE,nn
-Z80_instr_ED:      ; #ED
 Z80_instr_EE:      ; XOR n
 Z80_instr_EF:      ; RST 28H
 Z80_instr_F0:      ; RET P
 Z80_instr_F1:      ; POP AF
-Z80_instr_F2:      ; JP P,nn
-Z80_instr_F3:      ; DI
 Z80_instr_F4:      ; CALL P,nn
 Z80_instr_F5:      ; PUSH AF
 Z80_instr_F6:      ; OR n
 Z80_instr_F7:      ; RST 30H
 Z80_instr_F8:      ; RET M
 Z80_instr_F9:      ; LD SP,HL
-Z80_instr_FA:      ; JP M,nn
-Z80_instr_FB:      ; EI
 Z80_instr_FC:      ; CALL M,nn
-Z80_instr_FD:      ; #FD
 Z80_instr_FE:      ; CP n
 Z80_instr_FF:      ; RST 38H
 Z80_instr_CB_00:   ; RLC B
@@ -323,10 +306,8 @@ Z80_instr_DD_09:   ; ADD IX,BC
 Z80_instr_DD_19:   ; ADD IX,DE
 Z80_instr_DD_21:   ; LD IX,nn
 Z80_instr_DD_22:   ; LD (nn),IX
-Z80_instr_DD_23:   ; DEC IX
 Z80_instr_DD_29:   ; ADD IX,IX
 Z80_instr_DD_2A:   ; LD IX,(nn)
-Z80_instr_DD_2B:   ; DEC IX
 Z80_instr_DD_39:   ; ADD IX,SP
 Z80_instr_DD_46:   ; LD B,(IX+d)
 Z80_instr_DD_4E:   ; LD C,(IX+d)
@@ -350,7 +331,6 @@ Z80_instr_DD_A6:   ; AND (IX+d)
 Z80_instr_DD_AE:   ; XOR (IX+d)
 Z80_instr_DD_B6:   ; OR (IX+d)
 Z80_instr_DD_BE:   ; CP (IX+d)
-Z80_instr_DD_CB:   ; #DDCB
 Z80_instr_DD_E1:   ; POP IX
 Z80_instr_DD_E3:   ; EX (SP),IX
 Z80_instr_DD_E5:   ; PUSH IX
@@ -362,7 +342,6 @@ Z80_instr_ED_42:   ; SBC HL,BC
 Z80_instr_ED_43:   ; LD (nn),BC
 Z80_instr_ED_44:   ; NEG
 Z80_instr_ED_45:   ; RETN
-Z80_instr_ED_46:   ; IM 0
 Z80_instr_ED_47:   ; LD I,A
 Z80_instr_ED_48:   ; IN C,(C)
 Z80_instr_ED_49:   ; OUT (C),C
@@ -374,13 +353,11 @@ Z80_instr_ED_50:   ; IN D,(C)
 Z80_instr_ED_51:   ; OUT (C),D
 Z80_instr_ED_52:   ; SBC HL,DE
 Z80_instr_ED_53:   ; LD (nn),DE
-Z80_instr_ED_56:   ; IM 1
 Z80_instr_ED_57:   ; LD A,I
 Z80_instr_ED_58:   ; IN E,(C)
 Z80_instr_ED_59:   ; OUT (C),E
 Z80_instr_ED_5A:   ; ADC HL,DE
 Z80_instr_ED_5B:   ; LD DE,(nn)
-Z80_instr_ED_5E:   ; IM 2
 Z80_instr_ED_5F:   ; LD A,R
 Z80_instr_ED_60:   ; IN H,(C)
 Z80_instr_ED_61:   ; OUT (C),H
@@ -416,10 +393,8 @@ Z80_instr_FD_09:   ; ADD IY,BC
 Z80_instr_FD_19:   ; ADD IY,DE
 Z80_instr_FD_21:   ; LD IY,nn
 Z80_instr_FD_22:   ; LD (nn),IY
-Z80_instr_FD_23:   ; INC IY
 Z80_instr_FD_29:   ; ADD IY,IY
 Z80_instr_FD_2A:   ; LD IY,(nn)
-Z80_instr_FD_2B:   ; DEC IY
 Z80_instr_FD_39:   ; ADD IY,SP
 Z80_instr_FD_46:   ; LD B,(IY+d)
 Z80_instr_FD_4E:   ; LD C,(IY+d)
@@ -443,7 +418,6 @@ Z80_instr_FD_A6:   ; AND (IY+d)
 Z80_instr_FD_AE:   ; XOR (IY+d)
 Z80_instr_FD_B6:   ; OR (IY+d)
 Z80_instr_FD_BE:   ; CP (IY+d)
-Z80_instr_FD_CB:   ; #FDCB
 Z80_instr_FD_E1:   ; POP IY
 Z80_instr_FD_E3:   ; EX (SP),IY
 Z80_instr_FD_E5:   ; PUSH IY

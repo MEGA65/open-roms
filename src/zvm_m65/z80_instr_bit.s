@@ -503,7 +503,7 @@ Z80_common_bitXY7_1:
 	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_ZF - Z80_PF)
 	ora #($00 + Z80_HF + Z80_SF)
 	sta REG_F
-	lda ADDR_IXY_d
+	lda ADDR_IXY_d+1
 	and #(Z80_XF + Z80_YF)
 	ora REG_F
 	sta REG_F
@@ -515,7 +515,7 @@ Z80_common_bitXYx_0:
 	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF)
 	ora #($00 + Z80_HF + Z80_ZF + Z80_PF)
 	sta REG_F
-	lda ADDR_IXY_d
+	lda ADDR_IXY_d+1
 	and #(Z80_XF + Z80_YF)
 	ora REG_F
 	sta REG_F
@@ -527,7 +527,7 @@ Z80_common_bitXYx_1:
 	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF - Z80_ZF - Z80_PF)
 	ora #($00 + Z80_HF)
 	sta REG_F
-	lda ADDR_IXY_d
+	lda ADDR_IXY_d+1
 	and #(Z80_XF + Z80_YF)
 	ora REG_F
 	sta REG_F

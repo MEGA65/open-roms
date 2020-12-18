@@ -466,6 +466,8 @@ Fetch
 Mon_Memory
 ; ********
 
+         JSR  Set_MODE_80
+
          JSR  Get_LAC           ; get 1st. parameter
          LDZ  #16               ; default row count
          BCS  @row              ; no address
@@ -564,6 +566,8 @@ Mon_Set_Register
 Mon_Set_Memory
 ; ************
 
+         JSR  Set_MODE_80
+
          JSR  Get_LAC           ; get 1st. parameter
          BCS  @exit
          JSR  LAC_To_LPC        ; Long_PC = row address
@@ -653,6 +657,8 @@ Dump_4_Chars
 ; ******
 Dump_Row
 ; ******
+
+         JSR  Set_MODE_80
 
          PHZ
          JSR  Print_CR
@@ -2805,3 +2811,30 @@ Mon_Help
          !pet 0
 
          JMP Main
+
+
+; *********
+Set_MODE_80
+; *********
+
+        ; Not too effective, but allows to retain more original code
+
+        PHP
+        PHA
+        PHX
+        PHY
+
+        JSR SCREEN
+        CPX #80
+        BEQ @1
+        LDA #$FF
+        +skip_2_bytes_trash_nvz
+@1      LDA #$00
+        STA MODE_80
+
+        PLY
+        PLX
+        PLA
+        PLP
+
+        RTS

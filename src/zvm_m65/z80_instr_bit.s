@@ -3,7 +3,593 @@
 ; Z80 bit set/reset/test instructions
 ;
 
-; XXX put BIT instructions here
+
+; bits 0, 1, 4, 6
+
+Z80_instr_CB_40:   ; BIT 0,B
+
+	bbs0 REG_B, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+	
+Z80_instr_CB_41:   ; BIT 0,C
+
+	bbs0 REG_C, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_42:   ; BIT 0,D
+
+	bbs0 REG_D, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_43:   ; BIT 0,E
+
+	bbs0 REG_E, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_44:   ; BIT 0,H
+
+	bbs0 REG_H, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_45:   ; BIT 0,L
+
+	bbs0 REG_L, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_47:   ; BIT 0,A
+
+	bbs0 REG_A, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_48:   ; BIT 1,B
+
+	bbs1 REG_B, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_49:   ; BIT 1,C
+
+	bbs1 REG_C, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_4A:   ; BIT 1,D
+
+	bbs1 REG_D, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_4B:   ; BIT 1,E
+
+	bbs1 REG_E, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_4C:   ; BIT 1,H
+
+	bbs1 REG_H, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_4D:   ; BIT 1,L
+
+	bbs1 REG_L, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_4F:   ; BIT 1,A
+
+	bbs1 REG_A, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_50:   ; BIT 2,B
+
+	bbs2 REG_B, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_51:   ; BIT 2,C
+
+	bbs2 REG_C, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_52:   ; BIT 2,
+
+	bbs2 REG_D, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_53:   ; BIT 2,E
+
+	bbs2 REG_E, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_54:   ; BIT 2,H
+
+	bbs2 REG_H, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_55:   ; BIT 2,L
+
+	bbs2 REG_L, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_57:   ; BIT 2,A
+
+	bbs2 REG_A, Z80_common_bitx_1
+	
+	; FALLTROUGH
+
+Z80_common_bitx_0:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF)
+	ora #($00 + Z80_HF + Z80_ZF + Z80_PF)
+	sta REG_F
+	rts
+
+Z80_common_bitx_1:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF - Z80_ZF - Z80_PF)
+	ora #($00 + Z80_HF)
+	sta REG_F
+	rts
+
+Z80_instr_CB_60:   ; BIT 4,B
+
+	bbs4 REG_B, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_61:   ; BIT 4,C
+
+	bbs4 REG_C, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_62:   ; BIT 4,D
+
+	bbs4 REG_D, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_63:   ; BIT 4,E
+
+	bbs4 REG_E, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_64:   ; BIT 4,H
+
+	bbs4 REG_H, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_65:   ; BIT 4,L
+
+	bbs4 REG_L, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_67:   ; BIT 4,A
+
+	bbs4 REG_A, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_70:   ; BIT 6,B
+
+	bbs6 REG_B, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_71:   ; BIT 6,C
+
+	bbs6 REG_C, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_72:   ; BIT 6,D
+
+	bbs6 REG_D, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_73:   ; BIT 6,E
+
+	bbs6 REG_E, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_74:   ; BIT 6,H
+
+	bbs6 REG_H, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_75:   ; BIT 6,L
+
+	bbs6 REG_L, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+Z80_instr_CB_77:   ; BIT 6,A
+
+	bbs6 REG_A, Z80_common_bitx_1
+	bra  Z80_common_bitx_0
+
+; bits 3, 5, 7
+
+Z80_instr_CB_58:   ; BIT 3,B
+
+	bbs3 REG_B, Z80_common_bit3_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_59:   ; BIT 3,C
+
+	bbs3 REG_C, Z80_common_bit3_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_5A:   ; BIT 3,D
+
+	bbs3 REG_D, Z80_common_bit3_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_5B:   ; BIT 3,E
+
+	bbs3 REG_E, Z80_common_bit3_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_5C:   ; BIT 3,H
+
+	bbs3 REG_H, Z80_common_bit3_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_5D:   ; BIT 3,L
+
+	bbs3 REG_L, Z80_common_bit3_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_5F:   ; BIT 3,A
+
+	bbs3 REG_D, Z80_common_bit3_1
+	
+	; FALLTROUGH
+
+Z80_common_bit3_0:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF)
+	ora #($00 + Z80_HF + Z80_ZF + Z80_PF)
+	sta REG_F
+	rts
+
+Z80_common_bit3_1:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_YF - Z80_SF - Z80_ZF - Z80_PF)
+	ora #($00 + Z80_HF + Z80_XF)
+	sta REG_F
+	rts
+
+Z80_instr_CB_68:   ; BIT 5,B
+
+	bbs5 REG_B, Z80_common_bit5_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_69:   ; BIT 5,C
+
+	bbs5 REG_C, Z80_common_bit5_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_6A:   ; BIT 5,D
+
+	bbs5 REG_D, Z80_common_bit5_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_6B:   ; BIT 5,E
+
+	bbs5 REG_E, Z80_common_bit5_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_6C:   ; BIT 5,H
+
+	bbs5 REG_H, Z80_common_bit5_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_6D:   ; BIT 5,L
+
+	bbs5 REG_L, Z80_common_bit5_1
+	bra  Z80_common_bit3_0
+
+Z80_instr_CB_6F:   ; BIT 5,A
+
+	bbs5 REG_A, Z80_common_bit5_1
+	bra  Z80_common_bit3_0
+
+	; FALLTROUGH
+
+Z80_common_bit5_0:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF)
+	ora #($00 + Z80_HF + Z80_ZF + Z80_PF)
+	sta REG_F
+	rts
+
+Z80_common_bit5_1:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_SF - Z80_ZF - Z80_PF)
+	ora #($00 + Z80_HF + Z80_YF)
+	sta REG_F
+	rts
+
+Z80_instr_CB_78:   ; BIT 7,B
+
+	bbs7 REG_B, Z80_common_bit7_1
+	bra  Z80_common_bit7_0
+
+Z80_instr_CB_79:   ; BIT 7,C
+
+	bbs7 REG_C, Z80_common_bit7_1
+	bra  Z80_common_bit7_0
+
+Z80_instr_CB_7A:   ; BIT 7,D
+
+	bbs7 REG_D, Z80_common_bit7_1
+	bra  Z80_common_bit7_0
+
+Z80_instr_CB_7B:   ; BIT 7,E
+
+	bbs7 REG_E, Z80_common_bit7_1
+	bra  Z80_common_bit7_0
+
+Z80_instr_CB_7C:   ; BIT 7,H
+
+	bbs7 REG_H, Z80_common_bit7_1
+	bra  Z80_common_bit7_0
+
+Z80_instr_CB_7D:   ; BIT 7,L
+
+	bbs7 REG_L, Z80_common_bit7_1
+	bra  Z80_common_bit7_0
+
+Z80_instr_CB_7F:   ; BIT 7,A
+
+	bbs7 REG_A, Z80_common_bit7_1
+
+	; FALLTROUGH
+
+Z80_common_bit7_0:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF)
+	ora #($00 + Z80_HF + Z80_ZF + Z80_PF)
+	sta REG_F
+	rts
+
+Z80_common_bit7_1:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_ZF - Z80_PF)
+	ora #($00 + Z80_HF + Z80_SF)
+	sta REG_F
+	rts
+
+; bits taken from (HL)
+
+Z80_instr_CB_46:   ; BIT 0,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	and #%00000001
+	bne Z80_common_bitHL_1
+	bra Z80_common_bitHL_0
+
+Z80_instr_CB_4E:   ; BIT 1,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	and #%00000010
+	bne Z80_common_bitHL_1
+	bra Z80_common_bitHL_0
+
+Z80_instr_CB_56:   ; BIT 2,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	and #%00000100
+	bne Z80_common_bitHL_1
+	bra Z80_common_bitHL_0
+
+Z80_instr_CB_5E:   ; BIT 3,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	and #%00001000
+	bne Z80_common_bitHL_1
+	bra Z80_common_bitHL_0
+
+Z80_instr_CB_66:   ; BIT 4,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	and #%00010000
+	bne Z80_common_bitHL_1
+	bra Z80_common_bitHL_0
+
+Z80_instr_CB_6E:   ; BIT 5,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	and #%00100000
+	bne Z80_common_bitHL_1
+	bra Z80_common_bitHL_0
+
+Z80_instr_CB_76:   ; BIT 6,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	and #%01000000
+	bne Z80_common_bitHL_1
+	bra Z80_common_bitHL_0
+
+Z80_instr_CB_7E:   ; BIT 7,(HL)
+
+	jsr (VEC_fetch_via_HL)
+	and #%10000000
+	beq Z80_common_bitHL_0
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_ZF - Z80_PF)
+	ora #($00 + Z80_HF + Z80_SF)
+	sta REG_F
+	rts
+
+Z80_common_bitHL_0:
+
+	; XXX behaviour of undefined flags not fully known, thus not implemented
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF)
+	ora #($00 + Z80_HF + Z80_ZF + Z80_PF)
+	sta REG_F
+	rts
+
+Z80_common_bitHL_1:
+
+	; XXX behaviour of undefined flags not fully known, thus not implemented
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF - Z80_ZF - Z80_PF)
+	ora #($00 + Z80_HF)
+	sta REG_F
+	rts
+
+; bits taken from index register + displacement
+
+Z80_instr_DDCB_46: ; BIT 0,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%00000001
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_DDCB_4E: ; BIT 1,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%00000010
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_DDCB_56: ; BIT 2,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%00000100
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_DDCB_5E: ; BIT 3,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%00001000
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_DDCB_66: ; BIT 4,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%00010000
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_DDCB_6E: ; BIT 5,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%00100000
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_DDCB_76: ; BIT 6,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%01000000
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_DDCB_7E: ; BIT 7,(IX+d)
+
+	jsr (VEC_fetch_via_IX_d)
+	and #%10000000
+	beq Z80_common_bitXYx_0
+	
+	; FALLTROUGH
+
+Z80_common_bitXY7_1:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_ZF - Z80_PF)
+	ora #($00 + Z80_HF + Z80_SF)
+	sta REG_F
+	lda ADDR_IXY_d
+	and #(Z80_XF + Z80_YF)
+	ora REG_F
+	sta REG_F
+	rts
+
+Z80_common_bitXYx_0:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF)
+	ora #($00 + Z80_HF + Z80_ZF + Z80_PF)
+	sta REG_F
+	lda ADDR_IXY_d
+	and #(Z80_XF + Z80_YF)
+	ora REG_F
+	sta REG_F
+	rts
+
+Z80_common_bitXYx_1:
+
+	lda REG_F
+	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF - Z80_ZF - Z80_PF)
+	ora #($00 + Z80_HF)
+	sta REG_F
+	lda ADDR_IXY_d
+	and #(Z80_XF + Z80_YF)
+	ora REG_F
+	sta REG_F
+	rts
+
+Z80_instr_FDCB_46: ; BIT 0,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%00000001
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_FDCB_4E: ; BIT 1,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%00000010
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_FDCB_56: ; BIT 2,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%00000100
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_FDCB_5E: ; BIT 3,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%00001000
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_FDCB_66: ; BIT 4,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%00010000
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_FDCB_6E: ; BIT 5,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%00100000
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_FDCB_76: ; BIT 6,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%01000000
+	bne Z80_common_bitXYx_1
+	bra Z80_common_bitXYx_0
+
+Z80_instr_FDCB_7E: ; BIT 7,(IY+d)
+
+	jsr (VEC_fetch_via_IY_d)
+	and #%10000000
+	bne Z80_common_bitXY7_1
+	bra Z80_common_bitXYx_0
+
+; SET, RES
 
 Z80_instr_CB_C0:   ; SET 0,B
 

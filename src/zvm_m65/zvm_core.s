@@ -18,7 +18,7 @@ ZVM_init:
 @1:
 	sta REG_A, y
 	iny
-	cmp #(REG_R7+1)
+	cmp #(REG_IFF2+1)
 	bne @1
 	
 	; XXX what is the initial SP value?
@@ -319,70 +319,6 @@ Z80_instr_CB_3C:   ; SRL H
 Z80_instr_CB_3D:   ; SRL L
 Z80_instr_CB_3E:   ; SRL (HL)
 Z80_instr_CB_3F:   ; SRL A
-Z80_instr_CB_40:   ; BIT 0,B
-Z80_instr_CB_41:   ; BIT 0,C
-Z80_instr_CB_42:   ; BIT 0,D
-Z80_instr_CB_43:   ; BIT 0,E
-Z80_instr_CB_44:   ; BIT 0,H
-Z80_instr_CB_45:   ; BIT 0,L
-Z80_instr_CB_46:   ; BIT 0,(HL)
-Z80_instr_CB_47:   ; BIT 0,A
-Z80_instr_CB_48:   ; BIT 1,B
-Z80_instr_CB_49:   ; BIT 1,C
-Z80_instr_CB_4A:   ; BIT 1,D
-Z80_instr_CB_4B:   ; BIT 1,E
-Z80_instr_CB_4C:   ; BIT 1,H
-Z80_instr_CB_4D:   ; BIT 1,L
-Z80_instr_CB_4E:   ; BIT 1,(HL)
-Z80_instr_CB_4F:   ; BIT 1,A
-Z80_instr_CB_50:   ; BIT 2,B
-Z80_instr_CB_51:   ; BIT 2,C
-Z80_instr_CB_52:   ; BIT 2,D
-Z80_instr_CB_53:   ; BIT 2,E
-Z80_instr_CB_54:   ; BIT 2,H
-Z80_instr_CB_55:   ; BIT 2,L
-Z80_instr_CB_56:   ; BIT 2,(HL)
-Z80_instr_CB_57:   ; BIT 2,A
-Z80_instr_CB_58:   ; BIT 3,B
-Z80_instr_CB_59:   ; BIT 3,C
-Z80_instr_CB_5A:   ; BIT 3,D
-Z80_instr_CB_5B:   ; BIT 3,E
-Z80_instr_CB_5C:   ; BIT 3,H
-Z80_instr_CB_5D:   ; BIT 3,L
-Z80_instr_CB_5E:   ; BIT 3,(HL)
-Z80_instr_CB_5F:   ; BIT 3,A
-Z80_instr_CB_60:   ; BIT 4,B
-Z80_instr_CB_61:   ; BIT 4,C
-Z80_instr_CB_62:   ; BIT 4,D
-Z80_instr_CB_63:   ; BIT 4,E
-Z80_instr_CB_64:   ; BIT 4,H
-Z80_instr_CB_65:   ; BIT 4,L
-Z80_instr_CB_66:   ; BIT 4,(HL)
-Z80_instr_CB_67:   ; BIT 4,A
-Z80_instr_CB_68:   ; BIT 5,B
-Z80_instr_CB_69:   ; BIT 5,C
-Z80_instr_CB_6A:   ; BIT 5,D
-Z80_instr_CB_6B:   ; BIT 5,E
-Z80_instr_CB_6C:   ; BIT 5,H
-Z80_instr_CB_6D:   ; BIT 5,L
-Z80_instr_CB_6E:   ; BIT 5,(HL)
-Z80_instr_CB_6F:   ; BIT 5,A
-Z80_instr_CB_70:   ; BIT 6,B
-Z80_instr_CB_71:   ; BIT 6,C
-Z80_instr_CB_72:   ; BIT 6,D
-Z80_instr_CB_73:   ; BIT 6,E
-Z80_instr_CB_74:   ; BIT 6,H
-Z80_instr_CB_75:   ; BIT 6,L
-Z80_instr_CB_76:   ; BIT 6,(HL)
-Z80_instr_CB_77:   ; BIT 6,A
-Z80_instr_CB_78:   ; BIT 7,B
-Z80_instr_CB_79:   ; BIT 7,C
-Z80_instr_CB_7A:   ; BIT 7,D
-Z80_instr_CB_7B:   ; BIT 7,E
-Z80_instr_CB_7C:   ; BIT 7,H
-Z80_instr_CB_7D:   ; BIT 7,L
-Z80_instr_CB_7E:   ; BIT 7,(HL)
-Z80_instr_CB_7F:   ; BIT 7,A
 Z80_instr_DD_09:   ; ADD IX,BC
 Z80_instr_DD_19:   ; ADD IX,DE
 Z80_instr_DD_21:   ; LD IX,nn
@@ -520,14 +456,6 @@ Z80_instr_DDCB_1E: ; RR (IX+d)
 Z80_instr_DDCB_26: ; SLA (IX+d)
 Z80_instr_DDCB_2E: ; SRA (IX+d)
 Z80_instr_DDCB_3E: ; SRL (IX+d)
-Z80_instr_DDCB_46: ; BIT 0,(IX+d)
-Z80_instr_DDCB_4E: ; BIT 1,(IX+d)
-Z80_instr_DDCB_56: ; BIT 2,(IX+d)
-Z80_instr_DDCB_5E: ; BIT 3,(IX+d)
-Z80_instr_DDCB_66: ; BIT 4,(IX+d)
-Z80_instr_DDCB_6E: ; BIT 5,(IX+d)
-Z80_instr_DDCB_76: ; BIT 6,(IX+d)
-Z80_instr_DDCB_7E: ; BIT 7,(IX+d)
 Z80_instr_FDCB_06: ; RLC (IY+d)
 Z80_instr_FDCB_0E: ; RRC (IY+d)
 Z80_instr_FDCB_16: ; RL (IY+d)
@@ -535,14 +463,6 @@ Z80_instr_FDCB_1E: ; RR (IY+d)
 Z80_instr_FDCB_26: ; SLA (IY+d)
 Z80_instr_FDCB_2E: ; SRA (IY+d)
 Z80_instr_FDCB_3E: ; SRL (IY+d)
-Z80_instr_FDCB_46: ; BIT 0,(IY+d)
-Z80_instr_FDCB_4E: ; BIT 1,(IY+d)
-Z80_instr_FDCB_56: ; BIT 2,(IY+d)
-Z80_instr_FDCB_5E: ; BIT 3,(IY+d)
-Z80_instr_FDCB_66: ; BIT 4,(IY+d)
-Z80_instr_FDCB_6E: ; BIT 5,(IY+d)
-Z80_instr_FDCB_76: ; BIT 6,(IY+d)
-Z80_instr_FDCB_7E: ; BIT 7,(IY+d)
 
 
 	rts ; XXX

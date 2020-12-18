@@ -266,43 +266,43 @@ Z80_instr_7D:      ; LD A,L
 
 Z80_instr_06:      ; LD B,n
 
-	jsr VEC_fetch_value
+	jsr (VEC_fetch_value)
 	sta REG_B
 	rts
 
 Z80_instr_0E:      ; LD C,n
 
-	jsr VEC_fetch_value
+	jsr (VEC_fetch_value)
 	sta REG_C
 	rts
 
 Z80_instr_16:      ; LD D,n
 
-	jsr VEC_fetch_value
+	jsr (VEC_fetch_value)
 	sta REG_D
 	rts
 
 Z80_instr_1E:      ; LD E,n
 
-	jsr VEC_fetch_value
+	jsr (VEC_fetch_value)
 	sta REG_E
 	rts
 
 Z80_instr_26:      ; LD H,n
 
-	jsr VEC_fetch_value
+	jsr (VEC_fetch_value)
 	sta REG_H
 	rts
 
 Z80_instr_2E:      ; LD L,n
 
-	jsr VEC_fetch_value
+	jsr (VEC_fetch_value)
 	sta REG_L
 	rts
 
 Z80_instr_3E:      ; LD A,n
 
-	jsr VEC_fetch_value
+	jsr (VEC_fetch_value)
 	sta REG_A
 	rts
 
@@ -403,7 +403,7 @@ Z80_instr_77:      ; LD (HL),A
 
 Z80_instr_36:      ; LD (HL),n
 
-	jsr VEC_fetch_value
+	jsr (VEC_fetch_value)
 	jmp (VEC_store_via_HL)
 
 ; XXX put here LD (IX+d),n family

@@ -60,14 +60,14 @@ Z80_common_INC:
 	and #(0xFF - Z80_SF - Z80_ZF - Z80_HF - Z80_VF - Z80_NF)
 	ora z80_ftable_INC, x
 	sta REG_F
-	rts
+	jmp ZVM_next
 
 Z80_instr_34:      ; INC (HL)
 
 	jsr (VEC_fetch_via_HL)
 	tax
 	inc
-	jsr ZVM_store_back
+	sta [PTR_DATA],z
 	bra Z80_common_INC
 
 Z80_instr_DD_34:   ; INC (IX+d)
@@ -75,7 +75,7 @@ Z80_instr_DD_34:   ; INC (IX+d)
 	jsr (VEC_fetch_via_IX_d)
 	tax
 	inc
-	jsr ZVM_store_back
+	sta [PTR_DATA],z
 	bra Z80_common_INC
 
 Z80_instr_FD_34:   ; INC (IY+d)
@@ -83,7 +83,7 @@ Z80_instr_FD_34:   ; INC (IY+d)
 	jsr (VEC_fetch_via_IY_d)
 	tax
 	inc
-	jsr ZVM_store_back
+	sta [PTR_DATA],z
 	bra Z80_common_INC
 
 Z80_instr_05:      ; DEC B
@@ -135,14 +135,14 @@ Z80_common_DEC:
 	and #(0xFF - Z80_SF - Z80_ZF - Z80_HF - Z80_VF - Z80_NF)
 	ora z80_ftable_DEC, x
 	sta REG_F
-	rts
+	jmp ZVM_next
 
 Z80_instr_35:      ; DEC (HL)
 
 	jsr (VEC_fetch_via_HL)
 	tax
 	dec
-	jsr ZVM_store_back
+	sta [PTR_DATA],z
 	bra Z80_common_DEC
 
 Z80_instr_DD_35:   ; DEC (IX+d)
@@ -150,7 +150,7 @@ Z80_instr_DD_35:   ; DEC (IX+d)
 	jsr (VEC_fetch_via_IX_d)
 	tax
 	dec
-	jsr ZVM_store_back
+	sta [PTR_DATA],z
 	bra Z80_common_DEC
 
 Z80_instr_FD_35:   ; DEC (IY+d)
@@ -158,5 +158,5 @@ Z80_instr_FD_35:   ; DEC (IY+d)
 	jsr (VEC_fetch_via_IY_d)
 	tax
 	dec
-	jsr ZVM_store_back
+	sta [PTR_DATA],z
 	bra Z80_common_DEC

@@ -29,7 +29,7 @@ Z80_instr_ED_5E:   ; IM 2
 	; Real NOP
 Z80_instr_00:      ; NOP
 
-	rts
+	jmp ZVM_next
 
 Z80_instr_F3:      ; DI
 
@@ -43,4 +43,4 @@ Z80_instr_FB:      ; EI
 	lda #Z80_PF
 	sta REG_IFF1
 	sta REG_IFF2
-	rts
+	jmp ZVM_next

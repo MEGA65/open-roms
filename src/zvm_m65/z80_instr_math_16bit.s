@@ -7,59 +7,59 @@
 Z80_instr_03:      ; INC BC
 
 	inw REG_C
-	rts
+	jmp ZVM_next
 
 Z80_instr_13:      ; INC DE
 
 	inw REG_E
-	rts
+	jmp ZVM_next
 
 Z80_instr_23:      ; INC HL
 
 	inw REG_L
-	rts
+	jmp ZVM_next
 
 Z80_instr_33:      ; INC SP
 
 	inw REG_SP
-	rts
+	jmp ZVM_next
 
 Z80_instr_DD_23:   ; INC IX
 
 	inw REG_IX
-	rts
+	jmp ZVM_next
 
 Z80_instr_FD_23:   ; INC IY
 
 	inw REG_IY
-	rts
+	jmp ZVM_next
 
 Z80_instr_0B:      ; DEC BC
 
 	dew REG_C
-	rts
+	jmp ZVM_next
 
 Z80_instr_1B:      ; DEC DE
 
 	dew REG_E
-	rts
+	jmp ZVM_next
 
 Z80_instr_2B:      ; DEC HL
 
 	dew REG_L
-	rts
+	jmp ZVM_next
 
 Z80_instr_3B:      ; DEC SP
 
 	dew REG_SP
-	rts
+	jmp ZVM_next
 
 Z80_instr_DD_2B:   ; DEC IX
 
 	dew REG_IX
-	rts
+	jmp ZVM_next
 
 Z80_instr_FD_2B:   ; DEC IY
 
 	dew REG_IY
-	rts
+	jmp ZVM_next

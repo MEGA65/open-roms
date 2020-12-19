@@ -7,9 +7,13 @@ ZVM_entry:
 
 	jsr ZVM_init
 	; XXX fetch BDOS and Command Processor 
-	jmp ZVM_run
+	jmp ZVM_next
 
 ZVM_init:
+
+	; .Z is required to be 0 all the time
+
+	ldz #$00
 
 	; Reset all the registers
 	
@@ -24,9 +28,14 @@ ZVM_init:
 	; XXX what is the initial SP value?
 	; XXX clean memory
 
-	jmp ZVM_set_bank_0
-	
-ZVM_run:
+	jmp ZVM_set_bank_1
+
+
+ZVM_store_next:
+
+	sta [PTR_DATA],z
+
+ZVM_next: ; fetch and execute next opcode
 
 	; CPU main loop
 	
@@ -41,10 +50,6 @@ ZVM_run:
 	; Execute mnemonic $80-$FF
 
 	; XXX
-
-
-
-
 
 
 

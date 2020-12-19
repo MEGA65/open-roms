@@ -39,7 +39,8 @@ ZVM_next: ; fetch and execute next opcode
 
 	; CPU main loop
 	
-	jsr (VEC_fetch_opcode)
+	inc REG_R06
+	jsr (VEC_fetch_value)
 	asl
 	bcs @1
 	
@@ -50,12 +51,6 @@ ZVM_next: ; fetch and execute next opcode
 	; Execute mnemonic $80-$FF
 
 	; XXX
-
-
-
-
-
-
 
 
 
@@ -111,18 +106,14 @@ Z80_instr_DD_CB:   ; #DDCB
 Z80_instr_FD_CB:   ; #FDCB
 Z80_instr_01:      ; LD BC,nn
 Z80_instr_02:      ; LD (BC),A
-Z80_instr_07:      ; RLCA
 Z80_instr_09:      ; ADD HL,BC
 Z80_instr_0A:      ; LD A,(BC)	
-Z80_instr_0F:      ; RRCA
 Z80_instr_10:      ; DJNZ e
 Z80_instr_11:      ; LD DE,nn
 Z80_instr_12:      ; LD (DE),A
-Z80_instr_17:      ; RLA
 Z80_instr_18:      ; JR e
 Z80_instr_19:      ; ADD HL,DE
-Z80_instr_1A:      ; LD A,(DE)	
-Z80_instr_1F:      ; RRA
+Z80_instr_1A:      ; LD A,(DE)
 Z80_instr_20:      ; JR NZ,e
 Z80_instr_21:      ; LD HL,nn
 Z80_instr_22:      ; LD (nn),HL

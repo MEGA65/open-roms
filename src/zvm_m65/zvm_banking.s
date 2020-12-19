@@ -8,11 +8,6 @@ ZVM_set_bank_0:
 
 	; XXX consider switchink banks using DMA list
 
-	lda #<ZVM_fetch_opcode_bank_0
-	sta VEC_fetch_opcode+0
-	lda #>ZVM_fetch_opcode_bank_0
-	sta VEC_fetch_opcode+1
-
 	lda #<ZVM_fetch_value_bank_0
 	sta VEC_fetch_value+0
 	lda #>ZVM_fetch_value_bank_0
@@ -71,11 +66,6 @@ ZVM_set_bank_0:
 	rts
 
 ZVM_set_bank_1:
-
-	lda #<ZVM_fetch_opcode_bank_1
-	sta VEC_fetch_opcode+0
-	lda #>ZVM_fetch_opcode_bank_1
-	sta VEC_fetch_opcode+1
 
 	lda #<ZVM_fetch_value_bank_1
 	sta VEC_fetch_value+0

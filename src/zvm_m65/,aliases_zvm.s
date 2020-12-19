@@ -33,18 +33,17 @@
 !addr REG_IFF1           = $1F    ; interrupt flip-flop flag 1
 !addr REG_IFF2           = $20    ; interrupt flip-flop flag 2
 
-!addr VEC_fetch_opcode   = $60
-!addr VEC_fetch_value    = $62
-!addr VEC_fetch_stack    = $64
-!addr VEC_store_stack    = $66
-!addr VEC_fetch_via_HL   = $68
-!addr VEC_store_via_HL   = $6A
-!addr VEC_fetch_via_IX_d = $6C
-!addr VEC_fetch_via_IY_d = $6E
-!addr VEC_store_via_IX_d = $70
-!addr VEC_store_via_IY_d = $72
-!addr VEC_fetch_via_nn   = $74
-!addr VEC_store_via_nn   = $76
+!addr VEC_fetch_value    = $60
+!addr VEC_fetch_stack    = $62
+!addr VEC_store_stack    = $64
+!addr VEC_fetch_via_HL   = $66
+!addr VEC_store_via_HL   = $68
+!addr VEC_fetch_via_IX_d = $6A
+!addr VEC_fetch_via_IY_d = $6C
+!addr VEC_store_via_IX_d = $6E
+!addr VEC_store_via_IY_d = $70
+!addr VEC_fetch_via_nn   = $72
+!addr VEC_store_via_nn   = $74
 
 ; Masks for Z80 flag (F) register
 
@@ -57,3 +56,24 @@
 !set Z80_VF = %00000100 ; overflow
 !set Z80_NF = %00000010 ; subtract
 !set Z80_CF = %00000001 ; carry
+
+; Macros to set/reset flags - to avoid mistakes
+
+!macro Z80_PUT_1_SF { smb7 REG_F }
+!macro Z80_PUT_0_SF { rmb7 REG_F }
+!macro Z80_PUT_1_ZF { smb6 REG_F }
+!macro Z80_PUT_0_ZF { rmb6 REG_F }
+!macro Z80_PUT_1_YF { smb5 REG_F }
+!macro Z80_PUT_0_YF { rmb5 REG_F }
+!macro Z80_PUT_1_HF { smb4 REG_F }
+!macro Z80_PUT_0_HF { rmb4 REG_F }
+!macro Z80_PUT_1_XF { smb3 REG_F }
+!macro Z80_PUT_0_XF { rmb3 REG_F }
+!macro Z80_PUT_1_PF { smb2 REG_F }
+!macro Z80_PUT_0_PF { rmb2 REG_F }
+!macro Z80_PUT_1_VF { smb2 REG_F }
+!macro Z80_PUT_0_VF { rmb2 REG_F }
+!macro Z80_PUT_1_NF { smb1 REG_F }
+!macro Z80_PUT_0_NF { rmb1 REG_F }
+!macro Z80_PUT_1_CF { smb0 REG_F }
+!macro Z80_PUT_0_CF { rmb0 REG_F }

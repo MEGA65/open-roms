@@ -27,11 +27,11 @@
 !addr REG_R7             = $1C    ; refresh counter, bit 7 (bits 0-6 are 0's)
 
 !addr PTR_IXY_d          = $1D    ; 16-bit calculated address IX+d / IY+d  XXX - important!!!
-!addr PTR_DATA           = $1D    ; data source address   XXX is it OK to use the same one?
+!addr PTR_DATA           = $1F    ; data source address                    XXX - important!!!
 
 
-!addr REG_IFF1           = $1F    ; interrupt flip-flop flag 1
-!addr REG_IFF2           = $20    ; interrupt flip-flop flag 2
+!addr REG_IFF1           = $23    ; interrupt flip-flop flag 1
+!addr REG_IFF2           = $24    ; interrupt flip-flop flag 2
 
 !addr VEC_fetch_value    = $60
 !addr VEC_fetch_stack    = $62

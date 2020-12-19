@@ -409,5 +409,51 @@ Z80_instr_36:      ; LD (HL),n
 ; XXX put here LD (IX+d),n family
 ; XXX put here LD (IY+d),n family
 ; XXX put here LD A,(BC) / LD A,(DE) / LD A,(nn) / LD (BC), A / LD (DE),A / LD (nn),A
-; XXX put here LD A,I / LD A,R
-; XXX put here LD I,A / LD R,A
+
+Z80_instr_ED_57:   ; LD A,I
+
+	lda REG_F
+	and #($FF - Z80_SF - Z80_ZF - Z80_HF - Z80_PF - Z80_NF)
+	ora REG_IFF2
+	sta REG_F
+
+	lda REG_I
+	sta REG_A
+	bpl @1
+	+Z80_PUT_1_SF
+@1:
+	+bne ZVM_next
+	+Z80_PUT_1_ZF
+	jmp ZVM_next
+
+Z80_instr_ED_5F:   ; LD A,R
+
+	lda REG_F
+	and #($FF - Z80_SF - Z80_ZF - Z80_HF - Z80_PF - Z80_NF)
+	ora REG_IFF2
+	sta REG_F
+
+	lda REG_R06
+	and #%01111111
+	ora REG_R7
+	sta REG_A
+	bpl @1
+	+Z80_PUT_1_SF
+@1:
+	+bne ZVM_next
+	+Z80_PUT_1_ZF
+	jmp ZVM_next
+
+Z80_instr_ED_47:   ; LD I,A
+
+	lda REG_A
+	sta REG_I
+	jmp ZVM_next
+
+Z80_instr_ED_4F:   ; LD R,A
+
+	lda REG_A
+	sta REG_R06
+	and #%01111111
+	sta REG_R7
+	jmp ZVM_next

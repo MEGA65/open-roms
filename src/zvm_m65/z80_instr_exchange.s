@@ -16,7 +16,7 @@ Z80_instr_EB:      ; EX DE,HL
 	sty REG_E
 	stx REG_L
 
-	rts
+	jmp ZVM_next
 
 Z80_instr_08:      ; EX AF,AF''
 
@@ -30,7 +30,7 @@ Z80_instr_08:      ; EX AF,AF''
 	sty REG_F
 	stx REG_F_SH
 
-	rts
+	jmp ZVM_next
 
 Z80_instr_D9:      ; EXX
 
@@ -64,4 +64,4 @@ Z80_instr_D9:      ; EXX
 	sty REG_L
 	stx REG_L_SH
 
-	rts
+	jmp ZVM_next

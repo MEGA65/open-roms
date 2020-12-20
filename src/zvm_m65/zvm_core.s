@@ -41,8 +41,8 @@ ZVM_store_next:
 	asl
 	tax
 	bcs @1
-	jmp (.TAB_LO)            ; execute opcode $00-$7F
-@1: jmp (.TAB_HI)            ; execute opcode $80-$FF
+	jmp (.TAB_LO,x)          ; execute opcode $00-$7F
+@1: jmp (.TAB_HI,x)          ; execute opcode $80-$FF
 
 }
 
@@ -114,14 +114,10 @@ Z80_instr_22:      ; LD (nn),HL
 Z80_instr_27:      ; DAA
 Z80_instr_29:      ; ADD HL,HL
 Z80_instr_2A:      ; LD HL,(nn)
-Z80_instr_2F:      ; CPL
 Z80_instr_31:      ; LD SP,nn
 Z80_instr_32:      ; LD (nn),A
-Z80_instr_37:      ; SCF
 Z80_instr_39:      ; ADD HL,SP
 Z80_instr_3A:      ; LD A,(nn)
-Z80_instr_3F:      ; CCF
-Z80_instr_76:      ; HALT
 Z80_instr_80:      ; ADD A,B
 Z80_instr_81:      ; ADD A,C
 Z80_instr_82:      ; ADD A,D

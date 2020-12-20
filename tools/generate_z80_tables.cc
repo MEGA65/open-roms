@@ -10,6 +10,10 @@
 #include <fstream>
 #include <iomanip>
 
+// Global variables
+
+uint8_t GLOBAL_Parity[256];
+
 //
 // Constants
 //
@@ -97,10 +101,12 @@ std::string generateParityTable(void)
 
 		if (even)
 		{
+			GLOBAL_Parity[idx] = 4;
 			outStr += std::string("\t!byte %00000100 ; ") + idxInBin + "\n";
 		}
 		else
 		{
+			GLOBAL_Parity[idx] = 0;
 			outStr += std::string("\t!byte %00000000 ; ") + idxInBin + "\n";
 		}
 	}
@@ -108,10 +114,31 @@ std::string generateParityTable(void)
 	return outStr + "}\n\n\n";
 } 
 
+std::string generateDisplacementTable(void)
+{
+	std::stringstream outStr;
+	outStr << "!macro PUT_Z80_OTABLE_DISPLACEMENT {\n";
+
+	for (uint16_t idx = 0; idx < 0x100; idx++)
+	{
+		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0');
+
+		if (idx < 128)
+		{
+		    outStr << int(idx + 128) << "\n";
+		}
+		else
+		{
+		    outStr << int(idx - 128) << "\n";
+		}
+	}
+
+	return outStr.str() + "}\n\n\n";
+}
+
 std::string generateIncTable(void)
 {
 	std::stringstream outStr;
-
 	outStr << "!macro PUT_Z80_FTABLE_INC {\n";
 
 	for (uint16_t idx = 0; idx < 0x100; idx++)
@@ -123,8 +150,7 @@ std::string generateIncTable(void)
 		if ((idx & 0x0F) == 0x0F)       flags |= Z80_HF;
 		if (idx == 0x7F)                flags |= Z80_VF;
 
-		outStr << "\t!byte ";
-		outStr << std::hex << std::setw(2) << int(flags) << "\n";
+		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
 	}
 
 	return outStr.str() + "}\n\n\n";
@@ -133,8 +159,7 @@ std::string generateIncTable(void)
 std::string generateDecTable(void)
 {
 	std::stringstream outStr;
-
-	outStr << "!macro PUT_Z80_FTABLE_DEC {\n";
+	outStr << "!macro PUT_Z80_FTABLE_DEC {\n" << std::hex << std::setw(2) << std::setfill('0');
 
 	for (uint16_t idx = 0; idx < 0x100; idx++)
 	{
@@ -145,8 +170,7 @@ std::string generateDecTable(void)
 		if ((idx & 0x0F) == 0x00)       flags |= Z80_HF;
 		if (idx == 0x80)                flags |= Z80_VF;
 
-		outStr << "\t!byte ";
-		outStr << std::hex << std::setw(2) << int(flags) << "\n";
+		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
 	}
 
 	return outStr.str() + "}\n\n\n";
@@ -181,7 +205,8 @@ void writeTables()
 
     // Write tables
 
-	outFile << generateParityTable();
+	outFile << generateParityTable(); // always put it first!
+	outFile << generateDisplacementTable();
 	outFile << generateIncTable();
 	outFile << generateDecTable();
 	outFile << generateDaaTables();

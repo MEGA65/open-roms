@@ -11,16 +11,13 @@ ZVM_entry:
 
 ZVM_init:
 
-	; .Z is required to be 0 all the time
-
-	ldz #$00
-
-	; Reset all the registers
+	; Reset registers and internal data
 	
+	ldz #$00     	         ; .Z is required to be 0 all the time
 	lda #$00
 	tay
 @1:
-	sta REG_A, y
+	sta REG_AF, y
 	iny
 	cmp #(REG_IFF2+1)
 	bne @1
@@ -30,63 +27,75 @@ ZVM_init:
 
 	jmp ZVM_set_bank_1
 
-
 ZVM_store_next:
 
 	sta [PTR_DATA],z
 
+	; unimplemented/illegal instructions
+Z80_illegal__DD:
+Z80_illegal__ED:
+Z80_illegal__FD:
+Z80_illegal__DDCB:
+Z80_illegal__FDCB:
+	; LD instructions with no effect
+Z80_instr_40:      ; LD B,B
+Z80_instr_49:      ; LD C,C
+Z80_instr_52:      ; LD D,D
+Z80_instr_5B:      ; LD E,E
+Z80_instr_64:      ; LH H,H
+Z80_instr_6D:      ; LD L,L
+Z80_instr_7F:      ; LD A,A
+	; For interrupts (not emulated as of yet)
+Z80_instr_ED_46:   ; IM 0
+Z80_instr_ED_56:   ; IM 1
+Z80_instr_ED_5E:   ; IM 2
+	; Real NOP
+Z80_instr_00:      ; NOP
+
 ZVM_next: ; fetch and execute next opcode
 
-	; CPU main loop
-	
-	inc REG_R06
 	jsr (VEC_fetch_value)
 	asl
+	tax
 	bcs @1
-	
-	; Execute mnemonic $00-$7F
+	jmp (Z80_vectab_0)       ; execute opcode $00-$7F
+@1: jmp (Z80_vectab_1)       ; execute opcode $80-$FF
 
-	; XXX
-@1:
-	; Execute mnemonic $80-$FF
+Z80_instr_CB:      ; #CB
 
-	; XXX
+	jsr (VEC_fetch_value)
+	asl
+	tax
+	bcs @1
+	jmp (Z80_vectab_CB_0)    ; execute opcode $00-$7F
+@1: jmp (Z80_vectab_CB_1)    ; execute opcode $80-$FF
 
+Z80_instr_DD:      ; #DD
 
+	jsr (VEC_fetch_value)
+	asl
+	tax
+	bcs @1
+	jmp (Z80_vectab_DD_0)    ; execute opcode $00-$7F
+@1: jmp (Z80_vectab_DD_1)    ; execute opcode $80-$FF
 
+Z80_instr_ED:      ; #ED
 
+	jsr (VEC_fetch_value)
+	asl
+	tax
+	bcs @1
+	jmp (Z80_vectab_ED_0)    ; execute opcode $00-$7F
+@1: jmp (Z80_vectab_ED_1)    ; execute opcode $80-$FF
 
+Z80_instr_FD:      ; #FD
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+	jsr (VEC_fetch_value)
+	asl
+	tax
+	bcs @1
+	jmp (Z80_vectab_FD_0)    ; execute opcode $00-$7F
+@1: jmp (Z80_vectab_FD_1)    ; execute opcode $80-$FF
 
 
 
@@ -98,35 +107,26 @@ ZVM_next: ; fetch and execute next opcode
 ; Not implemented yet - XXX implement them!
 ;
 
-Z80_instr_CB:      ; #CB
-Z80_instr_DD:      ; #DD
-Z80_instr_ED:      ; #ED
-Z80_instr_FD:      ; #FD
+
 Z80_instr_DD_CB:   ; #DDCB
 Z80_instr_FD_CB:   ; #FDCB
 Z80_instr_01:      ; LD BC,nn
 Z80_instr_02:      ; LD (BC),A
 Z80_instr_09:      ; ADD HL,BC
 Z80_instr_0A:      ; LD A,(BC)	
-Z80_instr_10:      ; DJNZ e
 Z80_instr_11:      ; LD DE,nn
 Z80_instr_12:      ; LD (DE),A
-Z80_instr_18:      ; JR e
 Z80_instr_19:      ; ADD HL,DE
 Z80_instr_1A:      ; LD A,(DE)
-Z80_instr_20:      ; JR NZ,e
 Z80_instr_21:      ; LD HL,nn
 Z80_instr_22:      ; LD (nn),HL
 Z80_instr_27:      ; DAA
-Z80_instr_28:      ; JR Z,e
 Z80_instr_29:      ; ADD HL,HL
 Z80_instr_2A:      ; LD HL,(nn)
 Z80_instr_2F:      ; CPL
-Z80_instr_30:      ; JR NC,e
 Z80_instr_31:      ; LD SP,nn
 Z80_instr_32:      ; LD (nn),A
 Z80_instr_37:      ; SCF
-Z80_instr_38:      ; JR C,e
 Z80_instr_39:      ; ADD HL,SP
 Z80_instr_3A:      ; LD A,(nn)
 Z80_instr_3F:      ; CCF
@@ -196,9 +196,7 @@ Z80_instr_BD:      ; CP L
 Z80_instr_BE:      ; CP (HL)
 Z80_instr_BF:      ; CP A
 Z80_instr_C0:      ; RET NZ
-Z80_instr_C1:      ; POP BC
 Z80_instr_C4:      ; CALL NZ,nn
-Z80_instr_C5:      ; PUSH BC
 Z80_instr_C6:      ; ADD A,n
 Z80_instr_C7:      ; RST 00H
 Z80_instr_C8:      ; RET z
@@ -208,10 +206,8 @@ Z80_instr_CD:      ; CALL nn
 Z80_instr_CE:      ; ADC A,n
 Z80_instr_CF:      ; RST 08H
 Z80_instr_D0:      ; RET NC
-Z80_instr_D1:      ; POP DE
 Z80_instr_D3:      ; OUT (n), A
 Z80_instr_D4:      ; CALL NC,nn
-Z80_instr_D5:      ; PUSH DE
 Z80_instr_D6:      ; SUB n
 Z80_instr_D7:      ; RST 10H
 Z80_instr_D8:      ; RET C
@@ -220,21 +216,16 @@ Z80_instr_DC:      ; CALL C,nn
 Z80_instr_DE:      ; SBC A,n
 Z80_instr_DF:      ; RST 18H
 Z80_instr_E0:      ; RET PO
-Z80_instr_E1:      ; POP HL
 Z80_instr_E3:      ; EX (SP),HL
 Z80_instr_E4:      ; CALL PO,nn
-Z80_instr_E5:      ; PUSH HL
 Z80_instr_E6:      ; AND n
 Z80_instr_E7:      ; RST 20H
 Z80_instr_E8:      ; RET PE
-Z80_instr_E9:      ; JP (HL)
 Z80_instr_EC:      ; CALL PE,nn
 Z80_instr_EE:      ; XOR n
 Z80_instr_EF:      ; RST 28H
 Z80_instr_F0:      ; RET P
-Z80_instr_F1:      ; POP AF
 Z80_instr_F4:      ; CALL P,nn
-Z80_instr_F5:      ; PUSH AF
 Z80_instr_F6:      ; OR n
 Z80_instr_F7:      ; RST 30H
 Z80_instr_F8:      ; RET M
@@ -327,10 +318,7 @@ Z80_instr_DD_A6:   ; AND (IX+d)
 Z80_instr_DD_AE:   ; XOR (IX+d)
 Z80_instr_DD_B6:   ; OR (IX+d)
 Z80_instr_DD_BE:   ; CP (IX+d)
-Z80_instr_DD_E1:   ; POP IX
 Z80_instr_DD_E3:   ; EX (SP),IX
-Z80_instr_DD_E5:   ; PUSH IX
-Z80_instr_DD_E9:   ; JP (IX)
 Z80_instr_DD_F9:   ; LD SP,IX
 Z80_instr_ED_40:   ; IN B,(C)
 Z80_instr_ED_41:   ; OUT (C),B
@@ -410,10 +398,7 @@ Z80_instr_FD_A6:   ; AND (IY+d)
 Z80_instr_FD_AE:   ; XOR (IY+d)
 Z80_instr_FD_B6:   ; OR (IY+d)
 Z80_instr_FD_BE:   ; CP (IY+d)
-Z80_instr_FD_E1:   ; POP IY
 Z80_instr_FD_E3:   ; EX (SP),IY
-Z80_instr_FD_E5:   ; PUSH IY
-Z80_instr_FD_E9:   ; JP (IY)
 Z80_instr_FD_F9:   ; LD SP,IY
 Z80_instr_DDCB_06: ; RLC (IX+d)
 Z80_instr_DDCB_0E: ; RRC (IX+d)
@@ -431,5 +416,5 @@ Z80_instr_FDCB_2E: ; SRA (IY+d)
 Z80_instr_FDCB_3E: ; SRL (IY+d)
 
 
-	rts ; XXX
+	jmp ZVM_next ; XXX
 	; XXX add 'illegal' instructions

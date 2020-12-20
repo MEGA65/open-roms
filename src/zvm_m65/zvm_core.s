@@ -62,22 +62,23 @@ Z80_instr_6D:                                                                  ;
 Z80_instr_7F:                                                                  ; LD A,A
 	; For interrupts (not emulated as of yet)
 Z80_instr_ED_46:                                                               ; IM 0
+Z80_illeg_ED_4E:                                                               ; IM 0
+Z80_illeg_ED_66:                                                               ; IM 0
+Z80_illeg_ED_6E:                                                               ; IM 0
 Z80_instr_ED_56:                                                               ; IM 1
+Z80_illeg_ED_76:                                                               ; IM 1
 Z80_instr_ED_5E:                                                               ; IM 2
+Z80_illeg_ED_7E:                                                               ; IM 2
 	; Real NOP
 Z80_instr_00:                                                                  ; NOP
+Z80_illeg_ED_77:                                                               ; NOP
+Z80_illeg_ED_7F:                                                               ; NOP
 	; Dispatch via jumptable
 ZVM_next:          +ZVM_DISPATCH Z80_vectab_0,    Z80_vectab_1
 Z80_instr_CB:      +ZVM_DISPATCH Z80_vectab_CB_0, Z80_vectab_CB_1              ; #CB
 Z80_instr_DD:      +ZVM_DISPATCH Z80_vectab_DD_0, Z80_vectab_DD_1              ; #DD
 Z80_instr_ED:      +ZVM_DISPATCH Z80_vectab_ED_0, Z80_vectab_ED_1              ; #ED
 Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ; #FD
-
-
-
-
-
-
 
 
 
@@ -371,7 +372,45 @@ Z80_instr_FDCB_1E: ; RR (IY+d)
 Z80_instr_FDCB_26: ; SLA (IY+d)
 Z80_instr_FDCB_2E: ; SRA (IY+d)
 Z80_instr_FDCB_3E: ; SRL (IY+d)
+Z80_illeg_CB_30:   ; SLL B
+Z80_illeg_CB_31:   ; SLL C
+Z80_illeg_CB_32:   ; SLL D
+Z80_illeg_CB_33:   ; SLL E
+Z80_illeg_CB_34:   ; SLL H
+Z80_illeg_CB_35:   ; SLL L
+Z80_illeg_CB_36:   ; SLL (HL)
+Z80_illeg_CB_37:   ; SLL A
+Z80_illeg_ED_4C:   ; NEG
+Z80_illeg_ED_54:   ; NEG
+Z80_illeg_ED_55:   ; RETN
+Z80_illeg_ED_5C:   ; NEG
+Z80_illeg_ED_5D:   ; RETN
+Z80_illeg_ED_64:   ; NEG
+Z80_illeg_ED_65:   ; RETN
+Z80_illeg_ED_6C:   ; NEG
+Z80_illeg_ED_6D:   ; RETN
+Z80_illeg_ED_70:   ; IN F,(C)
+Z80_illeg_ED_71:   ; OUT (C),0
+Z80_illeg_ED_74:   ; NEG
+Z80_illeg_ED_75:   ; RETN
+Z80_illeg_ED_7C:   ; NEG
+Z80_illeg_ED_7D:   ; RETN
+Z80_illeg_DDCB_C0: ; SET 0,(IX+d),B
+Z80_illeg_DDCB_C1: ; SET 0,(IX+d),C
+Z80_illeg_DDCB_C2: ; SET 0,(IX+d),D
+Z80_illeg_DDCB_C3: ; SET 0,(IX+d),E
+Z80_illeg_DDCB_C4: ; SET 0,(IX+d),H
+Z80_illeg_DDCB_C5: ; SET 0,(IX+d),L
+Z80_illeg_DDCB_C7: ; SET 0,(IX+d),A
+Z80_illeg_FDCB_C0: ; SET 0,(IY+d),B
+Z80_illeg_FDCB_C1: ; SET 0,(IY+d),C
+Z80_illeg_FDCB_C2: ; SET 0,(IY+d),D
+Z80_illeg_FDCB_C3: ; SET 0,(IY+d),E
+Z80_illeg_FDCB_C4: ; SET 0,(IY+d),H
+Z80_illeg_FDCB_C5: ; SET 0,(IY+d),L
+Z80_illeg_FDCB_C7: ; SET 0,(IY+d),A
 
 
 	jmp ZVM_next ; XXX
-	; XXX add 'illegal' instructions
+
+	; XXX add illegal instructions for combination of prefixes

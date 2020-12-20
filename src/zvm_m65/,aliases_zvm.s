@@ -37,6 +37,10 @@
 !addr REG_IFF1           = $23    ; interrupt flip-flop flag 1
 !addr REG_IFF2           = $24    ; interrupt flip-flop flag 2
 
+!addr REG_TMP1           = $25    ; emulation-specific temporary storage
+!addr REG_TMP2           = $26
+
+
 !addr VEC_fetch_value    = $60
 !addr VEC_fetch_stack    = $62
 !addr VEC_store_stack    = $64

@@ -31,6 +31,21 @@ ZVM_store_next:
 
 	sta [PTR_DATA],z
 
+	; FALLTROUGH
+
+!macro ZVM_DISPATCH .TAB_LO, .TAB_HI {
+
+	; Fetch and execute next opcode
+
+	jsr (VEC_fetch_value)
+	asl
+	tax
+	bcs @1
+	jmp (.TAB_LO)            ; execute opcode $00-$7F
+@1: jmp (.TAB_HI)            ; execute opcode $80-$FF
+
+}
+
 	; unimplemented/illegal instructions
 Z80_illegal__DD:
 Z80_illegal__ED:
@@ -38,64 +53,39 @@ Z80_illegal__FD:
 Z80_illegal__DDCB:
 Z80_illegal__FDCB:
 	; LD instructions with no effect
-Z80_instr_40:      ; LD B,B
-Z80_instr_49:      ; LD C,C
-Z80_instr_52:      ; LD D,D
-Z80_instr_5B:      ; LD E,E
-Z80_instr_64:      ; LH H,H
-Z80_instr_6D:      ; LD L,L
-Z80_instr_7F:      ; LD A,A
+Z80_instr_40:                                                                  ; LD B,B
+Z80_instr_49:                                                                  ; LD C,C
+Z80_instr_52:                                                                  ; LD D,D
+Z80_instr_5B:                                                                  ; LD E,E
+Z80_instr_64:                                                                  ; LD H,H
+Z80_instr_6D:                                                                  ; LD L,L
+Z80_instr_7F:                                                                  ; LD A,A
 	; For interrupts (not emulated as of yet)
-Z80_instr_ED_46:   ; IM 0
-Z80_instr_ED_56:   ; IM 1
-Z80_instr_ED_5E:   ; IM 2
+Z80_instr_ED_46:                                                               ; IM 0
+Z80_instr_ED_56:                                                               ; IM 1
+Z80_instr_ED_5E:                                                               ; IM 2
 	; Real NOP
-Z80_instr_00:      ; NOP
+Z80_instr_00:                                                                  ; NOP
+	; Dispatch via jumptable
+ZVM_next:          +ZVM_DISPATCH Z80_vectab_0,    Z80_vectab_1
+Z80_instr_CB:      +ZVM_DISPATCH Z80_vectab_CB_0, Z80_vectab_CB_1              ; #CB
+Z80_instr_DD:      +ZVM_DISPATCH Z80_vectab_DD_0, Z80_vectab_DD_1              ; #DD
+Z80_instr_ED:      +ZVM_DISPATCH Z80_vectab_ED_0, Z80_vectab_ED_1              ; #ED
+Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ; #FD
 
-ZVM_next: ; fetch and execute next opcode
 
-	jsr (VEC_fetch_value)
-	asl
-	tax
-	bcs @1
-	jmp (Z80_vectab_0)       ; execute opcode $00-$7F
-@1: jmp (Z80_vectab_1)       ; execute opcode $80-$FF
 
-Z80_instr_CB:      ; #CB
 
-	jsr (VEC_fetch_value)
-	asl
-	tax
-	bcs @1
-	jmp (Z80_vectab_CB_0)    ; execute opcode $00-$7F
-@1: jmp (Z80_vectab_CB_1)    ; execute opcode $80-$FF
 
-Z80_instr_DD:      ; #DD
 
-	jsr (VEC_fetch_value)
-	asl
-	tax
-	bcs @1
-	jmp (Z80_vectab_DD_0)    ; execute opcode $00-$7F
-@1: jmp (Z80_vectab_DD_1)    ; execute opcode $80-$FF
 
-Z80_instr_ED:      ; #ED
 
-	jsr (VEC_fetch_value)
-	asl
-	tax
-	bcs @1
-	jmp (Z80_vectab_ED_0)    ; execute opcode $00-$7F
-@1: jmp (Z80_vectab_ED_1)    ; execute opcode $80-$FF
 
-Z80_instr_FD:      ; #FD
 
-	jsr (VEC_fetch_value)
-	asl
-	tax
-	bcs @1
-	jmp (Z80_vectab_FD_0)    ; execute opcode $00-$7F
-@1: jmp (Z80_vectab_FD_1)    ; execute opcode $80-$FF
+
+
+
+
 
 
 

@@ -43,7 +43,10 @@ Z80_instr_76:      ; HALT
 
 	ldx #$01 ; default BIOS function, warm start
 
-	lda REG_PC
+	lda REG_PC+1
+	cmp #$FE
+	bne @1
+	lda REG_PC+0
 	sec
 	sbc #$64
 	cmp #33

@@ -74,7 +74,7 @@ Z80_vectab_CB_0:
 	!word Z80_instr_CB_20, Z80_instr_CB_21, Z80_instr_CB_22, Z80_instr_CB_23, Z80_instr_CB_24, Z80_instr_CB_25, Z80_instr_CB_26, Z80_instr_CB_27
 	!word Z80_instr_CB_28, Z80_instr_CB_29, Z80_instr_CB_2A, Z80_instr_CB_2B, Z80_instr_CB_2C, Z80_instr_CB_2D, Z80_instr_CB_2E, Z80_instr_CB_2F
 
-	!word Z80_illegal__DD, Z80_illegal__DD, Z80_illegal__DD, Z80_illegal__DD, Z80_illegal__DD, Z80_illegal__DD, Z80_illegal__DD, Z80_illegal__DD
+	!word Z80_illeg_CB_30, Z80_illeg_CB_31, Z80_illeg_CB_32, Z80_illeg_CB_33, Z80_illeg_CB_34, Z80_illeg_CB_35, Z80_illeg_CB_36, Z80_illeg_CB_37
 	!word Z80_instr_CB_38, Z80_instr_CB_39, Z80_instr_CB_3A, Z80_instr_CB_3B, Z80_instr_CB_3C, Z80_instr_CB_3D, Z80_instr_CB_3E, Z80_instr_CB_3F
 
 	!word Z80_instr_CB_40, Z80_instr_CB_41, Z80_instr_CB_42, Z80_instr_CB_43, Z80_instr_CB_44, Z80_instr_CB_45, Z80_instr_CB_46, Z80_instr_CB_47
@@ -182,16 +182,16 @@ Z80_vectab_ED_0:
 	!word Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED
 
 	!word Z80_instr_ED_40, Z80_instr_ED_41, Z80_instr_ED_42, Z80_instr_ED_43, Z80_instr_ED_44, Z80_instr_ED_45, Z80_instr_ED_46, Z80_instr_ED_47
-	!word Z80_instr_ED_48, Z80_instr_ED_49, Z80_instr_ED_4A, Z80_instr_ED_4B, Z80_illegal__ED, Z80_instr_ED_4D, Z80_illegal__ED, Z80_instr_ED_4F
+	!word Z80_instr_ED_48, Z80_instr_ED_49, Z80_instr_ED_4A, Z80_instr_ED_4B, Z80_illeg_ED_4C, Z80_instr_ED_4D, Z80_illeg_ED_4E, Z80_instr_ED_4F
 
-	!word Z80_instr_ED_50, Z80_instr_ED_51, Z80_instr_ED_52, Z80_instr_ED_53, Z80_illegal__ED, Z80_illegal__ED, Z80_instr_ED_56, Z80_instr_ED_57
-	!word Z80_instr_ED_58, Z80_instr_ED_59, Z80_instr_ED_5A, Z80_instr_ED_5B, Z80_illegal__ED, Z80_illegal__ED, Z80_instr_ED_5E, Z80_instr_ED_5F
+	!word Z80_instr_ED_50, Z80_instr_ED_51, Z80_instr_ED_52, Z80_instr_ED_53, Z80_illeg_ED_54, Z80_illeg_ED_55, Z80_instr_ED_56, Z80_instr_ED_57
+	!word Z80_instr_ED_58, Z80_instr_ED_59, Z80_instr_ED_5A, Z80_instr_ED_5B, Z80_illeg_ED_5C, Z80_illeg_ED_5D, Z80_instr_ED_5E, Z80_instr_ED_5F
 
-	!word Z80_instr_ED_60, Z80_instr_ED_61, Z80_instr_ED_62, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_instr_ED_67
-	!word Z80_instr_ED_68, Z80_instr_ED_69, Z80_instr_ED_6A, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_instr_ED_6F
+	!word Z80_instr_ED_60, Z80_instr_ED_61, Z80_instr_ED_62, Z80_illegal__ED, Z80_illeg_ED_64, Z80_illeg_ED_65, Z80_illeg_ED_66, Z80_instr_ED_67
+	!word Z80_instr_ED_68, Z80_instr_ED_69, Z80_instr_ED_6A, Z80_illegal__ED, Z80_illeg_ED_6C, Z80_illeg_ED_6D, Z80_illeg_ED_6E, Z80_instr_ED_6F
 
-	!word Z80_illegal__ED, Z80_illegal__ED, Z80_instr_ED_72, Z80_instr_ED_73, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED
-	!word Z80_instr_ED_78, Z80_instr_ED_79, Z80_instr_ED_7A, Z80_instr_ED_7B, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED, Z80_illegal__ED
+	!word Z80_illeg_ED_70, Z80_illeg_ED_71, Z80_instr_ED_72, Z80_instr_ED_73, Z80_illeg_ED_74, Z80_illeg_ED_75, Z80_illeg_ED_76, Z80_illeg_ED_77
+	!word Z80_instr_ED_78, Z80_instr_ED_79, Z80_instr_ED_7A, Z80_instr_ED_7B, Z80_illeg_ED_7C, Z80_illeg_ED_7D, Z80_illeg_ED_7E, Z80_illeg_ED_7F
 
 Z80_vectab_ED_1:
 
@@ -295,12 +295,12 @@ Z80_vectab_DDCB_0:
 	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_6E, Z80_illegal__DDCB
 
 	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_76, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_6E, Z80_illegal__DDCB
+	!word Z80_illeg_DDCB_78, Z80_illeg_DDCB_79, Z80_illeg_DDCB_7A, Z80_illeg_DDCB_7B, Z80_illeg_DDCB_7C, Z80_illeg_DDCB_7D, Z80_instr_DDCB_7E, Z80_illeg_DDCB_7F
 
 Z80_vectab_DDCB_1:
 
 	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_86, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_7E, Z80_illegal__DDCB
+	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_8E, Z80_illegal__DDCB
 
 	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_96, Z80_illegal__DDCB
 	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_9E, Z80_illegal__DDCB
@@ -311,7 +311,7 @@ Z80_vectab_DDCB_1:
 	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_B6, Z80_illegal__DDCB
 	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_BE, Z80_illegal__DDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_C6, Z80_illegal__DDCB
+	!word Z80_illeg_DDCB_C0, Z80_illeg_DDCB_C1, Z80_illeg_DDCB_C2, Z80_illeg_DDCB_C3, Z80_illeg_DDCB_C4, Z80_illeg_DDCB_C5, Z80_instr_DDCB_C6, Z80_illeg_DDCB_C7
 	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_CE, Z80_illegal__DDCB
 
 	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_D6, Z80_illegal__DDCB
@@ -347,7 +347,7 @@ Z80_vectab_FDCB_0:
 	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_6E, Z80_illegal__FDCB
 
 	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_76, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_7E, Z80_illegal__FDCB
+	!word Z80_illeg_FDCB_78, Z80_illeg_FDCB_79, Z80_illeg_FDCB_7A, Z80_illeg_FDCB_7B, Z80_illeg_FDCB_7C, Z80_illeg_FDCB_7D, Z80_instr_FDCB_7E, Z80_illeg_FDCB_7F
 
 Z80_vectab_FDCB_1:
 
@@ -363,7 +363,7 @@ Z80_vectab_FDCB_1:
 	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_B6, Z80_illegal__FDCB
 	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_BE, Z80_illegal__FDCB
 
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_C6, Z80_illegal__FDCB
+	!word Z80_illeg_FDCB_C0, Z80_illeg_FDCB_C1, Z80_illeg_FDCB_C2, Z80_illeg_FDCB_C3, Z80_illeg_FDCB_C4, Z80_illeg_FDCB_C5, Z80_instr_FDCB_C6, Z80_illeg_FDCB_C7
 	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_CE, Z80_illegal__FDCB
 
 	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_D6, Z80_illegal__FDCB

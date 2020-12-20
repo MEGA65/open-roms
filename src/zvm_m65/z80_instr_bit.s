@@ -489,7 +489,14 @@ Z80_instr_DDCB_76: ; BIT 6,(IX+d)
 	bne Z80_common_bitXYx_1
 	bra Z80_common_bitXYx_0
 
+Z80_illeg_DDCB_78: ; BIT 7,(IX+d)
+Z80_illeg_DDCB_79: ; BIT 7,(IX+d)
+Z80_illeg_DDCB_7A: ; BIT 7,(IX+d)
+Z80_illeg_DDCB_7B: ; BIT 7,(IX+d)
+Z80_illeg_DDCB_7C: ; BIT 7,(IX+d)
+Z80_illeg_DDCB_7D: ; BIT 7,(IX+d)
 Z80_instr_DDCB_7E: ; BIT 7,(IX+d)
+Z80_illeg_DDCB_7F: ; BIT 7,(IX+d)
 
 	jsr (VEC_fetch_via_IX_d)
 	and #%10000000
@@ -582,7 +589,14 @@ Z80_instr_FDCB_76: ; BIT 6,(IY+d)
 	bne Z80_common_bitXYx_1
 	bra Z80_common_bitXYx_0
 
+Z80_illeg_FDCB_78: ; BIT 7,(IY+d)
+Z80_illeg_FDCB_79: ; BIT 7,(IY+d)
+Z80_illeg_FDCB_7A: ; BIT 7,(IY+d)
+Z80_illeg_FDCB_7B: ; BIT 7,(IY+d)
+Z80_illeg_FDCB_7C: ; BIT 7,(IY+d)
+Z80_illeg_FDCB_7D: ; BIT 7,(IY+d)
 Z80_instr_FDCB_7E: ; BIT 7,(IY+d)
+Z80_illeg_FDCB_7F: ; BIT 7,(IY+d)
 
 	jsr (VEC_fetch_via_IY_d)
 	and #%10000000

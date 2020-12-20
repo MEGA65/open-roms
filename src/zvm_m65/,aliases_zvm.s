@@ -1,15 +1,19 @@
 
-!addr REG_A              = $02    ; 8-bit accumulator
-!addr REG_F              = $03    ; 8-bit flag register
-!addr REG_B              = $04    ; general purpose 8-bit registers
-!addr REG_C              = $05
-!addr REG_D              = $06
-!addr REG_E              = $07
-!addr REG_H              = $08
-!addr REG_L              = $09
+!addr REG_AF             = $02         ; 16-bit combined register
+!addr REG_F              = REG_AF+0    ; 8-bit flag register
+!addr REG_A              = REG_AF+1    ; 8-bit accumulator
+!addr REG_BC             = $04
+!addr REG_C              = REG_BC+0
+!addr REG_B              = REG_BC+1
+!addr REG_DE             = $06
+!addr REG_E              = REG_DE+0
+!addr REG_D              = REG_DE+1
+!addr REG_HL             = $08
+!addr REG_L              = REG_HL+0
+!addr REG_H              = REG_HL+1
 
-!addr REG_A_SH           = $0A    ; shadow registers
-!addr REG_F_SH           = $0B
+!addr REG_F_SH           = $0A    ; shadow registers
+!addr REG_A_SH           = $0B
 !addr REG_C_SH           = $0C
 !addr REG_B_SH           = $0D
 !addr REG_E_SH           = $0E
@@ -24,7 +28,7 @@
 
 !addr REG_I              = $1A    ; 8-bit interrupt vector base
 !addr REG_R06            = $1B    ; refresh counter, bits 0-6 (bit 7 is garbage)
-!addr REG_R7             = $1C    ; refresh counter, bit 7 (bits 0-6 are 0's)
+!addr REG_R7             = $1C    ; refresh counter, bit 7 (bits 0-6 are garbage)
 
 !addr PTR_IXY_d          = $1D    ; 16-bit calculated address IX+d / IY+d  XXX - important!!!
 !addr PTR_DATA           = $1F    ; data source address                    XXX - important!!!

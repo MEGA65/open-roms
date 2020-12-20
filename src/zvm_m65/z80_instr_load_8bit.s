@@ -433,9 +433,14 @@ Z80_instr_ED_5F:   ; LD A,R
 	ora REG_IFF2
 	sta REG_F
 
-	lda REG_R06
+	lda REG_R06              ; register R only simulates random numbers
+	eor VIC_RASTER
+	adc TIME+2
+	eor VIC_XPOS
+	sta REG_R06
+
 	and #%01111111
-	ora REG_R7
+	eor REG_R7               ; not 'ora', we want to reuse the 'garbage'
 	sta REG_A
 	bpl @1
 	+Z80_PUT_1_SF
@@ -453,7 +458,7 @@ Z80_instr_ED_47:   ; LD I,A
 Z80_instr_ED_4F:   ; LD R,A
 
 	lda REG_A
-	sta REG_R06
-	and #%01111111
+	; Do not do 'sta REG_R06', it will generate a random number
+	; Do not do 'and #%01111111', let it have some garbage
 	sta REG_R7
 	jmp ZVM_next

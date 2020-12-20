@@ -144,20 +144,11 @@ ZVM_fetch_via_IY_d_bank_0:
 ZVM_fetch_via_IY_d_bank_1:
 ZVM_fetch_via_nn_bank_0:
 ZVM_fetch_via_nn_bank_1:
-
-	; XXX
-	rts
-
-
 ZVM_store_stack_bank_0:
-
-	; XXX
-	jmp ZVM_next
-
 ZVM_store_stack_bank_1:
 
 	; XXX
-	jmp ZVM_next
+	rts
 
 ZVM_store_via_HL_bank_0:
 

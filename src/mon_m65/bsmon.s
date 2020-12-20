@@ -16,7 +16,8 @@
 ; * Register storage *
 ; ********************
 
-!addr Bank        =  2         ; $00 = C64 address, $FF = M65 flat address ; XXX adapt the implementation
+!addr Bank        =  2 ; XXX remove this        
+!addr Adr_Mode    =  2 ; $00 = C64 address, $80 = M65 flat address ; XXX adapt the implementation
 !addr PCH         =  3
 !addr PCL         =  4
 !addr SR          =  5
@@ -76,30 +77,7 @@
 Mon_Break
 ; *******
 
-         JSR  Print_Commands
-
-; pull BP, Z, Y, X, A,SR,PCL,PCH
-;       7  6  5  4  3  2  1  0
-
-         LDX  #7
-@loop    PLA
-         STA  PCH,X
-         DEX
-         BPL  @loop
-
-; decrement PC to point after BRK
-
-         LDA  PCL
-         BNE  @nopage
-         DEC  PCH
-@nopage  DEC  PCL
-
-         LDA  $011d
-         BBR7 Bank,@bank
-         LDA  $011f
-@bank    AND  #15
-         STA  Bank
-         BRA  Mon_Start
+         ; XXX implement Open ROMs version, connect it to BRK handler
 
 ; ******
 Mon_Call
@@ -468,6 +446,8 @@ Fetch
 Mon_Memory
 ; ********
 
+         LDA  #$00
+         STA  Adr_Mode
          JSR  Set_MODE_80
 
          JSR  Get_LAC           ; get 1st. parameter
@@ -1734,7 +1714,7 @@ Got_LAC
          DEC  Buf_Index
 
 ; *****
-Get_LAC
+Get_LAC ;
 ; *****
 
          JSR  Read_Number

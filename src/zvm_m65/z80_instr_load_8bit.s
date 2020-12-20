@@ -362,37 +362,44 @@ Z80_instr_7E:      ; LD A,(HL)
 Z80_instr_70:      ; LD (HL),B
 
 	lda REG_B
-	jmp (VEC_store_via_HL)
+	jsr (VEC_store_via_HL)
+	jmp ZVM_next
 
 Z80_instr_71:      ; LD (HL),C
 
 	lda REG_C
-	jmp (VEC_store_via_HL)
+	jsr (VEC_store_via_HL)
+	jmp ZVM_next
 
 Z80_instr_72:      ; LD (HL),D
 
 	lda REG_D
-	jmp (VEC_store_via_HL)
+	jsr (VEC_store_via_HL)
+	jmp ZVM_next
 
 Z80_instr_73:      ; LD (HL),E
 
 	lda REG_E
-	jmp (VEC_store_via_HL)
+	jsr (VEC_store_via_HL)
+	jmp ZVM_next
 
 Z80_instr_74:      ; LD (HL),H
 
 	lda REG_H
-	jmp (VEC_store_via_HL)
+	jsr (VEC_store_via_HL)
+	jmp ZVM_next
 
 Z80_instr_75:      ; LD (HL),L
 
 	lda REG_L
-	jmp (VEC_store_via_HL)
+	jsr (VEC_store_via_HL)
+	jmp ZVM_next
 
 Z80_instr_77:      ; LD (HL),A
 
 	lda REG_A
-	jmp (VEC_store_via_HL)
+	jsr (VEC_store_via_HL)
+	jmp ZVM_next
 
 ; XXX put here LD (IX+d),r family
 ; XXX put here LD (IY+d),r family
@@ -404,7 +411,8 @@ Z80_instr_77:      ; LD (HL),A
 Z80_instr_36:      ; LD (HL),n
 
 	jsr (VEC_fetch_value)
-	jmp (VEC_store_via_HL)
+	jsr (VEC_store_via_HL)
+	jmp ZVM_next
 
 ; XXX put here LD (IX+d),n family
 ; XXX put here LD (IY+d),n family

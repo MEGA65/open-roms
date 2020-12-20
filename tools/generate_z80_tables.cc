@@ -159,7 +159,7 @@ std::string generateIncTable(void)
 std::string generateDecTable(void)
 {
 	std::stringstream outStr;
-	outStr << "!macro PUT_Z80_FTABLE_DEC {\n" << std::hex << std::setw(2) << std::setfill('0');
+	outStr << "!macro PUT_Z80_FTABLE_DEC {\n";
 
 	for (uint16_t idx = 0; idx < 0x100; idx++)
 	{
@@ -169,6 +169,40 @@ std::string generateDecTable(void)
 		if (idx == 0x01)                flags |= Z80_ZF; // for result equal 0
 		if ((idx & 0x0F) == 0x00)       flags |= Z80_HF;
 		if (idx == 0x80)                flags |= Z80_VF;
+
+		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
+	}
+
+	return outStr.str() + "}\n\n\n";
+} 
+
+std::string generateAndTable(void)
+{
+	std::stringstream outStr;
+	outStr << "!macro PUT_Z80_FTABLE_AND {\n";
+
+	for (uint16_t idx = 0; idx < 0x100; idx++)
+	{
+		uint8_t flags = Z80_HF | GLOBAL_Parity[idx];
+		if (idx >= 0x80) flags |= Z80_SF; // for negative result
+		if (idx == 0)    flags |= Z80_ZF; // for result equal 0
+
+		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
+	}
+
+	return outStr.str() + "}\n\n\n";
+}
+
+std::string generateOrXorTable(void)
+{
+	std::stringstream outStr;
+	outStr << "!macro PUT_Z80_FTABLE_OR_XOR {\n";
+
+	for (uint16_t idx = 0; idx < 0x100; idx++)
+	{
+		uint8_t flags = GLOBAL_Parity[idx];
+		if (idx >= 0x80) flags |= Z80_SF; // for negative result
+		if (idx == 0)    flags |= Z80_ZF; // for result equal 0
 
 		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
 	}
@@ -209,6 +243,8 @@ void writeTables()
 	outFile << generateDisplacementTable();
 	outFile << generateIncTable();
 	outFile << generateDecTable();
+	outFile << generateAndTable();
+	outFile << generateOrXorTable();
 	outFile << generateDaaTables();
 
 	// XXX

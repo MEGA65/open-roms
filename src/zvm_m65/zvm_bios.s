@@ -11,7 +11,7 @@
 ; $FE85 - $FEFF - unused
 ; $FF00 - $FFFF - Disk Drive Tables, dynamically generated, $10 bytes for each one
 
-
+!addr zvm_BIOS_return = Z80_instr_C9 ; RET instruction
 
 
 zvm_BIOS_vectable:
@@ -59,6 +59,10 @@ zvm_BIOS_00_BOOT:            ; Cold start
 zvm_BIOS_01_WBOOT:           ; Warm start
 zvm_BIOS_31_RESERV1:         ; Reserved   
 zvm_BIOS_32_RESERV2:         ; Reserved
+
+	; Reset BIOS vectors to point to bank 1
+
+	; XXX setup VEC_MOVE_fetch, VEC_MOVE_store, VEC_DISKIO_store
 
 	; XXX !!!
 
@@ -115,16 +119,16 @@ zvm_BIOS_14_WRITE:           ; Write sector
 	; XXX !!!
 
 zvm_BIOS_15_LISTST:          ; List status
+zvm_BIOS_17_CONOST:          ; Console output status
 
-	; XXX
+	; Always report the printer / output console as ready
+	lda #$FF
+	sta REG_A
+	jmp zvm_BIOS_return
 
 zvm_BIOS_16_SECTRN:          ; Convert logical to physical sector
 
 	; XXX !!!
-
-zvm_BIOS_17_CONOST:          ; Console output status
-
-	; XXX
 
 zvm_BIOS_18_AUXIST:          ; AUX input status
 
@@ -156,7 +160,19 @@ zvm_BIOS_24_FLUSH:           ; Force buffer flushing for user deblocking
 
 zvm_BIOS_25_MOVE:            ; Memory move
 
-	; XXX
+	lda REG_B
+	ora REG_C
+	beq @2                   ; branch if nothing to be copied
+@1:
+	jsr (VEC_MOVE_fetch)
+	jsr (VEC_MOVE_store)
+	inw REG_DE ; source address
+	inw REG_HL ; destination address
+	dew REG_BC ; count
+	bne @1
+@2:
+    ; XXX setup VEC_MOVE_fetch (to bank 1), VEC_MOVE_store (to bank 1)
+    jmp zvm_BIOS_return
 
 zvm_BIOS_26_TIME:            ; Get or set time
 
@@ -164,15 +180,18 @@ zvm_BIOS_26_TIME:            ; Get or set time
 
 zvm_BIOS_27_SELMEM:          ; Select memory bank
 
-	; XXX
+	; XXX !!!
+    ; XXX setup VEC_MOVE_fetch (REG_A), VEC_MOVE_store (REG_A)
 
-zvm_BIOS_28_SETBNK:          ; Set bank for DMA operation
+zvm_BIOS_28_SETBNK:          ; Set bank for disk DMA operation
 
-	; XXX
+	; XXX !!!
+    ; XXX setup VEC_DISKIO_store (REG_A)
 
 zvm_BIOS_29_XMOVE:           ; Set bank if buffer is in bank other than 1 or 2
 
-	; XXX
+	; XXX !!!
+    ; XXX setup VEC_MOVE_fetch (REG_C), VEC_MOVE_store (REG_B)
 
 zvm_BIOS_30_USERF:           ; Implementation-specific functionality
 

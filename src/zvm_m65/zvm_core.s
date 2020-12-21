@@ -5,27 +5,8 @@
 
 ZVM_entry:
 
-	jsr ZVM_init
-	; XXX fetch BDOS and Command Processor 
-	jmp ZVM_next
-
-ZVM_init:
-
-	; Reset registers and internal data
-	
-	ldz #$00     	         ; .Z is required to be 0 all the time
-	lda #$00
-	tay
-@1:
-	sta REG_AF, y
-	iny
-	cmp #(REG_IFF2+1)
-	bne @1
-	
-	; XXX what is the initial SP value?
-	; XXX clean memory
-
-	jmp ZVM_set_bank_1
+	; XXX mark that this is the first start of CP/M iin the lifecycle, display BIOS information
+	jmp zvm_BIOS_00_BOOT
 
 ZVM_store_next:
 
@@ -79,6 +60,24 @@ Z80_instr_CB:      +ZVM_DISPATCH Z80_vectab_CB_0, Z80_vectab_CB_1              ;
 Z80_instr_DD:      +ZVM_DISPATCH Z80_vectab_DD_0, Z80_vectab_DD_1              ; #DD
 Z80_instr_ED:      +ZVM_DISPATCH Z80_vectab_ED_0, Z80_vectab_ED_1              ; #ED
 Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ; #FD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

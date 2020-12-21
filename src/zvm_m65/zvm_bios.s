@@ -53,17 +53,41 @@ zvm_BIOS_00_BOOT:            ; Cold start
 
 	; XXX !!!
 
+	; XXX fetch RAM disk image
+	; XXX close all the files, reset I/O, set screen mode
+	; XXX clear memory
+
+	; Reset registers and internal emulation data
+	
+	ldz #$00     	         ; .Z is required to be 0 all the time
+	lda #$00
+	tay
+@1:
+	sta REG_AF, y
+	iny
+	cmp #(REG_IFF2+1)
+	bne @1
+
+	dew REG_AF               ; AF and SP have $FFFF value on start
+	dew REG_SP
+
+	; XXX load CPM3.SYS
+
 	; FALLTROUGH
 
 zvm_BIOS_01_WBOOT:           ; Warm start
 zvm_BIOS_31_RESERV1:         ; Reserved   
 zvm_BIOS_32_RESERV2:         ; Reserved
 
-	; Reset BIOS vectors to point to bank 1
-
-	; XXX setup VEC_MOVE_fetch, VEC_MOVE_store, VEC_DISKIO_store
-
 	; XXX !!!
+
+	; Select bank 1 as the default one
+
+	jsr ZVM_set_bank_1
+
+	; XXX put command processor in memory
+
+	; XXX setup VEC_MOVE_fetch, VEC_MOVE_store, VEC_DISKIO_store somewhere
 
 zvm_BIOS_02_CONST:           ; Check if input character available
 

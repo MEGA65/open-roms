@@ -69,7 +69,7 @@ Z80_instr_FD_A6:   +Z80_AND_VIA_IY_d                                           ;
 !macro Z80_OR_XOR_common_int {
 	lda REG_F
 	and #($FF - Z80_SF - Z80_ZF - Z80_HF - Z80_PF - Z80_NF - Z80_CF)
-	ora z80_ftable_OR_XOR, x
+	ora z80_ftable_IN_OR_XOR, x
 	sta REG_F
 	jmp ZVM_next
 }
@@ -142,7 +142,7 @@ Z80_instr_FD_B6:   +Z80_OR_VIA_IY_d                                            ;
 	sta REG_A
 	lda REG_F
 	and #($FF - Z80_SF - Z80_ZF - Z80_HF - Z80_PF - Z80_NF - Z80_CF)
-	ora z80_ftable_OR_XOR
+	ora z80_ftable_IN_OR_XOR
 	sta REG_F
 	jmp ZVM_next
 }

@@ -39,6 +39,8 @@
 
 !addr REG_TMP1           = $25    ; emulation-specific temporary storage
 !addr REG_TMP2           = $26
+!addr ADDR_IO            = $27    ; 16-bit address for fetching/storing the IO
+
 
 !addr VEC_MOVE_fetch     = $30    ; vector to byte fetch routine, for BIOS routine MOVE
 !addr VEC_MOVE_store     = $32    ; vector to byte store routine, for BIOS routine MOVE

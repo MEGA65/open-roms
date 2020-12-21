@@ -8,8 +8,7 @@
 
 ; $FE00 - $FE63 - jumptable, 3*33 bytes
 ; $FE63 - $FE84 - magic HALT instructions to select BIOS routines
-; $FE85 - $FEFF - unused
-; $FF00 - $FFFF - Disk Drive Tables, dynamically generated, $10 bytes for each one
+; $FE85 - $FFFF - unassigned as of yet
 
 !addr zvm_BIOS_return = Z80_instr_C9 ; RET instruction
 

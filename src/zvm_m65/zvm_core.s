@@ -100,20 +100,16 @@ Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ;
 
 Z80_instr_DD_CB:   ; #DDCB
 Z80_instr_FD_CB:   ; #FDCB
-Z80_instr_01:      ; LD BC,nn
 Z80_instr_02:      ; LD (BC),A
 Z80_instr_09:      ; ADD HL,BC
-Z80_instr_0A:      ; LD A,(BC)	
-Z80_instr_11:      ; LD DE,nn
+Z80_instr_0A:      ; LD A,(BC)
 Z80_instr_12:      ; LD (DE),A
 Z80_instr_19:      ; ADD HL,DE
 Z80_instr_1A:      ; LD A,(DE)
-Z80_instr_21:      ; LD HL,nn
 Z80_instr_22:      ; LD (nn),HL
 Z80_instr_27:      ; DAA
 Z80_instr_29:      ; ADD HL,HL
 Z80_instr_2A:      ; LD HL,(nn)
-Z80_instr_31:      ; LD SP,nn
 Z80_instr_32:      ; LD (nn),A
 Z80_instr_39:      ; ADD HL,SP
 Z80_instr_3A:      ; LD A,(nn)
@@ -248,7 +244,6 @@ Z80_instr_CB_3E:   ; SRL (HL)
 Z80_instr_CB_3F:   ; SRL A
 Z80_instr_DD_09:   ; ADD IX,BC
 Z80_instr_DD_19:   ; ADD IX,DE
-Z80_instr_DD_21:   ; LD IX,nn
 Z80_instr_DD_22:   ; LD (nn),IX
 Z80_instr_DD_29:   ; ADD IX,IX
 Z80_instr_DD_2A:   ; LD IX,(nn)
@@ -311,7 +306,6 @@ Z80_instr_ED_BA:   ; INDR
 Z80_instr_ED_BB:   ; OTDR
 Z80_instr_FD_09:   ; ADD IY,BC
 Z80_instr_FD_19:   ; ADD IY,DE
-Z80_instr_FD_21:   ; LD IY,nn
 Z80_instr_FD_22:   ; LD (nn),IY
 Z80_instr_FD_29:   ; ADD IY,IY
 Z80_instr_FD_2A:   ; LD IY,(nn)

@@ -4,6 +4,21 @@
 ;
 
 
+!macro Z80_LD_REGnn_nn .REGnn {
+	jsr (VEC_fetch_value)
+	sta .REGnn+0
+	jsr (VEC_fetch_value)
+	sta .REGnn+1
+	jmp ZVM_next
+}
+
+Z80_instr_01:      +Z80_LD_REGnn_nn REG_BC                                     ; LD BC,nn
+Z80_instr_11:      +Z80_LD_REGnn_nn REG_DE                                     ; LD DE,nn
+Z80_instr_21:      +Z80_LD_REGnn_nn REG_HL                                     ; LD HL,nn
+Z80_instr_31:      +Z80_LD_REGnn_nn REG_SP                                     ; LD SP,nn
+Z80_instr_DD_21:   +Z80_LD_REGnn_nn REG_IX                                     ; LD IX,nn
+Z80_instr_FD_21:   +Z80_LD_REGnn_nn REG_IY                                     ; LD IY,nn
+
 !macro Z80_PUSH_REGnn .REGnn {
 	lda .REGnn+1
 	jsr (VEC_store_stack)

@@ -193,10 +193,10 @@ std::string generateAndTable(void)
 	return outStr.str() + "}\n\n\n";
 }
 
-std::string generateOrXorTable(void)
+std::string generateInOrXorTable(void)
 {
 	std::stringstream outStr;
-	outStr << "!macro PUT_Z80_FTABLE_OR_XOR {\n";
+	outStr << "!macro PUT_Z80_FTABLE_IN_OR_XOR {\n";
 
 	for (uint16_t idx = 0; idx < 0x100; idx++)
 	{
@@ -244,7 +244,7 @@ void writeTables()
 	outFile << generateIncTable();
 	outFile << generateDecTable();
 	outFile << generateAndTable();
-	outFile << generateOrXorTable();
+	outFile << generateInOrXorTable();
 	outFile << generateDaaTables();
 
 	// XXX

@@ -25,6 +25,6 @@ z80_ftable_AND:
 
 	+PUT_Z80_FTABLE_AND
 
-z80_ftable_OR_XOR:
+z80_ftable_IN_OR_XOR:
 
-	+PUT_Z80_FTABLE_OR_XOR
+	+PUT_Z80_FTABLE_IN_OR_XOR

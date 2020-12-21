@@ -40,11 +40,12 @@ Z80_instr_37:      ; SCF
 Z80_instr_76:      ; HALT
 
 	; Used to call BIOS routines
+	; XXX probably not the besta idea, GENCPC seems to do some relocations
 
 	ldx #$01 ; default BIOS function, warm start
 
 	lda REG_PC+1
-	cmp #$FE
+	cmp #$FE ;
 	bne @1
 	lda REG_PC+0
 	sec

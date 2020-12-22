@@ -210,14 +210,102 @@ std::string generateInOrXorTable(void)
 	return outStr.str() + "}\n\n\n";
 } 
 
+
+
+typedef struct FlagsDAA
+{
+	uint8_t N = 0; // input/output
+	uint8_t C = 0; // input/output
+	uint8_t H = 0; // input/output
+	uint8_t S = 0; // output
+	uint8_t Z = 0; // output
+	uint8_t P = 0; // output
+	uint8_t X = 0; // output
+	uint8_t Y = 0; // output
+
+} Flags;
+
+
+uint8_t calculateDAA(FlagsDAA &flags, uint8_t A)
+{
+	// Based on code by Rui Ribeiro, see the discussion here:
+	// https://stackoverflow.com/questions/8119577/z80-daa-instruction
+
+	int t = 0;
+    
+	if (flags.H || ((A & 0xF) > 9)) t++;
+    
+	if (flags.C || (A > 0x99))
+	{
+		t += 2;
+		flags.C = 1;
+	}
+
+	if (flags.N && !flags.H)
+	{	
+    	flags.H = 0;
+	}
+	else
+	{
+    	if (flags.N && flags.H)
+			flags.H = (((A & 0x0F)) < 6);
+		else
+			flags.H = ((A & 0x0F) >= 0x0A);
+	}
+    
+    switch (t)
+	{
+		case 1: A += (flags.N) ? 0xFA : 0x06; break; // -6:6
+		case 2: A += (flags.N) ? 0xA0 : 0x60; break; // -0x60:0x60
+	    case 3: A += (flags.N) ? 0x9A : 0x66; break; // -0x66:0x66
+    }
+
+    flags.S = (A & 0x80);
+	flags.Z = !A;
+	flags.P = GLOBAL_Parity[A];
+	flags.X = A & 0x20;
+	flags.Y = A & 0x08;
+
+	return A;
+}
+
 std::string generateDaaTables()
 {
 	std::string outStr;
 
-	// iterate by SF, HF, CF flags
+	for (uint8_t NF : {0, 1}) for (uint8_t CF : {0, 1}) for (uint8_t HF : {0, 1})
+	{
+		std::string keyStr = std::string("_") + (NF ? "N1" : "N0") + (CF ? "C1" : "C0") + (HF ? "H1" : "H0");
 
-	// XXX
-	// Check code by Rui Ribeiro, see https://stackoverflow.com/questions/8119577/z80-daa-instruction
+		std::stringstream outStrF;
+		outStrF << "!macro PUT_Z80_FTABLE_DAA" << keyStr << "  {\n";
+
+		std::stringstream outStrO;
+		outStrO << "!macro PUT_Z80_OTABLE_DAA" << keyStr << "  {\n";
+
+		for (uint16_t idx = 0; idx < 0x100; idx++)
+		{
+			FlagsDAA flags;
+			if (NF) flags.N = 1;
+			if (CF) flags.C = 1;
+			if (HF) flags.H = 1;
+
+			outStrO << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << (int) calculateDAA(flags, idx) << "\n";			
+			
+			int fResult = (flags.N ? Z80_NF : 0) +
+			              (flags.C ? Z80_CF : 0) +
+			              (flags.H ? Z80_HF : 0) +
+			              (flags.S ? Z80_SF : 0) +
+			              (flags.P ? Z80_PF : 0) +
+			              (flags.Z ? Z80_ZF : 0) +
+			              (flags.X ? Z80_XF : 0) +
+			              (flags.Y ? Z80_YF : 0);
+			
+			outStrF << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << fResult << "\n";		
+		}
+
+		outStr += outStrF.str() + "}\n\n\n" + outStrO.str() + "}\n\n\n";
+	}
 
 	return outStr;
 }
@@ -239,7 +327,7 @@ void writeTables()
 
     // Write tables
 
-	outFile << generateParityTable(); // always put it first!
+	outFile << generateParityTable();        // always put this one first!
 	outFile << generateDisplacementTable();
 	outFile << generateIncTable();
 	outFile << generateDecTable();

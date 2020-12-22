@@ -270,7 +270,6 @@ Z80_instr_DD_E3:   ; EX (SP),IX
 Z80_instr_DD_F9:   ; LD SP,IX
 Z80_instr_ED_42:   ; SBC HL,BC
 Z80_instr_ED_43:   ; LD (nn),BC
-Z80_instr_ED_44:   ; NEG
 Z80_instr_ED_45:   ; RETN
 Z80_instr_ED_4A:   ; ADC HL,BC
 Z80_instr_ED_4B:   ; LD BC,(nn)
@@ -345,20 +344,13 @@ Z80_illeg_CB_34:   ; SLL H
 Z80_illeg_CB_35:   ; SLL L
 Z80_illeg_CB_36:   ; SLL (HL)
 Z80_illeg_CB_37:   ; SLL A
-Z80_illeg_ED_4C:   ; NEG
-Z80_illeg_ED_54:   ; NEG
 Z80_illeg_ED_55:   ; RETN
-Z80_illeg_ED_5C:   ; NEG
 Z80_illeg_ED_5D:   ; RETN
-Z80_illeg_ED_64:   ; NEG
 Z80_illeg_ED_65:   ; RETN
-Z80_illeg_ED_6C:   ; NEG
 Z80_illeg_ED_6D:   ; RETN
 Z80_illeg_ED_70:   ; IN F,(C)
 Z80_illeg_ED_71:   ; OUT (C),0
-Z80_illeg_ED_74:   ; NEG
 Z80_illeg_ED_75:   ; RETN
-Z80_illeg_ED_7C:   ; NEG
 Z80_illeg_ED_7D:   ; RETN
 Z80_illeg_xDCB_C0: ; SET 0,(IXY+d),B
 Z80_illeg_xDCB_C1: ; SET 0,(IXY+d),C

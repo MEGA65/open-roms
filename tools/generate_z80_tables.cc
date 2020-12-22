@@ -210,6 +210,26 @@ std::string generateInOrXorTable(void)
 	return outStr.str() + "}\n\n\n";
 } 
 
+std::string generateNegTable(void)
+{
+	std::stringstream outStr;
+	outStr << "!macro PUT_Z80_FTABLE_NEG {\n";
+
+	for (uint16_t idx = 0; idx < 0x100; idx++)
+	{
+		uint8_t flags = Z80_NF;
+		if (0 - idx >= 0x80)  flags |= Z80_SF;
+		if (idx == 0)         flags |= Z80_ZF;
+		if (idx != 0)         flags |= Z80_HF | Z80_CF;
+		if (idx == 0x80)      flags |= Z80_VF;
+		if ((0 - idx) & 0x08) flags |= Z80_XF;
+		if ((0 - idx) & 0x20) flags |= Z80_YF;
+
+		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
+	}
+
+	return outStr.str() + "}\n\n\n";
+} 
 
 
 typedef struct FlagsDAA
@@ -333,6 +353,7 @@ void writeTables()
 	outFile << generateDecTable();
 	outFile << generateAndTable();
 	outFile << generateInOrXorTable();
+	outFile << generateNegTable();
 	outFile << generateDaaTables();
 
 	// XXX

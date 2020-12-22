@@ -29,6 +29,10 @@ z80_ftable_IN_OR_XOR:
 
 	+PUT_Z80_FTABLE_IN_OR_XOR
 
+z80_ftable_NEG:
+
+	+PUT_Z80_FTABLE_NEG
+
 ;
 ; That horrific DAA instruction
 ;

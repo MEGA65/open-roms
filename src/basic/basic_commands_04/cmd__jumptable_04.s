@@ -6,8 +6,9 @@
 ;
 
 !set ITEM_01 = cmd_sysinfo
-!set ITEM_02 = cmd_joycrsr
-!set ITEM_03 = cmd_monitor
+!set ITEM_02 = cmd_monitor
+!set ITEM_03 = BOOTCPM
+!set ITEM_04 = cmd_joycrsr
 
 
 !ifndef HAS_OPCODES_65C02 {
@@ -33,4 +34,5 @@ command_04_jumptable:
 	!word ITEM_01
 	!word ITEM_02
 	!word ITEM_03
+	!word ITEM_04
 }

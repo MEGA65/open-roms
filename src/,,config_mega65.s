@@ -71,7 +71,7 @@
 ;; #CONFIG# KEYCMD_F11                 "REM F11"
 ;; #CONFIG# KEYCMD_F12                 "\5FHF"
 ;; #CONFIG# KEYCMD_F13                 "JOYCRSR 2"
-;; #CONFIG# KEYCMD_F14                 "JOYCRSR 0"
+;; #CONFIG# KEYCMD_F14                 "BOOTCPM"
 
 
 ; --- Screen editor

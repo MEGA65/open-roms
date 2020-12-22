@@ -271,106 +271,54 @@ Z80_vectab_FD_1:
 	!word Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD
 	!word Z80_illegal__FD, Z80_instr_FD_F9, Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD, Z80_illegal__FD
 
-Z80_vectab_DDCB_0:
+Z80_vectab_xDCB_0:
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_06, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_0E, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_06, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_0E, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_16, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_1E, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_16, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_1E, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_26, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_2E, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_26, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_2E, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_3E, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_3E, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_46, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_4E, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_46, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_4E, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_56, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_5E, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_56, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_5E, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_66, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_6E, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_66, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_6E, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_76, Z80_illegal__DDCB
-	!word Z80_illeg_DDCB_78, Z80_illeg_DDCB_79, Z80_illeg_DDCB_7A, Z80_illeg_DDCB_7B, Z80_illeg_DDCB_7C, Z80_illeg_DDCB_7D, Z80_instr_DDCB_7E, Z80_illeg_DDCB_7F
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_76, Z80_illegal__xDCB
+	!word Z80_illeg_xDCB_78, Z80_illeg_xDCB_79, Z80_illeg_xDCB_7A, Z80_illeg_xDCB_7B, Z80_illeg_xDCB_7C, Z80_illeg_xDCB_7D, Z80_instr_xDCB_7E, Z80_illeg_xDCB_7F
 
-Z80_vectab_DDCB_1:
+Z80_vectab_xDCB_1:
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_86, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_8E, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_86, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_8E, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_96, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_9E, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_96, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_9E, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_A6, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_AE, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_A6, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_AE, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_B6, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_BE, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_B6, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_BE, Z80_illegal__xDCB
 
-	!word Z80_illeg_DDCB_C0, Z80_illeg_DDCB_C1, Z80_illeg_DDCB_C2, Z80_illeg_DDCB_C3, Z80_illeg_DDCB_C4, Z80_illeg_DDCB_C5, Z80_instr_DDCB_C6, Z80_illeg_DDCB_C7
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_CE, Z80_illegal__DDCB
+	!word Z80_illeg_xDCB_C0, Z80_illeg_xDCB_C1, Z80_illeg_xDCB_C2, Z80_illeg_xDCB_C3, Z80_illeg_xDCB_C4, Z80_illeg_xDCB_C5, Z80_instr_xDCB_C6, Z80_illeg_xDCB_C7
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_CE, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_D6, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_DE, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_D6, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_DE, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_E6, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_EE, Z80_illegal__DDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_E6, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_EE, Z80_illegal__xDCB
 
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_F6, Z80_illegal__DDCB
-	!word Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_illegal__DDCB, Z80_instr_DDCB_FE, Z80_illegal__DDCB
-
-Z80_vectab_FDCB_0:
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_06, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_0E, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_16, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_1E, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_26, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_2E, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_3E, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_46, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_4E, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_56, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_5E, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_66, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_6E, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_76, Z80_illegal__FDCB
-	!word Z80_illeg_FDCB_78, Z80_illeg_FDCB_79, Z80_illeg_FDCB_7A, Z80_illeg_FDCB_7B, Z80_illeg_FDCB_7C, Z80_illeg_FDCB_7D, Z80_instr_FDCB_7E, Z80_illeg_FDCB_7F
-
-Z80_vectab_FDCB_1:
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_86, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_8E, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_96, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_9E, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_A6, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_AE, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_B6, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_BE, Z80_illegal__FDCB
-
-	!word Z80_illeg_FDCB_C0, Z80_illeg_FDCB_C1, Z80_illeg_FDCB_C2, Z80_illeg_FDCB_C3, Z80_illeg_FDCB_C4, Z80_illeg_FDCB_C5, Z80_instr_FDCB_C6, Z80_illeg_FDCB_C7
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_CE, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_D6, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_DE, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_E6, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_EE, Z80_illegal__FDCB
-
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_F6, Z80_illegal__FDCB
-	!word Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_illegal__FDCB, Z80_instr_FDCB_FE, Z80_illegal__FDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_F6, Z80_illegal__xDCB
+	!word Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_illegal__xDCB, Z80_instr_xDCB_FE, Z80_illegal__xDCB

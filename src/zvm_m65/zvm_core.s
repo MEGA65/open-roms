@@ -31,8 +31,8 @@ ZVM_store_next:
 Z80_illegal__DD:
 Z80_illegal__ED:
 Z80_illegal__FD:
-Z80_illegal__DDCB:
-Z80_illegal__FDCB:
+Z80_illegal__xDCB:
+	; XXX add a separate handler for illegal instructions
 	; LD instructions with no effect
 Z80_instr_40:                                                                  ; LD B,B
 Z80_instr_49:                                                                  ; LD C,C
@@ -330,20 +330,13 @@ Z80_instr_FD_9E:   ; SBC (IY+d)
 Z80_instr_FD_BE:   ; CP (IY+d)
 Z80_instr_FD_E3:   ; EX (SP),IY
 Z80_instr_FD_F9:   ; LD SP,IY
-Z80_instr_DDCB_06: ; RLC (IX+d)
-Z80_instr_DDCB_0E: ; RRC (IX+d)
-Z80_instr_DDCB_16: ; RL (IX+d)
-Z80_instr_DDCB_1E: ; RR (IX+d)
-Z80_instr_DDCB_26: ; SLA (IX+d)
-Z80_instr_DDCB_2E: ; SRA (IX+d)
-Z80_instr_DDCB_3E: ; SRL (IX+d)
-Z80_instr_FDCB_06: ; RLC (IY+d)
-Z80_instr_FDCB_0E: ; RRC (IY+d)
-Z80_instr_FDCB_16: ; RL (IY+d)
-Z80_instr_FDCB_1E: ; RR (IY+d)
-Z80_instr_FDCB_26: ; SLA (IY+d)
-Z80_instr_FDCB_2E: ; SRA (IY+d)
-Z80_instr_FDCB_3E: ; SRL (IY+d)
+Z80_instr_xDCB_06: ; RLC (IXY+d)
+Z80_instr_xDCB_0E: ; RRC (IXY+d)
+Z80_instr_xDCB_16: ; RL (IXY+d)
+Z80_instr_xDCB_1E: ; RR (IXY+d)
+Z80_instr_xDCB_26: ; SLA (IXY+d)
+Z80_instr_xDCB_2E: ; SRA (IXY+d)
+Z80_instr_xDCB_3E: ; SRL (IXY+d)
 Z80_illeg_CB_30:   ; SLL B
 Z80_illeg_CB_31:   ; SLL C
 Z80_illeg_CB_32:   ; SLL D
@@ -367,20 +360,14 @@ Z80_illeg_ED_74:   ; NEG
 Z80_illeg_ED_75:   ; RETN
 Z80_illeg_ED_7C:   ; NEG
 Z80_illeg_ED_7D:   ; RETN
-Z80_illeg_DDCB_C0: ; SET 0,(IX+d),B
-Z80_illeg_DDCB_C1: ; SET 0,(IX+d),C
-Z80_illeg_DDCB_C2: ; SET 0,(IX+d),D
-Z80_illeg_DDCB_C3: ; SET 0,(IX+d),E
-Z80_illeg_DDCB_C4: ; SET 0,(IX+d),H
-Z80_illeg_DDCB_C5: ; SET 0,(IX+d),L
-Z80_illeg_DDCB_C7: ; SET 0,(IX+d),A
-Z80_illeg_FDCB_C0: ; SET 0,(IY+d),B
-Z80_illeg_FDCB_C1: ; SET 0,(IY+d),C
-Z80_illeg_FDCB_C2: ; SET 0,(IY+d),D
-Z80_illeg_FDCB_C3: ; SET 0,(IY+d),E
-Z80_illeg_FDCB_C4: ; SET 0,(IY+d),H
-Z80_illeg_FDCB_C5: ; SET 0,(IY+d),L
-Z80_illeg_FDCB_C7: ; SET 0,(IY+d),A
+Z80_illeg_xDCB_C0: ; SET 0,(IXY+d),B
+Z80_illeg_xDCB_C1: ; SET 0,(IXY+d),C
+Z80_illeg_xDCB_C2: ; SET 0,(IXY+d),D
+Z80_illeg_xDCB_C3: ; SET 0,(IXY+d),E
+Z80_illeg_xDCB_C4: ; SET 0,(IXY+d),H
+Z80_illeg_xDCB_C5: ; SET 0,(IXY+d),L
+Z80_illeg_xDCB_C7: ; SET 0,(IXY+d),A
+
 
 
 	jmp ZVM_next ; XXX

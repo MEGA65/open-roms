@@ -440,71 +440,71 @@ Z80_common_bitHL_1:
 
 ; bits taken from index register + displacement
 
-Z80_instr_DDCB_46: ; BIT 0,(IX+d)
+Z80_instr_xDCB_46: ; BIT 0,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%00000001
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
+	bne Z80_common_bitIXYx_1
+	bra Z80_common_bitIXYx_0
 
-Z80_instr_DDCB_4E: ; BIT 1,(IX+d)
+Z80_instr_xDCB_4E: ; BIT 1,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%00000010
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
+	bne Z80_common_bitIXYx_1
+	bra Z80_common_bitIXYx_0
 
-Z80_instr_DDCB_56: ; BIT 2,(IX+d)
+Z80_instr_xDCB_56: ; BIT 2,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%00000100
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
+	bne Z80_common_bitIXYx_1
+	bra Z80_common_bitIXYx_0
 
-Z80_instr_DDCB_5E: ; BIT 3,(IX+d)
+Z80_instr_xDCB_5E: ; BIT 3,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%00001000
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
+	bne Z80_common_bitIXYx_1
+	bra Z80_common_bitIXYx_0
 
-Z80_instr_DDCB_66: ; BIT 4,(IX+d)
+Z80_instr_xDCB_66: ; BIT 4,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%00010000
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
+	bne Z80_common_bitIXYx_1
+	bra Z80_common_bitIXYx_0
 
-Z80_instr_DDCB_6E: ; BIT 5,(IX+d)
+Z80_instr_xDCB_6E: ; BIT 5,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%00100000
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
+	bne Z80_common_bitIXYx_1
+	bra Z80_common_bitIXYx_0
 
-Z80_instr_DDCB_76: ; BIT 6,(IX+d)
+Z80_instr_xDCB_76: ; BIT 6,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%01000000
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
+	bne Z80_common_bitIXYx_1
+	bra Z80_common_bitIXYx_0
 
-Z80_illeg_DDCB_78: ; BIT 7,(IX+d)
-Z80_illeg_DDCB_79: ; BIT 7,(IX+d)
-Z80_illeg_DDCB_7A: ; BIT 7,(IX+d)
-Z80_illeg_DDCB_7B: ; BIT 7,(IX+d)
-Z80_illeg_DDCB_7C: ; BIT 7,(IX+d)
-Z80_illeg_DDCB_7D: ; BIT 7,(IX+d)
-Z80_instr_DDCB_7E: ; BIT 7,(IX+d)
-Z80_illeg_DDCB_7F: ; BIT 7,(IX+d)
+Z80_illeg_xDCB_78: ; BIT 7,(IXY+d)
+Z80_illeg_xDCB_79: ; BIT 7,(IXY+d)
+Z80_illeg_xDCB_7A: ; BIT 7,(IXY+d)
+Z80_illeg_xDCB_7B: ; BIT 7,(IXY+d)
+Z80_illeg_xDCB_7C: ; BIT 7,(IXY+d)
+Z80_illeg_xDCB_7D: ; BIT 7,(IXY+d)
+Z80_instr_xDCB_7E: ; BIT 7,(IXY+d)
+Z80_illeg_xDCB_7F: ; BIT 7,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%10000000
-	beq Z80_common_bitXYx_0
+	beq Z80_common_bitIXYx_0
 	
 	; FALLTROUGH
 
-Z80_common_bitXY7_1:
+Z80_common_bitIXY7_1:
 
 	lda REG_F
 	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_ZF - Z80_PF)
@@ -516,7 +516,7 @@ Z80_common_bitXY7_1:
 	sta REG_F
 	jmp ZVM_next
 
-Z80_common_bitXYx_0:
+Z80_common_bitIXYx_0:
 
 	lda REG_F
 	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF)
@@ -528,7 +528,7 @@ Z80_common_bitXYx_0:
 	sta REG_F
 	jmp ZVM_next
 
-Z80_common_bitXYx_1:
+Z80_common_bitIXYx_1:
 
 	lda REG_F
 	and #($FF - Z80_NF - Z80_XF - Z80_YF - Z80_SF - Z80_ZF - Z80_PF)
@@ -539,69 +539,6 @@ Z80_common_bitXYx_1:
 	ora REG_F
 	sta REG_F
 	jmp ZVM_next
-
-Z80_instr_FDCB_46: ; BIT 0,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%00000001
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
-
-Z80_instr_FDCB_4E: ; BIT 1,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%00000010
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
-
-Z80_instr_FDCB_56: ; BIT 2,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%00000100
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
-
-Z80_instr_FDCB_5E: ; BIT 3,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%00001000
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
-
-Z80_instr_FDCB_66: ; BIT 4,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%00010000
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
-
-Z80_instr_FDCB_6E: ; BIT 5,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%00100000
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
-
-Z80_instr_FDCB_76: ; BIT 6,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%01000000
-	bne Z80_common_bitXYx_1
-	bra Z80_common_bitXYx_0
-
-Z80_illeg_FDCB_78: ; BIT 7,(IY+d)
-Z80_illeg_FDCB_79: ; BIT 7,(IY+d)
-Z80_illeg_FDCB_7A: ; BIT 7,(IY+d)
-Z80_illeg_FDCB_7B: ; BIT 7,(IY+d)
-Z80_illeg_FDCB_7C: ; BIT 7,(IY+d)
-Z80_illeg_FDCB_7D: ; BIT 7,(IY+d)
-Z80_instr_FDCB_7E: ; BIT 7,(IY+d)
-Z80_illeg_FDCB_7F: ; BIT 7,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%10000000
-	+bne Z80_common_bitXY7_1 ; too far away for normal BNE
-	bra Z80_common_bitXYx_0
 
 ; SET, RES
 
@@ -933,101 +870,61 @@ Z80_instr_CB_FE:   ; SET 7,(HL)
 	ora #%10000000
 	jmp ZVM_store_next
 
-Z80_instr_DDCB_C6: ; SET 0,(IX+d)
+Z80_instr_xDCB_C6: ; SET 0,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	ora #%00000001
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_CE: ; SET 1,(IX+d)
+Z80_instr_xDCB_CE: ; SET 1,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	ora #%00000010
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_D6: ; SET 2,(IX+d)
+Z80_instr_xDCB_D6: ; SET 2,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	ora #%00000100
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_DE: ; SET 3,(IX+d)
+Z80_instr_xDCB_DE: ; SET 3,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	ora #%00001000
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_E6: ; SET 4,(IX+d)
+Z80_instr_xDCB_E6: ; SET 4,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	ora #%00010000
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_EE: ; SET 5,(IX+d)
+Z80_instr_xDCB_EE: ; SET 5,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	ora #%00100000
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_F6: ; SET 6,(IX+d)
+Z80_instr_xDCB_F6: ; SET 6,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	ora #%01000000
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_FE: ; SET 7,(IX+d)
+Z80_instr_xDCB_FE: ; SET 7,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	ora #%10000000
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_C6: ; SET 0,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	ora #%00000001
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_CE: ; SET 1,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	ora #%00000010
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_D6: ; SET 2,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	ora #%00000100
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_DE: ; SET 3,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	ora #%00001000
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_E6: ; SET 4,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	ora #%00010000
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_EE: ; SET 5,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	ora #%00100000
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_F6: ; SET 6,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	ora #%01000000
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_FE: ; SET 7,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	ora #%10000000
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
 Z80_instr_CB_80:   ; RES 0,B
 
@@ -1357,98 +1254,58 @@ Z80_instr_CB_BE:   ; RES 7,(HL)
 	and #%01111111
 	jmp ZVM_store_next
 
-Z80_instr_DDCB_86: ; RES 0,(IX+d)
+Z80_instr_xDCB_86: ; RES 0,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%11111110
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_8E: ; RES 1,(IX+d)
+Z80_instr_xDCB_8E: ; RES 1,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%11111101
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_96: ; RES 2,(IX+d)
+Z80_instr_xDCB_96: ; RES 2,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%11111011
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_9E: ; RES 3,(IX+d)
+Z80_instr_xDCB_9E: ; RES 3,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%11110111
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_A6: ; RES 4,(IX+d)
+Z80_instr_xDCB_A6: ; RES 4,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%11101111
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_AE: ; RES 5,(IX+d)
+Z80_instr_xDCB_AE: ; RES 5,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%11011111
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_B6: ; RES 6,(IX+d)
+Z80_instr_xDCB_B6: ; RES 6,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%10111111
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next
 
-Z80_instr_DDCB_BE: ; RES 7,(IX+d)
+Z80_instr_xDCB_BE: ; RES 7,(IXY+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	lda [PTR_IXY_d],z
 	and #%01111111
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_86: ; RES 0,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%11111110
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_8E: ; RES 1,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%11111101
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_96: ; RES 2,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%11111011
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_9E: ; RES 3,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%11110111
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_A6: ; RES 4,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%11101111
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_AE: ; RES 5,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%11011111
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_B6: ; RES 6,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%10111111
-	jmp ZVM_store_next
-
-Z80_instr_FDCB_BE: ; RES 7,(IY+d)
-
-	jsr (VEC_fetch_via_IY_d)
-	and #%01111111
-	jmp ZVM_store_next
+	sta [PTR_IXY_d],z
+	jmp ZVM_next

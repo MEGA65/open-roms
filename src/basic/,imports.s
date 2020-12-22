@@ -20,6 +20,7 @@
 ;; #ALIAS# printf              = KERNAL_0.printf
 ;; #ALIAS# PRIMM               = KERNAL_0.PRIMM
 ;; #ALIAS# MONITOR             = KERNAL_0.MONITOR
+;; #ALIAS# BOOTCPM             = KERNAL_0.BOOTCPM
 
 ;; #ALIAS# plot_set            = KERNAL_0.plot_set
 ;; #ALIAS# print_hex_byte      = KERNAL_0.print_hex_byte

@@ -408,6 +408,7 @@ Note: this is likely to change in the future, possibly in an incompatible way!
 | Address   | Name     | Status   |  Remarks                                                               |
 | :-------: | :------- | :------: | :--------------------------------------------------------------------: |
 | ?         | MONITOR  | WIP      | launches a machine language monitor                                    |
+| ?         | BOOTCPM  | WIP      | launches the CP/M operating system                                     |
 | ?         | PRHEX    | DONE     | print hex value from .A                                                |
 | `$FF7D`   | PRIMM    | DONE     | print immediate, address compatible with C128 and C65 ROMs             |
 | `$FFF8`   |          | DONE     | reset vector for usage within hypervisor, starts in legacy mode        |

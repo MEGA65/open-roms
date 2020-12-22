@@ -11,20 +11,24 @@ INITMSG:
 
 	jsr INITMSG_main_banner
 
-	; Display additional information, depending on the mode
-
 	jsr M65_MODEGET
-	bcc @1
+	bcc INITMSG_native
+
+INITMSG_legacy:
 
 	; Legacy C64 compatibility mode
 
-	jsr INITMSG_partial
-
-	ldx #IDX__STR_ORS_LEGACY_2
+	ldx #IDX__STR_ORS_LEGACY
 	jsr print_packed_misc_str
 
-	bra INITMSG_end
-@1:
+	jsr initmsg_bytes_free
+
+	ldx #$07
+	ldy #$00
+	jmp plot_set
+
+INITMSG_native:
+
 	; Native mode	
 
 	ldx #48
@@ -48,14 +52,15 @@ INITMSG:
 	ldx #IDX__STR_ORS
 	jsr print_packed_misc_str
 
-	jsr INITMSG_revision
+	ldx #IDX__STR_PRE_REV
+	jsr print_packed_misc_str
+
+	lda #<rom_revision_basic_string
+	ldy #>rom_revision_basic_string
+	jsr STROUT
 
 	jsr print_return
 	jsr print_return
-
-	; FALLTROUGH
-
-INITMSG_end:
 
 	jsr initmsg_bytes_free
 
@@ -85,26 +90,11 @@ INITMSG_main_banner:
 	ldy #>startup_banner
 	jmp STROUT
 
-INITMSG_autoswitch: ; entry point for 'SYS command'
+INITMSG_autoswitch:
 
 	jsr INITMSG_main_banner
-	jsr INITMSG_partial
 
-	jsr print_return
+	ldx #IDX__STR_ORS_LEGACY
+	jsr print_packed_misc_str
+
 	jmp print_return
-
-INITMSG_partial:
-
-	ldx #IDX__STR_ORS_LEGACY_1
-	jsr print_packed_misc_str
-
-	; FALLTROUGH
-
-INITMSG_revision:
-
-	ldx #IDX__STR_PRE_REV
-	jsr print_packed_misc_str
-
-	lda #<rom_revision_basic_string
-	ldy #>rom_revision_basic_string
-	jmp STROUT

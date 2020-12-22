@@ -294,8 +294,7 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { true,  true,  true,  true,  true,  "STR_BRK_AT",       "\rBRK AT $"         },
 
     { false, false, true,  false, false, "STR_ORS",          "OPEN ROMS BASIC & KERNAL\r" },
-    { false, false, true,  false, false, "STR_ORS_LEGACY_1", "OPEN ROMS "         },
-    { false, false, true,  false, false, "STR_ORS_LEGACY_2", "\r\rLEGACY MODE   " },
+    { false, false, true,  false, false, "STR_ORS_LEGACY",   "(LEGACY MODE)     " },
 
     { false, true,  true,  false, false, "STR_MEM_HDR",      "\r\x12 AREA   START   SIZE  \r" },
     { false, true,  true,  false, false, "STR_MEM_1",        "   $"               },

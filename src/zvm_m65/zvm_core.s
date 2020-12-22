@@ -107,7 +107,6 @@ Z80_instr_12:      ; LD (DE),A
 Z80_instr_19:      ; ADD HL,DE
 Z80_instr_1A:      ; LD A,(DE)
 Z80_instr_22:      ; LD (nn),HL
-Z80_instr_27:      ; DAA
 Z80_instr_29:      ; ADD HL,HL
 Z80_instr_2A:      ; LD HL,(nn)
 Z80_instr_32:      ; LD (nn),A

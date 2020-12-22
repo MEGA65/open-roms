@@ -56,7 +56,23 @@ Z80_instr_2F:                                                                  ;
 	sta REG_F
 	jmp ZVM_next
 
-; XXX put NEG here
+Z80_instr_ED_44:                                                               ; NEG
+Z80_illeg_ED_4C:                                                               ; NEG
+Z80_illeg_ED_54:                                                               ; NEG
+Z80_illeg_ED_5C:                                                               ; NEG
+Z80_illeg_ED_64:                                                               ; NEG
+Z80_illeg_ED_6C:                                                               ; NEG
+Z80_illeg_ED_74:                                                               ; NEG
+Z80_illeg_ED_7C:                                                               ; NEG
+
+	ldx REG_A
+	lda z80_ftable_NEG, x
+	sta REG_F
+	lda #$00
+	sec
+	sbc REG_A
+	sta REG_A
+	jmp ZVM_next
 
 Z80_instr_3F:                                                                  ; CCF
 

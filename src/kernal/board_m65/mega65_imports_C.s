@@ -15,3 +15,11 @@
 ;; #ALIAS# __kb_matrix_alwaysrepeat_end    = KERNAL_0.__kb_matrix_alwaysrepeat_end
 ;; #ALIAS# kb_matrix_joy_status            = KERNAL_0.kb_matrix_joy_status
 ;; #ALIAS# kb_matrix_joy_keytab_idx        = KERNAL_0.kb_matrix_joy_status
+
+;
+; Definitions needed to perform proxy functionality for Z80 Virtual Machione
+;
+
+;; #ALIAS# CHROUT                          = KERNAL_0.CHROUT
+
+;; #ALIAS# map_ZVM_1                       = KERNAL_0.map_ZVM_1

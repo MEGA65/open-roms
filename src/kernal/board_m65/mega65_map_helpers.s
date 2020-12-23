@@ -10,6 +10,8 @@
 ; - KERNAL_1          - for calling KERNAL_1 segment code
 ; - DOS_1             - for swiching to DOS context
 ; - NORMAL_from_DOS_1 - for switching bact from DOS context
+; - MON_1             - for the monitor
+; - ZVM_1             - for Z80 virtual machine
 
 
 map_NORMAL:
@@ -114,6 +116,23 @@ map_MON_1:
 
 	lda #$C0
 	ldx #$42                 ; $4000 <- map 8KB from $30000
+
+	map
+	bra map_end
+
+map_ZVM_1:
+
+	php
+	pha
+	phx
+	phy
+	phz
+
+	lda #$00
+	tay
+	taz
+
+	ldx #$E3                 ; $2000 <- map 24KB from $32000
 
 	map
 	bra map_end

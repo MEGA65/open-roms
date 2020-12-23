@@ -72,23 +72,23 @@ m65_chrout_screen_HOME:
 
 ; Character set switching
 
-m65_chrout_screen_GFX:
+m65_chrout_screen_TXT:
 	
 	lda VIC_CHARPTR+1
 	ora #%00001000
 
 	; FALLTROUGH
 
-m65_chrout_screen_GFX_cont:
+m65_chrout_screen_GFXTXT_cont:
 
 	sta VIC_CHARPTR+1
 	bra m65_chrout_screen_ctrl2_end
 
-m65_chrout_screen_TXT:
+m65_chrout_screen_GFX:
 
 	lda VIC_CHARPTR+1
 	and #%11110111
-	bra m65_chrout_screen_GFX_cont
+	bra m65_chrout_screen_GFXTXT_cont
 
 ; INS key
 

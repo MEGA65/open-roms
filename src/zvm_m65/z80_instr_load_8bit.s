@@ -277,18 +277,22 @@ Z80_instr_ED_5F:   ; LD A,R
 	ora REG_IFF2
 	sta REG_F
 
+	clc
 	lda REG_R06              ; register R only simulates random numbers
+	bpl @1
+	sec
+@1:
+	rol
 	eor VIC_RASTER
-	adc TIME+2
 	eor VIC_XPOS
 	sta REG_R06
 
 	and #%01111111
 	eor REG_R7               ; not 'ora', we want to reuse the 'garbage'
 	sta REG_A
-	bpl @1
+	bpl @2
 	+Z80_PUT_1_SF
-@1:
+@2:
 	+bne ZVM_next
 	+Z80_PUT_1_ZF
 	jmp ZVM_next

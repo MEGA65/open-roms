@@ -71,6 +71,9 @@ zvm_BIOS_00_BOOT:            ; Cold start
 	dew REG_AF               ; AF and SP have $FFFF value on start
 	dew REG_SP
 
+	lda TIME+2               ; give a little initial randomness to register R
+	sta REG_R06
+
 	; XXX load CPM3.SYS
 
 	; FALLTROUGH

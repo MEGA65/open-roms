@@ -5,7 +5,47 @@
 
 ZVM_entry:
 
-	; XXX mark that this is the first start of CP/M iin the lifecycle, display BIOS information
+	; Reset stack pointer - this routine will never return
+
+	ldx #$FF
+	txs
+
+	; Skip the IRQ processing, even if Kernal reenables it
+
+	sei
+	lda #<return_from_interrupt
+	sta CINV+0 
+	lda #>return_from_interrupt
+	sta CINV+1
+
+	; Make sure $C000-$CFFF ROM is mapped-in, we keep our proxies there
+
+	lda VIC_CTRLA
+	ora #%00100000
+	sta VIC_CTRLA
+
+	; Setup colours, print welcome message
+
+	lda #$00
+	sta VIC_EXTCOL
+	sta VIC_BGCOL0
+
+	jsr PRIMM
+	!byte KEY_GREEN, KEY_ESC, 'o', KEY_CLR, KEY_C65_SHIFT_ON, KEY_TXT, KEY_C65_SHIFT_OFF
+	!pet "Open ROMs MEGA65 BIOS for CP/M", $0D
+	!pet "Zilog Z80 to 45GS02 translator", $0D
+	!byte $0D,$0D
+	!byte 0
+
+	; XXX code is not ready to progress further
+
+	jsr PRIMM
+	!byte $0D
+	!pet "* Implementation not finished yet - system HALTED *"
+	!byte 0
+@1
+	bra @1
+
 	jmp zvm_BIOS_00_BOOT
 
 ZVM_store_next:
@@ -61,28 +101,6 @@ Z80_instr_CB:      +ZVM_DISPATCH Z80_vectab_CB_0, Z80_vectab_CB_1              ;
 Z80_instr_DD:      +ZVM_DISPATCH Z80_vectab_DD_0, Z80_vectab_DD_1              ; #DD
 Z80_instr_ED:      +ZVM_DISPATCH Z80_vectab_ED_0, Z80_vectab_ED_1              ; #ED
 Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ; #FD
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

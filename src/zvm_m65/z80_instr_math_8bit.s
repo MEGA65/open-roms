@@ -60,6 +60,10 @@ Z80_instr_A2:      +Z80_AND_REGn REG_D                                         ;
 Z80_instr_A3:      +Z80_AND_REGn REG_E                                         ; AND E
 Z80_instr_A4:      +Z80_AND_REGn REG_H                                         ; AND H
 Z80_instr_A5:      +Z80_AND_REGn REG_L                                         ; AND L
+Z80_illeg_DD_A4:   +Z80_AND_REGn REG_IXH                                       ; AND IXH
+Z80_illeg_DD_A5:   +Z80_AND_REGn REG_IXL                                       ; AND IXL
+Z80_illeg_FD_A4:   +Z80_AND_REGn REG_IYH                                       ; AND IYH
+Z80_illeg_FD_A5:   +Z80_AND_REGn REG_IXL                                       ; AND IYL
 Z80_instr_A6:      +Z80_AND_VIA_HL                                             ; AND (HL)
 Z80_instr_A7:      +Z80_AND_SELF                                               ; AND A
 Z80_instr_E6:      +Z80_AND_n                                                  ; AND n
@@ -118,6 +122,10 @@ Z80_instr_B2:      +Z80_OR_REGn REG_D                                          ;
 Z80_instr_B3:      +Z80_OR_REGn REG_E                                          ; OR E
 Z80_instr_B4:      +Z80_OR_REGn REG_H                                          ; OR H
 Z80_instr_B5:      +Z80_OR_REGn REG_L                                          ; OR L
+Z80_illeg_DD_B4:   +Z80_OR_REGn REG_IXH                                        ; OR IXH
+Z80_illeg_DD_B5:   +Z80_OR_REGn REG_IXL                                        ; OR IXL
+Z80_illeg_FD_B4:   +Z80_OR_REGn REG_IYH                                        ; OR IYH
+Z80_illeg_FD_B5:   +Z80_OR_REGn REG_IYL                                        ; OR IYL
 Z80_instr_B6:      +Z80_OR_VIA_HL                                              ; OR (HL)
 Z80_instr_B7:      +Z80_OR_SELF                                                ; OR A
 Z80_instr_F6:      +Z80_OR_n                                                   ; OR n
@@ -173,51 +181,34 @@ Z80_instr_AA:      +Z80_XOR_REGn REG_D                                         ;
 Z80_instr_AB:      +Z80_XOR_REGn REG_E                                         ; XOR E
 Z80_instr_AC:      +Z80_XOR_REGn REG_H                                         ; XOR H
 Z80_instr_AD:      +Z80_XOR_REGn REG_L                                         ; XOR L
+Z80_illeg_DD_AC:   +Z80_XOR_REGn REG_IXH                                       ; XOR IXH
+Z80_illeg_DD_AD:   +Z80_XOR_REGn REG_IXL                                       ; XOR IXL
+Z80_illeg_FD_AC:   +Z80_XOR_REGn REG_IYH                                       ; XOR IYH
+Z80_illeg_FD_AD:   +Z80_XOR_REGn REG_IXL                                       ; XOR IYL
 Z80_instr_AE:      +Z80_XOR_VIA_HL                                             ; XOR (HL)
 Z80_instr_AF:      +Z80_XOR_SELF                                               ; XOR A
 Z80_instr_EE:      +Z80_XOR_n                                                  ; XOR n
 Z80_instr_DD_AE:   +Z80_XOR_VIA_IX_d                                           ; XOR (IX+d)
 Z80_instr_FD_AE:   +Z80_XOR_VIA_IY_d                                           ; XOR (IY+d)
 
-; XXX put CP instructions here
-
-Z80_instr_04:      ; INC B
-
-	ldx REG_B
-	inc REG_B
+!macro Z80_INC_REG_n .REG_n {
+	ldx .REG_n
+	inc .REG_n
 	bra Z80_common_INC
+}
 
-Z80_instr_0C:      ; INC C
+Z80_instr_04:      +Z80_INC_REG_n REG_B                                        ; INC B
+Z80_instr_0C:      +Z80_INC_REG_n REG_C                                        ; INC C
+Z80_instr_14:      +Z80_INC_REG_n REG_D                                        ; INC D
+Z80_instr_1C:      +Z80_INC_REG_n REG_E                                        ; INC E
+Z80_instr_24:      +Z80_INC_REG_n REG_H                                        ; INC H
+Z80_instr_2C:      +Z80_INC_REG_n REG_L                                        ; INC L
+Z80_illeg_DD_24:   +Z80_INC_REG_n REG_IXH                                      ; INC IXH
+Z80_illeg_DD_2C:   +Z80_INC_REG_n REG_IXL                                      ; INC IXL
+Z80_illeg_FD_24:   +Z80_INC_REG_n REG_IYH                                      ; INC IYH
+Z80_illeg_FD_2C:   +Z80_INC_REG_n REG_IYL                                      ; INC IYL
 
-	ldx REG_C
-	inc REG_C
-	bra Z80_common_INC
-
-Z80_instr_14:      ; INC D
-
-	ldx REG_D
-	inc REG_D
-	bra Z80_common_INC
-
-Z80_instr_1C:      ; INC E
-
-	ldx REG_E
-	inc REG_E
-	bra Z80_common_INC
-
-Z80_instr_24:      ; INC H
-
-	ldx REG_H
-	inc REG_H
-	bra Z80_common_INC
-
-Z80_instr_2C:      ; INC L
-
-	ldx REG_L
-	inc REG_L
-	bra Z80_common_INC
-
-Z80_instr_3C:      ; INC A
+Z80_instr_3C:                                                                  ; INC A
 
 	ldx REG_A
 	inc REG_A
@@ -256,43 +247,24 @@ Z80_instr_FD_34:   ; INC (IY+d)
 	sta [PTR_DATA],z
 	bra Z80_common_INC
 
-Z80_instr_05:      ; DEC B
-
-	ldx REG_B
-	dec REG_B
+!macro Z80_DEC_REG_n .REG_n {
+	ldx .REG_n
+	dec .REG_n
 	bra Z80_common_DEC
+}
 
-Z80_instr_0D:      ; DEC C
+Z80_instr_05:      +Z80_DEC_REG_n REG_B                                        ; DEC B
+Z80_instr_0D:      +Z80_DEC_REG_n REG_C                                        ; DEC C
+Z80_instr_15:      +Z80_DEC_REG_n REG_D                                        ; DEC D
+Z80_instr_1D:      +Z80_DEC_REG_n REG_E                                        ; DEC E
+Z80_instr_25:      +Z80_DEC_REG_n REG_H                                        ; DEC H
+Z80_instr_2D:      +Z80_DEC_REG_n REG_L                                        ; DEC L
+Z80_illeg_DD_25:   +Z80_DEC_REG_n REG_IXH                                      ; DEC IXH
+Z80_illeg_DD_2D:   +Z80_DEC_REG_n REG_IXL                                      ; DEC IXL
+Z80_illeg_FD_25:   +Z80_DEC_REG_n REG_IYH                                      ; DEC IYH
+Z80_illeg_FD_2D:   +Z80_DEC_REG_n REG_IYL                                      ; DEC IYL
 
-	ldx REG_C
-	dec REG_C
-	bra Z80_common_DEC
-
-Z80_instr_15:      ; DEC D
-
-	ldx REG_D
-	dec REG_D
-	bra Z80_common_DEC
-
-Z80_instr_1D:      ; DEC E
-
-	ldx REG_E
-	dec REG_E
-	bra Z80_common_DEC
-
-Z80_instr_25:      ; DEC H
-
-	ldx REG_H
-	dec REG_H
-	bra Z80_common_DEC
-
-Z80_instr_2D:      ; DEC L
-
-	ldx REG_L
-	dec REG_L
-	bra Z80_common_DEC
-
-Z80_instr_3D:      ; DEC A
+Z80_instr_3D:                                                                  ; DEC A
 
 	ldx REG_A
 	dec REG_A
@@ -330,3 +302,5 @@ Z80_instr_FD_35:   ; DEC (IY+d)
 	dec
 	sta [PTR_DATA],z
 	bra Z80_common_DEC
+
+

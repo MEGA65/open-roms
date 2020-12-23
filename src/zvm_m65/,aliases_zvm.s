@@ -22,7 +22,11 @@
 !addr REG_H_SH           = $11
 
 !addr REG_IX             = $12    ; 16-bit index register
+!addr REG_IXL            = $12
+!addr REG_IXH            = $13
 !addr REG_IY             = $14    ; 16-bit index register
+!addr REG_IYL            = $14
+!addr REG_IYH            = $15               
 !addr REG_SP             = $16    ; 16-bit stack pointer
 !addr REG_PC             = $18    ; 16-bit program counter
 
@@ -49,14 +53,20 @@
 !addr VEC_fetch_value    = $60
 !addr VEC_fetch_stack    = $62
 !addr VEC_store_stack    = $64
-!addr VEC_fetch_via_HL   = $66
-!addr VEC_store_via_HL   = $68
-!addr VEC_fetch_via_IX_d = $6A
-!addr VEC_fetch_via_IY_d = $6C
-!addr VEC_store_via_IX_d = $6E
-!addr VEC_store_via_IY_d = $70
-!addr VEC_fetch_via_nn   = $72
-!addr VEC_store_via_nn   = $74
+!addr VEC_fetch_via_BC   = $66 ; XXX add routines
+!addr VEC_store_via_BC   = $68 ; XXX add routines
+!addr VEC_fetch_via_DE   = $6A ; XXX add routines
+!addr VEC_store_via_DE   = $6C ; XXX add routines
+!addr VEC_fetch_via_HL   = $6E
+!addr VEC_store_via_HL   = $70
+!addr VEC_fetch_via_IX_d = $72
+!addr VEC_fetch_via_IY_d = $74
+!addr VEC_store_via_IX_d = $76
+!addr VEC_store_via_IY_d = $78
+!addr VEC_fetch_via_nn   = $7A
+!addr VEC_store_via_nn   = $7C
+
+
 
 ; Masks for Z80 flag (F) register
 

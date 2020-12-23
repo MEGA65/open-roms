@@ -440,49 +440,98 @@ Z80_common_bitHL_1:
 
 ; bits taken from index register + displacement
 
+Z80_illeg_xDCB_40: ; BIT 0,(IXY+d)
+Z80_illeg_xDCB_41: ; BIT 0,(IXY+d)
+Z80_illeg_xDCB_42: ; BIT 0,(IXY+d)
+Z80_illeg_xDCB_43: ; BIT 0,(IXY+d)
+Z80_illeg_xDCB_44: ; BIT 0,(IXY+d)
+Z80_illeg_xDCB_45: ; BIT 0,(IXY+d)
 Z80_instr_xDCB_46: ; BIT 0,(IXY+d)
+Z80_illeg_xDCB_47: ; BIT 0,(IXY+d)
 
 	lda [PTR_IXY_d],z
 	and #%00000001
 	bne Z80_common_bitIXYx_1
 	bra Z80_common_bitIXYx_0
 
+Z80_illeg_xDCB_48: ; BIT 1,(IXY+d)
+Z80_illeg_xDCB_49: ; BIT 1,(IXY+d)
+Z80_illeg_xDCB_4A: ; BIT 1,(IXY+d)
+Z80_illeg_xDCB_4B: ; BIT 1,(IXY+d)
+Z80_illeg_xDCB_4C: ; BIT 1,(IXY+d)
+Z80_illeg_xDCB_4D: ; BIT 1,(IXY+d)
 Z80_instr_xDCB_4E: ; BIT 1,(IXY+d)
+Z80_illeg_xDCB_4F: ; BIT 1,(IXY+d)
 
 	lda [PTR_IXY_d],z
 	and #%00000010
 	bne Z80_common_bitIXYx_1
 	bra Z80_common_bitIXYx_0
 
+Z80_illeg_xDCB_50: ; BIT 2,(IXY+d)
+Z80_illeg_xDCB_51: ; BIT 2,(IXY+d)
+Z80_illeg_xDCB_52: ; BIT 2,(IXY+d)
+Z80_illeg_xDCB_53: ; BIT 2,(IXY+d)
+Z80_illeg_xDCB_54: ; BIT 2,(IXY+d)
+Z80_illeg_xDCB_55: ; BIT 2,(IXY+d)
 Z80_instr_xDCB_56: ; BIT 2,(IXY+d)
+Z80_illeg_xDCB_57: ; BIT 2,(IXY+d)
 
 	lda [PTR_IXY_d],z
 	and #%00000100
 	bne Z80_common_bitIXYx_1
 	bra Z80_common_bitIXYx_0
 
+Z80_illeg_xDCB_58: ; BIT 3,(IXY+d)
+Z80_illeg_xDCB_59: ; BIT 3,(IXY+d)
+Z80_illeg_xDCB_5A: ; BIT 3,(IXY+d)
+Z80_illeg_xDCB_5B: ; BIT 3,(IXY+d)
+Z80_illeg_xDCB_5C: ; BIT 3,(IXY+d)
+Z80_illeg_xDCB_5D: ; BIT 3,(IXY+d)
 Z80_instr_xDCB_5E: ; BIT 3,(IXY+d)
+Z80_illeg_xDCB_5F: ; BIT 3,(IXY+d)
 
 	lda [PTR_IXY_d],z
 	and #%00001000
 	bne Z80_common_bitIXYx_1
 	bra Z80_common_bitIXYx_0
 
+Z80_illeg_xDCB_60: ; BIT 4,(IXY+d)
+Z80_illeg_xDCB_61: ; BIT 4,(IXY+d)
+Z80_illeg_xDCB_62: ; BIT 4,(IXY+d)
+Z80_illeg_xDCB_63: ; BIT 4,(IXY+d)
+Z80_illeg_xDCB_64: ; BIT 4,(IXY+d)
+Z80_illeg_xDCB_65: ; BIT 4,(IXY+d)
 Z80_instr_xDCB_66: ; BIT 4,(IXY+d)
+Z80_illeg_xDCB_67: ; BIT 4,(IXY+d)
 
 	lda [PTR_IXY_d],z
 	and #%00010000
 	bne Z80_common_bitIXYx_1
 	bra Z80_common_bitIXYx_0
 
+Z80_illeg_xDCB_68: ; BIT 5,(IXY+d)
+Z80_illeg_xDCB_69: ; BIT 5,(IXY+d)
+Z80_illeg_xDCB_6A: ; BIT 5,(IXY+d)
+Z80_illeg_xDCB_6B: ; BIT 5,(IXY+d)
+Z80_illeg_xDCB_6C: ; BIT 5,(IXY+d)
+Z80_illeg_xDCB_6D: ; BIT 5,(IXY+d)
 Z80_instr_xDCB_6E: ; BIT 5,(IXY+d)
+Z80_illeg_xDCB_6F: ; BIT 5,(IXY+d)
 
 	lda [PTR_IXY_d],z
 	and #%00100000
 	bne Z80_common_bitIXYx_1
 	bra Z80_common_bitIXYx_0
 
+Z80_illeg_xDCB_70: ; BIT 6,(IXY+d)
+Z80_illeg_xDCB_71: ; BIT 6,(IXY+d)
+Z80_illeg_xDCB_72: ; BIT 6,(IXY+d)
+Z80_illeg_xDCB_73: ; BIT 6,(IXY+d)
+Z80_illeg_xDCB_74: ; BIT 6,(IXY+d)
+Z80_illeg_xDCB_75: ; BIT 6,(IXY+d)
 Z80_instr_xDCB_76: ; BIT 6,(IXY+d)
+Z80_illeg_xDCB_77: ; BIT 6,(IXY+d)
 
 	lda [PTR_IXY_d],z
 	and #%01000000

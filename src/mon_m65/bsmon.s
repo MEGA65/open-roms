@@ -5,74 +5,6 @@
 ; *******************************
 
 
-!macro NOP { eom }             ; ACME does not allow NOP for MEGA65 CPU
-
-
-; Due to shadowing mechanism, we are free to use zeropage addresses $02-$8F
-; for any purpose - they won't conflict with BASIC interpreter varaibles
-
-
-; ********************
-; * Register storage *
-; ********************
-
-!addr Bank        =  2 ; XXX remove this        
-!addr Adr_Mode    =  2 ; $00 = C64 address, $80 = M65 flat address ; XXX adapt the implementation
-!addr PCH         =  3
-!addr PCL         =  4
-!addr SR          =  5
-!addr AC          =  6
-!addr XR          =  7
-!addr YR          =  8
-!addr ZR          =  9
-!addr BP          = 10
-!addr SPH         = 11
-!addr SPL         = 12
-
-
-; *******************
-; * Other variables *
-; *******************
-
-
-; A set of 32 bit variables also used as 32 bit pointer
-
-!addr Long_AC     = $10        ; 32 bit accumulator
-!addr Long_CT     = $14        ; 32 bit counter
-!addr Long_PC     = $18        ; 32 bit program counter
-!addr Long_DA     = $1C        ; 32 bit data pointer
-
-; Flags are used in BBR BBS instructions
-
-!addr Adr_Flags   = $20
-!addr Mode_Flags  = $21
-!addr Op_Code     = $22
-!addr Op_Flag     = $23        ; 7: two operands
-                               ; 6: long branch
-                               ; 5: 32 bit address
-                               ; 4: Q register
-!addr Op_Size     = $24
-!addr Dig_Cnt     = $25
-!addr Buf_Index   = $26
-
-!addr MODE_80     = $27        ; 80 column / 40 volumn flag ; XXX add routine to detect this
-!addr SP_Storage  = $28        ; location to preserve stack pointer
-
-!addr X_Vector    = $29        ; monitor exit vector
-!addr Ix_Mne      = $2B        ; index to mnemonics table
-!addr Op_Mne      = $2C        ; 3 bytes for mnemonic
-!addr Op_Ix       = $2F        ; type of constant
-!addr Op_Len      = $30        ; length of operand
-!addr Disk_Track  = $31        ; logical track  1 -> 255
-!addr Disk_Sector = $32        ; logical sector 0 -> 255
-!addr Disk_Status = $33        ; BCD value of status
-
-                               ; $34-$3F - free space, unused for now
-
-!addr Disk_Msg    = $40        ; 40 bytes, disk status as text message ; XXX rework code to make it not needed
-!addr Mon_Data    = $68        ; 40 bytes, buffer for hunt and filename
-
-
 ; *******
 Mon_Call:
 ; *******
@@ -281,7 +213,7 @@ Mon_Exit:
          JMP  (X_Vector)
 
 ; ********
-LAC_To_PC:
+LAC_To_PC: ; XXX to be adapted, get rid of 'bcs'!
 ; ********
 
 ; called from Mon_Set_Register, Mon_Go and Mon_JSR
@@ -306,14 +238,42 @@ LAC_To_PC:
 LAC_To_LPC:
 ; *********
 
-         PHX
-         LDX  #3
-@loop    LDA  Long_AC,X
-         STA  Long_PC,X
-         DEX
-         BPL  @loop
-         PLX
-         RTS
+   phx
+   ldx  #$03
+
+@loop:
+
+   lda  Long_AC,X
+   sta  Long_PC,X
+   dex
+   bpl  @loop
+   plx
+
+   rts
+
+; *******************
+LPC_Plus_Page_To_LAC:
+; *******************
+
+   phx
+   ldx  #$03
+
+@loop:
+
+   lda  Long_PC,X
+   sta  Long_AC,X
+   dex
+   bpl  @loop
+   plx
+
+   inc Long_AC+1
+   bcc @exit
+   inw Long_AC+2
+
+@exit:
+
+   rts
+
 
 ; *********
 LAC_To_LCT:
@@ -445,37 +405,59 @@ Mon_Memory:
 
    lda  #$00
    sta  Adr_Mode             ; by default use C64-style addressing
-   jsr  Set_MODE_80          ; check if we have 80 columns
 
-   jsr  Get_Addr_To_LAC      ; get 1st. parameter
+   jsr  Get_Addr_To_LAC      ; get 1st parameter (start address)
    +beq Mon_Error
+   jsr  LAC_To_LPC           ; Long_PC = start address
 
-         ; XXX !!! adapt from here
+   jsr  Get_Addr_To_LAC      ; get 2nd parameter (end address)
+   bne  @got_end_address
+   jsr  LPC_Plus_Page_To_LAC ; set default end address by start plus one page
 
-         LDZ  #16               ; default row count
-         BCS  @row              ; no address
-         JSR  LAC_To_LPC        ; Long_PC = start address
-         JSR  Get_LAC           ; Long_AC = end address
-         BCS  @row              ; not given
+@got_end_address:
 
-         JSR  LAC_Minus_LPC     ; Long_CT = range
-         LBCC Mon_Error         ; negative range -> error
-         LDX  #4                ; 16 bytes / line
-         BBR7 MODE_80,@shift
-         DEX                    ;  8 bytes / line
-@shift   LSR  Long_CT+1
-         ROR  Long_CT
-         DEX
-         BNE  @shift
-         LDZ  Long_CT           ; row count
-         INZ
+   jsr  LAC_Minus_LPC        ; Long_CT = range
+   +bcc Mon_Error            ; error if negative range
 
-@row     JSR  STOP
-         BEQ  @exit
-         JSR  Dump_Row
-         DEZ
-         BNE  @row
-@exit    JMP  Main
+@loop:
+
+   jsr Print_CR ; XXX for debug only
+   lda Long_CT+3
+   jsr Print_Hex
+   lda Long_CT+2
+   jsr Print_Hex
+   lda Long_CT+1
+   jsr Print_Hex
+   lda Long_CT+0
+   jsr Print_Hex
+
+   jsr Dump_Row
+
+   jsr Print_CR ; XXX for debug only
+   lda Long_CT+3
+   jsr Print_Hex
+   lda Long_CT+2
+   jsr Print_Hex
+   lda Long_CT+1
+   jsr Print_Hex
+   lda Long_CT+0
+   jsr Print_Hex
+   jsr Print_CR
+
+   jsr  STOP
+   beq  @exit
+
+
+   ; !!! loop till end reached
+
+
+
+
+
+@exit:
+
+   jmp Main
+
 
 ; *********
 Print_Bits:
@@ -507,7 +489,7 @@ Mon_Bits:
 
          LDX  #8
 @row     PHX
-         JSR  Hex_LPC
+         JSR  Print_LPC_Addr
          LDZ  #0
 @col     SEC
          LDA  #KEY_WHITE+KEY_LT_RED   ; toggle colour
@@ -647,7 +629,7 @@ Dump_Row:
          JSR  Print_CR
          LDA  #'>'
          JSR  CHROUT
-         JSR  Hex_LPC
+         JSR  Print_LPC_Addr
 
          LDZ  #0
          LDX  #2                ; 2 blocks in 80 columns
@@ -724,7 +706,7 @@ Mon_Compare:
 @loop    LDA  [Long_PC],Z
          CMP  [Long_AC],Z
          BEQ  @laba
-         JSR  Hex_LPC
+         JSR  Print_LPC_Addr
 @laba    JSR  Inc_LAC
          JSR  Inc_LPC
          JSR  Dec_LCT
@@ -772,7 +754,7 @@ Mon_Hunt:
          INY
          CPY  Long_DA
          BNE  @lpins
-         JSR  Hex_LPC           ; match
+         JSR  Print_LPC_Addr    ; match
 @next    JSR  STOP
          LBEQ Main
          JSR  Inc_LPC
@@ -1400,9 +1382,9 @@ Dis_Code:
 Print_Code:
 ; *********
 
-;        print 24 bit address of instruction
+;        print address of instruction
 
-         JSR  Hex_LPC          ; 24 bit address
+         JSR  Print_LPC_Addr
 
 ;        read opcode and calculate length and address mode
 
@@ -1708,148 +1690,6 @@ Print_Code:
          INC  Op_Size
 @return  RTS
 
-; **************
-Get_Addr_To_LAC:
-; **************
-
-   phx
-   phy
-   phz
-   lda  #$00
-   sta  Dig_Cnt              ; count columns read
-   sta  Long_AC+0            ; clear result Long_AC
-   sta  Long_AC+1
-   sta  Long_AC+2
-   sta  Long_AC+3
-
-   jsr  Get_Glyph            ; get 1st. character
-   beq  @exit
-
-   ldy #$03                  ; here we allow '$', '+', '&', and '%' prefixes
-
-@loop_prefix:
-
-   cmp  Cons_Prefix,Y        ; Y = base index
-
-   beq  @valid_prefix        ; -> valid prefix
-   dey
-   bpl  @loop_prefix
-   iny                       ; Y = 0
-   dec  Buf_Index            ; character is a digit
-
-@valid_prefix:
-
-   ; at this point .Y value determines a numeric system
-
-   jsr  Get_Char
-   beq  @exit                ; '?', ':'', ';' and zero terminate
-   cmp  #'0'
-   bcc  @exit
-   cmp  #':'
-   bcc  @valid_digit         ; 0-9
-   cmp  #'A'
-   bcc  @exit
-   cmp  #'G'
-   bcs  @exit
-   sbc  #$07                 ; hex conversion
-
-@valid_digit:   
-
-   sbc  #'0'-1
-   cmp  Num_Base,Y
-   +bcs Mon_Error            ; branch if digit above numerical system limit
-   pha                       ; push digit to the stack
-   inc  Dig_Cnt
-
-   cpy  #$01
-   bne  @laba                ; branch if not decimal
-
-   ldx  #$03                 ; decimal - push Long_AC * 2
-   clc
-
-@push2x:
-
-   lda  Long_AC,X
-   rol
-   pha
-   dex
-   bpl  @push2x
-
-@laba:
-
-   ldx  Num_Bits,Y           ; multiply Long_AC by power of 2 (depending on numeric system) 
-
-@shift:
-   
-   asl  Long_AC+0
-   rol  Long_AC+1
-   row  Long_AC+2
-   +bcs Mon_Error            ; overflow
-   dex
-   bne  @shift
-
-   cpy  #$01                 ; decimal adjustment
-   bne  @add_digit           ; branch if not a decimal number
-   ldx  #$00
-   ldz  #$03
-   clc
-
-@pull_and_add:
-
-   pla
-   adc  Long_AC,X
-   sta  Long_AC,X
-   inx
-   dez
-   bpl  @pull_and_add
-
-@add_digit:
-
-   pla                       ; pull digit
-   clc
-   adc  Long_AC+0
-   sta  Long_AC+0
-   bcc  @valid_prefix
-   inc  Long_AC+1
-   bne  @valid_prefix
-   inw  Long_AC+2
-   bne  @valid_prefix
-
-   jmp  Mon_Error            ; number foo large
-
-@exit:
-
-   lda  Long_AC+3
-   and  #%11110000
-   +bne Mon_Error            ; MEGA65 has a 28-bit address bu
-
-   lda  Dig_Cnt              ; check if we should enable long addressing mode
-   cmp  Num_Limit,Y
-   bcc  @check_done
-
-   cpy  #$1
-   bne  @set_long_mode
-
-   lda  Long_AC+2            ; for decimal system check most significant bytes instead
-   ora  Long_AC+3
-   beq  @check_done
-
-@set_long_mode:
-
-   lda  #$80                 ; set addressing mode to long
-   sta  Adr_Mode
-
-@check_done:
-
-   lda  Dig_Cnt
-
-   plz
-   ply
-   plx
-
-   cmp  #$00                 ; allow to easily check if a parameter was given
-   rts
-
 ; ******
 Got_LAC:  ; XXX to be replaced/adapted
 ; ******
@@ -1975,26 +1815,29 @@ Read_Number: ; XXX obsolete, to be replaced
          LDA  Dig_Cnt           ; digits read
          RTS
 
-; ******
-Hex_LPC:
-; ******
+; *************
+Print_LPC_Addr: ; prints out the address in PC
+; *************
 
-         LDX  Long_PC+3
-         BEQ  @laba
-         LDA  #KEY_YELLOW
-         JSR  CHROUT
-         TXA
-         JSR  Print_Hex
-         LDA  Long_PC+2
-         JSR  Print_Hex
-         LDA  #KEY_WHITE
-         JSR  CHROUT
-         BRA  @labb
-@laba    LDA  Long_PC+2
-         BEQ  @labb
-         JSR  Print_Hex
-@labb    LDX  Long_PC+1
-         LDA  Long_PC
+   bbr7 Adr_Mode, @short
+
+   lda  Long_PC+3
+   jsr  Print_Hex_Low_Digit
+   lda  Long_PC+2
+   jsr  Print_Hex
+   bra  @remaining
+
+@short:
+
+   jsr  PRIMM
+   !pet "...", 0
+
+@remaining:
+
+   lda  Long_PC+1
+   jsr  Print_Hex
+   lda  Long_PC+0
+   bra  Print_Hex_Blank
 
 ; ***********
 Print_XA_Hex:
@@ -2032,6 +1875,18 @@ CR_Erase:
          JSR  PRIMM
          !pet KEY_RETURN, KEY_ESC, 'q', 0
          RTS
+
+; ******************
+Print_Hex_Low_Digit:
+; ******************
+
+   phx
+   jsr  A_To_Hex
+   txa
+   jsr  CHROUT
+   plx
+
+   rts
 
 ; ********
 Print_Hex:
@@ -2892,7 +2747,7 @@ ACCUMODE:    !byte $0a,$1a,$2a,$3a,$4a,$6a,$42,$43
 
 Num_Base:    !byte 16,10, 8,  2 ; hex, dec, oct, bin
 Num_Bits:    !byte  4, 3, 3,  1 ; hex, dec, oct, bin
-Num_Limit:   !byte  4, 4, 8, 32 ; hex, dec, oct, bin  
+Num_Limit:   !byte  5, 5, 9, 33 ; hex, dec, oct, bin  
 
 Index_Char:  !pet "xyz"
 ;                  0123456789abcd

@@ -27,6 +27,14 @@
 
 	!addr VIC_CHARPTR     = $D068 ; 3 bytes  - pointer to start of character generator
 
+	!addr VIC_PALSEL      = $D070 ;          - palette selection register
+
+	; Palette memory areas
+
+	!addr PALETTE_R       = $D100
+	!addr PALETTE_G       = $D200
+	!addr PALETTE_B       = $D300
+
 	; Keyboard
 
 	!addr C65_EXTKEYS_PR  = $D607

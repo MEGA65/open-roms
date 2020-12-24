@@ -19,16 +19,27 @@ ZVM_entry:
 	sta CINV+1
 
 	; Make sure $C000-$CFFF ROM is mapped-in, we keep our proxies there
+	; Also make sure the palette is taken from RAM
 
 	lda VIC_CTRLA
-	ora #%00100000
+	ora #%00100100
 	sta VIC_CTRLA
 
-	; Setup colours, print welcome message
+	; Setup colours to ressemble vintage green monitor from the 70s, print welcome message
 
 	lda #$00
 	sta VIC_EXTCOL
 	sta VIC_BGCOL0
+	sta PALETTE_R+0
+	sta PALETTE_G+0
+	sta PALETTE_B+0
+
+	lda #$01
+	sta PALETTE_R+5
+	lda #$47
+	sta PALETTE_G+5
+	lda #$02
+	sta PALETTE_B+5
 
 	jsr PRIMM
 	!byte KEY_GREEN, KEY_ESC, 'o', KEY_CLR, KEY_C65_SHIFT_ON, KEY_TXT, KEY_C65_SHIFT_OFF

@@ -9,6 +9,7 @@
 mega65_viciv_setctrl_AC:
 
 	sta VIC_CTRLA
+	ora #%00000100  ; always use RAM color palette
 
 	lda VIC_CTRLC
 	and #%01101000

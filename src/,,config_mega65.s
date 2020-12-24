@@ -77,6 +77,7 @@
 ; --- Screen editor
 
 ;; #CONFIG# EDIT_STOPQUOTE             YES
+;; #CONFIG# VIC_PALETTE                0         ; 0 = default; 1 = C65, 2 = Colodore, 3 = VICE, 4 = Frodo, 5 = Deekay
 
 
 ; --- Software features

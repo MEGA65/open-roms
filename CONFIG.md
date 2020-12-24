@@ -247,6 +247,10 @@ If enabled, STOP key terminates insert/quote mode (like on some _Black Box_ cart
 
 Feature needs 12 bytes in KERNAL segment. If unsure - enable.
 
+### `VIC_PALETTE`
+
+Selects the default system palette - MEGA65 only.
+
 ## Software features
 
 ### `PANIC_SCREEN`

@@ -67,6 +67,7 @@ m65_mode65:
 
 	jsr vicii_init
 	jsr viciv_init
+	jsr m65_reset_palette
 
 	; Initialize various memory structures
 

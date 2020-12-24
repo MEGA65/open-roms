@@ -237,6 +237,14 @@
 }
 
 
+; Check that screen settings are correct
+
+!ifndef CONFIG_MB_M65 {
+	!ifdef CONFIG_VIC_PALETTE { !error "CONFIG_VIC_PALETTE is only possible for MEGA65 motherboard" }
+}
+!ifdef CONFIG_MB_MEGA65 {
+	!ifndef CONFIG_VIC_PALETTE { !error "CONFIG_VIC_PALETTE not specified" }
+}
 
 ; Check that internal DOS configuration is correct
 

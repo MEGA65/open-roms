@@ -448,7 +448,7 @@ Mon_Memory:
    jsr  Set_MODE_80          ; check if we have 80 columns
 
    jsr  Get_Addr_To_LAC      ; get 1st. parameter
-   +bcs Mon_Error
+   +beq Mon_Error
 
          ; XXX !!! adapt from here
 
@@ -1718,7 +1718,7 @@ Get_Addr_To_LAC:
    lda  #$00
    sta  Dig_Cnt              ; count columns read
    sta  Long_AC+0            ; clear result Long_AC
-   lda  Long_AC+1
+   sta  Long_AC+1
    sta  Long_AC+2
    sta  Long_AC+3
 
@@ -1757,7 +1757,7 @@ Get_Addr_To_LAC:
 
    sbc  #'0'-1
    cmp  Num_Base,Y
-   bcs  @error               ; branch if digit above numerical system limit
+   +bcs Mon_Error            ; branch if digit above numerical system limit
    pha                       ; push digit to the stack
    inc  Dig_Cnt
 
@@ -1784,8 +1784,8 @@ Get_Addr_To_LAC:
    asl  Long_AC+0
    rol  Long_AC+1
    row  Long_AC+2
-   bcs  @error               ; overflow
-   dec
+   +bcs Mon_Error            ; overflow
+   dex
    bne  @shift
 
    cpy  #$01                 ; decimal adjustment
@@ -1815,12 +1815,13 @@ Get_Addr_To_LAC:
    inw  Long_AC+2
    bne  @valid_prefix
 
-@error:
-
-   sec
-   bra  @return
+   jmp  Mon_Error            ; number foo large
 
 @exit:
+
+   lda  Long_AC+3
+   and  #%11110000
+   +bne Mon_Error            ; MEGA65 has a 28-bit address bu
 
    lda  Dig_Cnt              ; check if we should enable long addressing mode
    cmp  Num_Limit,Y
@@ -1841,13 +1842,12 @@ Get_Addr_To_LAC:
 @check_done:
 
    lda  Dig_Cnt
-   clc
-
-@return:
 
    plz
    ply
    plx
+
+   cmp  #$00                 ; allow to easily check if a parameter was given
    rts
 
 ; ******

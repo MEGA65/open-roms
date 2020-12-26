@@ -100,8 +100,8 @@
     !addr COLSTORE  = $9C  ;          [!] screen border storage for tape routines 
 }
 	!addr MSGFLG    = $9D  ;          bit 6 = error messages, bit 7 = control message
-	!addr PTR1      = $9E  ;          for tape support, counter of errorneous bytes             [!] also used by PRIMM
-	!addr PTR2      = $9F  ;          for tape support, counter for errorneous bytes correction [!] also used by PRIMM
+	!addr PTR1      = $9E  ;          for tape support, counter of errorneous bytes             [!] also used by PRIMM and other routines
+	!addr PTR2      = $9F  ;          for tape support, counter for errorneous bytes correction [!] also used by PRIMM and other routines
 	!addr TIME      = $A0  ; $A0-$A2  jiffy clock
 	!addr IECPROTO  = $A3  ;          [!] IEC or pseudo-IEC protocol, >= $80 for unknown; originally named TSFCNT
 	!addr TBTCNT    = $A4  ;          temporary variable for tape and IEC, [!] our usage probably differs in details

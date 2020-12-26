@@ -45,6 +45,8 @@
 ;; #ALIAS# M65_MODESET         = KERNAL_0.M65_MODESET
 ;; #ALIAS# M65_SETWIN_Y        = KERNAL_0.M65_SETWIN_Y
 
+;; #ALIAS# m65_colorset        = KERNAL_0.m65_colorset
+
 ;
 ; Ultimate 64 specific parts
 ;

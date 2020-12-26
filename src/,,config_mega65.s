@@ -68,7 +68,7 @@
 
 ;; #CONFIG# KEYCMD_F9                  "REM F9"
 ;; #CONFIG# KEYCMD_F10                 "\5FL"
-;; #CONFIG# KEYCMD_F11                 "REM F11"
+;; #CONFIG# KEYCMD_F11                 "COLORSET 128"
 ;; #CONFIG# KEYCMD_F12                 "\5FHF"
 ;; #CONFIG# KEYCMD_F13                 "JOYCRSR 2"
 ;; #CONFIG# KEYCMD_F14                 "BOOTCPM"
@@ -77,7 +77,7 @@
 ; --- Screen editor
 
 ;; #CONFIG# EDIT_STOPQUOTE             YES
-;; #CONFIG# VIC_PALETTE                0         ; 0 = default; 1 = C65, 2 = Colodore, 3 = VICE, 4 = Frodo, 5 = Deekay
+;; #CONFIG# VIC_PALETTE                0         ; 0 = default; 1 = C65, 2 = Frodo, 3 = VICE, 4 = Colodore, 5 = Deekay
 
 
 ; --- Software features

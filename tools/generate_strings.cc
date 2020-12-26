@@ -203,6 +203,7 @@ const StringEntryList GLOBAL_Keywords_04 =  { ListType::KEYWORDS, "keywords_04",
     { false, false, true,  false, false, "K04_02",   "MONITOR",      }, // Amos Professional Manual, Command Index
     { false, false, true,  false, false, "K04_03",   "BOOTCPM",      }, // Not present in CBM BASIC dialects, Open ROMs specific
     { false, false, true,  false, false, "K04_04",   "JOYCRSR",      }, // Not present in CBM BASIC dialects, Open ROMs specific
+    { false, false, true,  false, false, "K04_05",   "COLORSET",      }, // Not present in CBM BASIC dialects, Open ROMs specific
 
 } };
 

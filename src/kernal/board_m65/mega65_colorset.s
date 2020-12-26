@@ -16,6 +16,10 @@ m65_colorset:
 
 m65_colorset_reset:
 
+	; Make sure VIC-IV is unlocked
+
+	jsr viciv_unhide
+
 	; Enable RAM palette
 
 	lda VIC_CTRLA

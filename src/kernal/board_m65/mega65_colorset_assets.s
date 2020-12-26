@@ -4,7 +4,7 @@
 
 ; #1 - original C65 palette, data taken from C65 manual
 
-;             RRGGBB
+;               RRGGBB
 !set RGB_1_0 = $000000 ; black
 !set RGB_1_1 = $FFFFFF ; white
 !set RGB_1_2 = $FF0000 ; red
@@ -24,7 +24,7 @@
 
 ; #2 - a Frodo palette, values taken from VICE emulator
 
-;             RRGGBB
+;               RRGGBB
 !set RGB_2_0 = $000000 ; black
 !set RGB_2_1 = $FFFFFF ; white
 !set RGB_2_2 = $CC0000 ; red
@@ -44,7 +44,7 @@
 
 ; #3 - a VICE emulator palette
 
-;             RRGGBB
+;               RRGGBB
 !set RGB_3_0 = $000000 ; black
 !set RGB_3_1 = $FDFEFC ; white
 !set RGB_3_2 = $BE1A24 ; red
@@ -64,7 +64,7 @@
 
 ; #4 - a Colodore palette, values taken from VICE emulator, based on http://www.colodore.com/
 
-;             RRGGBB
+;               RRGGBB
 !set RGB_4_0 = $000000 ; black
 !set RGB_4_1 = $FFFFFF ; white
 !set RGB_4_2 = $96282E ; red
@@ -82,26 +82,45 @@
 !set RGB_4_E = $6864FF ; light blue
 !set RGB_4_F = $AEAEAE ; light gray
 
-; #5 - a Deekay palette, values taken from VICE emulator
+; #5 - a community palette, values taken from VICE emulator, based on https://p1x3l.net/36/c64-community-colors-theor/
 
-;             RRGGBB
+;               RRGGBB
 !set RGB_5_0 = $000000 ; black
 !set RGB_5_1 = $FFFFFF ; white
-!set RGB_5_2 = $882000 ; red
-!set RGB_5_3 = $68D0A8 ; cyan
-!set RGB_5_4 = $A838A0 ; purple / magenta
-!set RGB_5_5 = $50B818 ; green
-!set RGB_5_6 = $181090 ; blue
-!set RGB_5_7 = $F0E858 ; yellow
-!set RGB_5_8 = $A04800 ; orange
-!set RGB_5_9 = $472B1B ; brown
-!set RGB_5_A = $C87870 ; light red / pink
-!set RGB_5_B = $484848 ; dark grey
-!set RGB_5_C = $808080 ; medium grey
-!set RGB_5_D = $98FF98 ; light green
-!set RGB_5_E = $5090D0 ; light blue
-!set RGB_5_F = $B8B8B8 ; light gray
+!set RGB_5_2 = $AF2A29 ; red
+!set RGB_5_3 = $62D8CC ; cyan
+!set RGB_5_4 = $B03FB6 ; purple / magenta
+!set RGB_5_5 = $4AC64A ; green
+!set RGB_5_6 = $3739C4 ; blue
+!set RGB_5_7 = $E4ED4E ; yellow
+!set RGB_5_8 = $B6591C ; orange
+!set RGB_5_9 = $683808 ; brown
+!set RGB_5_A = $EA746C ; light red / pink
+!set RGB_5_B = $4D4D4D ; dark grey
+!set RGB_5_C = $848484 ; medium grey
+!set RGB_5_D = $A6FA9E ; light green
+!set RGB_5_E = $707CE6 ; light blue
+!set RGB_5_F = $B6B6B5 ; light gray
 
+; #6 - a Deekay palette, values taken from VICE emulator
+
+;               RRGGBB
+!set RGB_6_0 = $000000 ; black
+!set RGB_6_1 = $FFFFFF ; white
+!set RGB_6_2 = $882000 ; red
+!set RGB_6_3 = $68D0A8 ; cyan
+!set RGB_6_4 = $A838A0 ; purple / magenta
+!set RGB_6_5 = $50B818 ; green
+!set RGB_6_6 = $181090 ; blue
+!set RGB_6_7 = $F0E858 ; yellow
+!set RGB_6_8 = $A04800 ; orange
+!set RGB_6_9 = $472B1B ; brown
+!set RGB_6_A = $C87870 ; light red / pink
+!set RGB_6_B = $484848 ; dark grey
+!set RGB_6_C = $808080 ; medium grey
+!set RGB_6_D = $98FF98 ; light green
+!set RGB_6_E = $5090D0 ; light blue
+!set RGB_6_F = $B8B8B8 ; light gray
 
 ; Macros to convert colors to C65/M65 palette / greyscale palette (CCIR 601 conversion)
 
@@ -474,3 +493,75 @@ m65_colorset_5:
 	+GSCAL RGB_5_D
 	+GSCAL RGB_5_E
 	+GSCAL RGB_5_F
+
+; Set 6
+
+m65_colorset_6:
+
+	+RGB_R RGB_6_0
+	+RGB_R RGB_6_1
+	+RGB_R RGB_6_2
+	+RGB_R RGB_6_3
+	+RGB_R RGB_6_4
+	+RGB_R RGB_6_5
+	+RGB_R RGB_6_6
+	+RGB_R RGB_6_7
+	+RGB_R RGB_6_8
+	+RGB_R RGB_6_9
+	+RGB_R RGB_6_A
+	+RGB_R RGB_6_B
+	+RGB_R RGB_6_C
+	+RGB_R RGB_6_D
+	+RGB_R RGB_6_E
+	+RGB_R RGB_6_F
+
+	+RGB_G RGB_6_0
+	+RGB_G RGB_6_1
+	+RGB_G RGB_6_2
+	+RGB_G RGB_6_3
+	+RGB_G RGB_6_4
+	+RGB_G RGB_6_5
+	+RGB_G RGB_6_6
+	+RGB_G RGB_6_7
+	+RGB_G RGB_6_8
+	+RGB_G RGB_6_9
+	+RGB_G RGB_6_A
+	+RGB_G RGB_6_B
+	+RGB_G RGB_6_C
+	+RGB_G RGB_6_D
+	+RGB_G RGB_6_E
+	+RGB_G RGB_6_F
+
+	+RGB_B RGB_6_0
+	+RGB_B RGB_6_1
+	+RGB_B RGB_6_2
+	+RGB_B RGB_6_3
+	+RGB_B RGB_6_4
+	+RGB_B RGB_6_5
+	+RGB_B RGB_6_6
+	+RGB_B RGB_6_7
+	+RGB_B RGB_6_8
+	+RGB_B RGB_6_9
+	+RGB_B RGB_6_A
+	+RGB_B RGB_6_B
+	+RGB_B RGB_6_C
+	+RGB_B RGB_6_D
+	+RGB_B RGB_6_E
+	+RGB_B RGB_6_F
+
+	+GSCAL RGB_6_0
+	+GSCAL RGB_6_1
+	+GSCAL RGB_6_2
+	+GSCAL RGB_6_3
+	+GSCAL RGB_6_4
+	+GSCAL RGB_6_5
+	+GSCAL RGB_6_6
+	+GSCAL RGB_6_7
+	+GSCAL RGB_6_8
+	+GSCAL RGB_6_9
+	+GSCAL RGB_6_A
+	+GSCAL RGB_6_B
+	+GSCAL RGB_6_C
+	+GSCAL RGB_6_D
+	+GSCAL RGB_6_E
+	+GSCAL RGB_6_F

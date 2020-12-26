@@ -100,11 +100,15 @@ Displays BASIC memory usage information:
 
 ### `MONITOR` (MEGA65)
 
-Invokes a machine language monitor
+Invokes a machine language monitor. Not finished yet!
 
 ### `SYSINFO` (MEGA65)
 
 Displays various system information.
+
+### `COLORSET id` (MEGA65)
+
+Changes the color set (palette). 0 = alias for the default one. Add 128 for a greyscale version.
 
 ### `CLEAR` (cart, MEGA65)
 

@@ -59,7 +59,7 @@ m65_colorset: ; entry point for BASIC; .A - palette, where bit 7 selects greysca
 	asl
 	php
 
-	cmp #($06 * 2)
+	cmp #($07 * 2)
 	bcs m65_colorset_error
 
 	; Prepare pointer to palette
@@ -183,4 +183,5 @@ m65_colorset_presets:
 	!word m65_colorset_3
 	!word m65_colorset_4
 	!word m65_colorset_5
+	!word m65_colorset_6
 }

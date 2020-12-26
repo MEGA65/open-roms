@@ -6,7 +6,10 @@
 
 m65_reset_part:
 
+	jsr map_KERNAL_1
+	jsr (VK1__m65_colorset_reset)
 	jsr map_NORMAL                     ; we want normal memory mapping
+
 	jsr viciv_shutdown                 ; by default we do not want the VIC-IV
 
 	jsr M65_MODEGET

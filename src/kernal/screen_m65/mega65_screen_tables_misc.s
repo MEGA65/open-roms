@@ -113,22 +113,6 @@ m65_chrout_screen_jumptable:
 
 m65_chrout_screen_jumptable_escape:
 
-	!word m65_chrout_esc_0
-	!word m65_chrout_esc_1
-	!word m65_chrout_esc_2
-	!word m65_chrout_esc_3
-	!word m65_chrout_esc_4
-	!word m65_chrout_esc_5
-	!word m65_chrout_esc_6
-	!word m65_chrout_esc_7
-	!word m65_chrout_esc_8
-	!word m65_chrout_esc_9
-	!word m65_chrout_esc_LBR     ; ':'
-	!word m65_chrout_esc_RBR     ; ';'
-	!word m65_chrout_screen_done ; '<'
-	!word m65_chrout_screen_done ; '='
-	!word m65_chrout_screen_done ; '>'
-	!word m65_chrout_screen_done ; '?'
 	!word m65_chrout_esc_AT
 	!word m65_chrout_esc_A
 	!word m65_chrout_esc_B

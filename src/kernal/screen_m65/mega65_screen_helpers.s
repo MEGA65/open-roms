@@ -10,6 +10,15 @@ m65_screen_clear_colorattr:
 
 	rts
 
+m65_screen_clear_special_modes: ; XXX consider integrating with 'm65_screen_clear_colorattr'
+
+	lda #$00
+	sta QTSW
+	sta INSRT
+	sta RVS
+
+	rts
+
 
 m65_screen_upd_txtrow_off:
 

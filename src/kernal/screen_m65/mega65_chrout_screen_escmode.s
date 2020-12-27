@@ -31,22 +31,50 @@ m65_chrout_esc_J: ; move cursor to the beginning of the line
 	sta M65__TXTCOL
 	bra m65_chrout_esc_done
 
+m65_chrout_esc_K: ; move cursor after the text within the line       XXX update for window mode
+
+	phz
+	ldx M65_SCRMODE
+	lda m65_scrtab_txtwidth,x
+	sta M65__TXTCOL
+	dec
+	taz
+@1:
+	lda [M65_LPNT_SCR], z
+	cmp #$20                 ; 'SPACE'
+	bne @2
+	dec M65__TXTCOL
+	dez
+	bpl @1
+@2:
+	plz
+	lda M65__TXTCOL
+	cmp m65_scrtab_txtwidth,x
+	bne m65_chrout_esc_done
+	dec M65__TXTCOL
+	bra m65_chrout_esc_done
+
 m65_chrout_esc_O: ; cancel quote, reverse, underline, flash, etc
 
-	lda COLOR
-	and #$0F
-	sta COLOR
-
-	lda #$00
-	sta QTSW
-	sta INSRT
-	sta RVS
+	jsr m65_screen_clear_colorattr
+	jsr m65_screen_clear_special_modes
 
 	; FALLTROUGH
 
 m65_chrout_esc_done:
 
 	jmp m65_chrout_screen_done
+
+m65_chrout_esc_X: ; cycle through available screen modes
+
+	lda M65_SCRMODE
+	dec
+	bpl @1
+	lda #$02
+@1:
+	jsr M65_SCRMODESET
+	jsr M65_CLRSCR
+	bra m65_chrout_esc_done
 
 
 
@@ -92,8 +120,6 @@ m65_chrout_esc_H:
 	+nop
 m65_chrout_esc_I:
 	+nop
-m65_chrout_esc_K:
-	+nop
 m65_chrout_esc_L:
 	+nop
 m65_chrout_esc_M:
@@ -115,8 +141,6 @@ m65_chrout_esc_U:
 m65_chrout_esc_V:
 	+nop
 m65_chrout_esc_W:
-	+nop
-m65_chrout_esc_X:
 	+nop
 m65_chrout_esc_Y:
 	+nop

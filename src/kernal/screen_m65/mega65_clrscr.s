@@ -2,7 +2,7 @@
 ;; #LAYOUT# *   *        #IGNORE
 
 
-M65_CLRSCR:
+M65_CLRSCR: ; XXX consider integrating with M65_SCRMODESET
 
 	; Clear additional attributes from the color code
 

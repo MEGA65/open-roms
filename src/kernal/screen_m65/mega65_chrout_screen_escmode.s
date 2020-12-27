@@ -12,15 +12,30 @@ m65_chrout_screen_escmode:
 	; Select subroutine
 
 	txa
-	; XXX cmp #$BD                 ; SHIFT + '@'
-	; XXX beq m65_chrout_esc_AT
 	sec
-	sbc #$30                 ; '0'
-	cmp #$2E
-	bcs m65_chrout_esc_done
+	sbc #$40                 ; '@'
+	cmp #$1E
+	bcc @1
 
-	; XXX add workaround for SHIFT+key
+	; Check for shifted characters
 
+	sec
+	sbc #$20
+	beq m65_chrout_esc_done  ; $60 - character not supported here
+	cmp #$1B
+	bcc @1
+
+	
+	; Check for fgew special shifted characters
+	cpx #$3A                 ; colon
+	beq m65_chrout_esc_LBR
+	cpx #$3B                 ; semicolon
+	beq m65_chrout_esc_RBR
+	cpx #$DB
+	beq m65_chrout_esc_AT
+
+	bra m65_chrout_esc_done
+@1:
 	asl
 	tax
 	jmp (m65_chrout_screen_jumptable_escape, x)
@@ -80,26 +95,6 @@ m65_chrout_esc_X: ; cycle through available screen modes
 
 ; XXX: implement screen routines below:
 
-m65_chrout_esc_0:
-	+nop
-m65_chrout_esc_1:
-	+nop
-m65_chrout_esc_2:
-	+nop
-m65_chrout_esc_3:
-	+nop
-m65_chrout_esc_4:
-	+nop
-m65_chrout_esc_5:
-	+nop
-m65_chrout_esc_6:
-	+nop
-m65_chrout_esc_7:
-	+nop
-m65_chrout_esc_8:
-	+nop
-m65_chrout_esc_9:
-	+nop
 m65_chrout_esc_AT:
 	+nop
 m65_chrout_esc_A:

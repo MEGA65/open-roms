@@ -399,64 +399,6 @@ Fetch:
          AND  #$ff
          RTS
 
-; *********
-Mon_Memory:
-; *********
-
-   lda  #$00
-   sta  Adr_Mode             ; by default use C64-style addressing
-
-   jsr  Get_Addr_To_LAC      ; get 1st parameter (start address)
-   +beq Mon_Error
-   jsr  LAC_To_LPC           ; Long_PC = start address
-
-   jsr  Get_Addr_To_LAC      ; get 2nd parameter (end address)
-   bne  @got_end_address
-   jsr  LPC_Plus_Page_To_LAC ; set default end address by start plus one page
-
-@got_end_address:
-
-   jsr  LAC_Minus_LPC        ; Long_CT = range
-   +bcc Mon_Error            ; error if negative range
-
-@loop:
-
-   jsr Print_CR ; XXX for debug only
-   lda Long_CT+3
-   jsr Print_Hex
-   lda Long_CT+2
-   jsr Print_Hex
-   lda Long_CT+1
-   jsr Print_Hex
-   lda Long_CT+0
-   jsr Print_Hex
-
-   jsr Dump_Row
-
-   jsr Print_CR ; XXX for debug only
-   lda Long_CT+3
-   jsr Print_Hex
-   lda Long_CT+2
-   jsr Print_Hex
-   lda Long_CT+1
-   jsr Print_Hex
-   lda Long_CT+0
-   jsr Print_Hex
-   jsr Print_CR
-
-   jsr  STOP
-   beq  @exit
-
-
-   ; !!! loop till end reached
-
-
-
-
-
-@exit:
-
-   jmp Main
 
 
 ; *********
@@ -622,8 +564,6 @@ Dump_4_Chars: ; XXX to be adapted
 ; *******
 Dump_Row:
 ; *******
-
-         JSR  Set_MODE_80
 
          PHZ
          JSR  Print_CR

@@ -123,8 +123,8 @@ m65_chrout_screen_jumptable_escape:
 	!word m65_chrout_esc_7
 	!word m65_chrout_esc_8
 	!word m65_chrout_esc_9
-	!word m65_chrout_screen_done ; ':'
-	!word m65_chrout_screen_done ; ';'
+	!word m65_chrout_esc_LBR     ; ':'
+	!word m65_chrout_esc_RBR     ; ';'
 	!word m65_chrout_screen_done ; '<'
 	!word m65_chrout_screen_done ; '='
 	!word m65_chrout_screen_done ; '>'

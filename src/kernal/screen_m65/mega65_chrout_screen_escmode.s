@@ -9,11 +9,45 @@ m65_chrout_screen_escmode:
 	lda #$00
 	sta M65_ESCMODE
 
-	; XXX
+	; Select subroutine
 
-m65_chrout_screen_escmode_end:
+	txa
+	; XXX cmp #$BD                 ; SHIFT + '@'
+	; XXX beq m65_chrout_esc_AT
+	sec
+	sbc #$30                 ; '0'
+	cmp #$2E
+	bcs m65_chrout_esc_done
+
+	; XXX add workaround for SHIFT+key
+
+	asl
+	tax
+	jmp (m65_chrout_screen_jumptable_escape, x)
+
+m65_chrout_esc_J: ; move cursor to the beginning of the line
+
+	lda #$00
+	sta M65__TXTCOL
+	bra m65_chrout_esc_done
+
+m65_chrout_esc_O: ; cancel quote, reverse, underline, flash, etc
+
+	lda COLOR
+	and #$0F
+	sta COLOR
+
+	lda #$00
+	sta QTSW
+	sta INSRT
+	sta RVS
+
+	; FALLTROUGH
+
+m65_chrout_esc_done:
 
 	jmp m65_chrout_screen_done
+
 
 
 ; XXX: implement screen routines below:
@@ -58,8 +92,6 @@ m65_chrout_esc_H:
 	+nop
 m65_chrout_esc_I:
 	+nop
-m65_chrout_esc_J:
-	+nop
 m65_chrout_esc_K:
 	+nop
 m65_chrout_esc_L:
@@ -67,8 +99,6 @@ m65_chrout_esc_L:
 m65_chrout_esc_M:
 	+nop
 m65_chrout_esc_N:
-	+nop
-m65_chrout_esc_O:
 	+nop
 m65_chrout_esc_P:
 	+nop

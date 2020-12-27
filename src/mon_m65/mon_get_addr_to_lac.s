@@ -1,6 +1,6 @@
 
 
-Get_Addr_To_LAC: ; XXX !!! seems to work correctly for hex only
+Get_Addr_To_LAC: ; XXX !!! seems to work incorrectly for decimal
 
    phx
    phy
@@ -25,6 +25,7 @@ Get_Addr_To_LAC: ; XXX !!! seems to work correctly for hex only
    dey
    bpl  @loop_prefix
    iny                       ; Y = 0
+   dec  Buf_Index
 
 @valid_prefix:
 

@@ -2,6 +2,26 @@
 ;; #LAYOUT# *   *        #IGNORE
 
 
+m65_colorset_bold_tab: ; color redirection table for bold attribute
+
+	!byte $0B  ; black       -> dark grey
+	!byte $0A  ; white       -> light red
+	!byte $0A  ; red         -> light red
+	!byte $07  ; cyan        -> yellow
+    !byte $0A  ; purple      -> light red
+    !byte $0D  ; green       -> light green
+    !byte $0E  ; blue        -> light blue
+    !byte $0A  ; yellow      -> light red
+    !byte $07  ; orange      -> yellow
+    !byte $08  ; brown       -> orange
+    !byte $07  ; light red   -> yellow
+    !byte $0C  ; dark grey   -> medium grey
+    !byte $0F  ; medium grey -> light grey
+    !byte $07  ; light green -> yellow
+    !byte $03  ; ligh blue   -> cyan
+    !byte $01  ; light grey  -> white
+
+
 ; #1 - original C65 palette, data taken from C65 manual
 
 ;               RRGGBB

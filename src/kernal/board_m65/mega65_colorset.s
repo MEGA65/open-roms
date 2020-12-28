@@ -88,16 +88,22 @@ m65_colorset_color:
 @2:
 	lda (PTR1), y
 	sta PALETTE_R, y
+	jsr m65_colorset_get_bold
+	sta PALETTE_R + $10, y	
 
 	jsr m65_colorset_PTR1_inc_16
 
 	lda (PTR1), y
 	sta PALETTE_G, y
+	jsr m65_colorset_get_bold
+	sta PALETTE_G + $10, y	
 
 	jsr m65_colorset_PTR1_inc_16
 
 	lda (PTR1), y
 	sta PALETTE_B, y
+	jsr m65_colorset_get_bold
+	sta PALETTE_B + $10, y	
 
 	jsr m65_colorset_PTR1_dec_32
 
@@ -134,10 +140,14 @@ m65_colorset_greyscale:
 	ldy #$0F
 @2:
 	lda (PTR1), y
-
 	sta PALETTE_R, y
 	sta PALETTE_G, y
 	sta PALETTE_B, y
+
+	jsr m65_colorset_get_bold
+	sta PALETTE_R + $10, y
+	sta PALETTE_G + $10, y
+	sta PALETTE_B + $10, y	
 
 	dey
 	bpl @2
@@ -170,6 +180,15 @@ m65_colorset_PTR1_dec_32:
 @1:
 	rts
 
+m65_colorset_get_bold:
+
+	phy
+	lda m65_colorset_bold_tab, y
+	tay
+	lda (PTR1), y
+	ply
+
+	rts
 
 m65_colorset_selection:
 

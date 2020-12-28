@@ -186,6 +186,8 @@ std::string generateAndTable(void)
 		uint8_t flags = Z80_HF | GLOBAL_Parity[idx];
 		if (idx >= 0x80) flags |= Z80_SF; // for negative result
 		if (idx == 0)    flags |= Z80_ZF; // for result equal 0
+		if (idx & 0x08)  flags |= Z80_XF; // 3rd bit of the result
+		if (idx & 0x20)  flags |= Z80_YF; // 5th bit of the result
 
 		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
 	}
@@ -201,6 +203,63 @@ std::string generateInOrXorTable(void)
 	for (uint16_t idx = 0; idx < 0x100; idx++)
 	{
 		uint8_t flags = GLOBAL_Parity[idx];
+		if (idx >= 0x80) flags |= Z80_SF; // for negative result
+		if (idx == 0)    flags |= Z80_ZF; // for result equal 0
+		if (idx & 0x08)  flags |= Z80_XF; // 3rd bit of the result
+		if (idx & 0x20)  flags |= Z80_YF; // 5th bit of the result
+
+		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
+	}
+
+	return outStr.str() + "}\n\n\n";
+} 
+
+std::string generateAddAdcTable(void)
+{
+	std::stringstream outStr;
+	outStr << "!macro PUT_Z80_FTABLE_ADD_ADC {\n";
+
+	for (uint16_t idx = 0; idx < 0x100; idx++)
+	{
+		uint8_t flags = 0;
+		if (idx >= 0x80) flags |= Z80_SF; // for negative result
+		if (idx == 0)    flags |= Z80_ZF; // for result equal 0
+		if (idx & 0x08)  flags |= Z80_XF; // 3rd bit of the result
+		if (idx & 0x20)  flags |= Z80_YF; // 5th bit of the result
+
+		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
+	}
+
+	return outStr.str() + "}\n\n\n";
+} 
+
+std::string generateSubSbcTable(void)
+{
+	std::stringstream outStr;
+	outStr << "!macro PUT_Z80_FTABLE_SUB_SBC {\n";
+
+	for (uint16_t idx = 0; idx < 0x100; idx++)
+	{
+		uint8_t flags = Z80_NF;
+		if (idx >= 0x80) flags |= Z80_SF; // for negative result
+		if (idx == 0)    flags |= Z80_ZF; // for result equal 0
+		if (idx & 0x08)  flags |= Z80_XF; // 3rd bit of the result
+		if (idx & 0x20)  flags |= Z80_YF; // 5th bit of the result
+
+		outStr << "\t!byte $" << std::hex << std::setw(2) << std::setfill('0') << int(flags) << "\n";
+	}
+
+	return outStr.str() + "}\n\n\n";
+} 
+
+std::string generateCpTable(void)
+{
+	std::stringstream outStr;
+	outStr << "!macro PUT_Z80_FTABLE_CP {\n";
+
+	for (uint16_t idx = 0; idx < 0x100; idx++)
+	{
+		uint8_t flags = Z80_NF;
 		if (idx >= 0x80) flags |= Z80_SF; // for negative result
 		if (idx == 0)    flags |= Z80_ZF; // for result equal 0
 
@@ -353,6 +412,9 @@ void writeTables()
 	outFile << generateDecTable();
 	outFile << generateAndTable();
 	outFile << generateInOrXorTable();
+	outFile << generateAddAdcTable();
+	outFile << generateSubSbcTable();
+	outFile << generateCpTable();
 	outFile << generateNegTable();
 	outFile << generateDaaTables();
 

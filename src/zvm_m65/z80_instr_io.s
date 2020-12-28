@@ -23,7 +23,7 @@ Z80_instr_DB:                                                                  ;
 	sta .REGn
 	tax
 	lda REG_F
-	and #($FF - Z80_SF - Z80_ZF - Z80_HF - Z80_PF - Z80_NF)
+	and #($FF - Z80_SF - Z80_ZF - Z80_HF - Z80_PF - Z80_NF - Z80_XF - Z80_YF)
 	ora z80_ftable_IN_OR_XOR, x
 	sta REG_F
 	jmp ZVM_next

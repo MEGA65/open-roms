@@ -40,7 +40,20 @@ m65_chrout_screen_escmode:
 	tax
 	jmp (m65_chrout_screen_jumptable_escape, x)
 
-m65_chrout_esc_J: ; move cursor to the beginning of the line
+m65_chrout_esc_LBR: ; set monochrome display
+	
+	lda #$80
+	+skip_2_bytes_trash_nvz
+
+	; FALLTROUGH
+
+m65_chrout_esc_RBR: ; set color display
+
+	lda #$00
+	jsr m65_colorset
+	bra m65_chrout_esc_done_1
+
+m65_chrout_esc_J: ; move cursor to the beginning of the line        XXX update for window mode
 
 	lda #$00
 	sta M65__TXTCOL
@@ -79,6 +92,36 @@ m65_chrout_esc_O: ; cancel quote, reverse, underline, flash, etc
 m65_chrout_esc_done_1:
 
 	jmp m65_chrout_screen_done
+
+m65_chrout_esc_P: ; erase everything from start of the line to cursor      XXX update for window mode
+	
+	phz
+	ldz #$FF
+	lda #$20
+@1:
+	inz
+	sta [M65_LPNT_SCR], z
+	cpz M65__TXTCOL
+	bne @1
+
+	plz
+	bra m65_chrout_esc_done_1
+
+m65_chrout_esc_Q: ; erase everything from cursor till the end of line      XXX update for window mode
+
+	phz
+	ldx M65_SCRMODE
+	lda m65_scrtab_txtwidth,x
+	taz
+	lda #$20
+@1:
+	dez
+	sta [M65_LPNT_SCR], z
+	cpz M65__TXTCOL
+	bne @1
+
+	plz
+	bra m65_chrout_esc_done_1
 
 m65_chrout_esc_X: ; cycle through available screen modes
 
@@ -137,47 +180,40 @@ m65_chrout_esc_R: ; 'reversed' screen colors
 
 ; XXX: implement screen routines below:
 
-m65_chrout_esc_AT:
+m65_chrout_esc_AT: ; clears everything from cursor till end of the screen
 	+nop
-m65_chrout_esc_A:
+m65_chrout_esc_A: ; enable auto-insert mode
 	+nop
-m65_chrout_esc_B:
+m65_chrout_esc_B: ; set bottom-right window position
 	+nop
-m65_chrout_esc_C:
+m65_chrout_esc_C: ; disable auto-insert mode
 	+nop
-m65_chrout_esc_D:
+m65_chrout_esc_D: ; delete current line, move content up
 	+nop
-m65_chrout_esc_E:
+m65_chrout_esc_E: ; disable cursor flashing
 	+nop
-m65_chrout_esc_F:
+m65_chrout_esc_F: ; enable cursor flashing
 	+nop
-m65_chrout_esc_G:
+m65_chrout_esc_G: ; enable bell
 	+nop
-m65_chrout_esc_H:
+m65_chrout_esc_H: ; disable bell
 	+nop
-m65_chrout_esc_I:
+m65_chrout_esc_I: ; insert empty line, move content down
 	+nop
-m65_chrout_esc_L:
+m65_chrout_esc_L: ; enable screen scrolling
 	+nop
-m65_chrout_esc_M:
+m65_chrout_esc_M: ; disable screen scrolling, wrap-around mode
 	+nop
-m65_chrout_esc_P:
+m65_chrout_esc_T: ; set top-left window position
 	+nop
-m65_chrout_esc_Q:
+m65_chrout_esc_V: ; scroll screen up one line
 	+nop
-m65_chrout_esc_T:
+m65_chrout_esc_W: ; scroll screen down one line
 	+nop
-m65_chrout_esc_V:
+m65_chrout_esc_Y: ; set default TAB stops
 	+nop
-m65_chrout_esc_W:
+m65_chrout_esc_Z: ; clear all the TAB stops
 	+nop
-m65_chrout_esc_Y:
-	+nop
-m65_chrout_esc_Z:
-	+nop
-m65_chrout_esc_LBR:
-	+nop
-m65_chrout_esc_RBR:
-	+nop
+
 
 	jmp m65_chrout_screen_done

@@ -56,7 +56,7 @@
 	!set KEY_TAB_SET_CLR    = $18 ; XXX add to M65 matrix
 	!set KEY_UNDERLINE_ON   = $02 ; XXX add to M65 matrix
 	!set KEY_UNDERLINE_OFF  = $82 ; XXX add to M65 matrix
-	!set KEY_FLASHING_ON    = $0F ; XXX add to M65 matrix
+	!set KEY_FLASHING_ON    = $0F
 	!set KEY_FLASHING_OFF   = $8F ; XXX add to M65 matrix
 }
 

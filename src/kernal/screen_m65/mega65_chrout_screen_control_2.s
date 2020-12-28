@@ -10,6 +10,25 @@ m65_chrout_screen_ESC:
 	sta M65_ESCMODE
 	bra m65_chrout_screen_ctrl2_end
 
+; Flashing support
+
+m65_chrout_screen_FLASHING_ON:
+
+	lda COLOR
+	ora #%00010000
+	bra m65_chrout_screen_FLASHING_common
+
+m65_chrout_screen_FLASHING_OFF: ; XXX how to trigger it?
+
+	lda COLOR
+	and #%11101111
+
+	; FALLTROUGH
+
+m65_chrout_screen_FLASHING_common:
+
+	sta COLOR
+	bra m65_chrout_screen_ctrl2_end
 
 ; 'REVERSE' mode support
 
@@ -148,8 +167,6 @@ m65_chrout_screen_INS_winmode:
 	; XXX provide implementation
 
 	bra m65_chrout_screen_ctrl2_end
-
-
 
 m65_chrout_screen_INS_copy:
 

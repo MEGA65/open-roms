@@ -97,7 +97,7 @@ m65_chrout_screen_jumptable:
 	!word m65_chrout_screen_CRSR_DOWN
 	!word m65_chrout_screen_CRSR_UP
 	!word m65_chrout_screen_TAB
-	!word m65_chrout_screen_LINE_FEED
+	!word m65_chrout_screen_CRSR_DOWN            ; Line Feed
 	!word m65_chrout_screen_UNDERLINE_ON
 	!word m65_chrout_screen_UNDERLINE_OFF
 	!word m65_chrout_screen_FLASHING_ON
@@ -113,7 +113,7 @@ m65_chrout_screen_jumptable:
 
 m65_chrout_screen_jumptable_escape:
 
-	!word m65_chrout_esc_AT
+	!word m65_chrout_esc_AT                      ; '@'
 	!word m65_chrout_esc_A
 	!word m65_chrout_esc_B
 	!word m65_chrout_esc_C
@@ -140,6 +140,6 @@ m65_chrout_screen_jumptable_escape:
 	!word m65_chrout_esc_X
 	!word m65_chrout_esc_Y
 	!word m65_chrout_esc_Z
-	!word m65_chrout_esc_LBR
-	!word m65_chrout_screen_done ; pound symbol
-	!word m65_chrout_esc_RBR
+	!word m65_chrout_esc_LBR                     ; left square bracket
+	!word m65_chrout_screen_done                 ; pound symbol
+	!word m65_chrout_esc_RBR                     ; right square bracket

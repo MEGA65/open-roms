@@ -77,8 +77,6 @@ m65_chrout_try_color_loop:
 
 m65_chrout_screen_TAB:
 	+nop
-m65_chrout_screen_LINE_FEED:
-	+nop
 m65_chrout_screen_TAB_SET_CLR:
 
 	jmp m65_chrout_screen_done

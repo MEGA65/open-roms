@@ -69,14 +69,3 @@ m65_chrout_try_color_loop:
 	; Unknown code, or key not requiring any handling
 
 	jmp m65_chrout_screen_done
-
-
-
-
-; XXX: implement screen routines below:
-
-m65_chrout_screen_TAB:
-	+nop
-m65_chrout_screen_TAB_SET_CLR:
-
-	jmp m65_chrout_screen_done

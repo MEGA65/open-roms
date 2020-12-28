@@ -40,6 +40,19 @@ m65_chrout_screen_escmode:
 	tax
 	jmp (m65_chrout_screen_jumptable_escape, x)
 
+m65_chrout_esc_G: ; enable bell
+
+	lda #$00
+	+skip_2_bytes_trash_nvz
+	
+	; FALLTROUGH
+
+m65_chrout_esc_H: ; disable bell
+	
+	lda #$FF
+	sta M65_BELLDSBL
+	bra m65_chrout_esc_done_1
+
 m65_chrout_esc_LBR: ; set monochrome display
 	
 	lda #$80
@@ -174,10 +187,6 @@ m65_chrout_esc_R: ; 'reversed' screen colors
 
 
 
-
-
-
-
 ; XXX: implement screen routines below:
 
 m65_chrout_esc_AT: ; clears everything from cursor till end of the screen
@@ -193,10 +202,6 @@ m65_chrout_esc_D: ; delete current line, move content up
 m65_chrout_esc_E: ; disable cursor flashing
 	+nop
 m65_chrout_esc_F: ; enable cursor flashing
-	+nop
-m65_chrout_esc_G: ; enable bell
-	+nop
-m65_chrout_esc_H: ; disable bell
 	+nop
 m65_chrout_esc_I: ; insert empty line, move content down
 	+nop

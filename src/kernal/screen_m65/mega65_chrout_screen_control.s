@@ -79,12 +79,6 @@ m65_chrout_screen_TAB:
 	+nop
 m65_chrout_screen_LINE_FEED:
 	+nop
-m65_chrout_screen_UNDERLINE_ON:
-	+nop
-m65_chrout_screen_UNDERLINE_OFF:
-	+nop
 m65_chrout_screen_TAB_SET_CLR:
-	+nop
-m65_chrout_screen_BELL:
 
 	jmp m65_chrout_screen_done

@@ -10,22 +10,34 @@ m65_chrout_screen_ESC:
 	sta M65_ESCMODE
 	bra m65_chrout_screen_ctrl2_end
 
-; Flashing support
+; Flashing and underline support
+
+m65_chrout_screen_UNDERLINE_ON:
+
+	lda COLOR
+	ora #%10000000
+	bra m65_chrout_screen_FLAUND_common
+
+m65_chrout_screen_UNDERLINE_OFF:
+
+	lda COLOR
+	and #%01111111
+	bra m65_chrout_screen_FLAUND_common
 
 m65_chrout_screen_FLASHING_ON:
 
 	lda COLOR
 	ora #%00010000
-	bra m65_chrout_screen_FLASHING_common
+	bra m65_chrout_screen_FLAUND_common
 
-m65_chrout_screen_FLASHING_OFF: ; XXX how to trigger it?
+m65_chrout_screen_FLASHING_OFF:
 
 	lda COLOR
 	and #%11101111
 
 	; FALLTROUGH
 
-m65_chrout_screen_FLASHING_common:
+m65_chrout_screen_FLAUND_common:
 
 	sta COLOR
 	bra m65_chrout_screen_ctrl2_end
@@ -179,3 +191,63 @@ m65_chrout_screen_INS_copy:
 	bne m65_chrout_screen_INS_copy
 
 	rts
+
+; Bell (jingle)
+
+m65_chrout_screen_BELL:
+
+	lda M65_BELLDSBL
+	bmi m65_chrout_screen_BELL_done
+
+	; Play bell on both left&right secondary SIDs - first reset the SIDs
+
+	ldx #$1F
+	lda #$00
+@1:
+	sta __SID_BASE + $20,x
+	sta __SID_BASE + $60,x
+	dex
+	bpl @1
+
+	lda #$0A                           ; volume
+	sta SID_SIGVOL + $20
+	sta SID_SIGVOL + $60
+
+	lda #$23                           ; channel 1 - attack/decay
+	sta SID_ATDCY1 + $20
+	sta SID_ATDCY1 + $60
+
+	lda #$52                           ; channel 1 - sustain/release
+	sta SID_SUREL1 + $20
+	sta SID_SUREL1 + $60
+
+	lda #$1E                           ; channel 1 - frequency (HI)
+	sta SID_FREHI1 + $20
+	sta SID_FREHI1 + $60
+
+	lda #$00                           ; channel 1 - frequency (LO)
+	sta SID_FRELO1 + $20
+	sta SID_FRELO1 + $60
+
+	lda #$11                           ; channel 1 - waveform
+	sta SID_VCREG1 + $20
+	sta SID_VCREG1 + $60
+
+	ldx #$0E                           ; wait loop
+@2:
+	phx
+	ldx #$FF
+	jsr wait_x_bars
+	plx
+	dex
+	bne @2
+
+	lda #$10                           ; stop the jingle
+	sta SID_VCREG1 + $20
+	sta SID_VCREG1 + $60
+
+	; FALLTROUGH
+
+m65_chrout_screen_BELL_done:
+
+	jmp m65_chrout_screen_done

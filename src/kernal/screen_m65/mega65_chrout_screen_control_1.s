@@ -35,9 +35,10 @@ m65_chrout_screen_CRSR_UP:
 
 m65_chrout_screen_RETURN:
 
-	; RETURN clears quote and insert modes, it also clears reverse flag
+	; RETURN clears quote and insert modes, reverse flag, etc.
 	
 	jsr m65_screen_clear_special_modes
+	jsr m65_screen_clear_colorattr
 
 	; Move cursor to the beginning of the next line
 

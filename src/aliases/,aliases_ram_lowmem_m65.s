@@ -59,8 +59,9 @@
 	!addr M65_KB_PRESSED     = $5A0 ; $5A0-$5A2  keys pressed, used during scanning keyboard
 	!addr M65_KB_PRESSED_OLD = $5A3 ; $5A3-$5A5  keys pressed during previous scan
 	!addr M65_KB_PRESSED_NEW = $5A6 ; $5A6-$5A8  set of M65_KB_PRESSED minus M65_KB_PRESSED_OLD
-	!addr M65_JOYCRSR        = $5A9 ;            joystick to be used for cursor movement
-	                                ; $5AA-$5EB  -- UNUSED --
+	!addr M65_BELLDSBL       = $5A9 ;            flag - if set, disable the bell	
+	!addr M65_JOYCRSR        = $5AA ;            joystick to be used for cursor movement
+	                                ; $5AB-$5EB  -- UNUSED --
 	!addr M65_DMAGIC_LIST    = $5F1 ; $5EF-$5FF  reserved for DMAgic list, 15 bytes (modulo bytes are not needed)
 	!addr M65_RS232_INBUF    = $600 ; $600-$6FF  -- reserved for RS-232 input buffer --
 	!addr M65_RS232_OUTBUF   = $700 ; $700-$7FF  -- reserved for RS-232 output buffer --

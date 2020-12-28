@@ -4,7 +4,7 @@
 
 m65_colorset_bold_tab: ; color redirection table for bold attribute
 
-	!byte $0B  ; black       -> dark grey
+	!byte $02  ; black       -> red
 	!byte $0A  ; white       -> light red
 	!byte $0A  ; red         -> light red
 	!byte $07  ; cyan        -> yellow

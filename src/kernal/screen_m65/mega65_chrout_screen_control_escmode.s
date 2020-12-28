@@ -25,8 +25,7 @@ m65_chrout_screen_escmode:
 	cmp #$1B
 	bcc @1
 
-	
-	; Check for fgew special shifted characters
+	; Check for few special shifted characters
 	cpx #$3A                           ; colon
 	+beq m65_chrout_esc_LBR
 	cpx #$3B                           ; semicolon
@@ -39,19 +38,6 @@ m65_chrout_screen_escmode:
 	asl
 	tax
 	jmp (m65_chrout_screen_jumptable_escape, x)
-
-m65_chrout_esc_G: ; enable bell
-
-	lda #$00
-	+skip_2_bytes_trash_nvz
-	
-	; FALLTROUGH
-
-m65_chrout_esc_H: ; disable bell
-	
-	lda #$FF
-	sta M65_BELLDSBL
-	bra m65_chrout_esc_done_1
 
 m65_chrout_esc_LBR: ; set monochrome display
 	
@@ -215,10 +201,5 @@ m65_chrout_esc_V: ; scroll screen up one line
 	+nop
 m65_chrout_esc_W: ; scroll screen down one line
 	+nop
-m65_chrout_esc_Y: ; set default TAB stops
-	+nop
-m65_chrout_esc_Z: ; clear all the TAB stops
-	+nop
-
 
 	jmp m65_chrout_screen_done

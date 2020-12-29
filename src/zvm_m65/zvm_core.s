@@ -80,7 +80,18 @@ ZVM_store_next:
 
 	; unsupported illegal instructions
 Z80_unsupported:
-	; XXX add a separate handler for illegal instructions
+	; XXX add a separate handler to warn about illegal instructions
+	
+	; block I/O transfer - not implemented for now    XXX implement them
+Z80_instr_ED_A2:   ; INI
+Z80_instr_ED_B2:   ; INIR
+Z80_instr_ED_AA:   ; IND
+Z80_instr_ED_BA:   ; INDR
+Z80_instr_ED_A3:   ; OUTI
+Z80_instr_ED_B3:   ; OTIR
+Z80_instr_ED_AB:   ; OUTD
+Z80_instr_ED_BB:   ; OTDR
+	; XXX add a separate handler to warn about them
 	; LD instructions with no effect
 Z80_instr_40:                                                                  ; LD B,B
 Z80_instr_49:                                                                  ; LD C,C
@@ -93,7 +104,7 @@ Z80_illeg_DD_64:                                                               ;
 Z80_illeg_DD_6D:                                                               ; LD IXL,IXL
 Z80_illeg_FD_64:                                                               ; LD IYH,IYH
 Z80_illeg_FD_6D:                                                               ; LD IYL,IYL
-	; For interrupts (emulation not needed for CP/M)
+	; Instructions needed only for interrupts (emulation not needed for CP/M)
 Z80_instr_ED_46:                                                               ; IM 0
 Z80_illeg_ED_4E:                                                               ; IM 0
 Z80_illeg_ED_66:                                                               ; IM 0
@@ -102,16 +113,25 @@ Z80_instr_ED_56:                                                               ;
 Z80_illeg_ED_76:                                                               ; IM 1
 Z80_instr_ED_5E:                                                               ; IM 2
 Z80_illeg_ED_7E:                                                               ; IM 2
-	; Real NOP
+	; NOP
 Z80_instr_00:                                                                  ; NOP
 Z80_illeg_ED_77:                                                               ; NOP
 Z80_illeg_ED_7F:                                                               ; NOP
-	; Dispatch via jumptable
+	; Fetch and execute the next instruction
 ZVM_next:          +ZVM_DISPATCH Z80_vectab_0,    Z80_vectab_1
+	; Dispatch via jumptable
 Z80_instr_CB:      +ZVM_DISPATCH Z80_vectab_CB_0, Z80_vectab_CB_1              ; #CB
 Z80_instr_DD:      +ZVM_DISPATCH Z80_vectab_DD_0, Z80_vectab_DD_1              ; #DD
 Z80_instr_ED:      +ZVM_DISPATCH Z80_vectab_ED_0, Z80_vectab_ED_1              ; #ED
 Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ; #FD
+
+
+
+
+; XXX addition and subtraction are slow; pre-calculate data/flag tables in the extended 8MB RAM
+; XXX use TRB/TSB instead of LDA + AND/ORA + STA when applicable
+
+
 
 
 
@@ -132,12 +152,8 @@ Z80_instr_DD_CB:   ; #DDCB
 Z80_instr_FD_CB:   ; #FDCB
 Z80_instr_09:      ; ADD HL,BC
 Z80_instr_19:      ; ADD HL,DE
-Z80_instr_22:      ; LD (nn),HL
 Z80_instr_29:      ; ADD HL,HL
-Z80_instr_2A:      ; LD HL,(nn)
 Z80_instr_39:      ; ADD HL,SP
-Z80_instr_E3:      ; EX (SP),HL
-Z80_instr_F9:      ; LD SP,HL
 Z80_instr_CB_06:   ; RLC (HL)
 Z80_instr_CB_0E:   ; RRC (HL)
 Z80_instr_CB_16:   ; RL (HL)
@@ -147,52 +163,26 @@ Z80_instr_CB_2E:   ; SRA (HL)
 Z80_instr_CB_3E:   ; SRL (HL)
 Z80_instr_DD_09:   ; ADD IX,BC
 Z80_instr_DD_19:   ; ADD IX,DE
-Z80_instr_DD_22:   ; LD (nn),IX
 Z80_instr_DD_29:   ; ADD IX,IX
-Z80_instr_DD_2A:   ; LD IX,(nn)
 Z80_instr_DD_39:   ; ADD IX,SP
-Z80_instr_DD_E3:   ; EX (SP),IX
-Z80_instr_DD_F9:   ; LD SP,IX
 Z80_instr_ED_42:   ; SBC HL,BC
-Z80_instr_ED_43:   ; LD (nn),BC
 Z80_instr_ED_4A:   ; ADC HL,BC
-Z80_instr_ED_4B:   ; LD BC,(nn)
 Z80_instr_ED_52:   ; SBC HL,DE
-Z80_instr_ED_53:   ; LD (nn),DE
 Z80_instr_ED_5A:   ; ADC HL,DE
-Z80_instr_ED_5B:   ; LD DE,(nn)
 Z80_instr_ED_62:   ; SBC HL,HL
 Z80_instr_ED_67:   ; RRD
 Z80_instr_ED_6A:   ; ADC HL,HL
 Z80_instr_ED_6F:   ; RLD
 Z80_instr_ED_72:   ; SBC HL,SP
-Z80_instr_ED_73:   ; LD (nn),SP
 Z80_instr_ED_7A:   ; ADC HL,SP
-Z80_instr_ED_7B:   ; LD SP,(nn)
-Z80_instr_ED_A0:   ; LDI
 Z80_instr_ED_A1:   ; CPI
-Z80_instr_ED_A2:   ; INI
-Z80_instr_ED_A3:   ; OUTI
-Z80_instr_ED_A8:   ; LDD
 Z80_instr_ED_A9:   ; CPD
-Z80_instr_ED_AA:   ; IND
-Z80_instr_ED_AB:   ; OUTD
-Z80_instr_ED_B0:   ; LDIR
 Z80_instr_ED_B1:   ; CPIR
-Z80_instr_ED_B2:   ; INIR
-Z80_instr_ED_B3:   ; OTIR
-Z80_instr_ED_B8:   ; LDDR
 Z80_instr_ED_B9:   ; CPDR
-Z80_instr_ED_BA:   ; INDR
-Z80_instr_ED_BB:   ; OTDR
 Z80_instr_FD_09:   ; ADD IY,BC
 Z80_instr_FD_19:   ; ADD IY,DE
-Z80_instr_FD_22:   ; LD (nn),IY
 Z80_instr_FD_29:   ; ADD IY,IY
-Z80_instr_FD_2A:   ; LD IY,(nn)
 Z80_instr_FD_39:   ; ADD IY,SP
-Z80_instr_FD_E3:   ; EX (SP),IY
-Z80_instr_FD_F9:   ; LD SP,IY
 Z80_instr_xDCB_06: ; RLC (IXY+d)
 Z80_instr_xDCB_0E: ; RRC (IXY+d)
 Z80_instr_xDCB_16: ; RL (IXY+d)
@@ -203,8 +193,6 @@ Z80_instr_xDCB_3E: ; SRL (IXY+d)
 Z80_illeg_CB_36:   ; SLL (HL)
 Z80_illeg_ED_70:   ; IN F,(C)
 Z80_illeg_ED_71:   ; OUT (C),0
-Z80_illeg_ED_63:   ; LD (nn),HL
-Z80_illeg_ED_6B:   ; LD HL,(nn)
 Z80_illeg_xDCB_00: ; RLC (IXY+d),B
 Z80_illeg_xDCB_01: ; RLC (IXY+d),C
 Z80_illeg_xDCB_02: ; RLC (IXY+d),D
@@ -262,118 +250,7 @@ Z80_illeg_xDCB_3B: ; SLR (IXY+d),E
 Z80_illeg_xDCB_3C: ; SLR (IXY+d),H
 Z80_illeg_xDCB_3D: ; SLR (IXY+d),L
 Z80_illeg_xDCB_3F: ; SLR (IXY+d),A
-Z80_illeg_xDCB_80: ; RES 0,(IXY+d),B
-Z80_illeg_xDCB_81: ; RES 0,(IXY+d),C
-Z80_illeg_xDCB_82: ; RES 0,(IXY+d),D
-Z80_illeg_xDCB_83: ; RES 0,(IXY+d),E
-Z80_illeg_xDCB_84: ; RES 0,(IXY+d),H
-Z80_illeg_xDCB_85: ; RES 0,(IXY+d),L
-Z80_illeg_xDCB_87: ; RES 0,(IXY+d),A
-Z80_illeg_xDCB_88: ; RES 1,(IXY+d),B
-Z80_illeg_xDCB_89: ; RES 1,(IXY+d),C
-Z80_illeg_xDCB_8A: ; RES 1,(IXY+d),D
-Z80_illeg_xDCB_8B: ; RES 1,(IXY+d),E
-Z80_illeg_xDCB_8C: ; RES 1,(IXY+d),H
-Z80_illeg_xDCB_8D: ; RES 1,(IXY+d),L
-Z80_illeg_xDCB_8F: ; RES 1,(IXY+d),A
-Z80_illeg_xDCB_90: ; RES 2,(IXY+d),B
-Z80_illeg_xDCB_91: ; RES 2,(IXY+d),C
-Z80_illeg_xDCB_92: ; RES 2,(IXY+d),D
-Z80_illeg_xDCB_93: ; RES 2,(IXY+d),E
-Z80_illeg_xDCB_94: ; RES 2,(IXY+d),H
-Z80_illeg_xDCB_95: ; RES 2,(IXY+d),L
-Z80_illeg_xDCB_97: ; RES 2,(IXY+d),A
-Z80_illeg_xDCB_98: ; RES 3,(IXY+d),B
-Z80_illeg_xDCB_99: ; RES 3,(IXY+d),C
-Z80_illeg_xDCB_9A: ; RES 3,(IXY+d),D
-Z80_illeg_xDCB_9B: ; RES 3,(IXY+d),E
-Z80_illeg_xDCB_9C: ; RES 3,(IXY+d),H
-Z80_illeg_xDCB_9D: ; RES 3,(IXY+d),L
-Z80_illeg_xDCB_9F: ; RES 3,(IXY+d),A
-Z80_illeg_xDCB_A0: ; RES 4,(IXY+d),B
-Z80_illeg_xDCB_A1: ; RES 4,(IXY+d),C
-Z80_illeg_xDCB_A2: ; RES 4,(IXY+d),D
-Z80_illeg_xDCB_A3: ; RES 4,(IXY+d),E
-Z80_illeg_xDCB_A4: ; RES 4,(IXY+d),H
-Z80_illeg_xDCB_A5: ; RES 4,(IXY+d),L
-Z80_illeg_xDCB_A7: ; RES 4,(IXY+d),A
-Z80_illeg_xDCB_A8: ; RES 5,(IXY+d),B
-Z80_illeg_xDCB_A9: ; RES 5,(IXY+d),C
-Z80_illeg_xDCB_AA: ; RES 5,(IXY+d),D
-Z80_illeg_xDCB_AB: ; RES 5,(IXY+d),E
-Z80_illeg_xDCB_AC: ; RES 5,(IXY+d),H
-Z80_illeg_xDCB_AD: ; RES 5,(IXY+d),L
-Z80_illeg_xDCB_AF: ; RES 5,(IXY+d),A
-Z80_illeg_xDCB_B0: ; RES 6,(IXY+d),B
-Z80_illeg_xDCB_B1: ; RES 6,(IXY+d),C
-Z80_illeg_xDCB_B2: ; RES 6,(IXY+d),D
-Z80_illeg_xDCB_B3: ; RES 6,(IXY+d),E
-Z80_illeg_xDCB_B4: ; RES 6,(IXY+d),H
-Z80_illeg_xDCB_B5: ; RES 6,(IXY+d),L
-Z80_illeg_xDCB_B7: ; RES 6,(IXY+d),A
-Z80_illeg_xDCB_B8: ; RES 7,(IXY+d),B
-Z80_illeg_xDCB_B9: ; RES 7,(IXY+d),C
-Z80_illeg_xDCB_BA: ; RES 7,(IXY+d),D
-Z80_illeg_xDCB_BB: ; RES 7,(IXY+d),E
-Z80_illeg_xDCB_BC: ; RES 7,(IXY+d),H
-Z80_illeg_xDCB_BD: ; RES 7,(IXY+d),L
-Z80_illeg_xDCB_BF: ; RES 7,(IXY+d),A
-Z80_illeg_xDCB_C0: ; SET 0,(IXY+d),B
-Z80_illeg_xDCB_C1: ; SET 0,(IXY+d),C
-Z80_illeg_xDCB_C2: ; SET 0,(IXY+d),D
-Z80_illeg_xDCB_C3: ; SET 0,(IXY+d),E
-Z80_illeg_xDCB_C4: ; SET 0,(IXY+d),H
-Z80_illeg_xDCB_C5: ; SET 0,(IXY+d),L
-Z80_illeg_xDCB_C7: ; SET 0,(IXY+d),A
-Z80_illeg_xDCB_C8: ; SET 1,(IXY+d),B
-Z80_illeg_xDCB_C9: ; SET 1,(IXY+d),C
-Z80_illeg_xDCB_CA: ; SET 1,(IXY+d),D
-Z80_illeg_xDCB_CB: ; SET 1,(IXY+d),E
-Z80_illeg_xDCB_CC: ; SET 1,(IXY+d),H
-Z80_illeg_xDCB_CD: ; SET 1,(IXY+d),L
-Z80_illeg_xDCB_CF: ; SET 1,(IXY+d),A
-Z80_illeg_xDCB_D0: ; SET 2,(IXY+d),B
-Z80_illeg_xDCB_D1: ; SET 2,(IXY+d),C
-Z80_illeg_xDCB_D2: ; SET 2,(IXY+d),D
-Z80_illeg_xDCB_D3: ; SET 2,(IXY+d),E
-Z80_illeg_xDCB_D4: ; SET 2,(IXY+d),H
-Z80_illeg_xDCB_D5: ; SET 2,(IXY+d),L
-Z80_illeg_xDCB_D7: ; SET 2,(IXY+d),A
-Z80_illeg_xDCB_D8: ; SET 3,(IXY+d),B
-Z80_illeg_xDCB_D9: ; SET 3,(IXY+d),C
-Z80_illeg_xDCB_DA: ; SET 3,(IXY+d),D
-Z80_illeg_xDCB_DB: ; SET 3,(IXY+d),E
-Z80_illeg_xDCB_DC: ; SET 3,(IXY+d),H
-Z80_illeg_xDCB_DD: ; SET 3,(IXY+d),L
-Z80_illeg_xDCB_DF: ; SET 3,(IXY+d),A
-Z80_illeg_xDCB_E0: ; SET 4,(IXY+d),B
-Z80_illeg_xDCB_E1: ; SET 4,(IXY+d),C
-Z80_illeg_xDCB_E2: ; SET 4,(IXY+d),D
-Z80_illeg_xDCB_E3: ; SET 4,(IXY+d),E
-Z80_illeg_xDCB_E4: ; SET 4,(IXY+d),H
-Z80_illeg_xDCB_E5: ; SET 4,(IXY+d),L
-Z80_illeg_xDCB_E7: ; SET 4,(IXY+d),A
-Z80_illeg_xDCB_E8: ; SET 5,(IXY+d),B
-Z80_illeg_xDCB_E9: ; SET 5,(IXY+d),C
-Z80_illeg_xDCB_EA: ; SET 5,(IXY+d),D
-Z80_illeg_xDCB_EB: ; SET 5,(IXY+d),E
-Z80_illeg_xDCB_EC: ; SET 5,(IXY+d),H
-Z80_illeg_xDCB_ED: ; SET 5,(IXY+d),L
-Z80_illeg_xDCB_EF: ; SET 5,(IXY+d),A
-Z80_illeg_xDCB_F0: ; SET 6,(IXY+d),B
-Z80_illeg_xDCB_F1: ; SET 6,(IXY+d),C
-Z80_illeg_xDCB_F2: ; SET 6,(IXY+d),D
-Z80_illeg_xDCB_F3: ; SET 6,(IXY+d),E
-Z80_illeg_xDCB_F4: ; SET 6,(IXY+d),H
-Z80_illeg_xDCB_F5: ; SET 6,(IXY+d),L
-Z80_illeg_xDCB_F7: ; SET 6,(IXY+d),A
-Z80_illeg_xDCB_F8: ; SET 7,(IXY+d),B
-Z80_illeg_xDCB_F9: ; SET 7,(IXY+d),C
-Z80_illeg_xDCB_FA: ; SET 7,(IXY+d),D
-Z80_illeg_xDCB_FB: ; SET 7,(IXY+d),E
-Z80_illeg_xDCB_FC: ; SET 7,(IXY+d),H
-Z80_illeg_xDCB_FD: ; SET 7,(IXY+d),L
-Z80_illeg_xDCB_FF: ; SET 7,(IXY+d),A
+
 
 	jmp ZVM_next ; XXX provide implementation
 

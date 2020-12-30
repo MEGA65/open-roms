@@ -272,6 +272,8 @@ m65_chrout_fix_scroll_up_scroll:
 
 	phz
 
+	; XXX try to shorten code by using m65_screen_put_space
+
 	jsr m65_helper_scrlpnt_color
 	lda COLOR
 	and #$0F

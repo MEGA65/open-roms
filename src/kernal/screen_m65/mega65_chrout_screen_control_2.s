@@ -150,7 +150,7 @@ m65_chrout_screen_INS:
 
 	jsr m65_chrout_screen_INS_copy
 
-	; Store space in the current character cell
+	; Store space in the current character cell  XXX try to shorten code using m65_screen_put_space
 
 	lda #$20
 	sta [M65_LPNT_SCR], z

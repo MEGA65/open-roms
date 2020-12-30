@@ -72,20 +72,12 @@ m65_chrout_screen_DEL_1stcol:
 	lda M65__TXTCOL
 	beq @3
 
-	; Deleta character under cursor
+	; Delete character under cursor
 
 	phz
 
-	jsr m65_helper_scrlpnt_color
 	ldz M65__TXTCOL
-
-	lda COLOR
-	and #$0F
-	sta [M65_LPNT_SCR], z
-
-	jsr m65_helper_scrlpnt_to_screen
-	lda #$20
-	sta [M65_LPNT_SCR], z
+	jsr m65_screen_put_space
 
 	plz
 

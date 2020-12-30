@@ -98,15 +98,7 @@ m65_chrout_esc_P: ; erase everything from start of the line to cursor      XXX u
 	ldz #$FF
 @1:
 	inz
-	; XXX common part - deduplicate, find other places
-	lda #$20
-	sta [M65_LPNT_SCR], z
-	jsr m65_helper_scrlpnt_color
-	lda COLOR
-	and #$0F
-	sta [M65_LPNT_SCR], z
-	jsr m65_helper_scrlpnt_to_screen
-	; XXX end common part
+	jsr m65_screen_put_space
 	cpz M65__TXTCOL
 	bne @1
 
@@ -121,15 +113,7 @@ m65_chrout_esc_Q: ; erase everything from cursor till the end of line      XXX u
 	taz
 @1:
 	dez
-	; XXX common part - deduplicate, find other places
-	lda #$20
-	sta [M65_LPNT_SCR], z
-	jsr m65_helper_scrlpnt_color
-	lda COLOR
-	and #$0F
-	sta [M65_LPNT_SCR], z
-	jsr m65_helper_scrlpnt_to_screen
-	; XXX end common part
+	jsr m65_screen_put_space
 	cpz M65__TXTCOL
 	bne @1
 

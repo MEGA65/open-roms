@@ -20,6 +20,19 @@ m65_screen_clear_special_modes: ; XXX consider integrating with 'm65_screen_clea
 	rts
 
 
+m65_screen_put_space:
+
+	; Puts space in current line, position .Z
+
+	lda #$20
+	sta [M65_LPNT_SCR], z
+	jsr m65_helper_scrlpnt_color
+	lda COLOR
+	and #$0F
+	sta [M65_LPNT_SCR], z
+	jmp m65_helper_scrlpnt_to_screen
+
+
 m65_screen_upd_txtrow_off:
 
 	ldy M65__TXTROW

@@ -185,6 +185,22 @@ m65_chrout_esc_R: ; 'reversed' screen colors
 	and #$F0
 	bra m65_chrout_esc_COLOR_done
 
+m65_chrout_esc_E: ; disable cursor flashing
+
+	lda #$FF
+	+skip_2_bytes_trash_nvz
+
+	; FALLTROUGH
+
+m65_chrout_esc_F: ; enable cursor flashing
+	
+	lda #$00
+	sta M65_SOLIDCRSR
+
+	jmp m65_chrout_screen_done
+
+
+
 
 
 ; XXX: implement screen routines below:
@@ -198,10 +214,6 @@ m65_chrout_esc_B: ; set bottom-right window position
 m65_chrout_esc_C: ; disable auto-insert mode
 	+nop
 m65_chrout_esc_D: ; delete current line, move content up
-	+nop
-m65_chrout_esc_E: ; disable cursor flashing
-	+nop
-m65_chrout_esc_F: ; enable cursor flashing
 	+nop
 m65_chrout_esc_I: ; insert empty line, move content down
 	+nop

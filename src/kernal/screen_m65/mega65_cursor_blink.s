@@ -49,7 +49,7 @@ m65_cursor_blink:
 
 	; Check if cursor was visible or not, and toggle
 	lda BLNON
-	bne m65_cursor_blink_undraw
+	bne m65_cursor_blink_check_undraw
 
 	; FALLTROUGH
 
@@ -85,7 +85,11 @@ m65_cursor_blink_end:
 	plz
 	rts
 
-m65_cursor_blink_undraw:
+m65_cursor_blink_check_undraw:
+
+	; Check if cursor should blink at all
+	lda M65_SOLIDCRSR
+	bne m65_cursor_blink_timer_reset
 
 	; Cursor undraw - color
 	lda GDCOL

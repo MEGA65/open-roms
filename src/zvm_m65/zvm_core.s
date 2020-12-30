@@ -5,10 +5,11 @@
 
 ZVM_entry:
 
-	; Reset stack pointer - this routine will never return
+	; Reset stack pointer, set .Z to 0 - this routine will never return
 
 	ldx #$FF
 	txs
+	ldz #$00
 
 	; Skip the IRQ processing, even if Kernal reenables it
 
@@ -48,6 +49,10 @@ ZVM_entry:
 	!byte $0D,$0D
 	!byte 0
 
+	; Check if extended memory is present
+
+	jsr ZVM_memtest
+
 	; Initialize constants    XXX consider moving this to a dedicated reset CPU routine
 
 	lda #$00                           ; all the Z80 memory is located below $0100:$0000
@@ -58,17 +63,10 @@ ZVM_entry:
 
 	jsr z80_table_gen
 
-
-
-
 	; XXX code is not ready to progress further
-
 	jsr PRIMM
-	!byte $0D
-	!pet "* Implementation not finished yet - system HALTED *"
-	!byte 0
-@1
-	 bra @1
+	!pet $0D, "Implementation not finished yet.", 0
+	jmp ZVM_halt
 
 	jmp zvm_BIOS_00_BOOT
 
@@ -275,3 +273,56 @@ Z80_illeg_xDCB_3F: ; SLR (IXY+d),A
 
 	jmp ZVM_next ; XXX provide implementation
 
+
+
+ZVM_memtest:
+
+	; Simple memory test
+
+	lda #$00
+	sta PTR_DATA+0
+	sta PTR_DATA+1
+	sta PTR_DATA+2
+	lda #$08
+	sta PTR_DATA+3
+
+	ldx #$F0
+@1:
+	ldy #$00
+@2:
+	lda PTR_DATA+2
+	eor #%01111111
+	sta PTR_DATA+2
+
+	stx PTR_DATA+0
+	eor PTR_DATA+0
+	sta PTR_DATA+0
+
+	sty PTR_DATA+1
+	tya
+
+	sta [PTR_DATA], z
+	lda [PTR_DATA], z
+	cmp PTR_DATA+1
+	bne ZVM_halt_memtest_failed
+
+	iny
+	bne @2
+	inx
+	bne @1
+
+	rts
+
+ZVM_halt_memtest_failed:
+
+	jsr PRIMM
+	!pet $0D, "ATTIC RAM failure.", 0
+
+	; FALLTROUGH
+
+ZVM_halt:
+
+	jsr PRIMM
+	!pet "   * System HALTED *", 0
+@1:
+	bra @1

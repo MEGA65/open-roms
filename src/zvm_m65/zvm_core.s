@@ -48,6 +48,19 @@ ZVM_entry:
 	!byte $0D,$0D
 	!byte 0
 
+	; Initialize constants    XXX consider moving this to a dedicated reset CPU routine
+
+	lda #$00                           ; all the Z80 memory is located below $0100:$0000
+	sta PTR_DATA+3
+	sta PTR_IXY_d+3
+
+	; Generate CPU tables
+
+	jsr z80_table_gen
+
+
+
+
 	; XXX code is not ready to progress further
 
 	jsr PRIMM
@@ -55,7 +68,7 @@ ZVM_entry:
 	!pet "* Implementation not finished yet - system HALTED *"
 	!byte 0
 @1
-	bra @1
+	 bra @1
 
 	jmp zvm_BIOS_00_BOOT
 
@@ -69,7 +82,7 @@ ZVM_store_next:
 
 	; Fetch and execute next opcode
 
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	asl
 	tax
 	bcs @1
@@ -130,6 +143,43 @@ Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ;
 
 ; XXX addition and subtraction are slow; pre-calculate data/flag tables in the extended 8MB RAM
 ; XXX use TRB/TSB instead of LDA + AND/ORA + STA when applicable
+; XXX all dispatch routines shall have separate versions for bank 0/1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -150,39 +200,10 @@ Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ;
 
 Z80_instr_DD_CB:   ; #DDCB
 Z80_instr_FD_CB:   ; #FDCB
-Z80_instr_09:      ; ADD HL,BC
-Z80_instr_19:      ; ADD HL,DE
-Z80_instr_29:      ; ADD HL,HL
-Z80_instr_39:      ; ADD HL,SP
-Z80_instr_CB_06:   ; RLC (HL)
-Z80_instr_CB_0E:   ; RRC (HL)
-Z80_instr_CB_16:   ; RL (HL)
-Z80_instr_CB_1E:   ; RR (HL)
-Z80_instr_CB_26:   ; SLA (HL)
-Z80_instr_CB_2E:   ; SRA (HL)
-Z80_instr_CB_3E:   ; SRL (HL)
-Z80_instr_DD_09:   ; ADD IX,BC
-Z80_instr_DD_19:   ; ADD IX,DE
-Z80_instr_DD_29:   ; ADD IX,IX
-Z80_instr_DD_39:   ; ADD IX,SP
-Z80_instr_ED_42:   ; SBC HL,BC
-Z80_instr_ED_4A:   ; ADC HL,BC
-Z80_instr_ED_52:   ; SBC HL,DE
-Z80_instr_ED_5A:   ; ADC HL,DE
-Z80_instr_ED_62:   ; SBC HL,HL
-Z80_instr_ED_67:   ; RRD
-Z80_instr_ED_6A:   ; ADC HL,HL
-Z80_instr_ED_6F:   ; RLD
-Z80_instr_ED_72:   ; SBC HL,SP
-Z80_instr_ED_7A:   ; ADC HL,SP
 Z80_instr_ED_A1:   ; CPI
 Z80_instr_ED_A9:   ; CPD
 Z80_instr_ED_B1:   ; CPIR
 Z80_instr_ED_B9:   ; CPDR
-Z80_instr_FD_09:   ; ADD IY,BC
-Z80_instr_FD_19:   ; ADD IY,DE
-Z80_instr_FD_29:   ; ADD IY,IY
-Z80_instr_FD_39:   ; ADD IY,SP
 Z80_instr_xDCB_06: ; RLC (IXY+d)
 Z80_instr_xDCB_0E: ; RRC (IXY+d)
 Z80_instr_xDCB_16: ; RL (IXY+d)

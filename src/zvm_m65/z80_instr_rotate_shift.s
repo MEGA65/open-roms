@@ -3,6 +3,85 @@
 ; Z80 rotate/shift instructions
 ;
 
+; XXX for RRD/RLD generate tables in extended RAM
+
+
+Z80_instr_ED_67:   ; RRD
+
+	jsr (VEC_fetch_via_HL)
+	sta REG_TMP1
+	
+	lda REG_A
+	tax
+	and #$F0
+	sta REG_A
+	txa
+	
+	ror
+	ror  REG_TMP1
+	ror
+	ror  REG_TMP1
+	ror
+	ror  REG_TMP1
+	ror
+	ror  REG_TMP1
+	ror
+	
+	clc
+	ror
+	asr
+	asr
+	asr
+	
+	ora REG_A
+	sta REG_A
+	
+	tax
+	lda REG_F
+	and #Z80_CF
+	ora z80_ftable_RRD_RLD,x
+	sta REG_F
+	
+	lda REG_TMP1
+	jmp ZVM_store_next
+
+Z80_instr_ED_6F:   ; RLD
+
+	jsr (VEC_fetch_via_HL)
+	sta REG_TMP1
+	
+	lda REG_A
+	tax
+	and #$F0
+	sta REG_A
+	txa
+	
+	asl
+	asl
+	asl
+	asl
+	
+	asl
+	rol REG_TMP1
+	rol
+	rol REG_TMP1
+	rol	
+	rol REG_TMP1
+	rol
+	rol REG_TMP1
+	rol
+
+	ora REG_A
+	sta REG_A
+	
+	tax
+	lda REG_F
+	and #Z80_CF
+	ora z80_ftable_RRD_RLD,x
+	sta REG_F
+	
+	lda REG_TMP1
+	jmp ZVM_store_next
 
 Z80_instr_07:      ; RLCA
 
@@ -92,6 +171,25 @@ Z80_instr_1F:      ; RRA
 	jmp ZVM_next
 }
 
+!macro Z80_RLC_VIA_HL {
+
+	jsr (VEC_fetch_via_HL)
+
+	tax
+	rol
+	txa
+	
+	rol
+	sta [PTR_DATA],z
+	
+	tax
+	lda z80_ftable_IN_OR_XOR, x
+	sta REG_F
+	+bcc ZVM_next
+	+Z80_PUT_1_CF
+	jmp ZVM_next
+}
+
 Z80_instr_CB_00:   +Z80_RLC_REGn REG_B                                         ; RLC B
 Z80_instr_CB_01:   +Z80_RLC_REGn REG_C                                         ; RLC C
 Z80_instr_CB_02:   +Z80_RLC_REGn REG_D                                         ; RLC D
@@ -99,6 +197,7 @@ Z80_instr_CB_03:   +Z80_RLC_REGn REG_E                                         ;
 Z80_instr_CB_04:   +Z80_RLC_REGn REG_H                                         ; RLC H
 Z80_instr_CB_05:   +Z80_RLC_REGn REG_L                                         ; RLC L
 Z80_instr_CB_07:   +Z80_RLC_REGn REG_A                                         ; RLC A
+Z80_instr_CB_06:   +Z80_RLC_VIA_HL                                             ; RLC (HL)
 
 !macro Z80_RRC_REGn .REGn {
 
@@ -116,6 +215,25 @@ Z80_instr_CB_07:   +Z80_RLC_REGn REG_A                                         ;
 	jmp ZVM_next
 }
 
+!macro Z80_RRC_VIA_HL {
+
+	jsr (VEC_fetch_via_HL)
+
+	tax
+	ror
+	txa
+
+	ror
+	sta [PTR_DATA],z
+	
+	tax
+	lda z80_ftable_IN_OR_XOR, x
+	sta REG_F
+	+bcc ZVM_next
+	+Z80_PUT_1_CF
+	jmp ZVM_next
+}
+
 Z80_instr_CB_08:   +Z80_RRC_REGn REG_B                                         ; RRC B
 Z80_instr_CB_09:   +Z80_RRC_REGn REG_C                                         ; RRC C
 Z80_instr_CB_0A:   +Z80_RRC_REGn REG_D                                         ; RRC D
@@ -123,6 +241,7 @@ Z80_instr_CB_0B:   +Z80_RRC_REGn REG_E                                         ;
 Z80_instr_CB_0C:   +Z80_RRC_REGn REG_H                                         ; RRC H
 Z80_instr_CB_0D:   +Z80_RRC_REGn REG_L                                         ; RRC L
 Z80_instr_CB_0F:   +Z80_RRC_REGn REG_A                                         ; RRC A
+Z80_instr_CB_0E:   +Z80_RRC_VIA_HL                                             ; RRC (HL)
 
 !macro Z80_RL_REGn .REGn {
 
@@ -140,6 +259,25 @@ Z80_instr_CB_0F:   +Z80_RRC_REGn REG_A                                         ;
 	jmp ZVM_next
 }
 
+!macro Z80_RL_VIA_HL {
+
+	jsr (VEC_fetch_via_HL)
+
+	clc
+	bbr0 REG_F, @1
+	sec
+@1:
+	rol
+	sta [PTR_DATA],z
+	
+	tax
+	lda z80_ftable_IN_OR_XOR, x
+	sta REG_F
+	+bcc ZVM_next
+	+Z80_PUT_1_CF
+	jmp ZVM_next
+}
+
 Z80_instr_CB_10:   +Z80_RL_REGn REG_B                                          ; RL B
 Z80_instr_CB_11:   +Z80_RL_REGn REG_C                                          ; RL C 
 Z80_instr_CB_12:   +Z80_RL_REGn REG_D                                          ; RL D
@@ -147,6 +285,7 @@ Z80_instr_CB_13:   +Z80_RL_REGn REG_E                                          ;
 Z80_instr_CB_14:   +Z80_RL_REGn REG_H                                          ; RL H
 Z80_instr_CB_15:   +Z80_RL_REGn REG_L                                          ; RL L
 Z80_instr_CB_17:   +Z80_RL_REGn REG_A                                          ; RL A
+Z80_instr_CB_16:   +Z80_RL_VIA_HL                                              ; RL (HL)
 
 !macro Z80_RR_REGn .REGn {
 
@@ -164,6 +303,25 @@ Z80_instr_CB_17:   +Z80_RL_REGn REG_A                                          ;
 	jmp ZVM_next
 }
 
+!macro Z80_RR_VIA_HL {
+
+	jsr (VEC_fetch_via_HL)
+
+	clc
+	bbr0 REG_F, @1
+	sec
+@1:
+	ror
+	sta [PTR_DATA],z
+	
+	tax
+	lda z80_ftable_IN_OR_XOR, x
+	sta REG_F
+	+bcc ZVM_next
+	+Z80_PUT_1_CF
+	jmp ZVM_next
+}
+
 Z80_instr_CB_18:   +Z80_RR_REGn REG_B                                          ; RR B
 Z80_instr_CB_19:   +Z80_RR_REGn REG_C                                          ; RR C
 Z80_instr_CB_1A:   +Z80_RR_REGn REG_D                                          ; RR D
@@ -171,6 +329,7 @@ Z80_instr_CB_1B:   +Z80_RR_REGn REG_E                                          ;
 Z80_instr_CB_1C:   +Z80_RR_REGn REG_H                                          ; RR H
 Z80_instr_CB_1D:   +Z80_RR_REGn REG_L                                          ; RR L
 Z80_instr_CB_1F:   +Z80_RR_REGn REG_A                                          ; RR A
+Z80_instr_CB_1E:   +Z80_RR_VIA_HL                                              ; RR (HL)
 
 ; XXX SLA/SLL (and possibly rotations) can be made slightly faster with dedicated tables (omit carry flag calculation)
 
@@ -186,6 +345,20 @@ Z80_instr_CB_1F:   +Z80_RR_REGn REG_A                                          ;
 	jmp ZVM_next
 }
 
+!macro Z80_SLA_VIA {
+
+	jsr (VEC_fetch_via_HL)
+	asl
+	sta [PTR_DATA],z
+	
+	tax
+	lda z80_ftable_IN_OR_XOR, x
+	sta REG_F
+	+bcc ZVM_next
+	+Z80_PUT_1_CF
+	jmp ZVM_next
+}
+
 Z80_instr_CB_20:   +Z80_SLA_REGn REG_B                                         ; SLA B
 Z80_instr_CB_21:   +Z80_SLA_REGn REG_C                                         ; SLA C
 Z80_instr_CB_22:   +Z80_SLA_REGn REG_D                                         ; SLA D
@@ -193,6 +366,7 @@ Z80_instr_CB_23:   +Z80_SLA_REGn REG_E                                         ;
 Z80_instr_CB_24:   +Z80_SLA_REGn REG_H                                         ; SLA H
 Z80_instr_CB_25:   +Z80_SLA_REGn REG_L                                         ; SLA L
 Z80_instr_CB_27:   +Z80_SLA_REGn REG_A                                         ; SLA A
+Z80_instr_CB_26:   +Z80_SLA_VIA                                                ; SLA (HL)
 
 !macro Z80_SLL_REGn .REGn {
 
@@ -228,6 +402,21 @@ Z80_illeg_CB_37:   +Z80_SLL_REGn REG_A                                         ;
 	jmp ZVM_next
 }
 
+!macro Z80_SRL_VIA_HL {
+
+	jsr (VEC_fetch_via_HL)
+	clc
+	ror
+	sta [PTR_DATA],z
+	
+	tax
+	lda z80_ftable_IN_OR_XOR, x
+	sta REG_F
+	+bcc ZVM_next
+	+Z80_PUT_1_CF
+	jmp ZVM_next
+}
+
 Z80_instr_CB_38:   +Z80_SRL_REGn REG_B                                         ; SRL B
 Z80_instr_CB_39:   +Z80_SRL_REGn REG_C                                         ; SRL C
 Z80_instr_CB_3A:   +Z80_SRL_REGn REG_D                                         ; SRL D
@@ -235,6 +424,7 @@ Z80_instr_CB_3B:   +Z80_SRL_REGn REG_E                                         ;
 Z80_instr_CB_3C:   +Z80_SRL_REGn REG_H                                         ; SRL H
 Z80_instr_CB_3D:   +Z80_SRL_REGn REG_L                                         ; SRL L
 Z80_instr_CB_3F:   +Z80_SRL_REGn REG_A                                         ; SRL A
+Z80_instr_CB_3E:   +Z80_SRL_VIA_HL                                             ; SRL (HL)
 
 !macro Z80_SRA_REGn .REGn {
 
@@ -252,12 +442,30 @@ Z80_instr_CB_3F:   +Z80_SRL_REGn REG_A                                         ;
 	jmp ZVM_next
 }
 
-Z80_instr_CB_28:   +Z80_SRA_REGn REG_B; SRA B
-Z80_instr_CB_29:   +Z80_SRA_REGn REG_C; SRA C
-Z80_instr_CB_2A:   +Z80_SRA_REGn REG_D; SRA D
-Z80_instr_CB_2B:   +Z80_SRA_REGn REG_E; SRA E
-Z80_instr_CB_2C:   +Z80_SRA_REGn REG_H; SRA H
-Z80_instr_CB_2D:   +Z80_SRA_REGn REG_L; SRA L
-Z80_instr_CB_2F:   +Z80_SRA_REGn REG_A; SRA A
+!macro Z80_SRA_VIA_HL {
 
+	jsr (VEC_fetch_via_HL)
+	
+	tax
+	ror
+	txa
+	
+	ror
+	sta [PTR_DATA],z
+	
+	tax
+	lda z80_ftable_IN_OR_XOR, x
+	sta REG_F
+	+bcc ZVM_next
+	+Z80_PUT_1_CF
+	jmp ZVM_next
+}
 
+Z80_instr_CB_28:   +Z80_SRA_REGn REG_B                                         ; SRA B
+Z80_instr_CB_29:   +Z80_SRA_REGn REG_C                                         ; SRA C
+Z80_instr_CB_2A:   +Z80_SRA_REGn REG_D                                         ; SRA D
+Z80_instr_CB_2B:   +Z80_SRA_REGn REG_E                                         ; SRA E
+Z80_instr_CB_2C:   +Z80_SRA_REGn REG_H                                         ; SRA H
+Z80_instr_CB_2D:   +Z80_SRA_REGn REG_L                                         ; SRA L
+Z80_instr_CB_2F:   +Z80_SRA_REGn REG_A                                         ; SRA A
+Z80_instr_CB_2E:   +Z80_SRA_VIA_HL                                             ; SRA (HL)

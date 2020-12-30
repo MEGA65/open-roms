@@ -8,12 +8,12 @@
 
 
 !macro Z80_ADD_n {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	bra Z80_common_add
 }
 
 !macro Z80_ADC_n {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	bbs0 REG_F,Z80_common_adc
 	jmp Z80_common_add
 }
@@ -167,12 +167,12 @@ Z80_common_adc:
 	jmp ZVM_next
 
 !macro Z80_SUB_n {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	bra Z80_common_sub
 }
 
 !macro Z80_SBC_n {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	bbs0 REG_F,Z80_common_sbc
 	jmp Z80_common_sub
 }
@@ -326,7 +326,7 @@ Z80_common_sbc:
 	jmp ZVM_next
 
 !macro Z80_CP_n {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	bra Z80_common_cp
 }
 
@@ -431,7 +431,7 @@ Z80_common_cp:
 }
 
 !macro Z80_AND_n {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	+Z80_AND_common
 }
 
@@ -491,7 +491,7 @@ Z80_instr_FD_A6:   +Z80_AND_VIA_IY_d                                           ;
 }
 
 !macro Z80_OR_n {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	+Z80_OR_common
 }
 
@@ -548,7 +548,7 @@ Z80_instr_FD_B6:   +Z80_OR_VIA_IY_d                                            ;
 }
 
 !macro Z80_XOR_n {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	+Z80_XOR_common
 }
 

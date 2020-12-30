@@ -6,7 +6,7 @@
 
 Z80_instr_DB:                                                                  ; IN A,(n)
 
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	sta ADDR_IO+0
 	lda REG_A
 	sta ADDR_IO+1
@@ -39,7 +39,7 @@ Z80_instr_ED_78:   +Z80_IN_REGn REG_A                                          ;
 
 Z80_instr_D3:                                                                  ; OUT (n),A
 
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	sta ADDR_IO+0
 	lda REG_A
 	sta ADDR_IO+1

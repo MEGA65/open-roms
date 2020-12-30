@@ -3,7 +3,6 @@
 ; Z80 bit set/reset/test instructions
 ;
 
-
 ; bits 0, 1, 4, 6
 
 Z80_instr_CB_40:   ; BIT 0,B

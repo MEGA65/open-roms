@@ -74,6 +74,8 @@ zvm_BIOS_00_BOOT:            ; Cold start
 	lda TIME+2               ; give a little initial randomness to register R
 	sta REG_R06
 
+	; XXX restore all *_EXT1 values
+
 	; XXX load CPM3.SYS
 
 	; FALLTROUGH

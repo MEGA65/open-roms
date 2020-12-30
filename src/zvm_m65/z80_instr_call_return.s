@@ -6,9 +6,9 @@
 
 Z80_instr_CD:      ; CALL nn
 
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	pha
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	pha
 
 	lda REG_PC+1

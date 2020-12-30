@@ -34,6 +34,9 @@ z80_ftable_SUB_SBC:
 z80_ftable_CP:
 	+PUT_Z80_FTABLE_CP
 
+z80_ftable_RRD_RLD:
+	+PUT_Z80_FTABLE_RRD_RLD
+
 ;
 ; That horrific DAA instruction
 ;

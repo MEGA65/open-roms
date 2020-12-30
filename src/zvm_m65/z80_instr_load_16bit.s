@@ -5,9 +5,9 @@
 
 
 !macro Z80_LD_REGnn_nn .REGnn {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	sta .REGnn+0
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	sta .REGnn+1
 	jmp ZVM_next
 }

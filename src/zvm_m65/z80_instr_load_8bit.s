@@ -110,7 +110,7 @@ Z80_illeg_FD_6C:   +Z80_LD_REGn_REGn REG_IYL, REG_IYH                          ;
 Z80_illeg_FD_6F:   +Z80_LD_REGn_REGn REG_IYL, REG_A                            ; LD IYL,A
 
 !macro Z80_LD_REGn_n .REGn {
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	sta .REGn
 	jmp ZVM_next
 }
@@ -250,7 +250,7 @@ Z80_instr_FD_77:   +Z80_LD_VIA_IY_d_REG_n REG_A                                ;
 
 Z80_instr_36:      ; LD (HL),n
 
-	jsr (VEC_fetch_value)
+	jsr (VEC_fetch_via_PC_inc)
 	jsr (VEC_store_via_HL)
 	jmp ZVM_next
 

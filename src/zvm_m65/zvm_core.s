@@ -191,6 +191,8 @@ Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ;
 
 
 
+
+
 ;
 ; Not implemented yet - XXX implement them!
 ;
@@ -202,83 +204,21 @@ Z80_instr_ED_A1:   ; CPI
 Z80_instr_ED_A9:   ; CPD
 Z80_instr_ED_B1:   ; CPIR
 Z80_instr_ED_B9:   ; CPDR
-Z80_instr_xDCB_06: ; RLC (IXY+d)
-Z80_instr_xDCB_0E: ; RRC (IXY+d)
-Z80_instr_xDCB_16: ; RL (IXY+d)
-Z80_instr_xDCB_1E: ; RR (IXY+d)
-Z80_instr_xDCB_26: ; SLA (IXY+d)
-Z80_instr_xDCB_2E: ; SRA (IXY+d)
-Z80_instr_xDCB_3E: ; SRL (IXY+d)
-Z80_illeg_CB_36:   ; SLL (HL)
-Z80_illeg_ED_70:   ; IN F,(C)
-Z80_illeg_ED_71:   ; OUT (C),0
-Z80_illeg_xDCB_00: ; RLC (IXY+d),B
-Z80_illeg_xDCB_01: ; RLC (IXY+d),C
-Z80_illeg_xDCB_02: ; RLC (IXY+d),D
-Z80_illeg_xDCB_03: ; RLC (IXY+d),E
-Z80_illeg_xDCB_04: ; RLC (IXY+d),H
-Z80_illeg_xDCB_05: ; RLC (IXY+d),L
-Z80_illeg_xDCB_07: ; RLC (IXY+d),A
-Z80_illeg_xDCB_08: ; RRC (IXY+d),B
-Z80_illeg_xDCB_09: ; RRC (IXY+d),C
-Z80_illeg_xDCB_0A: ; RRC (IXY+d),D
-Z80_illeg_xDCB_0B: ; RRC (IXY+d),E
-Z80_illeg_xDCB_0C: ; RRC (IXY+d),H
-Z80_illeg_xDCB_0D: ; RRC (IXY+d),L
-Z80_illeg_xDCB_0F: ; RRC (IXY+d),A
-Z80_illeg_xDCB_10: ; RL (IXY+d),B
-Z80_illeg_xDCB_11: ; RL (IXY+d),C
-Z80_illeg_xDCB_12: ; RL (IXY+d),D
-Z80_illeg_xDCB_13: ; RL (IXY+d),E
-Z80_illeg_xDCB_14: ; RL (IXY+d),H
-Z80_illeg_xDCB_15: ; RL (IXY+d),L
-Z80_illeg_xDCB_17: ; RL (IXY+d),A
-Z80_illeg_xDCB_18: ; RR (IXY+d),B
-Z80_illeg_xDCB_19: ; RR (IXY+d),C
-Z80_illeg_xDCB_1A: ; RR (IXY+d),D
-Z80_illeg_xDCB_1B: ; RR (IXY+d),E
-Z80_illeg_xDCB_1C: ; RR (IXY+d),H
-Z80_illeg_xDCB_1D: ; RR (IXY+d),L
-Z80_illeg_xDCB_1F: ; RR (IXY+d),A
-Z80_illeg_xDCB_20: ; SLA (IXY+d),B
-Z80_illeg_xDCB_21: ; SLA (IXY+d),C
-Z80_illeg_xDCB_22: ; SLA (IXY+d),D
-Z80_illeg_xDCB_23: ; SLA (IXY+d),E
-Z80_illeg_xDCB_24: ; SLA (IXY+d),H
-Z80_illeg_xDCB_25: ; SLA (IXY+d),L
-Z80_illeg_xDCB_27: ; SLA (IXY+d),A
-Z80_illeg_xDCB_28: ; SRA (IXY+d),B
-Z80_illeg_xDCB_29: ; SRA (IXY+d),C
-Z80_illeg_xDCB_2A: ; SRA (IXY+d),D
-Z80_illeg_xDCB_2B: ; SRA (IXY+d),E
-Z80_illeg_xDCB_2C: ; SRA (IXY+d),H
-Z80_illeg_xDCB_2D: ; SRA (IXY+d),L
-Z80_illeg_xDCB_2F: ; SRA (IXY+d),A
-Z80_illeg_xDCB_30: ; SLL (IXY+d),B
-Z80_illeg_xDCB_31: ; SLL (IXY+d),C
-Z80_illeg_xDCB_32: ; SLL (IXY+d),D
-Z80_illeg_xDCB_33: ; SLL (IXY+d),E
-Z80_illeg_xDCB_34: ; SLL (IXY+d),H
-Z80_illeg_xDCB_35: ; SLL (IXY+d),L
-Z80_illeg_xDCB_36: ; SLL (IXY+d)
-Z80_illeg_xDCB_37: ; SLL (IXY+d),A
-Z80_illeg_xDCB_38: ; SLR (IXY+d),B
-Z80_illeg_xDCB_39: ; SLR (IXY+d),C
-Z80_illeg_xDCB_3A: ; SLR (IXY+d),D
-Z80_illeg_xDCB_3B: ; SLR (IXY+d),E
-Z80_illeg_xDCB_3C: ; SLR (IXY+d),H
-Z80_illeg_xDCB_3D: ; SLR (IXY+d),L
-Z80_illeg_xDCB_3F: ; SLR (IXY+d),A
+
+
 
 
 	jmp ZVM_next ; XXX provide implementation
 
 
 
+
+
 ZVM_memtest:
 
 	; Simple memory test
-
+	; XXX this test is temporary
+	
 	lda #$00
 	sta PTR_DATA+0
 	sta PTR_DATA+1

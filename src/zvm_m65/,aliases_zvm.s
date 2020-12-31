@@ -69,9 +69,7 @@
 ;
 
 !addr PTR_IXY_d              = $30               ; 4 bytes - calculated address IX+d / IY+d       XXX - review usage !!!
-!addr PTR_IXY_d_EXT1         = PTR_IXY_d+2
 !addr PTR_DATA               = $34               ; 4 bytes - calculated data source address       XXX - review usage !!! also check functions using ZVM_store_next
-!addr PTR_DATA_EXT1          = PTR_DATA+2
 !addr ADDR_IO                = $38               ; 4 bytes - address for fetching/storing the IO
 
 !addr REG_TMP1               = $3C               ; 1 byte  - emulation-specific temporary storage
@@ -80,17 +78,19 @@
 ;                              $3E               ; 2 bytes - reserved
 
 ;
-; Memory banking vectors
+; Memory banking vectors - every single routine destroys .Y in case of bank 0
 ;
+
+; XXX inline some of these routines - provide separate opcode implementations for various banks
 
 !addr zvm_bankvectors__start = $40
 
-!addr VEC_fetch_via_PC_inc   = $40               ; fetch to .A from (PC), increment PC afterwards      XXX consider providing dual-byte retrieval
+!addr VEC_fetch_via_PC_inc   = $40               ; fetch to .A from (PC), increment PC afterwards
+!addr VEC_fetch_stack        = $42               ; fetch to .A - stack POP operation, destroys .X
+!addr VEC_store_stack        = $44               ; store .A - stack PUSH operation, destroys .X
 
 ; XXX implement routines for vectors below
 
-!addr VEC_fetch_stack        = $42
-!addr VEC_store_stack        = $44
 !addr VEC_fetch_via_BC       = $46 
 !addr VEC_store_via_BC       = $48
 !addr VEC_fetch_via_DE       = $4A

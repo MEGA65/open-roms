@@ -7,11 +7,17 @@
 ZVM_bank0_vectab:
 
 	!word ZVM_bank0_fetch_via_PC_inc
+	!word ZVM_bank0_fetch_stack
+	!word ZVM_bank0_store_stack
+
 	; XXX add remaining routines here
 
 ZVM_bank1_vectab:
 
 	!word ZVM_bank1_fetch_via_PC_inc
+	!word ZVM_bank1_fetch_stack
+	!word ZVM_bank1_store_stack
+
 	; XXX add remaining routines here
 
 ;
@@ -39,13 +45,8 @@ ZVM_set_bank_1:
 
 	lda #$05
 	
-	sta REG_BC_EXT1+0
-	sta REG_DE_EXT1+0
-	sta REG_HL_EXT1+0
-	sta REG_SP_EXT1+0
-	sta REG_PC_EXT1+0
-	sta PTR_IXY_d_EXT1+0
-	sta PTR_DATA_EXT1+0
+	sta PTR_IXY_d+2
+	sta PTR_DATA+2
 
 	rts
 
@@ -61,21 +62,64 @@ ZVM_bank0_fetch_via_PC_inc:
 	lda z80_atable_mi_bank0,y
 	sta PTR_DATA+1
 	lda z80_atable_hi_bank0,y
-	sta PTR_DATA+1
+	sta PTR_DATA+2
 	
 	lda [PTR_DATA], z
-
 	inw REG_PC
+
 	rts
 
 ZVM_bank1_fetch_via_PC_inc:
 
 	lda [REG_PC], z
-
 	inw REG_PC
+
 	rts
 
+ZVM_bank0_fetch_stack:
 
+	ldx REG_SP+0
+	stx PTR_DATA+0
+	ldy REG_SP+1
+	ldx z80_atable_mi_bank0,y
+	stx PTR_DATA+1
+	ldx z80_atable_hi_bank0,y
+	stx PTR_DATA+2
+	
+	lda [PTR_DATA], z
+	inw REG_SP
+
+	rts
+
+ZVM_bank1_fetch_stack:
+
+	lda [REG_SP], z
+	inw REG_SP
+
+	rts
+
+ZVM_bank0_store_stack:
+
+	dew REG_SP
+
+	ldx REG_SP+0
+	stx PTR_DATA+0
+	ldy REG_SP+1
+	ldx z80_atable_mi_bank0,y
+	stx PTR_DATA+1
+	ldx z80_atable_hi_bank0,y
+	stx PTR_DATA+2
+
+	sta [PTR_DATA], z
+
+	rts
+
+ZVM_bank1_store_stack:
+
+	dew REG_SP
+	sta [REG_SP], z
+
+	rts
 
 
 

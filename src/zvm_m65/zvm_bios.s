@@ -53,30 +53,11 @@ zvm_BIOS_00_BOOT:            ; Cold start
 
 	; XXX !!!
 
-	; XXX fetch RAM disk image
+	; XXX fetch RAM disk image, CPM3.SYS, command interpreter
 	; XXX close all the files, reset I/O, set screen mode
 	; XXX clear memory
 
-	; Reset registers and internal emulation data
-	
-	ldz #$00     	         ; .Z is required to be 0 all the time
-	lda #$00
-	tay
-@1:
-	sta REG_AF, y
-	iny
-	cmp #(REG_IFF2+1)
-	bne @1
-
-	dew REG_AF               ; AF and SP have $FFFF value on start
-	dew REG_SP
-
-	lda TIME+2               ; give a little initial randomness to register R
-	sta REG_R06
-
-	; XXX restore all *_EXT1 values
-
-	; XXX load CPM3.SYS
+	jsr Z80_reset
 
 	; FALLTROUGH
 

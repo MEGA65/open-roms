@@ -18,7 +18,7 @@
 
 !macro Z80_RL_VIA_HL {
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 
 	clc
 	bbr0 REG_F, @1

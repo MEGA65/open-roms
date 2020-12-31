@@ -872,49 +872,49 @@ Z80_instr_CB_FF:   ; SET 7,A
 
 Z80_instr_CB_C6:   ; SET 0,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	ora #%00000001
 	jmp ZVM_store_next
 
 Z80_instr_CB_CE:   ; SET 1,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	ora #%00000010
 	jmp ZVM_store_next
 
 Z80_instr_CB_D6:   ; SET 2,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	ora #%00000100
 	jmp ZVM_store_next
 
 Z80_instr_CB_DE:   ; SET 3,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	ora #%00001000
 	jmp ZVM_store_next
 
 Z80_instr_CB_E6:   ; SET 4,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	ora #%00010000
 	jmp ZVM_store_next
 
 Z80_instr_CB_EE:   ; SET 5,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	ora #%00100000
 	jmp ZVM_store_next
 
 Z80_instr_CB_F6:   ; SET 6,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	ora #%01000000
 	jmp ZVM_store_next
 
 Z80_instr_CB_FE:   ; SET 7,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	ora #%10000000
 	jmp ZVM_store_next
 
@@ -1256,49 +1256,49 @@ Z80_instr_CB_BF:   ; RES 7,A
 
 Z80_instr_CB_86:   ; RES 0,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	and #%11111110
 	jmp ZVM_store_next
 
 Z80_instr_CB_8E:   ; RES 1,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	and #%11111101
 	jmp ZVM_store_next
 
 Z80_instr_CB_96:   ; RES 2,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	and #%11111011
 	jmp ZVM_store_next
 
 Z80_instr_CB_9E:   ; RES 3,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	and #%11110111
 	jmp ZVM_store_next
 
 Z80_instr_CB_A6:   ; RES 4,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	and #%11101111
 	jmp ZVM_store_next
 
 Z80_instr_CB_AE:   ; RES 5,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	and #%11011111
 	jmp ZVM_store_next
 
 Z80_instr_CB_B6:   ; RES 6,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	and #%10111111
 	jmp ZVM_store_next
 
 Z80_instr_CB_BE:   ; RES 7,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	and #%01111111
 	jmp ZVM_store_next
 

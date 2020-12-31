@@ -15,7 +15,7 @@
 
 !macro Z80_SRL_VIA_HL {
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	clc
 	ror
 

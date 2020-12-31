@@ -612,7 +612,7 @@ Z80_common_INC:
 
 Z80_instr_34:      ; INC (HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	tax
 	inc
 	sta [PTR_DATA],z
@@ -668,7 +668,7 @@ Z80_common_DEC:
 
 Z80_instr_35:      ; DEC (HL)
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	tax
 	dec
 	sta [PTR_DATA],z

@@ -26,8 +26,7 @@
 !set MEMCONF_SHADOW_BZP_3 = $00
 
 	; $1F800-$1FFFF  (2KB) - color RAM mirror, not useable
-	; $20000-$2FFFF (64KB) - ROM, the essential part
-	; $30000-$4FFFF (64KB) - ROM, additions
-	; $50000-$57FFF (32KB) - reserved for graphics screen
+	; $20000-$4FFFF (64KB) - ROM, additions
 
-	; $58000-...           - extended BASIC variables, RAM disk, etc.
+	; $50000-$57FFF (32KB) - reserved for graphics screen  /  Z80 memory bank 1
+	; $58000-...           - native mode BASIC variables   /  Z80 memory bank 1 (up to $57FFF)

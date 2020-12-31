@@ -34,9 +34,18 @@ ZVM_set_bank_1:
 
 	; XXX use DMAgic to switch banks (vectors on zeropage)
 
-	lda #$04                           ; all the Z80 bank 1 memory is located in $0004:$xxxx
-	sta PTR_DATA+2
-	sta PTR_IXY_d+2
+	; Since all the Z80 bank 1 memory is located in $0005:$xxxx,
+	; we can set some bytes in certain pointers for faster execution
+
+	lda #$05
+	
+	sta REG_BC_EXT1+0
+	sta REG_DE_EXT1+0
+	sta REG_HL_EXT1+0
+	sta REG_SP_EXT1+0
+	sta REG_PC_EXT1+0
+	sta PTR_IXY_d_EXT1+0
+	sta PTR_DATA_EXT1+0
 
 	rts
 

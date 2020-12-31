@@ -14,7 +14,7 @@
 
 !macro Z80_SLA_VIA_HL {
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	asl
 
 	sta [PTR_DATA],z	

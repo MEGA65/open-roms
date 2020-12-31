@@ -96,17 +96,18 @@
 !addr VEC_fetch_via_DE       = $4A
 !addr VEC_store_via_DE       = $4C
 !addr VEC_fetch_via_HL       = $4E
-!addr VEC_store_via_HL       = $50
-!addr VEC_fetch_via_IX_d     = $52
-!addr VEC_fetch_via_IY_d     = $54
-!addr VEC_store_via_IX_d     = $56
-!addr VEC_store_via_IY_d     = $58
-!addr VEC_fetch_via_nn       = $5A
-!addr VEC_store_via_nn       = $5C
-!addr VEC_fetch_via_plus1    = $5E
-!addr VEC_store_via_plus1    = $60  ; XXX jump to next directly?
-!addr VEC_xchng_stack_lo     = $62
-!addr VEC_xchng_stack_hi     = $64
+!addr VEC_fetch_via_HL_back  = $50  ; forces PTR_DATA update
+!addr VEC_store_via_HL       = $52
+!addr VEC_fetch_via_IX_d     = $54
+!addr VEC_fetch_via_IY_d     = $56
+!addr VEC_store_via_IX_d     = $58
+!addr VEC_store_via_IY_d     = $5A
+!addr VEC_fetch_via_nn       = $5C
+!addr VEC_store_via_nn       = $5E
+!addr VEC_fetch_via_plus1    = $60
+!addr VEC_store_via_plus1    = $62  ; XXX jump to next directly?
+!addr VEC_xchng_stack_lo     = $64
+!addr VEC_xchng_stack_hi     = $68
 
 ;
 ; Constant/macros definitions

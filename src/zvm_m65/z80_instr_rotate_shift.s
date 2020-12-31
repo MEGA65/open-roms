@@ -8,7 +8,7 @@
 
 Z80_instr_ED_67:   ; RRD
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	sta REG_TMP1
 	
 	lda REG_A
@@ -47,7 +47,7 @@ Z80_instr_ED_67:   ; RRD
 
 Z80_instr_ED_6F:   ; RLD
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	sta REG_TMP1
 	
 	lda REG_A

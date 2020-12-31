@@ -18,7 +18,7 @@
 
 !macro Z80_SRA_VIA_HL {
 
-	jsr (VEC_fetch_via_HL)
+	jsr (VEC_fetch_via_HL_back)
 	
 	tax
 	ror

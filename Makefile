@@ -153,6 +153,7 @@ TOOL_BUILD_SEGMENT       = build/tools/build_segment
 TOOL_RELEASE             = build/tools/release
 TOOL_SIMILARITY          = build/tools/similarity
 TOOL_ASSEMBLER           = build/tools/acme
+TOOL_ASSEMBLER_Z80       = build/tools/zmac
 
 TOOLS_LIST = $(TOOL_GENERATE_CONSTANTS) \
              $(TOOL_GENERATE_STRINGS) \
@@ -162,7 +163,8 @@ TOOLS_LIST = $(TOOL_GENERATE_CONSTANTS) \
              $(TOOL_BUILD_SEGMENT) \
              $(TOOL_RELEASE) \
              $(TOOL_SIMILARITY) \
-             $(TOOL_ASSEMBLER)
+             $(TOOL_ASSEMBLER) \
+             $(TOOL_ASSEMBLER_Z80)
 
 # List of targets
 
@@ -277,9 +279,9 @@ $(ROM_CBM_BASIC):
 
 # Rules - tools
 
-$(DIR_ACME) $(SRC_ACME):
+$(DIR_ACME) $(SRC_ACME) $(DIR_ZMAC) $(SRC_ZMAC):
 	@echo
-	@echo Fetching ACME source code...
+	@echo Fetching 3rd party source code...
 	@git submodule init
 	@git submodule update
 
@@ -864,3 +866,39 @@ testremote: build/kernal_custom.rom build/basic_custom.rom $(TARGET_CHR_PXL) bui
 testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN $(ROM_CBM_KERNAL) $(ROM_CBM_BASIC)
 	$(TOOL_SIMILARITY) $(ROM_CBM_KERNAL) $(DIR_GEN)/OUTx_x.BIN
 	$(TOOL_SIMILARITY) $(ROM_CBM_BASIC)  $(DIR_GEN)/OUTx_x.BIN
+
+#
+# Z80 and CP/M part
+#
+
+.PHONY: cpm
+cpm: $(TOOL_ASSEMBLER_Z80)
+
+DIR_ZMAC       = 3rdparty/zmac/src
+DIR_ZMAC_TMP   = build/,tmp_zmac
+HDR_ZMAC       = $(filter-out $(wildcard $(DIR_ZMAC)/_*.h),$(wildcard $(DIR_ZMAC)/*.h))
+SRC_ZMAC       = $(DIR_ZMAC)/mio.c $(DIR_ZMAC)/doc.c $(DIR_ZMAC)/zi80dis.cpp
+
+GEN_ZMAC_C     = $(DIR_ZMAC_TMP)/zmac.c
+GEN_ZMAC_H     = $(DIR_ZMAC_TMP)/doc.inl
+
+$(DIR_ZMAC_TMP)/doc: $(SRC_ZMAC)
+	@mkdir -p $(DIR_ZMAC_TMP)
+	@$(CC) -Wall -DMK_DOC -o $@ $(DIR_ZMAC)/doc.c
+
+$(DIR_ZMAC_TMP)/doc.txt : $(DIR_ZMAC)/doc.txt
+	@mkdir -p $(DIR_ZMAC_TMP)
+	@cp -f $< $@
+
+$(DIR_ZMAC_TMP)/doc.inl: $(DIR_ZMAC_TMP)/doc.txt $(DIR_ZMAC_TMP)/doc
+	@(cd $(DIR_ZMAC_TMP); ./doc > /dev/null)
+
+$(DIR_ZMAC_TMP)/zmac.c : $(SRC_ZMAC) $(DIR_ZMAC)/zmac.y
+	@mkdir -p $(DIR_ZMAC_TMP)
+	@bison -y $(DIR_ZMAC)/zmac.y -o $@
+
+$(TOOL_ASSEMBLER_Z80): $(DIR_ZMAC) $(SRC_ZMAC) $(GEN_ZMAC_C) $(GEN_ZMAC_H) $(HDR_ZMAC)
+	@echo
+	@echo Compiling tool $@ ...
+	@mkdir -p build/tools
+	@$(CC) -o $(TOOL_ASSEMBLER_Z80) $(SRC_ZMAC) $(GEN_ZMAC_C) -lm -w -I$(DIR_ZMAC) -I$(DIR_ZMAC_TMP)

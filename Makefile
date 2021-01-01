@@ -101,6 +101,16 @@ GEN_BASIC      = build/,generated/,float_constants.s
 GEN_KERNAL     =
 GEN_ZVM        = build/,generated/,z80_tables.s
 
+# Z80 part
+
+DIR_ZMAC       = 3rdparty/zmac/src
+DIR_ZMAC_TMP   = build/,tmp_zmac
+HDR_ZMAC       = $(filter-out $(wildcard $(DIR_ZMAC)/_*.h),$(wildcard $(DIR_ZMAC)/*.h))
+SRC_ZMAC       = $(DIR_ZMAC)/mio.c $(DIR_ZMAC)/doc.c $(DIR_ZMAC)/zi80dis.cpp
+
+GEN_ZMAC_C     = $(DIR_ZMAC_TMP)/zmac.c
+GEN_ZMAC_H     = $(DIR_ZMAC_TMP)/doc.inl
+
 # List of build directories
 
 DIR_CUS        = build/target_custom
@@ -868,19 +878,11 @@ testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN $(ROM_CBM_KERNAL) $(ROM
 	$(TOOL_SIMILARITY) $(ROM_CBM_BASIC)  $(DIR_GEN)/OUTx_x.BIN
 
 #
-# Z80 and CP/M part
+# Z80 part
 #
 
 .PHONY: cpm
 cpm: $(TOOL_ASSEMBLER_Z80)
-
-DIR_ZMAC       = 3rdparty/zmac/src
-DIR_ZMAC_TMP   = build/,tmp_zmac
-HDR_ZMAC       = $(filter-out $(wildcard $(DIR_ZMAC)/_*.h),$(wildcard $(DIR_ZMAC)/*.h))
-SRC_ZMAC       = $(DIR_ZMAC)/mio.c $(DIR_ZMAC)/doc.c $(DIR_ZMAC)/zi80dis.cpp
-
-GEN_ZMAC_C     = $(DIR_ZMAC_TMP)/zmac.c
-GEN_ZMAC_H     = $(DIR_ZMAC_TMP)/doc.inl
 
 $(DIR_ZMAC_TMP)/doc: $(SRC_ZMAC)
 	@mkdir -p $(DIR_ZMAC_TMP)

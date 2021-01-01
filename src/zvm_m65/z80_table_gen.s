@@ -10,53 +10,23 @@ z80_table_gen:
 	!byte 0
 
 	;
-	; Generating:   z80_atable_mi_bank0, z80_atable_hi_bank0
+	; Generating:   z80_atable_bank0
 	; Dependencies: NONE
 	; Destroys:     NONE
 	;
 
 	ldx #$00
-	
+
 @loop_atable_bank0:
-	
-	cpx #$C0
-	bcs @addr_common
-	
-	; Memory area $0000-$BFFF - maps somewhere to $0xxxx range - 48KB total
 
-	lda #$00
-	sta z80_atable_hi_bank0, x
+	lda #$04                           ;  $0000-$DFFF maps to $40000-$4DFFF (bank 0 RAM)
+	cpx #$E0
+	bcc @loop_atable_bank0_gotit
+	inc                                ;  $E000-$FFFF maps to $5E000-$5FFFF (common RAM)
 
-	txa
-	cmp #$60
-	bcc @addr_lo
+@loop_atable_bank0_gotit:
 
-@addr_hi:
-
-	; Memory area $6000-$BFFF - maps to $0C000 - $0FFFF - 24 KB
-
-	clc
-	adc #$40
-
-@addr_lo:
-
-	; Memory area $0000-$5FFF - maps to $02000 - $07FFF - 24 KB
-
-	adc #$20
-	sta z80_atable_mi_bank0, x
-
-	bra @loop_atable_next
-
-@addr_common:
-	
-	; Memory area $C000-$FFFF - maps to $5C000-$5FFFF - 16KB
-	
-	lda #$05
-	sta z80_atable_hi_bank0, x
-	txa
-	sta z80_atable_mi_bank0, x	
-	
-@loop_atable_next:
+	sta z80_atable_bank0, x
 
 	inx
 	bne @loop_atable_bank0

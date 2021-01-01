@@ -70,9 +70,9 @@ ZVM_entry:
 
 	jmp zvm_BIOS_00_BOOT
 
-ZVM_store_next:
+ZVM_store_via_HL_next:
 
-	sta [PTR_DATA],z
+	sta [REG_HL],z
 
 	; FALLTROUGH
 

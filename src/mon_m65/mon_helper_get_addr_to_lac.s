@@ -1,6 +1,6 @@
 
 
-Get_Addr_To_LAC: ; XXX !!! seems to work incorrectly for decimal
+Get_Addr_To_LAC:
 
    phx
    phy
@@ -13,7 +13,7 @@ Get_Addr_To_LAC: ; XXX !!! seems to work incorrectly for decimal
    sta  Long_AC+3
 
    jsr  Get_Glyph            ; get 1st. character
-   beq  @exit
+   +beq @exit
 
    ldy #$03                  ; here we allow '$', '+', '&', and '%' prefixes
 
@@ -54,16 +54,21 @@ Get_Addr_To_LAC: ; XXX !!! seems to work incorrectly for decimal
    cpy  #$01
    bne  @laba                ; branch if not decimal
 
-   ldx  #$03                 ; decimal - push Long_AC * 2
-   clc
+   ldx  #$03                 ; decimal - push Long_AC
 
-@push2x:
+@push_long_AC:
 
    lda  Long_AC,X
-   rol
    pha
    dex
-   bpl  @push2x
+   bpl  @push_long_AC
+
+   tsx                       ; double pushed value
+   asl  STACK+1,X
+   rol  STACK+2,X
+   rol  STACK+3,X
+   rol  STACK+4,X
+   +bcs Mon_Error            ; branch if overflow
 
 @laba:
 

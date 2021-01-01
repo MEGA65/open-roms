@@ -18,7 +18,7 @@
 
 !macro Z80_RR_VIA_HL {
 
-	jsr (VEC_fetch_via_HL_back)
+	jsr (VEC_fetch_via_HL)
 
 	clc
 	bbr0 REG_F, @1
@@ -26,7 +26,7 @@
 @1:
 	ror
 
-	sta [PTR_DATA],z
+	sta [REG_HL],z
 	bra Z80_common_RR_VIA
 }
 

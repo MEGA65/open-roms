@@ -25,23 +25,13 @@ Z80_reset:
 	; The engine requires all the Z80 visible memory to be present within the 1st 16MB,
 	; so set the most significant bytes of 32-bit pointers to 0.
 
-	stz REG_BC_EXT1+1
-	stz REG_DE_EXT1+1
-	stz REG_HL_EXT1+1
-	stz REG_SP_EXT1+1
-	stz REG_PC_EXT1+1
+	stz REG_BC_EXT+1
+	stz REG_DE_EXT+1
+	stz REG_HL_EXT+1
+	stz REG_SP_EXT+1
+	stz REG_PC_EXT+1
 	stz PTR_IXY_d+3
 	stz PTR_DATA+3
-
-	; Some pointers are useful for bank 0 only - we can set another byte there
-
-	lda #$05
-	
-	sta REG_BC_EXT1+0
-	sta REG_DE_EXT1+0
-	sta REG_HL_EXT1+0
-	sta REG_SP_EXT1+0
-	sta REG_PC_EXT1+0
 
 	; Default bank is 1 (the fastest, continuous memory)	
 

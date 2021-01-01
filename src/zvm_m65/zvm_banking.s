@@ -41,10 +41,16 @@ ZVM_set_bank_1:
 	; XXX use DMAgic to switch banks (vectors on zeropage)
 
 	; Since all the Z80 bank 1 memory is located in $0005:$xxxx,
-	; we can set some bytes in certain pointers for faster execution
+	; we can set bytes in certain pointers for faster execution
 
 	lda #$05
 	
+	sta REG_BC_EXT
+	sta REG_DE_EXT
+	sta REG_HL_EXT
+	sta REG_SP_EXT
+	sta REG_PC_EXT
+
 	sta PTR_IXY_d+2
 	sta PTR_DATA+2
 
@@ -56,19 +62,12 @@ ZVM_set_bank_1:
 
 ZVM_bank0_fetch_via_PC_inc:
 
-	lda REG_PC+0
-	sta PTR_DATA+0
 	ldy REG_PC+1
-	lda z80_atable_mi_bank0,y
-	sta PTR_DATA+1
-	lda z80_atable_hi_bank0,y
-	sta PTR_DATA+2
+	lda z80_atable_bank0,y
+	sta REG_PC_EXT+0
+
+	; FALLTROUGH
 	
-	lda [PTR_DATA], z
-	inw REG_PC
-
-	rts
-
 ZVM_bank1_fetch_via_PC_inc:
 
 	lda [REG_PC], z
@@ -78,18 +77,11 @@ ZVM_bank1_fetch_via_PC_inc:
 
 ZVM_bank0_fetch_stack:
 
-	ldx REG_SP+0
-	stx PTR_DATA+0
 	ldy REG_SP+1
-	ldx z80_atable_mi_bank0,y
-	stx PTR_DATA+1
-	ldx z80_atable_hi_bank0,y
-	stx PTR_DATA+2
+	lda z80_atable_bank0,y
+	sta REG_PC_EXT
 	
-	lda [PTR_DATA], z
-	inw REG_SP
-
-	rts
+	; FALLTROUGH
 
 ZVM_bank1_fetch_stack:
 
@@ -102,13 +94,9 @@ ZVM_bank0_store_stack:
 
 	dew REG_SP
 
-	ldx REG_SP+0
-	stx PTR_DATA+0
 	ldy REG_SP+1
-	ldx z80_atable_mi_bank0,y
-	stx PTR_DATA+1
-	ldx z80_atable_hi_bank0,y
-	stx PTR_DATA+2
+	ldx z80_atable_bank0,y
+	stx REG_SP_EXT
 
 	sta [PTR_DATA], z
 

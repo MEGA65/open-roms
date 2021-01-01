@@ -12,17 +12,17 @@
 !addr REG_BC                 = $04               ; 2 bytes - combined register
 !addr REG_C                  = REG_BC+0
 !addr REG_B                  = REG_BC+1
-!addr REG_BC_EXT1            = $06               ; 2 bytes - helper for faster access via BC in bank 1
+!addr REG_BC_EXT             = $06               ; 2 bytes - helper for faster access via BC in bank 1
 
 !addr REG_DE                 = $08               ; 2 bytes - combined register
 !addr REG_E                  = REG_DE+0
 !addr REG_D                  = REG_DE+1
-!addr REG_DE_EXT1            = $0A               ; 2 bytes - helper for faster access via DE in bank 1
+!addr REG_DE_EXT             = $0A               ; 2 bytes - helper for faster access via DE in bank 1
 
 !addr REG_HL                 = $0C               ; 2 bytes - combined register
 !addr REG_L                  = REG_HL+0
 !addr REG_H                  = REG_HL+1
-!addr REG_HL_EXT1            = $0E               ; 2 bytes - helper for faster access via HL in bank 1
+!addr REG_HL_EXT             = $0E               ; 2 bytes - helper for faster access via HL in bank 1
 
 !addr REG_SHADOW             = $10               ; 8 bytes - shadow registers
 !addr REG_F_SH               = REG_SHADOW+0
@@ -35,9 +35,9 @@
 !addr REG_H_SH               = REG_SHADOW+7
 
 !addr REG_SP                 = $18               ; 2 bytes - stack pointer
-!addr REG_SP_EXT1            = $1A               ; 2 bytes - helper for faster access via SP in bank 1
+!addr REG_SP_EXT             = $1A               ; 2 bytes - helper for faster access via SP in bank 1
 !addr REG_PC                 = $1C               ; 2 bytes - sprogram counter
-!addr REG_PC_EXT1            = $1E               ; 2 bytes - helper for faster access via PC in bank 1
+!addr REG_PC_EXT             = $1E               ; 2 bytes - helper for faster access via PC in bank 1
 
 !addr REG_IX                 = $20               ; 2 bytes - index register
 !addr REG_IXL                = REG_IX+0
@@ -86,7 +86,7 @@
 !addr zvm_bankvectors__start = $40
 
 !addr VEC_fetch_via_PC_inc   = $40               ; fetch to .A from (PC), increment PC afterwards
-!addr VEC_fetch_stack        = $42               ; fetch to .A - stack POP operation, destroys .X
+!addr VEC_fetch_stack        = $42               ; fetch to .A - stack POP operation
 !addr VEC_store_stack        = $44               ; store .A - stack PUSH operation, destroys .X
 
 ; XXX implement routines for vectors below
@@ -96,18 +96,17 @@
 !addr VEC_fetch_via_DE       = $4A
 !addr VEC_store_via_DE       = $4C
 !addr VEC_fetch_via_HL       = $4E
-!addr VEC_fetch_via_HL_back  = $50  ; forces PTR_DATA update
-!addr VEC_store_via_HL       = $52
-!addr VEC_fetch_via_IX_d     = $54
-!addr VEC_fetch_via_IY_d     = $56
-!addr VEC_store_via_IX_d     = $58
-!addr VEC_store_via_IY_d     = $5A
-!addr VEC_fetch_via_nn       = $5C
-!addr VEC_store_via_nn       = $5E
-!addr VEC_fetch_via_plus1    = $60
-!addr VEC_store_via_plus1    = $62  ; XXX jump to next directly?
-!addr VEC_xchng_stack_lo     = $64
-!addr VEC_xchng_stack_hi     = $68
+!addr VEC_store_via_HL       = $50
+!addr VEC_fetch_via_IX_d     = $52
+!addr VEC_fetch_via_IY_d     = $54
+!addr VEC_store_via_IX_d     = $56
+!addr VEC_store_via_IY_d     = $58
+!addr VEC_fetch_via_nn       = $5A
+!addr VEC_store_via_nn       = $5C
+!addr VEC_fetch_via_plus1    = $5E
+!addr VEC_store_via_plus1    = $60  ; XXX jump to next directly?
+!addr VEC_xchng_stack_lo     = $62
+!addr VEC_xchng_stack_hi     = $64
 
 ;
 ; Constant/macros definitions
@@ -150,5 +149,4 @@
 ; Helper tables for CPU emulation, downwards from $2000
 ;
 
-!addr z80_atable_mi_bank0         = $1FF0        ; table for bank 0 memory address conversion
-!addr z80_atable_hi_bank0         = $1FE0        ; table for bank 0 memory address conversion
+!addr z80_atable_bank0            = $1FE0        ; table for bank 0 memory address conversion

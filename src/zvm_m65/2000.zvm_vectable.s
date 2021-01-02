@@ -4,7 +4,7 @@
 ;
 
 
-!word ZVM_entry
+!word ZVM ; entry point
 
 
 ;

@@ -52,30 +52,31 @@
 !addr REG_R7                 = $27               ; 1 byte  - refresh counter, bit 7 (bits 0-6 are garbage)
 !addr REG_I                  = $28               ; 1 byte  - interrupt vector base
 
-!addr z80_cpustate__end      = $28
+!addr BANK_ID                = $29               ; 1 byte  - currently selected memory bank
 
-!addr BANK_ID                = $29               ; 1 byte - currently selected bank
-
-;
-; BIOS vectors
-;
-
-!addr VEC_MOVE_fetch         = $2A               ; 2 bytes - vector to byte fetch routine, for BIOS routine MOVE
-!addr VEC_MOVE_store         = $2C               ; 2 bytes - vector to byte store routine, for BIOS routine MOVE
-!addr VEC_DISKIO_store       = $2E               ; 2 bytes - vector to byte store routine, for BIOS disk I/O operations
+!addr z80_cpustate__end      = $29
 
 ;
 ; Z80 emulation temporary area
 ;
 
-!addr PTR_IXY_d              = $30               ; 4 bytes - calculated address IX+d / IY+d       XXX - review usage !!!
-!addr PTR_DATA               = $34               ; 4 bytes - calculated data source address       XXX - review usage !!! also check functions using ZVM_store_next
-!addr ADDR_IO                = $38               ; 4 bytes - address for fetching/storing the IO
+!addr PTR_IXY_d              = $2A               ; 4 bytes - calculated address IX+d / IY+d
+!addr PTR_DATA               = $2E               ; 4 bytes - calculated data source address
+!addr ADDR_IO                = $32               ; 2 bytes - address for fetching/storing the IO
 
-!addr REG_TMP1               = $3C               ; 1 byte  - emulation-specific temporary storage
-!addr REG_TMP2               = $3D               ; 1 byte  - emulation-specific temporary storage
+!addr REG_TMP1               = $34               ; 1 byte  - emulation-specific temporary storage
+!addr REG_TMP2               = $35               ; 1 byte  - emulation-specific temporary storage
  
-;                              $3E               ; 2 bytes - reserved
+;                              $36               ; for now free till $3F (inclusive)
+
+;
+; BIOS data
+;
+
+!addr VEC_MOVE_fetch         = $40               ; 2 bytes - vector to byte fetch routine, for BIOS routine MOVE
+!addr VEC_MOVE_store         = $42               ; 2 bytes - vector to byte store routine, for BIOS routine MOVE
+!addr VEC_DISKIO_store       = $44               ; 2 bytes - vector to byte store routine, for BIOS disk I/O operations
+
 
 ;
 ; Constant/macros definitions

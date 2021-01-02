@@ -18,7 +18,7 @@
 
 !macro Z80_SRA_VIA_HL {
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	
 	tax
 	ror
@@ -26,7 +26,7 @@
 	
 	ror
 
-	sta [REG_HL],z	
+	+Z80_STORE_BACK_VIA_HL
 	bra Z80_common_SRA_VIA
 }
 

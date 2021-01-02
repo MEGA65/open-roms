@@ -78,37 +78,6 @@
 ;                              $3E               ; 2 bytes - reserved
 
 ;
-; Memory banking vectors - every single routine destroys .Y in case of bank 0
-;
-
-; XXX inline some of these routines - provide separate opcode implementations for various banks
-
-!addr zvm_bankvectors__start = $40
-
-!addr VEC_fetch_via_PC_inc   = $40               ; fetch to .A from (PC), increment PC afterwards
-!addr VEC_fetch_stack        = $42               ; fetch to .A - stack POP operation
-!addr VEC_store_stack        = $44               ; store .A - stack PUSH operation, destroys .X
-
-; XXX implement routines for vectors below
-
-!addr VEC_fetch_via_BC       = $46 
-!addr VEC_store_via_BC       = $48
-!addr VEC_fetch_via_DE       = $4A
-!addr VEC_store_via_DE       = $4C
-!addr VEC_fetch_via_HL       = $4E
-!addr VEC_store_via_HL       = $50
-!addr VEC_fetch_via_IX_d     = $52
-!addr VEC_fetch_via_IY_d     = $54
-!addr VEC_store_via_IX_d     = $56
-!addr VEC_store_via_IY_d     = $58
-!addr VEC_fetch_via_nn       = $5A
-!addr VEC_store_via_nn       = $5C
-!addr VEC_fetch_via_plus1    = $5E
-!addr VEC_store_via_plus1    = $60  ; XXX jump to next directly?
-!addr VEC_xchng_stack_lo     = $62
-!addr VEC_xchng_stack_hi     = $64
-
-;
 ; Constant/macros definitions
 ;
 
@@ -145,8 +114,73 @@
 !macro Z80_PUT_1_CF { smb0 REG_F }
 !macro Z80_PUT_0_CF { rmb0 REG_F }
 
+
 ;
-; Helper tables for CPU emulation, downwards from $2000
+; Macros to abstract memory access
 ;
 
-!addr z80_atable_bank0            = $1FE0        ; table for bank 0 memory address conversion
+!macro Z80_FETCH_VIA_PC_INC {                    ; fetch to .A from (PC), increment PC afterwards
+
+	lda [REG_PC], z
+	inw REG_PC
+}
+
+!macro Z80_FETCH_STACK {                         ; fetch to .A - stack POP operation
+
+	lda [REG_SP], z
+	inw REG_SP
+}
+
+!macro Z80_STORE_STACK {                         ; store .A - stack PUSH operation
+
+	dew REG_SP
+	sta [REG_SP], z
+}
+
+!macro Z80_FETCH_VIA_BC {                        ; fetch to .A from (BC)
+
+	lda [REG_BC], z	
+}
+
+!macro Z80_STORE_VIA_BC {                        ; store .A to (BC)
+
+	sta [REG_BC], z	
+} 
+
+!macro Z80_FETCH_VIA_DE {                        ; fetch to .A from (DE)
+
+	lda [REG_DE], z	
+}
+
+!macro Z80_STORE_VIA_DE {                        ; store .A to (DE)
+
+	sta [REG_DE], z	
+} 
+
+!macro Z80_FETCH_VIA_HL {                        ; fetch to .A from (HL)
+
+	lda [REG_HL], z
+}
+
+!macro Z80_STORE_VIA_HL {                        ; store .A to (HL)
+
+	sta [REG_HL], z
+}
+
+!macro Z80_STORE_BACK_VIA_HL {                   ; store .A to (HL) when instruction already used Z80_FETCH_VIA_HL
+
+	sta [REG_HL], z
+}
+
+; XXX turn vectors below into macros
+
+!addr VEC_fetch_via_IX_d     = $52
+!addr VEC_fetch_via_IY_d     = $54
+!addr VEC_store_via_IX_d     = $56
+!addr VEC_store_via_IY_d     = $58
+!addr VEC_fetch_via_nn       = $5A
+!addr VEC_store_via_nn       = $5C
+!addr VEC_fetch_via_plus1    = $5E
+!addr VEC_store_via_plus1    = $60  ; XXX jump to next directly?
+!addr VEC_xchng_stack_lo     = $62
+!addr VEC_xchng_stack_hi     = $64

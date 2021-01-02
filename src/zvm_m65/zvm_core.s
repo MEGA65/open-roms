@@ -72,7 +72,7 @@ ZVM_entry:
 
 ZVM_store_via_HL_next:
 
-	sta [REG_HL],z
+	+Z80_STORE_BACK_VIA_HL
 
 	; FALLTROUGH
 
@@ -80,7 +80,7 @@ ZVM_store_via_HL_next:
 
 	; Fetch and execute next opcode
 
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	asl
 	tax
 	bcs @1
@@ -155,22 +155,19 @@ Z80_instr_FD:      +ZVM_DISPATCH Z80_vectab_FD_0, Z80_vectab_FD_1              ;
 
 
 
+; XXX cleanup code below
 
+ZVM_fetch_IO:
 
+	; XXX fetch addresses via ADDR_IO - but which ones are safe? Should we have a whitelist?
+	lda #$00
+	sta REG_A
+	rts
 
+ZVM_store_IO:
 
-
-
-
-
-
-
-
-
-
-
-
-
+	; XXX again, we should have a whitelist of addresses
+	rts
 
 
 

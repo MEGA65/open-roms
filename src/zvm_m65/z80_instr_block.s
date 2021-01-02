@@ -10,8 +10,8 @@ Z80_instr_ED_A0:   ; LDI
 	and #($FF - Z80_HF - Z80_PF - Z80_NF)
 	sta REG_F
 
-	jsr (VEC_fetch_via_HL)
-	jsr (VEC_store_via_DE)
+	+Z80_FETCH_VIA_HL
+	+Z80_STORE_VIA_DE
 	
 	inw REG_HL
 	inw REG_DE
@@ -27,8 +27,8 @@ Z80_instr_ED_B0:   ; LDIR
 	and #($FF - Z80_HF - Z80_PF - Z80_NF)
 	sta REG_F
 @1:
-	jsr (VEC_fetch_via_HL)
-	jsr (VEC_store_via_DE)
+	+Z80_FETCH_VIA_HL
+	+Z80_STORE_VIA_DE
 	
 	inw REG_HL
 	inw REG_DE
@@ -43,8 +43,8 @@ Z80_instr_ED_A8:   ; LDD
 	and #($FF - Z80_HF - Z80_PF - Z80_NF)
 	sta REG_F
 
-	jsr (VEC_fetch_via_HL)
-	jsr (VEC_store_via_DE)
+	+Z80_FETCH_VIA_HL
+	+Z80_STORE_VIA_DE
 	
 	dew REG_HL
 	dew REG_DE
@@ -60,8 +60,8 @@ Z80_instr_ED_B8:   ; LDDR
 	and #($FF - Z80_HF - Z80_PF - Z80_NF)
 	sta REG_F
 @1:
-	jsr (VEC_fetch_via_HL)
-	jsr (VEC_store_via_DE)
+	+Z80_FETCH_VIA_HL
+	+Z80_STORE_VIA_DE
 	
 	dew REG_HL
 	dew REG_DE

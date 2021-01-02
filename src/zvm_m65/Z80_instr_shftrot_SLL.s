@@ -15,11 +15,11 @@
 
 !macro Z80_SLL_VIA_HL {
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	sec
 	rol
 
-	sta [REG_HL],z	
+	+Z80_STORE_BACK_VIA_HL
 	bra Z80_common_SLL_VIA
 }
 

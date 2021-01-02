@@ -5,9 +5,9 @@
 
 
 !macro Z80_LD_REGnn_nn .REGnn {
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	sta .REGnn+0
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	sta .REGnn+1
 	jmp ZVM_next
 }
@@ -65,9 +65,9 @@ Z80_instr_ED_7B:   +Z80_LD_REGnn_VIA_nn REG_SP                                 ;
 
 !macro Z80_PUSH_REGnn .REGnn {
 	lda .REGnn+1
-	jsr (VEC_store_stack)
+	+Z80_STORE_STACK
 	lda .REGnn+0
-	jsr (VEC_store_stack)
+	+Z80_STORE_STACK
 	jmp ZVM_next	
 }
 
@@ -79,9 +79,9 @@ Z80_instr_DD_E5:   +Z80_PUSH_REGnn REG_IX                                      ;
 Z80_instr_FD_E5:   +Z80_PUSH_REGnn REG_IY                                      ; PUSH IY
 
 !macro Z80_POP_REGnn .REGnn {
-	jsr (VEC_fetch_stack)
+	+Z80_FETCH_STACK
 	sta .REGnn+0
-	jsr (VEC_fetch_stack)
+	+Z80_FETCH_STACK
 	lda .REGnn+1
 	jmp ZVM_next
 }

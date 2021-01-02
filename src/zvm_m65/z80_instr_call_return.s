@@ -6,19 +6,19 @@
 
 Z80_instr_CD:      ; CALL nn
 
-	jsr (VEC_fetch_via_PC_inc)
-	pha
-	jsr (VEC_fetch_via_PC_inc)
-	pha
+	+Z80_FETCH_VIA_PC_INC
+	tax
+	+Z80_FETCH_VIA_PC_INC
+	tay
 
 	lda REG_PC+1
-	jsr (VEC_store_stack)
+	+Z80_STORE_STACK
 	lda REG_PC+0
-	jsr (VEC_store_stack)
+	+Z80_STORE_STACK
 
-	pla
+	tya
 	sta REG_PC+1
-	pla
+	txa
 	sta REG_PC+0
 	jmp ZVM_next	
 	
@@ -92,9 +92,9 @@ Z80_illeg_ED_7D:   ; RETN
 Z80_instr_ED_4D:   ; RETTI
 Z80_instr_C9:      ; RET
 
-	jsr (VEC_fetch_stack)
+	+Z80_FETCH_STACK
 	sta REG_PC+0
-	jsr (VEC_fetch_stack)
+	+Z80_FETCH_STACK
 	sta REG_PC+1
 	jmp ZVM_next
 
@@ -142,9 +142,9 @@ Z80_instr_F8:      ; RET M
 !macro Z80_RST .P {
 
 	lda REG_PC+1
-	jsr (VEC_store_stack)
+	+Z80_STORE_STACK
 	lda REG_PC+0
-	jsr (VEC_store_stack)
+	+Z80_STORE_STACK
 	lda #$00
 	sta REG_PC+1
 	lda #.P

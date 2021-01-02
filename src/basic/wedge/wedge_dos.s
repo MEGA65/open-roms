@@ -34,7 +34,7 @@ wedge_dos:
 	; Close all the channels, so that wedge has full control
 	jsr JCLALL
 
-	; Set file parameters,  channel 15 is a typical one for commands
+	; Set file parameters, channel 15 is a typical one for commands
 	jsr SELDEV                                   ; sets .X register
 	lda #$0F
 	ldy #$0F

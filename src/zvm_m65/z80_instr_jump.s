@@ -6,9 +6,9 @@
 
 Z80_instr_C3:      ; JP nn
 
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	sta REG_PC+0
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	sta REG_PC+1
 	jmp ZVM_next
 
@@ -102,7 +102,7 @@ Z80_instr_18:      ; JR e
 @1:
 	rmb7 REG_PC+0
 @2:
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	tax
 	lda z80_otable_displacement,x
 	clc

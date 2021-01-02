@@ -529,9 +529,8 @@ Dump_4_Bytes: ; XXX to be adapted
 ; ***********
 
          JSR  CHROUT            ; colour
-@loop    BBS7 Long_PC+3,@banked ; trigger banked access
-         +NOP                   ; use LDA  [Long_PC],Z
-@banked  LDA  (Long_PC),Z
+@loop
+         JSR  Get_From_Memory
          JSR  Print_Hex_Blank
          INZ
          TZA
@@ -546,9 +545,8 @@ Dump_4_Chars: ; XXX to be adapted
          LDY  #0
          STY  QTSW              ; disable quote mode
          JSR  CHROUT            ; colour
-@loop    BBS7 Long_PC+3,@banked ; trigger banked access
-         +NOP                   ; use LDA  [Long_PC],Z
-@banked  LDA  (Long_PC),Z
+@loop
+         JSR  Get_From_Memory
          TAY
          AND  #%01100000
          BNE  @laba
@@ -589,9 +587,9 @@ Dump_Row:
          LDX  #2                ; 4 blocks in 80 columns
          BBR7 MODE_80,@lchr
          DEX                    ; 2 blocks in 40 columns
-@lchr    LDA  #KEY_LT_RED
+@lchr    LDA  #KEY_LT_RED       ; XXX replace color with bold attribute
          JSR  Dump_4_Chars
-         LDA  #KEY_WHITE
+         LDA  #KEY_WHITE        ; XXX replace color with bold attribute
          JSR  Dump_4_Chars
          DEX
          BNE  @lchr

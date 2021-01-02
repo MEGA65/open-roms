@@ -360,56 +360,56 @@ Z80_common_bit7_1:
 
 Z80_instr_CB_46:   ; BIT 0,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%00000001
 	bne Z80_common_bitHL_1
 	bra Z80_common_bitHL_0
 
 Z80_instr_CB_4E:   ; BIT 1,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%00000010
 	bne Z80_common_bitHL_1
 	bra Z80_common_bitHL_0
 
 Z80_instr_CB_56:   ; BIT 2,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%00000100
 	bne Z80_common_bitHL_1
 	bra Z80_common_bitHL_0
 
 Z80_instr_CB_5E:   ; BIT 3,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%00001000
 	bne Z80_common_bitHL_1
 	bra Z80_common_bitHL_0
 
 Z80_instr_CB_66:   ; BIT 4,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%00010000
 	bne Z80_common_bitHL_1
 	bra Z80_common_bitHL_0
 
 Z80_instr_CB_6E:   ; BIT 5,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%00100000
 	bne Z80_common_bitHL_1
 	bra Z80_common_bitHL_0
 
 Z80_instr_CB_76:   ; BIT 6,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%01000000
 	bne Z80_common_bitHL_1
 	bra Z80_common_bitHL_0
 
 Z80_instr_CB_7E:   ; BIT 7,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%10000000
 	beq Z80_common_bitHL_0
 
@@ -872,49 +872,49 @@ Z80_instr_CB_FF:   ; SET 7,A
 
 Z80_instr_CB_C6:   ; SET 0,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	ora #%00000001
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_CE:   ; SET 1,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	ora #%00000010
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_D6:   ; SET 2,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	ora #%00000100
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_DE:   ; SET 3,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	ora #%00001000
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_E6:   ; SET 4,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	ora #%00010000
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_EE:   ; SET 5,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	ora #%00100000
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_F6:   ; SET 6,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	ora #%01000000
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_FE:   ; SET 7,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	ora #%10000000
 	jmp ZVM_store_via_HL_next
 
@@ -1256,49 +1256,49 @@ Z80_instr_CB_BF:   ; RES 7,A
 
 Z80_instr_CB_86:   ; RES 0,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%11111110
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_8E:   ; RES 1,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%11111101
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_96:   ; RES 2,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%11111011
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_9E:   ; RES 3,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%11110111
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_A6:   ; RES 4,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%11101111
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_AE:   ; RES 5,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%11011111
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_B6:   ; RES 6,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%10111111
 	jmp ZVM_store_via_HL_next
 
 Z80_instr_CB_BE:   ; RES 7,(HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	and #%01111111
 	jmp ZVM_store_via_HL_next
 

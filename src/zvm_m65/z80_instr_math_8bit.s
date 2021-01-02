@@ -8,12 +8,12 @@
 
 
 !macro Z80_ADD_n {
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	bra Z80_common_add
 }
 
 !macro Z80_ADC_n {
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	bbs0 REG_F,Z80_common_adc
 	jmp Z80_common_add
 }
@@ -30,12 +30,12 @@
 }
 
 !macro Z80_ADD_VIA_HL {
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	bra Z80_common_add
 }
 
 !macro Z80_ADC_VIA_HL {
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	bbs0 REG_F,Z80_common_adc
 	jmp Z80_common_add
 }
@@ -167,12 +167,12 @@ Z80_common_adc:
 	jmp ZVM_next
 
 !macro Z80_SUB_n {
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	bra Z80_common_sub
 }
 
 !macro Z80_SBC_n {
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	bbs0 REG_F,Z80_common_sbc
 	jmp Z80_common_sub
 }
@@ -189,12 +189,12 @@ Z80_common_adc:
 }
 
 !macro Z80_SUB_VIA_HL {
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	bra Z80_common_sub
 }
 
 !macro Z80_SBC_VIA_HL {
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	bbs0 REG_F,Z80_common_sbc
 	jmp Z80_common_sub
 }
@@ -326,7 +326,7 @@ Z80_common_sbc:
 	jmp ZVM_next
 
 !macro Z80_CP_n {
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	bra Z80_common_cp
 }
 
@@ -336,7 +336,7 @@ Z80_common_sbc:
 }
 
 !macro Z80_CP_VIA_HL {
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	bra Z80_common_cp
 }
 
@@ -426,12 +426,12 @@ Z80_common_cp:
 }
 
 !macro Z80_AND_VIA_HL {
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	+Z80_AND_common
 }
 
 !macro Z80_AND_n {
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	+Z80_AND_common
 }
 
@@ -486,12 +486,12 @@ Z80_instr_FD_A6:   +Z80_AND_VIA_IY_d                                           ;
 }
 
 !macro Z80_OR_VIA_HL {
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	+Z80_OR_common
 }
 
 !macro Z80_OR_n {
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	+Z80_OR_common
 }
 
@@ -543,12 +543,12 @@ Z80_instr_FD_B6:   +Z80_OR_VIA_IY_d                                            ;
 }
 
 !macro Z80_XOR_VIA_HL {
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	+Z80_XOR_common
 }
 
 !macro Z80_XOR_n {
-	jsr (VEC_fetch_via_PC_inc)
+	+Z80_FETCH_VIA_PC_INC
 	+Z80_XOR_common
 }
 
@@ -612,10 +612,10 @@ Z80_common_INC:
 
 Z80_instr_34:      ; INC (HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	tax
 	inc
-	sta [REG_HL],z
+	+Z80_STORE_BACK_VIA_HL
 	bra Z80_common_INC
 
 Z80_instr_DD_34:   ; INC (IX+d)
@@ -668,10 +668,10 @@ Z80_common_DEC:
 
 Z80_instr_35:      ; DEC (HL)
 
-	jsr (VEC_fetch_via_HL)
+	+Z80_FETCH_VIA_HL
 	tax
 	dec
-	sta [REG_HL],z
+	+Z80_STORE_BACK_VIA_HL
 	bra Z80_common_DEC
 
 Z80_instr_DD_35:   ; DEC (IX+d)

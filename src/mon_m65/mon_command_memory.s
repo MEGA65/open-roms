@@ -1,4 +1,6 @@
 
+; Based on BSM (Bit Shifter's Monitor)
+
 Mon_Memory:
 
    jsr  Set_MODE_80

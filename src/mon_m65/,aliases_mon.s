@@ -61,7 +61,9 @@
 !addr Disk_Sector = $32        ; logical sector 0 -> 255
 !addr Disk_Status = $33        ; BCD value of status
 
-                               ; $34-$3F - free space, unused for now
+                               ; $34-$3B - free space, unused for now
+
+!addr Long_TMP    = $3C        ; temporary pointer, for fetching/storing memory content
 
 !addr Disk_Msg    = $40        ; 40 bytes, disk status as text message ; XXX rework code to make it not needed
 !addr Mon_Data    = $68        ; 40 bytes, buffer for hunt and filename

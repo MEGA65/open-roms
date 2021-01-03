@@ -84,24 +84,6 @@ ZVM: ; entry point
 
 
 
-
-
-;
-; Not implemented yet - XXX implement them!
-;
-
-
-Z80_instr_ED_A1:   ; CPI
-Z80_instr_ED_A9:   ; CPD
-Z80_instr_ED_B1:   ; CPIR
-Z80_instr_ED_B9:   ; CPDR
-
-	jmp ZVM_next ; XXX provide implementation
-
-
-
-
-
 ZVM_memtest:
 
 	; Simple memory test

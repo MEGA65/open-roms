@@ -387,7 +387,7 @@ Z80_common_cp:
 	and #%00101000
 	ora z80_ftable_CP, x
 	sta REG_F
-	bvs @V1:
+	bvs @V1
 @V0:
 	bcc @VxC1
 @V0C0:

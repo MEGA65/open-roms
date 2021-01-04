@@ -182,13 +182,13 @@ Z80_instr_1A:                                                                  ;
 
 Z80_instr_32:                                                                  ; LD (nn),A
 
-	lda REG_A
-	jsr (VEC_store_via_nn)
+	ldx REG_A
+	+Z80_STORE_VIA_nn
 	jmp ZVM_next
 
 Z80_instr_3A:                                                                  ; LD A,(nn)
 
-	jsr (VEC_fetch_via_nn)
+	+Z80_FETCH_VIA_nn
 	sta REG_A
 	jmp ZVM_next
 

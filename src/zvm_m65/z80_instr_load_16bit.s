@@ -32,10 +32,10 @@ Z80_instr_DD_F9:   +Z80_LD_REGnn_REGnn REG_SP, REG_IX                          ;
 Z80_instr_FD_F9:   +Z80_LD_REGnn_REGnn REG_SP, REG_IY                          ; LD SP,IY
 
 !macro Z80_LD_VIA_nn_REGnn .REGnn {
-	lda .REGnn+0
-	jsr (VEC_store_via_nn)
+	ldx .REGnn+0
+	+Z80_STORE_VIA_nn
 	lda .REGnn+1
-	jsr (VEC_store_via_plus1)
+	+Z80_STORE_VIA_plus1
 	jmp ZVM_next	
 }
 
@@ -48,9 +48,9 @@ Z80_instr_FD_22:   +Z80_LD_VIA_nn_REGnn REG_IY                                 ;
 Z80_instr_ED_73:   +Z80_LD_VIA_nn_REGnn REG_SP                                 ; LD (nn),SP
 
 !macro Z80_LD_REGnn_VIA_nn .REGnn {
-	jsr (VEC_fetch_via_nn)
+	+Z80_FETCH_VIA_nn
 	sta .REGnn+0
-	jsr (VEC_fetch_via_plus1)
+	+Z80_FETCH_VIA_plus1
 	sta .REGnn+1
 	jmp ZVM_next	
 }

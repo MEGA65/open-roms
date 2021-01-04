@@ -193,7 +193,7 @@ Z80_instr_3A:                                                                  ;
 	jmp ZVM_next
 
 !macro Z80_LD_REGn_VIA_IX_d .REGn {
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	sta .REGn
 	jmp ZVM_next
 }
@@ -207,7 +207,7 @@ Z80_instr_DD_6E:   +Z80_LD_REGn_VIA_IX_d REG_L                                 ;
 Z80_instr_DD_7E:   +Z80_LD_REGn_VIA_IX_d REG_A                                 ; LD A,(IX+d)
 
 !macro Z80_LD_REGn_VIA_IY_d .REGn {
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IX_d
 	sta .REGn
 	jmp ZVM_next
 }
@@ -221,8 +221,8 @@ Z80_instr_FD_6E:   +Z80_LD_REGn_VIA_IY_d REG_L                                 ;
 Z80_instr_FD_7E:   +Z80_LD_REGn_VIA_IY_d REG_A                                 ; LD A,(IY+d)
 
 !macro Z80_LD_VIA_IX_d_REG_n .REGn {
-	lda .REGn
-	jsr (VEC_store_via_IX_d)
+	ldx .REGn
+	+Z80_STORE_VIA_IX_d
 	jmp ZVM_next
 }
 
@@ -235,8 +235,8 @@ Z80_instr_DD_75:   +Z80_LD_VIA_IX_d_REG_n REG_L                                ;
 Z80_instr_DD_77:   +Z80_LD_VIA_IX_d_REG_n REG_A                                ; LD (IX+d),A
 
 !macro Z80_LD_VIA_IY_d_REG_n .REGn {
-	lda .REGn
-	jsr (VEC_store_via_IY_d)
+	ldx .REGn
+	+Z80_STORE_VIA_IY_d
 	jmp ZVM_next
 }
 

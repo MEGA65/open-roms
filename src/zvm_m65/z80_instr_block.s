@@ -126,6 +126,38 @@ Z80_instr_ED_A9:   ; CPD
 	jmp ZVM_next
 
 Z80_instr_ED_B1:   ; CPIR
+
+	+Z80_common_CP_block
+	inw REG_HL
+	dew REG_BC
+	beq Z80_common_CPIR_CPDR
+
+	+Z80_FETCH_VIA_HL
+	cmp REG_A
+	bne Z80_instr_ED_B1
+
+    +Z80_PUT_1_VF
+	jmp ZVM_next
+
+Z80_common_CPIR_CPDR:
+
+	+Z80_FETCH_VIA_HL
+	cmp REG_A
+	+bne ZVM_next
+
+    +Z80_PUT_1_VF
+	jmp ZVM_next
+
 Z80_instr_ED_B9:   ; CPDR
 
-	jmp ZVM_next ; XXX provide implementation
+	+Z80_common_CP_block
+	dew REG_HL
+	dew REG_BC
+	beq Z80_common_CPIR_CPDR
+
+	+Z80_FETCH_VIA_HL
+	cmp REG_A
+	bne Z80_instr_ED_B9
+
+    +Z80_PUT_1_VF
+	jmp ZVM_next

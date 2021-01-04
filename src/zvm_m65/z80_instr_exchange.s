@@ -67,12 +67,12 @@ Z80_instr_D9:      ; EXX
 	jmp ZVM_next
 
 !macro Z80_EX_VIA_SP_REGnn .REGnn {
-	lda .REGnn+0
-	jsr (VEC_xchng_stack_lo)
-	sta .REGnn+0
-	lda .REGnn+1
-	jsr (VEC_xchng_stack_hi)
-	sta .REGnn+1
+	ldx .REGnn+0
+	+Z80_XCHG_VIA_SP_lo
+	sty .REGnn+0
+	ldx .REGnn+1
+	+Z80_XCHG_VIA_SP_hi
+	sty .REGnn+1
 
 	jmp ZVM_next
 }

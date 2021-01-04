@@ -173,15 +173,64 @@
 	sta [REG_HL], z
 }
 
+!macro Z80_FETCH_VIA_nn {                        ; fetch to .A from ((PC))
+
+	lda [REG_PC], z
+	sta PTR_DATA+0
+	inw REG_PC
+	lda [REG_PC], z
+	sta PTR_DATA+1
+	inw REG_PC
+
+	lda [PTR_DATA], z
+}
+
+!macro Z80_STORE_VIA_nn {                        ; store .X to ((PC))
+
+	lda [REG_PC], z
+	sta PTR_DATA+0
+	inw REG_PC
+	lda [REG_PC], z
+	sta PTR_DATA+1
+	inw REG_PC
+
+	txa
+	lda [PTR_DATA], z
+}
+
+!macro Z80_FETCH_VIA_plus1 {                     ; fetch to .A from [PTR_DATA+1]
+
+	inw PTR_DATA
+	lda [PTR_DATA], z
+}
+
+!macro Z80_STORE_VIA_plus1 {                     ; store .A to [PTR_DATA+1]
+
+	inw PTR_DATA
+	sta [PTR_DATA], z
+}
+
+!macro Z80_XCHG_VIA_SP_lo {                      ; for exchange via stack only
+
+	lda [REG_SP], z
+	tay
+	txa
+	sta [REG_SP], z 
+}
+
+!macro Z80_XCHG_VIA_SP_hi {                      ; for exchange via stack only
+
+	inz
+	lda [REG_SP], z
+	tay
+	txa
+	sta [REG_SP], z
+	dez
+}
+
 ; XXX turn vectors below into macros
 
 !addr VEC_fetch_via_IX_d     = $52
 !addr VEC_fetch_via_IY_d     = $54
 !addr VEC_store_via_IX_d     = $56
 !addr VEC_store_via_IY_d     = $58
-!addr VEC_fetch_via_nn       = $5A
-!addr VEC_store_via_nn       = $5C
-!addr VEC_fetch_via_plus1    = $5E
-!addr VEC_store_via_plus1    = $60  ; XXX jump to next directly?
-!addr VEC_xchng_stack_lo     = $62
-!addr VEC_xchng_stack_hi     = $64

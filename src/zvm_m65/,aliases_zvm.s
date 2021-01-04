@@ -228,9 +228,22 @@
 	dez
 }
 
-; XXX turn vectors below into macros
+!macro Z80_FETCH_VIA_IX_d {                      ; fetch to .A using IX and displacement
 
-!addr VEC_fetch_via_IX_d     = $52
-!addr VEC_fetch_via_IY_d     = $54
-!addr VEC_store_via_IX_d     = $56
-!addr VEC_store_via_IY_d     = $58
+	jsr Z80_common_fetch_via_IX_d
+}
+
+!macro Z80_FETCH_VIA_IY_d {                      ; fetch to .A using IY and displacement
+
+	jsr Z80_common_fetch_via_IY_d
+}
+
+!macro Z80_STORE_VIA_IX_d {                      ; store .X using IX and displacement
+
+	jsr Z80_common_store_via_IX_d
+}
+
+!macro Z80_STORE_VIA_IY_d {                      ; store .X using IY and displacement
+
+	jsr Z80_common_store_via_IY_d
+}

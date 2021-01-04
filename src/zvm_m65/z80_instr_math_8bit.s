@@ -41,23 +41,23 @@
 }
 
 !macro Z80_ADD_VIA_IX_d {
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	bra Z80_common_add
 }
 
 !macro Z80_ADC_VIA_IX_d {
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	bbs0 REG_F,Z80_common_adc
 	jmp Z80_common_add
 }
 
 !macro Z80_ADD_VIA_IY_d {
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	bra Z80_common_add
 }
 
 !macro Z80_ADC_VIA_IY_d {
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	bbs0 REG_F,Z80_common_adc
 	jmp Z80_common_add
 }
@@ -200,23 +200,23 @@ Z80_common_adc:
 }
 
 !macro Z80_SUB_VIA_IX_d {
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	bra Z80_common_sub
 }
 
 !macro Z80_SBC_VIA_IX_d {
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	bbs0 REG_F,Z80_common_sbc
 	jmp Z80_common_sub
 }
 
 !macro Z80_SUB_VIA_IY_d {
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	bra Z80_common_sub
 }
 
 !macro Z80_SBC_VIA_IY_d {
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	bbs0 REG_F,Z80_common_sbc
 	jmp Z80_common_sub
 }
@@ -341,12 +341,12 @@ Z80_common_sbc:
 }
 
 !macro Z80_CP_VIA_IX_d {
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	bra Z80_common_cp
 }
 
 !macro Z80_CP_VIA_IY_d {
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	bra Z80_common_cp
 }
 
@@ -436,12 +436,12 @@ Z80_common_cp:
 }
 
 !macro Z80_AND_VIA_IX_d {
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	+Z80_AND_common
 }
 
 !macro Z80_AND_VIA_IY_d {
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	+Z80_AND_common
 }
 
@@ -496,12 +496,12 @@ Z80_instr_FD_A6:   +Z80_AND_VIA_IY_d                                           ;
 }
 
 !macro Z80_OR_VIA_IX_d {
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	+Z80_OR_common
 }
 
 !macro Z80_OR_VIA_IY_d {
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	+Z80_OR_common
 }
 
@@ -553,12 +553,12 @@ Z80_instr_FD_B6:   +Z80_OR_VIA_IY_d                                            ;
 }
 
 !macro Z80_XOR_VIA_IX_d {
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	+Z80_XOR_common
 }
 
 !macro Z80_XOR_VIA_IY_d {
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	+Z80_XOR_common
 }
 
@@ -620,7 +620,7 @@ Z80_instr_34:      ; INC (HL)
 
 Z80_instr_DD_34:   ; INC (IX+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	tax
 	inc
 	sta [PTR_DATA],z
@@ -628,7 +628,7 @@ Z80_instr_DD_34:   ; INC (IX+d)
 
 Z80_instr_FD_34:   ; INC (IY+d)
 
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	tax
 	inc
 	sta [PTR_DATA],z
@@ -676,7 +676,7 @@ Z80_instr_35:      ; DEC (HL)
 
 Z80_instr_DD_35:   ; DEC (IX+d)
 
-	jsr (VEC_fetch_via_IX_d)
+	+Z80_FETCH_VIA_IX_d
 	tax
 	dec
 	sta [PTR_DATA],z
@@ -684,7 +684,7 @@ Z80_instr_DD_35:   ; DEC (IX+d)
 
 Z80_instr_FD_35:   ; DEC (IY+d)
 
-	jsr (VEC_fetch_via_IY_d)
+	+Z80_FETCH_VIA_IY_d
 	tax
 	dec
 	sta [PTR_DATA],z

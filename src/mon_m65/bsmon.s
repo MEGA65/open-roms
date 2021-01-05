@@ -594,8 +594,8 @@ Dump_Row:
          DEX
          BNE  @lchr
          TZA
-         JSR  Add_LPC
 @done
+         JSR  Add_LPC
          PLZ
          RTS
 

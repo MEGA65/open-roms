@@ -580,13 +580,13 @@ Dump_Row:
          DEX
          BNE  @loop
 
+         BBS7 MODE_80,@done     ; in 40 columns, do not display chars
+
          JSR  PRIMM
          !byte $3a,$12,$00      ; : reverse on
 
          LDZ  #0
          LDX  #2                ; 4 blocks in 80 columns
-         BBR7 MODE_80,@lchr
-         DEX                    ; 2 blocks in 40 columns
 @lchr    LDA  #KEY_LT_RED       ; XXX replace color with bold attribute
          JSR  Dump_4_Chars
          LDA  #KEY_WHITE        ; XXX replace color with bold attribute
@@ -595,6 +595,7 @@ Dump_Row:
          BNE  @lchr
          TZA
          JSR  Add_LPC
+@done
          PLZ
          RTS
 

@@ -1,7 +1,6 @@
 
-; Monitor helper code - read and write
+; Monitor helper code - memory read and write
 
-; XXX there is a bug somewhere with wrapping arounf $FFFF
 
 Get_From_Memory:
 

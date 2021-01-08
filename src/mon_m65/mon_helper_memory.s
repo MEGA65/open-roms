@@ -16,13 +16,14 @@ Get_From_Memory:
 	adc Long_PC+0
 	sta Long_TMP+0
 
-	ldx #$02
+	ldx #$01
 @1:
-	lda Long_PC+1,x
+	lda Long_PC+0,x
 	adc #$00
-	sta Long_TMP+1,x
-	dex
-	bpl @1 
+	sta Long_TMP+0,x
+	inx
+	cpx #$04
+	bne @1 
 
 	ldz #$00
 

@@ -192,7 +192,7 @@ Jump_Table:
          !word Mon_Go           ; G  XXX to be debugged/adapted
          !word Mon_Hunt         ; H  XXX to be debugged/adapted
          !word Mon_JSR          ; J  XXX to be debugged/adapted
-         !word Mon_Memory       ; M  XXX to be debugged/adapted
+         !word Mon_Memory       ; M
          !word Mon_Register     ; R
          !word Mon_Transfer     ; T  XXX to be debugged/adapted
          !word Mon_Exit         ; X
@@ -528,9 +528,7 @@ Mon_JSR:
 Dump_4_Bytes: ; XXX to be adapted
 ; ***********
 
-         JSR  CHROUT            ; colour
-@loop
-         JSR  Get_From_Memory
+@loop    JSR  Get_From_Memory
          JSR  Print_Hex_Blank
          INZ
          TZA
@@ -542,11 +540,7 @@ Dump_4_Bytes: ; XXX to be adapted
 Dump_4_Chars: ; XXX to be adapted
 ; ***********
 
-         LDY  #0
-         STY  QTSW              ; disable quote mode
-         JSR  CHROUT            ; colour
-@loop
-         JSR  Get_From_Memory
+@loop    JSR  Get_From_Memory
          TAY
          AND  #%01100000
          BNE  @laba
@@ -573,9 +567,9 @@ Dump_Row:
          LDX  #2                ; 2 blocks in 80 columns
          BBR7 MODE_80,@loop
          DEX                    ; 1 block  in 40 columns
-@loop    LDA  #KEY_LT_RED
+@loop    JSR  Print_Attr_Bold
          JSR  Dump_4_Bytes
-         LDA  #KEY_WHITE
+         JSR  Print_Attr_NoBold
          JSR  Dump_4_Bytes
          DEX
          BNE  @loop
@@ -583,13 +577,13 @@ Dump_Row:
          BBS7 MODE_80,@done     ; in 40 columns, do not display chars
 
          JSR  PRIMM
-         !byte $3a,$12,$00      ; : reverse on
+         !byte $3a,$12,$00      ; reverse on
 
          LDZ  #0
          LDX  #2                ; 4 blocks in 80 columns
-@lchr    LDA  #KEY_LT_RED       ; XXX replace color with bold attribute
+@lchr    JSR  Print_Attr_Bold
          JSR  Dump_4_Chars
-         LDA  #KEY_WHITE        ; XXX replace color with bold attribute
+         JSR  Print_Attr_NoBold
          JSR  Dump_4_Chars
          DEX
          BNE  @lchr

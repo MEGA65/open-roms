@@ -4,7 +4,6 @@
 
 Get_From_Memory:
 
-	; XXX consider temporarily switching off $C000-$CFFF ROM
 	; XXX consider using long mode for addresses below $8000 always
 
 	phx

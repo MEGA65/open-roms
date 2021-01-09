@@ -4,8 +4,6 @@
 
 Get_From_Memory:
 
-	; XXX consider using long mode for addresses below $8000 always
-
 	phx
 	phy
 	phz
@@ -44,7 +42,7 @@ Get_From_Memory:
 	dec
 	dec
 	cmp  #$8E
-	bcs  @read                         ; branch if no need to handle shadow memory (0, 1, or above $8F)
+	bcs  @read_64k                     ; branch if no need to handle shadow memory (0, 1, or above $8F)
 @2:
 	sta  Long_TMP+0
 	bra  @read_shadow
@@ -63,6 +61,11 @@ Get_From_Memory:
 	bcs  @read_flat
 	bra  @2
 
+@read_64k:
+
+	bbr7 Long_TMP+1, @read_flat        ; below $8000 we do not want to retrieve MAP/EOM banked memory
+	bra  @read
+
 @read_shadow:
 
 	lda  #MEMCONF_SHADOW_BZP_1
@@ -72,7 +75,7 @@ Get_From_Memory:
 	lda  #MEMCONF_SHADOW_BZP_3
 	sta  Long_TMP+3
 
-@read_flat:
+@read_flat: ; XXX read via helper in KERNAL_0 segment
 	+nop
 @read: 
 	lda  (Long_TMP),Z

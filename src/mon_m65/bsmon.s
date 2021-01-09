@@ -93,9 +93,9 @@ Mon_Register:
          DEY
          BNE  @loopc
 
-; **
-Main
-; **
+; ***
+Main:
+; ***
 
          JSR  Print_CR
          LDX  #0
@@ -218,7 +218,7 @@ Mon_Exit:
          JMP  (X_Vector)
 
 ; ********
-LAC_To_PC: ; XXX to be adapted, get rid of 'bcs'!
+LAC_To_PC: ; XXX to be adapted
 ; ********
 
 ; called from Mon_Set_Register, Mon_Go and Mon_JSR

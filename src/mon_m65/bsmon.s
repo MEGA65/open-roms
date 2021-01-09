@@ -391,19 +391,16 @@ Dec_LDA:
          RTS
 
 ; ****
-Fetch: ; XXX get rid of this, use helper!
+Fetch:
 ; ****
 
          PHZ
          TYA
          TAZ
-         BBS7 Long_PC+3,@banked ; trigger banked access
-         +NOP                   ; use LDA  [Long_PC],Z
-@banked  LDA  (Long_PC),Z
+         JSR  Get_From_Memory
          PLZ
          AND  #$ff
          RTS
-
 
 
 ; *********

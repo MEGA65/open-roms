@@ -2360,7 +2360,7 @@ Close_Disk_Buffer:
 !set ENC_L = %00000010 + 11
 !set ENC_M = %00000010 + 12
 !set ENC_N = %00000010 + 13
-!set ENC_O = %00000010 + 13
+!set ENC_O = %00000010 + 14
 !set ENC_P = %00000010 + 15
 !set ENC_Q = %00000010 + 16
 !set ENC_R = %00000010 + 17

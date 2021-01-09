@@ -37,7 +37,7 @@ Get_From_Memory:
 	sta  Long_TMP+3
 
 	lda  Long_TMP+1
-	bne  @read                         ; branch if no need to handle shadow memory (not zero page)
+	bne  @read_64k                     ; branch if no need to handle shadow memory (not zero page)
 	lda  Long_TMP+0
 	dec
 	dec
@@ -75,10 +75,15 @@ Get_From_Memory:
 	lda  #MEMCONF_SHADOW_BZP_3
 	sta  Long_TMP+3
 
-@read_flat: ; XXX read via helper in KERNAL_0 segment
-	+nop
+@read_flat:
+	
+	jsr  monitor_memread_helper
+	bra  @end
+
 @read: 
 	lda  (Long_TMP),Z
+
+@end: 
 
 	plz
 	ply

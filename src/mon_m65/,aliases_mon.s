@@ -11,7 +11,7 @@
 ; ********************
 
 !addr Bank        =  2 ; XXX remove this        
-!addr Adr_Mode    =  2 ; $00 = C64 address, $80 = M65 flat address ; XXX adapt the implementation
+!addr Adr_Mode    =  2 ; $00 = 64K address, $80 = M65 flat address ; XXX adapt the implementation
 !addr PCH         =  3
 !addr PCL         =  4
 !addr SR          =  5

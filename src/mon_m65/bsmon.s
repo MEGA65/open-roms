@@ -15,13 +15,18 @@ Mon_Call:
 
          JSR  Print_Commands
 
-;        clear register for monitor call
+;        set default addressing mode to 64K
 
          LDA  #0
+         STA Adr_Mode 
+
+;        clear register for monitor call
+
          LDX  #6
 @loop    STA  AC,X
          DEX
          BPL  @loop
+
 
 ;        set default PC to monitor exit point
 
@@ -386,7 +391,7 @@ Dec_LDA:
          RTS
 
 ; ****
-Fetch:
+Fetch: ; XXX get rid of this, use helper!
 ; ****
 
          PHZ
@@ -426,7 +431,7 @@ Mon_Bits:
          BCS  @lab
          JSR  LAC_To_LPC        ; Long_PC = start address
 @lab     JSR  Print_CR
-         LDA  #KEY_WHITE
+         LDA  #KEY_WHITE        ; XXX adapt colors
          STA  Long_DA+1
 
          LDX  #8
@@ -503,11 +508,6 @@ Mon_Go:
 
          ; XXX to be rewritten for Open ROMs!
          jmp Main
-         ; JSR  Get_LAC           ; get 1st. parameter
-         ; JSR  LAC_To_PC
-         ; LDX  SPL
-         ; TXS
-         ; JMP  JMPFAR
 
 ; ******
 Mon_JSR:
@@ -515,14 +515,6 @@ Mon_JSR:
 
          ; XXX to be rewritten for Open ROMs!
          jmp Main
-         ; JSR  Get_LAC           ; get 1st. parameter
-         ; JSR  LAC_To_PC
-         ; LDX  SPL
-         ; TXS
-         ; JSR  JSRFAR
-         ; TSX
-         ; STX  SPL
-         ; JMP  Main
 
 ; ***********
 Dump_4_Bytes: ; XXX to be adapted
@@ -1275,35 +1267,6 @@ Size_To_Mode:
          LDX  #0
          RTS
 
-; **************
-Mon_Disassemble:
-; **************
-
-         JSR  Get_LAC           ; get 1st. parameter
-         BCS  @nopar
-         JSR  LAC_To_LPC        ; Long_PC = start address
-         JSR  Get_LAC           ; Long_AC = end address
-         BCC  @range
-@nopar   LDA  #32               ; disassemble 32 bytes
-         STA  Long_CT
-         BRA  @loop
-@range   JSR  LAC_Minus_LPC     ; Long_CT = range
-         LBCC Mon_Error         ; -> negative
-
-@loop    JSR  CR_Erase          ; prepare empty line
-         JSR  STOP
-         LBEQ Main
-         JSR  Dis_Code          ; disassemble one line
-         INC  Op_Size
-         LDA  Op_Size
-         JSR  Add_LPC           ; advance address
-         LDA  Long_CT
-         SEC
-         SBC  Op_Size
-         STA  Long_CT
-         BCS  @loop
-         JMP  Main
-
 ; *******
 Dis_Code:
 ; *******
@@ -1397,8 +1360,7 @@ Print_Code:
 
 ;        detect long branches
 
-@long    LDA  #KEY_YELLOW
-         JSR  CHROUT
+@long    JSR  Print_Attr_Bold
          LDX  Op_Code
          LDA  LEN_ADM,X
          CMP  #%10100000         ; long branch mode
@@ -1475,8 +1437,7 @@ Print_Code:
 
 @mne4    JSR  Print_Blank
 @mne5    JSR  Print_Blank
-         LDA  #KEY_WHITE
-         JSR  CHROUT
+         JSR  Print_Attr_NoBold
 
 ;        check for accumulator operand
 

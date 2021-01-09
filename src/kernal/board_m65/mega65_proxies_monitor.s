@@ -66,3 +66,13 @@ proxy_M1_TALK:
 
 	jsr TALK
 	bra proxy_M1_end
+
+
+
+!addr Long__TMP = $3C        ; has to be the same as Long_TMP in monitor
+
+proxy_M1_memread:
+
+	jsr map_NORMAL
+	lda [Long__TMP], z
+	bra proxy_M1_end

@@ -63,7 +63,7 @@
 
                                ; $34-$3B - free space, unused for now
 
-!addr Long_TMP    = $3C        ; temporary pointer, for fetching/storing memory content
+!addr Long_TMP    = $3C        ; temporary pointer, for fetching/storing memory content; has to be the same as Long__TMP in Kernal
 
 !addr Disk_Msg    = $40        ; 40 bytes, disk status as text message ; XXX rework code to make it not needed
 !addr Mon_Data    = $68        ; 40 bytes, buffer for hunt and filename

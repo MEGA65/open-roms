@@ -1333,6 +1333,7 @@ Print_Code:
 
 ;        print instruction and operand bytes
 
+         JSR  Print_Attr_Bold
          LDY  #0
          LDA  #' '
          BBR4 Op_Flag,@blpr
@@ -1357,7 +1358,9 @@ Print_Code:
 
 ;        detect long branches
 
-@long    JSR  Print_Attr_Bold
+@long    JSR  Print_Attr_NoBold
+         LDA  #' '
+         JSR  CHROUT
          LDX  Op_Code
          LDA  LEN_ADM,X
          CMP  #%10100000         ; long branch mode
@@ -1434,7 +1437,6 @@ Print_Code:
 
 @mne4    JSR  Print_Blank
 @mne5    JSR  Print_Blank
-         JSR  Print_Attr_NoBold
 
 ;        check for accumulator operand
 

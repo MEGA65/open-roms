@@ -4,6 +4,7 @@
 
 Mon_Bits:
 
+    jsr  Set_MODE_80
 	lda  Adr_Mode
 	pha                      ; store addressing mode, in case no parameter is given
 	lda  #$00
@@ -51,7 +52,12 @@ Mon_Bits:
     tza
     adc  #$08
     taz
+    bbr7 MODE_80,@disp8
+    cmp  #24
+    bra  @lab2
+@disp8:
     cmp  #64
+@lab2:
     bcc  @col
     jsr  Print_CR
     jsr  Inc_LPC

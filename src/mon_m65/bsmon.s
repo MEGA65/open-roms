@@ -18,7 +18,7 @@ Mon_Call:
 ;        set default addressing mode to 64K
 
          LDA  #0
-         STA Adr_Mode 
+         STA  Adr_Mode 
 
 ;        clear register for monitor call
 
@@ -152,7 +152,7 @@ Mon_Select:
 
          STA  VERCKK
          CPX  #22
-         LBCS  Load_Save
+         LBCS Load_Save
          TXA
          ASL
          TAX
@@ -221,7 +221,7 @@ Mon_Exit:
 LAC_To_PC: ; XXX to be adapted
 ; ********
 
-   inc $D020 ; XXX fior debug only
+   inc $D020 ; XXX for debug only
 
 ; called from Mon_Set_Register, Mon_Go and Mon_JSR
 ; as the first instruction. The carry flag was set from

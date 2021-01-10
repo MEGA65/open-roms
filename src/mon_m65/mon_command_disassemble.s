@@ -3,6 +3,7 @@
 
 Mon_Disassemble:
 
+	lda  Adr_Mode
 	pha                      ; store addressing mode, in case no parameter is given
 	lda  #$00
 	sta  Adr_Mode            ; by default use C64-style addressing

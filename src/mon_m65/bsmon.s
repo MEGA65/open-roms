@@ -190,7 +190,7 @@ Jump_Table:
 ; *********
 
          !word Mon_Assemble     ; A  XXX to be debugged/adapted
-         !word Mon_Bits         ; B  XXX to be debugged/adapted
+         !word Mon_Bits         ; B
          !word Mon_Compare      ; C  XXX to be debugged/adapted
          !word Mon_Disassemble  ; D
          !word Mon_Fill         ; F  XXX to be debugged/adapted
@@ -422,40 +422,6 @@ Print_Bits:
          PLZ
          RTS
 
-; *******
-Mon_Bits:
-; *******
-
-         JSR  Get_LAC           ; get 1st. parameter
-         BCS  @lab
-         JSR  LAC_To_LPC        ; Long_PC = start address
-@lab     JSR  Print_CR
-         LDA  #KEY_WHITE        ; XXX adapt colors
-         STA  Long_DA+1
-
-         LDX  #8
-@row     PHX
-         JSR  Print_LPC_Addr
-         LDZ  #0
-@col     SEC
-         LDA  #KEY_WHITE+KEY_LT_RED   ; toggle colour
-         SBC  Long_DA+1
-         STA  Long_DA+1
-         JSR  CHROUT
-         LDA  [Long_PC],Z
-         JSR  Print_Bits
-         CLC
-         TZA
-         ADC  #8
-         TAZ
-         CMP  #64
-         BCC  @col
-         JSR  Print_CR
-         JSR  Inc_LPC
-         PLX
-         DEX
-         BNE  @row
-         JMP  Main
 
 ; ***************
 Mon_Set_Register: ; XXX this needs adaptation
@@ -2665,7 +2631,7 @@ Mon_Help:
          
          !pet KEY_RETURN, KEY_RETURN
          !pet KEY_ESC,'s',"a",KEY_ESC,'u',"ssemble     - a address mnemonic operand",KEY_RETURN
-         !pet KEY_ESC,'s',"b",KEY_ESC,'u',"itmaps      - b [from [to]]",KEY_RETURN
+         !pet KEY_ESC,'s',"b",KEY_ESC,'u',"itmaps      - b [from]",KEY_RETURN
          !pet KEY_ESC,'s',"c",KEY_ESC,'u',"ompare      - c from to with",KEY_RETURN
          !pet KEY_ESC,'s',"d",KEY_ESC,'u',"isassemble  - d [from [to]]",KEY_RETURN
          !pet KEY_ESC,'s',"f",KEY_ESC,'u',"ill         - f from to fillbyte",KEY_RETURN

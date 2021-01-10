@@ -3,7 +3,6 @@
 
 Mon_Disassemble:
 
-	lda  Adr_Mode
 	pha                      ; store addressing mode, in case no parameter is given
 	lda  #$00
 	sta  Adr_Mode            ; by default use C64-style addressing
@@ -13,12 +12,17 @@ Mon_Disassemble:
 	pla                      ; drop previous addressing mode
 	jsr  LAC_To_LPC          ; Long_PC = start address
 	jsr  Get_Addr_To_LAC     ; get 2nd parameter (end address)
-	bne  @range
+	beq  @norange
+	jsr  LAC_Minus_LPC       ; Long_CT = range
+	+bcc Mon_Error           ; -> negative
+    bra  @loop
 
 @nopar:
 
 	pla                      ; retrieve old addressing mode
 	sta  Adr_Mode
+
+@norange:
 
 	lda  #$20                ; by default disassemble 32 addresses
     sta  Long_CT+0
@@ -26,12 +30,6 @@ Mon_Disassemble:
     sta  Long_CT+1
     sta  Long_CT+2
     sta  Long_CT+3
-    bra  @loop
-
-@range:
-
-	jsr  LAC_Minus_LPC       ; Long_CT = range
-	+bcc Mon_Error           ; -> negative
 
 @loop:
 
@@ -47,4 +45,5 @@ Mon_Disassemble:
 	sbc  Op_Size
 	sta  Long_CT
 	bcs  @loop
+
 	jmp  Main

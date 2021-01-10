@@ -192,7 +192,7 @@ Jump_Table:
          !word Mon_Assemble     ; A  XXX to be debugged/adapted
          !word Mon_Bits         ; B  XXX to be debugged/adapted
          !word Mon_Compare      ; C  XXX to be debugged/adapted
-         !word Mon_Disassemble  ; D  XXX to be debugged/adapted
+         !word Mon_Disassemble  ; D
          !word Mon_Fill         ; F  XXX to be debugged/adapted
          !word Mon_Go           ; G  XXX to be debugged/adapted
          !word Mon_Hunt         ; H  XXX to be debugged/adapted
@@ -221,6 +221,8 @@ Mon_Exit:
 LAC_To_PC: ; XXX to be adapted
 ; ********
 
+   inc $D020 ; XXX fior debug only
+
 ; called from Mon_Set_Register, Mon_Go and Mon_JSR
 ; as the first instruction. The carry flag was set from
 ; the routine Got_LAC if an error occured.
@@ -231,12 +233,12 @@ LAC_To_PC: ; XXX to be adapted
 ; the routines FAR_JMP and FAR_JSR of the operating system
 
          BCS  @error
-         LDA  Long_AC
-         STA  Bank+2
-         LDA  Long_AC+1
-         STA  Bank+1
-         LDA  Long_AC+2
-         STA  Bank
+         ;LDA  Long_AC
+         ;STA  Bank+2
+         ;LDA  Long_AC+1
+         ;STA  Bank+1
+         ;LDA  Long_AC+2
+         ;STA  Bank
 @error   RTS
 
 ; *********
@@ -456,7 +458,7 @@ Mon_Bits:
          JMP  Main
 
 ; ***************
-Mon_Set_Register:
+Mon_Set_Register: ; XXX this needs adaptation
 ; ***************
 
          JSR  Get_LAC           ; get 1st. parameter
@@ -465,7 +467,7 @@ Mon_Set_Register:
 @loop    JSR  Get_LAC
          BCS  @exit
          LDA  Long_AC
-         STA  Bank,Y
+         STA  Adr_Mode,Y
          INY
          CPY  #9
          BCC  @loop

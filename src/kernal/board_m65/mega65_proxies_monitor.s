@@ -24,52 +24,10 @@ proxy_M1_end:
 	jmp map_MON_1
 
 
-; Routines below typicaly do not change mapping - but it is still possible they'll do
+; Memory acccess routines
 
 
-proxy_M1_SECOND:
-
-	jsr SECOND
-	bra proxy_M1_end
-
-proxy_M1_TKSA:
-
-	jsr TKSA
-	bra proxy_M1_end
-
-proxy_M1_ACPTR:
-
-	jsr ACPTR
-	bra proxy_M1_end
-
-proxy_M1_CIOUT:
-
-	jsr CIOUT
-	bra proxy_M1_end
-
-proxy_M1_UNTLK:
-
-	jsr UNTLK
-	bra proxy_M1_end
-
-proxy_M1_UNLSN:
-
-	jsr UNLSN
-	bra proxy_M1_end
-
-proxy_M1_LISTEN:
-
-	jsr LISTEN
-	bra proxy_M1_end
-
-proxy_M1_TALK:
-
-	jsr TALK
-	bra proxy_M1_end
-
-
-
-!addr Long__TMP = $3C        ; has to be the same as Long_TMP in monitor
+!addr Long__TMP = $64        ; has to be the same as Long_TMP in monitor
 
 proxy_M1_memread:
 

@@ -1,4 +1,5 @@
 ;; #IMPORT# KERNAL_0 = KERNAL_0_combined.sym
+;; #IMPORT# BASIC_0  = BASIC_0_combined.sym
 
 ;
 ; Definitions for calling MEGA65 segment KERNAL_0 routines from MON_1
@@ -13,14 +14,8 @@
 
 ;; #ALIAS# CHRIN                       = KERNAL_0.proxy_M1_CHRIN
 ;; #ALIAS# CHROUT                      = KERNAL_0.proxy_M1_CHROUT
-;; #ALIAS# SECOND                      = KERNAL_0.proxy_M1_SECOND
-;; #ALIAS# TKSA                        = KERNAL_0.proxy_M1_TKSA
-;; #ALIAS# ACPTR                       = KERNAL_0.proxy_M1_ACPTR
-;; #ALIAS# CIOUT                       = KERNAL_0.proxy_M1_CIOUT
-;; #ALIAS# UNTLK                       = KERNAL_0.proxy_M1_UNTLK
-;; #ALIAS# UNLSN                       = KERNAL_0.proxy_M1_UNLSN
-;; #ALIAS# LISTEN                      = KERNAL_0.proxy_M1_LISTEN
-;; #ALIAS# TALK                        = KERNAL_0.proxy_M1_TALK
+
+;; #ALIAS# wedge_dos_monitor           = BASIC_0.wedge_dos_monitor
 
 
 ; 'Print immediate', original implementation by Mike Barry, adapted to 65CE02, modified to preserve .Y

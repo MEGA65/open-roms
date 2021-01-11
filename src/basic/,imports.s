@@ -40,12 +40,14 @@
 ;; #ALIAS# map_end             = KERNAL_0.map_end
 ;; #ALIAS# map_NORMAL          = KERNAL_0.map_NORMAL
 ;; #ALIAS# map_BASIC_1         = KERNAL_0.map_BASIC_1
+;; #ALIAS# map_MON_1           = KERNAL_0.map_MON_1
 
 ;; #ALIAS# M65_MODEGET         = KERNAL_0.M65_MODEGET
 ;; #ALIAS# M65_MODESET         = KERNAL_0.M65_MODESET
 ;; #ALIAS# M65_SETWIN_Y        = KERNAL_0.M65_SETWIN_Y
 
 ;; #ALIAS# m65_colorset        = KERNAL_0.m65_colorset
+;; #ALIAS# m65_shadow_BZP      = KERNAL_0.m65_shadow_BZP
 
 ;
 ; Ultimate 64 specific parts

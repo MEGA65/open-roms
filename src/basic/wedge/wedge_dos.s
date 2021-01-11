@@ -8,6 +8,23 @@
 !ifdef CONFIG_DOS_WEDGE {
 
 
+!ifdef SEGMENT_M65_BASIC_0 {
+
+wedge_dos_monitor:                               ; entry point for the MONITOR
+
+	jsr m65_shadow_BZP
+	jsr map_BASIC_1
+	jsr (VB1__wedge_dos_monitor)
+	jsr m65_shadow_BZP
+	jmp map_MON_1
+
+} else ifdef SEGMENT_M65_BASIC_1 {
+
+wedge_dos_monitor:
+
+	rts
+}
+
 ; .X has to contain size of the buffer
 
 wedge_dos:

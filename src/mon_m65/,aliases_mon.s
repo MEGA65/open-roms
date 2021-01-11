@@ -56,13 +56,8 @@
 !addr Op_Mne      = $2C        ; 3 bytes for mnemonic
 !addr Op_Ix       = $2F        ; type of constant
 !addr Op_Len      = $30        ; length of operand
-!addr Disk_Track  = $31        ; logical track  1 -> 255
-!addr Disk_Sector = $32        ; logical sector 0 -> 255
-!addr Disk_Status = $33        ; BCD value of status
 
-                               ; $34-$3B - free space, unused for now
+                               ; $31-$63 - free space, unused for now
 
-!addr Long_TMP    = $3C        ; temporary pointer, for fetching/storing memory content; has to be the same as Long__TMP in Kernal
-
-!addr Disk_Msg    = $40        ; 40 bytes, disk status as text message ; XXX rework code to make it not needed
-!addr Mon_Data    = $68        ; 40 bytes, buffer for hunt and filename
+!addr Long_TMP    = $64        ; temporary pointer, for fetching/storing memory content; has to be the same as Long__TMP in Kernal
+!addr Mon_Data    = $68        ; 40 bytes, buffer for hunt

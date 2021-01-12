@@ -16,8 +16,8 @@
 	!addr ADRAY2    = $05 ; $05-$06
 	!addr CHARAC    = $07 ;          [!] our implementation might be different  XXX give more details
 	!addr ENDCHR    = $08 ;          [!] our implementation might be different  XXX give more details
-	!addr TRMPOS    = $09 ;          -- NOT IMPLEMENTED --
-	!addr VERCKB    = $0A ;          flag used by BASIC, 0 - LOAD, 1 - VERIFY
+	!addr TRMPOS    = $09 ;          -- NOT IMPLEMENTED -- [!] on MEGA65 also used by DOS Wedge under MONITOR
+	!addr VERCKB    = $0A ;          flag used by BASIC, 0 - LOAD, 1 - VERIFY, [!] on MEGA65 also used by DOS Wedge
 	!addr COUNT     = $0B ;          [!] our implementation might be different  XXX give more details
 	!addr DIMFLG    = $0C ;          [!] our implementation might be different  XXX give more details
 	!addr VALTYP    = $0D ;          expression eveluation result; $00 - float, $FF - string

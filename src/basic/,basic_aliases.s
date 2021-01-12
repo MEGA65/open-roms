@@ -22,6 +22,12 @@
 !addr __tokenise_work4 = $0F ; GARBFL
 !addr __tokenise_work5 = $0C ; DIMFLG
 
+;
+; Helper aliases for DOS Wedge under MONITOR
+;
+
+!addr __wedge_mon     = $0A ; VERCKB
+!addr __wedge_spstore = $09 ; TRMPOS
 
 
 ;

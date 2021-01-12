@@ -22,7 +22,11 @@ wedge_dos_monitor:                               ; entry point for the MONITOR
 
 wedge_dos_monitor:
 
-	rts
+	tsx
+	stx __wedge_spstore                          ; preserve stack pointer
+
+	lda #$FF                                     ; mark MONITOR-called wedge
+	bra wedge_dos_monitor_cont
 }
 
 ; .X has to contain size of the buffer
@@ -44,9 +48,15 @@ wedge_dos:
 } else {
 
 	; Prepare buffer - finish it with '0'
-
 	lda #$00
 	sta BUF,x
+
+!ifdef CONFIG_MB_M65 {
+
+wedge_dos_monitor_cont:
+
+	sta __wedge_mon                              ; mark BASIC/MONITOR-called wedge
+}
 
 	; Close all the channels, so that wedge has full control
 	jsr JCLALL
@@ -164,7 +174,11 @@ wedge_dos_change_drive:
 
 	jsr fetch_uint8
 	cmp #$08
+!ifdef CONFIG_MB_M65 {
+	+bcc wedge_dos_wrapper_ILLEGAL_DEVICE_NUMBER_error
+} else {
 	+bcc do_ILLEGAL_DEVICE_NUMBER_error
+}
 
 	; Check if this is end of command, or directory request
 
@@ -176,8 +190,11 @@ wedge_dos_change_drive:
 	; Make sure this is end of command
 
 	cmp #$00
+!ifdef CONFIG_MB_M65 {
+	+bne wedge_dos_wrapper_SYNTAX_error
+} else {
 	+bne do_SYNTAX_error
-
+}
 	; Store new device number and return to shell
 
 	pla
@@ -221,8 +238,11 @@ wedge_dos_status_get_loop:
 	; Check for buffer overflow
 
 	cpy #$50
+!ifdef CONFIG_MB_M65 {
+	+beq wedge_dos_wrapper_OVERFLOW_error
+} else {
 	+beq do_OVERFLOW_error
-
+}
 	; Check for EOF
 
 	jsr JREADST
@@ -326,8 +346,12 @@ wedge_dos_directory_line:
 	jsr JCHRIN
 	bcs wedge_dos_basic_error
 	sta BUF, y
-	cpy #$50
-	+beq do_OVERFLOW_error                     ; branch if line too long
+	cpy #$50                                   ; make sure line is not too long
+!ifdef CONFIG_MB_M65 {
+	+beq wedge_dos_wrapper_OVERFLOW_error
+} else {
+	+beq do_OVERFLOW_error
+}
 	jsr JREADST
 	bne @6 ; end of file
 	cpy #$04 ; 2 bytes (pointer to next line) + 2 bytes (line number) 
@@ -371,14 +395,22 @@ wedge_dos_directory_display:
 wedge_dos_clean_exit:
 
 	jsr JCLALL
+!ifdef CONFIG_MB_M65 {
+	jmp wedge_dos_wrapper_exit
+} else {
 	jmp shell_main_loop
+}
 
 wedge_dos_basic_error:
 
 	pha
 	jsr JCLALL
 	pla
+!ifdef CONFIG_MB_M65 {
+	bra wedge_dos_wrapper_kernal_error
+} else {
 	jmp do_kernal_error
+}
 
 wedge_dos_setnam:
 
@@ -398,6 +430,68 @@ wedge_dos_setnam:
 
 	jmp JSETNAM
 
+!ifdef CONFIG_MB_M65 {
+
+wedge_dos_wrapper_exit:
+
+	bbr7 __wedge_mon, wedge_dos_clean_exit_basic
+
+	; FALLTROUGH
+
+wedge_dos_wrapper_exit_nocheck:
+
+	ldx __wedge_spstore
+	txs
+	rts
+
+wedge_dos_wrapper_SYNTAX_error:
+
+	bbr7 __wedge_mon, wedge_dos_SYNTAX_error
+
+	; XXX
+
+wedge_dos_wrapper_ILLEGAL_DEVICE_NUMBER_error:
+
+	bbr7 __wedge_mon, wedge_dos_ILLEGAL_DEVICE_NUMBER_error
+
+	; XXX
+
+wedge_dos_wrapper_OVERFLOW_error:
+
+	bbr7 __wedge_mon, wedge_dos_OVERFLOW_error
+
+	; XXX
+
+wedge_dos_wrapper_kernal_error:
+
+	bbr7 __wedge_mon, wedge_dos_kernal_error
+
+	; XXX
+
+	bra wedge_dos_wrapper_exit_nocheck
+
+wedge_dos_SYNTAX_error:
+
+	jmp do_SYNTAX_error
+
+wedge_dos_ILLEGAL_DEVICE_NUMBER_error:
+
+	jmp do_ILLEGAL_DEVICE_NUMBER_error
+
+wedge_dos_OVERFLOW_error:
+
+	jmp do_OVERFLOW_error
+
+wedge_dos_kernal_error:
+
+	jmp do_kernal_error
+
+wedge_dos_clean_exit_basic:
+
+	jmp shell_main_loop
+
+
+} ; MEGA65 specific code
 
 } ; ROM layout
 

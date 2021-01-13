@@ -138,4 +138,11 @@ proxy_B1_shell_main_loop:
 
 	jsr map_NORMAL
 	jmp shell_main_loop
+
+proxy_B1_do_error_print_only:
+
+	jsr map_NORMAL
+	jsr do_error_print_only
+	bra proxy_B1_end_2
+
 }

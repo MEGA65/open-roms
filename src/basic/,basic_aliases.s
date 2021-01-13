@@ -26,9 +26,8 @@
 ; Helper aliases for DOS Wedge under MONITOR
 ;
 
-!addr __wedge_mon     = $0A ; VERCKB
-!addr __wedge_spstore = $09 ; TRMPOS
-
+!addr __wedge_mon      = $0A ; VERCKB
+!addr __wedge_spstore  = $09 ; TRMPOS
 
 ;
 ; Aliases for the tokeniser - reuse the CPU stack

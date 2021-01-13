@@ -199,7 +199,11 @@ wedge_dos_change_drive:
 
 	pla
 	sta FA
+!ifdef CONFIG_MB_M65 {
+	jmp wedge_dos_wrapper_exit
+} else {
 	jmp shell_main_loop
+}
 
 wedge_dos_status_get:
 
@@ -447,27 +451,37 @@ wedge_dos_wrapper_exit_nocheck:
 wedge_dos_wrapper_SYNTAX_error:
 
 	bbr7 __wedge_mon, wedge_dos_SYNTAX_error
-
-	; XXX
+	ldx #$0A
+	bra wedge_dos_wrapper_error_common
 
 wedge_dos_wrapper_ILLEGAL_DEVICE_NUMBER_error:
 
 	bbr7 __wedge_mon, wedge_dos_ILLEGAL_DEVICE_NUMBER_error
-
-	; XXX
+	ldx #$08
+	bra wedge_dos_wrapper_error_common
 
 wedge_dos_wrapper_OVERFLOW_error:
 
 	bbr7 __wedge_mon, wedge_dos_OVERFLOW_error
-
-	; XXX
+	ldx #$0E
+	bra wedge_dos_wrapper_error_common
 
 wedge_dos_wrapper_kernal_error:
 
 	bbr7 __wedge_mon, wedge_dos_kernal_error
+	tax
+	bne @1
+	ldx #$1E                           ; BREAK error + 1
+@1:
+	dex
 
-	; XXX
+	; FALLTROUGH
 
+wedge_dos_wrapper_error_common:
+
+	; Print error - within the MONITOR
+
+	jsr do_error_print_only
 	bra wedge_dos_wrapper_exit_nocheck
 
 wedge_dos_SYNTAX_error:

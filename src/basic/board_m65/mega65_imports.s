@@ -41,6 +41,7 @@
 ;; #ALIAS# do_error_fetch                  = BASIC_0.do_error_fetch
 ;; #ALIAS# do_basic_error                  = BASIC_0.do_basic_error
 ;; #ALIAS# str_rev_question                = BASIC_0.str_rev_question
+;; #ALIAS# do_error_print_only             = BASIC_0.proxy_B1_do_error_print_only
 ;; #ALIAS# fetch_character                 = BASIC_0.proxy_B1_fetch_character
 ;; #ALIAS# fetch_character_skip_spaces     = BASIC_0.proxy_B1_fetch_character_skip_spaces
 ;; #ALIAS# fetch_uint8                     = BASIC_0.proxy_B1_fetch_uint8

@@ -201,7 +201,7 @@ Jump_Table:
          !word Mon_Register     ; R
          !word Mon_Transfer     ; T  XXX to be debugged/adapted
          !word Mon_Exit         ; X
-         !word Mon_DOS          ; @  XXX to be debugged/adapted
+         !word Mon_DOS          ; @
          !word Mon_Assemble     ; .  XXX to be debugged/adapted
          !word Mon_Set_Memory   ; >  XXX to be debugged/adapted
          !word Mon_Set_Register ; ;  XXX to be debugged/adapted
@@ -2025,6 +2025,7 @@ Mon_DOS:
 ; ******
 
          JSR  wedge_dos_monitor
+         JSR  Print_CR
          JMP  Main
 
 

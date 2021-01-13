@@ -200,6 +200,7 @@ do_basic_error:                        ; error code in .X
 	
 	+phx_trash_a
 	jsr tmpstr_free_all
+
 	ldx #IDX__STR_RET_QM
 	jsr print_packed_misc_str
 	+plx_trash_a
@@ -232,5 +233,22 @@ do_basic_error:                        ; error code in .X
 	txs
 
 	jmp shell_main_loop
+
+!ifdef CONFIG_MB_M65 {
+
+do_error_print_only:                   ; used by DOS Wedge
+
+	+phx_trash_a
+	lda #'?'
+	jsr JCHROUT
+	+plx_trash_a
+
+	jsr print_packed_error
+
+	ldx #IDX__STR_ERROR
+	jmp print_packed_misc_str
+}
+
+
 
 } ; ROM layout

@@ -28,7 +28,7 @@
 	!addr VB1__helper_ask_if_sure       = $4000 + 2 * 13
 	!addr VB1__helper_eggshell          = $4000 + 2 * 14
 	!addr VB1__wedge_dos                = $4000 + 2 * 15
-	!addr VB1__wedge_dos_monitor        = $4000 + 2 * 15
+	!addr VB1__wedge_dos_monitor        = $4000 + 2 * 16
 
 } else {
 

@@ -1,11 +1,12 @@
 
 ; Based on BSM (Bit Shifter's Monitor)
 
+
 Mon_Memory:
 
    jsr  Set_MODE_80
    lda  #$00
-   sta  Adr_Mode             ; by default use C64-style addressing
+   sta  Addr_Mode            ; by default use C64-style addressing
 
    jsr  Get_Addr_To_LAC      ; get 1st parameter (start address)
    +beq Mon_Error

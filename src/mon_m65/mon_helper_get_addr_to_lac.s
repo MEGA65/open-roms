@@ -1,6 +1,7 @@
 
 ; Based on BSM (Bit Shifter's Monitor)
 
+
 Get_Addr_To_LAC:
 
    phx
@@ -133,7 +134,7 @@ Get_Addr_To_LAC:
 @set_long_mode:
 
    lda  #$80                 ; set addressing mode to long
-   sta  Adr_Mode
+   sta  Addr_Mode
 
 @check_done:
 

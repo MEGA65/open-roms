@@ -29,7 +29,7 @@ DBG_print_long_pc:
 	jsr PRIMM
 	!pet "  addr mode : ", 0
 
-	lda Adr_Mode
+	lda Addr_Mode
 	jsr Print_Hex
 
 	jsr PRIMM

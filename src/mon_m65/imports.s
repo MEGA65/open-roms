@@ -11,6 +11,7 @@
 
 ;; #ALIAS# monitor_exit                = KERNAL_0.m65_shadow_BZP
 ;; #ALIAS# monitor_memread_helper      = KERNAL_0.proxy_M1_memread
+;; #ALIAS# monitor_memwrite_helper     = KERNAL_0.proxy_M1_memwrite
 
 ;; #ALIAS# CHRIN                       = KERNAL_0.proxy_M1_CHRIN
 ;; #ALIAS# CHROUT                      = KERNAL_0.proxy_M1_CHROUT

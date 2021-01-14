@@ -137,7 +137,7 @@ Put_To_Memory:
 
 @write_shadow:
 
-	jsr Get_Put_Memory_Prepare_Shadow
+	jsr  Get_Put_Memory_Prepare_Shadow
 
 @write_flat:
 

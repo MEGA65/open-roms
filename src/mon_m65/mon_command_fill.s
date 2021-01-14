@@ -16,8 +16,6 @@ Mon_Fill:
 	ora  Long_AC+3
 	+bne Mon_Error         ; only 1 fill byte allowed
 
-	jsr  Print_CR
-
 	ldz  #$00
 
 @loop:

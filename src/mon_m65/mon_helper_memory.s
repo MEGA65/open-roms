@@ -127,7 +127,7 @@ Put_To_Memory:
 	lda  Long_TMP+1
 	ora  Long_TMP+2
 	ora  Long_TMP+3
-	beq  @write_flat
+	bne  @write_flat
 
 	lda  Long_TMP+0
 	dec

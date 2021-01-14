@@ -193,7 +193,7 @@ Jump_Table:
          !word Mon_Bits         ; B
          !word Mon_Compare      ; C  XXX to be debugged/adapted
          !word Mon_Disassemble  ; D
-         !word Mon_Fill         ; F  XXX to be bugfixed
+         !word Mon_Fill         ; F
          !word Mon_Go           ; G  XXX to be debugged/adapted
          !word Mon_Hunt         ; H  XXX to be debugged/adapted
          !word Mon_JSR          ; J  XXX to be debugged/adapted

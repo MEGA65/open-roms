@@ -18,7 +18,7 @@ Mon_Call:
 ;        set default addressing mode to 64K
 
          LDA  #0
-         STA  Adr_Mode 
+         STA  Addr_Mode 
 
 ;        clear register for monitor call
 
@@ -433,7 +433,7 @@ Mon_Set_Register: ; XXX this needs adaptation
 @loop    JSR  Get_LAC
          BCS  @exit
          LDA  Long_AC
-         STA  Adr_Mode,Y
+         STA  Addr_Mode,Y
          INY
          CPY  #9
          BCC  @loop
@@ -554,7 +554,7 @@ Dump_Row:
 Mon_Transfer:
 ; ***********
 
-         JSR  Param_Range       ; Long_PC = source
+         JSR  Get_Param_Range   ; Long_PC = source
          LBCS Mon_Error         ; Long_CT = count
          JSR  Get_LAC           ; Long_AC = target
          LBCS Mon_Error
@@ -587,7 +587,7 @@ Mon_Transfer:
 Mon_Compare:
 ; **********
 
-         JSR  Param_Range       ; Long_PC = source
+         JSR  Get_Param_Range   ; Long_PC = source
          LBCS Mon_Error         ; Long_CT = count
          JSR  Get_LAC           ; Long_AC = target
          LBCS Mon_Error
@@ -607,7 +607,7 @@ Mon_Compare:
 Mon_Hunt:
 ; *******
 
-         JSR  Param_Range       ; Long_PC = start
+         JSR  Get_Param_Range   ; Long_PC = start
          LBCS Mon_Error         ; Long_CT = count
          LDY  #0
          JSR  Get_Char
@@ -737,23 +737,6 @@ Load_Save:
          ; LDA  #0                ; 0 = use X/Y as load address
          ; STA  SA                ; and ignore load address from file
          ; BRA  @do
-
-; *******
-Mon_Fill:
-; *******
-
-         JSR  Param_Range       ; Long_PC = target
-         LBCS Mon_Error         ; Long_CT = count
-         JSR  Get_LAC           ; Long_AC = fill byte
-         LBCS Mon_Error
-         JSR  Print_CR
-         LDZ  #0
-@loop    LDA  Long_AC
-         STA  [Long_PC],Z
-         JSR  Inc_LPC
-         JSR  Dec_LCT
-         BPL  @loop
-         JMP  Main
 
 ; ***********
 Mon_Assemble:
@@ -1680,7 +1663,7 @@ Read_Number: ; XXX obsolete, to be replaced
 Print_LPC_Addr: ; prints out the address in PC
 ; *************
 
-   bbr7 Adr_Mode, @short
+   bbr7 Addr_Mode, @short
 
    lda  Long_PC+3
    jsr  Print_Hex_Low_Digit
@@ -1850,30 +1833,6 @@ Inc_LPC_Page:
 Inc_LPC_Page_return
          RTS
 
-; **********
-Param_Range:
-; **********
-
-; read two (address) parameters
-
-; Long_CT = difference (2nd. minus 1st.)
-; Long_PC = 1st. parameter
-; Long_DA = 2nd. parameter
-
-; carry on exit flags error
-
-         JSR  Get_LAC           ; get 1st. parameter
-         BCS  @error
-         JSR  LAC_To_LPC        ; Long_PC = 1st. address
-         JSR  Get_LAC
-         BCS  @error
-         JSR  LAC_To_LDA        ; Long_DA = 2nd. address
-         JSR  LAC_Minus_LPC     ; Long_CT = range
-         BCC  @error
-         CLC
-         RTS
-@error   SEC
-         RTS
 
 ; ********
 Converter:

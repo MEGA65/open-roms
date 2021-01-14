@@ -5,10 +5,10 @@
 Mon_Bits:
 
     jsr  Set_MODE_80
-	lda  Adr_Mode
+	lda  Addr_Mode
 	pha                      ; store addressing mode, in case no parameter is given
 	lda  #$00
-	sta  Adr_Mode            ; by default use C64-style addressing
+	sta  Addr_Mode           ; by default use C64-style addressing
 
 	jsr  Get_Addr_To_LAC     ; get 1st parameter (start address)
 	beq  @nopar
@@ -19,7 +19,7 @@ Mon_Bits:
 @nopar:
 
 	pla                      ; retrieve old addressing mode
-	sta  Adr_Mode
+	sta  Addr_Mode
 
 @start:
 

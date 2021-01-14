@@ -34,3 +34,9 @@ proxy_M1_memread:
 	jsr map_NORMAL
 	lda [Long__TMP], z
 	bra proxy_M1_end
+
+proxy_M1_memwrite:
+
+	jsr map_NORMAL
+	sta [Long__TMP], z
+	bra proxy_M1_end

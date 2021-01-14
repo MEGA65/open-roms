@@ -11,6 +11,7 @@ Mon_Transfer:
 	+beq Mon_Error
 
 	lda  Src_Addr_Mode
+	ora  Dst_Addr_Mode
 	sta  Addr_Mode
 
 	ldz  #0

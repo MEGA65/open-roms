@@ -26,8 +26,8 @@
 ; * Other variables *
 ; *******************
 
-!addr Src_Addr_Mode = 13       ; Addr_Mode for 1st address
-!addr Dst_Addr_Mode = 14       ; Addr_Mode for 2nd address
+!addr Src_Addr_Mode = 13       ; Addr_Mode for 1st address  XXX can this be replaced with Addr_Mode?
+!addr Dst_Addr_Mode = 14       ; Addr_Mode for 2nd address  XXX is it needed?
 
 !addr MODE_80       = 15       ; 80 column / 40 volumn flag
 

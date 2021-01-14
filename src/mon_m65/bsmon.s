@@ -199,7 +199,7 @@ Jump_Table:
          !word Mon_JSR          ; J  XXX to be debugged/adapted
          !word Mon_Memory       ; M
          !word Mon_Register     ; R
-         !word Mon_Transfer     ; T  XXX to be debugged/adapted
+         !word Mon_Transfer     ; T  XXX to be bugfixed
          !word Mon_Exit         ; X
          !word Mon_DOS          ; @
          !word Mon_Assemble     ; .  XXX to be debugged/adapted
@@ -399,7 +399,7 @@ Fetch:
          PHZ
          TYA
          TAZ
-         JSR  Get_From_Memory
+         JSR  Get_From_Memory_LPC
          PLZ
          AND  #$ff
          RTS
@@ -482,10 +482,10 @@ Mon_JSR:
          jmp Main
 
 ; ***********
-Dump_4_Bytes: ; XXX to be adapted
+Dump_4_Bytes:
 ; ***********
 
-@loop    JSR  Get_From_Memory
+@loop    JSR  Get_From_Memory_LPC
          JSR  Print_Hex_Blank
          INZ
          TZA
@@ -494,10 +494,10 @@ Dump_4_Bytes: ; XXX to be adapted
          RTS
 
 ; ***********
-Dump_4_Chars: ; XXX to be adapted
+Dump_4_Chars:
 ; ***********
 
-@loop    JSR  Get_From_Memory
+@loop    JSR  Get_From_Memory_LPC
          TAY
          AND  #%01100000
          BNE  @laba
@@ -549,39 +549,6 @@ Dump_Row:
          JSR  Add_LPC
          PLZ
          RTS
-
-; ***********
-Mon_Transfer:
-; ***********
-
-         JSR  Get_Param_Range   ; Long_PC = source
-         LBCS Mon_Error         ; Long_CT = count
-         JSR  Get_LAC           ; Long_AC = target
-         LBCS Mon_Error
-
-         LDZ  #0
-         JSR  LAC_Compare_LPC   ; target - source
-         BCC  @forward
-
-;        source < target: backward transfer
-
-         JSR  LAC_Plus_LCT      ; Long_AC = end of target
-
-@lpback  LDA  [Long_DA],Z       ; backward copy
-         STA  [Long_AC],Z
-         JSR  Dec_LDA
-         JSR  Dec_LAC
-         JSR  Dec_LCT
-         BPL  @lpback
-         JMP  Main
-
-@forward LDA  [Long_PC],Z       ; forward copy
-         STA  [Long_AC],Z
-         JSR  Inc_LPC
-         JSR  Inc_LAC
-         JSR  Dec_LCT
-         BPL  @forward
-         JMP  Main
 
 ; **********
 Mon_Compare:
@@ -2325,7 +2292,7 @@ Mon_Help:
          !pet KEY_ESC,'s',"g",KEY_ESC,'u',"o           - g [address]",KEY_RETURN
          !pet KEY_ESC,'s',"h",KEY_ESC,'u',"unt         - h from to (string or bytes)",KEY_RETURN
          !pet KEY_ESC,'s',"j",KEY_ESC,'u',"sr          - j address",KEY_RETURN
-         !pet KEY_ESC,'s',"l",KEY_ESC,'u',"oad         - l filename [uniy [address]]",KEY_RETURN
+         !pet KEY_ESC,'s',"l",KEY_ESC,'u',"oad         - l filename [unit [address]]",KEY_RETURN
          !pet KEY_ESC,'s',"m",KEY_ESC,'u',"emory       - m [from [to]]",KEY_RETURN
          !pet KEY_ESC,'s',"r",KEY_ESC,'u',"egisters    - r",KEY_RETURN
          !pet KEY_ESC,'s',"s",KEY_ESC,'u',"ave         - s filename unit from to",KEY_RETURN

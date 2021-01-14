@@ -21,7 +21,7 @@ Mon_Fill:
 @loop:
 
 	lda  Long_AC
-	jsr  Put_To_Memory
+	jsr  Put_To_Memory_LPC
 	jsr  Inc_LPC
 	jsr  Dec_LCT
 	bpl  @loop

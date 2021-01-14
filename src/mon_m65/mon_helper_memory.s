@@ -1,8 +1,13 @@
 
 ; Monitor helper code - memory read and write
 
+Get_From_Memory_LDA:
 
-Get_From_Memory:
+	jsr Exchange_LDA_LPC
+	jsr Get_From_Memory_LPC
+	jmp Exchange_LDA_LPC
+
+Get_From_Memory_LPC:
 
 	phx
 	phy
@@ -111,7 +116,14 @@ Get_Put_Memory_Prepare_Shadow:
 
 
 
-Put_To_Memory:
+
+Put_To_Memory_LAC:
+
+	jsr Exchange_LAC_LPC
+	jsr Put_To_Memory_LPC
+	jmp Exchange_LAC_LPC
+
+Put_To_Memory_LPC:
 
 	phx
 	phy
@@ -144,3 +156,51 @@ Put_To_Memory:
 	pla
 	jsr  monitor_memwrite_helper
 	bra  Get_Put_Memory_End
+
+
+
+Exchange_LDA_LPC:
+
+	phx
+	pha
+
+	ldx  #$03
+
+@loop:
+
+	lda  Long_DA,X
+	pha
+	lda  Long_PC,X
+	sta  Long_DA,X
+	pla
+	sta  Long_PC,X
+
+	dex
+	bpl  @loop
+
+	pla
+	plx
+	rts
+
+Exchange_LAC_LPC:
+
+	phx
+	pha
+
+	ldx  #$03
+
+@loop:
+
+	lda  Long_AC,X
+	pha
+	lda  Long_PC,X
+	sta  Long_AC,X
+	pla
+	sta  Long_PC,X
+
+	dex
+	bpl  @loop
+
+	pla
+	plx
+	rts

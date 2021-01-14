@@ -46,7 +46,7 @@ Mon_Bits:
 
 	plx
 
-    jsr  Get_From_Memory
+    jsr  Get_From_Memory_LPC
     jsr  Print_Bits
     clc
     tza

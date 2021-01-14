@@ -199,7 +199,7 @@ Jump_Table:
          !word Mon_JSR          ; J  XXX to be debugged/adapted
          !word Mon_Memory       ; M
          !word Mon_Register     ; R
-         !word Mon_Transfer     ; T  XXX to be bugfixed
+         !word Mon_Transfer     ; T
          !word Mon_Exit         ; X
          !word Mon_DOS          ; @
          !word Mon_Assemble     ; .  XXX to be debugged/adapted

@@ -5,6 +5,28 @@
 
 ; XXX disable this code once the monitor integration is complete
 
+DBG_print_Buf_Index:
+
+	php
+	pha
+	phx
+	phy
+	phz
+
+	jsr PRIMM
+	!pet $0D, "buf idx : ", 0
+
+	lda Buf_Index
+	jsr Print_Hex
+
+	plz
+	ply
+	plx
+	pla
+	plp
+
+	rts
+
 
 DBG_print_long_pc:
 

@@ -28,6 +28,7 @@ Mon_Hunt:
 @bin:
 
 	jsr  Got_Addr_To_LAC
+	jsr  Syntax_Byte_AC
 
 @lpbin:
 
@@ -36,10 +37,7 @@ Mon_Hunt:
 	iny
 	jsr  Get_Addr_To_LAC
 	beq  @hunt
-	lda  Long_AC+1
-	ora  Long_AC+2
-	ora  Long_AC+3
-	+bne Mon_Error         ; value above $FF	
+	jsr  Syntax_Byte_AC
 
 	cpy  #32               ; max data length
 	bne  @lpbin

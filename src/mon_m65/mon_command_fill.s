@@ -11,10 +11,7 @@ Mon_Fill:
 
 	jsr  Get_Addr_To_LAC   ; Long_AC = fill byte
 	+beq Mon_Error
-	lda  Long_AC+1
-	ora  Long_AC+2
-	ora  Long_AC+3
-	+bne Mon_Error         ; only 1 fill byte allowed
+	jsr  Syntax_Byte_AC    ; only 1 fill byte allowed
 
 	ldz  #$00
 

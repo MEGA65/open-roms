@@ -1689,10 +1689,14 @@ Get_Char:
          CMP  #'?'            ; help
          BEQ  @return
 @regc    CMP  #0
-         BEQ  @return
+         BEQ  @eof
          CMP  #':'
+         BEQ  @eof
+         RTS
+@eof     PHP
+         DEC  Buf_Index
+         PLP
 @return  RTS
-
 
 ; ******
 Dec_LCT:

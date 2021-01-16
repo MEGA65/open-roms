@@ -39,7 +39,7 @@ Mon_Hunt:
 	lda  Long_AC+1
 	ora  Long_AC+2
 	ora  Long_AC+3
-	+beq Mon_Error         ; value above $FF	
+	+bne Mon_Error         ; value above $FF	
 
 	cpy  #32               ; max data length
 	bne  @lpbin

@@ -6,8 +6,10 @@ Mon_Compare:
 
 	jsr  Get_Param_Range     ; Long_PC = source
 	+bcs Mon_Error           ; Long_CT = count
-	jsr  Get_LAC             ; Long_AC = target
-	+bcs Mon_Error
+	lda  #$00
+    sta  Addr_Mode
+	jsr  Get_Addr_To_LAC     ; Long_AC = target
+	+beq Mon_Error
 
 	lda  Src_Addr_Mode
 	ora  Dst_Addr_Mode

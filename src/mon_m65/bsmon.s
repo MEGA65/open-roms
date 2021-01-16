@@ -195,7 +195,7 @@ Jump_Table:
          !word Mon_Disassemble  ; D
          !word Mon_Fill         ; F
          !word Mon_Go           ; G  XXX to be debugged/adapted
-         !word Mon_Hunt         ; H  XXX to be bugfixed
+         !word Mon_Hunt         ; H
          !word Mon_JSR          ; J  XXX to be debugged/adapted
          !word Mon_Memory       ; M
          !word Mon_Register     ; R

@@ -40,7 +40,7 @@ Get_Addr_To_LAC:
    ; at this point .Y value determines a numeric system
 
    jsr  Get_Char
-   beq  @exit                ; '?', ':'', ';' and zero terminate
+   beq  @exit                ; branch if terminated
    cmp  #'0'
    bcc  @exit
    cmp  #':'

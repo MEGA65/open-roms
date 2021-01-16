@@ -1,6 +1,12 @@
 
 ; Monitor helper code - memory read and write
 
+Get_From_Memory_LAC:
+
+	jsr Exchange_LAC_LPC
+	jsr Get_From_Memory_LPC
+	jmp Exchange_LAC_LPC
+
 Get_From_Memory_LDA:
 
 	jsr Exchange_LDA_LPC

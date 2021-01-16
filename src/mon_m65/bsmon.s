@@ -1681,18 +1681,9 @@ Get_Char:
          LDX  Buf_Index
          INC  Buf_Index
          LDA  BUF,X
-         CPX  #1
          PLX
-         BCC  @regc
-         CMP  #';'            ; register
-         BEQ  @return
-         CMP  #'?'            ; help
-         BEQ  @return
-@regc    CMP  #0
-         BEQ  @eof
-         CMP  #':'
-         BEQ  @eof
-         RTS
+         CMP  #0
+         BNE  @return
 @eof     PHP
          DEC  Buf_Index
          PLP

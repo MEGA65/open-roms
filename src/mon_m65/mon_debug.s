@@ -28,7 +28,7 @@ DBG_print_Buf_Index:
 	rts
 
 
-DBG_print_long_pc:
+DBG_print_long_ac:
 
 	php
 	pha
@@ -37,15 +37,15 @@ DBG_print_long_pc:
 	phz
 
 	jsr PRIMM
-	!pet $0D, "long pc : ", 0
+	!pet $0D, "long ac : ", 0
 
-	lda Long_PC+3
+	lda Long_AC+3
 	jsr Print_Hex
-	lda Long_PC+2
+	lda Long_AC+2
 	jsr Print_Hex
-	lda Long_PC+1
+	lda Long_AC+1
 	jsr Print_Hex
-	lda Long_PC+0
+	lda Long_AC+0
 	jsr Print_Hex
 
 	jsr PRIMM

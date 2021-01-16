@@ -191,7 +191,7 @@ Jump_Table:
 
          !word Mon_Assemble     ; A  XXX to be debugged/adapted
          !word Mon_Bits         ; B
-         !word Mon_Compare      ; C  XXX to be debugged/adapted
+         !word Mon_Compare      ; C
          !word Mon_Disassemble  ; D
          !word Mon_Fill         ; F
          !word Mon_Go           ; G  XXX to be debugged/adapted
@@ -549,26 +549,6 @@ Dump_Row:
          JSR  Add_LPC
          PLZ
          RTS
-
-; **********
-Mon_Compare:
-; **********
-
-         JSR  Get_Param_Range   ; Long_PC = source
-         LBCS Mon_Error         ; Long_CT = count
-         JSR  Get_LAC           ; Long_AC = target
-         LBCS Mon_Error
-         JSR  Print_CR
-         LDZ  #0
-@loop    LDA  [Long_PC],Z
-         CMP  [Long_AC],Z
-         BEQ  @laba
-         JSR  Print_LPC_Addr
-@laba    JSR  Inc_LAC
-         JSR  Inc_LPC
-         JSR  Dec_LCT
-         BPL  @loop
-         JMP  Main
 
 ; *******
 Mon_Hunt:

@@ -59,7 +59,8 @@
 !addr Op_Ix         = $2E      ; type of constant
 !addr Op_Len        = $2F      ; length of operand
 
-                               ; $30-$63 - free space, unused for now
+                               ; $30-$62 - free space, unused for now
 
+!addr Byte_TMP      = $63      ; temporary byte
 !addr Long_TMP      = $64      ; temporary pointer, for fetching/storing memory content; has to be the same as Long__TMP in Kernal
 !addr Mon_Data      = $68      ; 40 bytes, buffer for hunt

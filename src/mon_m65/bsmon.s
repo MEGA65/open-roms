@@ -195,7 +195,7 @@ Jump_Table:
          !word Mon_Disassemble  ; D
          !word Mon_Fill         ; F
          !word Mon_Go           ; G  XXX to be debugged/adapted
-         !word Mon_Hunt         ; H  XXX to be debugged/adapted
+         !word Mon_Hunt         ; H  XXX to be bugfixed
          !word Mon_JSR          ; J  XXX to be debugged/adapted
          !word Mon_Memory       ; M
          !word Mon_Register     ; R
@@ -549,55 +549,6 @@ Dump_Row:
          JSR  Add_LPC
          PLZ
          RTS
-
-; *******
-Mon_Hunt:
-; *******
-
-         JSR  Get_Param_Range   ; Long_PC = start
-         LBCS Mon_Error         ; Long_CT = count
-         LDY  #0
-         JSR  Get_Char
-         CMP  #KEY_APOSTROPHE
-         BNE  @bin
-         JSR  Get_Char          ; string hunt
-         CMP  #0
-         LBEQ Mon_Error         ; null string
-
-@lpstr   STA  Mon_Data,Y
-         INY
-         JSR  Get_Char
-         BEQ  @hunt
-         CPY  #32               ;max. string length
-         BNE  @lpstr
-         BRA  @hunt
-
-@bin     JSR  Got_LAC
-@lpbin   LDA  Long_AC
-         STA  Mon_Data,Y
-         INY
-         JSR  Get_LAC
-         BCS  @hunt
-         CPY  #32               ;max. data length
-         BNE  @lpbin
-
-@hunt    STY  Long_DA           ; hunt length
-         JSR  Print_CR
-
-@lpstart LDY  #0
-@lpins   JSR  Fetch
-         CMP  Mon_Data,Y
-         BNE  @next
-         INY
-         CPY  Long_DA
-         BNE  @lpins
-         JSR  Print_LPC_Addr    ; match
-@next    JSR  STOP
-         LBEQ Main
-         JSR  Inc_LPC
-         JSR  Dec_LCT
-         BPL  @lpstart
-         JMP  Main
 
 ; ********
 Load_Save:

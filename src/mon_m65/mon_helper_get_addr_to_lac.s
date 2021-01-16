@@ -2,6 +2,12 @@
 ; Based on BSM (Bit Shifter's Monitor)
 
 
+Got_Addr_To_LAC:             ; to be used when first byte already fetched
+
+   dec  Buf_Index
+
+   ; FALLTROUGH
+
 Get_Addr_To_LAC:
 
    phx

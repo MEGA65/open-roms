@@ -1636,14 +1636,8 @@ Print_LPC_Addr: ; prints out the address in PC
    jsr  Print_Hex_Low_Digit
    lda  Long_PC+2
    jsr  Print_Hex
-   bra  @remaining
 
 @short:
-
-   jsr  PRIMM
-   !pet "...", 0
-
-@remaining:
 
    lda  Long_PC+1
    jsr  Print_Hex

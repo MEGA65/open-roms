@@ -423,23 +423,6 @@ Print_Bits:
          RTS
 
 
-; ***************
-Mon_Set_Register: ; XXX this needs adaptation
-; ***************
-
-         JSR  Get_LAC           ; get 1st. parameter
-         JSR  LAC_To_PC
-         LDY  #3
-@loop    JSR  Get_LAC
-         BCS  @exit
-         LDA  Long_AC
-         STA  Addr_Mode,Y
-         INY
-         CPY  #9
-         BCC  @loop
-@exit    JMP  Main
-
-
 ; *****
 Mon_Go:
 ; *****

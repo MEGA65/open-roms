@@ -7,7 +7,7 @@ Mon_Transfer:
 	jsr  Get_Param_Range     ; Long_PC = source
                              ; Long_CT = count
 
-	jsr  Get_Addr_To_LAC     ; Long_AC = target
+	jsr  Get_Val_To_LAC      ; Long_AC = target
 	+beq Mon_Error
 
 	lda  Src_Addr_Mode

@@ -8,11 +8,11 @@ Mon_Memory:
    lda  #$00
    sta  Addr_Mode            ; by default use C64-style addressing
 
-   jsr  Get_Addr_To_LAC      ; get 1st parameter (start address)
+   jsr  Get_Val_To_LAC       ; get 1st parameter (start address)
    +beq Mon_Error
    jsr  LAC_To_LPC           ; Long_PC = start address
 
-   jsr  Get_Addr_To_LAC      ; get 2nd parameter (end address)
+   jsr  Get_Val_To_LAC       ; get 2nd parameter (end address)
    bne  @calcdiff
 
    lda  #$10                 ; by default display 16 rows

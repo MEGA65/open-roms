@@ -10,7 +10,7 @@ Mon_Bits:
 	lda  #$00
 	sta  Addr_Mode           ; by default use C64-style addressing
 
-	jsr  Get_Addr_To_LAC     ; get 1st parameter (start address)
+	jsr  Get_Val_To_LAC      ; get 1st parameter (start address)
 	beq  @nopar
 	pla                      ; drop previous addressing mode
 	jsr  LAC_To_LPC          ; Long_PC = start address

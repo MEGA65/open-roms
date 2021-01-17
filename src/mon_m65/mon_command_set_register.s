@@ -24,10 +24,10 @@ Mon_Set_Register:
 	jsr  Syntax_Byte_AC
 
 	lda  Long_AC+0
-	sta  SR,Y
+	sta  AC,Y
 
 	iny
-	cpy  #$06
+	cpy  #$05
 	bne  @lpreg
 
 	; SP - 16 bit
@@ -41,9 +41,47 @@ Mon_Set_Register:
 
 	; Flags
 
+	jsr  Get_Glyph
+	beq  @exit
+	dec  Buf_Index
 
+	lda  #%01111111          ; prepare helper values for bit set/clear
+	sta  Long_TMP+0
+	lda  #%10000000
+	sta  Long_TMP+1
 
-	; XXX
+@lpflag:
+
+	lda  Get_Char
+	beq  @exit
+
+	cmp  #'-'
+	beq  @bit_clr
+	cmp  #'1'
+	+bne Mon_Error
+
+@bit_set:
+
+	lda  SR
+	ora  Long_TMP+1
+
+	bra  @next
+
+@bit_clr:
+
+	lda  SR
+	and  Long_TMP+0
+
+@next:
+
+	sta  SR
+
+	sec
+	rol  Long_TMP+0
+	clc 
+	rol  Long_TMP+1
+
+	bne  @lpflag
 
 @exit:
 

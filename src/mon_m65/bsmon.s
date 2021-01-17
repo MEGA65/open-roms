@@ -63,13 +63,13 @@ Mon_Register:
          LDA  PCH
          JSR  Print_Hex
 
-; print PCL,SR,PCL,A,X,Y,Z,BP
+; print PCL,A,X,Y,Z,BP
 
          LDY  #0
 @loopb   LDA  PCL,Y
          JSR  Print_Hex_Blank
          INY
-         CPY  #7
+         CPY  #6
          BCC  @loopb
 
 ; print 16 bit stack pointer
@@ -126,6 +126,8 @@ Main_A:
 Mon_Switch:
 ; *********
 
+         CMP  #'?'
+         +beq Mon_Help
          LDX  #24
 @loop    CMP  Command_Char,X
          BEQ  Mon_Select
@@ -151,7 +153,7 @@ Mon_Select:
 ; *********
 
          STA  VERCKK
-         CPX  #22
+         CPX  #21
          LBCS Load_Save
          TXA
          ASL
@@ -163,14 +165,14 @@ Print_Commands:
 ; *************
 
          JSR  PRIMM
-         !pet KEY_RETURN," ",KEY_RVS_ON," commands: "
+         !pet KEY_RETURN,KEY_RVS_ON," commands: "
 
 ; ***********
 Command_Char:
 ; ***********
 
          ;     0123456789abcdef
-         !pet "abcdfghjmrtx@.>;?"
+         !pet "abcdfghjmrtx@.>;"
 
 ; **********
 Cons_Prefix:
@@ -182,7 +184,8 @@ Cons_Prefix:
 Load_Save_Verify:
 ; ***************
 
-         !pet "lsv ",KEY_RETURN,0
+         !pet "lsv ",KEY_RETURN
+         !pet KEY_RVS_ON," for help: type ? and press return ",KEY_RETURN,0
          RTS
 
 ; *********
@@ -204,8 +207,7 @@ Jump_Table:
          !word Mon_DOS          ; @
          !word Mon_Assemble     ; .  XXX to be debugged/adapted
          !word Mon_Set_Memory   ; >
-         !word Mon_Set_Register ; ;  XXX to be debugged/adapted
-         !word Mon_Help         ; ?
+         !word Mon_Set_Register ; ;  XXX to be bugfixed
          !word Converter        ; $
          !word Converter        ; +
          !word Converter        ; &
@@ -2150,7 +2152,7 @@ Reg_Text:
 ; *******
 
          JSR  PRIMM
-         !pet KEY_RETURN, "   pc  sr ac xr yr zr bp  sp  nvebdizc", KEY_RETURN, "; ", KEY_ESC, 'q', 0
+         !pet KEY_RETURN, "   pc  ac xr yr zr bp  sp  nvebdizc", KEY_RETURN, "; ", KEY_ESC, 'q', 0
          RTS
 
 ; *******

@@ -13,14 +13,14 @@
 !addr Addr_Mode     =  2       ; $00 = 64K address, $80 = M65 flat address
 !addr PCH           =  3
 !addr PCL           =  4
-!addr SR            =  5
-!addr AC            =  6
-!addr XR            =  7
-!addr YR            =  8
-!addr ZR            =  9
-!addr BP            = 10
-!addr SPH           = 11
-!addr SPL           = 12
+!addr AC            =  5
+!addr XR            =  6
+!addr YR            =  7
+!addr ZR            =  8
+!addr BP            =  9
+!addr SPH           = 10
+!addr SPL           = 11
+!addr SR            = 12
 
 ; *******************
 ; * Other variables *

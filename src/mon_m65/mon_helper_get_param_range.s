@@ -36,7 +36,7 @@ Get_Param_Range:
 
 	lda  #$00
 	sta  Addr_Mode
-	jsr  Get_Addr_To_LAC
+	jsr  Get_Val_To_LAC
 	beq  @error
 	lda  Addr_Mode
 	rts

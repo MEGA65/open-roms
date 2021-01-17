@@ -27,7 +27,7 @@ Mon_Hunt:
 
 @bin:
 
-	jsr  Got_Addr_To_LAC
+	jsr  Got_Val_To_LAC
 	jsr  Syntax_Byte_AC
 
 @lpbin:
@@ -35,7 +35,7 @@ Mon_Hunt:
 	lda  Long_AC
 	sta  Mon_Data,Y
 	iny
-	jsr  Get_Addr_To_LAC
+	jsr  Get_Val_To_LAC
 	beq  @hunt
 	jsr  Syntax_Byte_AC
 

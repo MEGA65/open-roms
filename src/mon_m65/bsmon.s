@@ -203,7 +203,7 @@ Jump_Table:
          !word Mon_Exit         ; X
          !word Mon_DOS          ; @
          !word Mon_Assemble     ; .  XXX to be debugged/adapted
-         !word Mon_Set_Memory   ; >  XXX to be debugged/adapted
+         !word Mon_Set_Memory   ; >
          !word Mon_Set_Register ; ;  XXX to be debugged/adapted
          !word Mon_Help         ; ?
          !word Converter        ; $
@@ -439,33 +439,6 @@ Mon_Set_Register: ; XXX this needs adaptation
          BCC  @loop
 @exit    JMP  Main
 
-; *************
-Mon_Set_Memory:
-; *************
-
-         JSR  Set_MODE_80
-
-         JSR  Get_LAC           ; get 1st. parameter
-         BCS  @exit
-         JSR  LAC_To_LPC        ; Long_PC = row address
-         LDZ  #0
-@loop    JSR  Get_LAC
-         BCS  @exit
-         LDA  Long_AC
-         BBS7 Long_PC+3,@banked ; trigger banked access
-         +NOP                   ; use STA  [Long_PC],Z
-@banked  STA  (Long_PC),Z
-         INZ
-         CPZ  #16
-         BBR7 MODE_80,@next
-         CPZ  #8
-@next    BCC  @loop
-
-@exit    JSR  PRIMM
-         !pet KEY_ESC, 'o'
-         !pet $91,$00
-         JSR  Dump_Row
-         JMP  Main
 
 ; *****
 Mon_Go:
@@ -1727,7 +1700,7 @@ Converter:
 
          LDX  #0
          STX  Buf_Index
-         JSR  Get_Addr_To_LAC
+         JSR  Get_Val_To_LAC
          LBEQ Mon_Error
          JSR  Print_CR
          LDX  #0

@@ -9,7 +9,7 @@ Mon_Fill:
 	jsr  Get_Param_Range   ; Long_PC = target
 	+bcs Mon_Error         ; Long_CT = count
 
-	jsr  Get_Addr_To_LAC   ; Long_AC = fill byte
+	jsr  Get_Val_To_LAC    ; Long_AC = fill byte
 	+beq Mon_Error
 	jsr  Syntax_Byte_AC    ; only 1 fill byte allowed
 

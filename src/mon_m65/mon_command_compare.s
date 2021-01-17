@@ -8,7 +8,7 @@ Mon_Compare:
 	+bcs Mon_Error           ; Long_CT = count
 	lda  #$00
     sta  Addr_Mode
-	jsr  Get_Addr_To_LAC     ; Long_AC = target
+	jsr  Get_Val_To_LAC      ; Long_AC = target
 	+beq Mon_Error
 
 	lda  Src_Addr_Mode

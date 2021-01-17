@@ -2,13 +2,13 @@
 ; Based on BSM (Bit Shifter's Monitor)
 
 
-Got_Addr_To_LAC:             ; to be used when first byte already fetched
+Got_Val_To_LAC:              ; to be used when first byte already fetched
 
    dec  Buf_Index
 
    ; FALLTROUGH
 
-Get_Addr_To_LAC:
+Get_Val_To_LAC:
 
    phx
    phy
@@ -118,13 +118,13 @@ Get_Addr_To_LAC:
    inw  Long_AC+2
    bne  @valid_prefix
 
-   jmp  Mon_Error            ; number foo large
+   jmp  Mon_Error            ; number too large
 
 @exit:
 
    lda  Long_AC+3
    and  #%11110000
-   +bne Mon_Error            ; MEGA65 has a 28-bit address bu
+   +bne Mon_Error            ; MEGA65 has a 28-bit address bus
 
    lda  Dig_Cnt              ; check if we should enable long addressing mode
    cmp  Num_Limit,Y

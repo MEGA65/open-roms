@@ -192,7 +192,7 @@ Load_Save_Verify:
 Jump_Table:
 ; *********
 
-         !word Mon_Assemble     ; A  XXX to be debugged/adapted
+         !word Mon_Assemble     ; A  XXX to be bugfixed
          !word Mon_Bits         ; B
          !word Mon_Compare      ; C
          !word Mon_Disassemble  ; D
@@ -205,7 +205,7 @@ Jump_Table:
          !word Mon_Transfer     ; T
          !word Mon_Exit         ; X
          !word Mon_DOS          ; @
-         !word Mon_Assemble     ; .  XXX to be debugged/adapted
+         !word Mon_Assemble     ; .  XXX to be bugfixed
          !word Mon_Set_Memory   ; >
          !word Mon_Set_Register ; ;
          !word Converter        ; $
@@ -598,8 +598,13 @@ Load_Save:
 Mon_Assemble:
 ; ***********
 
-         JSR  Get_LAC           ; get 1st. parameter
-         LBCS Mon_Error
+         LDA  #$00
+         STA  Addr_Mode
+         JSR  Get_Val_To_LAC    ; get 1st. parameter
+         LBEQ Mon_Error
+         LDA  Addr_Mode
+         LBNE Mon_Error 
+
          JSR  LAC_To_LPC        ; Long_PC = PC
 
 @start   LDX  #0                ; mne letter counter
@@ -660,6 +665,8 @@ Mon_Assemble:
          JMP  Mon_Error
 
 @found   STX  Ix_Mne
+
+; XXX start debugging from here
 
 ;        find 1st. opcode for this mnemonic
 
@@ -933,13 +940,13 @@ Mon_Assemble:
          BBR5 Op_Flag,@storen
          LDA  #$ea              ; 32 bit prefix
          LDZ  #0
-         STA  [Long_PC],Z       ; store prefix
+         JSR  Put_To_Memory_LPC ; store prefix
          INZ
          LDA  Op_Code
-         STA  [Long_PC],Z       ; store opcode
+         JSR  Put_To_Memory_LPC ; store opcode
          INZ
          LDA  Long_AC
-         STA  [Long_PC],Z       ; store address
+         JSR  Put_To_Memory_LPC ; store address
          INC  Op_Size
          BRA  @print
 
@@ -948,13 +955,13 @@ Mon_Assemble:
          BEQ  @store1
 
 @lpsto   LDA  Long_AC-1,Y
-         STA  [Long_PC],Z
+         JSR  Put_To_Memory_LPC
          DEZ
          DEY
          BNE  @lpsto
 
 @store1  LDA  Op_Code
-         STA  [Long_PC],Z
+         JSR  Put_To_Memory_LPC
 
 @print   JSR  PRIMM
          !pet 13,$91,"a ", KEY_ESC, 'q', 0
@@ -1390,33 +1397,6 @@ Print_Code:
          INC  Op_Size
 @return  RTS
 
-; ******
-Got_LAC:  ; XXX to be replaced/adapted
-; ******
-
-         DEC  Buf_Index
-
-; ******
-Get_LAC: ; XXX to be replaced/adapted
-; ******
-
-         JSR  Read_Number
-         BCS  @error            ; illegal character
-         BEQ  @noval            ; no value
-         JSR  Got_Char          ; delimiter ?
-         BEQ  @end              ; end of input
-         CMP  #' '
-         BEQ  @ok
-         CMP  #','
-         BEQ  @ok
-@error   JMP  Mon_Error         ; stack is reset in Mon_Error
-
-@noval   SEC
-         RTS
-
-@end     DEC  Buf_Index
-@ok      CLC
-         RTS
 
 ; **********
 Read_Number: ; XXX obsolete, to be replaced

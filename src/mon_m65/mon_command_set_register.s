@@ -52,7 +52,7 @@ Mon_Set_Register:
 
 @lpflag:
 
-	lda  Get_Char
+	jsr  Get_Char
 	beq  @exit
 
 	cmp  #'-'
@@ -77,9 +77,9 @@ Mon_Set_Register:
 	sta  SR
 
 	sec
-	rol  Long_TMP+0
+	ror  Long_TMP+0
 	clc 
-	rol  Long_TMP+1
+	ror  Long_TMP+1
 
 	bne  @lpflag
 

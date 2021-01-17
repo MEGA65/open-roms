@@ -207,7 +207,7 @@ Jump_Table:
          !word Mon_DOS          ; @
          !word Mon_Assemble     ; .  XXX to be debugged/adapted
          !word Mon_Set_Memory   ; >
-         !word Mon_Set_Register ; ;  XXX to be bugfixed
+         !word Mon_Set_Register ; ;
          !word Converter        ; $
          !word Converter        ; +
          !word Converter        ; &

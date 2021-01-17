@@ -219,30 +219,6 @@ Mon_Exit:
 
          JMP  (X_Vector)
 
-; ********
-LAC_To_PC: ; XXX to be adapted
-; ********
-
-   inc $D020 ; XXX for debug only
-
-; called from Mon_Set_Register, Mon_Go and Mon_JSR
-; as the first instruction. The carry flag was set from
-; the routine Got_LAC if an error occured.
-; Notice that the Bank, PCH and PCL values are stored
-; high to low, reverse to the standard order.
-
-; Bank, PCH and PCL are part of a list, that is used by
-; the routines FAR_JMP and FAR_JSR of the operating system
-
-         BCS  @error
-         ;LDA  Long_AC
-         ;STA  Bank+2
-         ;LDA  Long_AC+1
-         ;STA  Bank+1
-         ;LDA  Long_AC+2
-         ;STA  Bank
-@error   RTS
-
 ; *********
 LAC_To_LPC:
 ; *********
@@ -666,8 +642,6 @@ Mon_Assemble:
 
 @found   STX  Ix_Mne
 
-; XXX start debugging from here
-
 ;        find 1st. opcode for this mnemonic
 
          TXA
@@ -702,6 +676,8 @@ Mon_Assemble:
          LBNE Mon_Error
 
 ;        read operand
+
+; XXX start debugging from here
 
 @labc    LDA  #0
 @labd    STA  Mode_Flags

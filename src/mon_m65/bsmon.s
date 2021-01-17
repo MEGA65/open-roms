@@ -2162,30 +2162,32 @@ Mon_Help:
          JSR  PRIMM
          
          !pet KEY_RETURN, KEY_RETURN
-         !pet KEY_ESC,'s',"a",KEY_ESC,'u',"ssemble     - a address mnemonic operand",KEY_RETURN
+         !pet KEY_ESC,'s',"a",KEY_ESC,'u',"ssemble     - a addr mnemonic operand",KEY_RETURN
          !pet KEY_ESC,'s',"b",KEY_ESC,'u',"itmaps      - b [from]",KEY_RETURN
          !pet KEY_ESC,'s',"c",KEY_ESC,'u',"ompare      - c from to with",KEY_RETURN
          !pet KEY_ESC,'s',"d",KEY_ESC,'u',"isassemble  - d [from [to]]",KEY_RETURN
          !pet KEY_ESC,'s',"f",KEY_ESC,'u',"ill         - f from to fillbyte",KEY_RETURN
-         !pet KEY_ESC,'s',"g",KEY_ESC,'u',"o           - g [address]",KEY_RETURN
-         !pet KEY_ESC,'s',"h",KEY_ESC,'u',"unt         - h from to (string or bytes)",KEY_RETURN
-         !pet KEY_ESC,'s',"j",KEY_ESC,'u',"sr          - j address",KEY_RETURN
-         !pet KEY_ESC,'s',"l",KEY_ESC,'u',"oad         - l filename [unit [address]]",KEY_RETURN
+         !pet KEY_ESC,'s',"g",KEY_ESC,'u',"o           - g [addr]",KEY_RETURN
+         !pet KEY_ESC,'s',"h",KEY_ESC,'u',"unt         - h from to ('str / bytes)",KEY_RETURN
+         !pet KEY_ESC,'s',"j",KEY_ESC,'u',"sr          - j addr",KEY_RETURN
+         !pet KEY_ESC,'s',"l",KEY_ESC,'u',"oad         - l filename [unit [addr]]",KEY_RETURN
          !pet KEY_ESC,'s',"m",KEY_ESC,'u',"emory       - m [from [to]]",KEY_RETURN
          !pet KEY_ESC,'s',"r",KEY_ESC,'u',"egisters    - r",KEY_RETURN
          !pet KEY_ESC,'s',"s",KEY_ESC,'u',"ave         - s filename unit from to",KEY_RETURN
          !pet KEY_ESC,'s',"t",KEY_ESC,'u',"ransfer     - t from to target",KEY_RETURN
-         !pet KEY_ESC,'s',"v",KEY_ESC,'u',"erify       - v filename [unit [address]]",KEY_RETURN
+         !pet KEY_ESC,'s',"v",KEY_ESC,'u',"erify       - v filename [unit [addr]]",KEY_RETURN
          !pet "e",KEY_ESC,'s',"x",KEY_ESC,'u',"it         - x",KEY_RETURN
-         !pet KEY_ESC,'s',".",KEY_ESC,'u',"<dot>       - . address mnemonic operand",KEY_RETURN
-         !pet KEY_ESC,'s',">",KEY_ESC,'u',"<greater>   - > address byte sequence",KEY_RETURN
-         !pet KEY_ESC,'s',";",KEY_ESC,'u',"<semicolon> - ; register contents",KEY_RETURN
-         !pet KEY_ESC,'s',"@",KEY_ESC,'u',"dos         - @[dos wedge command]",KEY_RETURN
-         !pet KEY_ESC,'s',"$",KEY_ESC,'u',"<dollar>    - hexadecimal number (default)",KEY_RETURN
-         !pet KEY_ESC,'s',"+",KEY_ESC,'u',"<plus>      - decimal number",KEY_RETURN
-         !pet KEY_ESC,'s',"&",KEY_ESC,'u',"<ampersand> - octal number",KEY_RETURN
-         !pet KEY_ESC,'s',"%",KEY_ESC,'u',"<percent>   - binary number",KEY_RETURN
-         !pet KEY_ESC,'s',"?",KEY_ESC,'u',"help        - ?",KEY_RETURN
+         !pet KEY_ESC,'s',".",KEY_ESC,'u',"            - . addr mnemonic operand",KEY_RETURN
+         !pet KEY_ESC,'s',">",KEY_ESC,'u',"            - > addr byte sequence",KEY_RETURN
+         !pet KEY_ESC,'s',";",KEY_ESC,'u',"            - ; register contents",KEY_RETURN
+         !pet KEY_ESC,'s',"@",KEY_ESC,'u',"dos         - dos wedge command",KEY_RETURN
+
+         !pet KEY_ESC,'s',"$",KEY_ESC,'u',"/"
+         !pet KEY_ESC,'s',"+",KEY_ESC,'u',"/"
+         !pet KEY_ESC,'s',"&",KEY_ESC,'u',"/"
+         !pet KEY_ESC,'s',"%",KEY_ESC,'u',"      - hex/dec/oct/bin",KEY_RETURN
+  
+         !pet KEY_RETURN,"address above $ffff or enough digits", KEY_RETURN, "triggers flat memory access for read",KEY_RETURN
          !pet 0
 
          JMP Main

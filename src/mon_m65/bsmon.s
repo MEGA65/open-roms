@@ -197,9 +197,9 @@ Jump_Table:
          !word Mon_Compare      ; C
          !word Mon_Disassemble  ; D
          !word Mon_Fill         ; F
-         !word Mon_Go           ; G  XXX to be debugged/adapted
+         !word Mon_Go           ; G  XXX to be finished/bugfixed
          !word Mon_Hunt         ; H
-         !word Mon_JSR          ; J  XXX to be debugged/adapted
+         !word Mon_JSR          ; J  XXX to be finished/bugfixed
          !word Mon_Memory       ; M
          !word Mon_Register     ; R
          !word Mon_Transfer     ; T
@@ -399,21 +399,6 @@ Print_Bits:
          BNE  @loop
          PLZ
          RTS
-
-
-; *****
-Mon_Go:
-; *****
-
-         ; XXX to be rewritten for Open ROMs!
-         jmp Main
-
-; ******
-Mon_JSR:
-; ******
-
-         ; XXX to be rewritten for Open ROMs!
-         jmp Main
 
 ; ***********
 Dump_4_Bytes:

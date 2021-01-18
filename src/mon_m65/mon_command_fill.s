@@ -2,9 +2,7 @@
 ; Based on BSM (Bit Shifter's Monitor)
 
 
-; *******
 Mon_Fill:
-; *******
 
 	jsr  Get_Param_Range   ; Long_PC = target
 	+bcs Mon_Error         ; Long_CT = count

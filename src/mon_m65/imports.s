@@ -8,6 +8,7 @@
 ;; #ALIAS# SETMSG                      = KERNAL_0.SETMSG
 ;; #ALIAS# STOP                        = KERNAL_0.STOP
 ;; #ALIAS# SCREEN                      = KERNAL_0.SCREEN
+;; #ALIAS# SELDEV                      = KERNAL_0.SELDEV
 
 ;; #ALIAS# monitor_exit                = KERNAL_0.m65_shadow_BZP
 ;; #ALIAS# monitor_memread_helper      = KERNAL_0.proxy_M1_memread

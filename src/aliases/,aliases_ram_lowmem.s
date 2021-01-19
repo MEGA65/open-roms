@@ -122,7 +122,7 @@
 	!addr FNLEN     = $B7  ;          current file name length
 	!addr LA        = $B8  ;          current logical_file number
 	!addr SA        = $B9  ;          current secondary address
-	!addr FA        = $BA  ;          current device number
+	!addr FA        = $BA  ;          current unit number
 	!addr FNADDR    = $BB  ; $BB-$BC  current file name pointer
 	!addr ROPRTY    = $BD  ;          -- NOT IMPLEMENTED -- tape / RS-232 temporary storage
 	!addr FSBLK     = $BE  ;          -- NOT IMPLEMENTED -- tape / RS-232 temporary storage

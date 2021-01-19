@@ -36,7 +36,7 @@ Mon_Go:
 	lda  PCL                 ; use PC as jump address
 	sta  Long_AC+0
 	lda  PCH
-	sta  Long_AC+0
+	sta  Long_AC+1
 
 	; FALLTROUGH
 
@@ -45,15 +45,10 @@ Mon_Go_JSR_comon:
 	lda  Addr_Mode           ; only first 64KB is supported as target
 	+bne Mon_Error
 
-	lda  PCH                 ; push target address for RTS
-	sta  Long_TMP+1
-	lda  PCL
-	sta  Long_TMP+0
-	dew  Long_TMP+0
-
-	lda  Long_TMP+1
+	dew  Long_AC+0           ; push target address for RTS-jump
+	lda  Long_AC+1
 	pha
-	lda  Long_TMP+0
+	lda  Long_AC+0
 	pha
 
 	; Prepare registers
@@ -76,7 +71,6 @@ Mon_Go_JSR_comon:
 Mon_JSR_ret:
 
 	; Retrieve registers
-	; XXX address!
 
 	pha
 	php

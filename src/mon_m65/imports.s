@@ -10,14 +10,19 @@
 ;; #ALIAS# SCREEN                      = KERNAL_0.SCREEN
 ;; #ALIAS# SELDEV                      = KERNAL_0.SELDEV
 
+;; #ALIAS# CHRIN                       = KERNAL_0.proxy_M1_CHRIN
+;; #ALIAS# CHROUT                      = KERNAL_0.proxy_M1_CHROUT
+
+;; #ALIAS# LOAD                        = KERNAL_0.proxy_M1_JLOAD
+;; #ALIAS# SAVE                        = KERNAL_0.proxy_M1_JSAVE
+
 ;; #ALIAS# monitor_exit                = KERNAL_0.m65_shadow_BZP
 ;; #ALIAS# monitor_memread_helper      = KERNAL_0.proxy_M1_memread
 ;; #ALIAS# monitor_memwrite_helper     = KERNAL_0.proxy_M1_memwrite
 ;; #ALIAS# monitor_jmpout              = KERNAL_0.proxy_M1_jmpout
 ;; #ALIAS# monitor_jmpout_ret          = KERNAL_0.proxy_M1_jmpout_ret
 
-;; #ALIAS# CHRIN                       = KERNAL_0.proxy_M1_CHRIN
-;; #ALIAS# CHROUT                      = KERNAL_0.proxy_M1_CHROUT
+;; #ALIAS# m65_shadow_BZP              = KERNAL_0.m65_shadow_BZP
 
 ;; #ALIAS# wedge_dos_monitor           = BASIC_0.wedge_dos_monitor
 

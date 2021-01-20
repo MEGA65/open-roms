@@ -24,6 +24,17 @@ proxy_M1_end:
 
 	jmp map_MON_1
 
+proxy_M1_JLOAD:
+
+	jsr map_NORMAL
+	jsr JLOAD
+	bra proxy_M1_end
+
+proxy_M1_JSAVE:
+
+	jsr map_NORMAL
+	jsr JSAVE
+	bra proxy_M1_end
 
 ; Memory acccess routines
 

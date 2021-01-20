@@ -66,9 +66,12 @@ Mon_Go_JSR_comon:
 	lda  ZR
 	pha
 
+	jsr  m65_shadow_BZP
 	jmp  monitor_jmpout
 
 Mon_JSR_ret:
+
+	jsr  m65_shadow_BZP
 
 	; Retrieve registers
 

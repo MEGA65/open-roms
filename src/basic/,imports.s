@@ -48,6 +48,7 @@
 
 ;; #ALIAS# m65_colorset        = KERNAL_0.m65_colorset
 ;; #ALIAS# m65_shadow_BZP      = KERNAL_0.m65_shadow_BZP
+;; #ALIAS# proxy_M1_IO_end     = KERNAL_0.proxy_M1_IO_end
 
 ;
 ; Ultimate 64 specific parts

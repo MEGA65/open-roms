@@ -145,15 +145,14 @@ proxy_B1_do_error_print_only:
 	jsr do_error_print_only
 	bra proxy_B1_end_2
 
-proxy_B1_do_mon_kernal_error: ; for the MONITOR only
+proxy_M1_print_kernal_error:
 
-	jsr map_NORMAL
 	tax
 	bne @1
 	ldx #$1E                           ; BREAK error + 1
 @1:
 	dex
+	jsr m65_shadow_BZP
 	jsr do_error_print_only
-	bra proxy_B1_end_2
-
+	jmp proxy_M1_IO_end
 }

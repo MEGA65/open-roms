@@ -128,7 +128,7 @@ Mon_Switch:
 
          CMP  #'?'
          +beq Mon_Help
-         LDX  #24
+         LDX  #22
 @loop    CMP  Command_Char,X
          BEQ  Mon_Select
          DEX
@@ -152,8 +152,7 @@ Mon_Error:
 Mon_Select:
 ; *********
 
-         STA  VERCKK
-         CPX  #21
+         CPX  #20
          LBCS Load_Save
          TXA
          ASL
@@ -171,19 +170,21 @@ Print_Commands:
 Command_Char:
 ; ***********
 
-         ;     0123456789abcdef
+         ;     0123456789012345
          !pet "abcdfghjmrtx@.>;"
 
 ; **********
 Cons_Prefix:
 ; **********
 
+         ;     6789
          !pet "$+&%"
 
 ; ***************
 Load_Save_Verify:
 ; ***************
 
+         ;     012
          !pet "lsv ",KEY_RETURN
          !pet KEY_RVS_ON," for help: type ? and press return ",KEY_RETURN,0
          RTS

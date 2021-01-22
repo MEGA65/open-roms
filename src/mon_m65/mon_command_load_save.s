@@ -4,6 +4,8 @@
 
 Load_Save:
 
+   stx  VERCKK               ; store command
+
 	; Retrieve file name
 
 @skip1:

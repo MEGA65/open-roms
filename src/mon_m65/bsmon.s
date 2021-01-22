@@ -166,6 +166,8 @@ Print_Commands:
          JSR  PRIMM
          !pet KEY_RETURN,KEY_RVS_ON," commands: "
 
+         ; In case of changes in command numbering, adapt 'Load_Save'
+
 ; ***********
 Command_Char:
 ; ***********

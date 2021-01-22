@@ -34,10 +34,10 @@ Load_Save:
 	; Separate flow for SAVE
 
 	lda  VERCKK
-	cmp  #'S'
+	cmp  #21                 ; 'S'
 	beq  Mon_Save
    sec
-   sbc  #'L'
+   sbc  #20                 ; 'L'
    sta  VERCKK              ; 0 for load, other value for verify
 
 	; FALLTROUGH
@@ -86,7 +86,6 @@ Mon_Load_Verify:
    lda  VERCKK
    jsr  m65_shadow_BZP
    jsr  LOAD
-
    bra  Mon_Load_Save_Common
 
 Mon_Save:

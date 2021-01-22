@@ -25,6 +25,7 @@
 ;; #ALIAS# m65_shadow_BZP              = KERNAL_0.m65_shadow_BZP
 
 ;; #ALIAS# wedge_dos_monitor           = BASIC_0.wedge_dos_monitor
+;; #ALIAS# do_mon_kernal_error         = BASIC_0.proxy_B1_do_mon_kernal_error
 
 
 ; 'Print immediate', original implementation by Mike Barry, adapted to 65CE02, modified to preserve .Y

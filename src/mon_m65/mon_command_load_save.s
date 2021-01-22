@@ -83,8 +83,9 @@ Mon_Load_Verify:
 @load:
 
    sta  SA
+
+   jsr  Print_CR
    lda  VERCKK
-   jsr  m65_shadow_BZP
    jsr  LOAD
    bra  Mon_Load_Save_Common
 
@@ -123,22 +124,25 @@ Mon_Save:
    ldx  Long_AC+0
    ldy  Long_AC+1
 
-   jsr  m65_shadow_BZP
    pla                       ; set start address for SAVE            
    sta  TXTTAB+0
    pla
    sta  TXTTAB+1
-   lda  #TXTTAB
 
+   jsr  Print_CR
+   lda  #TXTTAB
    jsr  SAVE
 
    ; FALLTROUGH
 
 Mon_Load_Save_Common:
 
-   jsr  m65_shadow_BZP
    bcc  @end
-   jsr  do_mon_kernal_error
+   pha
+   jsr  Print_CR
+   pla
+   jsr  print_kernal_error
+   jsr  Print_CR
 
 @end:
 

@@ -19,22 +19,10 @@ proxy_M1_CHROUT:
 
 	; FALLTROUGH
 
-proxy_M1_jmpout_ret:         ; reused by monitor
 proxy_M1_end:
 
 	jmp map_MON_1
 
-proxy_M1_JLOAD:
-
-	jsr map_NORMAL
-	jsr JLOAD
-	bra proxy_M1_end
-
-proxy_M1_JSAVE:
-
-	jsr map_NORMAL
-	jsr JSAVE
-	bra proxy_M1_end
 
 ; Memory acccess routines
 
@@ -58,6 +46,8 @@ proxy_M1_memwrite:
 
 proxy_M1_jmpout:
 
+	jsr m65_shadow_BZP
+
 	plz  ; ZR
 	ply  ; YR
 	plx  ; XR
@@ -67,3 +57,24 @@ proxy_M1_jmpout:
 	plp  ; SR
 
 	jmp map_NORMAL
+
+; LOAD/SAVE
+
+proxy_M1_JLOAD:
+
+	jsr m65_shadow_BZP
+	jsr JLOAD
+
+	; FALLTROUGH
+
+proxy_M1_jmpout_ret:         ; reused by monitor
+proxy_M1_IO_end:
+
+	jsr m65_shadow_BZP
+	bra proxy_M1_end
+
+proxy_M1_JSAVE:
+
+	jsr m65_shadow_BZP
+	jsr JSAVE
+	bra proxy_M1_IO_end

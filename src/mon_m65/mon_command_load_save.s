@@ -136,7 +136,9 @@ Mon_Save:
 Mon_Load_Save_Common:
 
    jsr  m65_shadow_BZP
+   bcc  @end
+   jsr  do_mon_kernal_error
 
-	; XXX to be finished - check for errors
+@end:
 
 	jmp Main

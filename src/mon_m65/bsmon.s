@@ -1686,6 +1686,7 @@ Print_BCD:
 Mon_DOS:
 ; ******
 
+         JSR  Print_CR
          JSR  wedge_dos_monitor
          JSR  Print_CR
          JMP  Main

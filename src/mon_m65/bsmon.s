@@ -9,10 +9,6 @@
 Mon_Call:
 ; *******
 
-   jsr PRIMM
-   !pet $0D, "* warning * port not finished yet", $0D, $0D, $00
-
-
          JSR  Print_Commands
 
 ;        set default addressing mode to 64K
@@ -478,7 +474,18 @@ Mon_Assemble:
 
    lda #$0D
    jsr DBG_print_char
-   jsr DBG_print_Buf_Index
+   lda #'-'
+   jsr DBG_print_char
+   ldx #$FF
+@xx:
+   inx
+   lda BUF,x
+   beq @x1
+   jsr DBG_print_char
+   bra @xx
+@x1:
+   lda #$0D
+   jsr DBG_print_char
 
          LDA  #$00
          STA  Addr_Mode
@@ -583,16 +590,12 @@ Mon_Assemble:
 
 ;        read operand
 
-; XXX start debugging from here
-
-@labc jsr DBG_print_Buf_Index
-         LDA  #0
+@labc    LDA  #0
 @labd    STA  Mode_Flags
          LDA  #0
          STA  Addr_Mode
          JSR  Get_Val_To_LAC
          BEQ  @labg             ; no operand
-   jsr DBG_print_long_ac
          LDA  Addr_Mode
          LBNE Mon_Error         ; -> overflow
          LDY  #2                ; Y=2 word operand
@@ -609,7 +612,6 @@ Mon_Assemble:
 @labg
 @lpnop   JSR  Get_Char          ; get delimiter
          LBEQ @adjust           ; end of operand
-   jsr DBG_print_char
          CMP  #' '
          BEQ  @lpnop
 
@@ -848,11 +850,7 @@ Mon_Assemble:
 @store1  LDA  Op_Code
          JSR  Put_To_Memory_LPC
 
-@print pha 
-       lda #$0D
-       jsr DBG_print_char
-       pla
-         JSR  PRIMM
+@print   JSR  PRIMM
          !pet 13,$91,"a ", KEY_ESC, 'q', 0
          JSR  Print_Code
          INC  Op_Size

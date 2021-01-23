@@ -476,6 +476,10 @@ Dump_Row:
 Mon_Assemble:
 ; ***********
 
+   lda #$0D
+   jsr DBG_print_char
+   jsr DBG_print_Buf_Index
+
          LDA  #$00
          STA  Addr_Mode
          JSR  Get_Val_To_LAC    ; get 1st. parameter
@@ -581,12 +585,14 @@ Mon_Assemble:
 
 ; XXX start debugging from here
 
-@labc    LDA  #0
+@labc jsr DBG_print_Buf_Index
+         LDA  #0
 @labd    STA  Mode_Flags
          LDA  #0
          STA  Addr_Mode
-         JSR  Got_Val_To_LAC
+         JSR  Get_Val_To_LAC
          BEQ  @labg             ; no operand
+   jsr DBG_print_long_ac
          LDA  Addr_Mode
          LBNE Mon_Error         ; -> overflow
          LDY  #2                ; Y=2 word operand
@@ -603,6 +609,7 @@ Mon_Assemble:
 @labg
 @lpnop   JSR  Get_Char          ; get delimiter
          LBEQ @adjust           ; end of operand
+   jsr DBG_print_char
          CMP  #' '
          BEQ  @lpnop
 
@@ -841,7 +848,11 @@ Mon_Assemble:
 @store1  LDA  Op_Code
          JSR  Put_To_Memory_LPC
 
-@print   JSR  PRIMM
+@print pha 
+       lda #$0D
+       jsr DBG_print_char
+       pla
+         JSR  PRIMM
          !pet 13,$91,"a ", KEY_ESC, 'q', 0
          JSR  Print_Code
          INC  Op_Size

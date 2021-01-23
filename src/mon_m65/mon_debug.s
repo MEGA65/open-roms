@@ -13,11 +13,30 @@ DBG_print_Buf_Index:
 	phy
 	phz
 
-	jsr PRIMM
-	!pet $0D, "buf idx : ", 0
+	lda #':'
+	jsr CHROUT
 
 	lda Buf_Index
 	jsr Print_Hex
+
+	plz
+	ply
+	plx
+	pla
+	plp
+
+	rts
+
+
+DBG_print_char:
+
+	php
+	pha
+	phx
+	phy
+	phz
+
+	jsr CHROUT
 
 	plz
 	ply
@@ -36,8 +55,14 @@ DBG_print_long_ac:
 	phy
 	phz
 
-	jsr PRIMM
-	!pet $0D, "long ac : ", 0
+	lda #'*'
+	jsr CHROUT
+
+	lda Dig_Cnt
+	jsr Print_Hex
+
+	lda #'*'
+	jsr CHROUT
 
 	lda Long_AC+3
 	jsr Print_Hex
@@ -48,15 +73,6 @@ DBG_print_long_ac:
 	lda Long_AC+0
 	jsr Print_Hex
 
-	jsr PRIMM
-	!pet "  addr mode : ", 0
-
-	lda Addr_Mode
-	jsr Print_Hex
-
-	jsr PRIMM
-	!pet "  ::  ", 0
-
 	plz
 	ply
 	plx
@@ -64,64 +80,3 @@ DBG_print_long_ac:
 	plp
 
 	rts
-
-DBG_print_hex:
-
-	php
-	pha
-	phx
-	phy
-	phz
-
-	pha
-	jsr PRIMM
-	!pet $0D, "hex     : ", 0	
-	pla
-
-	jsr Print_Hex
-
-	plz
-	ply
-	plx
-	pla
-	plp
-
-	rts
-
-DBG_print_CP1:
-
-	php
-	pha
-	phx
-	phy
-	phz
-
-	jsr PRIMM
-	!pet $0D, "checkpoint 1", 0	
-
-	jmp DBG_END
-
-DBG_print_CP2:
-
-	php
-	pha
-	phx
-	phy
-	phz
-
-	jsr PRIMM
-	!pet $0D, "checkpoint 2", 0	
-
-	; FALLTROUGH
-
-DBG_END:
-
-	plz
-	ply
-	plx
-	pla
-	plp
-
-	rts
-
-

@@ -42,13 +42,13 @@ Get_Val_To_LAC:
    jsr  Get_Char
    beq  @exit                ; branch if terminated
    cmp  #'0'
-   bcc  @exit
+   bcc  @exit_invalid_digit
    cmp  #':'
    bcc  @valid_digit         ; 0-9
    cmp  #'A'
-   bcc  @exit
+   bcc  @exit_invalid_digit
    cmp  #'G'
-   bcs  @exit
+   bcs  @exit_invalid_digit
    sbc  #$07                 ; hex conversion
 
 @valid_digit:   
@@ -119,6 +119,10 @@ Get_Val_To_LAC:
    bne  @valid_prefix
 
    jmp  Mon_Error            ; number too large
+
+@exit_invalid_digit:
+
+   dec  Buf_Index
 
 @exit:
 

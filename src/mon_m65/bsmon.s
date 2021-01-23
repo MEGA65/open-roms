@@ -1599,9 +1599,25 @@ Print_BCD:
 Mon_DOS:
 ; ******
 
-         JSR  Print_CR
+; Shift BUF content so that '@' is first character
+
+@lp1     LDA  BUF
+         CMP  #'@'
+         BEQ  @wedge
+         LDX  #01
+@lp2     LDA  BUF,x
+         DEX
+         STA  BUF,x
+         INX
+         INX
+         CPX  #80
+         BNE  @lp2
+         BRA  @lp1
+
+; Launch DOS Wedge
+
+@wedge   JSR  Print_CR
          JSR  wedge_dos_monitor
-         JSR  Print_CR
          JMP  Main
 
 

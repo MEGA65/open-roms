@@ -471,6 +471,7 @@ wedge_dos_wrapper_error_common:
 	; Print error - within the MONITOR
 
 	jsr do_error_print_only
+	jsr print_return
 	bra wedge_dos_wrapper_exit_nocheck
 
 wedge_dos_SYNTAX_error:

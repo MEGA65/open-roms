@@ -583,10 +583,11 @@ Mon_Assemble:
 
 @labc    LDA  #0
 @labd    STA  Mode_Flags
-         JSR  Read_Number
-         LBCS Mon_Error
+         LDA  #0
+         STA  Addr_Mode
+         JSR  Got_Val_To_LAC
          BEQ  @labg             ; no operand
-         LDA  Long_AC+2
+         LDA  Mode_Flags
          LBNE Mon_Error         ; -> overflow
          LDY  #2                ; Y=2 word operand
          LDA  Long_AC+1
@@ -1274,104 +1275,6 @@ Print_Code:
          BBR7 Op_Flag,@return
          INC  Op_Size
 @return  RTS
-
-
-; **********
-Read_Number: ; XXX obsolete, to be replaced
-; **********
-
-         PHX
-         PHY
-         PHZ
-         LDA  #0
-         STA  Dig_Cnt           ; count columns read
-         STA  Long_AC           ; clear result Long_AC
-         STA  Long_AC+1
-         STA  Long_AC+2
-         STA  Long_AC+3
-
-         JSR  Get_Glyph         ; get 1st. character
-         BEQ  @exit
-         CMP  #KEY_APOSTROPHE   ; character entry 'C
-         BNE  @numeric
-         JSR  Get_Char          ; character after '
-         STA  Long_AC
-         INC  Dig_Cnt
-         BRA  @exit
-
-@numeric LDY  #3                ; $ + % %
-@prefix  CMP  Cons_Prefix,Y     ; Y = base index
-         BEQ  @digit            ; -> valid prefix
-         DEY
-         BPL  @prefix
-         INY                    ; Y = 0
-         DEC  Buf_Index         ; character is digit
-
-@digit   JSR  Get_Char          ; hex -> BCD
-         BEQ  @exit             ; ? : ; and zero terminate
-         CMP  #'0'
-         BCC  @exit
-         CMP  #':'
-         BCC  @valid            ; 0-9
-         CMP  #'A'
-         BCC  @exit
-         CMP  #'G'
-         BCS  @exit
-         SBC  #7                ; hex conversion
-@valid   SBC  #'0'-1
-         CMP  Num_Base,Y
-         BCS  @error
-         PHA                    ; push digit
-         INC  Dig_Cnt
-
-         CPY  #1                ; decimal
-         BNE  @laba
-         LDX  #3                ; push Long_AC * 2
-         CLC
-@push    LDA  Long_AC,X
-         ROL
-         PHA
-         DEX
-         BPL  @push
-
-@laba    LDX  Num_Bits,Y
-@shift   ASL  Long_AC
-         ROL  Long_AC+1
-         ROW  Long_AC+2
-         BCS  @error            ; overflow
-         DEX
-         BNE  @shift
-
-         CPY  #1                ; decimal adjustment
-         BNE  @labc
-         LDX  #0
-         LDZ  #3
-         CLC
-@pull    PLA
-         ADC  Long_AC,X
-         STA  Long_AC,X
-         INX
-         DEZ
-         BPL  @pull
-
-@labc    PLA                    ; pull digit
-         CLC
-         ADC  Long_AC
-         STA  Long_AC
-         BCC  @digit
-         INC  Long_AC+1
-         BNE  @digit
-         INW  Long_AC+2
-         BNE  @digit
-
-@error   SEC
-         BRA  @return
-@exit    CLC
-@return  PLZ
-         PLY
-         PLX
-         LDA  Dig_Cnt           ; digits read
-         RTS
 
 ; *************
 Print_LPC_Addr: ; prints out the address in PC

@@ -587,7 +587,7 @@ Mon_Assemble:
          STA  Addr_Mode
          JSR  Got_Val_To_LAC
          BEQ  @labg             ; no operand
-         LDA  Mode_Flags
+         LDA  Addr_Mode
          LBNE Mon_Error         ; -> overflow
          LDY  #2                ; Y=2 word operand
          LDA  Long_AC+1
@@ -600,8 +600,7 @@ Mon_Assemble:
          TXA                    ; A = current index
          BNE  @labg             ; -> at 2nd. byte
          JSR  LAC_To_LCT        ; Long_CT = 1st. operand
-@labg    DEC  Buf_Index         ; back to delimiter
-
+@labg
 @lpnop   JSR  Get_Char          ; get delimiter
          LBEQ @adjust           ; end of operand
          CMP  #' '

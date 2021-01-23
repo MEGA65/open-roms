@@ -144,11 +144,10 @@ Get_Val_To_LAC:
 
 @check_done:
 
-   lda  Dig_Cnt
-
    plz
    ply
    plx
 
-   cmp  #$00                 ; allow to easily check if a parameter was given
+   lda  Dig_Cnt              ; allow to easily check if a parameter was given
+   clc
    rts

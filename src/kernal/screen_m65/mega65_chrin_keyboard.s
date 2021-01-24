@@ -6,13 +6,18 @@
 ;
 
 
-m65_chrin_keyboard:       ; XXX connnect this function to Kernal
+m65_chrin_keyboard:
 
 	; Preserve .X, .Y and .Z register
 
 	phx
 	phy
 	phz
+
+	; Preserve old PNTR
+
+	lda PNTR
+	pha
 
 	; FALLTROUGH
 
@@ -48,6 +53,8 @@ m65_chrin_keyboard_empty_line:
 
 m65_chrin_keyboard_end:
 
+	plz ; drop stored PNTR
+
 	plz
 	ply
 	plx
@@ -60,10 +67,6 @@ m65_chrin_keyboard_not_end_of_input:
 	
 	inc CRSW
 	tay
-
-	; FALLTROUGH
-
-m65_chrin_keyboard_return_byte:
 
 	jsr m65_helper_scrlpnt_chrin
 
@@ -141,17 +144,17 @@ m65_chrin_enter_loop:
 
 	; XXX add windowed mode support here - correct INDX and M65__SCRINPUT
 
-	; Set mark informing that we are returning a line
-	ldy #$01
-	sty CRSW                ; XXX has to get previous PNTR+1, not 1
-
 	; Clear quote mode mark
-	dey
+	ldy #$00
 	sty QTSW
 
-	; Return first char of line
-	bra m65_chrin_keyboard_return_byte           ; branch always
+	; Set current character to return
+	pla
+	pha
+	sta CRSW
 
+	; Return first char
+	bra m65_chrin_keyboard_not_end_of_input
 
 m65_chrin_keyboard_not_enter:
 

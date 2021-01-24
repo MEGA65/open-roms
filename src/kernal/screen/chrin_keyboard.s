@@ -21,6 +21,11 @@ chrin_keyboard:
 	stx XSAV
 	+phy_trash_a
 
+	; Preserve old PNTR
+
+	lda PNTR
+	pha
+
 	; FALLTROUGH
 
 chrin_keyboard_repeat:
@@ -48,6 +53,7 @@ chrin_keyboard_empty_line:
 	; For an empty line, just return the carriage return
 
 	+ply_trash_a
+	pla                      ; drop preserved PNTR
 	ldx XSAV
 	clc
 	lda #$0D
@@ -60,14 +66,11 @@ chrin_keyboard_not_end_of_input:
 	inc CRSW
 	tay
 
-	; FALLTROUGH
-
-chrin_keyboard_return_byte:
-
 	lda (LSXP),y
 	jsr screen_check_toggle_quote
 	tax
 	+ply_trash_a
+	pla                      ; drop preserved PNTR
 	txa
 	ldx XSAV
 	jsr screen_code_to_petscii
@@ -134,16 +137,17 @@ chrin_enter_loop:
 	iny
 	sty INDX
 
-	; Set mark informing that we are returning a line
-	ldy #$01
-	sty CRSW          ; XXX has to get previous PNTR+1, not 1
+	; Set current character to return
+	pla
+	pha
+	sta CRSW
 
 	; Clear quote mode mark
-	dey                                ; set .Y to 0
+	ldy #$00
 	sty QTSW
 
 	; Return first char of line
-	beq chrin_keyboard_return_byte     ; branch always
+	beq chrin_keyboard_not_end_of_input          ; branch always
 
 chrkn_keyboard_not_enter:
 

@@ -100,7 +100,7 @@ Displays BASIC memory usage information:
 
 ### `MONITOR` (MEGA65)
 
-Invokes a machine language monitor. Not finished yet!
+Invokes a machine language monitor.
 
 ### `SYSINFO` (MEGA65)
 

@@ -4,6 +4,7 @@
 ## for source code/assets we reused
 
 * Retrofan - for his MEGA65 banner artwork and PXLfont
+* Edilbert Kirk - for his BSMON (Bit Shifter's Monitor)
 * TWW/CTR - for his keyboard handling code
 * Graham - for his PAL/NTSC detection code and compact 8x8 multiplication routine
 * enthusi/Onslaught - for his example Turbo Tape 64 compatible loader

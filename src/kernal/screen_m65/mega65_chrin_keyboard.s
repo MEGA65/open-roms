@@ -144,14 +144,14 @@ m65_chrin_enter_loop:
 
 	; XXX add windowed mode support here - correct INDX and M65__SCRINPUT
 
-	; Clear quote mode mark
-	ldy #$00
-	sty QTSW
-
 	; Set current character to return
 	pla
 	pha
 	sta CRSW
+
+	; Clear quote mode mark
+	ldy #$00
+	sty QTSW
 
 	; Return first char
 	bra m65_chrin_keyboard_not_end_of_input

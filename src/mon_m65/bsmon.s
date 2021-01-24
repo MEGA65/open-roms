@@ -472,21 +472,6 @@ Dump_Row:
 Mon_Assemble:
 ; ***********
 
-   lda #$0D
-   jsr DBG_print_char
-   lda #'-'
-   jsr DBG_print_char
-   ldx #$FF
-@xx:
-   inx
-   lda BUF,x
-   beq @x1
-   jsr DBG_print_char
-   bra @xx
-@x1:
-   lda #$0D
-   jsr DBG_print_char
-
          LDA  #$00
          STA  Addr_Mode
          JSR  Get_Val_To_LAC    ; get 1st. parameter

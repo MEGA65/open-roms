@@ -143,7 +143,7 @@ m65_chrin_enter_loop:
 
 	; Set mark informing that we are returning a line
 	ldy #$01
-	sty CRSW
+	sty CRSW                ; XXX has to get previous PNTR+1, not 1
 
 	; Clear quote mode mark
 	dey
@@ -166,4 +166,4 @@ m65_chrin_keyboard_not_enter:
 	; Print character, keep looking for input from keyboard until carriage return
 	jsr CHROUT
 	jsr pop_keyboard_buffer
-	jmp m65_chrin_keyboard_repeat
+	bra m65_chrin_keyboard_read

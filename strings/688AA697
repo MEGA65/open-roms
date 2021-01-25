@@ -1,0 +1,3 @@
+688AA697      PLA + TXA + LDX $97
+
+Drop value from stack, copy .X to .A, restore .X from standard .X storage. Trivial - not copyrightable.

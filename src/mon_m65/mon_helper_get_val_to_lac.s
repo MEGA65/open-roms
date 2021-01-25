@@ -145,6 +145,10 @@ Get_Val_To_LAC_common:
 @exit_invalid_digit:
 
    dec  Buf_Index
+   lda  #$00
+   sta  Dig_Cnt
+   sec
+   bra  @check_done
 
 @exit:
 
@@ -154,19 +158,23 @@ Get_Val_To_LAC_common:
 
    lda  Dig_Cnt              ; check if we should enable long addressing mode
    cmp  Num_Limit,Y
-   bcc  @check_done
+   bcc  @check_done_ok
 
    cpy  #$1
    bne  @set_long_mode
 
    lda  Long_AC+2            ; for decimal system check most significant bytes instead
    ora  Long_AC+3
-   beq  @check_done
+   beq  @check_done_ok
 
 @set_long_mode:
 
    lda  #$80                 ; set addressing mode to long
    sta  Addr_Mode
+
+@check_done_ok:
+
+   clc
 
 @check_done:
 
@@ -175,7 +183,6 @@ Get_Val_To_LAC_common:
    plx
 
    lda  Dig_Cnt              ; allow to easily check if a parameter was given
-   clc
    rts
 
 

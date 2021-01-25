@@ -50,6 +50,7 @@ Mon_Load_Verify:
 	stx  FA
 
 	jsr  Get_DecVal_To_LAC
+   +bcs Mon_Error
 	beq  @got_unit
 	jsr  Syntax_Byte_AC
 	lda  Long_AC+0
@@ -94,6 +95,7 @@ Mon_Save:
 	; Determine unit
 
 	jsr  Get_DecVal_To_LAC
+   +bcs Mon_Error
 	+beq Mon_Error
 	jsr  Syntax_Byte_AC
 	lda  Long_AC+0

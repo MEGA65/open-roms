@@ -1,0 +1,3 @@
+$FA + LDY $B7 + BEQ (offset not included in match)
+
+Instruction + some parts. Trivial - not copyrightable.

@@ -1,0 +1,3 @@
+JSR $F7D7 + JSR (address not included in match)
+
+Instruction + some part. Trivial - not copyrightable.

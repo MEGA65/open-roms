@@ -18,7 +18,7 @@ load_iec_error:
 	jsr iec_close_load
 	jmp lvs_load_verify_error 
 
-load_break_error:
+load_iec_break_error:
 	pla
 	lda FA
 	jsr iec_close_load
@@ -157,7 +157,7 @@ load_iec_loop:
 	+phx_trash_a
 	jsr udtim_keyboard
 	jsr STOP
-	+bcs load_break_error
+	+bcs load_iec_break_error
 	+plx_trash_a
 @3:
 	; Check for EOI - if so, this was the last byte
@@ -201,6 +201,8 @@ load_iec_get_addr_byte:
 
 load_iec_file_not_found:
 
+	lda FA
+	jsr iec_close_load
 	jmp kernalerror_FILE_NOT_FOUND
 
 

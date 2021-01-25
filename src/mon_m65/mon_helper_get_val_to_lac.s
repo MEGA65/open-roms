@@ -2,6 +2,26 @@
 ; Based on BSM (Bit Shifter's Monitor)
 
 
+Get_DecVal_To_LAC:
+
+   phx
+   phy
+   phz
+   jsr  Get_Val_To_LAC_reset
+
+   ; Enforce decimal system
+
+   jsr  Get_Glyph
+   +beq @exit
+
+   dec  Buf_Index
+   lda  #'+'                 ; set numbric system to decimal
+
+@exit:
+
+   bra Get_Val_To_LAC_common
+
+
 Got_Val_To_LAC:              ; to be used when first byte already fetched
 
    dec  Buf_Index
@@ -13,17 +33,19 @@ Get_Val_To_LAC:
    phx
    phy
    phz
-   lda  #$00
-   sta  Dig_Cnt              ; count columns read
-   sta  Long_AC+0            ; clear result Long_AC
-   sta  Long_AC+1
-   sta  Long_AC+2
-   sta  Long_AC+3
+   jsr  Get_Val_To_LAC_reset
 
    jsr  Get_Glyph            ; get 1st. character
+
+   ; FALLTROUGH
+
+Get_Val_To_LAC_common:
+
    +beq @exit
 
    ldy #$03                  ; here we allow '$', '+', '&', and '%' prefixes
+
+   ; FALLTROUGH
 
 @loop_prefix:
 
@@ -154,4 +176,15 @@ Get_Val_To_LAC:
 
    lda  Dig_Cnt              ; allow to easily check if a parameter was given
    clc
+   rts
+
+
+Get_Val_To_LAC_reset:
+
+   lda  #$00
+   sta  Dig_Cnt              ; count columns read
+   sta  Long_AC+0            ; clear result Long_AC
+   sta  Long_AC+1
+   sta  Long_AC+2
+   sta  Long_AC+3
    rts

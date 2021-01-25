@@ -49,7 +49,7 @@ Mon_Load_Verify:
 	jsr  SELDEV              ; set default unit
 	stx  FA
 
-	jsr  Get_Val_To_LAC
+	jsr  Get_DecVal_To_LAC
 	beq  @got_unit
 	jsr  Syntax_Byte_AC
 	lda  Long_AC+0
@@ -93,7 +93,7 @@ Mon_Save:
 
 	; Determine unit
 
-	jsr  Get_Val_To_LAC
+	jsr  Get_DecVal_To_LAC
 	+beq Mon_Error
 	jsr  Syntax_Byte_AC
 	lda  Long_AC+0

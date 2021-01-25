@@ -41,14 +41,14 @@ chrin_keyboard_repeat:
 	cmp INDX
 	bne chrin_keyboard_not_end_of_input
 
+	; FALLTROUGH
+
+chrin_keyboard_empty_line:
+
 	; Clear pending input and quote flags
 	lda #$00
 	sta CRSW
 	sta QTSW
-
-	; FALLTROUGH
-
-chrin_keyboard_empty_line:
 
 	; For an empty line, just return the carriage return
 
@@ -141,6 +141,10 @@ chrin_enter_loop:
 	pla
 	pha
 	sta CRSW
+
+	; Another empty line case
+	cmp INDX
+	bcs chrin_keyboard_empty_line
 
 	; Clear quote mode mark
 	ldy #$00

@@ -43,7 +43,8 @@ Mon_Start:
          TSX
          STX  SPL
          STX  SP_Storage
-         LDA  #$c0
+         LDA  #$C0
+         STA  Key_Direct     ; to disable function keys
          JSR  SETMSG
          CLI
          +NOP

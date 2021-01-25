@@ -201,7 +201,7 @@ load_iec_get_addr_byte:
 
 load_iec_file_not_found:
 
-	jmp load_iec_file_not_found
+	jmp kernalerror_FILE_NOT_FOUND
 
 
 } ; CONFIG_IEC

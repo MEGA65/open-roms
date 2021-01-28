@@ -33,6 +33,6 @@ Z80_reset:
 	stz PTR_IXY_d+3
 	stz PTR_DATA+3
 
-	; Default bank is 1 (the fastest, continuous memory)	
+	; Default bank is 1 (the one user software runs from)	
 
 	jmp ZVM_set_bank_1

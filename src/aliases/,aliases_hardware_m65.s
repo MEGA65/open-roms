@@ -72,6 +72,11 @@
 	!addr MISC_BOARDID    = $D629 ; board identification byte
 	!addr MISC_EMU        = $D710 ; to enable badlines and slow interrupts
 
+	; Hypervisor traps
+
+	!addr HTRAP00         = $D640
+
+
 	; SID offsets
 
 	!set __SID_R1_OFFSET = $00 ; right SID 1, $D400

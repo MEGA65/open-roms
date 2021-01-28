@@ -51,11 +51,17 @@ ZVM: ; entry point
 
 	; Check if extended memory is present
 
-	jsr ZVM_memtest
+	; XXX enable test jsr ZVM_memtest
 
 	; Generate CPU tables
 
 	jsr z80_table_gen
+
+	; Try CPU test
+
+	jsr ZVM_cputest
+
+
 
 	; XXX code is not ready to progress further
 	jsr PRIMM
@@ -82,12 +88,10 @@ ZVM: ; entry point
 
 
 
-
-
 ZVM_memtest:
 
 	; Simple memory test
-	; XXX this test is temporary
+	; XXX this test fails for now
 	
 	lda #$00
 	sta PTR_DATA+0
@@ -98,7 +102,7 @@ ZVM_memtest:
 
 	ldx #$F0
 @1:
-	ldy #$00
+	ldy #$10
 @2:
 	lda PTR_DATA+2
 	eor #%01111111

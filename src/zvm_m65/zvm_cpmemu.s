@@ -6,6 +6,9 @@
 
 zvm_CPMemu:
 
+	jsr PRIMM
+	!pet "DBG: CP1", $0D, 0
+
 	ldx REG_C
 	cpx #$09
 	beq zvm_CPMemu_09

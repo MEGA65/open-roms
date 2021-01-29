@@ -74,12 +74,16 @@ ZVM_cputest:
 	lda #$00
 	sta BIOS_LOADPTR+1
 
-!addr BIOS_LOADCOUNT         = $48               ; 2 bytes - counter used for loading data
+	; Read data, 512 byte chunks
 
-
-	; Read sectors
+	lda #$02                                     ; summy value - 2*256 bytes read
+	pha
 
 @loop2:
+
+	pla
+	cmp #$02
+	bne @load_done
 
 	; Set I/O buffer pointer to start
 
@@ -102,6 +106,8 @@ ZVM_cputest:
 	tya
 	ora BIOS_LOADCOUNT+0
 	beq @load_done
+
+	phy                                          ; if 2 - we most likely have something more to read
 
 @loop3:
 

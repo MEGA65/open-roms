@@ -73,9 +73,17 @@
 ; BIOS data
 ;
 
-!addr VEC_MOVE_fetch         = $40               ; 2 bytes - vector to byte fetch routine, for BIOS routine MOVE
-!addr VEC_MOVE_store         = $42               ; 2 bytes - vector to byte store routine, for BIOS routine MOVE
-!addr VEC_DISKIO_store       = $44               ; 2 bytes - vector to byte store routine, for BIOS disk I/O operations
+; Reuse data for loading
+
+!addr BIOS_IOBUFERPTR        = $40               ; 4 bytes - pointer to hardware I/O buffer
+!addr BIOS_LOADPTR           = $44               ; 4 bytes - pointer for loading data
+!addr BIOS_LOADCOUNT         = $48               ; 2 bytes - counter used for loading data
+
+; XXX are the values below needed?
+
+!addr VEC_MOVE_fetch         = $4A               ; 2 bytes - vector to byte fetch routine, for BIOS routine MOVE
+!addr VEC_MOVE_store         = $4C               ; 2 bytes - vector to byte store routine, for BIOS routine MOVE
+!addr VEC_DISKIO_store       = $4E               ; 2 bytes - vector to byte store routine, for BIOS disk I/O operations
 
 
 ;

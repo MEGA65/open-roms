@@ -3,7 +3,8 @@
 ; Z80 emulator - precalculated data generator
 ;
 
-z80_table_gen:
+
+Z80_table_gen:
 
 	jsr PRIMM
 	!pet $0D, "Generating CPU tables... "

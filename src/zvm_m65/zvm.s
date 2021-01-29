@@ -53,9 +53,11 @@ ZVM: ; entry point
 
 	; XXX enable test jsr ZVM_memtest
 
-	; Generate CPU tables
+	; Generate CPU tables, reset the CPU
 
-	jsr z80_table_gen
+	jsr Z80_table_gen
+	jsr Z80_reset
+	; XXX Z80 clear memory here
 
 	; Try CPU test
 
@@ -66,7 +68,7 @@ ZVM: ; entry point
 	; XXX code is not ready to progress further
 	jsr PRIMM
 	!pet $0D, "Implementation not finished yet.", 0
-	jmp ZVM_halt
+	jmp ZVM_syshalt
 
 	jmp zvm_BIOS_00_BOOT
 
@@ -134,7 +136,7 @@ ZVM_halt_memtest_failed:
 
 	; FALLTROUGH
 
-ZVM_halt:
+ZVM_syshalt:
 
 	jsr PRIMM
 	!pet "   * System HALTED *", 0

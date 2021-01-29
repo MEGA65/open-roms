@@ -23,9 +23,9 @@ ZVM_cputest:
 
 	ldy #>BUF
 	ldx #<BUF
-	lda #$2E                           ; dos_setname
+	lda #$2E
 	sta HTRAP00
-	+nop                               ; required by hypervisor
+	+nop                               ; NOPs are required by hypervisor
 	+bcc @end
 
 	; Try to find the file
@@ -60,23 +60,18 @@ ZVM_cputest:
 	lda #$D6
 	sta BIOS_IOBUFERPTR+2
 
-	lda #$FF
-	sta BIOS_IOBUFERPTR+3
-	lda #$D6
-	sta BIOS_IOBUFERPTR+2
-
-	lda #$00
+	lda #$00                                     ; $0005:0100 - from CP/M point of view this is start of page 1 in bank 1 
 	sta BIOS_LOADPTR+3
 	lda #$05
 	sta BIOS_LOADPTR+2
 	lda #$01
 	sta BIOS_LOADPTR+1
 	lda #$00
-	sta BIOS_LOADPTR+1
+	sta BIOS_LOADPTR+0
 
 	; Read data, 512 byte chunks
 
-	lda #$02                                     ; summy value - 2*256 bytes read
+	lda #$02                                     ; value means - 2*256 bytes read
 	pha
 
 @loop2:
@@ -105,9 +100,11 @@ ZVM_cputest:
 
 	tya
 	ora BIOS_LOADCOUNT+0
-	beq @load_done
+	beq @load_done                               ; 0 bytes to read - loading is done
 
 	phy                                          ; if 2 - we most likely have something more to read
+
+	; Copy up to 512 bytes from buffer to target memory
 
 @loop3:
 

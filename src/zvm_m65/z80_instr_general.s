@@ -96,17 +96,17 @@ Z80_instr_37:                                                                  ;
 
 Z80_instr_76:                                                                  ; HALT
 
-	; Used to call BIOS routines
-	; XXX probably not the besta idea, GENCPC seems to do some relocations
+	; Used to call BIOS and simulated CP/M routines
 
-	ldx #$01 ; default BIOS function, warm start
+	+Z80_FETCH_VIA_PC_INC
 
-	lda REG_PC+1
-	cmp #$FE ;
-	bne @1
-	lda REG_PC+0
-	sec
-	sbc #$64
+	cmp  #$FF                ; $FF = CP/M call
+	+beq zvm_CPMemu
+
+	inc $D021
+
+	ldx #$01                 ; default routine, warm boot
+
 	cmp #33
 	bcs @1
 	tax

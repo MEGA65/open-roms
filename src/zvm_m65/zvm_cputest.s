@@ -105,8 +105,6 @@ ZVM_cputest:
 
 @loop3:
 
-	inc $D020
-
 	dew BIOS_LOADCOUNT
 	bmi @loop2
 
@@ -119,6 +117,12 @@ ZVM_cputest:
 	bra @loop3
 
 @load_done:
+
+	; Close the file
+
+	lda #$20
+	sta HTRAP00
+	+nop
 
 	jsr PRIMM
 	!pet "      done", $0D, $0D, 0

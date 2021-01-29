@@ -36,7 +36,7 @@ ZVM_cputest:
 	+bcc @end
 
 	jsr PRIMM
-	!pet "Loading 'Z80TEST.COM'... ", 0
+	!pet "Loading Z80TEST.COM", 0
 
 	; Open the file
 
@@ -105,6 +105,8 @@ ZVM_cputest:
 
 @loop3:
 
+	inc $D020
+
 	dew BIOS_LOADCOUNT
 	bmi @loop2
 
@@ -117,6 +119,9 @@ ZVM_cputest:
 	bra @loop3
 
 @load_done:
+
+	jsr PRIMM
+	!pet "      done", $0D, $0D, 0
 
 	; At this moment we have Z80TEST.COM loaded into memory
 	; Install a virtual CP/M, set PC to $0100, and run it!

@@ -7,7 +7,7 @@
 Z80_table_gen:
 
 	jsr PRIMM
-	!pet $0D, "Generating CPU tables... "
+	!pet $0D, "Generating CPU tables"
 	!byte 0
 
 	;
@@ -23,7 +23,7 @@ Z80_table_gen:
 	;
 
 	jsr PRIMM
-	!pet "done", $0D, $0D
+	!pet "    done", $0D, $0D
 	!byte 0
 	
 	rts

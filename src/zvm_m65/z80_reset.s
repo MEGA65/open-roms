@@ -13,7 +13,7 @@ Z80_reset:
 @1:
 	sta z80_cpustate__start, y
 	iny
-	cmp #(z80_cpustate__end - z80_cpustate__start + 1)
+	cpy #(z80_cpustate__end - z80_cpustate__start + 1)
 	bne @1
 
 	dew REG_AF               ; AF and SP have $FFFF value at start

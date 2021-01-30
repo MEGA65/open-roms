@@ -8,6 +8,7 @@ ZVM_cputest:
 
 	; XXX move loading code to separate routine(s)
 
+
 	; Copy file name to RAM
 
 	ldx #$FF
@@ -30,7 +31,7 @@ ZVM_cputest:
 
 	; Try to find the file
 
-	lda #$34
+	lda #$34                           ; dos_findfile
 	sta HTRAP00
 	+nop
 	+bcc @end
@@ -38,13 +39,15 @@ ZVM_cputest:
 	jsr PRIMM
 	!pet "Loading Z80TEST.COM", 0
 
-	; Open the file
+	; Close all the files, to make sure handle is available
 
-	lda #$00
+	lda #$22                          ; dos_closeall
 	sta HTRAP00
 	+nop
-	
-	lda #$18
+
+	; Open the file
+
+	lda #$18                          ; dos_openfile
 	sta HTRAP00
 	+nop
 
@@ -55,9 +58,9 @@ ZVM_cputest:
 
 	; Prepare pointers
 
-	lda #$FF
+	lda #$0F
 	sta BIOS_IOBUFERPTR+3
-	lda #$D6
+	lda #$FD
 	sta BIOS_IOBUFERPTR+2
 
 	lda #$00                                     ; $0005:0100 - from CP/M point of view this is start of page 1 in bank 1 
@@ -89,7 +92,7 @@ ZVM_cputest:
 
 	; Read up to 512 bytes
 
-	lda #$1A
+	lda #$1A                                     ; dos_readfile
 	sta HTRAP00
 	+nop
 
@@ -123,7 +126,7 @@ ZVM_cputest:
 
 	; Close the file
 
-	lda #$20
+	lda #$20                                     ; dos_closefile
 	sta HTRAP00
 	+nop
 

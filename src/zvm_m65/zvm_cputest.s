@@ -77,6 +77,8 @@ ZVM_cputest:
 	lda #$02                                     ; value means - 2*256 bytes read
 	pha
 
+	ldz #$00                                     ; in case hypervisor modified it
+ 
 @loop2:
 
 	pla
@@ -142,18 +144,20 @@ ZVM_cputest:
 	sta BIOS_LOADPTR+1
 	lda #$05
 	sta BIOS_LOADPTR+0
-	lda #$76                           ; HALT
+	lda #$76                                     ; HALT
 	sta [BIOS_LOADPTR],z
 	inc BIOS_LOADPTR
 	lda #$FF
-	sta [BIOS_LOADPTR],z               ; $FF = CP/M simulation for CPU test
+	sta [BIOS_LOADPTR],z                         ; $FF = CP/M simulation for CPU test
 
 	; Run the software
 
+	ldz #$00                                     ; in case hypervisor modified it
 	jmp ZVM_next
 
 @end:
 
+	ldz #$00                                     ; in case hypervisor modified it
 	rts
 
 ZVM_filename_Z80TEST:

@@ -24,8 +24,7 @@ DBG_print_PC_opcode:
 	!pet " opcode: ", 0
 
 	pla
-@1:
-	beq @1
+	+beq MONITOR
 	jsr DBGINT_print_hex_byte
 
 	; FALLTROUGH
@@ -57,6 +56,22 @@ DBG_print_hex:
 	bra DBGINT_end
 
 
+DBG_print_LOADCOUNT:
+
+	php
+	pha
+	phx
+	phy
+	phz
+
+	lda BIOS_LOADCOUNT+1
+	jsr DBGINT_print_hex_byte
+	lda BIOS_LOADCOUNT+0
+	jsr DBGINT_print_hex_byte
+	lda #$0D
+	jsr CHROUT
+
+	bra DBGINT_end
 
 
 DBGINT_print_hex_byte:

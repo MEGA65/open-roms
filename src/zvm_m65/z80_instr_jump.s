@@ -7,8 +7,10 @@
 Z80_instr_C3:      ; JP nn
 
 	+Z80_FETCH_VIA_PC_INC
+	jsr DBG_print_hex
 	sta REG_PC+0
 	+Z80_FETCH_VIA_PC_INC
+	jsr DBG_print_hex
 	sta REG_PC+1
 	jmp ZVM_next
 

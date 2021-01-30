@@ -14,10 +14,11 @@ ZVM: ; entry point
 	; Skip the IRQ processing, even if Kernal reenables it
 
 	sei
-	lda #<return_from_interrupt
-	sta CINV+0 
-	lda #>return_from_interrupt
-	sta CINV+1
+	; XXX uncomment this when debugging is finished
+	; lda #<return_from_interrupt
+	; sta CINV+0 
+	; lda #>return_from_interrupt
+	; sta CINV+1
 
 	; Make sure $C000-$CFFF ROM is mapped-in, we keep our proxies there
 	; Also make sure the palette is taken from RAM

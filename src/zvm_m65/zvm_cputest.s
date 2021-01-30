@@ -111,10 +111,12 @@ ZVM_cputest:
 
 	; Copy up to 512 bytes from buffer to target memory
 
+	inw BIOS_LOADCOUNT
+
 @loop3:
 
 	dew BIOS_LOADCOUNT
-	bmi @loop2
+	beq @loop2 ; XXX why no BMI, without INW?
 
 	lda [BIOS_IOBUFERPTR],z
 	sta [BIOS_LOADPTR],z

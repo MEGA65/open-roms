@@ -38,6 +38,7 @@ Mon_Start:
 ; ********
 
          CLD
+         CLI
          TSY
          STY  SPH
          TSX

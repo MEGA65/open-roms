@@ -54,7 +54,7 @@ DBG_print_hex:
 	jsr CHROUT
 	pla
 	jsr DBGINT_print_hex_byte
-	jmp DBGINT_end
+	bra DBGINT_end
 
 
 

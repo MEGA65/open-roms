@@ -56,8 +56,8 @@ ZVM: ; entry point
 	; Generate CPU tables, reset the CPU
 
 	jsr Z80_table_gen
-	jsr Z80_reset
-	; XXX Z80 clear memory here
+	; XXX jsr Z80_reset_MEM
+	jsr Z80_reset_CPU
 
 	; Try CPU test
 

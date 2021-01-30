@@ -1,10 +1,10 @@
 
 ;
-; Z80 CPU reset
+; Z80 CPU/memory reset
 ;
 
 
-Z80_reset:
+Z80_reset_CPU:
 
 	; Reset registers and internal emulation data
 	
@@ -36,3 +36,25 @@ Z80_reset:
 	; Default bank is 1 (the one user software runs from)	
 
 	jmp ZVM_set_bank_1
+
+
+Z80_reset_MEM:
+
+	lda #$05
+	sta BIOS_LOADPTR+2
+	lda #$00
+	sta BIOS_LOADPTR+0
+	sta BIOS_LOADPTR+1
+	sta BIOS_LOADPTR+3
+
+@loop:
+
+	dec BIOS_LOADPTR+2
+	sta [BIOS_LOADPTR],z
+	inc BIOS_LOADPTR+2
+	sta [BIOS_LOADPTR],z
+
+	inw BIOS_LOADPTR
+	bne @loop
+
+	rts

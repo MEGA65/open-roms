@@ -9,7 +9,7 @@
 
 	+Z80_FETCH_VIA_PC_INC
 
-	; jsr DBG_print_PC_opcode
+	jsr DBG_print_PC_opcode
 
 	asl
 	tax

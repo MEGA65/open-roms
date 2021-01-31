@@ -103,7 +103,8 @@ Z80_instr_76:                                                                  ;
 	cmp  #$FF                ; $FF = CP/M call
 	+beq zvm_CPMemu
 
-	inc $D021
+@halt: ; XXX temporary, as the BIOS is not ready yet
+	bra @halt
 
 	ldx #$01                 ; default routine, warm boot
 

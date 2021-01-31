@@ -111,12 +111,12 @@ ZVM_cputest:
 
 	; Copy up to 512 bytes from buffer to target memory
 
-	inw BIOS_LOADCOUNT
+	inw BIOS_LOADCOUNT                           ; XXX workaround for DEW not handling N flag
 
 @loop3:
 
 	dew BIOS_LOADCOUNT
-	beq @loop2 ; XXX why no BMI, without INW?
+	beq @loop2
 
 	lda [BIOS_IOBUFERPTR],z
 	sta [BIOS_LOADPTR],z
@@ -152,7 +152,18 @@ ZVM_cputest:
 	lda #$FF
 	sta [BIOS_LOADPTR],z                         ; $FF = CP/M simulation for CPU test
 
+	lda #$00
+	sta BIOS_LOADPTR+0
+	lda #$76                                     ; HALT
+	sta [BIOS_LOADPTR],z
+	inc BIOS_LOADPTR
+	lda #$FE
+	sta [BIOS_LOADPTR],z                         ; $FE = dummy
+
 	; Run the software
+
+	jsr PRIMM
+	!pet $0D, $0D, 0
 
 	ldz #$00                                     ; in case hypervisor modified it
 	jmp ZVM_next

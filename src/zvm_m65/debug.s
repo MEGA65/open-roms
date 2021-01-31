@@ -2,6 +2,8 @@
 
 DBG_print_PC_opcode:
 
+	rts ; XXX disable this to turn debugging on
+
 	php
 	pha
 	phx
@@ -11,7 +13,7 @@ DBG_print_PC_opcode:
 	pha
 
 	jsr PRIMM
-	!pet $0D, "PC: ", 0
+	!pet $0D, $1E, "PC: ", 0
 
 	dew REG_PC
 	lda REG_PC+1
@@ -24,8 +26,11 @@ DBG_print_PC_opcode:
 	!pet " opcode: ", 0
 
 	pla
-	+beq MONITOR
+	pha
 	jsr DBGINT_print_hex_byte
+	pla
+@1:
+	beq @1 ; XXX stop on NOP
 
 	; FALLTROUGH
 

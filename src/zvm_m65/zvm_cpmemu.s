@@ -6,12 +6,11 @@
 
 zvm_CPMemu:
 
-	jsr PRIMM
-	!pet "DBG: CP1", $0D, 0
-
 	ldx REG_C
 	cpx #$09
 	beq zvm_CPMemu_09
+	cpx #$02
+	beq zvm_CPMemu_02
 
 	; XXX implement additional functions if needed
 
@@ -21,10 +20,16 @@ zvm_CPMemu_end:
 
 	jmp Z80_instr_C9         ; RET
 
+zvm_CPMemu_02:               ; C_WRITE
+
+	lda REG_E
+	jsr CHROUT
+	bra zvm_CPMemu_end
+
 zvm_CPMemu_09:               ; C_WRITESTR
 
 	+Z80_FETCH_VIA_DE
-	cmp #'$'
+	cmp #$24                 ; CP/M string termination character
 	beq zvm_CPMemu_end
 
 	jsr CHROUT

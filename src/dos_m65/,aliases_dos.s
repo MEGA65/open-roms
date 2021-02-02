@@ -20,23 +20,3 @@
 	!addr UNIT_SDCARD      = $05
 	!addr UNIT_FLOPPY      = $06
 	!addr UNIT_RAMDISK     = $07
-
-	; SD/SDHC card variables
-
-	!addr CARD_INIT_DONE   = $08 ; $80 - init done, $00 - init not done
-    !addr CARD_IS_SDHC     = $09 ; $00 = SD, $80 = SDHC
-    !addr CARD_SIZE        = $0A ; 4 bytes
-    !addr CARD_SECNUM      = $0E ; 4 bytes - sector number
-
-    !addr CARD_TMP_STEP    = $12 ; 4 bytes
-    !addr CARD_TMP_RETRIES = $16 ; 1 byte
-
-    !addr CARD_BUFPNT1     = $17 ; 4 bytes - pointer to hardware sector buffer  XXX replace copy routines with DMAgic
-    !addr CARD_BUFPNT2     = $1B ; 4 bytes - as above, but points to the 2nd page of the hardware buffer
-
-
-	;
-	; High memory
-	;
-
-	!addr CARD_BUF     = $8100 ; 512 bytes, up to $82FF - buffer for reading/writing data

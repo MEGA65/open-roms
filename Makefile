@@ -61,9 +61,7 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
                  src/kernal/time
 
 SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
-                 src/dos_m65 \
-                 # src/dos_m65/cmdrdos \
-                 src/dos_m65/sdcard
+                 src/dos_m65
 
 SRCDIR_MON_M65 = $(SRCDIR_COMMON) \
                  src/mon_m65

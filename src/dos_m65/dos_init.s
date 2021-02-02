@@ -26,9 +26,4 @@ dos_INIT:
 	lda #CONFIG_UNIT_RAMDISK
 	sta UNIT_RAMDISK
 
-	; Mark SD card as not initialized
-
-	lda #$00
-	sta CARD_INIT_DONE
-
 	rts

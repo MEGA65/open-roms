@@ -20,11 +20,11 @@ dos_UNITNUM:
 	cmp #$02
 	beq dos_UNITNUM_ramdisk
 
-	lda #$00
-
 	; FALLTROUGH
 
 dos_UNITNUM_none:
+
+	lda #$00
 
 	sec
 	rts
@@ -32,18 +32,19 @@ dos_UNITNUM_none:
 dos_UNITNUM_sdcard:
 
 	lda UNIT_SDCARD
-
-	+skip_2_bytes_trash_nvz
+	bra dos_UNITNUM_common
 
 dos_UNITNUM_floppy:
 
 	lda UNIT_FLOPPY
-
-	+skip_2_bytes_trash_nvz
+	bra dos_UNITNUM_common
 
 dos_UNITNUM_ramdisk:
 
 	lda UNIT_RAMDISK
+	bra dos_UNITNUM_common
+
+dos_UNITNUM_common:
 
 	cmp #$00
 	beq dos_UNITNUM_none

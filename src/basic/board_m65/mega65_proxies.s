@@ -156,3 +156,9 @@ proxy_M1_print_kernal_error:
 	jsr do_error_print_only
 	jmp proxy_M1_IO_end
 }
+
+proxy_B1_m65dos_unitnum:
+
+	jsr map_NORMAL
+	jsr m65dos_unitnum
+	bra proxy_B1_end_2

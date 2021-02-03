@@ -67,7 +67,7 @@ m65dos_acptr:
 
 m65dos_end_1:
 
-	jmp map_NORMAL_from_DOS_1          ; ACPTR is slightly faster
+	jmp map_NORMAL                    ; ACPTR is slightly faster
 
 m65dos_ciout:
 
@@ -78,7 +78,7 @@ m65dos_ciout:
 
 m65dos_end_2:
 
-	jmp map_NORMAL_from_DOS_1          ; CIOUT is slightly faster
+	jmp map_NORMAL                    ; CIOUT is slightly faster
 
 m65dos_listen:
 

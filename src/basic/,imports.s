@@ -50,6 +50,8 @@
 ;; #ALIAS# m65_shadow_BZP      = KERNAL_0.m65_shadow_BZP
 ;; #ALIAS# proxy_M1_IO_end     = KERNAL_0.proxy_M1_IO_end
 
+;; #ALIAS# m65dos_unitnum      = KERNAL_0.m65dos_unitnum
+
 ;
 ; Ultimate 64 specific parts
 ;

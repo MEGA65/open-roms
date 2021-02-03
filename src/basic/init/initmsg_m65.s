@@ -31,11 +31,11 @@ INITMSG_native:
 
 	; Native mode	
 
-	ldx #48
+	ldx #44
 	ldy #0
 	jsr M65_SETWIN_XY
 
-	ldx #32
+	ldx #36
 	ldy #9
 	jsr M65_SETWIN_WH
 

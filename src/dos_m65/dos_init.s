@@ -3,6 +3,11 @@
 ; Initializes DOS. For detailed description see 'm65dos_bridge.s' file
 ;
 
+
+!set CONFIG_UNIT_FLOPPY  = 0 ; XXX floppy not supported yet
+!set CONFIG_UNIT_RAMDISK = 0 ; XXX RAM disk not supported yet
+
+
 dos_INIT:
 
 	; Set the magic string 'CBDOS'

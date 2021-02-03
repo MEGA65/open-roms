@@ -12,7 +12,7 @@ m65dos_detect:
 	; Output: Carry set if not supported, if supported IECPROTO isset to IEC_ROMDOS
 
 	pha
-	jsr m65dos_chkunit
+	jsr m65dos_unitchk
 	bcs @1
 
 	lda #IEC_ROMDOS

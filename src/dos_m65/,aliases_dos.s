@@ -20,3 +20,7 @@
 	!addr UNIT_SDCARD      = $05
 	!addr UNIT_FLOPPY      = $06
 	!addr UNIT_RAMDISK     = $07
+
+	; General DOS status
+
+	!addr UNIT_HANDLER     = $08

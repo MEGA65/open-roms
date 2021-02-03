@@ -4,58 +4,51 @@
 ;
 
 
-dos_CHKUNIT:
+dos_UNITCHK:
 
-	; Check for magic string
+	; Check if memory content is not damaged
 
-	pha
-	phx
-
-	ldx #$04
-@1:
-	lda MAGICSTR, x
-	cmp dos_magicstr, x
-	bne dos_CHKUNIT_mem_fail
-	dex
-	bpl @1
-
-	plx
-	pla
+	jsr dos_MEMCHK
+	bcs dos_UNITCHK_none
 
 	; Check for unit
 
 	cmp UNIT_SDCARD
-	beq dos_CHKUNIT_sdcard
+	beq dos_UNITCHK_sdcard
 	cmp UNIT_FLOPPY
-	beq dos_CHKUNIT_floppy
+	beq dos_UNITCHK_floppy
 	cmp UNIT_RAMDISK
-	beq dos_CHKUNIT_ramdisk
+	beq dos_UNITCHK_ramdisk
+
+	; FALLTROUGH
+
+dos_UNITCHK_none:
 
 	sec
 	rts
 
-dos_CHKUNIT_sdcard:
+dos_UNITCHK_sdcard:
 
 	lda #$00
 	+skip_2_bytes_trash_nvz
 
 	; FALLTROUGH
 
-dos_CHKUNIT_floppy:
+dos_UNITCHK_floppy:
 
 	lda #$01
 	+skip_2_bytes_trash_nvz
 
 	; FALLTROUGH
 
-dos_CHKUNIT_ramdisk:
+dos_UNITCHK_ramdisk:
 
 	lda #$02
 	
 	clc
 	rts
 
-dos_CHKUNIT_mem_fail:
+dos_UNITCHK_mem_fail:
 
 	plx
 	pla

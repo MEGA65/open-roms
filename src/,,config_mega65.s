@@ -33,6 +33,8 @@
 ;; #CONFIG# IEC_JIFFYDOS_BLANK         NO
 ;; #CONFIG# IEC_BURST_M65              NO        ; please keep disabled for now
 
+;; #CONFIG# UNIT_SDCARD                20        ; do not change for now
+
 
 ; --- Tape deck configuration
 

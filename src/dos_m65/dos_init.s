@@ -31,4 +31,10 @@ dos_INIT:
 	lda #CONFIG_UNIT_RAMDISK
 	sta UNIT_RAMDISK
 
+	; Clear listener / talker
+
+	lda #$FF
+	sta IDX_LISTENER
+	sta IDX_TALKER
+
 	rts

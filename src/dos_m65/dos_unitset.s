@@ -12,6 +12,8 @@ dos_UNITSET:
 	bcc @1
 	rts
 @1:
+	; XXX do not allow illegal device numbers... above 30 or below 8 ?
+
 	; Check what kind of device was requested
 
 	cmp #$00

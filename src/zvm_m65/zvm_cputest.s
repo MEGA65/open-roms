@@ -111,12 +111,10 @@ ZVM_cputest:
 
 	; Copy up to 512 bytes from buffer to target memory
 
-	inw BIOS_LOADCOUNT                           ; XXX workaround for DEW not handling N flag
-
 @loop3:
 
 	dew BIOS_LOADCOUNT
-	beq @loop2
+	bmi @loop2
 
 	lda [BIOS_IOBUFERPTR],z
 	sta [BIOS_LOADPTR],z

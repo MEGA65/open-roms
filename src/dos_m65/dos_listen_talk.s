@@ -72,6 +72,7 @@ dos_TALK_success:
 dos_fail_TALK_LISTEN:
 
 	pla
+	lda #K_ERR_DEVICE_NOT_FOUND
 	sec
 	rts
 

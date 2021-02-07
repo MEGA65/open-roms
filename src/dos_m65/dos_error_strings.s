@@ -9,15 +9,15 @@
 
 dos_err_init_sdcard:
 
-	!pet "m65 dos sdcard", 0
+	!pet "73,m65 dos sdcard,00,00", 0
 
 dos_err_init_floppy:
 
-	!pet "m65 dos floppy", 0
+	!pet "73,m65 dos floppy,00,00", 0
 
 dos_err_init_ramdisk:
 
-	!pet "m65 dos ram disk", 0
+	!pet "73,m65 dos ram disk,00,00", 0
 
 
 ; List compiled from various manuals (CBM 1571, CBM 1581, CMD FD4000, MSD Super Disk, IDE64)

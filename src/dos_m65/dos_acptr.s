@@ -1,7 +1,6 @@
 
 ;
-; Implementation of ACPTR/CIOUT commands.
-; For detailed description see 'm65dos_bridge.s' file.
+; Implementation of ACPTR command. For detailed description see 'm65dos_bridge.s' file.
 ;
 
 
@@ -54,6 +53,10 @@ dos_ACPTR_eoi:
 	clc
 	rts
 
+
+
+; Retrieving bytes from the status string
+
 dos_ACPTR_getsts_SD:                   ; get next byte of status - SD card
 
 	ldx SD_STATUS_IDX
@@ -75,35 +78,8 @@ dos_ACPTR_getsts_RD:                   ; get next byte of status - ram disk
 	lda RD_STATUS_STR,x
 	rts
 
-
 dos_ACPTR_getsts_table:
 
 	!word dos_ACPTR_getsts_SD
 	!word dos_ACPTR_getsts_FD
 	!word dos_ACPTR_getsts_RD
-
-
-
-
-
-
-
-
-
-dos_CIOUT:
-
-	; XXX provide implementation
-
-	sec
-	rts
-
-
-
-kernalstatus_EOI:
-
-	; XXX reuse original code instead
-
-	lda IOSTATUS
-	ora #K_STS_EOI
-	sta IOSTATUS
-	rts

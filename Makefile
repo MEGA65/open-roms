@@ -394,7 +394,7 @@ $(DIR_M65)/kernal.seg_C $(DIR_M65)/KERNAL_C_combined.vs $(DIR_M65)/KERNAL_C_comb
 $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym
 $(DIR_M65)/dos.seg_1    $(DIR_M65)/DOS_1_combined.vs    $(DIR_M65)/DOS_1_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_DOS_M65) $(CFG_M65)
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_DOS_M65) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym
 $(DIR_M65)/mon.seg_1    $(DIR_M65)/MON_1_combined.vs    $(DIR_M65)/MON_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_MON_M65) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_M65)/BASIC_1_combined.sym
 $(DIR_M65)/zvm.seg_1    $(DIR_M65)/ZVM_1_combined.vs    $(DIR_M65)/ZVM_1_combined.sym: \

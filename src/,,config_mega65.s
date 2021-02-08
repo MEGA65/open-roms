@@ -66,7 +66,7 @@
 
 ;; #CONFIG# KEYCMD_HELP                "LIST"
 
-;; #CONFIG# KEYCMD_F9                  "REM F9"
+;; #CONFIG# KEYCMD_F9                  "@20$"
 ;; #CONFIG# KEYCMD_F10                 "\5FL"
 ;; #CONFIG# KEYCMD_F11                 "COLORSET 128"
 ;; #CONFIG# KEYCMD_F12                 "\5FHF"

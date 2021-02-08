@@ -21,14 +21,23 @@
 
 	; General DOS status
 
-	!addr IDX_LISTENER     = $8008 ; listener idx * 2, >=$80 = none - for calling routines via vector table
-	!addr IDX_TALKER       = $8009 ; talker   idx * 2, >=$80 = none - for calling routines via vector table
+	!addr IDX1_LISTENER    = $8008 ; listener idx, >=$80 = none
+	!addr IDX2_LISTENER    = $8009 ; listener idx * 2, >=$80 = none - for calling routines via vector table
+	!addr IDX1_TALKER      = $800A ; talker idx, >=$80 = none
+	!addr IDX2_TALKER      = $800B ; talker idx * 2, >=$80 = none - for calling routines via vector table
 
-	; Free space: $800A-$806F
+	; Free space: $800C-$8069
+
+	!addr XX_CHANNEL       = $806A ; current channel
+	!addr SD_CHANNEL       = $806A ; - SD card
+	!addr FD_CHANNEL       = $806B ; - floppy
+	!addr RD_CHANNEL       = $806C ; - ram disk
+
+	!addr XX_STATUS_IDX    = $806D ; index byte for reading status 
+	!addr SD_STATUS_IDX    = $806D ; - SD card
+	!addr FD_STATUS_IDX    = $806E ; - floppy
+	!addr RD_STATUS_IDX    = $806F ; - ram disk
 
 	!addr SD_STATUS_STR    = $8070 ; status string for SD card, terminated by 0
-	!addr SD_STATUS_IDX    = $809F ; index byte for reading status
 	!addr FD_STATUS_STR    = $80A0 ; status string for floppy drive, terminated by 0
-	!addr FD_STATUS_IDX    = $80CF ; index byte for reading status
 	!addr RD_STATUS_STR    = $80D0 ; status string for ram disk, terminated by 0
-	!addr RD_STATUS_IDX    = $80FF ; index byte for reading status

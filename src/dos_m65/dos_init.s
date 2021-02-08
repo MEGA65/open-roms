@@ -34,8 +34,10 @@ dos_INIT:
 	; Clear listener / talker
 
 	lda #$FF
-	sta IDX_LISTENER
-	sta IDX_TALKER
+	sta IDX1_LISTENER
+	sta IDX2_LISTENER
+	sta IDX1_TALKER
+	sta IDX2_TALKER
 
 	; Initialize device handlers
 

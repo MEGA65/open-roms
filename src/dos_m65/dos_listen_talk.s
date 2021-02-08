@@ -22,19 +22,22 @@ dos_LISTEN:
 	cmp UNIT_FLOPPY
 	bne @2
 
-	lda #$02
+	lda #$01
 	bra dos_LISTEN_success
 @2:
 	cmp UNIT_RAMDISK
 	bne dos_fail_TALK_LISTEN
 
-	lda #$04
+	lda #$02
 	
 	; FALLTROUGH
 
 dos_LISTEN_success:
 
-	sta IDX_LISTENER
+	sta IDX1_LISTENER
+	asl
+	sta IDX2_LISTENER 
+
 	bra dos_common_LSN_TALK_UN
 
 ; TALK
@@ -54,19 +57,22 @@ dos_TALK:
 	cmp UNIT_FLOPPY
 	bne @2
 
-	lda #$02
+	lda #$01
 	bra dos_TALK_success
 @2:
 	cmp UNIT_RAMDISK
 	bne dos_fail_TALK_LISTEN
 
-	lda #$04
+	lda #$02
 	
 	; FALLTROUGH
 
 dos_TALK_success:
 
-	sta IDX_TALKER
+	sta IDX1_TALKER
+	asl
+	sta IDX2_TALKER
+
 	bra dos_common_LSN_TALK_UN
 
 dos_fail_TALK_LISTEN:
@@ -82,14 +88,16 @@ dos_UNLSN:
 
 	pha
 	lda #$FF
-	sta IDX_LISTENER
+	sta IDX1_LISTENER
+	sta IDX2_LISTENER
 	bra dos_common_LSN_TALK_UN
 
 dos_UNTLK:
 
 	pha
 	lda #$FF
-	sta IDX_TALKER
+	sta IDX1_TALKER
+	sta IDX2_TALKER
 
 	; FALLTROUGH
 

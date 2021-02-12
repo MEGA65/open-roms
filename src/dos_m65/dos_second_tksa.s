@@ -7,19 +7,25 @@
 
 dos_SECOND:
 
+	phx
+	cmp #$60
+	bcs dos_SECOND_OPEN
+
 	; XXX provide implementation
 
+	plx
 	sec
 	rts
 
+dos_SECOND_OPEN:
 
-dos_TKSA:
+	and #$1F
 
-	phx
-	pha
-	and #$60
-	bne dos_TKSA_OPEN
-	pla
+	ldx IDX1_LISTENER          ; store channel
+	sta XX_CHANNEL, X
+
+	cmp #$0F
+	beq dos_SECOND_OPEN_cmd
 
 	; XXX provide implementation
 
@@ -28,9 +34,31 @@ dos_TKSA:
 	rts
 
 
+dos_SECOND_OPEN_cmd:
+
+	; XXX provide implementation
+
+	plx
+	clc
+	rts
+
+
+
+
+dos_TKSA:
+
+	phx
+	cmp #$60
+	bcs dos_TKSA_OPEN
+
+	; XXX provide implementation
+
+	plx
+	sec
+	rts
+
 dos_TKSA_OPEN:
 
-	pla
 	and #$1F
 
 	ldx IDX1_TALKER          ; store channel

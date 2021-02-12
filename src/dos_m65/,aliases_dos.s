@@ -38,6 +38,7 @@
 	!addr FD_STATUS_IDX    = $806E ; - floppy
 	!addr RD_STATUS_IDX    = $806F ; - ram disk
 
+	!addr XX_STATUS_STR    = $8070
 	!addr SD_STATUS_STR    = $8070 ; status string for SD card, terminated by 0
 	!addr FD_STATUS_STR    = $80A0 ; status string for floppy drive, terminated by 0
 	!addr RD_STATUS_STR    = $80D0 ; status string for ram disk, terminated by 0

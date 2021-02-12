@@ -24,8 +24,6 @@ dos_ACPTR_status:
 	sta TBTCNT                         ; byte return
 	beq dos_ACPTR_reset_status
 
-	; XXX
-
 	clc
 	rts
 
@@ -38,11 +36,8 @@ dos_ACPTR_fail:
 
 dos_ACPTR_reset_status:
 
-	; XXX replace status with OK instead
-
-	ldx IDX1_TALKER
-	lda #$00
-	sta XX_STATUS_IDX,x
+	lda IDX1_TALKER
+	jsr dos_status_00
 
 	; FALLTROUGH
 

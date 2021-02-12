@@ -10,6 +10,7 @@ dev_sd_init:
 
 	ldx #$00
 	stx SD_STATUS_IDX
+	stx SD_CMDFN_IDX
 	dex
 @1:
 	inx

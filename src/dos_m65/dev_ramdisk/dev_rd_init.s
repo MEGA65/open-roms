@@ -10,6 +10,7 @@ dev_rd_init:
 
 	ldx #$00
 	stx RD_STATUS_IDX
+	stx RD_CMDFN_IDX
 	dex
 @1:
 	inx

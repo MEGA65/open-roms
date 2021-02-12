@@ -50,7 +50,7 @@ dos_ACPTR_eoi:
 
 
 
-; Retrieving bytes from the status string
+; Sending bytes from the status string
 
 dos_ACPTR_getsts_SD:                   ; get next byte of status - SD card
 

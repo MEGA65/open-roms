@@ -36,7 +36,9 @@ dos_LISTEN_success:
 
 	sta IDX1_LISTENER
 	asl
-	sta IDX2_LISTENER 
+	sta IDX2_LISTENER
+
+	; XXX should we reset XX_CMDFN_IDX ?
 
 	bra dos_common_LSN_TALK_UN
 

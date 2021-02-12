@@ -16,9 +16,9 @@ dos_SECOND:
 	tay
 	and #$0F                   ; support channels 0-15, like 1541 drive
 
-	ldx IDX1_LISTENER          ; store channel
+	ldx IDX1_LISTENER
 	bmi dos_SECOND_done        ; do nothing if no listener
-	sta XX_CHANNEL, x
+	sta XX_CHANNEL, x          ; store channel
 
 	; Determine command type
 
@@ -32,10 +32,17 @@ dos_SECOND:
 
 	; XXX provide implementation
 
-dos_SECOND_OPEN:               ; XXX provide implementaation
-dos_SECOND_CLOSE:              ; XXX provide implementaation
+	bra dos_SECOND_done
 
-	; finish
+dos_SECOND_OPEN:
+
+	ldx IDX2_LISTENER
+	jmp (dos_cmd_OPEN_vectable, x)
+
+dos_SECOND_CLOSE:
+
+	ldx IDX2_LISTENER
+	jmp (dos_cmd_CLOSE_vectable, x)
 
 dos_SECOND_done:
 
@@ -50,9 +57,11 @@ dos_TKSA:
 
 	and #$0F                   ; support channels 0-15, like 1541 drive
 
-	ldx IDX1_TALKER            ; store channel
+	ldx IDX1_TALKER
 	bmi dos_TKSA_done          ; do nothing if no taalker
-	sta XX_CHANNEL, x
+	sta XX_CHANNEL, x          ; store channel
+
+	; FALLTROUGH
 
 dos_TKSA_done:
 

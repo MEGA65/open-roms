@@ -7,77 +7,56 @@
 
 dos_SECOND:
 
+	pha
 	phx
-	cmp #$60
-	bcs dos_SECOND_OPEN
+	phy
 
-	; XXX provide implementation
+	; First store the channel
 
-	plx
-	sec
-	rts
-
-dos_SECOND_OPEN:
-
-	and #$1F
+	tay
+	and #$0F                   ; support channels 0-15, like 1541 drive
 
 	ldx IDX1_LISTENER          ; store channel
-	sta XX_CHANNEL, X
+	bmi dos_SECOND_done        ; do nothing if no listener
+	sta XX_CHANNEL, x
 
-	cmp #$0F
-	beq dos_SECOND_OPEN_cmd
+	; Determine command type
+
+	tya	
+	and #$F0
+
+	cmp #$F0
+	beq dos_SECOND_OPEN
+	cmp #$E0
+	beq dos_SECOND_CLOSE
 
 	; XXX provide implementation
 
-	plx
-	sec
-	rts
+dos_SECOND_OPEN:               ; XXX provide implementaation
+dos_SECOND_CLOSE:              ; XXX provide implementaation
 
+	; finish
 
-dos_SECOND_OPEN_cmd:
+dos_SECOND_done:
 
-	; XXX provide implementation
-
-	plx
-	clc
-	rts
-
-
+	ply
+	bra dos_TKSA_done          ; reuse part of TKSA code
 
 
 dos_TKSA:
 
+	pha
 	phx
-	cmp #$60
-	bcs dos_TKSA_OPEN
 
-	; XXX provide implementation
+	and #$0F                   ; support channels 0-15, like 1541 drive
 
-	plx
-	sec
-	rts
+	ldx IDX1_TALKER            ; store channel
+	bmi dos_TKSA_done          ; do nothing if no taalker
+	sta XX_CHANNEL, x
 
-dos_TKSA_OPEN:
-
-	and #$1F
-
-	ldx IDX1_TALKER          ; store channel
-	sta XX_CHANNEL, X
-
-	cmp #$0F
-	beq dos_TKSA_OPEN_cmd
-
-	; XXX provide implementation
+dos_TKSA_done:
 
 	plx
-	sec
-	rts
-
-
-dos_TKSA_OPEN_cmd:
-
-	; XXX provide implementation
-
-	plx
+	pla
 	clc
 	rts

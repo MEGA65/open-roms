@@ -6,6 +6,8 @@
 
 dos_UNITSET:
 
+	jsr dos_ENTER
+
 	; Check if memory content is not damaged
 
 	jsr dos_MEMCHK
@@ -18,14 +20,13 @@ dos_UNITSET:
 
 	cmp #$00
 	beq dos_UNITSET_sdcard
-	; XXX devioces below are not implemented yet
+	; XXX devices below are not implemented yet
 	; cmp #$01
 	; beq dos_UNITSET_floppy
 	; cmp #$02
 	; beq dos_UNITSET_ramdisk
 
-	sec
-	rts
+	jmp dos_EXIT_SEC
 
 dos_UNITSET_sdcard:
 
@@ -45,7 +46,4 @@ dos_UNITSET_ramdisk:
 
 	stx UNIT_RAMDISK
 
-	; FALLTROUGH
-
-	clc
-	rts
+	jmp dos_EXIT

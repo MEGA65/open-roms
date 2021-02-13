@@ -6,7 +6,7 @@
 
 dev_sd_cmd_OPEN:
 
-	; XXX provide implementation
+	lda #$01                 ; mode: receive command or file name
+	sta SD_MODE
 
-	sec
-	jmp dos_SECOND_done
+	jmp dos_EXIT

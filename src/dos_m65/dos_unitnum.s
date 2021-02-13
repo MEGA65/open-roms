@@ -6,10 +6,13 @@
 
 dos_UNITNUM:
 
+	jsr dos_ENTER
+
 	; Check if memory content is not damaged
 
 	jsr dos_MEMCHK
-	bcs dos_UNITNUM_none
+	bcs dos_UNITNUM_fail
+	lda REG_A
 
 	; Check what kind of device was requested
 
@@ -22,12 +25,11 @@ dos_UNITNUM:
 
 	; FALLTROUGH
 
-dos_UNITNUM_none:
+dos_UNITNUM_fail:
 
 	lda #$00
 
-	sec
-	rts
+	jmp dos_EXIT_A_SEC
 
 dos_UNITNUM_sdcard:
 
@@ -42,13 +44,12 @@ dos_UNITNUM_floppy:
 dos_UNITNUM_ramdisk:
 
 	lda UNIT_RAMDISK
-	bra dos_UNITNUM_common
+	
+	; FALLTROUGH
 
 dos_UNITNUM_common:
 
 	cmp #$00
-	beq dos_UNITNUM_none
+	beq dos_UNITNUM_fail
 
-	clc
-	rts
-
+	jmp dos_EXIT_A

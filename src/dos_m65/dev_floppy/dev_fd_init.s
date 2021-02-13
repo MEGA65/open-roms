@@ -11,6 +11,7 @@ dev_fd_init:
 	ldx #$00
 	stx FD_STATUS_IDX
 	stx FD_CMDFN_IDX
+	stx FD_MODE
 	dex
 @1:
 	inx

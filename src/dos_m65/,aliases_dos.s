@@ -13,20 +13,34 @@
 
 	!addr MAGICSTR         = $8000 ; magic string; if not matching, DOS considered non-functional
 
+	; Register storage
+
+	!addr REG_A            = $8005
+	!addr REG_X            = $8006
+	!addr REG_Y            = $8007
+	!addr REG_Z            = $8008
+
+	; Reserved: $8009 - $800C
+
 	; General DOS configuration
 
-	!addr UNIT_SDCARD      = $8005 ; unit number for device, 0 = none
-	!addr UNIT_FLOPPY      = $8006 ; as above
-	!addr UNIT_RAMDISK     = $8007 ; as above
+	!addr UNIT_SDCARD      = $800D ; unit number for device, 0 = none
+	!addr UNIT_FLOPPY      = $800E ; as above
+	!addr UNIT_RAMDISK     = $800F ; as above
 
 	; General DOS status
 
-	!addr IDX1_LISTENER    = $8008 ; listener idx, >=$80 = none
-	!addr IDX2_LISTENER    = $8009 ; listener idx * 2, >=$80 = none - for calling routines via vector table
-	!addr IDX1_TALKER      = $800A ; talker idx, >=$80 = none
-	!addr IDX2_TALKER      = $800B ; talker idx * 2, >=$80 = none - for calling routines via vector table
+	!addr IDX1_LISTENER    = $8010 ; listener idx, >=$80 = none
+	!addr IDX2_LISTENER    = $8011 ; listener idx * 2, >=$80 = none - for calling routines via vector table
+	!addr IDX1_TALKER      = $8012 ; talker idx, >=$80 = none
+	!addr IDX2_TALKER      = $8013 ; talker idx * 2, >=$80 = none - for calling routines via vector table
 
-	; Free space: $800C-$8069
+	; Free space: $8014-$8063
+
+	!addr XX_MODE          = $8064 ; current mode (0 = none, 1 = receiving command/file name)
+	!addr SD_MODE          = $8064 ; - SD card
+	!addr FD_MODE          = $8065 ; - floppy
+	!addr RD_MODE          = $8066 ; - ram disk
 
 	!addr XX_CHANNEL       = $8067 ; current channel
 	!addr SD_CHANNEL       = $8067 ; - SD card

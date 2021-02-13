@@ -12,10 +12,6 @@
 
 dos_status_00: ; OK
 
-	pha
-	phx
-	phy
-
 	; Set status byte pointer to the beginning
 
 	tax
@@ -76,11 +72,6 @@ dos_status_00: ; OK
 
 	; End
 
-	ply
-	plx
-	pla
-
-	clc ; mark status as OK 
 	rts
 
 

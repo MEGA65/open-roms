@@ -10,17 +10,16 @@
 
 dos_INIT:
 
+	jsr dos_ENTER
+
 	; Set the magic string 'CBDOS'
 
-	phx
 	ldx #$04
 @1:
 	lda dos_magicstr, x
 	sta MAGICSTR, x
 	dex
 	bpl @1
-
-	plx
 
 	; Set default device numbers
 
@@ -45,4 +44,6 @@ dos_INIT:
 	jsr dev_fd_init
 	jsr dev_rd_init
 
-	rts
+	; Exit DOS context
+
+	jmp dos_EXIT

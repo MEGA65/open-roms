@@ -6,10 +6,12 @@
 
 dos_UNITCHK:
 
+	jsr dos_ENTER
+
 	; Check if memory content is not damaged
 
 	jsr dos_MEMCHK
-	bcs dos_UNITCHK_none
+	bcs dos_UNITCHK_fail
 
 	; Check for unit
 
@@ -22,10 +24,9 @@ dos_UNITCHK:
 
 	; FALLTROUGH
 
-dos_UNITCHK_none:
+dos_UNITCHK_fail:
 
-	sec
-	rts
+	jmp dos_EXIT_SEC
 
 dos_UNITCHK_sdcard:
 
@@ -44,13 +45,5 @@ dos_UNITCHK_floppy:
 dos_UNITCHK_ramdisk:
 
 	lda #$02
-	
-	clc
-	rts
 
-dos_UNITCHK_mem_fail:
-
-	plx
-	pla
-	sec
-	rts
+	jmp dos_EXIT_A

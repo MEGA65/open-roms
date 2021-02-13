@@ -12,6 +12,7 @@ dos_UNITCHK:
 
 	jsr dos_MEMCHK
 	bcs dos_UNITCHK_fail
+	lda REG_A
 
 	; Check for unit
 

@@ -55,7 +55,7 @@ msg_ACPTR_status_got:
 	sta TBTCNT                         ; byte return
 	beq msg_ACPTR_reset_status
 
-	jmp dos_EXIT
+	jmp dos_EXIT_A
 
 msg_ACPTR_fail:
 
@@ -73,7 +73,7 @@ msg_ACPTR_reset_status:
 msg_ACPTR_eoi:
 
 	jsr kernalstatus_EOI
-	jmp dos_EXIT_SEC
+	jmp dos_EXIT
 
 
 

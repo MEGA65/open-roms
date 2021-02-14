@@ -94,3 +94,5 @@
 	!addr SD_CMDFN_BUF     = $8100 ; buffer for command and/or file name, 128 bytes, SD card
 	!addr FD_CMDFN_BUF     = $8180 ; buffer for command and/or file name, 128 bytes, floppy
 	!addr RD_CMDFN_BUF     = $8200 ; buffer for command and/or file name, 128 bytes, ram disk
+
+	!addr SD_DIRENT        = $8280 ; 256 byte buffer for 'dirent' structure

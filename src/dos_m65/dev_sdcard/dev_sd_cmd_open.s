@@ -19,46 +19,11 @@ dev_sd_cmd_OPEN_EOI:
 
 	lda SD_CMDFN_BUF
 	cmp #'$'
-	beq dev_sd_cmd_OPEN_dir
+	+beq fs_hvsr_read_dir_open
 
 	; XXX implement for file names
 
 	jmp dos_EXIT_SEC
 
 
-dev_sd_cmd_OPEN_dir:
 
-	; XXX
-
-    ; .X = file descriptor
-    ; .Y = page of memory for output
-
-	; lda #$11                          ; dos_opendir
-	; sta HTRAP00
-	; +nop
-
-	; Reset status to OK
-
-	lda #$00
-	jsr dos_status_00
-
-	; Provide pointer to the header
-
-	lda #$20
-	sta SD_ACPTR_LEN+0
-	lda #$00
-	sta SD_ACPTR_LEN+1
-
-	lda #<dir_hdr_sd
-	sta SD_ACPTR_PTR+0
-	lda #>dir_hdr_sd
-	sta SD_ACPTR_PTR+1
-
-	; Set directory phase to 'file name'
-
-	lda #$01
-	sta SD_DIR_PHASE
-
-	; End
-
-	jmp dos_EXIT

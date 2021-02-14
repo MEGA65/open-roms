@@ -16,6 +16,7 @@ dev_sd_init:
 	stx SD_ACPTR_LEN+1
 	stx SD_ACPTR_PTR+0
 	stx SD_ACPTR_PTR+1
+	stx SD_DIR_PHASE
 	dex
 @1:
 	inx

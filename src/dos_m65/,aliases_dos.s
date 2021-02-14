@@ -96,3 +96,5 @@
 	!addr RD_CMDFN_BUF     = $8200 ; buffer for command and/or file name, 128 bytes, ram disk
 
 	!addr SD_DIRENT        = $8280 ; 256 byte buffer for 'dirent' structure
+	!addr SD_DIR_DESC      = $8380 ; file descriptor for reading directory
+

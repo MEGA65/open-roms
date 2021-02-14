@@ -12,6 +12,10 @@ dev_sd_init:
 	stx SD_STATUS_IDX
 	stx SD_CMDFN_IDX
 	stx SD_MODE
+	stx SD_ACPTR_LEN+0
+	stx SD_ACPTR_LEN+1
+	stx SD_ACPTR_PTR+0
+	stx SD_ACPTR_PTR+1
 	dex
 @1:
 	inx

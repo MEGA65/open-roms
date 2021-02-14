@@ -1224,7 +1224,7 @@ void DataSet::generateConfigDepStrings()
 
     // CBDOS features
 
-    featureStrM65 += "CBDOS  : SDCARD ";
+    featureStrM65 += "CBDOS  : SD CARD ";
 
     // Keyboard support features
    

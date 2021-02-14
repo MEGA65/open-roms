@@ -44,6 +44,18 @@ dos_INIT:
 	jsr dev_fd_init
 	jsr dev_rd_init
 
+	; Initialize helper code in RAM
+
+	lda #$AD                 ; LDA opcode, absolute
+	sta code_LDA_01
+	sta code_LDA_02
+	sta code_LDA_03
+
+	lda #$60                 ; RTS opcode
+	sta code_RTS_01
+	sta code_RTS_02
+	sta code_RTS_03
+
 	; Exit DOS context
 
 	jmp dos_EXIT

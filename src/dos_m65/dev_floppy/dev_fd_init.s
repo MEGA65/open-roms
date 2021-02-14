@@ -12,6 +12,10 @@ dev_fd_init:
 	stx FD_STATUS_IDX
 	stx FD_CMDFN_IDX
 	stx FD_MODE
+	stx FD_ACPTR_LEN+0
+	stx FD_ACPTR_LEN+1
+	stx FD_ACPTR_PTR+0
+	stx FD_ACPTR_PTR+1
 	dex
 @1:
 	inx

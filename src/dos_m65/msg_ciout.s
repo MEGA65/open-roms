@@ -7,10 +7,12 @@
 msg_CIOUT:
 
 	jsr dos_ENTER
+	php
 
 	; Check operation mode
 
 	ldx IDX1_LISTENER
+	bmi msg_CIOUT_fail
 	lda XX_MODE, x
 
 	cmp #$01
@@ -18,14 +20,20 @@ msg_CIOUT:
 
 	; Receiving command or file name
 
-	ldx IDX2_TALKER
+	ldx IDX2_LISTENER
 	jmp (msg_CIOUT_cmdfn_vectab, X)
 @1:
 	; XXX handle cases of transferring data
 
+	plp
 	jmp dos_EXIT_SEC
 
+msg_CIOUT_fail:
 
+	; XXX should we set status?
+	lda #K_ERR_DEVICE_NOT_FOUND
+
+	jmp dos_EXIT_A_SEC
 
 
 
@@ -41,6 +49,8 @@ msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 @1:
 	lda #$00
 	sta SD_CMDFN_IDX,x
+	plp
+	+bcs dev_sd_cmd_OPEN_EOI           ; if EOI - execute command
 	jmp dos_EXIT
 
 msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
@@ -53,6 +63,8 @@ msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
 @1:
 	lda #$00
 	sta FD_CMDFN_IDX,x
+	plp
+	+bcs dev_fd_cmd_OPEN_EOI           ; if EOI - execute command
 	jmp dos_EXIT
 
 msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
@@ -65,6 +77,8 @@ msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 @1:
 	lda #$00
 	sta RD_CMDFN_IDX,x
+	plp
+	+bcs dev_rd_cmd_OPEN_EOI           ; if EOI - execute command
 	jmp dos_EXIT
 
 msg_CIOUT_cmdfn_vectab:

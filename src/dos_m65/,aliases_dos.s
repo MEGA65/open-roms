@@ -35,7 +35,36 @@
 	!addr IDX1_TALKER      = $8012 ; talker idx, >=$80 = none
 	!addr IDX2_TALKER      = $8013 ; talker idx * 2, >=$80 = none - for calling routines via vector table
 
+	; Various temporary data
+
+	!addr XX_DIR_PHASE     = $8014 ; directory output phase, values deponds on device driver
+	!addr SD_DIR_PHASE     = $8014 ; - SD card
+	!addr FD_DIR_PHASE     = $8015 ; - floppy
+	!addr RD_DIR_PHASE     = $8016 ; - ram disk
+
+
+
 	; Free space: $8014-$8063
+
+	!addr SD_ACPTR_helper  = $8052 ; subroutine in RAM to read a byte
+	!addr code_LDA_01      = $8052 ; - LDA instruction
+	!addr SD_ACPTR_PTR     = $8053 ; - 2 bytes; address in buffer, SD card
+	!addr code_RTS_01      = $8055 ; - RTS instruction
+	
+	!addr FD_ACPTR_helper  = $8056 ; subroutine in RAM to read a byte
+	!addr code_LDA_02      = $8056 ; - LDA instruction
+	!addr FD_ACPTR_PTR     = $8057 ; - 2 bytes; address in buffer, floppy
+	!addr code_RTS_02      = $8059 ; - RTS instruction
+	
+	!addr RD_ACPTR_helper  = $805A ; subroutine in RAM to read a byte
+	!addr code_LDA_03      = $805A ; - LDA instruction
+	!addr RD_ACPTR_PTR     = $805B ; - 2 bytes; address in buffer, ram disk
+	!addr code_RTS_03      = $805D ; - RTS instruction
+
+	!addr XX_ACPTR_LEN     = $805E ; 2 bytes - length of data left for ACPTR
+	!addr SD_ACPTR_LEN     = $805E ; - SD card
+	!addr FD_ACPTR_LEN     = $8060 ; - floppy
+	!addr RD_ACPTR_LEN     = $8062 ; - ram disk
 
 	!addr XX_MODE          = $8064 ; current mode (0 = none, 1 = receiving command/file name)
 	!addr SD_MODE          = $8064 ; - SD card

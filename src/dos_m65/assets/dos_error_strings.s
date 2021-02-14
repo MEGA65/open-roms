@@ -9,7 +9,7 @@
 
 dos_err_init_sdcard:
 
-	!pet "73,m65 dos sdcard,00,00", 0
+	!pet "73,m65 dos sd card,00,00", 0
 
 dos_err_init_floppy:
 
@@ -25,7 +25,7 @@ dos_err_init_ramdisk:
 
 dos_err_00: ; not an error
 
-	!pet "ok", 0
+	!pet " ok", 0
 
 dos_err_01: ; not an error
 

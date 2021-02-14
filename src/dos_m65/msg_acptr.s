@@ -11,7 +11,7 @@ msg_ACPTR:
 	; Check if there is a talker active
 
 	ldx IDX1_TALKER
-	bmi msg_ACPTR_fail
+	bmi msg_ACPTR_fail_no_talker
 
 	; Check if active channel is status one
 
@@ -19,9 +19,65 @@ msg_ACPTR:
 	cmp #$0F
 	beq msg_ACPTR_status
 
-	; XXX providde implementation for non-status channels
+	; XXX add support for read contexts (multiple channels)
 
-	jmp msg_ACPTR_fail
+	; Not a status channel - check if we have something to read out
+
+	ldx IDX2_TALKER
+	lda XX_ACPTR_LEN+0,x
+	ora XX_ACPTR_LEN+1,x
+	beq msg_ACPTR_fail_no_data
+
+	; Read a byte of data from the buffer
+
+	jmp (msg_ACPTR_read_vectab, X)
+
+msg_ACPTR_read_SD:
+
+	; Read and return one byte
+
+	jsr SD_ACPTR_helper
+	sta TBTCNT
+
+	; Increment pointer, decrement length
+
+	inc SD_ACPTR_PTR+0
+	bne @1
+	inc SD_ACPTR_PTR+1
+@1:
+	dec SD_ACPTR_LEN+0
+	lda SD_ACPTR_LEN+0
+	cmp #$FF
+	bne @2
+	dec SD_ACPTR_LEN+1
+@2:
+	; If new length is 0, try to read next block of data
+
+	ora SD_ACPTR_LEN+1
+	bne @3
+	jsr dev_sd_cmd_READ
+	bcc @3
+	jsr kernalstatus_EOI
+@3:
+	jmp dos_EXIT
+
+
+msg_ACPTR_read_FD:
+
+	; XXX provide implementation
+
+
+msg_ACPTR_read_RD:
+
+	; XXX provide implementation
+
+
+msg_ACPTR_fail_no_data:
+
+	; XXX What should be the reaction when trying to read and no data is present?
+
+	sta TBTCNT
+	bra msg_ACPTR_EOI
 
 msg_ACPTR_status:
 
@@ -57,7 +113,7 @@ msg_ACPTR_status_got:
 
 	jmp dos_EXIT_A
 
-msg_ACPTR_fail:
+msg_ACPTR_fail_no_talker:
 
 	; XXX set error code
 
@@ -70,11 +126,10 @@ msg_ACPTR_reset_status:
 
 	; FALLTROUGH
 
-msg_ACPTR_eoi:
+msg_ACPTR_EOI:
 
 	jsr kernalstatus_EOI
 	jmp dos_EXIT
-
 
 
 ; Vector tables for jumps
@@ -84,3 +139,9 @@ msg_ACPTR_status_vectab:
 	!word msg_ACPTR_status_SD
 	!word msg_ACPTR_status_FD
 	!word msg_ACPTR_status_RD
+
+msg_ACPTR_read_vectab:
+
+	!word msg_ACPTR_read_SD
+	!word msg_ACPTR_read_FD
+	!word msg_ACPTR_read_RD

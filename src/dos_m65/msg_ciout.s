@@ -21,6 +21,7 @@ msg_CIOUT:
 	; Receiving command or file name
 
 	ldx IDX2_LISTENER
+	lda REG_A
 	jmp (msg_CIOUT_cmdfn_vectab, X)
 @1:
 	; XXX handle cases of transferring data
@@ -42,13 +43,14 @@ msg_CIOUT_fail:
 msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 
 	ldx SD_CMDFN_IDX
-	sta SD_CMDFN_IDX,x
+	sta SD_CMDFN_BUF,x
 	inx
 	bpl @1
 	ldx #$7F
 @1:
+	sta SD_CMDFN_IDX
 	lda #$00
-	sta SD_CMDFN_IDX,x
+	sta SD_CMDFN_BUF,x
 	plp
 	+bcs dev_sd_cmd_OPEN_EOI           ; if EOI - execute command
 	jmp dos_EXIT
@@ -56,13 +58,14 @@ msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
 
 	ldx FD_CMDFN_IDX
-	sta FD_CMDFN_IDX,x
+	sta FD_CMDFN_BUF,x
 	inx
 	bpl @1
 	ldx #$7F
 @1:
+	sta FD_CMDFN_IDX
 	lda #$00
-	sta FD_CMDFN_IDX,x
+	sta FD_CMDFN_BUF,x
 	plp
 	+bcs dev_fd_cmd_OPEN_EOI           ; if EOI - execute command
 	jmp dos_EXIT
@@ -70,13 +73,14 @@ msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
 msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 
 	ldx RD_CMDFN_IDX
-	sta RD_CMDFN_IDX,x
+	sta RD_CMDFN_BUF,x
 	inx
 	bpl @1
 	ldx #$7F
 @1:
+	sta RD_CMDFN_IDX
 	lda #$00
-	sta RD_CMDFN_IDX,x
+	sta RD_CMDFN_BUF,x
 	plp
 	+bcs dev_rd_cmd_OPEN_EOI           ; if EOI - execute command
 	jmp dos_EXIT

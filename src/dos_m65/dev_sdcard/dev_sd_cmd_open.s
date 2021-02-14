@@ -18,7 +18,7 @@ dev_sd_cmd_OPEN_EOI:
 	; XXX add support for second card
 
 	lda SD_CMDFN_BUF
-	cmp '$'
+	cmp #'$'
 	beq dev_sd_cmd_OPEN_dir
 
 	; XXX implement for file names
@@ -38,9 +38,9 @@ dev_sd_cmd_OPEN_dir:
 	; Provide pointer and length of the header
 
 	lda #$20
-	sta SD_ACPTR_PTR+0
+	sta SD_ACPTR_LEN+0
 	lda #$00
-	sta SD_ACPTR_PTR+1
+	sta SD_ACPTR_LEN+1
 
 	lda #<dir_hdr_sd
 	sta SD_ACPTR_PTR+0

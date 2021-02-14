@@ -15,6 +15,20 @@ dev_sd_cmd_READ:
 	sec ; mark EOI
 	rts
 
+dev_sd_cmd_READ_dir:
+
+	; Dirent structure:
+	; - 4 bytes - inode
+	; - 2 bytes - ('off' - not sure what's this)
+	; - 4 bytes - ('reclen' - is it file size?)
+	; - 2 bytes - type
+
+    ; .X = file descriptor
+    ; .Y = page of memory for output
+
+	; lda #$12                          ; dos_readdir
+	; sta HTRAP00
+	; +nop
 
 dev_sd_cmd_READ_dir_blocksfree:
 
@@ -32,8 +46,14 @@ dev_sd_cmd_READ_dir_blocksfree:
 
 	; Mark end of directory
 
-	lda #$FF
+	lda #$00
 	sta SD_DIR_PHASE
+
+    ; .X = file descriptor
+
+	; lda #$13                          ; dos_closedir
+	; sta HTRAP00
+	; +nop
 
 	clc
 	rts

@@ -28,6 +28,15 @@ dev_sd_cmd_OPEN_EOI:
 
 dev_sd_cmd_OPEN_dir:
 
+	; XXX
+
+    ; .X = file descriptor
+    ; .Y = page of memory for output
+
+	; lda #$11                          ; dos_opendir
+	; sta HTRAP00
+	; +nop
+
 	; Reset status to OK
 
 	lda #$00

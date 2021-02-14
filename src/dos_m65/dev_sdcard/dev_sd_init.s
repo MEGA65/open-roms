@@ -6,7 +6,7 @@
 
 dev_sd_init:
 
-	; Copy status string
+	; Copy initial status string
 
 	ldx #$00
 	stx SD_STATUS_IDX
@@ -22,6 +22,16 @@ dev_sd_init:
 	lda dos_err_init_sdcard,x
 	sta SD_STATUS_STR,x
 	bne @1
+
+	; Close all the files in the hypervisor, go to root directory
+
+	lda #$22                          ; dos_closeall
+	sta HTRAP00
+	+nop
+
+	lda #$36                          ; dos_cdrootdir
+	sta HTRAP00
+	+nop
 
 	; End of initialization
 

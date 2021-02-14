@@ -57,7 +57,9 @@ fs_hvsr_read_dir:
 	sta HTRAP00
 	+nop
 
+	php
 	jsr fs_hvsr_dirent_swap
+	plp
 
 	; If nothing to read, output 'blocks free'
 
@@ -68,9 +70,37 @@ fs_hvsr_read_dir:
 	; - $40     - file name length
 	; - $55     - file type and attributes
 
-	; Validate entry
+	; Validate/fix characters in file name
 
-	; X check for directory!
+	ldx SD_DIRENT+$40
+
+@lp1:
+
+	lda SD_DIRENT,x
+	cmp #$22
+	beq fs_hvsr_read_dir               ; quotation mark is illegal
+	cmp #$2A
+	beq fs_hvsr_read_dir               ; asterisk is illegal, it is used for filtering
+	cmp #$20
+	bcc fs_hvsr_read_dir               ; control characters are not allowed
+	cmp #$5B
+	bcc @lp1_next                      ; up to PETSCII 'Z' is OK
+	cmp #$61
+	bcc fs_hvsr_read_dir               ; some characters are not allowed
+	cmp #$7B
+	bcs fs_hvsr_read_dir               ; PETSCII-art and control characters are illegal
+	clc
+	sbc #$20                           ; make everything the same case
+	sta SD_DIRENT,x
+
+@lp1_next:
+
+	dex
+	bpl @lp1
+
+	; Validate file name length
+
+	; XXX check for directory!
 
 	lda SD_DIRENT+$40
 	sec
@@ -83,24 +113,8 @@ fs_hvsr_read_dir:
 	sta SD_DIRENT+$40                  ; store corrected file name length
 
 	; Detect file type (+64 for read-only, +128 = damaged)
-	; 0  = not supported
-	; 1  = SEQ
-	; 2  = PRG
-	; 3  = USR
-	; 4  = REL
-	; 5  = DIR
-	; 6  = D67 ; CBM 2040 (DOS 1)               - disk image
-	; 6  = D64 ; CBM 1541 / 2031 / 3040 / 4040  - disk image
-	; 7  = D71 ; CBM 1571                       - disk image
-	; 8  = D81 ; CBM 1581                       - disk image
-	; 9  = D80 ; CBM 8050                       - disk image
-	; 10 = D81 ; CBM 8250 / 1001                - disk image
-	; 11 = D90 ; CBM D9060 / D9090              - hard disk image
-	; 12 = D1M ; CMD FD 2000 / 4000             - disk image (DD)
-	; 13 = D2M ; CMD FD 2000 / 4000             - disk image (HD)
-	; 14 = D2M ; CMD FD 4000                    - disk image (ED)
-	; 15 = DHD ; CMD HD                         - hard disk image
 
+	; XXX detect image
 
 	; Try to prepare output row
 

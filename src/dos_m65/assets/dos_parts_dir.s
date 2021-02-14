@@ -48,5 +48,5 @@ dir_ext_0B: !pet "d81"       ; CBM 8250 / 1001                - disk image
 dir_ext_0C: !pet "d90"       ; CBM D9060 / D9090              - hard disk image
 dir_ext_0D: !pet "d1m"       ; CMD FD 2000 / 4000             - disk image (DD)
 dir_ext_0E: !pet "d2m"       ; CMD FD 2000 / 4000             - disk image (HD)
-dir_ext_0F: !pet "d2m"       ; CMD FD 4000                    - disk image (ED)
+dir_ext_0F: !pet "d4m"       ; CMD FD 4000                    - disk image (ED)
 dir_ext_10: !pet "dhd"       ; CMD HD                         - hard disk image

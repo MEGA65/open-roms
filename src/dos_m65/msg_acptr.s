@@ -38,6 +38,7 @@ msg_ACPTR_read_SD:
 
 	jsr SD_ACPTR_helper
 	sta TBTCNT
+	sta REG_A
 
 	; Increment pointer, decrement length
 
@@ -77,6 +78,7 @@ msg_ACPTR_fail_no_data:
 	; XXX What should be the reaction when trying to read and no data is present?
 
 	sta TBTCNT
+	sta REG_A
 	bra msg_ACPTR_EOI
 
 msg_ACPTR_status:

@@ -291,7 +291,7 @@
 	!set IEC_BURST   = 3
 }
 !ifdef CONFIG_MB_M65 {
-	!set IEC_ROMDOS  = 4
+	!set IEC_CBDOS   = 4
 }
 
 

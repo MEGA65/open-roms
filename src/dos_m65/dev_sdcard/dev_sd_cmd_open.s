@@ -28,14 +28,12 @@ dev_sd_cmd_OPEN_EOI:
 
 dev_sd_cmd_OPEN_dir:
 
-	; XXX add support for filtering
+	; Reset status to OK
 
-	; Initialize 1st directory phase - header
+	lda #$00
+	jsr dos_status_00
 
-	lda #$01
-	sta SD_DIR_PHASE
-
-	; Provide pointer and length of the header
+	; Provide pointer to the header
 
 	lda #$20
 	sta SD_ACPTR_LEN+0
@@ -46,6 +44,11 @@ dev_sd_cmd_OPEN_dir:
 	sta SD_ACPTR_PTR+0
 	lda #>dir_hdr_sd
 	sta SD_ACPTR_PTR+1
+
+	; Set directory phase to 'file name'
+
+	lda #$01
+	sta SD_DIR_PHASE
 
 	; End
 

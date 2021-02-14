@@ -15,7 +15,7 @@ m65dos_detect:
 	jsr m65dos_unitchk
 	bcs @1
 
-	lda #IEC_ROMDOS
+	lda #IEC_CBDOS
 	sta IECPROTO
 @1:
 	pla

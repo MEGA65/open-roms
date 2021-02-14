@@ -18,6 +18,8 @@ dev_sd_cmd_READ:
 
 dev_sd_cmd_READ_dir_blocksfree:
 
+	; Set pointer to '0 BLOCKS FREE.' line
+
 	lda #$13
 	sta SD_ACPTR_LEN+0
 	lda #$00
@@ -27,6 +29,11 @@ dev_sd_cmd_READ_dir_blocksfree:
 	sta SD_ACPTR_PTR+0
 	lda #>dir_end
 	sta SD_ACPTR_PTR+1
+
+	; Mark end of directory
+
+	lda #$FF
+	sta SD_DIR_PHASE
 
 	clc
 	rts

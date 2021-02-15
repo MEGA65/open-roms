@@ -39,14 +39,15 @@ dir_ext_02: !pet "prg"       ; PRG
 dir_ext_03: !pet "usr"       ; USR
 dir_ext_04: !pet "rel"       ; REL
 dir_ext_05: !pet "dir"       ; directory
-dir_ext_06: !pet "d67"       ; CBM 2040 (DOS 1)               - disk image
-dir_ext_07: !pet "d64"       ; CBM 1541 / 2031 / 3040 / 4040  - disk image
-dir_ext_08: !pet "d71"       ; CBM 1571                       - disk image
-dir_ext_09: !pet "d81"       ; CBM 1581                       - disk image
-dir_ext_0A: !pet "d80"       ; CBM 8050                       - disk image
-dir_ext_0B: !pet "d81"       ; CBM 8250 / 1001                - disk image
-dir_ext_0C: !pet "d90"       ; CBM D9060 / D9090              - hard disk image
-dir_ext_0D: !pet "d1m"       ; CMD FD 2000 / 4000             - disk image (DD)
-dir_ext_0E: !pet "d2m"       ; CMD FD 2000 / 4000             - disk image (HD)
-dir_ext_0F: !pet "d4m"       ; CMD FD 4000                    - disk image (ED)
-dir_ext_10: !pet "dhd"       ; CMD HD                         - hard disk image
+; dir_ext_06: !pet "tap"       ; tape image
+; dir_ext_07: !pet "d67"       ; CBM 2040 (DOS 1)               - disk image
+; dir_ext_08: !pet "d64"       ; CBM 1541 / 2031 / 3040 / 4040  - disk image
+; dir_ext_09: !pet "d71"       ; CBM 1571                       - disk image
+; dir_ext_0A: !pet "d81"       ; CBM 1581                       - disk image
+; dir_ext_0B: !pet "d80"       ; CBM 8050                       - disk image
+; dir_ext_0C: !pet "d81"       ; CBM 8250 / 1001                - disk image
+; dir_ext_0D: !pet "d90"       ; CBM D9060 / D9090              - hard disk image
+; dir_ext_0E: !pet "d1m"       ; CMD FD 2000 / 4000             - disk image (DD)
+; dir_ext_0F: !pet "d2m"       ; CMD FD 2000 / 4000             - disk image (HD)
+; dir_ext_10: !pet "d4m"       ; CMD FD 4000                    - disk image (ED)
+; dir_ext_11: !pet "dhd"       ; CMD HD                         - hard disk image

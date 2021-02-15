@@ -6,13 +6,14 @@
 
 dos_UNITNUM:
 
-	jsr dos_ENTER
-
-	; Check if memory content is not damaged
+	; Before the start make sure memory content is not damaged
 
 	jsr dos_MEMCHK
-	bcs dos_UNITNUM_fail
-	lda REG_A
+	bcc @ok
+	lda #$00 ; failure
+	rts
+@ok:
+	jsr dos_ENTER
 
 	; Check what kind of device was requested
 

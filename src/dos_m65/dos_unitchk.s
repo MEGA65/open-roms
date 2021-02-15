@@ -6,13 +6,13 @@
 
 dos_UNITCHK:
 
-	jsr dos_ENTER
-
-	; Check if memory content is not damaged
+	; Before the start make sure memory content is not damaged
 
 	jsr dos_MEMCHK
-	bcs dos_UNITCHK_fail
-	lda REG_A
+	bcc @ok
+	rts
+@ok:
+	jsr dos_ENTER
 
 	; Check for unit
 

@@ -6,6 +6,9 @@
 
 dos_MEMCHK:
 
+	pha
+	phx
+
 	; Check for magic string
 
 	ldx #$04
@@ -34,10 +37,14 @@ dos_MEMCHK:
 	cmp code_RTS_03
 	bne @fail
 
+	plx
+	pla
 	clc 
 	rts
 
 @fail:
 
+	plx
+	pla
 	sec
 	rts

@@ -6,14 +6,14 @@
 
 dos_UNITSET:
 
-	jsr dos_ENTER
-
-	; Check if memory content is not damaged
+	; Before the start make sure memory content is not damaged
 
 	jsr dos_MEMCHK
-	bcc @1
+	bcc @ok
 	rts
-@1:
+@ok:
+	jsr dos_ENTER
+
 	; XXX do not allow illegal device numbers... above 30 or below 8 ?
 
 	; Check what kind of device was requested

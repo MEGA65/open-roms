@@ -30,7 +30,7 @@ dev_sd_init:
 	sta HTRAP00
 	+nop
 
-	lda #$36                          ; dos_cdrootdir
+	lda #$3C                          ; dos_cdrootdir
 	sta HTRAP00
 	+nop
 

@@ -53,7 +53,7 @@ fs_hvsr_read_dir:
 	ldx SD_DIR_DESC                   ; directory descriptor
 	ldy #$10                          ; target page number
 
-	lda #$13                          ; dos_readdir
+	lda #$14                          ; dos_readdir
 	sta HTRAP00
 	+nop
 
@@ -72,6 +72,7 @@ fs_hvsr_read_dir:
 	; Validate/fix characters in file name
 
 	ldx SD_DIRENT+$40
+	dex
 
 @lp1:
 
@@ -96,8 +97,6 @@ fs_hvsr_read_dir:
 
 	dex
 	bpl @lp1
-
-	inc $D020
 
 	; Validate file name length
 
@@ -131,6 +130,9 @@ fs_hvsr_read_dir:
 	sta SD_DIRENT+$82
 	sta SD_DIRENT+$83	
 
+	ldx SD_DIRENT+$40                  ; make sure file name is terminated by 0
+	sta SD_DIRENT, x
+
 	ldx #$04                           ; XXX put correct amount of spaces instead
 	lda #' '
 	sta SD_DIRENT+$80, x
@@ -148,9 +150,7 @@ fs_hvsr_read_dir:
 	iny
 	lda SD_DIRENT, y
 	sta SD_DIRENT+$80,x
-
 	bne @lp2
-	inx
 
 	lda #$22                           ; closing quote
 	sta SD_DIRENT+$80, x
@@ -214,7 +214,7 @@ fs_hvsr_read_dir_blocksfree:
 	; Close the directory within the hypervisor  XXX maybe move it to close routine
 
     ldx SD_DIR_DESC
-	lda #$14                          ; dos_closedir
+	lda #$16                          ; dos_closedir
 	sta HTRAP00
 	+nop
 

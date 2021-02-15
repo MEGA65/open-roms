@@ -57,9 +57,7 @@ fs_hvsr_read_dir:
 	sta HTRAP00
 	+nop
 
-	php
-	jsr fs_hvsr_dirent_swap
-	plp
+	jsr fs_hvsr_dirent_swap           ; processor status is preserved
 
 	; If nothing to read, output 'blocks free'
 

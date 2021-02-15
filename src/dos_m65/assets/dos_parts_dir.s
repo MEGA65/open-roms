@@ -34,20 +34,22 @@ dir_end:                     ; 19 bytes
 
 ; File types / extensions
 
-dir_ext_01: !pet "seq"       ; SEQ
-dir_ext_02: !pet "prg"       ; PRG
-dir_ext_03: !pet "usr"       ; USR
-dir_ext_04: !pet "rel"       ; REL
-dir_ext_05: !pet "dir"       ; directory
-; dir_ext_06: !pet "tap"       ; tape image
-; dir_ext_07: !pet "d67"       ; CBM 2040 (DOS 1)               - disk image
-; dir_ext_08: !pet "d64"       ; CBM 1541 / 2031 / 3040 / 4040  - disk image
-; dir_ext_09: !pet "d71"       ; CBM 1571                       - disk image
-; dir_ext_0A: !pet "d81"       ; CBM 1581                       - disk image
-; dir_ext_0B: !pet "d80"       ; CBM 8050                       - disk image
-; dir_ext_0C: !pet "d81"       ; CBM 8250 / 1001                - disk image
-; dir_ext_0D: !pet "d90"       ; CBM D9060 / D9090              - hard disk image
-; dir_ext_0E: !pet "d1m"       ; CMD FD 2000 / 4000             - disk image (DD)
-; dir_ext_0F: !pet "d2m"       ; CMD FD 2000 / 4000             - disk image (HD)
-; dir_ext_10: !pet "d4m"       ; CMD FD 4000                    - disk image (ED)
-; dir_ext_11: !pet "dhd"       ; CMD HD                         - hard disk image
+dir_types:
+
+	!pet "seq", $00          ; SEQ
+	!pet "prg", $00          ; PRG
+	!pet "usr", $00          ; USR
+	!pet "rel", $00          ; REL
+	!pet "dir", $00          ; directory
+;	!pet "tap", $00          ; tape image
+;	!pet "d67", $00          ; CBM 2040 (DOS 1)               - disk image
+;	!pet "d64", $00          ; CBM 1541 / 2031 / 3040 / 4040  - disk image
+;	!pet "d71", $00          ; CBM 1571                       - disk image
+;	!pet "d81", $00          ; CBM 1581                       - disk image
+;	!pet "d80", $00          ; CBM 8050                       - disk image
+;	!pet "d81", $00          ; CBM 8250 / 1001                - disk image
+;	!pet "d90", $00          ; CBM D9060 / D9090              - hard disk image
+;	!pet "d1m", $00          ; CMD FD 2000 / 4000             - disk image (DD)
+;	!pet "d2m", $00          ; CMD FD 2000 / 4000             - disk image (HD)
+;	!pet "d4m", $00          ; CMD FD 4000                    - disk image (ED)
+;	!pet "dhd", $00          ; CMD HD                         - hard disk image

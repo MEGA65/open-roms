@@ -85,7 +85,7 @@ fs_hvsr_read_dir:
 @rdonly:
 
 	lda #'<'
-	sta SD_DIRENT+$FF
+	sta SD_DIRENT+$FE
 
 	; Validate/fix characters in file name
 
@@ -116,18 +116,18 @@ fs_hvsr_read_dir:
 	dex
 	bpl @lp1
 
-	; Determine type (file/directory), store marker offset in SD_DIRENT+$FE
+	; Determine type (file/directory), store marker offset in SD_DIRENT+$FF
 
 	lda SD_DIRENT+$56
 	and #$FE
-	
-	; XXX code below does not work
-	;cmp #$20
-	;beq @cklen_file                    ; branch on file
-	;cmp #$10
-	;bne fs_hvsr_read_dir               ; this type is unknown 
+	beq @cklen_file                    ; XXX temporary workaround for XEMU
 
-	bra @cklen_file ; XXX temporary
+	and #$20
+	bne @cklen_file                    ; branch on file
+	
+	lda SD_DIRENT+$56
+	and #$10
+	beq fs_hvsr_read_dir               ; this type is unknown 
 
 @cklen_dir:
 
@@ -250,7 +250,9 @@ fs_hvsr_read_dir:
 
 fs_hvsr_read_dir_blocksfree:
 
-	; Set pointer to '0 BLOCKS FREE.' line
+	; Set pointer to '65535 BLOCKS FREE.' line
+
+	; XXX determine free space
 
 	lda #$13
 	sta SD_ACPTR_LEN+0

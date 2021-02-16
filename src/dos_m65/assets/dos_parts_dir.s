@@ -41,15 +41,22 @@ dir_types:
 	!pet "usr", $00          ; USR
 	!pet "rel", $00          ; REL
 	!pet "dir", $00          ; directory
-;	!pet "tap", $00          ; tape image
-;	!pet "d67", $00          ; CBM 2040 (DOS 1)               - disk image
-;	!pet "d64", $00          ; CBM 1541 / 2031 / 3040 / 4040  - disk image
-;	!pet "d71", $00          ; CBM 1571                       - disk image
-;	!pet "d81", $00          ; CBM 1581                       - disk image
-;	!pet "d80", $00          ; CBM 8050                       - disk image
-;	!pet "d81", $00          ; CBM 8250 / 1001                - disk image
-;	!pet "d90", $00          ; CBM D9060 / D9090              - hard disk image
-;	!pet "d1m", $00          ; CMD FD 2000 / 4000             - disk image (DD)
-;	!pet "d2m", $00          ; CMD FD 2000 / 4000             - disk image (HD)
-;	!pet "d4m", $00          ; CMD FD 4000                    - disk image (ED)
-;	!pet "dhd", $00          ; CMD HD                         - hard disk image
+
+; File types below are not mandatory
+
+	!pet "tap", $00          ; tape image
+	!pet "d67", $00          ; CBM 2040 (DOS 1)               - disk image
+	!pet "d64", $00          ; CBM 1541 / 2031 / 3040 / 4040  - disk image
+	!pet "d71", $00          ; CBM 1571                       - disk image
+	!pet "d81", $00          ; CBM 1581                       - disk image
+	!pet "d80", $00          ; CBM 8050                       - disk image
+	!pet "d81", $00          ; CBM 8250 / 1001                - disk image
+	!pet "d90", $00          ; CBM D9060 / D9090              - hard disk image
+	!pet "d1m", $00          ; CMD FD 2000 / 4000             - disk image (DD)
+	!pet "d2m", $00          ; CMD FD 2000 / 4000             - disk image (HD)
+	!pet "d4m", $00          ; CMD FD 4000                    - disk image (ED)
+	!pet "dhd", $00          ; CMD HD                         - hard disk image
+	!pet "rom", $00          ; rom image
+	!pet "m65", $00          ; MEGA65 utility
+
+dir_types__end:

@@ -4,6 +4,9 @@
 ;
 
 
+; XXX optimize the flow; we do not need 256-byte SD_DIRENT buffer, directory entries can be constructed directly
+
+
 fs_hvsr_read_dir_open:
 
 	; Open the directory
@@ -120,7 +123,7 @@ fs_hvsr_read_dir:
 
 	lda SD_DIRENT+$56
 	and #$FE
-	beq @cklen_file                    ; XXX temporary workaround for XEMU
+	beq @cklen_file                    ; workaround for older hypervisors
 
 	and #$20
 	bne @cklen_file                    ; branch on file
@@ -164,11 +167,49 @@ fs_hvsr_read_dir:
 	cmp #$2E
 	+bne fs_hvsr_read_dir              ; 3-character extension is required!
 
-	lda #$04 ; XXX temporary; detect file type by extension instead
+	inx
+	ldy #$00
+
+@lpdetect:
+
+	lda SD_DIRENT+0, x
+	cmp dir_types+0, y
+	bne @lpdetect_next
+
+	lda SD_DIRENT+1, x
+	cmp dir_types+1, y
+	bne @lpdetect_next
+
+	lda SD_DIRENT+2, x
+	cmp dir_types+2, y
+	beq @lpdetect_found
+
+@lpdetect_next:
+
+	iny
+	iny
+	iny
+	iny
+	cpy #(dir_types__end - dir_types)
+	bcc @lpdetect
+
+	jmp fs_hvsr_read_dir               ; file extension not detected
+
+@lpdetect_found:
+
+	cpy #$10
+	+beq fs_hvsr_read_dir              ; file extension 'DIR' does not mean this is a directory
+	tya
 
 @all_prepared:
 
 	sta SD_DIRENT+$FF                  ; store offset to file type in SD_DIRENT+$FF
+	cmp #$14
+	bcc @noforcedro
+	lda #'<'                           ; for some file types, force the read-only flag
+	sta SD_DIRENT+$FE
+
+@noforcedro:
 
 	; Prepare output entry, starting from SD_DIRENT+$80
 
@@ -187,6 +228,9 @@ fs_hvsr_read_dir:
 	sta SD_DIRENT+$80, x
 	inx
 	sta SD_DIRENT+$80, x
+	inx
+	sta SD_DIRENT+$80, x
+	inx
 
 	lda #$22                           ; opening quote
 	sta SD_DIRENT+$80, x
@@ -205,26 +249,31 @@ fs_hvsr_read_dir:
 	sta SD_DIRENT+$80, x
 	inx
 
-	lda #' '                           ; XXX put correct amount of spaces instead
+	lda #' '                           ; put spaces for indentation
+	ldy SD_DIRENT+$40
+
+@lp3:
+
 	sta SD_DIRENT+$80, x
 	inx
-	sta SD_DIRENT+$80, x
-	inx
+	iny
+	cpy #$11
+	bcc @lp3
 
 	; No 'damaged' mark make sense for this filesystem
 
 	ldy SD_DIRENT+$FF                  ; put file type
 
-@lp3:
+@lp4:
 	
 	lda dir_types, y
-	beq @lp3_done
+	beq @lp4_done
 	sta SD_DIRENT+$80, x
 	inx
 	iny
-	bra @lp3
+	bra @lp4
 	
-@lp3_done:
+@lp4_done:
 
 	lda SD_DIRENT+$FE                  ; read-only mark (if needed)
 	beq @skipro

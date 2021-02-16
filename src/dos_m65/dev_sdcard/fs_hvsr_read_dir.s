@@ -97,6 +97,8 @@ fs_hvsr_read_dir:
 	beq fs_hvsr_read_dir               ; quotation mark is illegal
 	cmp #$2A
 	beq fs_hvsr_read_dir               ; asterisk is illegal, it is used for filtering
+	cmp #$3F
+	beq fs_hvsr_read_dir               ; the question mark - in the MS-DOS world it is illegal
 	cmp #$20
 	bcc fs_hvsr_read_dir               ; control characters are not allowed
 	cmp #$5B

@@ -35,16 +35,19 @@
 	!addr IDX1_TALKER      = $8012 ; talker idx, >=$80 = none
 	!addr IDX2_TALKER      = $8013 ; talker idx * 2, >=$80 = none - for calling routines via vector table
 
+	; Parameters for utilities
+
+	!addr PAR_FSIZE_BLOCKS = $8014 ; 2 bytes - file size in blocks
+	!addr PAR_FSIZE_BYTES  = $8016 ; 4 bytes - file size in bytes
+
 	; Various temporary data
 
-	!addr XX_DIR_PHASE     = $8014 ; directory output phase, values deponds on device driver
-	!addr SD_DIR_PHASE     = $8014 ; - SD card
-	!addr FD_DIR_PHASE     = $8015 ; - floppy
-	!addr RD_DIR_PHASE     = $8016 ; - ram disk
+	!addr XX_DIR_PHASE     = $801A ; directory output phase, values deponds on device driver
+	!addr SD_DIR_PHASE     = $801A ; - SD card
+	!addr FD_DIR_PHASE     = $801B ; - floppy
+	!addr RD_DIR_PHASE     = $801C ; - ram disk
 
-
-
-	; Free space: $8014-$8063
+	; Free space: $801D-$8063
 
 	!addr SD_ACPTR_helper  = $8052 ; subroutine in RAM to read a byte
 	!addr code_LDA_01      = $8052 ; - LDA instruction

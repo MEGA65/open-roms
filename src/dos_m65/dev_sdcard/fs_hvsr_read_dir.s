@@ -212,34 +212,36 @@ fs_hvsr_read_dir:
 	sta SD_DIRENT+$80
 	sta SD_DIRENT+$81
 	
-	lda SD_DIRENT+$53                  ; XXX calculate length in blocks instead
-	sta SD_DIRENT+$82
-	lda SD_DIRENT+$54
-	sta SD_DIRENT+$83	
-
-	bra @len_done                      ; XXX if size above 9999, force maximum possible length
-
-@len_max:
-
-	lda #<9999
-	sta SD_DIRENT+$82
-	lda #>9999
-	sta SD_DIRENT+$83
-
-@len_done:
-
 	ldx SD_DIRENT+$40                  ; make sure file name is terminated by 0
 	lda #$00
 	sta SD_DIRENT, x
 
-	ldx #$04                           ; XXX put correct amount of spaces depending on number size
+	lda SD_DIRENT+$52                  ; calculate file length in blocks to display
+	sta PAR_FSIZE_BYTES+0
+	lda SD_DIRENT+$53
+	sta PAR_FSIZE_BYTES+1
+	lda SD_DIRENT+$54
+	sta PAR_FSIZE_BYTES+2
+	lda SD_DIRENT+$55
+	sta PAR_FSIZE_BYTES+3
+
+	jsr util_dir_filesize_bytes
+
+	lda PAR_FSIZE_BLOCKS+0
+	sta SD_DIRENT+$82
+	lda PAR_FSIZE_BLOCKS+1
+	sta SD_DIRENT+$83
+
 	lda #' '
+	ldx #$04                           ; indent number of blocks
+@lpindent1:
+	dey
+	bmi @lpindent1_done
 	sta SD_DIRENT+$80, x
 	inx
-	sta SD_DIRENT+$80, x
-	inx
-	sta SD_DIRENT+$80, x
-	inx
+	bra @lpindent1
+
+@lpindent1_done:
 
 	lda #$22                           ; opening quote
 	sta SD_DIRENT+$80, x

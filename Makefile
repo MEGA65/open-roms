@@ -65,8 +65,8 @@ SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
                  src/dos_m65/assets \
                  src/dos_m65/dev_floppy \
                  src/dos_m65/dev_ramdisk \
-                 src/dos_m65/dev_sdcard
-
+                 src/dos_m65/dev_sdcard \
+                 src/dos_m65/utils
 
 SRCDIR_MON_M65 = $(SRCDIR_COMMON) \
                  src/mon_m65

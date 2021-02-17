@@ -22,7 +22,9 @@ fs_hvsr_read_dir_open:
 	; Reset status to OK
 
 	lda #$00
-	jsr dos_status_00
+	sta PAR_TRACK
+	sta PAR_SECTOR
+	jsr util_status_SD
 
 	; Provide pointer to the header
 

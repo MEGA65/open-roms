@@ -11,21 +11,21 @@ util_status_SD:
 
 	ldx #$00
 	stx SD_STATUS_IDX                  ; set first byte of status to read
-	ldx $00                            ; offset to status buffer
+	ldx #$00                           ; offset to status buffer
 	bra util_status_common
 
 util_status_FD:
 
 	ldx #$00
 	stx FD_STATUS_IDX                  ; set first byte of status to read
-	ldx $20                            ; offset to status buffer
+	ldx #$20                           ; offset to status buffer
 	bra util_status_common
 
 util_status_RD:
 
 	ldx #$00
 	stx RD_STATUS_IDX                  ; set first byte of status to read
-	ldx $40                            ; offset to status buffer
+	ldx #$40                           ; offset to status buffer
 
 	; FALLLTROUGH
 
@@ -49,7 +49,7 @@ util_status_common:
 	ldy #$00                           ; copy the string
 @lp:
 	jsr code_LDA_nnnn_Y
-	bne @lp_end
+	beq @lp_end
 	sta XX_STATUS_STR, x
 	iny
 	inx
@@ -59,6 +59,7 @@ util_status_common:
 
 	; Store track and sector
 
+	jsr util_status_store_comma
 	lda PAR_TRACK
 	jsr util_status_store_number
 	jsr util_status_store_comma
@@ -112,10 +113,12 @@ util_status_store_number:
 	sbc #10
 	bra @lp
 
-@store_finalize:   ; first digit to store in .Y, second in .A
+@store_finalize:   ; first digit to store in .Y, second in .A (need no add '0')
 
 	sty XX_STATUS_STR, x
 	inx
+	clc
+	adc #'0'
 	sta XX_STATUS_STR, x
 	inx
 

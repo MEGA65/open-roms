@@ -123,8 +123,11 @@ msg_ACPTR_fail_no_talker:
 
 msg_ACPTR_reset_status:
 
-	lda IDX1_TALKER
-	jsr dos_status_00
+	ldx IDX2_TALKER
+	lda #$00
+	sta PAR_TRACK
+	sta PAR_SECTOR
+	jsr (msg_ACPTR_set_status_vectab, x)
 
 	; FALLTROUGH
 
@@ -147,3 +150,9 @@ msg_ACPTR_read_vectab:
 	!word msg_ACPTR_read_SD
 	!word msg_ACPTR_read_FD
 	!word msg_ACPTR_read_RD
+
+msg_ACPTR_set_status_vectab:
+
+	!word util_status_SD
+	!word util_status_FD
+	!word util_status_RD

@@ -41,7 +41,7 @@ dos_status_00: ; OK
 @1:
 	inx
 	iny
-	lda dos_err_00, y
+	lda dos_sts_00, y
 	beq @2
 	sta XX_STATUS_STR, x
 	bra @1

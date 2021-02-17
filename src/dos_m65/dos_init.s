@@ -51,10 +51,14 @@ dos_INIT:
 	sta code_LDA_02
 	sta code_LDA_03
 
+	lda #$B9                 ; LDA nnnn, y opcode
+	sta code_LDA_nnnn_Y
+
 	lda #$60                 ; RTS opcode
 	sta code_RTS_01
 	sta code_RTS_02
 	sta code_RTS_03
+	sta code_RTS_04
 
 	; Exit DOS context
 

@@ -20,7 +20,7 @@ dev_sd_init:
 	dex
 @1:
 	inx
-	lda dos_err_init_sdcard,x
+	lda dos_sts_init_sdcard,x
 	sta SD_STATUS_STR,x
 	bne @1
 

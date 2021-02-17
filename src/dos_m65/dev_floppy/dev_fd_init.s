@@ -19,7 +19,7 @@ dev_fd_init:
 	dex
 @1:
 	inx
-	lda dos_err_init_floppy,x
+	lda dos_sts_init_floppy,x
 	sta FD_STATUS_STR,x
 	bne @1
 

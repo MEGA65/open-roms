@@ -19,7 +19,7 @@ dev_rd_init:
 	dex
 @1:
 	inx
-	lda dos_err_init_ramdisk,x
+	lda dos_sts_init_ramdisk,x
 	sta RD_STATUS_STR,x
 	bne @1
 

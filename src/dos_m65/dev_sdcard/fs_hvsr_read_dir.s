@@ -17,7 +17,7 @@ fs_hvsr_read_dir_open:
 
 	; XXX handle read errors
 
-	sta SD_DIR_DESC                   ; store directory descriptor  XXX invent better name
+	sta SD_DESC                       ; store directory descriptor  XXX invent better name
 
 	; Reset status to OK
 
@@ -53,7 +53,7 @@ fs_hvsr_read_dir:
 
 	jsr fs_hvsr_dirent_prepare
 
-	ldx SD_DIR_DESC                   ; directory descriptor
+	ldx SD_DESC                       ; directory descriptor
 	ldy #$10                          ; target page number
 
 	lda #$14                          ; dos_readdir
@@ -333,7 +333,7 @@ fs_hvsr_read_dir_blocksfree:
 
 	; Close the directory within the hypervisor  XXX maybe move it to close routine
 
-    ldx SD_DIR_DESC
+    ldx SD_DESC
 	lda #$16                          ; dos_closedir
 	sta HTRAP00
 	+nop

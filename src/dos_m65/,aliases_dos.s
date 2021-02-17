@@ -35,19 +35,28 @@
 	!addr IDX1_TALKER      = $8012 ; talker idx, >=$80 = none
 	!addr IDX2_TALKER      = $8013 ; talker idx * 2, >=$80 = none - for calling routines via vector table
 
+	; Helper subroutines to fetch data
+
+	!addr code_LDA_nnnn_Y  = $8014 ; - LDA nnnn, Y instruction
+	!addr par_LDA_nnnn_Y   = $8015 ; - 2 bytes; address in buffer, ram disk
+	!addr code_RTS_04      = $8017 ; - RTS instruction
+
 	; Parameters for utilities
 
-	!addr PAR_FSIZE_BLOCKS = $8014 ; 2 bytes - file size in blocks
-	!addr PAR_FSIZE_BYTES  = $8016 ; 4 bytes - file size in bytes
+	!addr PAR_TRACK        = $8018 ; track number for status/error
+	!addr PAR_SECTOR       = $8019 ; sector number for status/error	
+
+	!addr PAR_FSIZE_BYTES  = $801A ; 4 bytes - file size in bytes
+	!addr PAR_FSIZE_BLOCKS = $801E ; 2 bytes - file size in blocks
 
 	; Various temporary data
 
-	!addr XX_DIR_PHASE     = $801A ; directory output phase, values deponds on device driver
-	!addr SD_DIR_PHASE     = $801A ; - SD card
-	!addr FD_DIR_PHASE     = $801B ; - floppy
-	!addr RD_DIR_PHASE     = $801C ; - ram disk
+	!addr XX_DIR_PHASE     = $8020 ; directory output phase, values deponds on device driver, but 0 = not reading
+	!addr SD_DIR_PHASE     = $8020 ; - SD card
+	!addr FD_DIR_PHASE     = $8021 ; - floppy
+	!addr RD_DIR_PHASE     = $8022 ; - ram disk
 
-	; Free space: $801D-$8063
+	; Free space: $8023-$8063
 
 	!addr SD_ACPTR_helper  = $8052 ; subroutine in RAM to read a byte
 	!addr code_LDA_01      = $8052 ; - LDA instruction
@@ -99,5 +108,4 @@
 	!addr RD_CMDFN_BUF     = $8200 ; buffer for command and/or file name, 128 bytes, ram disk
 
 	!addr SD_DIRENT        = $8280 ; 256 byte buffer for 'dirent' structure
-	!addr SD_DIR_DESC      = $8380 ; file descriptor for reading directory
-
+	!addr SD_DESC          = $8380 ; current file descriptor

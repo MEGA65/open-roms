@@ -107,10 +107,18 @@ fs_hvsr_read_dir:
 	bcc @lp1_next                      ; up to PETSCII 'Z' is OK
 	cmp #$61
 	bcc fs_hvsr_read_dir               ; some characters are not allowed
+	cmp #$7E
+	bne @lp1_1
+	lda #$A6                           ; replace tilde / pi with something more sane                         
+	bra @lp1_store_next
+@lp1_1:
 	cmp #$7B
 	bcs fs_hvsr_read_dir               ; PETSCII-art and control characters are illegal
 	clc
 	sbc #$20                           ; make everything the same case
+
+@lp1_store_next:
+
 	sta SD_DIRENT,x
 
 @lp1_next:
@@ -153,10 +161,10 @@ fs_hvsr_read_dir:
 	sec
 	sbc #$04                           ; strip 4 bytes - for dot and extension
 	sta SD_DIRENT+$40
-	bmi fs_hvsr_read_dir               ; if name too short, try next entry
-	beq fs_hvsr_read_dir               ; if name too short, try next entry
+	+bmi fs_hvsr_read_dir              ; if name too short, try next entry
+	+beq fs_hvsr_read_dir              ; if name too short, try next entry
 	cmp #$11
-	bcs fs_hvsr_read_dir               ; if stripped name is 17 characters or longer, try the next entry
+	+bcs fs_hvsr_read_dir              ; if stripped name is 17 characters or longer, try the next entry
 	sta SD_DIRENT+$40                  ; store corrected file name length
 	tax
 

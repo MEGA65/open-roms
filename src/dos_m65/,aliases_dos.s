@@ -8,6 +8,13 @@
 
 
 	;
+	; Temporary storage locations
+	;
+
+	!addr FS_HVSR_DIRENT = $1000
+
+
+	;
 	; Page start+0
 	;
 
@@ -41,7 +48,7 @@
 	!addr par_LDA_nnnn_Y   = $8015 ; - 2 bytes; address in buffer, ram disk
 	!addr code_RTS_04      = $8017 ; - RTS instruction
 
-	; Parameters for utilities
+	; Parameters for utilities/helkpers
 
 	!addr PAR_TRACK        = $8018 ; track number for status/error
 	!addr PAR_SECTOR       = $8019 ; sector number for status/error	
@@ -49,14 +56,18 @@
 	!addr PAR_FSIZE_BYTES  = $801A ; 4 bytes - file size in bytes
 	!addr PAR_FSIZE_BLOCKS = $801E ; 2 bytes - file size in blocks
 
+	!addr PAR_FTYPE        = $801F ; bits 0-5 - type, bits 6-7 - protected, closed        
+	!addr PAR_FNAME        = $8020 ; 16 bytes - filename, filled with $A0
+	!addr PAR_FPATTERN     = $8030 ; 16 bytes - pattern to match, filled with $A0
+
 	; Various temporary data
 
-	!addr XX_DIR_PHASE     = $8020 ; directory output phase, values deponds on device driver, but 0 = not reading
-	!addr SD_DIR_PHASE     = $8020 ; - SD card
-	!addr FD_DIR_PHASE     = $8021 ; - floppy
-	!addr RD_DIR_PHASE     = $8022 ; - ram disk
+	!addr XX_DIR_PHASE     = $8040 ; directory output phase, values deponds on device driver, but 0 = not reading
+	!addr SD_DIR_PHASE     = $8040 ; - SD card
+	!addr FD_DIR_PHASE     = $8041 ; - floppy
+	!addr RD_DIR_PHASE     = $8042 ; - ram disk
 
-	; Free space: $8023-$8063
+	; Free space: $8043-$8063
 
 	!addr SD_ACPTR_helper  = $8052 ; subroutine in RAM to read a byte
 	!addr code_LDA_01      = $8052 ; - LDA instruction
@@ -102,6 +113,10 @@
 	!addr SD_STATUS_STR    = $8070 ; status string for SD card, terminated by 0
 	!addr FD_STATUS_STR    = $80A0 ; status string for floppy drive, terminated by 0
 	!addr RD_STATUS_STR    = $80D0 ; status string for ram disk, terminated by 0
+
+	;
+	; Further pages
+	;
 
 	!addr SD_CMDFN_BUF     = $8100 ; buffer for command and/or file name, 128 bytes, SD card
 	!addr FD_CMDFN_BUF     = $8180 ; buffer for command and/or file name, 128 bytes, floppy

@@ -322,7 +322,7 @@ fs_hvsr_read_dir:
 
 fs_hvsr_read_dir_blocksfree:
 
-	; Set pointer to '65535 BLOCKS FREE.' line
+	; Set pointer to 'BLOCKS FREE.' line
 
 	; XXX determine free space
 

@@ -122,5 +122,10 @@
 	!addr FD_CMDFN_BUF     = $8180 ; buffer for command and/or file name, 128 bytes, floppy
 	!addr RD_CMDFN_BUF     = $8200 ; buffer for command and/or file name, 128 bytes, ram disk
 
-	!addr SD_DIRENT        = $8280 ; 256 byte buffer for 'dirent' structure
-	!addr SD_DESC          = $8380 ; current file descriptor
+	!addr XX_DIR_ENTRY     = $8280 ; directory entry in BASIC format
+	!addr SD_DIR_ENTRY     = $8280 ; - SD card
+	!addr FD_DIR_ENTRY     = $82B0 ; - floppy
+	!addr RD_DIR_ENTRY     = $82E0 ; - ram disk
+
+	!addr SD_MEMSHADOW     = $8310 ; 256 byte buffer for preserving original memory content
+	!addr SD_DESC          = $8410 ; current file descriptor

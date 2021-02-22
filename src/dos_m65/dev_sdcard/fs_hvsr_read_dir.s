@@ -94,6 +94,7 @@ fs_hvsr_read_dir:
 
 	lda #$22                           ; opening quote
 	sta XX_DIR_ENTRY, x
+	inx
 
 	ldy #$FF                           ; put file name
 
@@ -102,6 +103,8 @@ fs_hvsr_read_dir:
 	iny
 	lda PAR_FNAME, y
 	cmp #$A0
+	beq @lp2_done
+	cpy #$10
 	beq @lp2_done
 	sta XX_DIR_ENTRY, x
 	inx

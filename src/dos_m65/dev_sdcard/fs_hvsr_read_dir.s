@@ -120,14 +120,17 @@ fs_hvsr_read_dir:
 
 @lp3:
 
-	lda #' '
-	sta XX_DIR_ENTRY, x
-	inx
-
 	dey
 	lda PAR_FNAME, y
 	cmp #$A0
-	beq @lp3
+	bne @lp3_done
+
+	lda #' '
+	sta XX_DIR_ENTRY, x
+	inx
+	bra @lp3
+
+@lp3_done:
 
 	lda PAR_FTYPE                      ; put 'damaged' mark if needed
 	bmi @damaged
@@ -161,6 +164,7 @@ fs_hvsr_read_dir:
 	lda PAR_FTYPE                      ; read-only mark (if needed)
 	and #$40
 	beq @skipro
+	lda #'<'
 	sta XX_DIR_ENTRY, x
 	inx
 

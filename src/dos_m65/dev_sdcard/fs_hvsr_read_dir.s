@@ -58,7 +58,7 @@ fs_hvsr_read_dir:
 
 	; If nothing to read, output 'blocks free'
 
-	+bcc fs_hvsr_read_dir_blocksfree
+	+bcs fs_hvsr_read_dir_blocksfree
 
 	; Otherwise, convert the file length from bytes to blocks to display
 

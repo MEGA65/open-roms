@@ -48,7 +48,7 @@ fs_hvsr_util_nextdirentry:
 
 	ldx FS_HVSR_DIRENT+$40             ; file name length
 	beq fs_hvsr_util_nextdirentry      ; do not even try for empty file name
-	cmp #20
+	cpx #20
 	bcs fs_hvsr_util_nextdirentry      ; if longer than 16 characters + dot + extension - also skip this one
 	dex
 

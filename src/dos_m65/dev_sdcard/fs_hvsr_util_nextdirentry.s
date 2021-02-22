@@ -173,8 +173,10 @@ fs_hvsr_util_nextdirentry:
 	+beq fs_hvsr_util_nextdirentry     ; file extension 'DIR' does not mean this is a directory
 	tya
 
-	asr                                ; convert the result to CBM-compatible value
-	asr
+	clc
+	ror
+	clc
+	ror
 	inc
 
 	cmp #$06                           ; mark some file types (not SEQ/PRG/USR/REL/DIR) as read-only

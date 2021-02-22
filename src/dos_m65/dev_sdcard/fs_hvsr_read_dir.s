@@ -133,13 +133,13 @@ fs_hvsr_read_dir:
 @lp3_done:
 
 	lda PAR_FTYPE                      ; put 'damaged' mark if needed
-	bmi @damaged
-	lda #' '
+	bmi @closed
+	lda #'*'
 	+skip_2_bytes_trash_nvz
 
-@damaged:
+@closed:
 
-	lda #'*'
+	lda #' '
 	sta XX_DIR_ENTRY, x
 	inx
 

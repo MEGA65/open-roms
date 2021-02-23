@@ -60,6 +60,12 @@ fs_hvsr_read_dir:
 
 	+bcs fs_hvsr_read_dir_blocksfree
 
+	; Check if file name matches the filter
+
+	; XXX debug this
+	; jsr util_dir_filter
+	; bne fs_hvsr_read_dir               ; if does not match, try the next entry
+
 	; Otherwise, convert the file length from bytes to blocks to display
 
 	jsr util_dir_filesize_bytes

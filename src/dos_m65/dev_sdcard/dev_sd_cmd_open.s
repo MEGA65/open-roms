@@ -43,7 +43,7 @@ dev_sd_cmd_OPEN_dir:
 
 	ldy #$00
 @lp2:
-	lda SD_MODE, y
+	lda SD_CMDFN_BUF+1, y
 	beq @lp2_end
 	sta PAR_FPATTERN, y
 	iny

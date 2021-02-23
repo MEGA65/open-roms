@@ -62,9 +62,8 @@ fs_hvsr_read_dir:
 
 	; Check if file name matches the filter
 
-	; XXX debug this
-	; jsr util_dir_filter
-	; bne fs_hvsr_read_dir               ; if does not match, try the next entry
+	jsr util_dir_filter
+	bne fs_hvsr_read_dir               ; if does not match, try the next entry
 
 	; Otherwise, convert the file length from bytes to blocks to display
 

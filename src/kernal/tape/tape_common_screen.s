@@ -22,20 +22,9 @@ tape_screen_on_motor_off:
 
 !ifdef CONFIG_MB_M65 {
 
-	jsr M65_MODEGET
-	bcc @1
+	; Restore standard CPU speed settings
 
-	; For compatibility mode, restore normal speed settings and hide VIC-IV
-
-	lda #$03
-	sta MISC_EMU
-
-	lda NXTBIT
-	sta VIC_CTRLB
-
-	sta VIC_KEY
-@1:
-	rts
+	jmp m65_speed_restore
 
 } else ifdef CONFIG_MB_U64 {
 
@@ -64,12 +53,12 @@ tape_screen_off_motor_on:
 
 !ifdef CONFIG_MB_M65 {
 
-	; On MEGA65 we need to switch banks everytim we retrieve byte to be stored in memory,
+	; On MEGA65 we need to switch banks everytime we retrieve byte to be stored in memory,
 	; additionally we perform advanced tape speed autocallibration - this is all too expensive
 	; to be handled by 1 MHz CPU - so in case of compatibility mode, switch CPU to fast speed
 	; (and disable badlines, so we will not have to blank the screen)
 
-	jsr tape_fast_cpu
+	jsr m65_speed_tape_cbdos
 
 } else ifdef CONFIG_MB_U64 {
 

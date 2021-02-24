@@ -112,6 +112,7 @@
 !ifdef CONFIG_MB_MEGA65 {
 	!ifdef CONFIG_IEC_BURST_CIA1 { !error "Do not use CONFIG_IEC_BURST_CIA1 options for MEGA65 motherboard, CONFIG_IEC_BURST_M65 instead" }
 	!ifdef CONFIG_IEC_BURST_CIA2 { !error "Do not use CONFIG_IEC_BURST_CIA2 options for MEGA65 motherboard, CONFIG_IEC_BURST_M65 instead" }
+	!ifdef IEC_JIFFYDOS_BLANK    { !error "Do not use IEC_JIFFYDOS_BLANK option for MEGA65 motherboard, it is not needed"                 }
 	!ifndef CONFIG_DOS_WEDGE     { !error "MEGA65 build requires CONFIG_DOS_WEDGE" }
 }
 !ifndef CONFIG_MB_MEGA65 {

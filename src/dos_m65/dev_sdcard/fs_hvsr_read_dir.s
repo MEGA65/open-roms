@@ -4,9 +4,6 @@
 ;
 
 
-; XXX optimize the flow; we do not need 256-byte SD_DIRENT buffer, directory entries can be constructed directly
-
-
 fs_hvsr_read_dir_open:
 
 	; Open the directory

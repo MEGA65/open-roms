@@ -15,22 +15,7 @@ dev_sd_cmd_OPEN_EOI:
 
 	; XXX this dispatcher is temporary
 
-	; XXX add support for second card
-
-	lda SD_CMDFN_BUF
-	cmp #'$'
-	beq dev_sd_cmd_OPEN_dir
-
-	; XXX implement for file names
-
-	jmp dos_EXIT_SEC
-
-
-dev_sd_cmd_OPEN_dir:
-
-	; XXX this should be moved to common part
-
-	; Erase filter pattern for the directory
+	; Erase filter pattern     XXX this should be moved to common part
 
 	ldy #$0F
 	lda #$A0
@@ -39,18 +24,47 @@ dev_sd_cmd_OPEN_dir:
 	dey
 	bpl @lp1
 
-	; Copy the filter from command
+	; XXX add support for second card
+
+	lda SD_CMDFN_BUF
+	cmp #'$'
+	beq dev_sd_cmd_OPEN_dir
+
+	; FALLTROUGH
+
+dev_sd_cmd_OPEN_file:
+
+	; Copy the filter from command     XXX this should be moved to common part and deduplicated with directory opening
 
 	ldy #$00
-@lp2:
-	lda SD_CMDFN_BUF+1, y
+@lp1:
+	lda SD_CMDFN_BUF, y
 	cmp #$A0
-	beq @lp2_end
+	beq @lp1_end
 	sta PAR_FPATTERN, y
 	iny
 	cpy #$10
-	bne @lp2
+	bne @lp1
 
-@lp2_end:
+@lp1_end:
+
+	jmp fs_hvsr_read_file_open
+
+
+dev_sd_cmd_OPEN_dir:
+
+	; Copy the filter from command     XXX this should be moved to common part and deduplicated with file opening
+
+	ldy #$00
+@lp1:
+	lda SD_CMDFN_BUF+1, y
+	cmp #$A0
+	beq @lp1_end
+	sta PAR_FPATTERN, y
+	iny
+	cpy #$10
+	bne @lp1
+
+@lp1_end:
 
 	jmp fs_hvsr_read_dir_open

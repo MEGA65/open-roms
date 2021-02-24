@@ -44,11 +44,12 @@ dev_sd_cmd_OPEN_dir:
 	ldy #$00
 @lp2:
 	lda SD_CMDFN_BUF+1, y
+	cmp #$A0
 	beq @lp2_end
 	sta PAR_FPATTERN, y
 	iny
 	cpy #$10
-	bne @lp2_end
+	bne @lp2
 
 @lp2_end:
 

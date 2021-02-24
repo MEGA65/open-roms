@@ -10,7 +10,12 @@
 
 dos_INIT:
 
-	jsr dos_ENTER
+	; Safer version of 'dos_ENTER' - does not affect speed related registers
+
+	sta REG_A
+	stx REG_X
+	sty REG_Y
+	stz REG_Z
 
 	; Set the magic string 'CBDOS'
 
@@ -60,6 +65,12 @@ dos_INIT:
 	sta code_RTS_03
 	sta code_RTS_04
 
-	; Exit DOS context
+	; Safer version of 'dos_EXIT' - does not affect speed related registers
 
-	jmp dos_EXIT
+	clc
+	ldz REG_Z
+	ldy REG_Y
+	ldx REG_X
+	lda REG_A
+
+	rts

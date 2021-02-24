@@ -5,6 +5,10 @@
 
 dos_ENTER:         ; enter DOS context
  
+	php
+	jsr m65_speed_tape_cbdos
+	plp
+
 	sta REG_A
 	stx REG_X
 	sty REG_Y
@@ -26,12 +30,8 @@ dos_EXIT:          ; exit DOS context with Carry clear
 
 dos_EXIT_common:
 
-	ldz REG_Z
-	ldy REG_Y
-	ldx REG_X
 	lda REG_A
-
-	rts
+	bra dos_EXIT_A_common
 
 
 dos_EXIT_A_SEC:    ; exit DOS context with Carry set, return .A
@@ -50,5 +50,9 @@ dos_EXIT_A_common:
 	ldz REG_Z
 	ldy REG_Y
 	ldx REG_X
+
+	php
+	jsr m65_speed_restore
+	plp
 
 	rts

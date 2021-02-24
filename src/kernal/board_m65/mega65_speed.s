@@ -30,13 +30,7 @@ m65_speed_iec:
 
 	; Disable badlines and slow interrupt emulation
 
-	lda #$00
-	sta MISC_EMU
-
-	; Return
-
-	pla
-	rts
+	bra m65_speed_tape_cbdos_ME
 }
 
 
@@ -49,11 +43,22 @@ m65_speed_tape_cbdos:
 	bcc @1
 	jsr viciv_unhide
 @1:
-	; Just set the maximum possible speed
+	; Set the maximum possible speed
 
-	pha
-	bra m65_speed_restore_native
+	lda #%01000000
+	tsb VIC_CTRLB
 
+	; FALLTROUGH
+
+m65_speed_tape_cbdos_ME:
+
+	; Disable badlines and slow interrupt emulation
+
+	lda #$00
+	sta MISC_EMU
+
+	pla
+	rts
 
 
 m65_speed_restore:

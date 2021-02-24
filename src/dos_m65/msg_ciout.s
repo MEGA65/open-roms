@@ -48,8 +48,8 @@ msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 	bpl @1
 	ldx #$7F
 @1:
-	sta SD_CMDFN_IDX
-	lda #$00
+	stx SD_CMDFN_IDX
+	lda #$A0
 	sta SD_CMDFN_BUF,x
 	plp
 	+bcs dev_sd_cmd_OPEN_EOI           ; if EOI - execute command
@@ -63,8 +63,8 @@ msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
 	bpl @1
 	ldx #$7F
 @1:
-	sta FD_CMDFN_IDX
-	lda #$00
+	stx FD_CMDFN_IDX
+	lda #$A0
 	sta FD_CMDFN_BUF,x
 	plp
 	+bcs dev_fd_cmd_OPEN_EOI           ; if EOI - execute command
@@ -78,8 +78,8 @@ msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 	bpl @1
 	ldx #$7F
 @1:
-	sta RD_CMDFN_IDX
-	lda #$00
+	stx RD_CMDFN_IDX
+	lda #$A0
 	sta RD_CMDFN_BUF,x
 	plp
 	+bcs dev_rd_cmd_OPEN_EOI           ; if EOI - execute command

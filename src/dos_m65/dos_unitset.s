@@ -46,4 +46,4 @@ dos_UNITSET_ramdisk:
 
 	stx UNIT_RAMDISK
 
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC

@@ -47,4 +47,4 @@ dos_UNITCHK_ramdisk:
 
 	lda #$02
 
-	jmp dos_EXIT_A
+	jmp dos_EXIT_CLC_A

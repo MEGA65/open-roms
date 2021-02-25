@@ -34,7 +34,7 @@ msg_SECOND:
 
 msg_SECOND_done:
 
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC
 
 msg_SECOND_OPEN:
 

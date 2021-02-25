@@ -19,4 +19,4 @@ msg_TKSA:
 
 msg_TKSA_done:
 
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC

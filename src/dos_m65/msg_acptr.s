@@ -60,7 +60,7 @@ msg_ACPTR_read_SD:
 	bcc @3
 	jsr kernalstatus_EOI
 @3:
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC
 
 
 msg_ACPTR_read_FD:
@@ -113,7 +113,7 @@ msg_ACPTR_status_got:
 	sta TBTCNT                         ; byte return
 	beq msg_ACPTR_reset_status
 
-	jmp dos_EXIT_A
+	jmp dos_EXIT_CLC_A
 
 msg_ACPTR_fail_no_talker:
 
@@ -134,7 +134,7 @@ msg_ACPTR_reset_status:
 msg_ACPTR_EOI:
 
 	jsr kernalstatus_EOI
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC
 
 
 ; Vector tables for jumps

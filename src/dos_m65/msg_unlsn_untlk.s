@@ -13,7 +13,7 @@ msg_UNLSN:
 	sta IDX1_LISTENER
 	sta IDX2_LISTENER
 
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC
 
 msg_UNTLK:
 
@@ -22,4 +22,4 @@ msg_UNTLK:
 	sta IDX1_TALKER
 	sta IDX2_TALKER
 
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC

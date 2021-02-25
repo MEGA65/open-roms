@@ -8,4 +8,4 @@ dev_sd_cmd_CLOSE:
 
 	; XXX provide implementation
 
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC

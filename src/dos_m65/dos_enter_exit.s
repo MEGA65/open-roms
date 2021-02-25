@@ -20,32 +20,32 @@ dos_ENTER:         ; enter DOS context
 dos_EXIT_SEC:      ; exit DOS context with Carry set
 
 	sec
-	bra dos_EXIT_common
+	bra dos_EXIT
 
-dos_EXIT:          ; exit DOS context with Carry clear
+dos_EXIT_CLC:      ; exit DOS context with Carry clear
 
 	clc
 
 	; FALLTROUGH
 
-dos_EXIT_common:
+dos_EXIT:
 
 	lda REG_A
-	bra dos_EXIT_A_common
+	bra dos_EXIT_A
 
 
-dos_EXIT_A_SEC:    ; exit DOS context with Carry set, return .A
+dos_EXIT_SEC_A:    ; exit DOS context with Carry set, return .A
 
 	sec
-	bra dos_EXIT_A_common
+	bra dos_EXIT_A
 
-dos_EXIT_A:        ; exit DOS context with Carry clear, return .A
+dos_EXIT_CLC_A:    ; exit DOS context with Carry clear, return .A
 
 	clc
 
 	; FALLTROUGH
 
-dos_EXIT_A_common:
+dos_EXIT_A:
 
 	ldz REG_Z
 	ldy REG_Y

@@ -34,7 +34,7 @@ msg_CIOUT_fail:
 	; XXX should we set status?
 	lda #K_ERR_DEVICE_NOT_FOUND
 
-	jmp dos_EXIT_A_SEC
+	jmp dos_EXIT_SEC_A
 
 
 
@@ -53,7 +53,7 @@ msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 	sta SD_CMDFN_BUF,x
 	plp
 	+bcs dev_sd_cmd_OPEN_EOI           ; if EOI - execute command
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC
 
 msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
 
@@ -68,7 +68,7 @@ msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
 	sta FD_CMDFN_BUF,x
 	plp
 	+bcs dev_fd_cmd_OPEN_EOI           ; if EOI - execute command
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC
 
 msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 
@@ -83,7 +83,7 @@ msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 	sta RD_CMDFN_BUF,x
 	plp
 	+bcs dev_rd_cmd_OPEN_EOI           ; if EOI - execute command
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC
 
 msg_CIOUT_cmdfn_vectab:
 

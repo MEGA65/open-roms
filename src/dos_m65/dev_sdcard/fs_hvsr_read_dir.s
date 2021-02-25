@@ -42,7 +42,7 @@ fs_hvsr_read_dir_open:
 
 	; End
 
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC
 
 fs_hvsr_read_dir:
 

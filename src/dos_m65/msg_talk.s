@@ -43,10 +43,10 @@ msg_TALK_success:
 	asl
 	sta IDX2_TALKER
 
-	jmp dos_EXIT
+	jmp dos_EXIT_CLC
 
 msg_TALK_fail:
 
 	lda #K_ERR_DEVICE_NOT_FOUND
 
-	jmp dos_EXIT_A_SEC
+	jmp dos_EXIT_SEC_A

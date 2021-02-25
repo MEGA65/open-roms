@@ -30,7 +30,7 @@ dos_UNITNUM_fail:
 
 	lda #$00
 
-	jmp dos_EXIT_A_SEC
+	jmp dos_EXIT_SEC_A
 
 dos_UNITNUM_sdcard:
 
@@ -53,4 +53,4 @@ dos_UNITNUM_common:
 	cmp #$00
 	beq dos_UNITNUM_fail
 
-	jmp dos_EXIT_A
+	jmp dos_EXIT_CLC_A

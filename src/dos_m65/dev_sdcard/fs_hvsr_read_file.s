@@ -53,8 +53,8 @@ fs_hvsr_read_file_open:
 
 
 
-	clc
-	rts
+	jmp dos_EXIT
+
 
 fs_hvsr_file_not_found:
 
@@ -68,5 +68,4 @@ fs_hvsr_file_not_found:
 	lda #39                           ; file not found error
 	jsr util_status_SD
 
-	sec
-	rts
+	jmp dos_EXIT_SEC

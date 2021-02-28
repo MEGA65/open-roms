@@ -18,14 +18,11 @@ open_iec:
 
 	; We have a command to send to IEC device
 	jsr LISTEN
-	bcc @1
-	jmp kernalerror_DEVICE_NOT_FOUND
-@1:
+	+bcs kernalerror_DEVICE_NOT_FOUND
+
 	lda SA
 	jsr iec_cmd_open
-	bcc @2
-	jmp kernalerror_DEVICE_NOT_FOUND
-@2:
+	+bcs kernalerror_DEVICE_NOT_FOUND
 
 !ifdef CONFIG_MEMORY_MODEL_60K {
 	; We need our helpers to get to filenames under ROMs or IO area

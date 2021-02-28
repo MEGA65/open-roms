@@ -7,6 +7,9 @@
 ;
 
 
+; XXX This is suspiciously complicated, most likely something is really wrong with the IEC support
+
+
 !ifdef CONFIG_IEC {
 
 
@@ -57,6 +60,11 @@ load_iec:
 	jsr TALK
 	bcs load_iec_error
 
+!ifdef CONFIG_MB_M65 {
+	jsr m65dos_check
+	+bcc m65dos_load_part              ; branch if device is handeld by internal DOS
+}
+
 !ifdef HAS_IEC_BURST {
 	jsr burst_advertise
 }
@@ -82,6 +90,10 @@ load_iec:
 
 	jsr load_iec_get_addr_byte
 	sta EAL+1
+
+!ifdef CONFIG_MB_M65 {
+	load_iec_m65cont:
+}
 
 	; If secondary address is 0, override EAL with STAL
 
@@ -125,6 +137,11 @@ load_iec:
 
 
 load_iec_loop:
+
+!ifdef CONFIG_MB_M65 {
+	jsr m65dos_check
+	+bcc m65dos_load_loop              ; branch if device is handeld by internal DOS
+}
 
 	; We are now ready to receive bytes
 !ifdef CONFIG_IEC_JIFFYDOS {

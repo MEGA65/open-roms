@@ -4,3 +4,6 @@
 [submodule "3rdparty/zmac"]
 	path = 3rdparty/zmac
 	url = https://github.com/FeralChild64/zmac
+[submodule "3rdparty/z80exer"]
+	path = 3rdparty/z80exer
+	url = https://github.com/FeralChild64/z80exer

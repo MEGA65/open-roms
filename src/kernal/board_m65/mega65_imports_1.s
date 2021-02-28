@@ -40,6 +40,9 @@
 ;; #ALIAS# viciv_hotregs_on                = KERNAL_0.viciv_hotregs_on
 ;; #ALIAS# viciv_hotregs_off               = KERNAL_0.viciv_hotregs_off
 
+;; #ALIAS# m65_speed_tape_cbdos            = KERNAL_0.m65_speed_tape_cbdos
+;; #ALIAS# m65_speed_restore               = KERNAL_0.m65_speed_restore
+
 ;; #ALIAS# m65_clr_magictstr               = KERNAL_0.m65_clr_magictstr
 ;; #ALIAS# m65_scrtab_txtwidth             = KERNAL_0.m65_scrtab_txtwidth
 ;; #ALIAS# m65_scrtab_txtheight            = KERNAL_0.m65_scrtab_txtheight

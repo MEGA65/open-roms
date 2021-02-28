@@ -26,8 +26,8 @@ iec_return_success:
 	+plx_trash_a
 
 !ifdef CONFIG_MB_M65 {
-	; If in native mode, switch back to fast mode
-	jsr m65_iec_fast
+	; Restore the proper speed
+	jsr m65_speed_restore
 }
 
 	; Report success

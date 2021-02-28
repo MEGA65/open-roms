@@ -1,0 +1,3 @@
+part of floating point constants pi/2 and one of the sine calculation coefficients
+
+In the opriginal ROMs this sequence occurs within two floating point constants, one is a very common: PI/2. Mathematical fact, not a human creation - not copyrightable.

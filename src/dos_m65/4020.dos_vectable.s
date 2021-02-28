@@ -2,13 +2,14 @@
 ; A vector table to integrate DOS with the MEGA65 Kernal
 
 !word dos_INIT
-!word dos_CHKUNIT
-!word dos_SETUNIT
-!word dos_ACPTR
-!word dos_CIOUT
-!word dos_LISTEN
-!word dos_SECOND
-!word dos_TALK
-!word dos_TKSA
-!word dos_UNTLK
-!word dos_UNLSN
+!word dos_UNITCHK
+!word dos_UNITSET
+!word dos_UNITNUM
+!word msg_ACPTR
+!word msg_CIOUT
+!word msg_LISTEN
+!word msg_SECOND
+!word msg_TALK
+!word msg_TKSA
+!word msg_UNTLK
+!word msg_UNLSN

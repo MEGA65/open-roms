@@ -31,11 +31,11 @@ INITMSG_native:
 
 	; Native mode	
 
-	ldx #48
+	ldx #44
 	ldy #0
 	jsr M65_SETWIN_XY
 
-	ldx #32
+	ldx #36
 	ldy #9
 	jsr M65_SETWIN_WH
 
@@ -64,18 +64,9 @@ INITMSG_native:
 
 	jsr initmsg_bytes_free
 
-!ifdef HAS_NOLGPL3_WARN {
-
-	lda #<str_nonlgpl3_warn
-	ldy #>str_nonlgpl3_warn
-	jmp STROUT
-
-} else {
-
 	ldx #$09
 	ldy #$00
 	jmp plot_set
-}
 
 INITMSG_main_banner:
 

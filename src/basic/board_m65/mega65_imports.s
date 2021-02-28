@@ -46,3 +46,4 @@
 ;; #ALIAS# fetch_character_skip_spaces     = BASIC_0.proxy_B1_fetch_character_skip_spaces
 ;; #ALIAS# fetch_uint8                     = BASIC_0.proxy_B1_fetch_uint8
 ;; #ALIAS# shell_main_loop                 = BASIC_0.proxy_B1_shell_main_loop
+;; #ALIAS# m65dos_unitnum                  = BASIC_0.proxy_B1_m65dos_unitnum

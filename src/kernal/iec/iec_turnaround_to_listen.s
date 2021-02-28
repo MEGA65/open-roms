@@ -21,8 +21,8 @@ iec_turnaround_to_listen:
 	sei
 
 !ifdef CONFIG_MB_M65 {
-	; If in native mode, switch to 1 MHz
-	jsr m65_iec_slow
+	; Ensure 1 Mhz mode and disabled badlines
+	jsr m65_speed_iec
 }
 
 	; Pull DATA, release CLK and ATN (we are not sending commands)

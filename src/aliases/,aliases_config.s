@@ -112,6 +112,7 @@
 !ifdef CONFIG_MB_MEGA65 {
 	!ifdef CONFIG_IEC_BURST_CIA1 { !error "Do not use CONFIG_IEC_BURST_CIA1 options for MEGA65 motherboard, CONFIG_IEC_BURST_M65 instead" }
 	!ifdef CONFIG_IEC_BURST_CIA2 { !error "Do not use CONFIG_IEC_BURST_CIA2 options for MEGA65 motherboard, CONFIG_IEC_BURST_M65 instead" }
+	!ifdef IEC_JIFFYDOS_BLANK    { !error "Do not use IEC_JIFFYDOS_BLANK option for MEGA65 motherboard, it is not needed"                 }
 	!ifndef CONFIG_DOS_WEDGE     { !error "MEGA65 build requires CONFIG_DOS_WEDGE" }
 }
 !ifndef CONFIG_MB_MEGA65 {
@@ -246,12 +247,6 @@
 !ifdef CONFIG_MB_MEGA65 {
 	!ifndef CONFIG_VIC_PALETTE { !error "CONFIG_VIC_PALETTE not specified" }
 }
-
-; Check that internal DOS configuration is correct
-
-!ifdef CONFIG_CMDRDOS { !ifndef CONFIG_MB_M65 {
-	!error "CONFIG_CMDRDOS requires CONFIG_MB_M65"
-} }
 
 
 ; Check that startup banner configuration is correct
@@ -421,12 +416,6 @@
 		!set CONFIG_COLOR_TXT = $01
 	}
 }
-
-
-
-; Handle non-LGPL3 code
-
-!ifdef CONFIG_CMDRDOS { !set HAS_NOLGPL3_WARN = 1 }
 
 
 

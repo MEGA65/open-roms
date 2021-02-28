@@ -13,6 +13,8 @@
 
 jiffydos_wait_line:
 
+!ifdef CONFIG_MB_M65 {                 ; MEGA65 does not need to wait, but has to waste few cycles
+
 	; One might try to optimize the code by checking for disabled screen
 	; (bit 4 of VIC_SCROLY); problem: VIC checks this bit only once per frame:
 	; - https://www.lemon64.com/forum/viewtopic.php?t=56582
@@ -30,6 +32,8 @@ jiffydos_wait_line:
 	bcs @1
 
 jiffydos_wait_line_done:
+
+}
 
 	rts
 }

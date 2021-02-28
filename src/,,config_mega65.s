@@ -30,7 +30,6 @@
 ;; #CONFIG# IEC_DOLPHINDOS             NO
 ;; #CONFIG# IEC_DOLPHINDOS_FAST        NO
 ;; #CONFIG# IEC_JIFFYDOS               NO        ; fastloaders do not work on MEGA65 yet!
-;; #CONFIG# IEC_JIFFYDOS_BLANK         NO
 ;; #CONFIG# IEC_BURST_M65              NO        ; please keep disabled for now
 
 
@@ -66,7 +65,7 @@
 
 ;; #CONFIG# KEYCMD_HELP                "LIST"
 
-;; #CONFIG# KEYCMD_F9                  "REM F9"
+;; #CONFIG# KEYCMD_F9                  "@20$"
 ;; #CONFIG# KEYCMD_F10                 "\5FL"
 ;; #CONFIG# KEYCMD_F11                 "COLORSET 128"
 ;; #CONFIG# KEYCMD_F12                 "\5FHF"
@@ -91,9 +90,7 @@
 
 ; --- Built-in DOS configuration
 
-;; #CONFIG# CMDRDOS                    NO        ; do not change, DOS is not implemented yet
-
-;; #CONFIG# UNIT_SDCARD                0         ; do not change, DOS is not implemented yet
+;; #CONFIG# UNIT_SDCARD                20        ; do not change, DOS is not implemented yet
 ;; #CONFIG# UNIT_FLOPPY                0         ; do not change, DOS is not implemented yet
 ;; #CONFIG# UNIT_RAMDISK               0         ; do not change, DOS is not implemented yet
 

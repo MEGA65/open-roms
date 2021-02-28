@@ -8,7 +8,9 @@
 
 ;; #ALIAS# CHROUT                          = KERNAL_C.proxy_Z1_CHROUT
 
+;; #ALIAS# MONITOR                         = KERNAL_0.MONITOR
 ;; #ALIAS# return_from_interrupt           = KERNAL_0.return_from_interrupt
+
 
 
 ; 'Print immediate', original implementation by Mike Barry, adapted to 65CE02, modified to preserve .Y

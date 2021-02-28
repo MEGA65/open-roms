@@ -20,8 +20,8 @@ iec_tx_dispatch:
 	php                                ; preserve C flag for EOI indication
 
 !ifdef CONFIG_MB_M65 {
-	; If in native mode, switch to 1 MHz
-	jsr m65_iec_slow
+	; Ensure 1 Mhz mode and disabled badlines
+	jsr m65_speed_iec
 }
 
 	lda IECPROTO
@@ -41,9 +41,9 @@ iec_tx_dispatch:
 iec_tx_byte:
 
 !ifdef CONFIG_MB_M65 { !ifndef CONFIG_IEC_JIFFYDOS {
-	; If in native mode, switch to 1 MHz
+	; Ensure 1 Mhz mode and disabled badlines
 	php
-	jsr m65_iec_slow
+	jsr m65_speed_iec
 	plp
 } }
 

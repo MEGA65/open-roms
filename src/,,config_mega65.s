@@ -90,8 +90,8 @@
 
 ; --- Built-in DOS configuration
 
-;; #CONFIG# UNIT_SDCARD                20        ; do not change, DOS is not implemented yet
-;; #CONFIG# UNIT_FLOPPY                0         ; do not change, DOS is not implemented yet
+;; #CONFIG# UNIT_SDCARD                20
+;; #CONFIG# UNIT_FLOPPY                21        ; work in progress
 ;; #CONFIG# UNIT_RAMDISK               0         ; do not change, DOS is not implemented yet
 
 

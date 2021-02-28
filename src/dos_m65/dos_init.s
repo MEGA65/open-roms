@@ -4,10 +4,6 @@
 ;
 
 
-!set CONFIG_UNIT_FLOPPY  = 0 ; XXX floppy not supported yet
-!set CONFIG_UNIT_RAMDISK = 0 ; XXX RAM disk not supported yet
-
-
 dos_INIT:
 
 	; Safer version of 'dos_ENTER' - does not affect speed related registers

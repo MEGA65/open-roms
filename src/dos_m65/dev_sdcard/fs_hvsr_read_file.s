@@ -131,7 +131,9 @@ fs_hvsr_read_file:
 	!byte $00                         ; operation: COPY
 	!word $0200                       ; data size if 512 bytes
 	!byte $00, $6E, $0D               ; src. addr is $xxD6E00
-	!byte <SD_FILEBUF, >SD_FILEBUF - $80, $01 ; dst. addr is $xx1xxxx (internal buffer)
+	!byte <(SD_FILEBUF - $8000)
+	!byte >(SD_FILEBUF - $8000)
+	!byte $01                         ; dst. addr is $xx1xxxx (internal buffer)
 
 fs_hvsr_file_not_found:
 

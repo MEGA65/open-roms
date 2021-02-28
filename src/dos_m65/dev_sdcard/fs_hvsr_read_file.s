@@ -83,7 +83,7 @@ fs_hvsr_read_file:
 
 	; Check if any data was read
 
-	lda SD_ACPTR_LEN+0
+	tya
 	ora SD_ACPTR_LEN+0
 	bne @copy
 

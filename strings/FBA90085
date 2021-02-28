@@ -1,0 +1,3 @@
+$FB + LDA #$00 + STA (zeropage address not included in similarity)
+
+Instruction + some parts. Trivial - not copyrightable.

@@ -13,7 +13,7 @@
 
 jiffydos_wait_line:
 
-!ifdef CONFIG_MB_M65 {                 ; MEGA65 does not need to wait, but has to waste few cycles
+!ifndef CONFIG_MB_M65 {                ; MEGA65 does not need to wait, but has to waste few cycles
 
 	; One might try to optimize the code by checking for disabled screen
 	; (bit 4 of VIC_SCROLY); problem: VIC checks this bit only once per frame:

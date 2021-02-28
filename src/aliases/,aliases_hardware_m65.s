@@ -48,6 +48,7 @@
 
 	!addr SD_CTL          = $D680
 	!addr SD_ADDR         = $D681 ; 4 bytes
+	!addr SD_BUFCTL       = $D689
 	!addr SD_ERRCODE      = $D6DA
 
 	; SD card sector buffer, $FFFD6E00

@@ -6,7 +6,9 @@
 
 dev_sd_cmd_READ:
 
-	; XXX provide implementation for regular files
+	lda SD_MODE
+	cmp #$03
+	+beq fs_hvsr_read_file
 
 	lda SD_DIR_PHASE
 	cmp #$01

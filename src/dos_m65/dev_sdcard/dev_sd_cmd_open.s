@@ -53,6 +53,9 @@ dev_sd_cmd_OPEN_file:
 
 dev_sd_cmd_OPEN_dir:
 
+	lda #$02                 ; mode: read directory
+	sta SD_MODE
+
 	; Copy the filter from command     XXX this should be moved to common part and deduplicated with file opening
 
 	ldy #$00

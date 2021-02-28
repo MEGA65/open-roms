@@ -128,4 +128,7 @@
 	!addr RD_DIR_ENTRY     = $82E0 ; - ram disk
 
 	!addr SD_MEMSHADOW     = $8310 ; 256 byte buffer for preserving original memory content
-	!addr SD_DESC          = $8410 ; current file descriptor
+	!addr SD_FILEBUF       = $8410 ; 512 byte buffer for file reading
+
+	!addr SD_DESC          = $8610 ; current file descriptor
+

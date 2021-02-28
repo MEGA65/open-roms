@@ -35,11 +35,11 @@ fs_hvsr_read_file_open:
 	jsr fs_hvsr_util_nextdirentry      ; fetch the next file name
 	+bcs fs_hvsr_file_not_found
 
-	; Only accept files of type 'PRG'
+	; Only accept files of type 'PRG', properly closed
 
 	lda PAR_FTYPE
 	and #%10111111 
-	cmp #$02
+	cmp #$82
 	bne @lp_find
 
 	; Check if file name matches the filter
@@ -57,8 +57,6 @@ fs_hvsr_read_file_open:
 
 	; XXX check error code
 
-	; XXX check for errors
-
 	; Read the first 512-byte chunk
 
 	lda #$03                 ; mode: read file
@@ -71,6 +69,7 @@ fs_hvsr_read_file:
 
 	; Read chunk of data to SD card buffer
 
+	ldx SD_DESC
 	lda #$1A                          ; dos_readfile
 	sta HTRAP00
 	+nop

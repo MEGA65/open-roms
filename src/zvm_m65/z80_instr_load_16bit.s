@@ -22,7 +22,7 @@ Z80_instr_FD_21:   +Z80_LD_REGnn_nn REG_IY                                     ;
 !macro Z80_LD_REGnn_REGnn .REGnn1, .REGnn2 {
 	lda .REGnn2+0
 	sta .REGnn1+0
-	jsr .REGnn2+1
+	lda .REGnn2+1
 	sta .REGnn1+1
 	jmp ZVM_next
 }

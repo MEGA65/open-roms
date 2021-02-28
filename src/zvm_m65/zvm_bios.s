@@ -55,9 +55,9 @@ zvm_BIOS_00_BOOT:            ; Cold start
 
 	; XXX fetch RAM disk image, CPM3.SYS, command interpreter
 	; XXX close all the files, reset I/O, set screen mode
-	; XXX clear memory
 
-	jsr Z80_reset
+	jsr Z80_reset_MEM
+	jsr Z80_reset_CPU
 
 	; FALLTROUGH
 

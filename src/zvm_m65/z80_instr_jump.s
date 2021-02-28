@@ -7,8 +7,9 @@
 Z80_instr_C3:      ; JP nn
 
 	+Z80_FETCH_VIA_PC_INC
-	sta REG_PC+0
+	tax
 	+Z80_FETCH_VIA_PC_INC
+	stx REG_PC+0
 	sta REG_PC+1
 	jmp ZVM_next
 

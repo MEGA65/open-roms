@@ -48,7 +48,7 @@ tape_head_align:
 	; Switch CPU to fast mode
 
 !ifdef CONFIG_MB_M65 {
-	jsr tape_fast_cpu
+	jsr m65_speed_tape_cbdos
 }
 
 !ifdef CONFIG_MB_U64 {

@@ -306,6 +306,9 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { false, true,  true,  false, false, "STR_MEM_STRS",     "\r STRS"            },
     { false, true,  true,  false, false, "STR_MEM_FREE",     "\r\r FREE"          },
 
+    { false, false, true,  false, false, "STR_DOS_FD",       ", FDD "             },
+    { false, false, true,  false, false, "STR_DOS_RD",       ", RAM "             },
+
     { false, false, true,  false, false, "STR_SI_HEADER",    "OPEN ROMS, "        },
     { false, false, true,  false, false, "STR_SI_MODE64",    "LEGACY MODE"        },
     { false, false, true,  false, false, "STR_SI_MODE65",    "NATIVE MODE"        },
@@ -1221,7 +1224,7 @@ void DataSet::generateConfigDepStrings()
 
     // CBDOS features
 
-    featureStrM65 += "CBDOS  : NO FDD/SD/RAM SUPPORT\r";
+    featureStrM65 += "CBDOS  : SD CARD ";
 
     // Keyboard support features
    

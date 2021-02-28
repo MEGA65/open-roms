@@ -1,0 +1,3 @@
+RTS + JSR $F7D0
+
+End of a routine + a single instruction. Trivial - not copyrightable.

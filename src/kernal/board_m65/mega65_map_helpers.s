@@ -76,31 +76,14 @@ map_DOS_1:
 	phy
 	phz
 
-	lda #$80
-	tab                      ; from now on, zeropage starts from $C000
-
 	ldy #$80
-	lda #$30
-	taz                      ; $8000 <- map 16KB RAM from $10000
+	ldz #$30                 ; $8000 <- map 16KB RAM from $10000
 
 	lda #$C0
 	ldx #$C1                 ; $4000 <- map 16KB ROM from $20000
 
 	map
 	bra map_end_no_eom       ; no EOM, we do not want interrupts within DOS!
-
-map_NORMAL_from_DOS_1:
-
-	php
-	pha
-	phx
-	phy
-	phz
-
-	lda #$00
-	tab
-
-	bra map_NORMAL_common
 
 map_MON_1:
 

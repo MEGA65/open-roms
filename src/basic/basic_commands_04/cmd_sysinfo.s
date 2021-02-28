@@ -106,12 +106,46 @@ print_sysinfo_video:
 @5:
 	jsr print_packed_misc_str
 
-	; Print build featires information
+	; Print build features information
 
 	ldx #IDX__STR_SI_FEATURES
-	jmp print_packed_misc_str
+	jsr print_packed_misc_str
 
+	; Print SD CARD unit ID
 
+	lda #$00
+	jsr cmd_sysinfo_print_dev
+
+	ldx #IDX__STR_DOS_FD
+	jsr print_packed_misc_str
+
+	; Print floppy unit ID
+
+	lda #$01
+	jsr cmd_sysinfo_print_dev
+
+	; Print ram disk unit ID
+
+	ldx #IDX__STR_DOS_RD
+	jsr print_packed_misc_str
+
+	lda #$02
+	jsr cmd_sysinfo_print_dev
+
+	jmp print_return
+
+cmd_sysinfo_print_dev:
+
+	jsr m65dos_unitnum
+	bcs @nounit
+	tax
+	lda #$00
+	jmp print_integer
+
+@nounit:
+
+	lda #'-'
+	jmp JCHROUT
 
 cmd_sysinfo_hw_ids:
 

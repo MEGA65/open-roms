@@ -16,8 +16,8 @@ SETFLS:
 	; There are 6 sane ways to implement this routine,
 	; I hope this one will not cause similarity to CBM code
 
-	sta LA
-	sty SA
-	stx FA
+	sta LA ; logical number
+	sty SA ; secondary address
+	stx FA ; unit number
 
 	rts

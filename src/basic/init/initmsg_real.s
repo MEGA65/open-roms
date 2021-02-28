@@ -115,5 +115,3 @@ initmsg_real:
 }
 
 }
-
-!ifdef HAS_NOLGPL3_WARN { !error "HAS_NOLGPL3_WARN not implemented" }

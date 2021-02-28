@@ -14,10 +14,11 @@ ZVM: ; entry point
 	; Skip the IRQ processing, even if Kernal reenables it
 
 	sei
-	lda #<return_from_interrupt
-	sta CINV+0 
-	lda #>return_from_interrupt
-	sta CINV+1
+	; XXX uncomment this when debugging is finished
+	; lda #<return_from_interrupt
+	; sta CINV+0 
+	; lda #>return_from_interrupt
+	; sta CINV+1
 
 	; Make sure $C000-$CFFF ROM is mapped-in, we keep our proxies there
 	; Also make sure the palette is taken from RAM
@@ -51,16 +52,24 @@ ZVM: ; entry point
 
 	; Check if extended memory is present
 
-	jsr ZVM_memtest
+	; XXX enable test jsr ZVM_memtest
 
-	; Generate CPU tables
+	; Generate CPU tables, reset the CPU
 
-	jsr z80_table_gen
+	jsr Z80_table_gen
+	; XXX jsr Z80_reset_MEM
+	jsr Z80_reset_CPU
+
+	; Try CPU test
+
+	jsr ZVM_cputest
+
+
 
 	; XXX code is not ready to progress further
 	jsr PRIMM
 	!pet $0D, "Implementation not finished yet.", 0
-	jmp ZVM_halt
+	jmp ZVM_syshalt
 
 	jmp zvm_BIOS_00_BOOT
 
@@ -82,12 +91,10 @@ ZVM: ; entry point
 
 
 
-
-
 ZVM_memtest:
 
 	; Simple memory test
-	; XXX this test is temporary
+	; XXX this test fails for now
 	
 	lda #$00
 	sta PTR_DATA+0
@@ -98,7 +105,7 @@ ZVM_memtest:
 
 	ldx #$F0
 @1:
-	ldy #$00
+	ldy #$10
 @2:
 	lda PTR_DATA+2
 	eor #%01111111
@@ -130,7 +137,7 @@ ZVM_halt_memtest_failed:
 
 	; FALLTROUGH
 
-ZVM_halt:
+ZVM_syshalt:
 
 	jsr PRIMM
 	!pet "   * System HALTED *", 0

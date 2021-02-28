@@ -62,8 +62,11 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
 
 SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
                  src/dos_m65 \
-                 # src/dos_m65/cmdrdos \
-                 src/dos_m65/sdcard
+                 src/dos_m65/assets \
+                 src/dos_m65/dev_floppy \
+                 src/dos_m65/dev_ramdisk \
+                 src/dos_m65/dev_sdcard \
+                 src/dos_m65/utils
 
 SRCDIR_MON_M65 = $(SRCDIR_COMMON) \
                  src/mon_m65
@@ -107,6 +110,7 @@ DIR_ZMAC       = 3rdparty/zmac/src
 DIR_ZMAC_TMP   = build/,tmp_zmac
 HDR_ZMAC       = $(filter-out $(wildcard $(DIR_ZMAC)/_*.h),$(wildcard $(DIR_ZMAC)/*.h))
 SRC_ZMAC       = $(DIR_ZMAC)/mio.c $(DIR_ZMAC)/doc.c $(DIR_ZMAC)/zi80dis.cpp
+SRC_Z80TEST    = 3rdparty/z80exer/cpm/zexdoc.src
 
 GEN_ZMAC_C     = $(DIR_ZMAC_TMP)/zmac.c
 GEN_ZMAC_H     = $(DIR_ZMAC_TMP)/doc.inl
@@ -209,6 +213,7 @@ TARGET_LIST_TST    = $(TARGET_TST_B) $(TARGET_TST_K)
 TARGET_LIST_U64    = $(TARGET_U64_B) $(TARGET_U64_K)
 TARGET_LIST_U64CRT = $(TARGET_U64CRT_B) $(TARGET_U64CRT_K) $(TARGET_U64CRT_X)
 
+TARGET_Z80TEST     = ./build/cpm/Z80TEST.COM
 
 TARGET_LIST        = $(TARGET_CHR_ORF)     \
                      $(TARGET_LIST_CUS)    \
@@ -289,7 +294,7 @@ $(ROM_CBM_BASIC):
 
 # Rules - tools
 
-$(DIR_ACME) $(SRC_ACME) $(DIR_ZMAC) $(SRC_ZMAC):
+$(DIR_ACME) $(SRC_ACME) $(DIR_ZMAC) $(SRC_ZMAC) $(SRC_Z80TEST):
 	@echo
 	@echo Fetching 3rd party source code...
 	@git submodule init
@@ -390,7 +395,7 @@ $(DIR_M65)/kernal.seg_C $(DIR_M65)/KERNAL_C_combined.vs $(DIR_M65)/KERNAL_C_comb
 $(DIR_M65)/kernal.seg_1 $(DIR_M65)/KERNAL_1_combined.vs $(DIR_M65)/KERNAL_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_M65) $(GEN_STR_M65) $(DIR_M65)/KERNAL_0_combined.sym
 $(DIR_M65)/dos.seg_1    $(DIR_M65)/DOS_1_combined.vs    $(DIR_M65)/DOS_1_combined.sym: \
-    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_DOS_M65) $(CFG_M65)
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_DOS_M65) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym
 $(DIR_M65)/mon.seg_1    $(DIR_M65)/MON_1_combined.vs    $(DIR_M65)/MON_1_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_MON_M65) $(CFG_M65) $(DIR_M65)/KERNAL_0_combined.sym $(DIR_M65)/BASIC_1_combined.sym
 $(DIR_M65)/zvm.seg_1    $(DIR_M65)/ZVM_1_combined.vs    $(DIR_M65)/ZVM_1_combined.sym: \
@@ -881,8 +886,9 @@ testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN $(ROM_CBM_KERNAL) $(ROM
 # Z80 part
 #
 
+
 .PHONY: cpm
-cpm: $(TOOL_ASSEMBLER_Z80)
+cpm: $(TOOL_ASSEMBLER_Z80) $(TARGET_Z80TEST)
 
 $(DIR_ZMAC_TMP)/doc: $(SRC_ZMAC)
 	@mkdir -p $(DIR_ZMAC_TMP)
@@ -904,3 +910,11 @@ $(TOOL_ASSEMBLER_Z80): $(DIR_ZMAC) $(SRC_ZMAC) $(GEN_ZMAC_C) $(GEN_ZMAC_H) $(HDR
 	@echo Compiling tool $@ ...
 	@mkdir -p build/tools
 	@$(CC) -o $(TOOL_ASSEMBLER_Z80) $(SRC_ZMAC) $(GEN_ZMAC_C) -lm -w -I$(DIR_ZMAC) -I$(DIR_ZMAC_TMP)
+
+$(TARGET_Z80TEST) : $(TOOL_ASSEMBLER_Z80) $(SRC_Z80TEST)
+	@echo
+	@echo Compiling Z80 CPU tester ...
+	@mkdir -p build/cpm
+	@rm -f $(TARGET_Z80TEST).CIM $(TARGET_Z80TEST)
+	@$(TOOL_ASSEMBLER_Z80) -o $(TARGET_Z80TEST).CIM $(SRC_Z80TEST)
+	@mv -f $(TARGET_Z80TEST).CIM $(TARGET_Z80TEST)

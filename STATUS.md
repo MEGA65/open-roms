@@ -101,6 +101,7 @@ The following ROM features are currently missing:
 | :----------------: | :------: | :------------------------------------------------: |
 | standard           | DONE     |                                                    |
 | JiffyDOS           | PARTIAL  | LOAD needs improvement for better performance      |
+| ELoad v1           | NOT DONE |                                                    |
 | DolphinDOS         | DONE     |                                                    |
 | CIA burst mod      | NOT DONE |                                                    |
 | MEGA65 burst       | NOT DONE |                                                    |
@@ -125,10 +126,11 @@ The following ROM features are currently missing:
 
 <br />
 
-| Driver             | Status   |  Remarks                                                                    |
-| :----------------: | :------: | :-------------------------------------------------------------------------: |
-| internal floppy    | NOT DONE | try to reuse https://github.com/commanderx16/x16-rom/tree/master/dos        |
-| SD card access     | NOT DONE | tryy to reuse https://github.com/commanderx16/x16-rom/tree/master/dos/fat32 |
+| Driver             | Status   |  Remarks                                           |
+| :----------------: | :------: | :------------------------------------------------: |
+| SD card            | PARTIAL  | work-in-progress, can already load files           |
+| floppy drive       | NOT DONE |                                                    |
+| ram disk           | NOT DONE |                                                    |
 
 <br />
 

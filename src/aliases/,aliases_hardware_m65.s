@@ -48,6 +48,7 @@
 
 	!addr SD_CTL          = $D680
 	!addr SD_ADDR         = $D681 ; 4 bytes
+	!addr SD_BUFCTL       = $D689
 	!addr SD_ERRCODE      = $D6DA
 
 	; SD card sector buffer, $FFFD6E00
@@ -71,6 +72,11 @@
 
 	!addr MISC_BOARDID    = $D629 ; board identification byte
 	!addr MISC_EMU        = $D710 ; to enable badlines and slow interrupts
+
+	; Hypervisor traps
+
+	!addr HTRAP00         = $D640
+
 
 	; SID offsets
 

@@ -186,6 +186,8 @@ Last, but not least - the `#TAKE-HIGH` is intended to be used for BASIC routines
 
 ### MEGA65 computer-based DOS
 
+Both the internal DOS and all the IEC operations leave with CPU speed set to 1 MHz (in case of legacy compatibility mode) or 40 MHz (in case of native mode). Also the fast interrupts and badline emulation is set according to the mode.
+
 TODO
 
 ### CPU-specific optimizations

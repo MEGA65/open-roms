@@ -10,7 +10,7 @@ m65dos_check:
 
 	pha
 	lda IECPROTO
-	cmp #IEC_ROMDOS
+	cmp #IEC_CBDOS
 	beq @1
 
 	pla

@@ -24,7 +24,7 @@ ACPTR:
 
 !ifdef CONFIG_MB_M65 {
 	jsr m65dos_check
-	+bcc m65dos_acptr                ; branch if device is handeld by internal DOS
+	+bcc m65dos_acptr                  ; branch if device is handeld by internal DOS
 }
 
 !ifdef CONFIG_IEC {

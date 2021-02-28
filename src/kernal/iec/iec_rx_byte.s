@@ -17,8 +17,8 @@
 iec_rx_dispatch:
 
 !ifdef CONFIG_MB_M65 {
-	; If in native mode, switch to 1 MHz
-	jsr m65_iec_slow
+	; Ensure 1 Mhz mode and disabled badlines
+	jsr m65_speed_iec
 }
 
 	lda IECPROTO
@@ -33,8 +33,8 @@ iec_rx_dispatch:
 iec_rx_byte:
 
 !ifdef CONFIG_MB_M65 { !ifndef CONFIG_IEC_JIFFYDOS {
-	; If in native mode, switch to 1 MHz
-	jsr m65_iec_slow
+	; Ensure 1 Mhz mode and disabled badlines
+	jsr m65_speed_iec
 } }
 
 	; Store .X and .Y on the stack - preserve them
@@ -161,8 +161,8 @@ iec_rx_acknowledge:
 iec_rx_end:
 
 !ifdef CONFIG_MB_M65 {
-	; If in native mode, switch back to fast mode
-	jsr m65_iec_fast
+	; Restore the proper speed
+	jsr m65_speed_restore
 }
 
 	+ply_trash_a

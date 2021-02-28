@@ -54,7 +54,7 @@ ZVM_cputest:
 	; Select SD card buffer
 
 	lda #$80
-	tsb $D689 ; XXX invent name for the register
+	tsb SD_BUFCTL
 
 	; Prepare pointers
 

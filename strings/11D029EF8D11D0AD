@@ -1,0 +1,3 @@
+$D011 + AND #$EF + STA $D011 + LDA (address not included in similarity)
+
+Simple set of instructions manipulating bits in a documented hardware register. Trivial - not copyrightable.

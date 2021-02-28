@@ -1,0 +1,3 @@
+JSR $F7D0 + BCC (offset not included in similarity)
+
+Jump to a subroutine + decision based on result (Carry flag) - trivial, not copyrightable.

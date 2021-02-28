@@ -128,7 +128,7 @@ The following ROM features are currently missing:
 
 | Driver             | Status   |  Remarks                                           |
 | :----------------: | :------: | :------------------------------------------------: |
-| SD card            | PARTIAL  | work-in-progress                                   |
+| SD card            | PARTIAL  | work-in-progress, can already load files           |
 | floppy drive       | NOT DONE |                                                    |
 | ram disk           | NOT DONE |                                                    |
 

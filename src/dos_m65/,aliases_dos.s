@@ -48,10 +48,10 @@
 	!addr par_LDA_nnnn_Y   = $8015 ; - 2 bytes; address in buffer, ram disk
 	!addr code_RTS_04      = $8017 ; - RTS instruction
 
-	; Parameters for utilities/helkpers
+	; Parameters for utilities/helpers
 
-	!addr PAR_TRACK        = $8018 ; track number for status/error
-	!addr PAR_SECTOR       = $8019 ; sector number for status/error	
+	!addr PAR_TRACK        = $8018 ; track number, also for status/error
+	!addr PAR_SECTOR       = $8019 ; sector number, also for status/error	
 
 	!addr PAR_FSIZE_BYTES  = $801A ; 4 bytes - file size in bytes
 	!addr PAR_FSIZE_BLOCKS = $801E ; 2 bytes - file size in blocks

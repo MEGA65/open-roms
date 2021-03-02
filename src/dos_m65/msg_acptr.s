@@ -90,21 +90,21 @@ msg_ACPTR_status_SD:                   ; get next byte of status - SD card
 
 	ldx SD_STATUS_IDX
 	inc SD_STATUS_IDX
-	lda SD_STATUS_STR,x
+	lda SD_STATUS_BUF,x
 	bra msg_ACPTR_status_got
 
 msg_ACPTR_status_FD:                   ; get next byte of status - floppy
 
 	ldx FD_STATUS_IDX
 	inc FD_STATUS_IDX
-	lda FD_STATUS_STR,x
+	lda FD_STATUS_BUF,x
 	bra msg_ACPTR_status_got
 
 msg_ACPTR_status_RD:                   ; get next byte of status - ram disk
 
 	ldx RD_STATUS_IDX
 	inc RD_STATUS_IDX
-	lda RD_STATUS_STR,x
+	lda RD_STATUS_BUF,x
 
 	; FALLTROUGH
 

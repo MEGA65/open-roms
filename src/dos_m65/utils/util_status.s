@@ -50,7 +50,7 @@ util_status_common:
 @lp:
 	jsr code_LDA_nnnn_Y
 	beq @lp_end
-	sta XX_STATUS_STR, x
+	sta XX_STATUS_BUF, x
 	iny
 	inx
 	bra @lp
@@ -69,13 +69,13 @@ util_status_common:
 	; Mark end of status and quit
 
 	lda #$00
-	sta XX_STATUS_STR, x
+	sta XX_STATUS_BUF, x
 	rts
 
 util_status_store_comma:
 
 	ldy #','
-	sty XX_STATUS_STR, x
+	sty XX_STATUS_BUF, x
 	inx
 	rts
 
@@ -86,7 +86,7 @@ util_status_store_number:
 	cmp #200
 	bcc @store_00_199
 	ldy #'2'
-	sty XX_STATUS_STR, x
+	sty XX_STATUS_BUF, x
 	inx
 	sec
 	sbc #200
@@ -97,7 +97,7 @@ util_status_store_number:
 	cmp #100
 	bcc @store_00_99
 	ldy #'1'
-	sty XX_STATUS_STR, x
+	sty XX_STATUS_BUF, x
 	inx
 	sec
 	sbc #100
@@ -115,11 +115,11 @@ util_status_store_number:
 
 @store_finalize:   ; first digit to store in .Y, second in .A (need no add '0')
 
-	sty XX_STATUS_STR, x
+	sty XX_STATUS_BUF, x
 	inx
 	clc
 	adc #'0'
-	sta XX_STATUS_STR, x
+	sta XX_STATUS_BUF, x
 	inx
 
 	rts 

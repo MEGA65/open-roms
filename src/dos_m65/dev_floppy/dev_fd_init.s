@@ -20,7 +20,7 @@ dev_fd_init:
 @1:
 	inx
 	lda dos_sts_init_floppy,x
-	sta FD_STATUS_STR,x
+	sta FD_STATUS_BUF,x
 	bne @1
 
 	; End of initialization

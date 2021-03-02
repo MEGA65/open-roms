@@ -21,7 +21,7 @@ dev_sd_init:
 @1:
 	inx
 	lda dos_sts_init_sdcard,x
-	sta SD_STATUS_STR,x
+	sta SD_STATUS_BUF,x
 	bne @1
 
 	; Close all the files in the hypervisor, go to root directory

@@ -99,12 +99,12 @@ fs_hvsr_read_file:
 
 	; Set pointer to new data
 
-	lda #<SD_FILEBUF
+	lda #<SHARED_BUF_0
 	sta SD_ACPTR_PTR+0
-	lda #>SD_FILEBUF
+	lda #>SHARED_BUF_0
 	sta SD_ACPTR_PTR+1
 
-	; Copy data to SD_FILEBUF
+	; Copy data to SHARED_BUF_0
 
 	lda #%10000000                    ; select SD card buffer
 	tsb SD_BUFCTL
@@ -131,8 +131,8 @@ fs_hvsr_read_file:
 	!byte $00                         ; operation: COPY
 	!word $0200                       ; data size if 512 bytes
 	!byte $00, $6E, $0D               ; src. addr is $xxD6E00
-	!byte <(SD_FILEBUF - $8000)
-	!byte >(SD_FILEBUF - $8000)
+	!byte <(SHARED_BUF_0 - $8000)
+	!byte >(SHARED_BUF_0 - $8000)
 	!byte $01                         ; dst. addr is $xx1xxxx (internal buffer)
 
 fs_hvsr_file_not_found:

@@ -67,7 +67,7 @@
 
 ;; #CONFIG# KEYCMD_F9                  "@20$"
 ;; #CONFIG# KEYCMD_F10                 "\5FL"
-;; #CONFIG# KEYCMD_F11                 "COLORSET 128"
+;; #CONFIG# KEYCMD_F11                 "@21$"
 ;; #CONFIG# KEYCMD_F12                 "\5FHF"
 ;; #CONFIG# KEYCMD_F13                 "JOYCRSR 2"
 ;; #CONFIG# KEYCMD_F14                 "BOOTCPM"

@@ -50,9 +50,9 @@ util_dir_filter:
 	beq @done
 	lda PAR_FPATTERN, y
 	
-	; XXXthe comparisons below do not work; investigate, why
+	sta $1000
 
-	cmp #$44                           ; if 'D' - require a directory      XXX document this
+	cmp #$44                           ; if 'D' - require a directory      XXX documment this extension
 	beq @require_dir
 	cmp #$50                           ; if 'P' - require PRG file
 	beq @require_prg
@@ -87,5 +87,7 @@ util_dir_filter:
 
 	lda #$05
 
-	cmp PAR_FTYPE
+	eor PAR_FTYPE
+	and #%00111111
+
 	rts

@@ -14,33 +14,42 @@ dev_fd_util_readsector:
 
 	; Select physical track and sector based on logical ones from PAR_TRACK and PAR_SECTOR
 
-	lda PAR_TRACK
-	dec
-	sta FDC_TRACK    ; $D084
+;	lda PAR_TRACK
+;	dec
+;	sta FDC_TRACK    ; $D084
 
-	lda PAR_SECTOR
-	cmp #20
-	bcc @side0
+;	lda PAR_SECTOR
+;	cmp #20
+;	bcc @side0
 
 @side1:
 
-	lda #%00001000                     ; set side 1
-	tsb FDC_CONTROL  ; $D080
+;	lda #%00001000                     ; set side 1
+;	tsb FDC_CONTROL  ; $D080
 	
-	lda PAR_SECTOR
-	sec
-	sbc #20
+;	lda PAR_SECTOR
+;	sec
+;	sbc #20
 
-	ldx #$01
-	+skip_2_bytes_trash_nvz
+;	ldx #$01
+;	+skip_2_bytes_trash_nvz
 
 @side0:
 
-	ldx #$00
-	stx FDC_SIDE     ; $D086
-	clc
-	ror
+;	ldx #$00
+;	stx FDC_SIDE     ; $D086
+;	clc
+;	ror
+;	sta FDC_SECTOR   ; $D085
+
+	; XXX temporary code, just for testing (replacement for the commented-out code)
+
+	lda #39
+	sta FDC_TRACK    ; $D084
+	lda #00
 	sta FDC_SECTOR   ; $D085
+	lda #00
+	sta FDC_SIDE     ; $D086
 
 	; Ask the controller to read the sector    XXX how to detect errors, missing disk, etc.?
 

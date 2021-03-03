@@ -1,6 +1,6 @@
 
 ;
-; Hypervisor virtual filesystem - opening the file
+; Hypervisor virtual filesystem - reading the file
 ;
 
 

@@ -135,7 +135,7 @@
 	; General purpose buffers, 512 bytes each, each starts at page start - XXX dynamic alllocation to be written
 
 	!addr SHARED_BUF_0     = $9200  ; XXX temporarily hardcoded for usage by SD card
-	!addr SHARED_BUF_1     = $9400
+	!addr SHARED_BUF_1     = $9400  ; XXX temporarily hardcoded for usage by floppy
 	!addr SHARED_BUF_2     = $9600
 	!addr SHARED_BUF_3     = $9800
 	!addr SHARED_BUF_4     = $9A00

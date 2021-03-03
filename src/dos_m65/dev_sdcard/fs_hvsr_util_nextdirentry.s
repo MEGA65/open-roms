@@ -114,7 +114,7 @@ fs_hvsr_util_nextdirentry:
 
 	; Set the type to directory
 
-	lda #$05
+	lda #$06
 	bra @detect_attributes
 
 @entity_file:
@@ -169,7 +169,7 @@ fs_hvsr_util_nextdirentry:
 
 @lpext_found:
 
-	cpy #$10
+	cpy #$14
 	+beq fs_hvsr_util_nextdirentry     ; file extension 'DIR' does not mean this is a directory
 	tya
 
@@ -179,7 +179,7 @@ fs_hvsr_util_nextdirentry:
 	ror
 	inc
 
-	cmp #$06                           ; mark some file types (not SEQ/PRG/USR/REL/DIR) as read-only
+	cmp #$07                           ; mark some file types (not SEQ/PRG/USR/REL/CBM/DIR) as read-only
 	bcc @detect_attributes
 	ora #$40
 

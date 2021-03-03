@@ -40,6 +40,7 @@ dir_types:
 	!pet "prg", $00          ; PRG
 	!pet "usr", $00          ; USR
 	!pet "rel", $00          ; REL
+	!pet "cbm", $00          ; CBM-style partition
 	!pet "dir", $00          ; directory
 
 ; File types below are not mandatory

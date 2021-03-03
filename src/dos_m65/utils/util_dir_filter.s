@@ -85,7 +85,7 @@ util_dir_filter:
 
 @require_dir:
 
-	lda #$05
+	lda #$06
 
 	eor PAR_FTYPE
 	and #%00111111

@@ -109,7 +109,14 @@
 	!addr FD_STATUS_IDX    = $806E ; - floppy
 	!addr RD_STATUS_IDX    = $806F ; - ram disk
 
-	!addr SD_DESC          = $8070 ; current file descriptor
+	!addr DMAJOB_LIST      = $8070 ; 15 bytes, a general purpose DMA list
+	!addr DMAJOB_SRC_MB    = DMAJOB_LIST+2
+	!addr DMAJOB_DST_MB    = DMAJOB_LIST+4
+	!addr DMAJOB_SIZE      = DMAJOB_LIST+7    ; keep $0200 here
+	!addr DMAJOB_SRC_ADDR  = DMAJOB_LIST+9
+	!addr DMAJOB_DST_ADDR  = DMAJOB_LIST+12
+
+	!addr SD_DESC          = $807F ; current file descriptor
 
 
 

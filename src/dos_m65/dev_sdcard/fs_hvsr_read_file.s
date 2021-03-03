@@ -109,31 +109,21 @@ fs_hvsr_read_file:
 	lda #%10000000                    ; select SD card buffer
 	tsb SD_BUFCTL
 
-	lda #$02
-	sta DMA_ADDRBANK                  ; $D702
-	lda #$00
-	sta DMA_ADDRMB                    ; $D704
+	; Copy data using DMA job
 
-	lda #>(@dmalist-$4000)
-	sta DMA_ADDRMSB                   ; $D701
-	lda #<(@dmalist-$4000)
-	sta DMA_ETRIG                     ; $D705
+	lda #$00
+	sta DMAJOB_DST_MB
+	lda #<(SHARED_BUF_0 - $8000)
+	sta DMAJOB_DST_ADDR+0
+	lda #>(SHARED_BUF_0 - $8000)
+	sta DMAJOB_DST_ADDR+1
+	lda #$01
+	sta DMAJOB_DST_ADDR+2
+
+	jsr util_dma_launch_from_hwbuf    ; execute DMA job
 
 	clc
 	rts
-
-@dmalist:
-
-	!byte $0A                         ; use F018A list format (it is shorter by 1 byte)
-	!byte $80, $FF                    ; src. address is $FFxxxxx
-	!byte $81, $00                    ; dst. address is $00xxxxx
-	!byte $00                         ; end of options
-	!byte $00                         ; operation: COPY
-	!word $0200                       ; data size if 512 bytes
-	!byte $00, $6E, $0D               ; src. addr is $xxD6E00
-	!byte <(SHARED_BUF_0 - $8000)
-	!byte >(SHARED_BUF_0 - $8000)
-	!byte $01                         ; dst. addr is $xx1xxxx (internal buffer)
 
 fs_hvsr_file_not_found:
 

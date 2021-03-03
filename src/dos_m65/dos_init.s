@@ -45,6 +45,15 @@ dos_INIT:
 	jsr dev_fd_init
 	jsr dev_rd_init
 
+	; Initialize DMA list
+
+	ldy #$08
+@2:
+	lda dos_dmalist_template, y
+	sta DMAJOB_LIST, y
+	dey
+	bpl @2:
+
 	; Initialize helper code in RAM
 
 	lda #$AD                 ; LDA opcode, absolute

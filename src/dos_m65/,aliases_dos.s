@@ -45,7 +45,7 @@
 	; Helper subroutines to fetch data
 
 	!addr code_LDA_nnnn_Y  = $8014 ; - LDA nnnn, Y instruction
-	!addr par_LDA_nnnn_Y   = $8015 ; - 2 bytes; address in buffer, ram disk
+	!addr par_LDA_nnnn_Y   = $8015 ; - 2 bytes; address
 	!addr code_RTS_04      = $8017 ; - RTS instruction
 
 	; Parameters for utilities/helpers
@@ -111,6 +111,8 @@
 
 	!addr SD_DESC          = $8070 ; current file descriptor
 
+	!addr FD_DIRENT        = $8071 ; directory entry to read, 0-15
+
 
 
 	; XXX Free space
@@ -120,29 +122,32 @@
 	; Various buffers, caches, and other large memory chunks
 	;
 
-	; BAM cache for floppy drives; 2 KB (4 blocks) each, to cover up to ED floppies - XXX implementation to be written
-
-	!addr FD_BAM_CACHE_0   = $8200 ; - floppy drive 0
-	!addr FD_BAM_CACHE_1   = $8600 ; - floppy drive 1
 
 	; General purpose buffers, 512 bytes each, each starts at page start - XXX dynamic alllocation to be written
 
-	!addr SHARED_BUF_0     = $8A00  ; XXX temporarily hardcoded for usage by SD card
-	!addr SHARED_BUF_1     = $8C00  ; XXX temporarily hardcoded for usage by floppy
-	!addr SHARED_BUF_2     = $8E00
-	!addr SHARED_BUF_3     = $9000
-	!addr SHARED_BUF_4     = $9200
-	!addr SHARED_BUF_5     = $9400
-	!addr SHARED_BUF_6     = $9600
-	!addr SHARED_BUF_7     = $9800
-	!addr SHARED_BUF_8     = $9A00
-	!addr SHARED_BUF_9     = $9C00
-	!addr SHARED_BUF_A     = $9E00
-	!addr SHARED_BUF_B     = $A000
-	!addr SHARED_BUF_C     = $A200
-	!addr SHARED_BUF_D     = $A400
-	!addr SHARED_BUF_E     = $A600
-	!addr SHARED_BUF_F     = $A800
+	!addr SHARED_BUF_0     = $8200 ; XXX temporarily hardcoded for usage by SD card
+	!addr SHARED_BUF_1     = $8400 ; XXX temporarily hardcoded for usage by floppy
+	!addr SHARED_BUF_2     = $8600
+	!addr SHARED_BUF_3     = $8800
+	!addr SHARED_BUF_4     = $8A00
+	!addr SHARED_BUF_5     = $8C00
+	!addr SHARED_BUF_6     = $8E00
+	!addr SHARED_BUF_7     = $9000
+	!addr SHARED_BUF_8     = $9200
+	!addr SHARED_BUF_9     = $9400
+	!addr SHARED_BUF_A     = $9600
+	!addr SHARED_BUF_B     = $9800
+	!addr SHARED_BUF_C     = $9A00
+	!addr SHARED_BUF_D     = $9C00
+	!addr SHARED_BUF_E     = $9E00
+	!addr SHARED_BUF_F     = $A000
+
+	; BAM cache for floppy drives; 2 KB (4 blocks) each, to cover up to ED floppies
+
+	!addr FD_BAM_CACHE_0   = $A200 ; - floppy disk 0 BAM
+	!addr SHARED_BUF_X0    = $A400 ; - buffer which can be used if disk is not ED 
+	!addr FD_BAM_CACHE_1   = $A600 ; - floppy disk 1 BAM
+	!addr SHARED_BUF_X1    = $A800 ; - buffer which can be used if disk is not ED
 
 	; Memory shadow, needed for SD card support
 

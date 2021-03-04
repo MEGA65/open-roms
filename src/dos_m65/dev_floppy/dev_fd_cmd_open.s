@@ -58,20 +58,3 @@ dev_fd_cmd_OPEN_dir:
 @lp1_end:
 
 	jmp fs_1581_read_dir_open
-
-
-
-	; XXX experimental code below
-
-	; Try to read track 40, sector 0 (disk header)
-
-	lda #40
-	sta PAR_TRACK
-	lda #$00
-	sta PAR_SECTOR
-
-	jsr dev_fd_util_readsector
-
-	; XXX continue implementation
-
-	jmp dos_EXIT_CLC

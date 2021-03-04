@@ -11,13 +11,13 @@ msg_ACPTR:
 	; Check if there is a talker active
 
 	ldx IDX1_TALKER
-	bmi msg_ACPTR_fail_no_talker
+	+bmi msg_ACPTR_fail_no_talker
 
 	; Check if active channel is status one
 
 	lda XX_CHANNEL, X
 	cmp #$0F
-	beq msg_ACPTR_status
+	+beq msg_ACPTR_status
 
 	; XXX add support for read contexts (multiple channels)
 
@@ -26,7 +26,7 @@ msg_ACPTR:
 	ldx IDX2_TALKER
 	lda XX_ACPTR_LEN+0,x
 	ora XX_ACPTR_LEN+1,x
-	beq msg_ACPTR_fail_no_data
+	+beq msg_ACPTR_fail_no_data
 
 	; Read a byte of data from the buffer
 
@@ -62,11 +62,35 @@ msg_ACPTR_read_SD:
 @3:
 	jmp dos_EXIT_CLC
 
-
 msg_ACPTR_read_FD:
 
-	; XXX provide implementation
+	; Read and return one byte
 
+	jsr FD_ACPTR_helper
+	sta TBTCNT
+	sta REG_A
+
+	; Increment pointer, decrement length
+
+	inc FD_ACPTR_PTR+0
+	bne @1
+	inc FD_ACPTR_PTR+1
+@1:
+	dec FD_ACPTR_LEN+0
+	lda FD_ACPTR_LEN+0
+	cmp #$FF
+	bne @2
+	dec FD_ACPTR_LEN+1
+@2:
+	; If new length is 0, try to read next block of data
+
+	ora FD_ACPTR_LEN+1
+	bne @3
+	jsr dev_fd_cmd_READ
+	bcc @3
+	jsr kernalstatus_EOI
+@3:
+	jmp dos_EXIT_CLC
 
 msg_ACPTR_read_RD:
 

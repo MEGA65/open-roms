@@ -289,8 +289,6 @@ fs_1581_read_dir_blocksfree:
 
 @lp2_end:
 
-
-
 	; Set pointer and length
 
 	lda #$13

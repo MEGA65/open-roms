@@ -112,12 +112,12 @@ fs_1581_read_dir:
 
 	; FALLTROUGH
 
-fs_1581_read_dir_cont:
+@cont:
 
 	; Set address of the RAW directory entry
 
-	lda >SHARED_BUF_1
-	sta par_LDA_nnnn_Y+1
+	ldy #>SHARED_BUF_1
+	sty par_LDA_nnnn_Y+1
 
 	asl
 	asl
@@ -154,39 +154,70 @@ fs_1581_read_dir_cont:
 	sta PAR_FSIZE_BLOCKS+0
 	iny
 	jsr code_LDA_nnnn_Y
-	sta PAR_FSIZE_BLOCKS+0
+	sta PAR_FSIZE_BLOCKS+1
 
 	ldy #$05                           ; copy the file name
 @lp1:
 	jsr code_LDA_nnnn_Y
-	sta PAR_FNAME-5
+	sta PAR_FNAME-5,y
 	iny
 	cpy #$15
 	bne @lp1
 
-	; 
+	; Prepare output entry, starting from XX_DIRENT_BUF + initial offset
 
-	; XXX
+	jsr util_dir_filesize_blocks
+	ldx #(FD_DIRENT_BUF - XX_DIRENT_BUF)
+	ldx #$30
+	jsr util_dir_basic
+
+	; Provide pointers and length
+
+	sta FD_ACPTR_LEN+1
+	txa
+	sec
+	sbc #$30
+	sta FD_ACPTR_LEN+0
+
+	lda #<(FD_DIRENT_BUF)
+	sta FD_ACPTR_PTR+0
+	lda #>(FD_DIRENT_BUF)
+	sta FD_ACPTR_PTR+1
+	clc
+	rts
 
 @get_sector_lo:
 
-	; XXX
+	; XXX provide implementation
 
+	lda FD_DIRENT
+	bra @cont
 
 @get_sector_hi:
 
-	; XXX
-
-
-
-
 	; XXX provide implementation
-
-	jmp dos_EXIT_SEC
 
 
 fs_1581_read_dir_blocksfree:
 
-	; XXX provide implementation
+	; XXX calculate free blocks from BAM instead
 
-	jmp dos_EXIT_SEC
+	; Set pointer to 'BLOCKS FREE.' line
+
+	lda #$13
+	sta FD_ACPTR_LEN+0
+	lda #$00
+	sta FD_ACPTR_LEN+1
+
+	lda #<dir_end
+	sta FD_ACPTR_PTR+0
+	lda #>dir_end
+	sta FD_ACPTR_PTR+1
+
+	; Mark end of directory
+
+	lda #$00
+	sta FD_DIR_PHASE
+
+	clc
+	rts

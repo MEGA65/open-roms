@@ -43,7 +43,6 @@ dev_fd_util_readsector:
 	inc
 	sta FDC_SECTOR   ; $D085
 
-
 	; Ask the controller to read the sector    XXX how to detect errors, missing disk, etc.?
 
 	lda #$40
@@ -66,7 +65,7 @@ dev_fd_util_readsector:
 @lp3:
 	lda FDC_STATUS_A ; $D082
 	and #%01100000
-	cmp #%01000000     ; XXX is this correct? .A seems to stay at $40 at this point
+	cmp #%01000000   ; XXX is this correct? .A seems to stay at $40 at this point
 	bne @lp3
 
 	; Copy sector to buffer in RAM

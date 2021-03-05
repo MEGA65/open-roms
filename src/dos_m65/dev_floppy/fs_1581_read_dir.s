@@ -260,18 +260,47 @@ fs_1581_read_dir:
 
 fs_1581_read_dir_blocksfree:
 
-	; XXX calculate free blocks from BAM instead
+	; Copy the 'BLOCKS FREE' line
 
-	; Set pointer to 'BLOCKS FREE.' line
+	ldx #$13
+@lp1:
+	lda dir_end, x
+	sta FD_DIRENT_BUF, x
+	dex
+	bpl @lp1
+
+	; Calculate free blocks from the BAM
+
+	ldx #$10
+@lp2:
+	lda FD_BAM_CACHE_0+$100,x
+	jsr @sub_free_add
+	cpx #$FA
+	beq @lp2_end
+	lda FD_BAM_CACHE_0+$000,x
+	jsr @sub_free_add
+	inx
+	inx
+	inx
+	inx
+	inx
+	inx
+	bra @lp2
+
+@lp2_end:
+
+
+
+	; Set pointer and length
 
 	lda #$13
 	sta FD_ACPTR_LEN+0
 	lda #$00
 	sta FD_ACPTR_LEN+1
 
-	lda #<dir_end
+	lda #<FD_DIRENT_BUF
 	sta FD_ACPTR_PTR+0
-	lda #>dir_end
+	lda #>FD_DIRENT_BUF
 	sta FD_ACPTR_PTR+1
 
 	; Mark end of directory
@@ -280,4 +309,17 @@ fs_1581_read_dir_blocksfree:
 	sta FD_DIR_PHASE
 
 	clc
+	rts
+
+
+@sub_free_add:
+
+	; Helper routine to calculate free blocks
+
+	clc
+	adc FD_DIRENT_BUF+2
+	sta FD_DIRENT_BUF+2
+	bcc @noinc
+	inc FD_DIRENT_BUF+3
+@noinc:
 	rts

@@ -85,7 +85,6 @@ util_dir_basic:
 
 	lda PAR_FTYPE                      ; put file type
 	and #$3F
-	dec
 	asl
 	asl
 	tay

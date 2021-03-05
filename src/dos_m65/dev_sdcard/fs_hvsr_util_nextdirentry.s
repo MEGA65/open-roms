@@ -169,7 +169,7 @@ fs_hvsr_util_nextdirentry:
 
 @lpext_found:
 
-	cpy #$14
+	cpy #$18
 	+beq fs_hvsr_util_nextdirentry     ; file extension 'DIR' does not mean this is a directory
 	tya
 
@@ -177,7 +177,6 @@ fs_hvsr_util_nextdirentry:
 	ror
 	clc
 	ror
-	inc
 
 	cmp #$07                           ; mark some file types (not SEQ/PRG/USR/REL/CBM/DIR) as read-only
 	bcc @detect_attributes

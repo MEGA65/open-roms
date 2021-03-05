@@ -37,10 +37,11 @@ dir_end:                     ; 19 bytes
 
 dir_types:
 
-	!pet "seq", $00          ; SEQ
-	!pet "prg", $00          ; PRG
-	!pet "usr", $00          ; USR
-	!pet "rel", $00          ; REL
+	!pet "del", $00          ; deleted file
+	!pet "seq", $00          ; sequential file
+	!pet "prg", $00          ; program (executable)
+	!pet "usr", $00          ; user type
+	!pet "rel", $00          ; random access file
 	!pet "cbm", $00          ; CBM-style partition
 	!pet "dir", $00          ; directory
 

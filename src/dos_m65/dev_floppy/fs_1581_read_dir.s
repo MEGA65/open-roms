@@ -147,10 +147,10 @@ fs_1581_read_dir:
 
 	ldy #$02                           ; start from determining file type
 	jsr code_LDA_nnnn_Y
+	beq fs_1581_read_dir               ; ignore deleted files (but allow DEL files in some cases)
 
 	tax
 	and #%00111111                     ; for checking, filter out special bits
-	beq fs_1581_read_dir               ; ignore deleted files
 	cmp #$06
 	bcs fs_1581_read_dir               ; ignore unknown file types
 

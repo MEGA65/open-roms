@@ -109,10 +109,10 @@
 	!addr FD_STATUS_IDX    = $806E ; - floppy
 	!addr RD_STATUS_IDX    = $806F ; - ram disk
 
+	; Various, most likely to be reworked
+
 	!addr SD_DESC          = $8070 ; current file descriptor
-
 	!addr FD_DIRENT        = $8071 ; directory entry to read, 0-15
-
 
 
 	; XXX Free space
@@ -173,9 +173,16 @@
 	!addr FD_STATUS_BUF    = $AEC0 ; - floppy
 	!addr RD_STATUS_BUF    = $AEF0 ; - ram disk
 
-	; Common DMA list
+	; Shared buffer metadata tables, 18 bytes each
 
-	!addr DMAJOB_LIST      = $AF20 ; 15 bytes, a general purpose DMA list
+	!addr BUFTAB_UNIT      = $AF20 ; which unit the buffer is assigned to
+	!addr BUFTAB_DEV       = $AF32 ; which device within the unit
+	!addr BUFTAB_TRACK     = $AF44 ; which track (or other kind of handle)
+	!addr BUFTAB_SECTOR    = $AF56 ; which sector is stored in the first half of the buffer
+
+	; Common DMA list, 15 bytes
+
+	!addr DMAJOB_LIST      = $AF68
 	!addr DMAJOB_SRC_MB    = DMAJOB_LIST+2
 	!addr DMAJOB_DST_MB    = DMAJOB_LIST+4
 	!addr DMAJOB_SIZE      = DMAJOB_LIST+7    ; keep $0200 here
@@ -183,7 +190,7 @@
 	!addr DMAJOB_DST_ADDR  = DMAJOB_LIST+12
 
 	;
-	; Reserved 20 KB for floppy track buffers + some area for track metadata
+	; Reserved 20 KB for floppy track buffers + some area still free
 	;
 
-	!addr XX_REMAINING     = $AF2F
+	!addr XX_REMAINING     = $AF87

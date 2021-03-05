@@ -81,5 +81,15 @@ dev_fd_util_readsector:
 
 	jsr util_dma_launch_from_hwbuf    ; execute DMA job
 
+	; Fill-in metadata for buffer #1
+
+	lda #$00
+	sta BUFTAB_DEV+1
+	lda PAR_TRACK
+	sta BUFTAB_TRACK+1
+	lda PAR_SECTOR
+	and #%11111110
+	sta BUFTAB_SECTOR+1
+
 	clc
 	rts

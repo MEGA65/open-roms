@@ -94,6 +94,13 @@ fs_1581_read_dir_open:
 	lda #$08
 	sta FD_DIRENT
 
+	; Make sure the 1st sector in buffer points to 2nd one
+
+	lda #40
+	sta SHARED_BUF_1+0
+	lda #03
+	sta SHARED_BUF_1+1
+
 	; End
 
 	jmp dos_EXIT_CLC
@@ -108,7 +115,7 @@ fs_1581_read_dir:
 	cmp #$08
 	beq @get_sector_lo
 	cmp #$10
-	beq @get_sector_hi
+	+beq @get_sector_hi
 
 	; FALLTROUGH
 
@@ -188,15 +195,68 @@ fs_1581_read_dir:
 
 @get_sector_lo:
 
-	; XXX provide implementation
+	; Check if this was the last sector
+
+	lda SHARED_BUF_1+0
+	beq fs_1581_read_dir_blocksfree
+	lda SHARED_BUF_1+1
+	cmp #$FF
+	beq fs_1581_read_dir_blocksfree
+
+	; Transition from 1st half of the buffer, to (possibly) the second one
+	
+	lda SHARED_BUF_1+0
+	cmp BUFTAB_TRACK+1
+	bne @get_sector_lo_next
+
+	lda SHARED_BUF_1+1	
+	dec
+	cmp BUFTAB_SECTOR+1
+	bne @get_sector_lo_next
+
+	; It's OK, we can transition to the upper half of the buffer
 
 	lda FD_DIRENT
-	bra @cont
+	jmp @cont
+
+@get_sector_lo_next:
+
+	lda SHARED_BUF_1+0
+	sta PAR_TRACK
+	lda SHARED_BUF_1+1
+	sta PAR_SECTOR
+	bra @get_sector_common
 
 @get_sector_hi:
 
-	; XXX provide implementation
+	; Check if this was the last sector
 
+	lda SHARED_BUF_1+$100+0
+	beq fs_1581_read_dir_blocksfree
+	lda SHARED_BUF_1+$100+1
+	cmp #$FF
+	beq fs_1581_read_dir_blocksfree
+
+	; Load new sector
+
+	lda SHARED_BUF_1+$100+0
+	sta PAR_TRACK
+	lda SHARED_BUF_1+$100+1
+	sta PAR_SECTOR
+
+@get_sector_common:
+
+	jsr dev_fd_util_readsector         ; XXX handle read errors
+
+	; Set new FD_DIRENT
+
+	lda PAR_SECTOR
+	and #$01
+	beq @2
+	lda #$08
+@2:
+	sta FD_DIRENT
+	jmp @cont
 
 fs_1581_read_dir_blocksfree:
 

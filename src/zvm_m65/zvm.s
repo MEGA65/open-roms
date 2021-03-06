@@ -52,7 +52,7 @@ ZVM: ; entry point
 
 	; Check if extended memory is present
 
-	; XXX enable test jsr ZVM_memtest
+	jsr ZVM_memtest
 
 	; Generate CPU tables, reset the CPU
 

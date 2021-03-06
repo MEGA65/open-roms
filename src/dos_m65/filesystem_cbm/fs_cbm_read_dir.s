@@ -1,10 +1,10 @@
 
 ;
-; Hypervisor virtual filesystem - reading directory
+; CBM/CMD virtual filesystem - reading directory
 ;
 
 
-fs_1581_read_dir_open:
+fs_cbm_read_dir_open:
 
 	; Try to read track 40, sector 0 (disk header)
 
@@ -13,7 +13,7 @@ fs_1581_read_dir_open:
 	lda #$00
 	sta PAR_SECTOR
 
-	jsr dev_fd_util_readsector         ; XXX handle read errors
+	jsr lowlevel_readsector            ; XXX handle read errors
 
 	; Create the first directory listing entry (title, id)
 
@@ -78,7 +78,7 @@ fs_1581_read_dir_open:
 	lda #$02
 	sta PAR_SECTOR
 
-	jsr dev_fd_util_readsector         ; XXX handle read errors
+	jsr lowlevel_readsector            ; XXX handle read errors
 
 	; Copy 2nd BAM sector to the cache
 
@@ -106,7 +106,7 @@ fs_1581_read_dir_open:
 	jmp dos_EXIT_CLC
 
 
-fs_1581_read_dir:
+fs_cbm_read_dir:
 
 	lda FD_DIRENT
 
@@ -147,12 +147,12 @@ fs_1581_read_dir:
 
 	ldy #$02                           ; start from determining file type
 	jsr code_LDA_nnnn_Y
-	beq fs_1581_read_dir               ; ignore deleted files (but allow DEL files in some cases)
+	beq fs_cbm_read_dir                ; ignore deleted files (but allow DEL files in some cases)
 
 	tax
 	and #%00111111                     ; for checking, filter out special bits
 	cmp #$06
-	bcs fs_1581_read_dir               ; ignore unknown file types
+	bcs fs_cbm_read_dir                ; ignore unknown file types
 
 	stx PAR_FTYPE
 
@@ -198,10 +198,10 @@ fs_1581_read_dir:
 	; Check if this was the last sector
 
 	lda SHARED_BUF_1+0
-	beq fs_1581_read_dir_blocksfree
+	beq fs_cbm_read_dir_blocksfree
 	lda SHARED_BUF_1+1
 	cmp #$FF
-	beq fs_1581_read_dir_blocksfree
+	beq fs_cbm_read_dir_blocksfree
 
 	; Transition from 1st half of the buffer, to (possibly) the second one
 	
@@ -232,10 +232,10 @@ fs_1581_read_dir:
 	; Check if this was the last sector
 
 	lda SHARED_BUF_1+$100+0
-	beq fs_1581_read_dir_blocksfree
+	beq fs_cbm_read_dir_blocksfree
 	lda SHARED_BUF_1+$100+1
 	cmp #$FF
-	beq fs_1581_read_dir_blocksfree
+	beq fs_cbm_read_dir_blocksfree
 
 	; Load new sector
 
@@ -246,7 +246,7 @@ fs_1581_read_dir:
 
 @get_sector_common:
 
-	jsr dev_fd_util_readsector         ; XXX handle read errors
+	jsr lowlevel_readsector         ; XXX handle read errors
 
 	; Set new FD_DIRENT
 
@@ -258,7 +258,7 @@ fs_1581_read_dir:
 	sta FD_DIRENT
 	jmp @cont
 
-fs_1581_read_dir_blocksfree:
+fs_cbm_read_dir_blocksfree:
 
 	; Copy the 'BLOCKS FREE' line
 

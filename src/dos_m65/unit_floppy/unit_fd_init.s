@@ -4,7 +4,7 @@
 ;
 
 
-dev_fd_init:
+unit_fd_init:
 
 	; Copy status string
 

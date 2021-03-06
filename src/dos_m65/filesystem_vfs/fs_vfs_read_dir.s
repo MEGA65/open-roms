@@ -4,7 +4,7 @@
 ;
 
 
-fs_hvsr_read_dir_open:
+fs_vfs_read_dir_open:
 
 	; Open the directory
 
@@ -44,23 +44,23 @@ fs_hvsr_read_dir_open:
 
 	jmp dos_EXIT_CLC
 
-fs_hvsr_read_dir:
+fs_vfs_read_dir:
 
 	; Read dirent structure into $1000, process it, restore the memory content.
 	; Starting at $1000 VIC sees chargen, so this should be a safe place
 
-	jsr fs_hvsr_direntmem_prepare
-	jsr fs_hvsr_util_nextdirentry
-	jsr fs_hvsr_direntmem_restore      ; processor status is preserved
+	jsr fs_vfs_direntmem_prepare
+	jsr fs_vfs_nextdirentry
+	jsr fs_vfs_direntmem_restore      ; processor status is preserved
 
 	; If nothing to read, output 'blocks free'
 
-	+bcs fs_hvsr_read_dir_blocksfree
+	+bcs fs_vfs_read_dir_blocksfree
 
 	; Check if file name matches the filter
 
 	jsr util_dir_filter
-	bne fs_hvsr_read_dir               ; if does not match, try the next entry
+	bne fs_vfs_read_dir               ; if does not match, try the next entry
 
 	; Otherwise, convert the file length from bytes to blocks to display
 
@@ -84,7 +84,7 @@ fs_hvsr_read_dir:
 	clc
 	rts
 
-fs_hvsr_read_dir_blocksfree:
+fs_vfs_read_dir_blocksfree:
 
 	; Set pointer to 'BLOCKS FREE.' line
 
@@ -117,7 +117,7 @@ fs_hvsr_read_dir_blocksfree:
 ; Helper routines
 ;
 
-fs_hvsr_direntmem_prepare:
+fs_vfs_direntmem_prepare:
 
 	ldx #$00
 @1:
@@ -128,7 +128,7 @@ fs_hvsr_direntmem_prepare:
 
 	rts
 
-fs_hvsr_direntmem_restore:
+fs_vfs_direntmem_restore:
 
 	php
 

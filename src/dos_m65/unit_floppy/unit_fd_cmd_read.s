@@ -4,17 +4,17 @@
 ;
 
 
-dev_fd_cmd_READ:
+unit_fd_cmd_READ:
 
 	lda FD_MODE
 	cmp #$03
-	+beq fs_1581_read_file
+	+beq fs_cbm_read_file
 
 	lda FD_DIR_PHASE
 	cmp #$01
-	+beq fs_1581_read_dir
+	+beq fs_cbm_read_dir
 	cmp #$02
-	+beq fs_1581_read_dir_blocksfree
+	+beq fs_cbm_read_dir_blocksfree
 
 	sec ; mark EOI
 	rts

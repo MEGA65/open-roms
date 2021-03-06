@@ -4,7 +4,7 @@
 ;
 
 
-dev_sd_cmd_CLOSE:
+unit_sd_cmd_CLOSE:
 
 	; XXX provide implementation
 

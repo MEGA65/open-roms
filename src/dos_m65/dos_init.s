@@ -41,9 +41,9 @@ dos_INIT:
 
 	; Initialize device handlers
 
-	jsr dev_sd_init
-	jsr dev_fd_init
-	jsr dev_rd_init
+	jsr unit_sd_init
+	jsr unit_fd_init
+	jsr unit_rd_init
 
 	; Initialize DMA list
 

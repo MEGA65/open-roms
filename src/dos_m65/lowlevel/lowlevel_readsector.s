@@ -1,8 +1,8 @@
 
-; Read a single sector from a floppy drive
+; Read a single sector from a block device
 
 
-dev_fd_util_readsector:
+lowlevel_readsector:
 
 	; Select FDD sector as buffer
 

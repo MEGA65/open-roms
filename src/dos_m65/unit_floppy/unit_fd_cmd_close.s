@@ -4,7 +4,7 @@
 ;
 
 
-dev_fd_cmd_CLOSE:
+unit_fd_cmd_CLOSE:
 
 	; XXX provide implementation
 

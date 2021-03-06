@@ -56,7 +56,7 @@ msg_ACPTR_read_SD:
 
 	ora SD_ACPTR_LEN+1
 	bne @3
-	jsr dev_sd_cmd_READ
+	jsr unit_sd_cmd_READ
 	bcc @3
 	jsr kernalstatus_EOI
 @3:
@@ -86,7 +86,7 @@ msg_ACPTR_read_FD:
 
 	ora FD_ACPTR_LEN+1
 	bne @3
-	jsr dev_fd_cmd_READ
+	jsr unit_fd_cmd_READ
 	bcc @3
 	jsr kernalstatus_EOI
 @3:

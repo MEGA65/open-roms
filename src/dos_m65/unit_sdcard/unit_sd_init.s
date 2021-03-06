@@ -4,7 +4,7 @@
 ;
 
 
-dev_sd_init:
+unit_sd_init:
 
 	; Copy initial status string
 

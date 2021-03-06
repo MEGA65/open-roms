@@ -4,7 +4,7 @@
 ;
 
 
-fs_hvsr_read_file_open:
+fs_vfs_read_file_open:
 
 	; Open the directory
 
@@ -28,12 +28,12 @@ fs_hvsr_read_file_open:
 	; Read dirent structures into $1000, find the first matching file
 	; Starting at $1000 VIC sees chargen, so this should be a safe place
 
-	jsr fs_hvsr_direntmem_prepare
+	jsr fs_vfs_direntmem_prepare
 
 @lp_find:
 
-	jsr fs_hvsr_util_nextdirentry      ; fetch the next file name
-	+bcs fs_hvsr_file_not_found
+	jsr fs_vfs_nextdirentry            ; fetch the next file name
+	+bcs fs_vfs_file_not_found
 
 	; Only accept files of type 'PRG', properly closed
 
@@ -49,9 +49,9 @@ fs_hvsr_read_file_open:
 
 	; Found the file - load it
 
-	jsr fs_hvsr_direntmem_restore     ; restore $1000 memory content
+	jsr fs_vfs_direntmem_restore       ; restore $1000 memory content
 
-	lda #$18                          ; dos_openfile
+	lda #$18                           ; dos_openfile
 	sta HTRAP00
 	+nop
 
@@ -62,15 +62,15 @@ fs_hvsr_read_file_open:
 	lda #$03                 ; mode: read file
 	sta SD_MODE
 
-	jsr fs_hvsr_read_file
+	jsr fs_vfs_read_file
 	jmp dos_EXIT
 
-fs_hvsr_read_file:
+fs_vfs_read_file:
 
 	; Read chunk of data to SD card buffer
 
 	ldx SD_DESC
-	lda #$1A                          ; dos_readfile
+	lda #$1A                           ; dos_readfile
 	sta HTRAP00
 	+nop
 
@@ -87,7 +87,7 @@ fs_hvsr_read_file:
 	ora SD_ACPTR_LEN+0
 	bne @copy
 
-	lda #$20                          ; dos_closefile
+	lda #$20                           ; dos_closefile
 	sta HTRAP00
 	+nop
 
@@ -106,7 +106,7 @@ fs_hvsr_read_file:
 
 	; Copy data to SHARED_BUF_0
 
-	lda #%10000000                    ; select SD card buffer
+	lda #%10000000                     ; select SD card buffer
 	tsb SD_BUFCTL
 
 	; Copy data using DMA job
@@ -120,21 +120,21 @@ fs_hvsr_read_file:
 	lda #$01
 	sta DMAJOB_DST_ADDR+2
 
-	jsr util_dma_launch_from_hwbuf    ; execute DMA job
+	jsr util_dma_launch_from_hwbuf     ; execute DMA job
 
 	clc
 	rts
 
-fs_hvsr_file_not_found:
+fs_vfs_file_not_found:
 
-	jsr fs_hvsr_direntmem_restore     ; restore $1000 memory content
+	jsr fs_vfs_direntmem_restore       ; restore $1000 memory content
 
     ldx SD_DESC
-	lda #$16                          ; dos_closedir
+	lda #$16                           ; dos_closedir
 	sta HTRAP00
 	+nop
 
-	lda #39                           ; file not found error
+	lda #39                            ; file not found error
 	jsr util_status_SD
 
 	lda #K_ERR_FILE_NOT_FOUND

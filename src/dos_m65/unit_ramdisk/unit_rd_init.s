@@ -4,7 +4,7 @@
 ;
 
 
-dev_rd_init:
+unit_rd_init:
 
 	; Copy status string
 

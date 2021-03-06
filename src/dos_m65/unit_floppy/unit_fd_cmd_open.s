@@ -4,14 +4,14 @@
 ;
 
 
-dev_sd_cmd_OPEN:
+unit_fd_cmd_OPEN:
 
 	lda #$01                 ; mode: receive command or file name
-	sta SD_MODE
+	sta FD_MODE
 
 	jmp dos_EXIT_CLC
 
-dev_sd_cmd_OPEN_EOI:
+unit_fd_cmd_OPEN_EOI:
 
 	; XXX this dispatcher is temporary
 
@@ -24,43 +24,30 @@ dev_sd_cmd_OPEN_EOI:
 	dey
 	bpl @lp1
 
-	; XXX add support for second card
+	; XXX add support for second floppy
 
-	lda SD_CMDFN_BUF
+	lda FD_CMDFN_BUF
 	cmp #'$'
-	beq dev_sd_cmd_OPEN_dir
+	beq unit_fd_cmd_OPEN_dir
 
 	; FALLTROUGH
 
-dev_sd_cmd_OPEN_file:
+unit_fd_cmd_OPEN_file:
 
-	; Copy the filter from command     XXX this should be moved to common part and deduplicated with directory opening
+	; XXX provide implementation
 
-	ldy #$00
-@lp1:
-	lda SD_CMDFN_BUF, y
-	cmp #$A0
-	beq @lp1_end
-	sta PAR_FPATTERN, y
-	iny
-	cpy #$10
-	bne @lp1
+	jmp dos_EXIT_CLC
 
-@lp1_end:
-
-	jmp fs_hvsr_read_file_open
-
-
-dev_sd_cmd_OPEN_dir:
+unit_fd_cmd_OPEN_dir:
 
 	lda #$02                 ; mode: read directory
-	sta SD_MODE
+	sta FD_MODE
 
 	; Copy the filter from command     XXX this should be moved to common part and deduplicated with file opening
 
 	ldy #$00
 @lp1:
-	lda SD_CMDFN_BUF+1, y
+	lda FD_CMDFN_BUF+1, y
 	cmp #$A0
 	beq @lp1_end
 	sta PAR_FPATTERN, y
@@ -70,4 +57,4 @@ dev_sd_cmd_OPEN_dir:
 
 @lp1_end:
 
-	jmp fs_hvsr_read_dir_open
+	jmp fs_cbm_read_dir_open

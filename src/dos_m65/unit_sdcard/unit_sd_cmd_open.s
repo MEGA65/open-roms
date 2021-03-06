@@ -4,14 +4,14 @@
 ;
 
 
-dev_fd_cmd_OPEN:
+unit_sd_cmd_OPEN:
 
 	lda #$01                 ; mode: receive command or file name
-	sta FD_MODE
+	sta SD_MODE
 
 	jmp dos_EXIT_CLC
 
-dev_fd_cmd_OPEN_EOI:
+unit_sd_cmd_OPEN_EOI:
 
 	; XXX this dispatcher is temporary
 
@@ -24,30 +24,21 @@ dev_fd_cmd_OPEN_EOI:
 	dey
 	bpl @lp1
 
-	; XXX add support for second floppy
+	; XXX add support for second card
 
-	lda FD_CMDFN_BUF
+	lda SD_CMDFN_BUF
 	cmp #'$'
-	beq dev_fd_cmd_OPEN_dir
+	beq unit_sd_cmd_OPEN_dir
 
 	; FALLTROUGH
 
-dev_fd_cmd_OPEN_file:
+unit_sd_cmd_OPEN_file:
 
-	; XXX provide implementation
-
-	jmp dos_EXIT_CLC
-
-dev_fd_cmd_OPEN_dir:
-
-	lda #$02                 ; mode: read directory
-	sta FD_MODE
-
-	; Copy the filter from command     XXX this should be moved to common part and deduplicated with file opening
+	; Copy the filter from command     XXX this should be moved to common part and deduplicated with directory opening
 
 	ldy #$00
 @lp1:
-	lda FD_CMDFN_BUF+1, y
+	lda SD_CMDFN_BUF, y
 	cmp #$A0
 	beq @lp1_end
 	sta PAR_FPATTERN, y
@@ -57,4 +48,26 @@ dev_fd_cmd_OPEN_dir:
 
 @lp1_end:
 
-	jmp fs_1581_read_dir_open
+	jmp fs_vfs_read_file_open
+
+
+unit_sd_cmd_OPEN_dir:
+
+	lda #$02                 ; mode: read directory
+	sta SD_MODE
+
+	; Copy the filter from command     XXX this should be moved to common part and deduplicated with file opening
+
+	ldy #$00
+@lp1:
+	lda SD_CMDFN_BUF+1, y
+	cmp #$A0
+	beq @lp1_end
+	sta PAR_FPATTERN, y
+	iny
+	cpy #$10
+	bne @lp1
+
+@lp1_end:
+
+	jmp fs_vfs_read_dir_open

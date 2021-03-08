@@ -78,7 +78,7 @@ fs_cbm_nextdirentry:
 	clc
 	rts
 
-@get_sector_lo:
+@get_sector_lo:              ; processing the 1st half of the buffer finished
 
 	; Check if this was the last sector
 
@@ -88,31 +88,16 @@ fs_cbm_nextdirentry:
 	cmp #$FF
 	beq @end_of_dir
 
-	; Transition from 1st half of the buffer, to (possibly) the second one
+	; Load the next sector
 	
 	lda SHARED_BUF_1+0
-	cmp BUFTAB_TRACK+1
-	bne @get_sector_lo_next
-
-	lda SHARED_BUF_1+1	
-	dec
-	cmp BUFTAB_SECTOR+1
-	bne @get_sector_lo_next
-
-	; It's OK, we can transition to the upper half of the buffer
-
-	lda FD_DIRENT
-	jmp @cont
-
-@get_sector_lo_next:
-
-	lda SHARED_BUF_1+0
-	sta PAR_TRACK
+	sta PAR_TRACK	
 	lda SHARED_BUF_1+1
 	sta PAR_SECTOR
+
 	bra @get_sector_common
 
-@get_sector_hi:
+@get_sector_hi:              ; processing the 2nd half of the buffer finished
 
 	; Check if this was the last sector
 
@@ -122,7 +107,7 @@ fs_cbm_nextdirentry:
 	cmp #$FF
 	beq @end_of_dir
 
-	; Load new sector
+	; Load the next sector
 
 	lda SHARED_BUF_1+$100+0
 	sta PAR_TRACK

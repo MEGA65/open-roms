@@ -1,8 +1,30 @@
 
-; Read a single sector from a block device
+; Read a sector pair from a block device
 
 
 lowlevel_readsector:
+
+	; XXX compare device and unit too
+
+	; Check if buffer contains data from given track
+
+	lda PAR_TRACK
+	cmp BUFTAB_TRACK+1
+	bne lowlevel_readsector_force
+ 
+	; Check if sectors match
+
+	lda PAR_SECTOR
+	and #%11111110
+	cmp BUFTAB_SECTOR+1
+	bne lowlevel_readsector_force
+
+	; Data already loaded into buffer - do nothing
+
+	clc
+	rts
+
+lowlevel_readsector_force:
 
 	; Select FDD sector as buffer
 

@@ -114,6 +114,8 @@
 	!addr SD_DESC          = $8070 ; current file descriptor
 	!addr FD_DIRENT        = $8071 ; directory entry to read, 0-15
 
+	!addr FD_LOADTRACK     = $8072 ; current track for file loading
+	!addr FD_LOADSECTOR    = $8073 ; current sector for file loading
 
 	; XXX Free space
 

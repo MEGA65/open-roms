@@ -65,9 +65,9 @@
 
 ;; #CONFIG# KEYCMD_HELP                "LIST"
 
-;; #CONFIG# KEYCMD_F9                  "@20$"
+;; #CONFIG# KEYCMD_F9                  "@28$"
 ;; #CONFIG# KEYCMD_F10                 "\5FL"
-;; #CONFIG# KEYCMD_F11                 "@21$"
+;; #CONFIG# KEYCMD_F11                 "@29$"
 ;; #CONFIG# KEYCMD_F12                 "\5FHF"
 ;; #CONFIG# KEYCMD_F13                 "JOYCRSR 2"
 ;; #CONFIG# KEYCMD_F14                 "BOOTCPM"
@@ -90,8 +90,8 @@
 
 ; --- Built-in DOS configuration
 
-;; #CONFIG# UNIT_SDCARD                20
-;; #CONFIG# UNIT_FLOPPY                21        ; work in progress
+;; #CONFIG# UNIT_SDCARD                28
+;; #CONFIG# UNIT_FLOPPY                29        ; work in progress
 ;; #CONFIG# UNIT_RAMDISK               0         ; do not change, DOS is not implemented yet
 
 

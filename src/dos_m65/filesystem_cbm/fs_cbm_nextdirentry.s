@@ -84,13 +84,9 @@ fs_cbm_nextdirentry:
 
 	lda SHARED_BUF_1+0
 	beq @end_of_dir
-	lda SHARED_BUF_1+1
-	cmp #$FF
-	beq @end_of_dir
 
 	; Load the next sector
 	
-	lda SHARED_BUF_1+0
 	sta PAR_TRACK	
 	lda SHARED_BUF_1+1
 	sta PAR_SECTOR
@@ -103,13 +99,9 @@ fs_cbm_nextdirentry:
 
 	lda SHARED_BUF_1+$100+0
 	beq @end_of_dir
-	lda SHARED_BUF_1+$100+1
-	cmp #$FF
-	beq @end_of_dir
 
 	; Load the next sector
 
-	lda SHARED_BUF_1+$100+0
 	sta PAR_TRACK
 	lda SHARED_BUF_1+$100+1
 	sta PAR_SECTOR

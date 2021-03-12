@@ -29,16 +29,32 @@ fs_cbm_read_file_open:
 
 	; XXX deduplicate code above with fs_cbm_read_dir_open
 
-	; Try to find the file
+	; Try to find the file, has to be PRG
+
+@lp_find:
 
 	jsr fs_cbm_nextdirentry
 	+bcs dos_EXIT
 
+	; Only accept files of type 'PRG', properly closed     XXX deduplicate with fs_vfs
+
+	lda PAR_FTYPE
+	and #%10111111 
+	cmp #$82
+	bne @lp_find
+
+	; Check if file name matches the filter     XXX deduplicate with fs_vfs
+
+	jsr util_dir_filter
+	bne @lp_find                       ; if does not match, try the next entry
+
+	; Found the file - load it, start from fetching initial track/sector
 
 
 
 
-	; XXX provide implementation
+
+	; XXX provide implementation, use FD_LOADTRACK and FD_LOADSECTOR
 
 	jmp dos_EXIT_SEC
 

@@ -50,6 +50,7 @@ fs_cbm_read_file_open:
 
 	; Found the file - load it, start from fetching initial track/sector
 
+	inc $D020
 
 
 

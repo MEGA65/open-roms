@@ -34,9 +34,22 @@ unit_fd_cmd_OPEN_EOI:
 
 unit_fd_cmd_OPEN_file:
 
-	; XXX provide implementation
+	; Copy the filter from command     XXX this should be moved to common part and deduplicated with directory opening
 
-	jmp dos_EXIT_CLC
+	ldy #$00
+@lp1:
+	lda FD_CMDFN_BUF, y
+	cmp #$A0
+	beq @lp1_end
+	sta PAR_FPATTERN, y
+	iny
+	cpy #$10
+	bne @lp1
+
+@lp1_end:
+
+	jmp fs_cbm_read_file_open
+
 
 unit_fd_cmd_OPEN_dir:
 

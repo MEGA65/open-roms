@@ -49,7 +49,14 @@ fs_cbm_nextdirentry:
 	; XXX most likely copying is not necessary (compare all CBM and CMD filesystems) -
 	; XXX just make the hypervisor file system emulate these structures
 
-	ldy #$02                           ; start from determining file type
+	ldy #$00                           ; start from getting track and sector of file beginning
+	jsr code_LDA_nnnn_Y
+	sta FD_LOADTRACK
+	iny
+	jsr code_LDA_nnnn_Y
+	sta FD_LOADSECTOR
+
+	iny                                ; determining file type
 	jsr code_LDA_nnnn_Y
 	beq fs_cbm_nextdirentry            ; ignore deleted files (but allow DEL files in some cases)
 

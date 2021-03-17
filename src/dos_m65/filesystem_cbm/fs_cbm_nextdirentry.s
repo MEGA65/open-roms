@@ -49,14 +49,7 @@ fs_cbm_nextdirentry:
 	; XXX most likely copying is not necessary (compare all CBM and CMD filesystems) -
 	; XXX just make the hypervisor file system emulate these structures
 
-	ldy #$00                           ; start from getting track and sector of file beginning
-	jsr code_LDA_nnnn_Y
-	sta FD_LOADTRACK
-	iny
-	jsr code_LDA_nnnn_Y
-	sta FD_LOADSECTOR
-
-	iny                                ; determining file type
+	ldy #$02                           ; determining file type
 	jsr code_LDA_nnnn_Y
 	beq fs_cbm_nextdirentry            ; ignore deleted files (but allow DEL files in some cases)
 
@@ -67,14 +60,21 @@ fs_cbm_nextdirentry:
 
 	stx PAR_FTYPE
 
-	ldy #$1E                           ; now get file size in blocks
+	ldy #$1E                           ; get file size in blocks
 	jsr code_LDA_nnnn_Y
 	sta PAR_FSIZE_BLOCKS+0
 	iny
 	jsr code_LDA_nnnn_Y
 	sta PAR_FSIZE_BLOCKS+1
 
-	ldy #$05                           ; copy the file name
+	ldy #$03                           ; get file starting track and sector
+	jsr code_LDA_nnnn_Y
+	sta FD_LOADTRACK
+	iny
+	jsr code_LDA_nnnn_Y
+	sta FD_LOADSECTOR
+
+	iny                           ; copy the file name
 @lp1:
 	jsr code_LDA_nnnn_Y
 	sta PAR_FNAME-5,y

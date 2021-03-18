@@ -50,6 +50,9 @@ fs_cbm_read_file_open:
 
 	; Found the file, load it
 
+	lda #$03                 ; mode: read file
+	sta FD_MODE
+
 	lda FD_LOADTRACK
 	sta PAR_TRACK
 	lda FD_LOADSECTOR

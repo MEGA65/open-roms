@@ -64,7 +64,7 @@ fs_cbm_read_file:
 
 	; Fetch the next track/sector
 
-	lda FD_LOADSECTOR
+	lda PAR_SECTOR
 	and #$01
 	bne @part_2
 
@@ -72,8 +72,7 @@ fs_cbm_read_file:
 
 	; We were reading from the 1st half of the buffer
 
-	lda SHARED_BUF_1+1
-	sta PAR_SECTOR
+	ldx SHARED_BUF_1+1
 	lda SHARED_BUF_1+0
 	bra @common_chk
 
@@ -81,8 +80,7 @@ fs_cbm_read_file:
 
 	; We were reading from the 2nd half of the buffer
 
-	lda SHARED_BUF_1+$100+1
-	sta PAR_SECTOR
+	ldx SHARED_BUF_1+$100+1
 	lda SHARED_BUF_1+$100+0
 
 @common_chk:
@@ -96,6 +94,7 @@ fs_cbm_read_file:
 @common_load:
 
 	sta PAR_TRACK
+	stx PAR_SECTOR
 
 	; FALLTROUGH
 

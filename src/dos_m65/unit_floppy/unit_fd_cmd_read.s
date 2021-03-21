@@ -8,7 +8,7 @@ unit_fd_cmd_READ:
 
 	lda FD_MODE
 	cmp #$03
-	+beq fs_cbm_read_file
+	+beq fs_cbm_nextfileblock
 
 	lda FD_DIR_PHASE
 	cmp #$01

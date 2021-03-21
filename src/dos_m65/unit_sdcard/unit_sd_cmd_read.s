@@ -8,7 +8,7 @@ unit_sd_cmd_READ:
 
 	lda SD_MODE
 	cmp #$03
-	+beq fs_vfs_read_file
+	+beq fs_vfs_nextfileblock
 
 	lda SD_DIR_PHASE
 	cmp #$01

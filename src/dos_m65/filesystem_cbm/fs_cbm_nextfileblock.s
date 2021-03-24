@@ -69,7 +69,7 @@ fs_cbm_nextfileblock_got_ts:
 	; Sector with data is located in the 1st half of the buffer
 
 	lda SHARED_BUF_1+0
-	beq @exit
+	bne @exit
 
 	; Less than a full sector is used
 
@@ -83,7 +83,7 @@ fs_cbm_nextfileblock_got_ts:
 	inc FD_ACPTR_PTR+1
 
 	lda SHARED_BUF_1+$100+0
-	beq @exit
+	bne @exit
 
 	; Less than a full sector is used
 

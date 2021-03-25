@@ -91,8 +91,8 @@
 ; --- Built-in DOS configuration
 
 ;; #CONFIG# UNIT_SDCARD                28
-;; #CONFIG# UNIT_FLOPPY                29        ; work in progress
-;; #CONFIG# UNIT_RAMDISK               0         ; do not change, DOS is not implemented yet
+;; #CONFIG# UNIT_FLOPPY                29
+;; #CONFIG# UNIT_RAMDISK               0         ; do not change, ram disk is not implemented yet
 
 
 ; --- Debug options

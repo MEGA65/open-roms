@@ -29,13 +29,17 @@ fs_cbm_nextfileblock:
 
 @common_chk:
 
-	bne @common_load
+	bne fs_cbm_nextfileblock_common_load
+
+	; FALLTROUGH
+
+fs_cbm_nextfileblock_eof:
 
 	lda #$00                           ; end of file
 	sec
 	rts
 
-@common_load:
+fs_cbm_nextfileblock_common_load:
 
 	sta PAR_TRACK
 	stx PAR_SECTOR
@@ -87,9 +91,13 @@ fs_cbm_nextfileblock_got_ts:
 
 	; Less than a full sector is used
 
-	lda SHARED_BUF_1+$100+0
+	lda SHARED_BUF_1+$100+1
 
 @not_full_buf:
+
+	dec
+	cmp #$FF
+	beq fs_cbm_nextfileblock_eof
 
 	sta FD_ACPTR_LEN+0
 

@@ -69,7 +69,7 @@
 ;; #CONFIG# KEYCMD_F10                 "\5FL"
 ;; #CONFIG# KEYCMD_F11                 "@29$"
 ;; #CONFIG# KEYCMD_F12                 "\5FHF"
-;; #CONFIG# KEYCMD_F13                 "JOYCRSR 2"
+;; #CONFIG# KEYCMD_F13                 "@30$"
 ;; #CONFIG# KEYCMD_F14                 "BOOTCPM"
 
 
@@ -92,7 +92,7 @@
 
 ;; #CONFIG# UNIT_SDCARD                28
 ;; #CONFIG# UNIT_FLOPPY                29
-;; #CONFIG# UNIT_RAMDISK               0         ; do not change, ram disk is not implemented yet
+;; #CONFIG# UNIT_RAMDISK               30
 
 
 ; --- Debug options

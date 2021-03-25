@@ -23,6 +23,46 @@ unit_rd_init:
 	sta RD_STATUS_BUF,x
 	bne @1
 
+	; End of initialization, now try to load the initial RAM disk; first set file name
+
+	ldx #<ramdisk_filename
+	ldy #>ramdisk_filename
+
+	lda #$2E                           ; dos_setname
+	sta HTRAP00
+	+nop
+
+	; Try to find the file
+
+	jsr fs_vfs_direntmem_prepare
+
+	ldy #>FS_HVSR_DIRENT  ; XXX is it needed?
+
+	lda #$30                           ; dos_findfirst
+	sta HTRAP00
+	+nop
+
+	bcc @error_not_found               ; branch if file not found    XXX why it can't find the file?
+
+	; XXX load the file
+
+
+
+
+	lda #$20                           ; dos_closefile
+	sta HTRAP00
+	+nop
+
+	jsr fs_vfs_direntmem_restore
+
 	; End of initialization
 
 	rts
+
+
+@error_not_found:
+
+
+	; XXX set information about file not found
+
+	jmp fs_vfs_direntmem_restore

@@ -4,7 +4,7 @@
 ;
 
 
-dev_fd_cmd_READ:
+unit_rd_cmd_READ:
 
 	; XXX provide implementation
 

@@ -4,7 +4,7 @@
 ;
 
 
-dev_rd_init:
+unit_rd_init:
 
 	; Copy status string
 
@@ -20,7 +20,7 @@ dev_rd_init:
 @1:
 	inx
 	lda dos_sts_init_ramdisk,x
-	sta RD_STATUS_STR,x
+	sta RD_STATUS_BUF,x
 	bne @1
 
 	; End of initialization

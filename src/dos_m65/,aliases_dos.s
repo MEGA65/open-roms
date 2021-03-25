@@ -45,13 +45,13 @@
 	; Helper subroutines to fetch data
 
 	!addr code_LDA_nnnn_Y  = $8014 ; - LDA nnnn, Y instruction
-	!addr par_LDA_nnnn_Y   = $8015 ; - 2 bytes; address in buffer, ram disk
+	!addr par_LDA_nnnn_Y   = $8015 ; - 2 bytes; address
 	!addr code_RTS_04      = $8017 ; - RTS instruction
 
-	; Parameters for utilities/helkpers
+	; Parameters for utilities/helpers
 
-	!addr PAR_TRACK        = $8018 ; track number for status/error
-	!addr PAR_SECTOR       = $8019 ; sector number for status/error	
+	!addr PAR_TRACK        = $8018 ; track number, also for status/error
+	!addr PAR_SECTOR       = $8019 ; sector number, also for status/error	
 
 	!addr PAR_FSIZE_BYTES  = $801A ; 4 bytes - file size in bytes
 	!addr PAR_FSIZE_BLOCKS = $801E ; 2 bytes - file size in blocks
@@ -109,26 +109,90 @@
 	!addr FD_STATUS_IDX    = $806E ; - floppy
 	!addr RD_STATUS_IDX    = $806F ; - ram disk
 
-	!addr XX_STATUS_STR    = $8070
-	!addr SD_STATUS_STR    = $8070 ; status string for SD card, terminated by 0
-	!addr FD_STATUS_STR    = $80A0 ; status string for floppy drive, terminated by 0
-	!addr RD_STATUS_STR    = $80D0 ; status string for ram disk, terminated by 0
+	; Various, most likely to be reworked
+
+	!addr SD_DESC          = $8070 ; current file descriptor
+	!addr FD_DIRENT        = $8071 ; directory entry to read, 0-15
+
+	!addr FD_LOADTRACK     = $8072 ; current track for file loading
+	!addr FD_LOADSECTOR    = $8073 ; current sector for file loading
+
+	; XXX Free space
+
 
 	;
-	; Further pages
+	; Various buffers, caches, and other large memory chunks
 	;
 
-	!addr SD_CMDFN_BUF     = $8100 ; buffer for command and/or file name, 128 bytes, SD card
-	!addr FD_CMDFN_BUF     = $8180 ; buffer for command and/or file name, 128 bytes, floppy
-	!addr RD_CMDFN_BUF     = $8200 ; buffer for command and/or file name, 128 bytes, ram disk
 
-	!addr XX_DIR_ENTRY     = $8280 ; directory entry in BASIC format
-	!addr SD_DIR_ENTRY     = $8280 ; - SD card
-	!addr FD_DIR_ENTRY     = $82B0 ; - floppy
-	!addr RD_DIR_ENTRY     = $82E0 ; - ram disk
+	; General purpose buffers, 512 bytes each, each starts at page start - XXX dynamic alllocation to be written
 
-	!addr SD_MEMSHADOW     = $8310 ; 256 byte buffer for preserving original memory content
-	!addr SD_FILEBUF       = $8410 ; 512 byte buffer for file reading
+	!addr SHARED_BUF_0     = $8200 ; XXX temporarily hardcoded for usage by SD card
+	!addr SHARED_BUF_1     = $8400 ; XXX temporarily hardcoded for usage by floppy
+	!addr SHARED_BUF_2     = $8600
+	!addr SHARED_BUF_3     = $8800
+	!addr SHARED_BUF_4     = $8A00
+	!addr SHARED_BUF_5     = $8C00
+	!addr SHARED_BUF_6     = $8E00
+	!addr SHARED_BUF_7     = $9000
+	!addr SHARED_BUF_8     = $9200
+	!addr SHARED_BUF_9     = $9400
+	!addr SHARED_BUF_A     = $9600
+	!addr SHARED_BUF_B     = $9800
+	!addr SHARED_BUF_C     = $9A00
+	!addr SHARED_BUF_D     = $9C00
+	!addr SHARED_BUF_E     = $9E00
+	!addr SHARED_BUF_F     = $A000
 
-	!addr SD_DESC          = $8610 ; current file descriptor
+	; BAM cache for floppy drives; 2 KB (4 blocks) each, to cover up to ED floppies
 
+	!addr FD_BAM_CACHE_0   = $A200 ; - floppy disk 0 BAM
+	!addr SHARED_BUF_X0    = $A400 ; - buffer which can be used if disk is not ED 
+	!addr FD_BAM_CACHE_1   = $A600 ; - floppy disk 1 BAM
+	!addr SHARED_BUF_X1    = $A800 ; - buffer which can be used if disk is not ED
+
+	; Memory shadow, needed for SD card support
+
+	!addr SD_MEMSHADOW_BUF = $AA00 ; 256 byte buffer for preserving original memory content
+
+	; Command/filename buffers, 128 bytes each - XXX extend to 256 bytes (change implementation)
+
+	!addr SD_CMDFN_BUF     = $AB00 ; - SD card
+	!addr FD_CMDFN_BUF     = $AC00 ; - floppy
+	!addr RD_CMDFN_BUF     = $AD00 ; - ram disk
+
+	; Directory entry buffers, in BASIC format, $30 bytes each
+
+	!addr XX_DIRENT_BUF    = $AE00
+	!addr SD_DIRENT_BUF    = $AE00 ; - SD card
+	!addr FD_DIRENT_BUF    = $AE30 ; - floppy
+	!addr RD_DIRENT_BUF    = $AE60 ; - ram disk
+
+	; Status buffers, content terminated by 0, $30 bytes each
+
+	!addr XX_STATUS_BUF    = $AE90
+	!addr SD_STATUS_BUF    = $AE90 ; - SD card
+	!addr FD_STATUS_BUF    = $AEC0 ; - floppy
+	!addr RD_STATUS_BUF    = $AEF0 ; - ram disk
+
+	; Shared buffer metadata tables, 18 bytes each
+
+	!addr BUFTAB_UNIT      = $AF20 ; which unit the buffer is assigned to
+	!addr BUFTAB_DEV       = $AF32 ; which device within the unit
+	!addr BUFTAB_TRACK     = $AF44 ; which track (or other kind of handle)
+	!addr BUFTAB_SECTOR    = $AF56 ; which sector is stored in the first half of the buffer
+
+	; Common DMA list, 15 bytes
+
+	!addr DMAJOB_LIST      = $AF68
+	!addr DMAJOB_SRC_MB    = DMAJOB_LIST+2
+	!addr DMAJOB_DST_MB    = DMAJOB_LIST+4
+	!addr DMAJOB_SIZE      = DMAJOB_LIST+7    ; keep $0200 here
+	!addr DMAJOB_SRC_ADDR  = DMAJOB_LIST+9
+	!addr DMAJOB_DST_ADDR  = DMAJOB_LIST+12
+
+	;
+	; Reserved 20 KB for floppy track buffers + some area still free
+	;
+
+	!addr XX_REMAINING     = $AF87

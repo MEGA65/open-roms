@@ -4,7 +4,7 @@
 ;
 
 
-dev_rd_cmd_CLOSE:
+unit_rd_cmd_CLOSE:
 
 	; XXX provide implementation
 

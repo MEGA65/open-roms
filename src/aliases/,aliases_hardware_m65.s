@@ -29,6 +29,27 @@
 
 	!addr VIC_PALSEL      = $D070 ;          - palette selection register
 
+	; Floppy controller registers
+
+	!addr FDC_CONTROL     = $D080
+	!addr FDC_COMMAND     = $D081
+	!addr FDC_STATUS_A    = $D082
+	!addr FDC_STATUS_B    = $D083
+	!addr FDC_TRACK       = $D084
+	!addr FDC_SECTOR      = $D085
+	!addr FDC_SIDE        = $D086
+	!addr FDC_DATA        = $D087
+	!addr FDC_CLOCK       = $D088
+	!addr FDC_STEP        = $D089
+	!addr FDC_PCODE       = $D08A
+
+	!addr FDC_DBG0        = $D6A0
+	!addr FDC_DBG1        = $D6A1
+	!addr FDC_DATARATE    = $D6A2
+	!addr FDC_LAST_TRACK  = $D6A3
+	!addr FDC_LAST_SECTOR = $D6A4
+	!addr FDC_LAST_SIODE  = $D6A5
+
 	; Palette memory areas
 
 	!addr PALETTE_R       = $D100

@@ -63,9 +63,13 @@ SRCDIR_KERNAL  = $(SRCDIR_COMMON) \
 SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
                  src/dos_m65 \
                  src/dos_m65/assets \
-                 src/dos_m65/dev_floppy \
-                 src/dos_m65/dev_ramdisk \
-                 src/dos_m65/dev_sdcard \
+                 src/dos_m65/filesystem_cbm \
+                 src/dos_m65/filesystem_vfs \
+                 src/dos_m65/lowlevel \
+                 src/dos_m65/pseudoiec \
+                 src/dos_m65/unit_floppy \
+                 src/dos_m65/unit_ramdisk \
+                 src/dos_m65/unit_sdcard \
                  src/dos_m65/utils
 
 SRCDIR_MON_M65 = $(SRCDIR_COMMON) \
@@ -327,15 +331,17 @@ build/tools/%: tools/%.cc tools/common.h
 # Rules - CHARGEN
 
 $(TARGET_CHR_ORF): $(TOOL_PNGPREPARE) assets/8x8font.png
-	@$(TOOL_PNGPREPARE) charrom assets/8x8font.png $@ 1>build/pngprepare.log
+	@$(TOOL_PNGPREPARE) charrom assets/8x8font.png $@ 1>/dev/null
 
 $(TARGET_CHR_PXL): bin/chargen_pxlfont_2.3.rom
 	@cp $< $@
 
-build/chargen_openroms.patched: $(TOOL_PATCH_CHARGEN) $(TARGET_CHR_ORF)
+build/patched_chargen/openroms.pcg: $(TOOL_PATCH_CHARGEN) $(TARGET_CHR_ORF)
+	@mkdir -p build/patched_chargen
 	@$(TOOL_PATCH_CHARGEN) -i $(TARGET_CHR_ORF) -o $@ -n 7px-OpenROMs
 
-build/chargen_pxlfont.patched: $(TOOL_PATCH_CHARGEN) $(TARGET_CHR_PXL)
+build/patched_chargen/pxlfont.pcg: $(TOOL_PATCH_CHARGEN) $(TARGET_CHR_PXL)
+	@mkdir -p build/patched_chargen
 	@$(TOOL_PATCH_CHARGEN) -i $(TARGET_CHR_PXL) -o $@ -n 6px-PXLfont
 
 # Dependencies - BASIC, DOS, and KERNAL
@@ -699,21 +705,21 @@ build/symbols_hybrid_u64.vs: $(DIR_U64)/KERNAL_combined.vs
 
 # Rules - padding files
 
-build/padding_4_KB:
-	@mkdir -p build
+build/padding/4_KB:
+	@mkdir -p build/padding
 	@dd if=/dev/zero bs=4096 count=1 of=$@ status=none
 
-build/padding_8_KB:
-	@mkdir -p build
+build/padding/8_KB:
+	@mkdir -p build/padding
 	@dd if=/dev/zero bs=8192 count=1 of=$@ status=none
 
-build/padding_16_KB:
-	@mkdir -p build
+build/padding/16_KB:
+	@mkdir -p build/padding
 	@dd if=/dev/zero bs=8192 count=2 of=$@ status=none
 
 # Rules - external CRT images
 
-$(TARGET_GENCRT_X): $(SEG_LIST_GENCRT) $(CRT_BIN_LIST) build/padding_8_KB
+$(TARGET_GENCRT_X): $(SEG_LIST_GENCRT) $(CRT_BIN_LIST) build/padding/8_KB
 	@echo
 	@echo
 	@echo
@@ -724,14 +730,14 @@ $(TARGET_GENCRT_X): $(SEG_LIST_GENCRT) $(CRT_BIN_LIST) build/padding_8_KB
 	@cat assets/cartridge/header-seg0.bin   >> $@
 	@cat $(DIR_GENCRT)/basic.seg_1          >> $@
 	@cat assets/cartridge/header-seg1.bin   >> $@
-	@cat build/padding_8_KB                 >> $@
+	@cat build/padding/8_KB                 >> $@
 	@cat assets/cartridge/header-seg2.bin   >> $@
 	@cat $(DIR_GENCRT)/kernal.seg_1         >> $@
 	@cat assets/cartridge/header-seg3.bin   >> $@
-	@cat build/padding_8_KB                 >> $@
+	@cat build/padding/8_KB                 >> $@
 	@echo
 
-$(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
+$(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding/8_KB
 	@echo
 	@echo
 	@echo
@@ -742,11 +748,11 @@ $(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
 	@cat assets/cartridge/header-seg0.bin   >> $@
 	@cat $(DIR_U64CRT)/basic.seg_1          >> $@
 	@cat assets/cartridge/header-seg1.bin   >> $@
-	@cat build/padding_8_KB                 >> $@
+	@cat build/padding/8_KB                 >> $@
 	@cat assets/cartridge/header-seg2.bin   >> $@
 	@cat $(DIR_U64CRT)/kernal.seg_1         >> $@
 	@cat assets/cartridge/header-seg3.bin   >> $@
-	@cat build/padding_8_KB                 >> $@
+	@cat build/padding/8_KB                 >> $@
 	@echo
 
 # Rules - MEGA65 platform specific
@@ -763,43 +769,43 @@ $(TARGET_U64CRT_X): $(SEG_LIST_U64CRT) $(CRT_BIN_LIST) build/padding_8_KB
 # $1:$2000 - 24 KB - Z80 Virtual Machine for CP/M
 # $1:$8000 - 32 KB - unused for now, padding; most likely will be used for BASIC extensions
 
-$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding_16_KB $(TARGET_CHR_ORF) build/chargen_openroms.patched $(TARGET_CHR_PXL) build/chargen_pxlfont.patched
+$(TARGET_M65_x_ORF) $(TARGET_M65_x_PXL): $(SEG_LIST_M65) build/padding/16_KB $(TARGET_CHR_ORF) build/patched_chargen/openroms.pcg $(TARGET_CHR_PXL) build/patched_chargen/pxlfont.pcg
 	@echo
 	@echo
 	@echo
 	@echo //-------------------------------------------------------------------------------------------
 	@echo // Making ROM image for MEGA65 - with Open ROMs chargen
 	@echo //-------------------------------------------------------------------------------------------
-	@cat $(DIR_M65)/dos.seg_1             > $(TARGET_M65_x_ORF)
-	@cat $(DIR_M65)/kernal.seg_1         >> $(TARGET_M65_x_ORF)
-	@cat $(DIR_M65)/basic.seg_1          >> $(TARGET_M65_x_ORF)
-	@cat build/chargen_openroms.patched  >> $(TARGET_M65_x_ORF)
-	@cat $(DIR_M65)/basic.seg_0          >> $(TARGET_M65_x_ORF)
-	@cat $(DIR_M65)/kernal.seg_C         >> $(TARGET_M65_x_ORF)
-	@cat $(TARGET_CHR_ORF)               >> $(TARGET_M65_x_ORF)
-	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_ORF)
-	@cat $(DIR_M65)/mon.seg_1            >> $(TARGET_M65_x_ORF)
-	@cat $(DIR_M65)/zvm.seg_1            >> $(TARGET_M65_x_ORF)
-	@cat build/padding_16_KB             >> $(TARGET_M65_x_ORF)
-	@cat build/padding_16_KB             >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/dos.seg_1                > $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/kernal.seg_1            >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/basic.seg_1             >> $(TARGET_M65_x_ORF)
+	@cat build/patched_chargen/openroms.pcg >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/basic.seg_0             >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/kernal.seg_C            >> $(TARGET_M65_x_ORF)
+	@cat $(TARGET_CHR_ORF)                  >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/kernal.seg_0            >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/mon.seg_1               >> $(TARGET_M65_x_ORF)
+	@cat $(DIR_M65)/zvm.seg_1               >> $(TARGET_M65_x_ORF)
+	@cat build/padding/16_KB                >> $(TARGET_M65_x_ORF)
+	@cat build/padding/16_KB                >> $(TARGET_M65_x_ORF)
 	@echo
 	@echo
 	@echo
 	@echo //-------------------------------------------------------------------------------------------
 	@echo // Making ROM image for MEGA65 - with PXL font chargen
 	@echo //-------------------------------------------------------------------------------------------
-	@cat $(DIR_M65)/dos.seg_1             > $(TARGET_M65_x_PXL)
-	@cat $(DIR_M65)/kernal.seg_1         >> $(TARGET_M65_x_PXL)
-	@cat $(DIR_M65)/basic.seg_1          >> $(TARGET_M65_x_PXL)
-	@cat build/chargen_pxlfont.patched   >> $(TARGET_M65_x_PXL)
-	@cat $(DIR_M65)/basic.seg_0          >> $(TARGET_M65_x_PXL)
-	@cat $(DIR_M65)/kernal.seg_C         >> $(TARGET_M65_x_PXL)
-	@cat $(TARGET_CHR_PXL)               >> $(TARGET_M65_x_PXL)
-	@cat $(DIR_M65)/kernal.seg_0         >> $(TARGET_M65_x_PXL)
-	@cat $(DIR_M65)/mon.seg_1            >> $(TARGET_M65_x_PXL)
-	@cat $(DIR_M65)/zvm.seg_1            >> $(TARGET_M65_x_PXL)
-	@cat build/padding_16_KB             >> $(TARGET_M65_x_PXL)
-	@cat build/padding_16_KB             >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/dos.seg_1                > $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/kernal.seg_1            >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/basic.seg_1             >> $(TARGET_M65_x_PXL)
+	@cat build/patched_chargen/pxlfont.pcg  >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/basic.seg_0             >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/kernal.seg_C            >> $(TARGET_M65_x_PXL)
+	@cat $(TARGET_CHR_PXL)                  >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/kernal.seg_0            >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/mon.seg_1               >> $(TARGET_M65_x_PXL)
+	@cat $(DIR_M65)/zvm.seg_1               >> $(TARGET_M65_x_PXL)
+	@cat build/padding/16_KB                >> $(TARGET_M65_x_PXL)
+	@cat build/padding/16_KB                >> $(TARGET_M65_x_PXL)
 	@echo
 
 # Rules - platform 'Commander X16' specific

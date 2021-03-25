@@ -52,7 +52,7 @@ msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 	lda #$A0
 	sta SD_CMDFN_BUF,x
 	plp
-	+bcs dev_sd_cmd_OPEN_EOI           ; if EOI - execute command
+	+bcs unit_sd_cmd_OPEN_EOI          ; if EOI - execute command
 	jmp dos_EXIT_CLC
 
 msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
@@ -67,7 +67,7 @@ msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
 	lda #$A0
 	sta FD_CMDFN_BUF,x
 	plp
-	+bcs dev_fd_cmd_OPEN_EOI           ; if EOI - execute command
+	+bcs unit_fd_cmd_OPEN_EOI          ; if EOI - execute command
 	jmp dos_EXIT_CLC
 
 msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
@@ -82,7 +82,7 @@ msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 	lda #$A0
 	sta RD_CMDFN_BUF,x
 	plp
-	+bcs dev_rd_cmd_OPEN_EOI           ; if EOI - execute command
+	+bcs unit_rd_cmd_OPEN_EOI          ; if EOI - execute command
 	jmp dos_EXIT_CLC
 
 msg_CIOUT_cmdfn_vectab:

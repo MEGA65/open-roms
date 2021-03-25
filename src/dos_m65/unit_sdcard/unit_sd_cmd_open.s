@@ -4,14 +4,14 @@
 ;
 
 
-dev_sd_cmd_OPEN:
+unit_sd_cmd_OPEN:
 
 	lda #$01                 ; mode: receive command or file name
 	sta SD_MODE
 
 	jmp dos_EXIT_CLC
 
-dev_sd_cmd_OPEN_EOI:
+unit_sd_cmd_OPEN_EOI:
 
 	; XXX this dispatcher is temporary
 
@@ -28,11 +28,11 @@ dev_sd_cmd_OPEN_EOI:
 
 	lda SD_CMDFN_BUF
 	cmp #'$'
-	beq dev_sd_cmd_OPEN_dir
+	beq unit_sd_cmd_OPEN_dir
 
 	; FALLTROUGH
 
-dev_sd_cmd_OPEN_file:
+unit_sd_cmd_OPEN_file:
 
 	; Copy the filter from command     XXX this should be moved to common part and deduplicated with directory opening
 
@@ -48,10 +48,10 @@ dev_sd_cmd_OPEN_file:
 
 @lp1_end:
 
-	jmp fs_hvsr_read_file_open
+	jmp fs_vfs_read_file_open
 
 
-dev_sd_cmd_OPEN_dir:
+unit_sd_cmd_OPEN_dir:
 
 	lda #$02                 ; mode: read directory
 	sta SD_MODE
@@ -70,4 +70,4 @@ dev_sd_cmd_OPEN_dir:
 
 @lp1_end:
 
-	jmp fs_hvsr_read_dir_open
+	jmp fs_vfs_read_dir_open

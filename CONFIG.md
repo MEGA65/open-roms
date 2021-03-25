@@ -175,6 +175,12 @@ Enable this option if you are using a tape interface adapter with some audio sig
 
 Enable this option if you are using a tape interface adapter lacking tape motor control (most likely every adapter currently being sold) - this will eliminate the need to quickly press space when the program header information gets displayed. Note: if you are using a cassette player with REM port, and your adapter is connected to this port too, than you do not need this option.
 
+## Additional storage
+
+### `UNIT_SDCARD`, `UNIT_FLOPPY`, `UNIT_RAMDISK`
+
+MEGA65 specific pseudo-IEC devices, handled by internal DOS (work in progress). If set to 0, given unit is disabled. Otherwise - assigns IEC unit number to the given storage.
+
 ## Sound support
 
 The original Commodore 64 had one SID sound chip installed. However, mods exists to add more of them for improved sound capabilities. Emulators and FPGA machines typically allow to simulate more than one too. Unfortunately, there is no standard regarding how these additional chips are visible in the processor address space, and there is no sane way to detect it - thus, it has to be configurable.

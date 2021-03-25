@@ -4,10 +4,6 @@
 ;
 
 
-!set CONFIG_UNIT_FLOPPY  = 0 ; XXX floppy not supported yet
-!set CONFIG_UNIT_RAMDISK = 0 ; XXX RAM disk not supported yet
-
-
 dos_INIT:
 
 	; Safer version of 'dos_ENTER' - does not affect speed related registers
@@ -43,11 +39,28 @@ dos_INIT:
 	sta IDX1_TALKER
 	sta IDX2_TALKER
 
-	; Initialize device handlers
+	; Initialize buffer metadata
 
-	jsr dev_sd_init
-	jsr dev_fd_init
-	jsr dev_rd_init
+	lda #$0
+	ldx #17
+@2:
+	sta BUFTAB_TRACK, x
+	dec
+	sta BUFTAB_UNIT, x
+	sta BUFTAB_DEV, x
+	sta BUFTAB_SECTOR, x
+	inc
+	dex
+	bpl @2
+
+	; Initialize DMA list
+
+	ldy #$08
+@3:
+	lda dos_dmalist_template, y
+	sta DMAJOB_LIST, y
+	dey
+	bpl @3:
 
 	; Initialize helper code in RAM
 
@@ -64,6 +77,12 @@ dos_INIT:
 	sta code_RTS_02
 	sta code_RTS_03
 	sta code_RTS_04
+
+	; Initialize device handlers
+
+	jsr unit_sd_init
+	jsr unit_fd_init
+	jsr unit_rd_init
 
 	; Safer version of 'dos_EXIT' - does not affect speed related registers
 

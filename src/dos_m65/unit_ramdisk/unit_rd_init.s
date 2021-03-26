@@ -1,10 +1,11 @@
 
 ;
-; Initializes DOS part of ram disk
+; Initializes DOS part of RAM disk
 ;
 
 
 unit_rd_init:
+
 
 	; Copy status string
 
@@ -23,41 +24,98 @@ unit_rd_init:
 	sta RD_STATUS_BUF,x
 	bne @1
 
-	; End of initialization, now try to load the initial RAM disk; first set file name
+	; FALLTROUGH
 
-	ldy #>ramdisk_filename
-	ldx #<ramdisk_filename
-	lda #$2E                           ; dos_setname
-	sta HTRAP00
-	+nop
-	bcc @error_not_found
+unit_rd_init_test_ram:                 ; non-destructive ATTIC/CELLAR RAM test
 
-	; Try to find the file
+	; Preserve temporary address area on stack
 
-	lda #$34                           ; dos_findfile
-	sta HTRAP00
-	+nop
-	bcc @error_not_found               ; branch if file not found    XXX why it can't find the file?
+	ldx #$03
+@2:
+	lda PNTR, x
+	pha
+	dex
+	bpl @2
 
-	; XXX load the file
+	; For the start, mark extended RAM as not present
 
+	inx
+	stx RAM_ATTIC                      ; set ATTIC/CELLAR RAM as not present
+	stx RAM_CELLAR
 
-;@x:
-;	inc $D020
-;	bra @x
+	; Prepare address - ATTIC RAM, $0800:$0000
 
+	stx PNTR+0
+	stx PNTR+1
+	stx PNTR+2
+	lda #$08
+	sta PNTR+3
 
-	; lda #$20                           ; dos_closefile
-	; sta HTRAP00
-	; +nop
+	ldz #$00
+
+	; Test for ATTIC RAM
+
+	jsr @perform_ram_test
+	bne @done_attic
+	dec RAM_ATTIC                      ; test passed
+
+@done_attic:
+
+	; Prepare address - CELLAR RAM, $0880:$0000
+
+	lda #$80
+	sta PNTR+2
+
+	; Test for cellar RAM
+
+	jsr @perform_ram_test
+	bne @done_cellar
+	dec RAM_CELLAR                     ; test passed
+
+@done_cellar:
+
+	; Restore temporary address area content
+
+	ldx #$00
+@3:
+	pla
+	sta PNTR, x
+	inx
+	cpx #$04
+	bne @3
 
 	; End of initialization
 
 	rts
 
+@perform_ram_test:
 
-@error_not_found:
+	; Try to change one byte in extended RAM
 
-	; XXX set information about file not found
+	lda [PNTR], z
+	tax
+	eor #$FF
+	sta [PNTR], z
 
+	; Make sure the cache does not contain the value any more
+
+	tay
+	dez
+	lda [PNTR], z
+	inz
+	tya
+
+	; Check if byte still contains the new value
+
+	cmp [PNTR], z
+	php
+
+	; Restore byte content
+
+	txa
+	sta [PNTR], z
+	
+	; Return test result
+
+	plp
 	rts

@@ -27,7 +27,12 @@
 	!addr REG_Y            = $8007
 	!addr REG_Z            = $8008
 
-	; Reserved: $8009 - $800C
+	; System configuration
+
+	!addr RAM_ATTIC        = $8009 ; $8000000-$87FFFFF RAM status; 0 = not present, $FF = present
+	!addr RAM_CELLAR       = $800A ; $8800000-$8FFFFFF RAM status; 0 = not present, $FF = present
+
+	; Reserved: $800B - $800C
 
 	; General DOS configuration
 

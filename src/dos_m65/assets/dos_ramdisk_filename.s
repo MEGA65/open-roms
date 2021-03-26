@@ -5,5 +5,4 @@
 
 ramdisk_filename:
 
-	!pet "ramdisk.dnp"
-	!byte $00
+	!pet "ramdisk.dnp", 0

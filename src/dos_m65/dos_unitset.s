@@ -14,17 +14,16 @@ dos_UNITSET:
 @ok:
 	jsr dos_ENTER
 
-	; XXX do not allow illegal device numbers... above 30 or below 8 ?
+	; XXX do not allow illegal device numbers (above 30 or below 8)
 
 	; Check what kind of device was requested
 
 	cmp #$00
 	beq dos_UNITSET_sdcard
-	; XXX devices below are not implemented yet
-	; cmp #$01
-	; beq dos_UNITSET_floppy
-	; cmp #$02
-	; beq dos_UNITSET_ramdisk
+	cmp #$01
+	beq dos_UNITSET_floppy
+	cmp #$02
+	beq dos_UNITSET_ramdisk
 
 	jmp dos_EXIT_SEC
 
@@ -38,12 +37,13 @@ dos_UNITSET_sdcard:
 dos_UNITSET_floppy:
 
 	stx UNIT_FLOPPY
-	+skip_2_bytes_trash_nvz
-
-	; FALLTROUGH
+	jmp dos_EXIT_CLC
 
 dos_UNITSET_ramdisk:
 
 	stx UNIT_RAMDISK
 
-	jmp dos_EXIT_CLC
+	; Clear RAM disk device number if no Hyper RAM available
+
+	jsr util_check_rd_ram
+	jmp dos_EXIT

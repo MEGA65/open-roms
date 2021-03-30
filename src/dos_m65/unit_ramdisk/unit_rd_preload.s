@@ -6,6 +6,11 @@
 
 unit_rd_preload:
 
+	; Check if RAM disk is enabled
+
+	lda UNIT_RAMDISK
+	beq @error_no_ramdisk
+
 	; XXX make sure attic RAM is present
 
 	rts ; XXX remove when code is fully implemented
@@ -28,6 +33,11 @@ unit_rd_preload:
 
 	; XXX load the file
 
+	; XXX while loading set RD_MAXTRACK
+
+@load_track:
+
+	; XXX while loading set RD_MAXTRACK
 
 
 
@@ -42,6 +52,12 @@ unit_rd_preload:
 
 @error_not_found:
 
-	; XXX set information about file not found
+	; XXX set error information
+
+	rts
+
+@error_no_ramdisk:
+
+	; XXX set error information
 
 	rts

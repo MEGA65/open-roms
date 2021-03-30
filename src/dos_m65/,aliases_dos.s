@@ -122,6 +122,10 @@
 	!addr FD_LOADTRACK     = $8072 ; current track for file loading
 	!addr FD_LOADSECTOR    = $8073 ; current sector for file loading
 
+	!addr RD_STARTSEG      = $8074 ; RAM disk start address, 2nd most significant byte (or $FF if no RAM)
+	!addr RD_MAXTRACK      = $8075 ; maximum RAM disk track number
+
+
 	; XXX Free space
 
 

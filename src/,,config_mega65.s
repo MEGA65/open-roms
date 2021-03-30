@@ -52,23 +52,23 @@
 
 ;; #CONFIG# PROGRAMMABLE_KEYS          YES
 
-;; #CONFIG# KEYCMD_RUN                 "RUN"
+;; #CONFIG# KEYCMD_RUN                 "RUN:"
 
 ;; #CONFIG# KEYCMD_F1                  "@8$"
 ;; #CONFIG# KEYCMD_F2                  "LOAD"
 ;; #CONFIG# KEYCMD_F3                  "@9$"
-;; #CONFIG# KEYCMD_F4                  "RUN:"
+;; #CONFIG# KEYCMD_F4                  "\5FL"
 ;; #CONFIG# KEYCMD_F5                  "@10$"
-;; #CONFIG# KEYCMD_F6                  "REM F6"
+;; #CONFIG# KEYCMD_F6                  "\5FHF"
 ;; #CONFIG# KEYCMD_F7                  "@11$"
 ;; #CONFIG# KEYCMD_F8                  "MONITOR"
 
 ;; #CONFIG# KEYCMD_HELP                "LIST"
 
-;; #CONFIG# KEYCMD_F9                  "@28$"
-;; #CONFIG# KEYCMD_F10                 "\5FL"
-;; #CONFIG# KEYCMD_F11                 "@29$"
-;; #CONFIG# KEYCMD_F12                 "\5FHF"
+;; #CONFIG# KEYCMD_F9                  "@27$"
+;; #CONFIG# KEYCMD_F10                 "REM F10"
+;; #CONFIG# KEYCMD_F11                 "@28$"
+;; #CONFIG# KEYCMD_F12                 "@29$"
 ;; #CONFIG# KEYCMD_F13                 "@30$"
 ;; #CONFIG# KEYCMD_F14                 "BOOTCPM"
 
@@ -90,8 +90,8 @@
 
 ; --- Built-in DOS configuration
 
-;; #CONFIG# UNIT_SDCARD                28
-;; #CONFIG# UNIT_FLOPPY                29
+;; #CONFIG# UNIT_SDCARD                27
+;; #CONFIG# UNIT_FLOPPY                28        ; XXX use separate number for second floppy (device 29)
 ;; #CONFIG# UNIT_RAMDISK               30
 
 

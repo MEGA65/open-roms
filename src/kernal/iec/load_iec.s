@@ -92,7 +92,7 @@ load_iec:
 	sta EAL+1
 
 !ifdef CONFIG_MB_M65 {
-	load_iec_m65cont:
+load_iec_m65cont:
 }
 
 	; If secondary address is 0, override EAL with STAL

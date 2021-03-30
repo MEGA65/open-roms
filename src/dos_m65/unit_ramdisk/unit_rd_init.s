@@ -39,40 +39,47 @@ unit_rd_init_test_ram:                 ; non-destructive ATTIC/CELLAR RAM test
 
 	; For the start, mark extended RAM as not present
 
+	stx RD_STARTSEG                    ; by default $FF, to mark no RAM disk
 	inx
+	stx RD_MAXTRACK                    ; maximum allowed track number, for now set 0
 	stx RAM_ATTIC                      ; set ATTIC/CELLAR RAM as not present
 	stx RAM_CELLAR
 
-	; Prepare address - ATTIC RAM, $0800:$0000
+	; Prepare address - CELLAR RAM, $0880:$0000
 
 	stx PNTR+0
 	stx PNTR+1
-	stx PNTR+2
+	lda #$80
+	sta PNTR+2
 	lda #$08
 	sta PNTR+3
 
 	ldz #$00
 
+	; Test for CELLAR RAM
+
+	jsr @perform_ram_test
+	bne @done_cellar
+	dec RAM_ATTIC                      ; test passed
+	lda #$08
+	sta RD_STARTSEG                    ; RAM DISK start segment - CELLAR RAM
+
+@done_cellar:
+
+	; Prepare address - ATTIC RAM, $0800:$0000
+
+	lda #$00
+	sta PNTR+2
+
 	; Test for ATTIC RAM
 
 	jsr @perform_ram_test
 	bne @done_attic
-	dec RAM_ATTIC                      ; test passed
+	dec RAM_CELLAR                     ; test passed
+	lda #$00
+	sta RD_STARTSEG                    ; RAM DISK start segment - ATTIC RAM
 
 @done_attic:
-
-	; Prepare address - CELLAR RAM, $0880:$0000
-
-	lda #$80
-	sta PNTR+2
-
-	; Test for cellar RAM
-
-	jsr @perform_ram_test
-	bne @done_cellar
-	dec RAM_CELLAR                     ; test passed
-
-@done_cellar:
 
 	; Restore temporary address area content
 
@@ -83,6 +90,10 @@ unit_rd_init_test_ram:                 ; non-destructive ATTIC/CELLAR RAM test
 	inx
 	cpx #$04
 	bne @3
+
+	; Clear RAM disk device number if no Hyper RAM available
+
+	jsr util_check_rd_ram
 
 	; End of initialization
 

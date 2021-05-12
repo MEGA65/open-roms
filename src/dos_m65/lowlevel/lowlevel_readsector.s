@@ -4,9 +4,24 @@
 
 lowlevel_readsector:
 
-	; XXX compare device and unit too
+	; Set drive, check if disk is present
+
+	lda #%00001111                     ; set drive 0 (internal) and side 0
+	trb FDC_CONTROL  ; $D080
+
+	lda FDC_STATUS_B ; $D083           ; check if disk is inserted    XXX this is probably not enough!
+	and #$08
+	bne @disk_present
+
+	; XXX set error code
+
+	sec
+	rts
+
+@disk_present:
 
 	; Check if buffer contains data from given track
+	; XXX compare device and unit too
 
 	lda PAR_TRACK
 	cmp BUFTAB_TRACK+1
@@ -26,13 +41,8 @@ lowlevel_readsector:
 
 lowlevel_readsector_force:
 
-	; Select FDD sector as buffer
-
 	lda #%10000000                     ; select floppy buffer
 	trb SD_BUFCTL    ; $D689
-
-	lda #%00001111                     ; set drive 0 (internal) and side 0
-	trb FDC_CONTROL  ; $D080
 
 	; Select physical track and sector based on logical ones from PAR_TRACK and PAR_SECTOR
 
@@ -70,17 +80,8 @@ lowlevel_readsector_force:
 	lda #$40
 	sta FDC_COMMAND  ; $D081
 
-	; Wait for RDREQ (indicates sector found)
-
-@lp1:
-	lda FDC_STATUS_B ; $D083
-	bpl @lp1
-
-	; Wait for BUSY flag to clear
-
-@lp2:
-	lda FDC_STATUS_A ; $D082
-	bmi @lp2
+	jsr lowlevel_wait_set_RDREQ        ; wait till sector is found
+	jsr lowlevel_wait_clr_BUSY         ; wait for BUSY flag to clear
 
 	; Wait for DRQ and EQ flags to go high
 
@@ -114,4 +115,22 @@ lowlevel_readsector_force:
 	sta BUFTAB_SECTOR+1
 
 	clc
+	rts
+
+
+
+; XXX consider moving these to a separate file
+
+lowlevel_wait_clr_BUSY:
+
+	bit FDC_STATUS_A ; $D082
+	bmi lowlevel_wait_clr_BUSY
+
+	rts
+
+lowlevel_wait_set_RDREQ:
+
+	bit FDC_STATUS_B ; $D083
+	bpl lowlevel_wait_set_RDREQ
+
 	rts

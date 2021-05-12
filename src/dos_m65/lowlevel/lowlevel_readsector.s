@@ -4,21 +4,12 @@
 
 lowlevel_readsector:
 
-	; Set drive, check if disk is present
+	; Set drive, ensure disk is present
 
 	lda #%00001111                     ; set drive 0 (internal) and side 0
 	trb FDC_CONTROL  ; $D080
 
-	lda FDC_STATUS_B ; $D083           ; check if disk is inserted    XXX this is probably not enough!
-	and #$08
-	bne @disk_present
-
-	; XXX set error code
-
-	sec
-	rts
-
-@disk_present:
+	jsr lowlevel_ensure_presence
 
 	; Check if buffer contains data from given track
 	; XXX compare device and unit too
@@ -40,6 +31,9 @@ lowlevel_readsector:
 	rts
 
 lowlevel_readsector_force:
+
+	jsr lowlevel_motor_on              ; enable drive motor and LED
+	jsr lowlevel_ensure_presence
 
 	lda #%10000000                     ; select floppy buffer
 	trb SD_BUFCTL    ; $D689
@@ -85,11 +79,13 @@ lowlevel_readsector_force:
 
 	; Wait for DRQ and EQ flags to go high
 
-@lp3:
+@lp1:
 	lda FDC_STATUS_A ; $D082
 	and #%01100000
 	cmp #%01000000   ; XXX is this correct? .A seems to stay at $40 at this point
-	bne @lp3
+	bne @lp1
+
+	jsr lowlevel_motor_off             ; disable drive motor
 
 	; Copy sector to buffer in RAM
 
@@ -115,22 +111,4 @@ lowlevel_readsector_force:
 	sta BUFTAB_SECTOR+1
 
 	clc
-	rts
-
-
-
-; XXX consider moving these to a separate file
-
-lowlevel_wait_clr_BUSY:
-
-	bit FDC_STATUS_A ; $D082
-	bmi lowlevel_wait_clr_BUSY
-
-	rts
-
-lowlevel_wait_set_RDREQ:
-
-	bit FDC_STATUS_B ; $D083
-	bpl lowlevel_wait_set_RDREQ
-
 	rts

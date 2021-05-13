@@ -85,8 +85,6 @@ lowlevel_readsector_force:
 	cmp #%01000000   ; XXX is this correct? .A seems to stay at $40 at this point
 	bne @lp1
 
-	jsr lowlevel_fdc_motor_off         ; disable drive motor
-
 	; Copy sector to buffer in RAM
 
 	lda #$00

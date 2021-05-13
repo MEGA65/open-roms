@@ -23,6 +23,13 @@ unit_fd_init:
 	sta FD_STATUS_BUF,x
 	bne @1
 
+	; Initialize the controller
+
+	lda #$80       ; default track stepping rate
+	sta FDC_STEP
+	lda #$FF
+	sta FDC_CLOCK
+
 	; End of initialization
 
 	rts

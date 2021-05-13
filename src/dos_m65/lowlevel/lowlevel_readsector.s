@@ -9,7 +9,7 @@ lowlevel_readsector:
 	lda #%00001111                     ; set drive 0 (internal) and side 0
 	trb FDC_CONTROL  ; $D080
 
-	jsr lowlevel_ensure_presence
+	jsr lowlevel_fdc_ensure_presence_refresh
 
 	; Check if buffer contains data from given track
 	; XXX compare device and unit too
@@ -32,8 +32,8 @@ lowlevel_readsector:
 
 lowlevel_readsector_force:
 
-	jsr lowlevel_motor_on              ; enable drive motor and LED
-	jsr lowlevel_ensure_presence
+	jsr lowlevel_fdc_motor_on              ; enable drive motor and LED
+	jsr lowlevel_fdc_ensure_presence
 
 	lda #%10000000                     ; select floppy buffer
 	trb SD_BUFCTL    ; $D689
@@ -74,8 +74,8 @@ lowlevel_readsector_force:
 	lda #$40
 	sta FDC_COMMAND  ; $D081
 
-	jsr lowlevel_wait_set_RDREQ        ; wait till sector is found
-	jsr lowlevel_wait_clr_BUSY         ; wait for BUSY flag to clear
+	jsr lowlevel_fdc_wait_set_RDREQ    ; wait till sector is found
+	jsr lowlevel_fdc_wait_clr_BUSY     ; wait for BUSY flag to clear
 
 	; Wait for DRQ and EQ flags to go high
 
@@ -85,7 +85,7 @@ lowlevel_readsector_force:
 	cmp #%01000000   ; XXX is this correct? .A seems to stay at $40 at this point
 	bne @lp1
 
-	jsr lowlevel_motor_off             ; disable drive motor
+	jsr lowlevel_fdc_motor_off         ; disable drive motor
 
 	; Copy sector to buffer in RAM
 

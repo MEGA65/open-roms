@@ -306,8 +306,8 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { false, true,  true,  false, false, "STR_MEM_STRS",     "\r STRS"            },
     { false, true,  true,  false, false, "STR_MEM_FREE",     "\r\r FREE"          },
 
-    { false, false, true,  false, false, "STR_DOS_FD",       ", FLOPPY " },
-    { false, false, true,  false, false, "STR_DOS_RD",       ", RAM DISK " },
+    { false, false, true,  false, false, "STR_DOS_FD",       ", FDD "             },
+    { false, false, true,  false, false, "STR_DOS_RD",       ", RAM DISK "        },
 
     { false, false, true,  false, false, "STR_SI_HEADER",    "OPEN ROMS, "        },
     { false, false, true,  false, false, "STR_SI_MODE64",    "LEGACY MODE"        },

@@ -177,7 +177,7 @@ Enable this option if you are using a tape interface adapter lacking tape motor 
 
 ## Additional storage
 
-### `UNIT_SDCARD`, `UNIT_FLOPPY`, `UNIT_RAMDISK`
+### `UNIT_SDCARD`, `UNIT_FLOPPY0`, `UNIT_FLOPPY1`, `UNIT_RAMDISK`
 
 MEGA65 specific pseudo-IEC devices, handled by internal DOS (work in progress). If set to 0, given unit is disabled. Otherwise - assigns IEC unit number to the given storage.
 

@@ -21,6 +21,7 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  src/basic/basic_functions_06 \
                  src/basic/board_crt \
                  src/basic/board_m65 \
+                 src/basic/board_u64 \
                  src/basic/board_x16 \
                  src/basic/engine_editor \
                  src/basic/engine_runtime \

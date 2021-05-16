@@ -38,7 +38,7 @@ msg_CIOUT_fail:
 
 
 
-; Receiving command/file name
+; Receiving command/file name   XXX limit $7F is too small, buffer size is 256 bytes
 
 msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 
@@ -55,17 +55,32 @@ msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 	+bcs unit_sd_cmd_OPEN_EOI          ; if EOI - execute command
 	jmp dos_EXIT_CLC
 
-msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
+msg_CIOUT_cmdfn_F0:                    ; get next byte of status - floppy
 
-	ldx FD_CMDFN_IDX
-	sta FD_CMDFN_BUF,x
+	ldx F0_CMDFN_IDX
+	sta F0_CMDFN_BUF,x
 	inx
 	bpl @1
 	ldx #$7F
 @1:
-	stx FD_CMDFN_IDX
+	stx F0_CMDFN_IDX
 	lda #$A0
-	sta FD_CMDFN_BUF,x
+	sta F0_CMDFN_BUF,x
+	plp
+	+bcs unit_fd_cmd_OPEN_EOI          ; if EOI - execute command
+	jmp dos_EXIT_CLC
+
+msg_CIOUT_cmdfn_F1:                    ; get next byte of status - floppy
+
+	ldx F1_CMDFN_IDX
+	sta F1_CMDFN_BUF,x
+	inx
+	bpl @1
+	ldx #$7F
+@1:
+	stx F1_CMDFN_IDX
+	lda #$A0
+	sta F1_CMDFN_BUF,x
 	plp
 	+bcs unit_fd_cmd_OPEN_EOI          ; if EOI - execute command
 	jmp dos_EXIT_CLC
@@ -88,5 +103,6 @@ msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 msg_CIOUT_cmdfn_vectab:
 
 	!word msg_CIOUT_cmdfn_SD
-	!word msg_CIOUT_cmdfn_FD
+	!word msg_CIOUT_cmdfn_F0
+	!word msg_CIOUT_cmdfn_F1
 	!word msg_CIOUT_cmdfn_RD

@@ -62,31 +62,61 @@ msg_ACPTR_read_SD:
 @3:
 	jmp dos_EXIT_CLC
 
-msg_ACPTR_read_FD:
+msg_ACPTR_read_F0:
 
 	; Read and return one byte
 
-	jsr FD_ACPTR_helper
+	jsr F0_ACPTR_helper
 	sta TBTCNT
 	sta REG_A
 
 	; Increment pointer, decrement length
 
-	inc FD_ACPTR_PTR+0
+	inc F0_ACPTR_PTR+0
 	bne @1
-	inc FD_ACPTR_PTR+1
+	inc F0_ACPTR_PTR+1
 @1:
-	dec FD_ACPTR_LEN+0
-	lda FD_ACPTR_LEN+0
+	dec F0_ACPTR_LEN+0
+	lda F0_ACPTR_LEN+0
 	cmp #$FF
 	bne @2
-	dec FD_ACPTR_LEN+1
+	dec F0_ACPTR_LEN+1
 @2:
 	; If new length is 0, try to read next block of data
 
-	ora FD_ACPTR_LEN+1
+	ora F0_ACPTR_LEN+1
 	bne @3
-	jsr unit_fd_cmd_READ
+	jsr unit_f0_cmd_READ
+	bcc @3
+	jsr kernalstatus_EOI
+@3:
+	jmp dos_EXIT_CLC
+
+msg_ACPTR_read_F1:
+
+	; Read and return one byte
+
+	jsr F1_ACPTR_helper
+	sta TBTCNT
+	sta REG_A
+
+	; Increment pointer, decrement length
+
+	inc F1_ACPTR_PTR+0
+	bne @1
+	inc F1_ACPTR_PTR+1
+@1:
+	dec F1_ACPTR_LEN+0
+	lda F1_ACPTR_LEN+0
+	cmp #$FF
+	bne @2
+	dec F1_ACPTR_LEN+1
+@2:
+	; If new length is 0, try to read next block of data
+
+	ora F1_ACPTR_LEN+1
+	bne @3
+	jsr unit_f1_cmd_READ
 	bcc @3
 	jsr kernalstatus_EOI
 @3:
@@ -117,11 +147,18 @@ msg_ACPTR_status_SD:                   ; get next byte of status - SD card
 	lda SD_STATUS_BUF,x
 	bra msg_ACPTR_status_got
 
-msg_ACPTR_status_FD:                   ; get next byte of status - floppy
+msg_ACPTR_status_F0:                   ; get next byte of status - floppy 0
 
-	ldx FD_STATUS_IDX
-	inc FD_STATUS_IDX
-	lda FD_STATUS_BUF,x
+	ldx F0_STATUS_IDX
+	inc F0_STATUS_IDX
+	lda F0_STATUS_BUF,x
+	bra msg_ACPTR_status_got
+
+msg_ACPTR_status_F1:                   ; get next byte of status - floppy 0
+
+	ldx F1_STATUS_IDX
+	inc F1_STATUS_IDX
+	lda F1_STATUS_BUF,x
 	bra msg_ACPTR_status_got
 
 msg_ACPTR_status_RD:                   ; get next byte of status - ram disk
@@ -166,17 +203,20 @@ msg_ACPTR_EOI:
 msg_ACPTR_status_vectab:
 
 	!word msg_ACPTR_status_SD
-	!word msg_ACPTR_status_FD
+	!word msg_ACPTR_status_F0
+	!word msg_ACPTR_status_F1
 	!word msg_ACPTR_status_RD
 
 msg_ACPTR_read_vectab:
 
 	!word msg_ACPTR_read_SD
-	!word msg_ACPTR_read_FD
+	!word msg_ACPTR_read_F0
+	!word msg_ACPTR_read_F1
 	!word msg_ACPTR_read_RD
 
 msg_ACPTR_set_status_vectab:
 
 	!word util_status_SD
-	!word util_status_FD
+	!word util_status_F0
+	!word util_status_F1
 	!word util_status_RD

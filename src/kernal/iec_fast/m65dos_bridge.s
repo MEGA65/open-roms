@@ -41,7 +41,7 @@ m65dos_unitchk:                        ; XXX expose to BASIC
 
 	; Checks is the unit number is supported by the internal DOS
 	; Input:  .A - unit number to check
-	; Output: Carry set if not supported, otherwise .A contains unit type (0 = SD card, 1 = internal floppy, 2 = RAM disk)
+	; Output: Carry set if not supported, otherwise .A contains unit type (0 = SD card, 1/2 = internal/external floppy, 3 = RAM disk)
 
 	jsr map_DOS_1
 	jsr (VDOS_UNITCHK)

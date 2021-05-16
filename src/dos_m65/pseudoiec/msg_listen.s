@@ -12,28 +12,44 @@ msg_LISTEN:
 	and #$1F
 	beq msg_LISTEN_fail      ; branch if device 0 (used to denote lack of device)
 
+@try_sd:
+
 	cmp UNIT_SDCARD
-	bne @1
+	bne @try_f0
 
 	; LISTEN on SD card
 
 	lda #$00
 	bra msg_LISTEN_success
-@1:
-	cmp UNIT_FLOPPY
-	bne @2
 
-	; LISTEN on floppy
+@try_f0:
+
+	cmp UNIT_FLOPPY0
+	bne @try_f1
+
+	; LISTEN on floppy 0
 
 	lda #$01
 	bra msg_LISTEN_success
-@2:
+
+@try_f1:
+
+	cmp UNIT_FLOPPY1
+	bne @try_rd
+
+	; LISTEN on floppy 1
+
+	lda #$02
+	bra msg_LISTEN_success
+
+@try_rd:
+
 	cmp UNIT_RAMDISK
 	bne msg_LISTEN_fail
 
 	; LISTEN on ram disk
 
-	lda #$02
+	lda #$03
 	
 	; FALLTROUGH
 

@@ -91,7 +91,8 @@
 ; --- Built-in DOS configuration
 
 ;; #CONFIG# UNIT_SDCARD                27
-;; #CONFIG# UNIT_FLOPPY                28        ; XXX use separate number for second floppy (device 29)
+;; #CONFIG# UNIT_FLOPPY0               28
+;; #CONFIG# UNIT_FLOPPY1               29
 ;; #CONFIG# UNIT_RAMDISK               30
 
 

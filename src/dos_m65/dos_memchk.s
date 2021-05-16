@@ -28,6 +28,8 @@ dos_MEMCHK:
 	bne @fail
 	cmp code_LDA_03
 	bne @fail
+	cmp code_LDA_04
+	bne @fail
 
 	lda #$60
 	cmp code_RTS_01
@@ -35,6 +37,10 @@ dos_MEMCHK:
 	cmp code_RTS_02
 	bne @fail
 	cmp code_RTS_03
+	bne @fail
+	cmp code_RTS_04
+	bne @fail
+	cmp code_RTS_05
 	bne @fail
 
 	plx

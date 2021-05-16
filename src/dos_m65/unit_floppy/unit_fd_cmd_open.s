@@ -3,11 +3,13 @@
 ; Open file for reading
 ;
 
+; XXX add support for both floppies
+
 
 unit_fd_cmd_OPEN:
 
 	lda #$01                 ; mode: receive command or file name
-	sta FD_MODE
+	sta F0_MODE
 
 	jmp dos_EXIT_CLC
 
@@ -26,7 +28,7 @@ unit_fd_cmd_OPEN_EOI:
 
 	; XXX add support for second floppy
 
-	lda FD_CMDFN_BUF
+	lda F0_CMDFN_BUF
 	cmp #'$'
 	beq unit_fd_cmd_OPEN_dir
 
@@ -38,7 +40,7 @@ unit_fd_cmd_OPEN_file:
 
 	ldy #$00
 @lp1:
-	lda FD_CMDFN_BUF, y
+	lda F0_CMDFN_BUF, y
 	cmp #$A0
 	beq @lp1_end
 	sta PAR_FPATTERN, y
@@ -54,13 +56,13 @@ unit_fd_cmd_OPEN_file:
 unit_fd_cmd_OPEN_dir:
 
 	lda #$02                 ; mode: read directory
-	sta FD_MODE
+	sta F0_MODE
 
 	; Copy the filter from command     XXX this should be moved to common part and deduplicated with file opening
 
 	ldy #$00
 @lp1:
-	lda FD_CMDFN_BUF+1, y
+	lda F0_CMDFN_BUF+1, y
 	cmp #$A0
 	beq @lp1_end
 	sta PAR_FPATTERN, y

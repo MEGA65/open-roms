@@ -21,8 +21,10 @@ dos_UNITSET:
 	cmp #$00
 	beq dos_UNITSET_sdcard
 	cmp #$01
-	beq dos_UNITSET_floppy
+	beq dos_UNITSET_floppy0
 	cmp #$02
+	beq dos_UNITSET_floppy1
+	cmp #$03
 	beq dos_UNITSET_ramdisk
 
 	jmp dos_EXIT_SEC
@@ -30,14 +32,22 @@ dos_UNITSET:
 dos_UNITSET_sdcard:
 
 	stx UNIT_SDCARD
-	+skip_2_bytes_trash_nvz
 
 	; FALLTROUGH
 
-dos_UNITSET_floppy:
+dos_UNITSET_end:
 
-	stx UNIT_FLOPPY
 	jmp dos_EXIT_CLC
+
+dos_UNITSET_floppy0:
+
+	stx UNIT_FLOPPY0
+	bra dos_UNITSET_end
+
+dos_UNITSET_floppy1:
+
+	stx UNIT_FLOPPY1
+	bra dos_UNITSET_end
 
 dos_UNITSET_ramdisk:
 

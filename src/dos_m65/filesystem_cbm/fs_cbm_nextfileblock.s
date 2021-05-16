@@ -4,6 +4,8 @@
 ;
 
 
+; XXX add support for both floppies
+
 fs_cbm_nextfileblock:
 
 	; Fetch the next track/sector
@@ -55,14 +57,14 @@ fs_cbm_nextfileblock_got_ts:
 	; Store pointer and amount of data ready to fetch
 
 	lda #$FE
-	sta FD_ACPTR_LEN+0
+	sta F0_ACPTR_LEN+0
 	lda #$00
-	sta FD_ACPTR_LEN+1
+	sta F0_ACPTR_LEN+1
 
 	lda #$02
-	sta FD_ACPTR_PTR+0
+	sta F0_ACPTR_PTR+0
 	lda #>SHARED_BUF_1
-	sta FD_ACPTR_PTR+1
+	sta F0_ACPTR_PTR+1
 
 	lda PAR_SECTOR
 	and #$01
@@ -84,7 +86,7 @@ fs_cbm_nextfileblock_got_ts:
 
 	; Sector with data is located in the 2nd half of the buffer
 
-	inc FD_ACPTR_PTR+1
+	inc F0_ACPTR_PTR+1
 
 	lda SHARED_BUF_1+$100+0
 	bne @exit
@@ -99,7 +101,7 @@ fs_cbm_nextfileblock_got_ts:
 	cmp #$FF
 	beq fs_cbm_nextfileblock_eof
 
-	sta FD_ACPTR_LEN+0
+	sta F0_ACPTR_LEN+0
 
 	; FALLTROUGH
 

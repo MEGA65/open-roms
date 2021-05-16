@@ -12,7 +12,7 @@
 
 fs_cbm_nextdirentry:
 
-	lda FD_DIRENT
+	lda F0_DIRENT
 
 	; If first entry within sector - make sure it is present within the buffer
 
@@ -42,7 +42,7 @@ fs_cbm_nextdirentry:
 @1:
 	; Set next directory entry
 
-	inc FD_DIRENT
+	inc F0_DIRENT
 
 	; Copy data to parameter variables
 
@@ -69,10 +69,10 @@ fs_cbm_nextdirentry:
 
 	ldy #$03                           ; get file starting track and sector
 	jsr code_LDA_nnnn_Y
-	sta FD_LOADTRACK
+	sta F0_LOADTRACK
 	iny
 	jsr code_LDA_nnnn_Y
-	sta FD_LOADSECTOR
+	sta F0_LOADSECTOR
 
 	iny                           ; copy the file name
 @lp1:
@@ -124,7 +124,7 @@ fs_cbm_nextdirentry:
 	beq @2
 	lda #$08
 @2:
-	sta FD_DIRENT
+	sta F0_DIRENT
 	jmp @cont
 
 @end_of_dir:

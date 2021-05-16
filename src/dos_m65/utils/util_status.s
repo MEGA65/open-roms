@@ -14,18 +14,25 @@ util_status_SD:
 	ldx #$00                           ; offset to status buffer
 	bra util_status_common
 
-util_status_FD:
+util_status_F0:
 
 	ldx #$00
-	stx FD_STATUS_IDX                  ; set first byte of status to read
-	ldx #$20                           ; offset to status buffer
+	stx F0_STATUS_IDX                  ; set first byte of status to read
+	ldx #$30                           ; offset to status buffer
+	bra util_status_common
+
+util_status_F1:
+
+	ldx #$00
+	stx F1_STATUS_IDX                  ; set first byte of status to read
+	ldx #$60                           ; offset to status buffer
 	bra util_status_common
 
 util_status_RD:
 
 	ldx #$00
 	stx RD_STATUS_IDX                  ; set first byte of status to read
-	ldx #$40                           ; offset to status buffer
+	ldx #$90                           ; offset to status buffer
 
 	; FALLLTROUGH
 

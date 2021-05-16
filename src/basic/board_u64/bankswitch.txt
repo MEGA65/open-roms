@@ -1,0 +1,12 @@
+
+Information about Ultimate 64 bank switching: https://www.forum64.de/index.php?thread/102375-16k-bzw-24k-kernal/&postID=1674790#post1674790
+
+	lda $e460        ; only needed if switching from outside of the Kernal
+	lda $e460
+	lda $e494
+	lda $e464
+	lda $e462
+	lda $e495
+	lda $e480+bankno
+
+There can be no $e460-$e49f access in between.

@@ -4,13 +4,21 @@
 ;
 
 
+unit_f0_cmd_READ:
+
+	; XXX provide implementation
+
+unit_f1_cmd_READ:
+
+	; XXX provide implementation
+
 unit_fd_cmd_READ:
 
-	lda FD_MODE
+	lda F0_MODE
 	cmp #$03
 	+beq fs_cbm_nextfileblock
 
-	lda FD_DIR_PHASE
+	lda F0_DIR_PHASE
 	cmp #$01
 	+beq fs_cbm_read_dir
 	cmp #$02

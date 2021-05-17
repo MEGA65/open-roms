@@ -41,7 +41,7 @@ unit_rd_init_test_ram:                 ; non-destructive ATTIC/CELLAR RAM test
 
 	stx RD_STARTSEG                    ; by default $FF, to mark no RAM disk
 	inx
-	stx RD_MAXTRACK                    ; maximum allowed track number, for now set 0
+	stx RD_VALIDIMG                    ; mark no valid image loaded
 	stx RAM_ATTIC                      ; set ATTIC/CELLAR RAM as not present
 	stx RAM_CELLAR
 

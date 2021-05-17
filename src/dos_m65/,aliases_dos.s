@@ -138,10 +138,12 @@
 	!addr F1_LOADTRACK     = $807D ; current track for file loading
 	!addr F1_LOADSECTOR    = $807E ; current sector for file loading
 
-	!addr RD_STARTSEG      = $807F ; RAM disk start address, 2nd most significant byte (or $FF if no RAM)
-	!addr RD_MAXTRACK      = $8080 ; maximum RAM disk track number
+	!addr RD_MAXTRACK      = $807F ; maximum RAM disk track number of loaded image
+	!addr RD_STARTSEG      = $8080 ; RAM disk start address, 2nd most significant byte (or $FF if no RAM)
+	!addr RD_VALIDIMG      = $8081 ; $00 = no valid image loaded
 
-	; Reserved: $8081-$81FF
+
+	; Reserved: $8082-$81FF
 
 	;
 	; Various buffers, caches, and other large memory chunks

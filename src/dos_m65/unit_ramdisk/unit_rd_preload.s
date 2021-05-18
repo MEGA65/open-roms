@@ -54,50 +54,119 @@ unit_rd_preload:
 
 @added_cellar:
 
-	; Load the file
+	; Load the image
 
-
-
-
-
-	; XXX load the file
-
-	; XXX while loading set RD_MAXTRACK
+	lda #$FF
+	sta RD_MODE                        ; mark for nothing loaded
 
 @load_track:
 
-	; XXX while loading set RD_MAXTRACK
+	inc RD_MAXTRACK                    ; XXX check against __stoptrack - detect file too llarge
+	ldx #$FF                           ; counter of 512-byte blocks to load
 
+@load_track_loop:
 
+	phx
 
-	; lda #$20                           ; dos_closefile
-	; sta HTRAP00
-	; +nop
+	; Read 512 bytes
+
+	lda #$1A                           ; dos_readfile
+	sta HTRAP00
+	+nop
+
+	cpx #$00
+	bne @error_wrong_size_plx          ; file size not multiplicity of 64K
+
+	cpy #$00
+	beq @load_image_end
+
+	cpy #$02
+	bne @error_wrong_size_plx          ; file size not multiplicity of 64K
+
+	stx RD_MODE                        ; .X should be 0 - mark that something was actually loaded
+
+	plx
+	inx
+
+	; XXX launch DMA job to copy data
+
+	cpx #$7F
+	bne @load_track_loop               ; next 512-byte block of the same track
+
+	bra @load_track                    ; next track
+
+@load_image_end:
+
+	plx
+	cpx #$7F
+	bne @error_wrong_size              ; file empty or file size not multiplicity of 64K
+
+	lda RD_MAXTRACK
+	cmp #$02
+	bcc @error_wrong_size              ; file too small, at least 128K required
+
+	lda #$20                           ; dos_closefile
+	sta HTRAP00
+	+nop
 
 	; End of initialization
 
 	lda #$FF
-	sta RD_VALIDIMG                      ; mark image as valid
+	sta RD_VALIDIMG                    ; mark image as valid
 
-	lda #$00                             ; temporary storage needs to be restored to 0
+	lda #$00                           ; temporary storage needs to be restored to 0
 	sta __stoptrack
+
+	rts
+
+
+
+@error_wrong_size_plx:
+
+	plx
+
+@error_wrong_size:
+
+	jsr unit_rd_preload_err_common
+
+	; XXX set error information
 
 	rts
 
 
 @error_not_found:
 
-	; XXX set error information
+	jsr unit_rd_preload_err_common_noclose
+
+	; XXX set error information, put 0 to __stoptrack
 
 	rts
 
 @error_no_ramdisk:
 
-	; XXX set error information
+	jsr unit_rd_preload_err_common_noclose
+
+	; XXX set error information, put 0 to __stoptrack
 
 	rts
 
 
+
+unit_rd_preload_err_common:
+
+	lda #$20                           ; dos_closefile
+	sta HTRAP00
+	+nop
+
+	; FALLTROUGH
+
+unit_rd_preload_err_common_noclose:
+
+	lda #$00                           ; temporary storage needs to be restored to 0
+	sta __stoptrack
+	sta RD_VALIDIMG                    ; mark image as invalid
+
+	rts
 
 
 

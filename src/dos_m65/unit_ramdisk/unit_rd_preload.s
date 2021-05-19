@@ -12,13 +12,12 @@ unit_rd_preload:
 	; Check if RAM disk is enabled (should be disabled if no Hyper RAM is present)
 
 	lda UNIT_RAMDISK
-	beq @error_no_ramdisk
+	+beq @error_no_ramdisk
 
-	rts ; XXX remove when code is fully implemented
+	; Select SD card buffer
 
-
-
-
+	lda #$80
+	tsb SD_BUFCTL
 
 	; Set file name
 
@@ -27,14 +26,14 @@ unit_rd_preload:
 	lda #$2E                           ; dos_setname
 	sta HTRAP00
 	+nop
-	bcc @error_not_found
+	+bcc @error_not_found              ; branch if error
 
 	; Try to find the file
 
 	lda #$34                           ; dos_findfile
 	sta HTRAP00
 	+nop
-	bcc @error_not_found               ; branch if file not found
+	+bcc @error_not_found              ; branch if file not found
 
 	; Calculate maximum amount of tracks possible to load
 
@@ -56,12 +55,20 @@ unit_rd_preload:
 
 	; Load the image
 
-	lda #$FF
-	sta RD_MODE                        ; mark for nothing loaded
+	lda #$00
+	sta RD_MAXTRACK
+
+	bra @load_track_check_done
 
 @load_track:
 
-	inc RD_MAXTRACK                    ; XXX check against __stoptrack - detect file too llarge
+	lda RD_MAXTRACK
+	cmp __stoptrack
+	beq @load_image_mem_full
+
+@load_track_check_done:
+
+	inc RD_MAXTRACK                    
 	ldx #$FF                           ; counter of 512-byte blocks to load
 
 @load_track_loop:
@@ -83,8 +90,6 @@ unit_rd_preload:
 	cpy #$02
 	bne @error_wrong_size_plx          ; file size not multiplicity of 64K
 
-	stx RD_MODE                        ; .X should be 0 - mark that something was actually loaded
-
 	plx
 	inx
 
@@ -94,6 +99,23 @@ unit_rd_preload:
 	bne @load_track_loop               ; next 512-byte block of the same track
 
 	bra @load_track                    ; next track
+
+@load_image_mem_full:
+
+	; Make sure this is the end of the file
+
+	lda #$1A                           ; dos_readfile
+	sta HTRAP00
+	+nop
+
+	cpx #$00
+	bne @error_too_large
+	cpy #$00
+	bne @error_too_large
+
+	lda #$20                           ; dos_closefile
+	sta HTRAP00
+	+nop
 
 @load_image_end:
 
@@ -133,6 +155,13 @@ unit_rd_preload:
 
 	rts
 
+@error_too_large:
+
+	jsr unit_rd_preload_err_common
+
+	; XXX set error information
+
+	rts
 
 @error_not_found:
 

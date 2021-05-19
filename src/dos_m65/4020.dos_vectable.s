@@ -3,6 +3,7 @@
 
 !word dos_INIT
 !word dos_PRELOAD
+!word dos_RDCHK
 !word dos_UNITCHK
 !word dos_UNITSET
 !word dos_UNITNUM

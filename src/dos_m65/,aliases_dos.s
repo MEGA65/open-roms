@@ -32,7 +32,7 @@
 	!addr RAM_ATTIC        = $8009 ; $8000000-$87FFFFF RAM status; 0 = not present, $FF = present
 	!addr RAM_CELLAR       = $800A ; $8800000-$8FFFFFF RAM status; 0 = not present, $FF = present
 
-	; Reserved: $800B
+	!addr RD_MSG           = $800B ; code of the RAM disk message to be displayed on banner screen, $FF for none
 
 	; General DOS configuration
 

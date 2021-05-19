@@ -326,6 +326,12 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { false, false, true,  false, false, "STR_SI_HW_XX",     "UNKNOWN ID $"       },
     { false, false, true,  false, false, "STR_SI_HDR_VID",   "\rVIDEO  : "        },
 
+    { false, false, true,  false, false, "STR_RD_NAME",      "RAMDISK.DNP "       },
+    { false, false, true,  false, false, "STR_RD_OK",        "LOADED OK\r"        },
+    { false, false, true,  false, false, "STR_RD_ERR1",      "SIZE WRONG\r"       },
+    { false, false, true,  false, false, "STR_RD_ERR2",      "TOO LARGE\r"        },
+    { false, false, true,  false, false, "STR_RD_ERR3",      "NOT FOUND\r"        },
+
     // Note: depending on configuration, additional strings will be added here
 } };
 

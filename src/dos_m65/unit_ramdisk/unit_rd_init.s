@@ -37,6 +37,8 @@ unit_rd_init_test_ram:                 ; non-destructive ATTIC/CELLAR RAM test
 	dex
 	bpl @2
 
+	stx RD_MSG                         ; $FF - mark no message to be displayed
+
 	; For the start, mark extended RAM as not present
 
 	stx RD_STARTSEG                    ; by default $FF, to mark no RAM disk

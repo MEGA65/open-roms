@@ -12,7 +12,7 @@ unit_rd_preload:
 	; Check if RAM disk is enabled (should be disabled if no Hyper RAM is present)
 
 	lda UNIT_RAMDISK
-	+beq @error_no_ramdisk
+	+beq unit_rd_preload_err_common_noclose
 
 	; Select SD card buffer
 
@@ -139,6 +139,9 @@ unit_rd_preload:
 	lda #$00                           ; temporary storage needs to be restored to 0
 	sta __stoptrack
 
+	lda #$00                           ; set message to OK
+	sta RD_MSG
+
 	rts
 
 
@@ -149,39 +152,25 @@ unit_rd_preload:
 
 @error_wrong_size:
 
-	jsr unit_rd_preload_err_common
-
-	; XXX set error information
-
-	rts
+	lda #$01
+	jmp unit_rd_preload_err_common
 
 @error_too_large:
 
-	jsr unit_rd_preload_err_common
-
-	; XXX set error information
-
-	rts
+	lda #$02
+	jmp unit_rd_preload_err_common
 
 @error_not_found:
 
-	jsr unit_rd_preload_err_common_noclose
+	lda #$03
+	sta RD_MSG
 
-	; XXX set error information, put 0 to __stoptrack
-
-	rts
-
-@error_no_ramdisk:
-
-	jsr unit_rd_preload_err_common_noclose
-
-	; XXX set error information, put 0 to __stoptrack
-
-	rts
-
+	jmp unit_rd_preload_err_common_noclose
 
 
 unit_rd_preload_err_common:
+
+	sta RD_MSG                         ; set code for startup screen
 
 	lda #$20                           ; dos_closefile
 	sta HTRAP00

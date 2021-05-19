@@ -66,7 +66,40 @@ INITMSG_native:
 
 	ldx #$09
 	ldy #$00
-	jmp plot_set
+	jsr plot_set
+
+	; Display the preloaded RAM disc image status
+
+	jsr m65dos_rdchk
+	cmp #$FF
+	beq INITMSG_rts
+
+	pha
+	jsr print_return
+	pla
+	pha
+	cmp #$00
+	beq @skip_bold
+
+	lda #$1B
+	jsr JCHROUT
+	lda #'S'
+	jsr JCHROUT
+
+@skip_bold:
+
+	ldx #IDX__STR_RD_NAME
+	jsr print_packed_misc_str
+	pla
+
+	clc
+	adc #IDX__STR_RD_OK
+	tax
+	jmp print_packed_misc_str
+
+INITMSG_rts:
+
+	rts
 
 INITMSG_main_banner:
 

@@ -135,9 +135,7 @@ unit_rd_preload:
 @load_image_end:
 
 	plx
-	cpx #$7F
-	; XXX debug code
-	; stx $1000
+	cpx #$00
 	bne @error_wrong_size              ; file empty or file size not multiplicity of 64K
 
 	lda RD_MAXTRACK
@@ -168,10 +166,6 @@ unit_rd_preload:
 	plx
 
 @error_wrong_size:
-
-	; XXX debug code
-	; lda RD_MAXTRACK
-	; sta $1001
 
 	lda #$01
 	jmp unit_rd_preload_err_common

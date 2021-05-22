@@ -65,6 +65,10 @@ unit_rd_preload:
 
 	; Load the image
 
+	lda #$18                          ; dos_openfile
+	sta HTRAP00
+	+nop
+
 	lda #$FF
 	sta RD_MAXTRACK
 
@@ -166,7 +170,7 @@ unit_rd_preload:
 
 	; XXX debug code
 	; lda RD_MAXTRACK
-	l sta $1001
+	; sta $1001
 
 	lda #$01
 	jmp unit_rd_preload_err_common

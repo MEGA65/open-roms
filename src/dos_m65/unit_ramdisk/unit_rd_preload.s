@@ -83,7 +83,7 @@ unit_rd_preload:
 @load_track_check_done:
 
 	inc RD_MAXTRACK                    
-	ldx #$FF                           ; counter of 512-byte blocks to load
+	ldx #$00                           ; counter of 512-byte blocks to load
 
 @load_track_loop:
 
@@ -104,12 +104,13 @@ unit_rd_preload:
 	cpy #$02
 	bne @error_wrong_size_plx          ; file size not multiplicity of 64K
 
-	plx
-	inx
-
 	; XXX launch DMA job to copy data
 
-	cpx #$7F
+	; Next 512-byte block or next track
+
+	plx
+	inx
+	inx
 	bne @load_track_loop               ; next 512-byte block of the same track
 
 	bra @load_track                    ; next track

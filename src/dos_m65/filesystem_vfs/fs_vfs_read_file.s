@@ -28,7 +28,7 @@ fs_vfs_read_file_open:
 	; Read dirent structures into $1000, find the first matching file
 	; Starting at $1000 VIC sees chargen, so this should be a safe place
 
-	jsr fs_vfs_direntmem_prepare
+	jsr util_shadow
 
 @lp_find:
 
@@ -49,7 +49,7 @@ fs_vfs_read_file_open:
 
 	; Found the file - load it
 
-	jsr fs_vfs_direntmem_restore       ; restore $1000 memory content
+	jsr util_shadow_restore            ; restore $1000 memory content
 
 	lda #$18                           ; dos_openfile
 	sta HTRAP00

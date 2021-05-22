@@ -21,11 +21,21 @@ unit_rd_preload:
 
 	; Set file name
 
-	ldy #>ramdisk_filename
-	ldx #<ramdisk_filename
+	jsr util_shadow
+	ldx #$FF
+@lp1:
+	inx
+	lda ramdisk_filename, x
+	sta $1000, x
+	bne @lp1
+
+	ldy #>$1000
+	ldx #<$1000
 	lda #$2E                           ; dos_setname
 	sta HTRAP00
 	+nop
+	jsr util_shadow_restore
+
 	+bcc @error_not_found              ; branch if error
 
 	; Try to find the file

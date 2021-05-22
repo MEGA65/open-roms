@@ -49,9 +49,9 @@ fs_vfs_read_dir:
 	; Read dirent structure into $1000, process it, restore the memory content.
 	; Starting at $1000 VIC sees chargen, so this should be a safe place
 
-	jsr fs_vfs_direntmem_prepare
+	jsr util_shadow
 	jsr fs_vfs_nextdirentry
-	jsr fs_vfs_direntmem_restore      ; processor status is preserved
+	jsr util_shadow_restore          ; processor status is preserved
 
 	; If nothing to read, output 'blocks free'
 
@@ -111,35 +111,4 @@ fs_vfs_read_dir_blocksfree:
 	+nop
 
 	clc
-	rts
-
-;
-; Helper routines
-;
-
-fs_vfs_direntmem_prepare:
-
-	ldx #$00
-@1:
-	ldy $1000, x
-	sty SD_MEMSHADOW_BUF, x
-	inx
-	bne @1
-
-	rts
-
-fs_vfs_direntmem_restore:
-
-	php
-
-	ldx #$00
-@1:
-	ldy SD_MEMSHADOW_BUF, x
-	sty $1000, x
-	inx
-	bne @1
-
-	bne @1
-
-	plp
 	rts

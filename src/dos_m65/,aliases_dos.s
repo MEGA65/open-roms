@@ -177,7 +177,7 @@
 
 	; Memory shadow, needed for SD card support
 
-	!addr SD_MEMSHADOW_BUF = $A800 ; 256 byte buffer for preserving original memory content
+	!addr MEMSHADOW_BUF    = $A800 ; 256 byte buffer for preserving original memory content
 
 	; Command/filename buffers, 256 bytes each
 

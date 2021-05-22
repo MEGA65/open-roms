@@ -26,11 +26,11 @@ unit_rd_preload:
 @lp1:
 	inx
 	lda ramdisk_filename, x
-	sta $1000, x
+	sta MEM_BUF, x
 	bne @lp1
 
-	ldy #>$1000
-	ldx #<$1000
+	ldy #>MEM_BUF
+	ldx #<MEM_BUF
 	lda #$2E                           ; dos_setname
 	sta HTRAP00
 	+nop

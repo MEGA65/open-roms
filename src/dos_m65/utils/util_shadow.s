@@ -7,7 +7,7 @@ util_shadow:
 
 	ldx #$00
 @1:
-	ldy $1000, x
+	ldy MEM_BUF, x
 	sty MEMSHADOW_BUF, x
 	inx
 	bne @1
@@ -21,7 +21,7 @@ util_shadow_restore:
 	ldx #$00
 @1:
 	ldy MEMSHADOW_BUF, x
-	sty $1000, x
+	sty MEM_BUF, x
 	inx
 	bne @1
 

@@ -66,7 +66,7 @@ fs_vfs_nextfileblock:
 
 fs_vfs_file_not_found:
 
-	jsr util_shadow_restore            ; restore $1000 memory content
+	jsr util_shadow_restore            ; restore MEM_BUF memory content
 
     ldx SD_DESC
 	lda #$16                           ; dos_closedir

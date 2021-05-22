@@ -46,8 +46,7 @@ fs_vfs_read_dir_open:
 
 fs_vfs_read_dir:
 
-	; Read dirent structure into $1000, process it, restore the memory content.
-	; Starting at $1000 VIC sees chargen, so this should be a safe place
+	; Read dirent structure into MEM_BUF, process it, restore the memory content.
 
 	jsr util_shadow
 	jsr fs_vfs_nextdirentry

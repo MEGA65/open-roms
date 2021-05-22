@@ -11,7 +11,7 @@
 	; Temporary storage locations
 	;
 
-	!addr FS_HVSR_DIRENT = $1000
+	!addr MEM_BUF = $1000          ; buffer for hypervisor calls; starting at $1000 VIC sees chargen, so this should be a safe place
 
 
 	;

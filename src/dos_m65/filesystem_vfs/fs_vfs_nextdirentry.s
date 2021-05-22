@@ -6,7 +6,7 @@
 
 ; Fills-in: PAR_FNAME, PAR_FTYPE, PAR_FSIZE_BYTES
 
-; NOTE: overrides page pointed by FS_HVSR_DIRENT!
+; NOTE: overrides page pointed by MEM_BUF!
 
 
 fs_vfs_nextdirentry:
@@ -18,14 +18,14 @@ fs_vfs_nextdirentry:
 
 @lpclear:
 
-	sta FS_HVSR_DIRENT, x
+	sta MEM_BUF, x
 	inx
 	bne @lpclear
 
 	; Ask the hypervisor to read the next dirent structure
 
 	ldx SD_DESC                       ; directory descriptor    XXX rename to FS_HVSR_DESC
-	ldy #>FS_HVSR_DIRENT              ; target page number
+	ldy #>MEM_BUF                     ; target page number
 
 	lda #$14                          ; dos_readdir
 	sta HTRAP00
@@ -44,7 +44,7 @@ fs_vfs_nextdirentry:
 	; Preprocess/validate the filename
 	;
 
-	ldx FS_HVSR_DIRENT+$40             ; file name length
+	ldx MEM_BUF+$40                    ; file name length
 	beq fs_vfs_nextdirentry            ; do not even try for empty file name
 	cpx #20
 	bcs fs_vfs_nextdirentry            ; if longer than 16 characters + dot + extension - also skip this one
@@ -52,7 +52,7 @@ fs_vfs_nextdirentry:
 
 @lpname:
 
-	lda FS_HVSR_DIRENT,x
+	lda MEM_BUF,x
 	cmp #$22
 	beq fs_vfs_nextdirentry            ; quotation mark is illegal
 	cmp #$2A
@@ -79,7 +79,7 @@ fs_vfs_nextdirentry:
 
 @lpname_store_next:
 
-	sta FS_HVSR_DIRENT,x               ; use this when file name has to be adapted
+	sta MEM_BUF,x                      ; use this when file name has to be adapted
 
 @lpname_next:
 
@@ -90,7 +90,7 @@ fs_vfs_nextdirentry:
 	; Determine type (file/directory)
 	;
 
-	lda FS_HVSR_DIRENT+$56
+	lda MEM_BUF+$56
 	tax
 	and #$FE
 	beq @entity_file                   ; workaround for older hypervisors
@@ -106,7 +106,7 @@ fs_vfs_nextdirentry:
 
 	; Once again validate the name length, with more precise information
 
-	lda FS_HVSR_DIRENT+$40
+	lda MEM_BUF+$40
 	cmp #$11
 	bcs fs_vfs_nextdirentry            ; skip entry if file name longer than 16 characters
 
@@ -119,17 +119,17 @@ fs_vfs_nextdirentry:
 
 	; Once again validate the name length, with more precise information
 
-	lda FS_HVSR_DIRENT+$40
+	lda MEM_BUF+$40
 	sec
 	sbc #$04                           ; strip 4 bytes - for dot and extension
 	bmi fs_vfs_nextdirentry            ; if name too short, try next entry
 	beq fs_vfs_nextdirentry            ; if name too short, try next entry
-	sta FS_HVSR_DIRENT+$40             ; store corrected file name length
+	sta MEM_BUF+$40                    ; store corrected file name length
 	tax
 
 	; Make sure there is a dot marking the start of a 3-byte extension
 
-	lda FS_HVSR_DIRENT, x
+	lda MEM_BUF, x
 	cmp #$2E
 	+bne fs_vfs_nextdirentry
 
@@ -142,15 +142,15 @@ fs_vfs_nextdirentry:
 
 @lpext:
 
-	lda FS_HVSR_DIRENT+0, x
+	lda MEM_BUF+0, x
 	cmp dir_types+0, y
 	bne @lpext_next
 
-	lda FS_HVSR_DIRENT+1, x
+	lda MEM_BUF+1, x
 	cmp dir_types+1, y
 	bne @lpext_next
 
-	lda FS_HVSR_DIRENT+2, x
+	lda MEM_BUF+2, x
 	cmp dir_types+2, y
 	beq @lpext_found
 
@@ -185,7 +185,7 @@ fs_vfs_nextdirentry:
 	ora #$80                           ; mark the file as closed, FAT32 does not have a 'not closed' attribute
 	sta PAR_FTYPE
 
-	lda FS_HVSR_DIRENT+$56             ; also apply read-only attribute from FAT32
+	lda MEM_BUF+$56                    ; also apply read-only attribute from FAT32
 	and #$01
 	beq @copy_size
 
@@ -201,7 +201,7 @@ fs_vfs_nextdirentry:
 
 @lpsize:
 
-	lda FS_HVSR_DIRENT+$52,x           ; copy file size in byytes
+	lda MEM_BUF+$52,x                  ; copy file size in byytes
 	sta PAR_FSIZE_BYTES,x
 	dex
 	bpl @lpsize
@@ -215,9 +215,9 @@ fs_vfs_nextdirentry:
 
 @lpname_cpy:
 
-	cpx FS_HVSR_DIRENT+$40
+	cpx MEM_BUF+$40
 	bcs @lpname_fill
-	lda FS_HVSR_DIRENT, x
+	lda MEM_BUF, x
 
 @lpname_fill:
 

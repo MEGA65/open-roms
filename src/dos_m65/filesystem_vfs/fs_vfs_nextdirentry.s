@@ -27,9 +27,7 @@ fs_vfs_nextdirentry:
 	ldx SD_DESC                       ; directory descriptor    XXX rename to FS_HVSR_DESC
 	ldy #>MEM_BUF                     ; target page number
 
-	lda #$14                          ; dos_readdir
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_readddir
 
 	+bcc @fail
 

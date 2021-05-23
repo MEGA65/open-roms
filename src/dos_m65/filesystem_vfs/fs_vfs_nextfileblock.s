@@ -9,9 +9,7 @@ fs_vfs_nextfileblock:
 	; Read chunk of data to SD card buffer
 
 	ldx SD_DESC
-	lda #$1A                           ; dos_readfile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_readfile
 
 	; XXX check error code
 
@@ -26,9 +24,7 @@ fs_vfs_nextfileblock:
 	ora SD_ACPTR_LEN+0
 	bne @copy
 
-	lda #$20                           ; dos_closefile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_closefile
 
 	lda #$00
 	sec
@@ -69,9 +65,7 @@ fs_vfs_file_not_found:
 	jsr util_shadow_restore            ; restore MEM_BUF memory content
 
     ldx SD_DESC
-	lda #$16                           ; dos_closedir
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_closedir
 
 	lda #39                            ; file not found error
 	jsr util_status_SD

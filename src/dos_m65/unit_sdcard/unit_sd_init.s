@@ -26,14 +26,5 @@ unit_sd_init:
 
 	; Close all the files in the hypervisor, go to root directory
 
-	lda #$22                          ; dos_closeall
-	sta HTRAP00
-	+nop
-
-	lda #$3C                          ; dos_cdrootdir
-	sta HTRAP00
-	+nop
-
-	; End of initialization
-
-	rts
+	jsr util_htrap_dos_closeall
+	jmp util_htrap_dos_cdrootdir

@@ -50,9 +50,7 @@ fs_vfs_read_file_open:
 
 	jsr util_shadow_restore            ; restore MEM_BUF memory content
 
-	lda #$18                           ; dos_openfile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_openfile
 
 	; XXX check error code
 

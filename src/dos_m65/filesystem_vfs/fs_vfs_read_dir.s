@@ -8,9 +8,7 @@ fs_vfs_read_dir_open:
 
 	; Open the directory
 
-	lda #$12                          ; dos_opendir
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_opendir
 
 	; XXX handle read errors
 
@@ -105,9 +103,7 @@ fs_vfs_read_dir_blocksfree:
 	; Close the directory within the hypervisor  XXX maybe move it to close routine
 
     ldx SD_DESC
-	lda #$16                          ; dos_closedir
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_closedir
 
 	clc
 	rts

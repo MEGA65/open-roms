@@ -31,18 +31,14 @@ unit_rd_preload:
 
 	ldy #>MEM_BUF
 	ldx #<MEM_BUF
-	lda #$2E                           ; dos_setname
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_setname
 	jsr util_shadow_restore
 
 	+bcc @error_not_found              ; branch if error
 
 	; Try to find the file
 
-	lda #$34                           ; dos_findfile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_findfile
 	+bcc @error_not_found              ; branch if file not found
 
 	; Calculate maximum amount of tracks possible to load
@@ -65,9 +61,7 @@ unit_rd_preload:
 
 	; Load the image
 
-	lda #$18                          ; dos_openfile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_openfile
 
 	lda #$FF
 	sta RD_MAXTRACK
@@ -91,9 +85,7 @@ unit_rd_preload:
 
 	; Read 512 bytes
 
-	lda #$1A                           ; dos_readfile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_readfile
 
 	cpx #$00
 	bne @error_wrong_size_plx          ; file size not multiplicity of 64K
@@ -119,18 +111,12 @@ unit_rd_preload:
 
 	; Make sure this is the end of the file
 
-	lda #$1A                           ; dos_readfile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_readfile
 
 	cpx #$00
 	bne @error_too_large
 	cpy #$00
 	bne @error_too_large
-
-	lda #$20                           ; dos_closefile
-	sta HTRAP00
-	+nop
 
 @load_image_end:
 
@@ -142,9 +128,7 @@ unit_rd_preload:
 	cmp #$02
 	bcc @error_wrong_size              ; file too small, at least 128K required
 
-	lda #$20                           ; dos_closefile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_closefile       ; XXX set descriptor
 
 	; End of initialization
 
@@ -187,9 +171,7 @@ unit_rd_preload_err_common:
 
 	sta RD_MSG                         ; set code for startup screen
 
-	lda #$20                           ; dos_closefile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_closefile       ; XXX set descriptor
 
 	; FALLTROUGH
 

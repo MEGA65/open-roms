@@ -124,8 +124,8 @@ print_sysinfo_video:
 	lda #$01
 	jsr cmd_sysinfo_print_dev
 
-	lda #'/'
-	jsr JCHROUT
+	ldx #IDX__STR_DOS_SEPAR
+	jsr print_packed_misc_str
 
 	lda #$02
 	jsr cmd_sysinfo_print_dev

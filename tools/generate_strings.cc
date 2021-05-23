@@ -306,14 +306,15 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { false, true,  true,  false, false, "STR_MEM_STRS",     "\r STRS"            },
     { false, true,  true,  false, false, "STR_MEM_FREE",     "\r\r FREE"          },
 
-    { false, false, true,  false, false, "STR_DOS_FD",       ", FDD "             },
-    { false, false, true,  false, false, "STR_DOS_RD",       ", RAM DISK "        },
+    { false, false, true,  false, false, "STR_DOS_FD",       "\rFLOPPY   : "      },
+    { false, false, true,  false, false, "STR_DOS_SEPAR",    " / "                },
+    { false, false, true,  false, false, "STR_DOS_RD",       "\rRAM DISK : "      },
 
     { false, false, true,  false, false, "STR_SI_HEADER",    "OPEN ROMS, "        },
     { false, false, true,  false, false, "STR_SI_MODE64",    "LEGACY MODE"        },
     { false, false, true,  false, false, "STR_SI_MODE65",    "NATIVE MODE"        },
     { false, false, true,  false, false, "STR_SI_HDR_REL",   "\rRELEASE "         },
-    { false, false, true,  false, false, "STR_SI_HDR_HW",    "BOARD  : "          },
+    { false, false, true,  false, false, "STR_SI_HDR_HW",    "BOARD    : "        },
     { false, false, true,  false, false, "STR_SI_HW_01",     "MEGA65 R1"          },
     { false, false, true,  false, false, "STR_SI_HW_02",     "MEGA65 R2"          },
     { false, false, true,  false, false, "STR_SI_HW_03",     "MEGA65 R3"          },
@@ -324,7 +325,7 @@ const StringEntryList GLOBAL_MiscStrings =  { ListType::STRINGS_BASIC, "misc",
     { false, false, true,  false, false, "STR_SI_HW_FD",     "WUKONG A100T"       },
     { false, false, true,  false, false, "STR_SI_HW_FE",     "SIMULATION VHDL"    },
     { false, false, true,  false, false, "STR_SI_HW_XX",     "UNKNOWN ID $"       },
-    { false, false, true,  false, false, "STR_SI_HDR_VID",   "\rVIDEO  : "        },
+    { false, false, true,  false, false, "STR_SI_HDR_VID",   "\rVIDEO    : "      },
 
     { false, false, true,  false, false, "STR_RD_NAME",      "RAMDISK.DNP "       },
     { false, false, true,  false, false, "STR_RD_OK",        "LOADED OK\r"        },
@@ -1153,17 +1154,17 @@ void DataSet::generateConfigDepStrings()
     if (GLOBAL_ConfigOptions["TAPE_NORMAL"] && GLOBAL_ConfigOptions["TAPE_TURBO"])
     {
         featureStr    += "TAPE LOAD NORMAL TURBO\r";
-        featureStrM65 += "TAPE   : LOAD NORMAL TURBO\r";
+        featureStrM65 += "TAPE     : LOAD NORMAL TURBO\r";
     }
     else if (GLOBAL_ConfigOptions["TAPE_NORMAL"])
     {
         featureStr    += "TAPE LOAD NORMAL\r";
-        featureStrM65 += "TAPE   : LOAD NORMAL\r";
+        featureStrM65 += "TAPE     : LOAD NORMAL\r";
     }
     else if (GLOBAL_ConfigOptions["TAPE_TURBO"])
     {
         featureStr    += "TAPE LOAD TURBO\r";
-        featureStrM65 += "TAPE   : LOAD TURBO\r";
+        featureStrM65 += "TAPE     : LOAD TURBO\r";
     }
    
     // IEC support features
@@ -1171,7 +1172,7 @@ void DataSet::generateConfigDepStrings()
     if (GLOBAL_ConfigOptions["IEC"])
     {
         featureStr    += "IEC";
-        featureStrM65 += "IEC    :";
+        featureStrM65 += "IEC      :";
        
         bool extendedIEC = false;
        
@@ -1217,7 +1218,7 @@ void DataSet::generateConfigDepStrings()
     }
     else
     {
-        featureStrM65 += "IEC    : NO\r";
+        featureStrM65 += "IEC      : -\r";
     }
 
     // RS-232 support features
@@ -1226,11 +1227,11 @@ void DataSet::generateConfigDepStrings()
     if (GLOBAL_ConfigOptions["RS232_UP2400"]) featureStr += "UP2400\r";
     if (GLOBAL_ConfigOptions["RS232_UP9600"]) featureStr += "UP9600\r";
    
-    featureStrM65 += "RS-232 : NO\r";
+    featureStrM65 += "RS-232   : -\r";
 
     // CBDOS features
 
-    featureStrM65 += "\rSD CARD ";
+    featureStrM65 += "\rSD CARD  : ";
 
     // Keyboard support features
    

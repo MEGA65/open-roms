@@ -31,11 +31,11 @@ INITMSG_native:
 
 	; Native mode	
 
-	ldx #46
+	ldx #48
 	ldy #0
 	jsr M65_SETWIN_XY
 
-	ldx #34
+	ldx #32
 	ldy #9
 	jsr M65_SETWIN_WH
 
@@ -72,7 +72,7 @@ INITMSG_native:
 
 	jsr m65dos_rdchk
 	cmp #$FF
-	beq INITMSG_rts
+	+beq print_return
 
 	pha
 	jsr print_return
@@ -96,10 +96,6 @@ INITMSG_native:
 	adc #IDX__STR_RD_OK
 	tax
 	jmp print_packed_misc_str
-
-INITMSG_rts:
-
-	rts
 
 INITMSG_main_banner:
 

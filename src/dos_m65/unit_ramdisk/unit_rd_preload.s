@@ -43,6 +43,8 @@ unit_rd_preload:
 
 	; Calculate maximum amount of tracks possible to load
 
+	; XXX clean this up, for the loop counter it should be enough to use DMAJOB_DST_ADDR
+
 	lda #$FF
 	sta RD_MAXTRACK                    ; maximum track number of loaded image, for now set $FF
 	sta __stoptrack
@@ -61,7 +63,16 @@ unit_rd_preload:
 
 	; Load the image
 
+	lda #$08                           ; set the ram disk start address
+	sta DMAJOB_DST_MB
+	lda #$00
+	sta DMAJOB_DST_ADDR+0
+	sta DMAJOB_DST_ADDR+1
+	lda RD_STARTSEG
+	sta DMAJOB_DST_ADDR+2
+
 	jsr util_htrap_dos_openfile
+	sta SD_DESC                        ; XXX consider using separate variable
 
 	lda #$FF
 	sta RD_MAXTRACK
@@ -73,6 +84,7 @@ unit_rd_preload:
 	lda RD_MAXTRACK
 	cmp __stoptrack
 	beq @load_image_mem_full
+	inc DMAJOB_DST_ADDR+2
 
 @load_track_check_done:
 
@@ -96,7 +108,10 @@ unit_rd_preload:
 	cpy #$02
 	bne @error_wrong_size_plx          ; file size not multiplicity of 64K
 
-	; XXX launch DMA job to copy data
+	jsr util_dma_launch_from_hwbuf     ; copy data to Hyper RAM
+
+	inc DMAJOB_DST_ADDR+1              ; advance pointer to the next block
+	inc DMAJOB_DST_ADDR+1
 
 	; Next 512-byte block or next track
 
@@ -128,7 +143,8 @@ unit_rd_preload:
 	cmp #$02
 	bcc @error_wrong_size              ; file too small, at least 128K required
 
-	jsr util_htrap_dos_closefile       ; XXX set descriptor
+	ldx SD_DESC
+	jsr util_htrap_dos_closefile
 
 	; End of initialization
 

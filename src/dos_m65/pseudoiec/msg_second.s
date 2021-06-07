@@ -16,6 +16,7 @@ msg_SECOND:
 
 	ldx IDX1_LISTENER
 	bmi msg_SECOND_done        ; do nothing if no listener
+	stx PAR_FSINSTANCE         ; set file system instance
 	sta XX_CHANNEL, x          ; store channel
 
 	; Determine command type

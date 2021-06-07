@@ -2,6 +2,9 @@
 ; Read a sector pair from a block device
 
 
+; XXX utilize PAR_FSINSTANCE
+
+
 lowlevel_readsector:
 
 	; Set drive, ensure disk is present

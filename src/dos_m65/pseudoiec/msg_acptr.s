@@ -13,6 +13,10 @@ msg_ACPTR:
 	ldx IDX1_TALKER
 	+bmi msg_ACPTR_fail_no_talker
 
+	; Set file system instance
+
+	stx PAR_FSINSTANCE
+
 	; Check if active channel is status one
 
 	lda XX_CHANNEL, X

@@ -66,15 +66,17 @@
 	!addr PAR_FNAME        = $8021 ; 16 bytes - filename, filled with $A0
 	!addr PAR_FPATTERN     = $8031 ; 16 bytes - pattern to match, filled with $A0
 
+	!addr PAR_FSINSTANCE   = $8041 ; 0 = SD card, 1/2 = floppy, 3 = ram disk
+
 	; Various temporary data
 
-	!addr XX_DIR_PHASE     = $8041 ; directory output phase, values deponds on device driver, but 0 = not reading
-	!addr SD_DIR_PHASE     = $8041 ; - SD card
-	!addr F0_DIR_PHASE     = $8042 ; - floppy 0
-	!addr F1_DIR_PHASE     = $8043 ; - floppy 0
-	!addr RD_DIR_PHASE     = $8044 ; - ram disk
+	!addr XX_DIR_PHASE     = $8042 ; directory output phase, values deponds on device driver, but 0 = not reading
+	!addr SD_DIR_PHASE     = $8042 ; - SD card
+	!addr F0_DIR_PHASE     = $8043 ; - floppy 0
+	!addr F1_DIR_PHASE     = $8044 ; - floppy 0
+	!addr RD_DIR_PHASE     = $8045 ; - ram disk
 
-	; Free space: $8045-$8063
+	; Free space: $8046-$8063
 
 	!addr SD_ACPTR_helper  = $8052 ; subroutine in RAM to read a byte
 	!addr code_LDA_01      = $8052 ; - LDA instruction

@@ -13,8 +13,14 @@ msg_CIOUT:
 
 	ldx IDX1_LISTENER
 	bmi msg_CIOUT_fail
-	lda XX_MODE, x
 
+	; Set file system instance
+
+	stx PAR_FSINSTANCE
+
+	; Check current operation mode
+
+	lda XX_MODE, x
 	cmp #$01
 	bne @1
 

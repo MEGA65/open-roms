@@ -24,8 +24,6 @@ unit_sd_cmd_OPEN_EOI:
 	dey
 	bpl @lp1
 
-	; XXX add support for second card
-
 	lda SD_CMDFN_BUF
 	cmp #'$'
 	beq unit_sd_cmd_OPEN_dir

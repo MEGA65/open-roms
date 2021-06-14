@@ -3,6 +3,8 @@
 ; Open file for reading
 ;
 
+; XXX to be unified with floppy code
+
 
 unit_rd_cmd_OPEN:
 

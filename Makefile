@@ -68,7 +68,7 @@ SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
                  src/dos_m65/filesystem_vfs \
                  src/dos_m65/lowlevel \
                  src/dos_m65/pseudoiec \
-                 src/dos_m65/unit_floppy \
+                 src/dos_m65/unit_disk \
                  src/dos_m65/unit_ramdisk \
                  src/dos_m65/unit_sdcard \
                  src/dos_m65/utils

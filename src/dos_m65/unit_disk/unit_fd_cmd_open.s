@@ -6,14 +6,15 @@
 ; XXX add support for both floppies
 
 
-unit_fd_cmd_OPEN:
+unit_disk_cmd_OPEN:
 
 	lda #$01                 ; mode: receive command or file name
-	sta F0_MODE
+	ldx PAR_FSINSTANCE
+	sta XX_MODE, x
 
 	jmp dos_EXIT_CLC
 
-unit_fd_cmd_OPEN_EOI:
+unit_disk_cmd_OPEN_EOI:
 
 	; XXX this dispatcher is temporary
 
@@ -26,15 +27,27 @@ unit_fd_cmd_OPEN_EOI:
 	dey
 	bpl @lp1
 
-	; XXX add support for second floppy
+	ldx PAR_FSINSTANCE
+	cmp #$02
+	beq @f1
+	bcs @rd
 
 	lda F0_CMDFN_BUF
+	+skip_2_bytes_trash_nvz
+@f1:
+	lda F1_CMDFN_BUF
+	+skip_2_bytes_trash_nvz
+@rd:
+	lda RD_CMDFN_BUF
+
 	cmp #'$'
-	beq unit_fd_cmd_OPEN_dir
+	beq unit_fd_cmd_OPEN_dir           ; XXX add support for second floppy and RAM disk
 
 	; FALLTROUGH
 
 unit_fd_cmd_OPEN_file:
+
+	; XXX add support for second floppy and RAM disk
 
 	; Copy the filter from command     XXX this should be moved to common part and deduplicated with directory opening
 

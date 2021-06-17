@@ -72,9 +72,7 @@ msg_CIOUT_cmdfn_F0:                    ; get next byte of status - floppy
 	stx F0_CMDFN_IDX
 	lda #$A0
 	sta F0_CMDFN_BUF,x
-	plp
-	+bcs unit_fd_cmd_OPEN_EOI          ; if EOI - execute command
-	jmp dos_EXIT_CLC
+	bra msg_CIOUT_cmdfn_FX
 
 msg_CIOUT_cmdfn_F1:                    ; get next byte of status - floppy
 
@@ -87,9 +85,7 @@ msg_CIOUT_cmdfn_F1:                    ; get next byte of status - floppy
 	stx F1_CMDFN_IDX
 	lda #$A0
 	sta F1_CMDFN_BUF,x
-	plp
-	+bcs unit_fd_cmd_OPEN_EOI          ; if EOI - execute command
-	jmp dos_EXIT_CLC
+	bra msg_CIOUT_cmdfn_FX
 
 msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 
@@ -102,8 +98,13 @@ msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 	stx RD_CMDFN_IDX
 	lda #$A0
 	sta RD_CMDFN_BUF,x
+
+	; FALLTROUGH
+
+msg_CIOUT_cmdfn_FX:                    ; common pard for floppy and RAM disk
+
 	plp
-	+bcs unit_rd_cmd_OPEN_EOI          ; if EOI - execute command
+	+bcs unit_disk_cmd_OPEN_EOI        ; if EOI - execute command
 	jmp dos_EXIT_CLC
 
 msg_CIOUT_cmdfn_vectab:

@@ -4,7 +4,7 @@
 ;
 
 
-unit_fd_init:
+disk_fd_init:
 
 	; Copy status string
 

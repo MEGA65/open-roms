@@ -4,7 +4,7 @@
 ;
 
 
-unit_sd_init:
+card_sd_init:
 
 	; Copy initial status string
 

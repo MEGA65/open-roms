@@ -4,7 +4,7 @@
 ;
 
 
-unit_fd_cmd_CLOSE:
+disk_fd_cmd_CLOSE:
 
 	; XXX provide implementation
 

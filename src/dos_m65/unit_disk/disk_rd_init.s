@@ -4,7 +4,7 @@
 ;
 
 
-unit_rd_init:
+disk_rd_init:
 
 
 	; Copy status string
@@ -26,7 +26,7 @@ unit_rd_init:
 
 	; FALLTROUGH
 
-unit_rd_init_test_ram:                 ; non-destructive ATTIC/CELLAR RAM test
+disk_rd_init_test_ram:                 ; non-destructive ATTIC/CELLAR RAM test
 
 	; Preserve temporary address area on stack
 

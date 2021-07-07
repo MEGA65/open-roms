@@ -4,7 +4,7 @@
 ;
 
 
-unit_sd_cmd_READ:
+card_sd_cmd_READ:
 
 	lda SD_MODE
 	cmp #$03

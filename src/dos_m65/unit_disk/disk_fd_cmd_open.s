@@ -6,7 +6,7 @@
 ; XXX add support for both floppies
 
 
-unit_disk_cmd_OPEN:
+disk_xx_cmd_OPEN:
 
 	lda #$01                 ; mode: receive command or file name
 	ldx PAR_FSINSTANCE
@@ -14,7 +14,7 @@ unit_disk_cmd_OPEN:
 
 	jmp dos_EXIT_CLC
 
-unit_disk_cmd_OPEN_EOI:
+disk_fd_cmd_OPEN_EOI:
 
 	; XXX this dispatcher is temporary
 
@@ -41,11 +41,11 @@ unit_disk_cmd_OPEN_EOI:
 	lda RD_CMDFN_BUF
 
 	cmp #'$'
-	beq unit_fd_cmd_OPEN_dir           ; XXX add support for second floppy and RAM disk
+	beq disk_fd_cmd_OPEN_dir           ; XXX add support for second floppy and RAM disk
 
 	; FALLTROUGH
 
-unit_fd_cmd_OPEN_file:
+disk_fd_cmd_OPEN_file:
 
 	; XXX add support for second floppy and RAM disk
 
@@ -66,7 +66,7 @@ unit_fd_cmd_OPEN_file:
 	jmp fs_cbm_read_file_open
 
 
-unit_fd_cmd_OPEN_dir:
+disk_fd_cmd_OPEN_dir:
 
 	lda #$02                 ; mode: read directory
 	sta F0_MODE

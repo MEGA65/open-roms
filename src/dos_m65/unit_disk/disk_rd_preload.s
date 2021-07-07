@@ -7,12 +7,12 @@
 !addr __stoptrack = RD_DIR_PHASE       ; helper value for detecting too large image
 
 
-unit_rd_preload:
+disk_rd_preload:
 
 	; Check if RAM disk is enabled (should be disabled if no Hyper RAM is present)
 
 	lda UNIT_RAMDISK
-	+beq unit_rd_preload_err_common_noclose
+	+beq disk_rd_preload_err_common_noclose
 
 	; Select SD card buffer
 
@@ -51,13 +51,13 @@ unit_rd_preload:
 
 	lda RAM_ATTIC
 	beq @added_attic
-	jsr unit_rd_preload_addram
+	jsr disk_rd_preload_addram
 
 @added_attic:
 
 	lda RAM_CELLAR
 	beq @added_cellar
-	jsr unit_rd_preload_addram
+	jsr disk_rd_preload_addram
 
 @added_cellar:
 
@@ -168,22 +168,22 @@ unit_rd_preload:
 @error_wrong_size:
 
 	lda #$01
-	jmp unit_rd_preload_err_common
+	jmp disk_rd_preload_err_common
 
 @error_too_large:
 
 	lda #$02
-	jmp unit_rd_preload_err_common
+	jmp disk_rd_preload_err_common
 
 @error_not_found:
 
 	lda #$03
 	sta RD_MSG
 
-	jmp unit_rd_preload_err_common_noclose
+	jmp disk_rd_preload_err_common_noclose
 
 
-unit_rd_preload_err_common:
+disk_rd_preload_err_common:
 
 	sta RD_MSG                         ; set code for startup screen
 
@@ -191,7 +191,7 @@ unit_rd_preload_err_common:
 
 	; FALLTROUGH
 
-unit_rd_preload_err_common_noclose:
+disk_rd_preload_err_common_noclose:
 
 	lda #$00                           ; temporary storage needs to be restored to 0
 	sta __stoptrack
@@ -201,7 +201,7 @@ unit_rd_preload_err_common_noclose:
 
 
 
-unit_rd_preload_addram:
+disk_rd_preload_addram:
 
 	; Add allowed number of tracks due to attic/cellar block presence
 

@@ -60,7 +60,7 @@ msg_ACPTR_read_SD:
 
 	ora SD_ACPTR_LEN+1
 	bne @3
-	jsr unit_sd_cmd_READ
+	jsr card_sd_cmd_READ
 	bcc @3
 	jsr kernalstatus_EOI
 @3:
@@ -90,7 +90,7 @@ msg_ACPTR_read_F0:
 
 	ora F0_ACPTR_LEN+1
 	bne @3
-	jsr unit_f0_cmd_READ
+	jsr disk_f0_cmd_READ
 	bcc @3
 	jsr kernalstatus_EOI
 @3:
@@ -120,7 +120,7 @@ msg_ACPTR_read_F1:
 
 	ora F1_ACPTR_LEN+1
 	bne @3
-	jsr unit_f1_cmd_READ
+	jsr disk_f1_cmd_READ
 	bcc @3
 	jsr kernalstatus_EOI
 @3:

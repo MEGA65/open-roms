@@ -4,15 +4,15 @@
 ;
 
 
-unit_f0_cmd_READ:
+disk_f0_cmd_READ:
 
 	; XXX provide implementation
 
-unit_f1_cmd_READ:
+disk_f1_cmd_READ:
 
 	; XXX provide implementation
 
-unit_fd_cmd_READ:
+disk_f__cmd_READ:
 
 	lda F0_MODE
 	cmp #$03

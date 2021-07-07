@@ -13,5 +13,5 @@ dos_PRELOAD:
 	rts
 @ok:
 	jsr dos_ENTER
-	jsr unit_rd_preload
+	jsr disk_rd_preload
 	jmp dos_EXIT_CLC

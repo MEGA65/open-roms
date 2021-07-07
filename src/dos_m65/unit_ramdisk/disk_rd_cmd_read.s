@@ -1,13 +1,14 @@
 
 ;
-; Open file for reading
+; Read more data into the buffer
 ;
 
 ; XXX to be unified with floppy code
 
 
-unit_rd_cmd_OPEN_EOI:
+disk_rd_cmd_READ:
 
 	; XXX provide implementation
 
-	jmp dos_EXIT_CLC
+	sec ; mark EOI
+	rts

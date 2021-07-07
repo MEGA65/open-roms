@@ -84,9 +84,9 @@ dos_INIT:
 
 	; Initialize device handlers
 
-	jsr unit_sd_init
-	jsr unit_fd_init
-	jsr unit_rd_init
+	jsr card_sd_init
+	jsr disk_fd_init
+	jsr disk_rd_init
 
 	; Safer version of 'dos_EXIT' - does not affect speed related registers
 

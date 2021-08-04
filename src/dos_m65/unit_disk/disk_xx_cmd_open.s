@@ -16,9 +16,9 @@ disk_xx_cmd_OPEN:
 
 disk_xx_cmd_OPEN_EOI:
 
-	; XXX this dispatcher is temporary
+	; XXX this dispatcher needs improvements to handle more of the syntax
 
-	; Erase filter pattern     XXX this should be moved to common part
+	; Erase filter pattern
 
 	ldy #$0F
 	lda #$A0
@@ -51,8 +51,9 @@ disk_xx_cmd_OPEN_EOI:
 	; FALLTROUGH
 
 
-disk_rd_cmd_OPEN_file:     ; XXX there is a great potential for code deduplication here
+disk_rd_cmd_OPEN_file:
 
+	; Copy the filter from command
 	ldy #$00
 @lp1:
 	lda RD_CMDFN_BUF, y
@@ -64,6 +65,7 @@ disk_rd_cmd_OPEN_file:     ; XXX there is a great potential for code deduplicati
 
 disk_f0_cmd_OPEN_file:
 
+	; Copy the filter from command
 	ldy #$00
 @lp1:
 	lda F0_CMDFN_BUF, y
@@ -75,6 +77,7 @@ disk_f0_cmd_OPEN_file:
 
 disk_f1_cmd_OPEN_file:
 
+	; Copy the filter from command
 	ldy #$00
 @lp1:
 	lda F1_CMDFN_BUF, y

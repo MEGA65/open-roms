@@ -14,7 +14,7 @@ disk_xx_cmd_OPEN:
 
 	jmp dos_EXIT_CLC
 
-disk_fd_cmd_OPEN_EOI:
+disk_xx_cmd_OPEN_EOI:
 
 	; XXX this dispatcher is temporary
 
@@ -32,57 +32,125 @@ disk_fd_cmd_OPEN_EOI:
 	beq @f1
 	bcs @rd
 
+	; FALLTROUGH
+
 	lda F0_CMDFN_BUF
-	+skip_2_bytes_trash_nvz
+	cmp #'$'
+	beq disk_f0_cmd_OPEN_dir 
+	bra disk_f0_cmd_OPEN_file
 @f1:
 	lda F1_CMDFN_BUF
-	+skip_2_bytes_trash_nvz
+	cmp #'$'
+	beq disk_f1_cmd_OPEN_dir 
+	bra disk_f1_cmd_OPEN_file
 @rd:
 	lda RD_CMDFN_BUF
-
 	cmp #'$'
-	beq disk_fd_cmd_OPEN_dir           ; XXX add support for second floppy and RAM disk
+	beq disk_rd_cmd_OPEN_dir
 
 	; FALLTROUGH
 
-disk_fd_cmd_OPEN_file:
 
-	; XXX add support for second floppy and RAM disk
-
-	; Copy the filter from command     XXX this should be moved to common part and deduplicated with directory opening
+disk_rd_cmd_OPEN_file:     ; XXX there is a great potential for code deduplication here
 
 	ldy #$00
 @lp1:
-	lda F0_CMDFN_BUF, y
-	cmp #$A0
-	beq @lp1_end
-	sta PAR_FPATTERN, y
-	iny
-	cpy #$10
+	lda RD_CMDFN_BUF, y
+	jsr disk_xx_cmd_OPEN_file_common
 	bne @lp1
-
-@lp1_end:
 
 	jmp fs_cbm_read_file_open
 
 
-disk_fd_cmd_OPEN_dir:
-
-	lda #$02                 ; mode: read directory
-	sta F0_MODE
-
-	; Copy the filter from command     XXX this should be moved to common part and deduplicated with file opening
+disk_f0_cmd_OPEN_file:
 
 	ldy #$00
 @lp1:
-	lda F0_CMDFN_BUF+1, y
-	cmp #$A0
-	beq @lp1_end
-	sta PAR_FPATTERN, y
-	iny
-	cpy #$10
+	lda F0_CMDFN_BUF, y
+	jsr disk_xx_cmd_OPEN_file_common
+	bne @lp1
+
+	jmp fs_cbm_read_file_open
+
+
+disk_f1_cmd_OPEN_file:
+
+	ldy #$00
+@lp1:
+	lda F1_CMDFN_BUF, y
+	jsr disk_xx_cmd_OPEN_file_common
+	bne @lp1
+
+	jmp fs_cbm_read_file_open
+
+
+disk_rd_cmd_OPEN_dir:
+
+	lda #$02
+	sta RD_MODE
+
+	; Copy the filter from command
+	ldy #$00
+@lp1:
+	lda RD_CMDFN_BUF+1, y
+	jsr disk_xx_cmd_OPEN_dir_common
 	bne @lp1
 
 @lp1_end:
 
 	jmp fs_cbm_read_dir_open
+
+
+disk_f0_cmd_OPEN_dir:
+
+	lda #$02
+	sta F0_MODE
+
+	; Copy the filter from command
+	ldy #$00
+@lp1:
+	lda F0_CMDFN_BUF+1, y
+	jsr disk_xx_cmd_OPEN_dir_common
+	bne @lp1
+
+	jmp fs_cbm_read_dir_open
+
+
+disk_f1_cmd_OPEN_dir:
+
+	lda #$02
+	sta F1_MODE
+
+	; Copy the filter from command
+	ldy #$00
+@lp1:
+	lda F1_CMDFN_BUF+1, y
+	jsr disk_xx_cmd_OPEN_dir_common
+	bne @lp1
+
+	jmp fs_cbm_read_dir_open
+
+
+
+disk_xx_cmd_OPEN_file_common:
+
+	; Common part of filter copy loop
+
+	cmp #$A0
+	+beq fs_cbm_read_file_open
+	sta PAR_FPATTERN, y
+	iny
+	cpy #$10
+
+	rts
+
+
+disk_xx_cmd_OPEN_dir_common:
+
+	cmp #$A0
+	+beq fs_cbm_read_dir_open
+	sta PAR_FPATTERN, y
+	iny
+	cpy #$10
+
+	rts

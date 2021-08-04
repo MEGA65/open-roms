@@ -104,7 +104,7 @@ msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 msg_CIOUT_cmdfn_FX:                    ; common pard for floppy and RAM disk
 
 	plp
-	+bcs disk_fd_cmd_OPEN_EOI        ; if EOI - execute command
+	+bcs disk_xx_cmd_OPEN_EOI        ; if EOI - execute command
 	jmp dos_EXIT_CLC
 
 msg_CIOUT_cmdfn_vectab:

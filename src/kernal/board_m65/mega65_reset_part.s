@@ -8,6 +8,11 @@ m65_reset_part:
 
 	jsr map_KERNAL_1
 	jsr (VK1__m65_colorset_reset)
+
+	; FALLTROUGH
+
+m65_reset_part_skip_palette:           ; for hypervisor reset do not set palette, see https://github.com/MEGA65/open-roms/issues/68
+
 	jsr map_NORMAL                     ; we want normal memory mapping
 
 	jsr viciv_shutdown                 ; by default we do not want the VIC-IV

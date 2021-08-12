@@ -89,12 +89,7 @@ msg_ACPTR_read_F0:
 	; If new length is 0, try to read next block of data
 
 	ora F0_ACPTR_LEN+1
-	bne @3
-	jsr disk_f0_cmd_READ
-	bcc @3
-	jsr kernalstatus_EOI
-@3:
-	jmp dos_EXIT_CLC
+	bra msg_ACPTR_read_XX_common
 
 msg_ACPTR_read_F1:
 
@@ -119,16 +114,21 @@ msg_ACPTR_read_F1:
 	; If new length is 0, try to read next block of data
 
 	ora F1_ACPTR_LEN+1
-	bne @3
-	jsr disk_f1_cmd_READ
+	bra msg_ACPTR_read_XX_common
+
+msg_ACPTR_read_RD:
+
+	; XXX provide implementation
+
+msg_ACPTR_read_XX_common:
+
+	bne @3                  
+	jsr disk_xx_cmd_READ
 	bcc @3
 	jsr kernalstatus_EOI
 @3:
 	jmp dos_EXIT_CLC
 
-msg_ACPTR_read_RD:
-
-	; XXX provide implementation
 
 
 msg_ACPTR_fail_no_data:

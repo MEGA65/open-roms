@@ -13,7 +13,7 @@ fs_cbm_read_dir_open:
 	lda #$00
 	sta PAR_SECTOR
 
-	jsr lowlevel_readsector            ; XXX handle read errors
+	jsr lowlevel_xx_readsector         ; XXX handle read errors
 
 	; Create the first directory listing entry (title, id)
 
@@ -78,7 +78,7 @@ fs_cbm_read_dir_open:
 	lda #$02
 	sta PAR_SECTOR
 
-	jsr lowlevel_readsector            ; XXX handle read errors
+	jsr lowlevel_xx_readsector         ; XXX handle read errors
 
 	; Copy 2nd BAM sector to the cache
 

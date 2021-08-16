@@ -115,7 +115,7 @@ fs_cbm_nextdirentry:
 
 @get_sector_common:
 
-	jsr lowlevel_readsector         ; XXX handle read errors
+	jsr lowlevel_xx_readsector      ; XXX handle read errors
 
 	; Set new FD_DIRENT
 

@@ -2,17 +2,29 @@
 ; Read a sector pair from a block device
 
 
-; XXX utilize PAR_FSINSTANCE
+lowlevel_xx_readsector:
 
+    ldx PAR_FSINSTANCE
+    +beq lowlevel_rd_readsector
 
-lowlevel_readsector:
+    ; FALLTROUGH
 
-	; Set drive, ensure disk is present
+lowlevel_fd_readsector:
+
+	; Set drive
 
 	lda #%00001111                     ; set drive 0 (internal) and side 0
 	trb FDC_CONTROL  ; $D080
 
-	jsr lowlevel_fdc_ensure_presence_refresh
+	cpx #$01
+	beq @1
+
+	lda #%00000001                     ; if needed, switch to drive 1 (external)
+	tsb FDC_CONTROL
+@1:
+	; Ensure disk is present
+
+	jsr lowlevel_fd_ensure_presence_refresh
 
 	; Check if buffer contains data from given track
 	; XXX compare device and unit too
@@ -35,8 +47,8 @@ lowlevel_readsector:
 
 lowlevel_readsector_force:
 
-	jsr lowlevel_fdc_motor_on              ; enable drive motor and LED
-	jsr lowlevel_fdc_ensure_presence
+	jsr lowlevel_fd_motor_on           ; enable drive motor and LED
+	jsr lowlevel_fd_ensure_presence
 
 	lda #%10000000                     ; select floppy buffer
 	trb SD_BUFCTL    ; $D689
@@ -77,8 +89,8 @@ lowlevel_readsector_force:
 	lda #$40
 	sta FDC_COMMAND  ; $D081
 
-	jsr lowlevel_fdc_wait_set_RDREQ    ; wait till sector is found
-	jsr lowlevel_fdc_wait_clr_BUSY     ; wait for BUSY flag to clear
+	jsr lowlevel_fd_wait_set_RDREQ     ; wait till sector is found
+	jsr lowlevel_fd_wait_clr_BUSY      ; wait for BUSY flag to clear
 
 	; Wait for DRQ and EQ flags to go high
 

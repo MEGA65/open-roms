@@ -52,7 +52,7 @@ fs_cbm_nextfileblock_got_ts:
 
 	; Load next track/sector
 
-	jsr lowlevel_readsector         ; XXX handle read errors
+	jsr lowlevel_xx_readsector         ; XXX handle read errors
 
 	; Store pointer and amount of data ready to fetch
 

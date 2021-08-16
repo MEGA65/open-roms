@@ -13,7 +13,7 @@ fs_cbm_read_file_open:
 	lda #$03
 	sta PAR_SECTOR
 
-	jsr lowlevel_readsector         ; XXX handle read errors
+	jsr lowlevel_xx_readsector         ; XXX handle read errors
 
 	; Set variables to point to the 1st directory entry in the 2nd sector of the buffer
 

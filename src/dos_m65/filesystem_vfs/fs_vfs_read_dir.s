@@ -8,9 +8,7 @@ fs_vfs_read_dir_open:
 
 	; Open the directory
 
-	lda #$12                          ; dos_opendir
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_opendir
 
 	; XXX handle read errors
 
@@ -46,12 +44,11 @@ fs_vfs_read_dir_open:
 
 fs_vfs_read_dir:
 
-	; Read dirent structure into $1000, process it, restore the memory content.
-	; Starting at $1000 VIC sees chargen, so this should be a safe place
+	; Read dirent structure into MEM_BUF, process it, restore the memory content.
 
-	jsr fs_vfs_direntmem_prepare
+	jsr util_shadow
 	jsr fs_vfs_nextdirentry
-	jsr fs_vfs_direntmem_restore      ; processor status is preserved
+	jsr util_shadow_restore          ; processor status is preserved
 
 	; If nothing to read, output 'blocks free'
 
@@ -106,40 +103,7 @@ fs_vfs_read_dir_blocksfree:
 	; Close the directory within the hypervisor  XXX maybe move it to close routine
 
     ldx SD_DESC
-	lda #$16                          ; dos_closedir
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_closedir
 
 	clc
-	rts
-
-;
-; Helper routines
-;
-
-fs_vfs_direntmem_prepare:
-
-	ldx #$00
-@1:
-	ldy $1000, x
-	sty SD_MEMSHADOW_BUF, x
-	inx
-	bne @1
-
-	rts
-
-fs_vfs_direntmem_restore:
-
-	php
-
-	ldx #$00
-@1:
-	ldy SD_MEMSHADOW_BUF, x
-	sty $1000, x
-	inx
-	bne @1
-
-	bne @1
-
-	plp
 	rts

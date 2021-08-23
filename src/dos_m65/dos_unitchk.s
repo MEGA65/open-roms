@@ -18,8 +18,10 @@ dos_UNITCHK:
 
 	cmp UNIT_SDCARD
 	beq dos_UNITCHK_sdcard
-	cmp UNIT_FLOPPY
-	beq dos_UNITCHK_floppy
+	cmp UNIT_FLOPPY0
+	beq dos_UNITCHK_floppy0
+	cmp UNIT_FLOPPY1
+	beq dos_UNITCHK_floppy1
 	cmp UNIT_RAMDISK
 	beq dos_UNITCHK_ramdisk
 
@@ -36,15 +38,22 @@ dos_UNITCHK_sdcard:
 
 	; FALLTROUGH
 
-dos_UNITCHK_floppy:
+dos_UNITCHK_floppy0:
 
 	lda #$01
 	+skip_2_bytes_trash_nvz
 
 	; FALLTROUGH
 
-dos_UNITCHK_ramdisk:
+dos_UNITCHK_floppy1:
 
 	lda #$02
+	+skip_2_bytes_trash_nvz
+
+	; FALLTROUGH
+
+dos_UNITCHK_ramdisk:
+
+	lda #$03
 
 	jmp dos_EXIT_CLC_A

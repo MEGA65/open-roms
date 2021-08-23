@@ -30,7 +30,7 @@ LOAD:
 	lda MEMUSS+0
 	sta STAL+0
 	lda MEMUSS+1
-	sty STAL+1
+	sta STAL+1
 
 	; Reset status
 	jsr kernalstatus_reset

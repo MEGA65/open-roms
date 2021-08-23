@@ -1,38 +1,56 @@
 
-; Read a sector pair from a block device
+; Read a sector pair from a block device, flow partially based on:
+; - https://github.com/MEGA65/mega65-tools/blob/master/src/tests/floppytest.c
 
 
-lowlevel_readsector:
+lowlevel_xx_readsector:
 
-	; XXX compare device and unit too
+    ldx PAR_FSINSTANCE
+    +beq lowlevel_rd_readsector
 
-	; Check if buffer contains data from given track
+    ; FALLTROUGH
+
+lowlevel_fd_readsector:
+
+	; Check if buffer contains data from given track, sector, drive
 
 	lda PAR_TRACK
 	cmp BUFTAB_TRACK+1
-	bne lowlevel_readsector_force
- 
-	; Check if sectors match
+	bne lowlevel_fd_readsector_force
 
 	lda PAR_SECTOR
 	and #%11111110
 	cmp BUFTAB_SECTOR+1
-	bne lowlevel_readsector_force
+	bne lowlevel_fd_readsector_force
+
+	; XXX compare drive
 
 	; Data already loaded into buffer - do nothing
 
 	clc
 	rts
 
-lowlevel_readsector_force:
+lowlevel_fd_readsector_force:
 
-	; Select FDD sector as buffer
+	; Set drive, motor ON
 
-	lda #%10000000                     ; select floppy buffer
+	lda #$68
+	cpx #$01
+	beq @1
+	inc
+@1:
+	sta FDC_CONTROL  ; $D080
+
+	; Select floppy buffer
+
+	lda #%10000000
 	trb SD_BUFCTL    ; $D689
 
-	lda #%00001111                     ; set drive 0 (internal) and side 0
-	trb FDC_CONTROL  ; $D080
+	; Wait until BUSY flag clears
+
+@2:
+	lda FDC_STATUS_A ; $D082
+	bmi @2
 
 	; Select physical track and sector based on logical ones from PAR_TRACK and PAR_SECTOR
 
@@ -65,30 +83,30 @@ lowlevel_readsector_force:
 	inc
 	sta FDC_SECTOR   ; $D085
 
+	; Reset buffers
+
+	lda #$00
+	sta FDC_COMMAND  ; $D081
+
 	; Ask the controller to read the sector    XXX how to detect errors, missing disk, etc.?
 
 	lda #$40
 	sta FDC_COMMAND  ; $D081
 
-	; Wait for RDREQ (indicates sector found)
+	; Wait for busy flag to assert   XXX how much? 1 second? most likelly too much...
 
-@lp1:
-	lda FDC_STATUS_B ; $D083
-	bpl @lp1
+	ldy #71
+@3:
+	ldx #$00
+	jsr wait_x_bars
+	dey
+	bne @3
 
-	; Wait for BUSY flag to clear
+	; Wait until BUSY flag clears
 
-@lp2:
+@4:
 	lda FDC_STATUS_A ; $D082
-	bmi @lp2
-
-	; Wait for DRQ and EQ flags to go high
-
-@lp3:
-	lda FDC_STATUS_A ; $D082
-	and #%01100000
-	cmp #%01000000   ; XXX is this correct? .A seems to stay at $40 at this point
-	bne @lp3
+	bmi @4
 
 	; Copy sector to buffer in RAM
 
@@ -114,4 +132,14 @@ lowlevel_readsector_force:
 	sta BUFTAB_SECTOR+1
 
 	clc
+	rts
+
+
+
+lowlevel_fd_motor_off:
+
+	; XXX set correct drive
+
+	lda #$00
+	sta FDC_CONTROL  ; $D080
 	rts

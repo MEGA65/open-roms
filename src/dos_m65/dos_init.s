@@ -26,8 +26,10 @@ dos_INIT:
 
 	lda #CONFIG_UNIT_SDCARD
 	sta UNIT_SDCARD
-	lda #CONFIG_UNIT_FLOPPY
-	sta UNIT_FLOPPY
+	lda #CONFIG_UNIT_FLOPPY0
+	sta UNIT_FLOPPY0
+	lda #CONFIG_UNIT_FLOPPY1
+	sta UNIT_FLOPPY1
 	lda #CONFIG_UNIT_RAMDISK
 	sta UNIT_RAMDISK
 
@@ -68,6 +70,7 @@ dos_INIT:
 	sta code_LDA_01
 	sta code_LDA_02
 	sta code_LDA_03
+	sta code_LDA_04
 
 	lda #$B9                 ; LDA nnnn, y opcode
 	sta code_LDA_nnnn_Y
@@ -77,12 +80,13 @@ dos_INIT:
 	sta code_RTS_02
 	sta code_RTS_03
 	sta code_RTS_04
+	sta code_RTS_05
 
 	; Initialize device handlers
 
-	jsr unit_sd_init
-	jsr unit_fd_init
-	jsr unit_rd_init
+	jsr card_sd_init
+	jsr disk_fd_init
+	jsr disk_rd_init
 
 	; Safer version of 'dos_EXIT' - does not affect speed related registers
 

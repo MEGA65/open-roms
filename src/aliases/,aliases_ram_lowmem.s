@@ -44,7 +44,7 @@
 	!addr OLDLIN    = $3B ; $3B-$3C  previous BASIC line number
 	!addr OLDTXT    = $3D ; $3D-$3E  current BASIC line pointer
 	!addr DATLIN    = $3F ; $3F-$40  -- NOT IMPLEMENTED --
-	!addr DATPTR    = $41 ; $41-$42  pointer for READ/DATA copmmands
+	!addr DATPTR    = $41 ; $41-$42  pointer for READ/DATA commands
 	!addr INPPTR    = $43 ; $43-$44  -- NOT IMPLEMENTED --
 	!addr VARNAM    = $45 ; $45-$46  current variable name
 	!addr VARPNT    = $47 ; $47-$48  current variable/descriptor pointer

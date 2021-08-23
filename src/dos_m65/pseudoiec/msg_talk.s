@@ -12,28 +12,44 @@ msg_TALK:
 	and #$1F
 	beq msg_TALK_fail        ; branch if device 0 (used to denote lack of device)
 
+@try_sd:
+
 	cmp UNIT_SDCARD
-	bne @1
+	bne @try_f0
 
 	; TALK on SD card
 
 	lda #$00
 	bra msg_TALK_success
-@1:
-	cmp UNIT_FLOPPY
-	bne @2
 
-	; TALK on floppy
+@try_f0:
+
+	cmp UNIT_FLOPPY0
+	bne @try_f1
+
+	; TALK on floppy 0
 
 	lda #$01
 	bra msg_TALK_success
-@2:
+
+@try_f1:
+
+	cmp UNIT_FLOPPY1
+	bne @try_rd
+
+	; TALK on floppy 1
+
+	lda #$02
+	bra msg_TALK_success
+
+@try_rd:
+
 	cmp UNIT_RAMDISK
 	bne msg_TALK_fail
 
 	; TALK on ram disk
 
-	lda #$02
+	lda #$03
 	
 	; FALLTROUGH
 

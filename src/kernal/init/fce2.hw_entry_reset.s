@@ -64,6 +64,8 @@ hw_entry_reset:
 
 	jsr m65_reset_common     ; RAMTAS, RESTOR, CINT
 
+	jsr m65dos_preload       ; preload RAM disk content
+
 	clc
 	jsr M65_MODESET          ; on MEGA65 go to native mode by default
 

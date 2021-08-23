@@ -50,7 +50,7 @@ util_dir_filter:
 	beq @done
 	lda PAR_FPATTERN, y
 	
-	sta $1000
+	sta MEM_BUF
 
 	cmp #$44                           ; if 'D' - require a directory      XXX documment this extension
 	beq @require_dir

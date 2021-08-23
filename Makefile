@@ -21,6 +21,7 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  src/basic/basic_functions_06 \
                  src/basic/board_crt \
                  src/basic/board_m65 \
+                 src/basic/board_u64 \
                  src/basic/board_x16 \
                  src/basic/engine_editor \
                  src/basic/engine_runtime \
@@ -67,9 +68,9 @@ SRCDIR_DOS_M65 = $(SRCDIR_COMMON) \
                  src/dos_m65/filesystem_vfs \
                  src/dos_m65/lowlevel \
                  src/dos_m65/pseudoiec \
-                 src/dos_m65/unit_floppy \
+                 src/dos_m65/unit_card \
+                 src/dos_m65/unit_disk \
                  src/dos_m65/unit_ramdisk \
-                 src/dos_m65/unit_sdcard \
                  src/dos_m65/utils
 
 SRCDIR_MON_M65 = $(SRCDIR_COMMON) \

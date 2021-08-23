@@ -25,10 +25,9 @@ fs_vfs_read_file_open:
 
 	; XXX deduplicate part above with opening directory
 
-	; Read dirent structures into $1000, find the first matching file
-	; Starting at $1000 VIC sees chargen, so this should be a safe place
+	; Read dirent structures into MEM_BUF, find the first matching file
 
-	jsr fs_vfs_direntmem_prepare
+	jsr util_shadow
 
 @lp_find:
 
@@ -49,11 +48,9 @@ fs_vfs_read_file_open:
 
 	; Found the file - load it
 
-	jsr fs_vfs_direntmem_restore       ; restore $1000 memory content
+	jsr util_shadow_restore            ; restore MEM_BUF memory content
 
-	lda #$18                           ; dos_openfile
-	sta HTRAP00
-	+nop
+	jsr util_htrap_dos_openfile
 
 	; XXX check error code
 

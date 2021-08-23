@@ -4,8 +4,8 @@
 ;
 
 
-unit_sd_cmd_CLOSE:
+disk_rd_cmd_CLOSE:
 
 	; XXX provide implementation
 
-	jmp dos_EXIT_CLC
+	jmp dos_EXIT_SEC

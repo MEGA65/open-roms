@@ -4,13 +4,16 @@
 ;
 
 
-unit_fd_cmd_READ:
+disk_xx_cmd_READ:
 
-	lda FD_MODE
+    ldx PAR_FSINSTANCE
+	lda XX_MODE, x
 	cmp #$03
 	+beq fs_cbm_nextfileblock
 
-	lda FD_DIR_PHASE
+	; Reading directory
+
+	lda XX_DIR_PHASE, x
 	cmp #$01
 	+beq fs_cbm_read_dir
 	cmp #$02

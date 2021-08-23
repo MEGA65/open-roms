@@ -13,63 +13,63 @@ fs_cbm_read_dir_open:
 	lda #$00
 	sta PAR_SECTOR
 
-	jsr lowlevel_readsector            ; XXX handle read errors
+	jsr lowlevel_xx_readsector         ; XXX handle read errors
 
 	; Create the first directory listing entry (title, id)
 
 	ldx #$1F                           ; first fetch the template
 @lp1:
 	lda dir_hdr,x
-	sta FD_DIRENT_BUF,x
+	sta F0_DIRENT_BUF,x
 	dex
 	bpl @lp1
 
 	ldx #$0F                           ; file name
 @lp2:
 	lda SHARED_BUF_1+$04,x
-	sta FD_DIRENT_BUF+$08,x
+	sta F0_DIRENT_BUF+$08,x
 	dex
 	bpl @lp2
 
 	lda SHARED_BUF_1+$16               ; disk ID   XXX test this on a disk with ID
 	cmp #$A0
 	beq @skip1
-	sta FD_DIRENT_BUF+$1A
+	sta F0_DIRENT_BUF+$1A
 @skip1:	
 	lda SHARED_BUF_1+$17
 	cmp #$A0
 	beq @skip2
-	sta FD_DIRENT_BUF+$1B
+	sta F0_DIRENT_BUF+$1B
 @skip2:
 
 	lda SHARED_BUF_1+$19               ; dos version
-	sta FD_DIRENT_BUF+$1D
+	sta F0_DIRENT_BUF+$1D
 	lda SHARED_BUF_1+$1A
-	sta FD_DIRENT_BUF+$1E
+	sta F0_DIRENT_BUF+$1E
 
 	; Provide pointer to the header
 
 	lda #$20
-	sta FD_ACPTR_LEN+0
+	sta F0_ACPTR_LEN+0
 	lda #$00
-	sta FD_ACPTR_LEN+1
+	sta F0_ACPTR_LEN+1
 
-	lda #<FD_DIRENT_BUF
-	sta FD_ACPTR_PTR+0
-	lda #>FD_DIRENT_BUF
-	sta FD_ACPTR_PTR+1
+	lda #<F0_DIRENT_BUF
+	sta F0_ACPTR_PTR+0
+	lda #>F0_DIRENT_BUF
+	sta F0_ACPTR_PTR+1
 
 	; Set directory phase to 'file name'
 
 	lda #$01
-	sta FD_DIR_PHASE
+	sta F0_DIR_PHASE
 
 	; Copy 1st BAM sector to the cache
 
 	ldx #$00
 @lp3:
 	lda SHARED_BUF_1+$100, x
-	sta FD_BAM_CACHE_0,x
+	sta F0_BAM_CACHE,x
 	inx
 	bne @lp3
 
@@ -78,21 +78,21 @@ fs_cbm_read_dir_open:
 	lda #$02
 	sta PAR_SECTOR
 
-	jsr lowlevel_readsector            ; XXX handle read errors
+	jsr lowlevel_xx_readsector         ; XXX handle read errors
 
 	; Copy 2nd BAM sector to the cache
 
 	ldx #$00
 @lp4:
 	lda SHARED_BUF_1, x
-	sta FD_BAM_CACHE_0+$100,x
+	sta F0_BAM_CACHE+$100,x
 	inx
 	bne @lp4
 
 	; Set variables to point to the 1st directory entry in the 2nd sector of the buffer
 
 	lda #$08
-	sta FD_DIRENT
+	sta F0_DIRENT
 
 	; Make sure the 1st sector in buffer points to 2nd one
 
@@ -117,22 +117,22 @@ fs_cbm_read_dir:
 	; Prepare output entry, starting from XX_DIRENT_BUF + initial offset
 
 	jsr util_dir_filesize_blocks
-	ldx #(FD_DIRENT_BUF - XX_DIRENT_BUF)
+	ldx #(F0_DIRENT_BUF - XX_DIRENT_BUF)
 	ldx #$30
 	jsr util_dir_basic
 
 	; Provide pointers and length
 
-	sta FD_ACPTR_LEN+1
+	sta F0_ACPTR_LEN+1
 	txa
 	sec
 	sbc #$30
-	sta FD_ACPTR_LEN+0
+	sta F0_ACPTR_LEN+0
 
-	lda #<(FD_DIRENT_BUF)
-	sta FD_ACPTR_PTR+0
-	lda #>(FD_DIRENT_BUF)
-	sta FD_ACPTR_PTR+1
+	lda #<(F0_DIRENT_BUF)
+	sta F0_ACPTR_PTR+0
+	lda #>(F0_DIRENT_BUF)
+	sta F0_ACPTR_PTR+1
 	clc
 	rts
 
@@ -143,7 +143,7 @@ fs_cbm_read_dir_blocksfree:
 	ldx #$13
 @lp1:
 	lda dir_end, x
-	sta FD_DIRENT_BUF, x
+	sta F0_DIRENT_BUF, x
 	dex
 	bpl @lp1
 
@@ -151,11 +151,11 @@ fs_cbm_read_dir_blocksfree:
 
 	ldx #$10
 @lp2:
-	lda FD_BAM_CACHE_0+$100,x
+	lda F0_BAM_CACHE+$100,x
 	jsr @sub_free_add
 	cpx #$FA
 	beq @lp2_end
-	lda FD_BAM_CACHE_0+$000,x
+	lda F0_BAM_CACHE+$000,x
 	jsr @sub_free_add
 	inx
 	inx
@@ -170,19 +170,19 @@ fs_cbm_read_dir_blocksfree:
 	; Set pointer and length
 
 	lda #$13
-	sta FD_ACPTR_LEN+0
+	sta F0_ACPTR_LEN+0
 	lda #$00
-	sta FD_ACPTR_LEN+1
+	sta F0_ACPTR_LEN+1
 
-	lda #<FD_DIRENT_BUF
-	sta FD_ACPTR_PTR+0
-	lda #>FD_DIRENT_BUF
-	sta FD_ACPTR_PTR+1
+	lda #<F0_DIRENT_BUF
+	sta F0_ACPTR_PTR+0
+	lda #>F0_DIRENT_BUF
+	sta F0_ACPTR_PTR+1
 
 	; Mark end of directory
 
 	lda #$00
-	sta FD_DIR_PHASE
+	sta F0_DIR_PHASE
 
 	clc
 	rts
@@ -193,9 +193,9 @@ fs_cbm_read_dir_blocksfree:
 	; Helper routine to calculate free blocks
 
 	clc
-	adc FD_DIRENT_BUF+2
-	sta FD_DIRENT_BUF+2
+	adc F0_DIRENT_BUF+2
+	sta F0_DIRENT_BUF+2
 	bcc @noinc
-	inc FD_DIRENT_BUF+3
+	inc F0_DIRENT_BUF+3
 @noinc:
 	rts

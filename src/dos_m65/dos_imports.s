@@ -12,3 +12,5 @@
 
 ;; #ALIAS# m65_speed_tape_cbdos            = KERNAL_0.m65_speed_tape_cbdos
 ;; #ALIAS# m65_speed_restore               = KERNAL_0.m65_speed_restore
+
+;; #ALIAS# wait_x_bars                     = KERNAL_0.wait_x_bars

@@ -59,6 +59,7 @@ dir_types:
 	!pet "d2m", $00          ; CMD FD 2000 / 4000             - disk image (HD)
 	!pet "d4m", $00          ; CMD FD 4000                    - disk image (ED)
 	!pet "dhd", $00          ; CMD HD                         - hard disk image
+	!pet "dnp", $00          ; CMD partition                  - single partition image
 	!pet "rom", $00          ; rom image
 	!pet "m65", $00          ; MEGA65 utility
 

@@ -7,17 +7,19 @@
 
 
 !addr VDOS_INIT    = $4020 +  0 * 2
-!addr VDOS_UNITCHK = $4020 +  1 * 2
-!addr VDOS_UNITSET = $4020 +  2 * 2
-!addr VDOS_UNITNUM = $4020 +  3 * 2
-!addr VDOS_ACPTR   = $4020 +  4 * 2
-!addr VDOS_CIOUT   = $4020 +  5 * 2
-!addr VDOS_LISTEN  = $4020 +  6 * 2
-!addr VDOS_SECOND  = $4020 +  7 * 2
-!addr VDOS_TALK    = $4020 +  8 * 2
-!addr VDOS_TKSA    = $4020 +  9 * 2
-!addr VDOS_UNTLK   = $4020 + 10 * 2
-!addr VDOS_UNLSN   = $4020 + 11 * 2
+!addr VDOS_PRELOAD = $4020 +  1 * 2
+!addr VDOS_RDCHK   = $4020 +  2 * 2
+!addr VDOS_UNITCHK = $4020 +  3 * 2
+!addr VDOS_UNITSET = $4020 +  4 * 2
+!addr VDOS_UNITNUM = $4020 +  5 * 2
+!addr VDOS_ACPTR   = $4020 +  6 * 2
+!addr VDOS_CIOUT   = $4020 +  7 * 2
+!addr VDOS_LISTEN  = $4020 +  8 * 2
+!addr VDOS_SECOND  = $4020 +  9 * 2
+!addr VDOS_TALK    = $4020 + 10 * 2
+!addr VDOS_TKSA    = $4020 + 11 * 2
+!addr VDOS_UNTLK   = $4020 + 12 * 2
+!addr VDOS_UNLSN   = $4020 + 13 * 2
 
 
 m65dos_init:
@@ -28,11 +30,28 @@ m65dos_init:
 	jsr (VDOS_INIT)
 	bra m65dos_end_1
 
+m65dos_preload:
+
+	; Preaload RAM disk content, only to be used during KERNAL initialization
+
+	jsr map_DOS_1
+	jsr (VDOS_PRELOAD)
+	bra m65dos_end_1
+
+m65dos_rdchk:
+
+	; Returns in .A the RAM DISK preload status; $00 = OK, $FF = N/A, other = error code
+
+	jsr map_DOS_1
+	jsr (VDOS_RDCHK)
+	bra m65dos_end_1
+
+
 m65dos_unitchk:                        ; XXX expose to BASIC
 
 	; Checks is the unit number is supported by the internal DOS
 	; Input:  .A - unit number to check
-	; Output: Carry set if not supported, otherwise .A contains unit type (0 = SD card, 1 = internal floppy, 2 = RAM disk)
+	; Output: Carry set if not supported, otherwise .A contains unit type (0 = SD card, 1/2 = internal/external floppy, 3 = RAM disk)
 
 	jsr map_DOS_1
 	jsr (VDOS_UNITCHK)

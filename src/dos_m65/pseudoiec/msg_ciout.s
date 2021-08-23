@@ -13,8 +13,14 @@ msg_CIOUT:
 
 	ldx IDX1_LISTENER
 	bmi msg_CIOUT_fail
-	lda XX_MODE, x
 
+	; Set file system instance
+
+	stx PAR_FSINSTANCE
+
+	; Check current operation mode
+
+	lda XX_MODE, x
 	cmp #$01
 	bne @1
 
@@ -38,7 +44,7 @@ msg_CIOUT_fail:
 
 
 
-; Receiving command/file name
+; Receiving command/file name   XXX limit $7F is too small, buffer size is 256 bytes
 
 msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 
@@ -52,23 +58,34 @@ msg_CIOUT_cmdfn_SD:                    ; get next byte of status - SD card
 	lda #$A0
 	sta SD_CMDFN_BUF,x
 	plp
-	+bcs unit_sd_cmd_OPEN_EOI          ; if EOI - execute command
+	+bcs card_sd_cmd_OPEN_EOI          ; if EOI - execute command
 	jmp dos_EXIT_CLC
 
-msg_CIOUT_cmdfn_FD:                    ; get next byte of status - floppy
+msg_CIOUT_cmdfn_F0:                    ; get next byte of status - floppy
 
-	ldx FD_CMDFN_IDX
-	sta FD_CMDFN_BUF,x
+	ldx F0_CMDFN_IDX
+	sta F0_CMDFN_BUF,x
 	inx
 	bpl @1
 	ldx #$7F
 @1:
-	stx FD_CMDFN_IDX
+	stx F0_CMDFN_IDX
 	lda #$A0
-	sta FD_CMDFN_BUF,x
-	plp
-	+bcs unit_fd_cmd_OPEN_EOI          ; if EOI - execute command
-	jmp dos_EXIT_CLC
+	sta F0_CMDFN_BUF,x
+	bra msg_CIOUT_cmdfn_FX
+
+msg_CIOUT_cmdfn_F1:                    ; get next byte of status - floppy
+
+	ldx F1_CMDFN_IDX
+	sta F1_CMDFN_BUF,x
+	inx
+	bpl @1
+	ldx #$7F
+@1:
+	stx F1_CMDFN_IDX
+	lda #$A0
+	sta F1_CMDFN_BUF,x
+	bra msg_CIOUT_cmdfn_FX
 
 msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 
@@ -81,12 +98,18 @@ msg_CIOUT_cmdfn_RD:                    ; get next byte of status - ram disk
 	stx RD_CMDFN_IDX
 	lda #$A0
 	sta RD_CMDFN_BUF,x
+
+	; FALLTROUGH
+
+msg_CIOUT_cmdfn_FX:                    ; common pard for floppy and RAM disk
+
 	plp
-	+bcs unit_rd_cmd_OPEN_EOI          ; if EOI - execute command
+	+bcs disk_xx_cmd_OPEN_EOI        ; if EOI - execute command
 	jmp dos_EXIT_CLC
 
 msg_CIOUT_cmdfn_vectab:
 
 	!word msg_CIOUT_cmdfn_SD
-	!word msg_CIOUT_cmdfn_FD
+	!word msg_CIOUT_cmdfn_F0
+	!word msg_CIOUT_cmdfn_F1
 	!word msg_CIOUT_cmdfn_RD

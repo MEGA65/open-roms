@@ -13,12 +13,12 @@ fs_cbm_read_file_open:
 	lda #$03
 	sta PAR_SECTOR
 
-	jsr lowlevel_readsector         ; XXX handle read errors
+	jsr lowlevel_xx_readsector         ; XXX handle read errors
 
 	; Set variables to point to the 1st directory entry in the 2nd sector of the buffer
 
 	lda #$08
-	sta FD_DIRENT
+	sta F0_DIRENT
 
 	; Make sure the 1st sector in buffer points to 2nd one
 
@@ -51,11 +51,11 @@ fs_cbm_read_file_open:
 	; Found the file, load it
 
 	lda #$03                 ; mode: read file
-	sta FD_MODE
+	sta F0_MODE
 
-	lda FD_LOADTRACK
+	lda F0_LOADTRACK
 	sta PAR_TRACK
-	lda FD_LOADSECTOR
+	lda F0_LOADSECTOR
 	sta PAR_SECTOR
 
 	jmp fs_cbm_nextfileblock_got_ts

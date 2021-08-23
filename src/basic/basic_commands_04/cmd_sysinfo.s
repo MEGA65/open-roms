@@ -119,9 +119,15 @@ print_sysinfo_video:
 	ldx #IDX__STR_DOS_FD
 	jsr print_packed_misc_str
 
-	; Print floppy unit ID
+	; Print floppy unit IDs
 
 	lda #$01
+	jsr cmd_sysinfo_print_dev
+
+	ldx #IDX__STR_DOS_SEPAR
+	jsr print_packed_misc_str
+
+	lda #$02
 	jsr cmd_sysinfo_print_dev
 
 	; Print ram disk unit ID
@@ -129,7 +135,7 @@ print_sysinfo_video:
 	ldx #IDX__STR_DOS_RD
 	jsr print_packed_misc_str
 
-	lda #$02
+	lda #$03
 	jsr cmd_sysinfo_print_dev
 
 	jmp print_return

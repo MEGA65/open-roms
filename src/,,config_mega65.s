@@ -91,9 +91,9 @@
 ; --- Built-in DOS configuration
 
 ;; #CONFIG# UNIT_SDCARD                27
-;; #CONFIG# UNIT_FLOPPY0               28
-;; #CONFIG# UNIT_FLOPPY1               29
-;; #CONFIG# UNIT_RAMDISK               30
+;; #CONFIG# UNIT_FLOPPY0               0
+;; #CONFIG# UNIT_FLOPPY1               0
+;; #CONFIG# UNIT_RAMDISK               0
 
 
 ; --- Debug options

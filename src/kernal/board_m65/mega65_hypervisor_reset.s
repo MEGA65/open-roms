@@ -16,12 +16,13 @@ m65_hypervisor_reset:
 
 	; Do not reset the stack (see, ldx #$FF, txs) - we need to know where to return
 	
-	jsr m65_reset_part                 ; init MEGA65 specific hardware, shutdown VIC-IV, clear native mode mark
+	jsr m65_reset_part_skip_palette    ; init MEGA65 specific hardware, shutdown VIC-IV, clear native mode mark
+	                                   ; but do not override the palette, it would have broken the logo
 	ldx #$28                           ; 40 columns, screen disabled for now
 	stx VIC_SCROLX
 
 	jsr IOINIT_skip_DOS                ; better not to initialize DOS under hypervisor, risk of incompatibility
-	jsr m65_reset_part_skip_palette    ; also skip palette setting, but do RAMTAS, RESTOR, CINT
+	jsr m65_reset_common               ; RAMTAS, RESTOR, CINT
 
 	; Restore hypervisor memory mapping and quit
 

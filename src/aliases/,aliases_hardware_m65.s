@@ -91,7 +91,7 @@
 
 	; MISC registers
 
-	!addr MISC_BOARDID    = $D629 ; board identification byte
+	!addr MISC_M65MODEL   = $D629 ; board identification byte
 	!addr MISC_EMU        = $D710 ; to enable badlines and slow interrupts
 
 	; Hypervisor traps

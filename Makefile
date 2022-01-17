@@ -99,6 +99,14 @@ SRC_ACME       = $(DIR_ACME)/acme.c $(DIR_ACME)/platform.c $(DIR_ACME)/alu.c $(D
                  $(DIR_ACME)/dynabuf.c $(DIR_ACME)/mnemo.c $(DIR_ACME)/input.c $(DIR_ACME)/section.c \
                  $(DIR_ACME)/symbol.c $(DIR_ACME)/tree.c
 
+HDR_COMMON     = tools/common.h
+SRC_COMMON     = tools/common.cc
+
+DIR_GENSTR     = tools/generate_strings
+HDR_GENSTR     = $(HDR_COMMON) $(DIR_GENSTR)/dataset.h $(DIR_GENSTR)/dictencoder.h $(DIR_GENSTR)/global.h 
+SRC_GENSTR     = $(SRC_COMMON) $(DIR_GENSTR)/dataset.cc $(DIR_GENSTR)/dictencoder.cc $(DIR_GENSTR)/global.cc \
+                 $(DIR_GENSTR)/main.cc
+
 CRT_BIN_LIST   = assets/cartridge/header-cart.bin \
                  assets/cartridge/header-seg0.bin \
                  assets/cartridge/header-seg1.bin \
@@ -316,6 +324,12 @@ $(TOOL_ASSEMBLER): $(DIR_ACME) $(SRC_ACME) $(HDR_ACME)
 	@mkdir -p build/tools
 	@$(CC) -o $(TOOL_ASSEMBLER) $(SRC_ACME) -lm -w -I./3rdparty/acme/src
 
+$(TOOL_GENERATE_STRINGS): $(SRC_GENSTR) $(HDR_GENSTR)
+	@echo
+	@echo Compiling tool $@ ...
+	@mkdir -p build/tools
+	@$(CXX) -O2 -Wall -o $(TOOL_GENERATE_STRINGS) $(SRC_GENSTR) -lm -I./tools
+
 $(TOOL_PNGPREPARE): tools/pngprepare.c
 	@echo
 	@echo Compiling tool $@ ...
@@ -328,11 +342,11 @@ build/tools/%: tools/%.c
 	@mkdir -p build/tools
 	@$(CC) -O2 -Wall -o $@ $<
 
-build/tools/%: tools/%.cc tools/common.h
+build/tools/%: tools/%.cc $(SRC_COMMON) $(HDR_COMMON)
 	@echo
 	@echo Compiling tool $@ ...
 	@mkdir -p build/tools
-	@$(CXX) -O2 -Wall -o $@ $<
+	@$(CXX) -O2 -Wall -o $@ $< $(SRC_COMMON)
 
 # Rules - CHARGEN
 

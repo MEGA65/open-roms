@@ -1,3 +1,3 @@
-LDA $C3 + STA $C1 + LDA $C$ + STA $C2 + JSR (address not imnculded in similarity)
+LDA $C3 + STA $C1 + LDA $C4 + STA $C2 + JSR (address not included in similarity)
 
 Copy 16-bit value from one well-known zero page location to another + jump to subroutine. Trivial - not copyrightable.

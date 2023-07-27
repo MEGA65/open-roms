@@ -5,6 +5,7 @@
 
 #include <iostream>
 #include <string>
+#include <cstdint>
 
 
 #if defined(WIN32) || defined(_WIN32)

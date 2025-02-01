@@ -1,0 +1,4 @@
+STA $64 + STA $65
+
+Storing the same number (mostly 0) to the mantissa of FAC1 is a common operation when clearing parts of a floating point number.
+This is trivial and not copyrightable.

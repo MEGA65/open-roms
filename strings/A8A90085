@@ -1,0 +1,3 @@
+TAY + LDA #0 + STA zero page
+
+Saving the accumulator to be able to use it to clear some byte in the zero page. This a common and trivial idea.

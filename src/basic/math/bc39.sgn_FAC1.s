@@ -15,7 +15,6 @@
 ; - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 ;
 
-; XXX provide implementation
-
 sgn_FAC1:
-	+STUB_IMPLEMENTATION
+	jsr sgn_FAC1_A
+	; Fallthrough to convert_A_to_FAC1

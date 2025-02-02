@@ -1,0 +1,3 @@
+JSR $BC2B + STA $62
+
+Calls the SGN FAC1 into A which is a well known routine and then stores the result in the FAC1 mantissa. Trivial

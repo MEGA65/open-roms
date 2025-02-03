@@ -1,0 +1,3 @@
+STA $24 + LDA $2E   $24 = INDEX + 2 and $2E VARTAB+1
+
+storing and loading from two well known locations in the zero page. Trivial

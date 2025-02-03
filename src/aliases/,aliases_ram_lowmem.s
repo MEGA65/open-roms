@@ -63,7 +63,7 @@
 	!addr FAC1_mantissa   = $62 ; $62 - $65
 	!addr FAC1_sign       = $66
 
-	!addr SGNFLG    = $67 ;          -- NOT IMPLEMENTED --
+	!addr SGNFLG    = $67 ;          Also used as number of terms of series evaluation
 	!addr BITS      = $68 ;          FAC1 overflow
 
 	!addr __FAC2    = $69 ; $69-$6E  floating point accumulator 2 [!] also used for memory move pointers

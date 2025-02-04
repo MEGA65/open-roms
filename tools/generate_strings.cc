@@ -1077,7 +1077,7 @@ void DictEncoder::process(StringEntryList &outDictionary)
 
     for (const auto &dictionaryStr : dictionary)
     {
-        StringEntry newEntry = { true, true, true, true, "", dictionaryStr };
+        StringEntry newEntry = { true, true, true, true, true, "", dictionaryStr };
         outDictionary.list.push_back(newEntry);
     }
 

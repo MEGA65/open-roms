@@ -248,8 +248,8 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BF7B`   | `pwr_FAC2_FAC1`        | NOT DONE |                                                    |
 | `$BFB4`   | `toggle_sign_FAC1`     | DONE     |                                                    |
 | `$BFED`   | `exp_FAC1`             | NOT DONE |                                                    |
-| `$E043`   | `poly1_FAC1`           | NOT DONE |                                                    |
-| `$E059`   | `poly2_FAC1`           | NOT DONE |                                                    |
+| `$E043`   | `poly1_FAC1`           | PARTIAL  | not fully tested yet                               |
+| `$E059`   | `poly2_FAC1`           | PARTIAL  | not fully tested yet                               |
 | `$E097`   | `rnd_FAC1`             | DONE     |                                                    |
 | `$E09A`   | `rnd_A`                | DONE     |                                                    |
 | `$E0BE`   | `rnd_generate`         | DONE     |                                                    |

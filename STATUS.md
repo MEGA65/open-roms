@@ -375,6 +375,7 @@ Not all of them - only these we want to have implemented.
 | `$E51B`   | init screen keyboard, no VIC | DONE     |                                                    |
 | `$E544`   | clear screen                 | DONE     |                                                    |
 | `$E50C`   | set cursor position          | DONE     |                                                    |
+| `$E536`   | init screen ?                | PARTIAL  |                                                    |
 | `$E566`   | home cursor                  | DONE     |                                                    |
 | `$E56C`   | set PNT and USER values      | DONE     |                                                    |
 | `$E5A0`   | setup VIC II & I/O           | DONE     |                                                    |

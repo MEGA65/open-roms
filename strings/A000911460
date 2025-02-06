@@ -1,0 +1,3 @@
+LDY #0 + BCC $14 + RTS
+
+Fragment of special case termination of subroutine. Trivial

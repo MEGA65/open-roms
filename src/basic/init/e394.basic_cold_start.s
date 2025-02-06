@@ -8,7 +8,13 @@
 
 basic_cold_start:
 
-!ifdef ROM_LAYOUT_STD { ; skip on non-sgtandard ROM layouts - they produce single image nevertheless
+!ifdef ROM_LAYOUT_STD { ; skip on non-standard ROM layouts - they produce single image nevertheless
+
+!ifdef CONFIG_MEMORY_MODEL_38K {
+    ; Special version in high memory for the 38K memory layout
+    jsr revision_check
+} else {
+
 
 	; Before doing anything, check if we have a compatible BASIC/KERNAL pair
 
@@ -23,6 +29,7 @@ basic_cold_start:
 @2:
 	dey
 	bpl @1
+}
 }
 
 	; Remaining part would not fit here

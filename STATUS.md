@@ -299,6 +299,7 @@ Not all of them - only these we want to have implemented.
 | `$AB1E`   | `STROUT`     | DONE     |                                                    |
 | `$AD9E`   | `FRMEVL`     | PARTIAL  |                                                    |
 | `$BDCD`   | `LINPRT`     | DONE     | temporary implementation                           |
+| `$E3A2`   | `MOVCHG`     | DONE     | memory model 38K only                              |
 | `$E3BF`   | `INIT`       | NOT DONE |                                                    |
 | `$E422`   | `INITMSG`    | DONE     |                                                    |
 | `$E453`   | `RVECT`      | NOT DONE |                                                    |

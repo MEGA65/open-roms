@@ -86,8 +86,8 @@ List of the most important make targets:
 | `test_ultimate64`     | builds the Ultimate 64 configuration, launches it using VICE                    |
 | `test_ultimate64_crt` | as above, ROM with extended cartriodge image                                    |
 | `test_hybrid`         | builds a hybrid ROM (Open ROMs Kernal + original BASIC), launches it using VICE |
-| `test_testing`        | builds a rather odd testing configuration, launches it using VICE               |
-
+| `test_testing_38K`    | builds a 38K memory model configuration, launches it using VICE                 |
+| `test_testing_60K`    | builds a 60K memory model configuration, launches it using VICE                 |
 
 ### Code segments and ROM layouts
 

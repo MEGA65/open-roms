@@ -17,8 +17,8 @@
 
 
 convert_A_to_FAC1:
-    sta FAC1_mantissa
+    sta FAC1_mantissa+1
     jsr sign_extend_A_to_Y
-    sty FAC1_mantissa+1
+    sty FAC1_mantissa
     +nop                    ; To not leave a gap to the fallthrough
     ; Fall through to convert_i16_to_FAC1

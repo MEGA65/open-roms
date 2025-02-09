@@ -200,7 +200,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B1AA`   | `FACINX`               | NOT DONE | convert FAC1 to 16-bit signed integer              |
 | `$B1BF`   | `convert_FAC1_to_s16`  | NOT DONE |                                                    |
 | `$B391`   | `GIVAYF`               | PARTIAL  | not fully tested yet                               |
-| `$B3A2`   | `convert_Y_to_FAC1`    | PARTIAL  | not fully tested yet                               |
+| `$B3A2`   | `convert_Y_to_FAC1`    | DONE     |                                                    |
 | `$B794`   | `convert_A_to_FAC1`    | NOT DONE |                                                    |
 | `$B7B5`   | `STRVAL`               | NOT DONE | imports string to FAC1                             |
 | `$B7F7`   | `convert_FAC1_to_ADDR` | NOT DONE |                                                    |
@@ -233,8 +233,8 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC1B`   | `round_FAC1`           | PARTIAL  | not fully tested yet                               |
 | `$BC2B`   | `sgn_FAC1_A`           | DONE     |                                                    |
 | `$BC39`   | `sgn_FAC1`             | DONE     |                                                    |
-| `$BC3C`   | `convert_A_to_FAC1`    | PARTIAL  | not fully tested yet                               |
-| `$BC44`   | `convert_i16_to_FAC1`  | PARTIAL  | not fully tested yet                               |
+| `$BC3C`   | `convert_A_to_FAC1`    | DONE     |                                                    |
+| `$BC44`   | `convert_i16_to_FAC1`  | DONE     |                                                    |
 | `$BC58`   | `abs_FAC1`             | NOT DONE |                                                    |
 | `$BC5B`   | `FCOMP`                | NOT DONE | compare FAC1 with RAM location                     |
 | `$BC9B`   | `QINT`                 | NOT DONE | convert FAC1 to 32 bit signed integer              |

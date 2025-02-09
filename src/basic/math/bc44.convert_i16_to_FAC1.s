@@ -24,6 +24,6 @@ convert_i16_to_FAC1:
 
 
 carry:
-    lda FAC1_mantissa+1
+    lda FAC1_mantissa
     cmp #$80                    ; Copy sign into carry
     rts

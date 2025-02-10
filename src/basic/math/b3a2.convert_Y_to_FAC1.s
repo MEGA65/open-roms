@@ -18,7 +18,7 @@
 ;
 
 convert_Y_to_FAC1:
+    sty FAC1_mantissa+1
     lda #$00
-    sta FAC1_mantissa+1
-    sty FAC1_mantissa
+    sta FAC1_mantissa
     jmp convert_i16_to_FAC1

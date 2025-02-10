@@ -12,12 +12,12 @@ convert_i16_expsign_to_FAC1:
     sta FAC1_mantissa+3
     stx FAC1_exponent
     sta FAC1_sign
-    bcs @1
+    bcc @1
 
     ; Handle signed int
-    lda FAC1_mantissa+1          ; Clear sign bit of int 16
+    lda FAC1_mantissa            ; Clear sign bit of int 16
     and #$7F
-    sta FAC1_mantissa+1
+    sta FAC1_mantissa
     ldy #>CONST_NEG_32768       ; Subtract with 32768 to invert negative number
     lda #<CONST_NEG_32768
     jsr add_MEM_FAC1

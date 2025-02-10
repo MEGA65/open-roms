@@ -74,7 +74,8 @@
 	!addr ARISGN    = $6F ;          -- NOT IMPLEMENTED --
 	!addr FACOV     = $70 ;          FAC1 low order mantissa
 	!addr FBUFPT    = $71 ; $71-$72  -- NOT IMPLEMENTED --
-	!addr CHRGET    = $73 ; $73-$8A  -- NOT IMPLEMENTED --
+	!addr CHRGET    = $73 ; $73-$8A  copied from $E3A2 during cold start
+	!addr CHRGOT    = $79 ; same area as CHRGET
 	!addr TXTPTR    = $7A ; $7A-$7B  current BASIC statement pointer
 	!addr RNDX      = $8B ; $8B-$8F  random number seed
 

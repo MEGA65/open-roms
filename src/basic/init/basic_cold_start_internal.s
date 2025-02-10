@@ -11,7 +11,7 @@ basic_cold_start_internal:
 
 	; Setup vectors at $300
 	ldy #$0B
-@1:
+@1
 	lda basic_vector_defaults_1, y
 	sta IERROR, y
 	dey
@@ -43,6 +43,14 @@ basic_cold_start_internal:
 
 	; Initialize other variables by performing NEW
 	jsr do_new
+
+!ifdef CONFIG_MEMORY_MODEL_38K {
+
+	; Copy CHRGET to the zero page
+	; This is for maximum C64 compatibility
+	jsr copy_CHRGET
+
+}
 
 	; jump into warm start loop
 	jmp basic_warm_start

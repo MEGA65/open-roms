@@ -869,7 +869,7 @@ $(TARGET_X16_x): $(SEG_LIST_X16) build/chargen_openroms.rom
 
 .PHONY: test test_crt test_generic test_generic_x128 test_generic_crt test_hybrid test_testing \
         test_mega65 test_mega65_xemu test_m65 test_ultimate64 \
-        testremote testsimilarity
+        testremote testsimilarity testunit
 
 test:     test_custom
 test_crt: test_generic_crt
@@ -931,6 +931,14 @@ testremote: build/kernal_custom.rom build/basic_custom.rom $(TARGET_CHR_PXL) bui
 testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN $(ROM_CBM_KERNAL) $(ROM_CBM_BASIC)
 	$(TOOL_SIMILARITY) $(ROM_CBM_KERNAL) $(DIR_GEN)/OUTx_x.BIN
 	$(TOOL_SIMILARITY) $(ROM_CBM_BASIC)  $(DIR_GEN)/OUTx_x.BIN
+
+build/testresults: testsuite/unit/testresults.cc
+	$(CXX) -std=c++20 -O2 -Wall -o $@ $<
+
+testunit: $(TARGET_LIST_TST38) $(TARGET_CHR_PXL) build/testresults
+	rm -f build/output
+	$(EXEC_X64) -kernal $(TARGET_TST38_K) -basic $(TARGET_TST38_B) -chargen $(TARGET_CHR_PXL) -moncommands testsuite/unit/math.vs -initbreak ready
+	cd build; ./testresults
 
 #
 # Z80 part

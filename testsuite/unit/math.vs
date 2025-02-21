@@ -33,6 +33,20 @@ print "COMPARE"
 compare $E2EA $E2EE $1001
 print "END"
 
+print "TEST: mov FAC2 FAC1 0.9970194103661925"
+fill $61 $66 FF FF FF FF FF AA
+fill $70 $70 CD
+fill $69 $6E 80 7F 3C AA 01 00
+r A=$BC
+r Y=$B9
+r PC=$BBFC
+ret
+fill $1001 $1006 81 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $69
+compare $70 $70 $6E  ; FACOV = 0
+print "END"
+
 print "TEST: convert_A_to_FAC1 A=0"
 r A=0
 r PC=$BC3C

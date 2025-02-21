@@ -227,7 +227,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BBCA`   | `mov_r_FAC1_TMP1`      | PARTIAL  | not fully tested yet                               |
 | `$BBD0`   | `mov_r_FAC1_VAR`       | PARTIAL  | not fully tested yet                               |
 | `$BBD4`   | `mov_r_FAC1_MEM`       | PARTIAL  | not fully tested yet                               |
-| `$BBFC`   | `mov_FAC2_FAC1`        | PARTIAL  | not fully tested yet                               |
+| `$BBFC`   | `mov_FAC2_FAC1`        | DONE     |                                                    |
 | `$BC0C`   | `mov_r_FAC1_FAC2`      | PARTIAL  | not fully tested yet                               |
 | `$BC0F`   | `mov_FAC1_FAC2`        | DONE     |                                                    |
 | `$BC1B`   | `round_FAC1`           | PARTIAL  | not fully tested yet                               |

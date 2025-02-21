@@ -1,0 +1,3 @@
+INY + LDA ($24),Y + CMP $63
+
+Load using well known pointer in zero page and compare with mantissa byte in FAC1

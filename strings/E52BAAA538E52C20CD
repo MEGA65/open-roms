@@ -1,0 +1,3 @@
+SBC $2B + TAX + LDA $38 + SBC $2C + JSR $CD..
+
+Fragment of decreasing well known pointer in zero page

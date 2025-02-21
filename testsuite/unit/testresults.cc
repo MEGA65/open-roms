@@ -20,6 +20,26 @@ int main()
             } else if (line.starts_with("  print \"COMPARE")) {
                 getline(file, line);
                 in_compare = true;
+            } else if (line.starts_with("  print \"CHECK")) {
+                std::string cmp = line.substr(15, line.size() - 16);
+                std::string reg = cmp.substr(0, 1);
+                std::string op = cmp.substr(1, 2);
+                int value = std::stoi(cmp.substr(3, line.size() - 3));
+                if (op == "==") {
+                    getline(file, line);
+                    getline(file, line);
+                    getline(file, line);
+                    if (reg == "A") {
+                        int A_val = std::stoi(line.substr(7, 2), 0, 16);
+                        if (A_val != value) {
+                            std::cout << "FAIL: A != " << value << " (was " << A_val << ")" << std::endl;
+                            failed = true;
+                        }
+                    }
+                } else {
+                    std::cout << "ERROR: Unknown operator for check" << std::endl;
+                    failed = true;
+                }
             } else if (line.starts_with("  print \"END")) {
                 in_compare = false;
             }

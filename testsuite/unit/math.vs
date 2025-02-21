@@ -105,4 +105,118 @@ print "COMPARE"
 compare $61 $67 $1001
 print "END"
 
+print "TEST: mov MEM FAC1 const 1.0"
+fill $61 $67 FF FF FF FF FF AA
+fill $70 $70 CD
+r A=$BC
+r Y=$B9
+r PC=$BBA2
+ret
+fill $1001 $1006 81 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $1003  ; FACOV = 0
+print "END"
+
+print "TEST: mov MEM FAC1 const -0.5"
+fill $61 $67 FF FF FF FF FF AA
+fill $70 $70 CD
+r A=$E0
+r Y=$B9
+r PC=$BBA2
+ret
+fill $1001 $1006 80 80 00 00 00 FF
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $1003  ; FACOV = 0
+print "END"
+
+print "TEST: FCOMP 1.0 == 1.0"
+r A=$BC
+r Y=$B9
+r PC=$BBA2
+ret
+r A=$BC
+r Y=$B9
+r PC=$BC5B
+ret
+print "CHECK A==0"
+r
+
+print "TEST: FCOMP 1.0 > 0.5"
+r A=$BC
+r Y=$B9
+r PC=$BBA2
+ret
+r A=$11
+r Y=$BF
+r PC=$BC5B
+ret
+print "CHECK A==1"
+r
+
+print "TEST: FCOMP 0.5 < 1.0"
+r A=$11
+r Y=$BF
+r PC=$BBA2
+ret
+r A=$BC
+r Y=$B9
+r PC=$BC5B
+ret
+print "CHECK A==255"
+r
+
+print "TEST: FCOMP -0.5 < 1.0"
+r A=$E0
+r Y=$B9
+r PC=$BBA2
+ret
+r A=$BC
+r Y=$B9
+r PC=$BC5B
+ret
+print "CHECK A==255"
+r
+
+print "TEST: FCOMP 10.0 > -0.5"
+r A=$F9
+r Y=$BA
+r PC=$BBA2
+ret
+r A=$E0
+r Y=$B9
+r PC=$BC5B
+ret
+print "CHECK A==1"
+r
+
+print "TEST: FCOMP 0.9970194103661925 < 0.9970194105990231"
+fill $1001 $1005 80 7F 3C AA 01
+r A=$01
+r Y=$10
+r PC=$BBA2
+ret
+fill $1006 $100A 80 7F 3C AA 02
+r A=$06
+r Y=$10
+r PC=$BC5B
+ret
+print "CHECK A==255"
+r
+
+print "TEST: FCOMP 0.0 = 0.0"
+fill $1001 $1005 00 7F 3C AA 01
+r A=$01
+r Y=$10
+r PC=$BBA2
+ret
+fill $1006 $100A 00 7F 3C AA 02
+r A=$06
+r Y=$10
+r PC=$BC5B
+ret
+print "CHECK A==0"
+r
+
 q

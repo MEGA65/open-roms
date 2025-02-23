@@ -1,0 +1,3 @@
+INY + LDA ($24),Y + CMP zp
+
+Loop fragment with well known zero page pointer address

@@ -1,0 +1,3 @@
+$2D + LDA $2C + ADC #$00 + STA $2E + JSR
+
+Fragment of updating well known pointers in the zero page

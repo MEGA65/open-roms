@@ -1,0 +1,3 @@
+$60 + STA $24 + STA $25
+
+Fragment of storing to well known pointer in zero page

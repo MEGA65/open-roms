@@ -236,7 +236,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC3C`   | `convert_A_to_FAC1`    | DONE     |                                                    |
 | `$BC44`   | `convert_i16_to_FAC1`  | DONE     |                                                    |
 | `$BC58`   | `abs_FAC1`             | NOT DONE |                                                    |
-| `$BC5B`   | `FCOMP`                | NOT DONE | compare FAC1 with RAM location                     |
+| `$BC5B`   | `FCOMP`                | DONE     |                                                    |
 | `$BC9B`   | `QINT`                 | NOT DONE | convert FAC1 to 32 bit signed integer              |
 | `$BCCC`   | `int_FAC1`             | NOT DONE |                                                    |
 | `$BCF3`   | `FIN`                  | NOT DONE | imports string to FAC1, ignores spaces             |

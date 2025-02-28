@@ -1,0 +1,3 @@
+LDA #$BC + LDY #$B9 + JSR
+
+Load well known address of float constant 1.0 into Y:A and make call.

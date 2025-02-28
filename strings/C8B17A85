@@ -1,0 +1,3 @@
+INY + BCS $7A + STA
+
+loop fragment

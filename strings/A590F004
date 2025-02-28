@@ -1,0 +1,3 @@
+LDA $90 + BEQ $04
+
+Check well known kernal i/o status variable in zero page

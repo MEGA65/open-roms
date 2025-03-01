@@ -233,4 +233,87 @@ ret
 print "CHECK A==0"
 r
 
+print "TEST: int_FAC1 0.0"
+fill $61 $61 00
+r PC=$BCCC
+ret
+fill $1001 $1001 00
+print "COMPARE"
+compare $61 $61 $1001
+print "END"
+
+print "TEST: int_FAC1 1.0"
+fill $61 $66 81 80 00 00 00 00
+r PC=$BCCC
+ret
+fill $1001 $1006 81 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: int_FAC1 1.5"
+fill $61 $66 81 C0 00 00 00 00
+r PC=$BCCC
+ret
+fill $1001 $1006 81 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: int_FAC1 1.5"
+fill $61 $66 81 C0 00 00 00 00
+r PC=$BCCC
+ret
+fill $1001 $1006 81 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: int_FAC1 0.5"
+fill $61 $66 80 80 00 00 00 00
+r PC=$BCCC
+ret
+fill $1001 $1001 00
+print "COMPARE"
+compare $61 $61 $1001
+print "END"
+
+print "TEST: int_FAC1 4.00000006519258"
+fill $61 $66 83 80 00 00 23 00
+r PC=$BCCC
+ret
+fill $1001 $1006 83 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: int_FAC1 -4.00000006519258"
+fill $61 $66 83 80 00 00 23 FF
+r PC=$BCCC
+ret
+fill $1001 $1006 83 A0 00 00 00 FF
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: int_FAC1 4398016684.0"
+fill $61 $66 A1 83 12 34 56 00
+r PC=$BCCC
+ret
+fill $1001 $1006 A1 83 12 34 56 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: int_FAC1 134216.81774902344"
+fill $61 $66 92 83 12 34 56 00
+r PC=$BCCC
+ret
+fill $1001 $1006 92 83 12 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+
+
 q

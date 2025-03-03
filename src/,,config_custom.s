@@ -108,7 +108,7 @@
 ; --- Software features
 
 ;; #CONFIG# PANIC_SCREEN               YES
-;; #CONFIG# DOS_WEDGE                  YES
+;; #CONFIG# DOS_WEDGE                  NO
 ;; #CONFIG# TAPE_WEDGE                 YES
 ;; #CONFIG# TAPE_HEAD_ALIGN            NO
 ;; #CONFIG# BCD_SAFE_INTERRUPTS        YES

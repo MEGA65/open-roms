@@ -1,0 +1,3 @@
+$65 + BNE $0A + INC $64 + BNE $06 + INC $63 + BNE $02 + INC $62 + RTS
+
+Incrementing a 32-bit integer at the well known position of the FAC1 mantissa in the zero page.

@@ -12,9 +12,25 @@
 ; - https://sta.c64.org/cbm64basconv.html
 ;
 
-; XXX implement, test
+; 2-complement the FAC1 mantissa
+; The 4 byte mantissa is treated as an integer in big endian form
 
 
 inv_FAC1_mantissa:
 
-	+STUB_IMPLEMENTATION
+    ldx #3
+@1: lda FAC1_mantissa,X
+    eor #$FF
+    sta FAC1_mantissa,X
+    dex
+    bpl @1
+
+    inc FAC1_mantissa+3
+    bne @2
+    inc FAC1_mantissa+2
+    bne @2
+    inc FAC1_mantissa+1
+    bne @2
+    inc FAC1_mantissa
+    
+@2: rts

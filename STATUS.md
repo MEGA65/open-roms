@@ -211,7 +211,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B867`   | `add_MEM_FAC1`         | DONE     |                                                    |
 | `$B86A`   | `add_FAC2_FAC1`        | DONE     |                                                    |
 | `$B8FE`   | `normal_FAC1`          | DONE     |                                                    |
-| `$B947`   | `inv_FAC1_mantissa`    | NOT DONE |                                                    |
+| `$B947`   | `inv_FAC1_mantissa`    | DONE     |                                                    |
 | `$B9EA`   | `log_FAC1`             | NOT DONE |                                                    |
 | `$BA28`   | `mul_MEM_FAC1`         | DONE     |                                                    |
 | `$BA2B`   | `mul_FAC2_FAC1`        | DONE     |                                                    |

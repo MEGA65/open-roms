@@ -1,0 +1,3 @@
+fragment + LDA #$00 + STA fragment
+
+Fragments of clearing byte in zero page.

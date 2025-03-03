@@ -314,6 +314,41 @@ print "COMPARE"
 compare $61 $66 $1001
 print "END"
 
+print "TEST: inv_FAC1_mantissa 0"
+fill $62 $65 00 00 00 00
+r PC=$B947
+ret
+fill $1001 $1004 00 00 00 00
+print "COMPARE"
+compare $62 $65 $1001
+print "END"
+
+print "TEST: inv_FAC1_mantissa 1"
+fill $62 $65 00 00 00 01
+r PC=$B947
+ret
+fill $1001 $1004 FF FF FF FF
+print "COMPARE"
+compare $62 $65 $1001
+print "END"
+
+print "TEST: inv_FAC1_mantissa 2130706432"
+fill $62 $65 7F 00 00 00
+r PC=$B947
+ret
+fill $1001 $1004 81 00 00 00
+print "COMPARE"
+compare $62 $65 $1001
+print "END"
+
+print "TEST: inv_FAC1_mantissa -100"
+fill $62 $65 FF FF FF 9C
+r PC=$B947
+ret
+fill $1001 $1004 00 00 00 64
+print "COMPARE"
+compare $62 $65 $1001
+print "END"
 
 
 q

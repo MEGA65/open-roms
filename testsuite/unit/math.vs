@@ -145,6 +145,38 @@ compare $61 $66 $1001
 compare $70 $70 $1003  ; FACOV = 0
 print "END"
 
+print "TEST: mov MEM FAC2 const 1.0"
+fill $69 $6E FF FF FF FF FF AA
+r A=$BC
+r Y=$B9
+r PC=$BA8C
+ret
+fill $1001 $1006 81 80 00 00 00 00
+print "COMPARE"
+compare $69 $6E $1001
+print "END"
+
+print "TEST: mov MEM FAC2 const -0.5"
+fill $69 $6E FF FF FF FF FF AA
+r A=$E0
+r Y=$B9
+r PC=$BA8C
+ret
+fill $1001 $1006 80 80 00 00 00 FF
+print "COMPARE"
+compare $69 $6E $1001
+print "END"
+
+print "TEST: get_FAC2_via_INDEX -0.5"
+fill $69 $6E FF FF FF FF FF AA
+fill $22 $23 E0 B9
+r PC=$BA90
+ret
+fill $1001 $1006 80 80 00 00 00 FF
+print "COMPARE"
+compare $69 $6E $1001
+print "END"
+
 print "TEST: FCOMP 1.0 == 1.0"
 r A=$BC
 r Y=$B9

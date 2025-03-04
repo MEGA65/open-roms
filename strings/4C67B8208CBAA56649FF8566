@@ -1,0 +1,5 @@
+4C 67 B8 20 8C BA A5 66 49 FF 85 66
+
+JMP $B867 + JSR $BA8C + LDA $66 + EOR #$FF + STA $66
+
+Call two well known floating point functions and invert sign of FAC1

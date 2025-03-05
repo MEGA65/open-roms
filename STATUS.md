@@ -195,7 +195,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$AABC`   | `print_FAC1`           | NOT DONE |                                                    |
 | `$AF7B`   | `compute_TI`           | NOT DONE |                                                    |
 | `$AF7E`   | not named yet          | NOT DONE |                                                    |
-| `$AF87`   | not named yet          | NOT DONE |                                                    |
+| `$AF87`   | `set_FAC1_mantissa`    | DONE     |                                                    |
 | `$AF9A`   | `compute_ST`           | NOT DONE |                                                    |
 | `$B1AA`   | `FACINX`               | NOT DONE | convert FAC1 to 16-bit signed integer              |
 | `$B1BF`   | `convert_FAC1_to_s16`  | NOT DONE |                                                    |

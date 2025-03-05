@@ -1,0 +1,3 @@
+ror $63 + ror $64 + ror $65 + ror $70 + rts
+
+Shifting of 32 bit value of the FAC1 mantissa in the zero page

@@ -216,7 +216,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BA28`   | `mul_MEM_FAC1`         | DONE     |                                                    |
 | `$BA2B`   | `mul_FAC2_FAC1`        | DONE     |                                                    |
 | `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
-| `$BA90`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
+| `$BA90`   | `get_FAC2_via_INDEX`   | DONE     |                                                    |
 | `$BAE2`   | `mul10_FAC1`           | DONE     |                                                    |
 | `$BAFE`   | `div10_FAC1_p`         | DONE     |                                                    |
 | `$BB0F`   | `div_MEM_FAC1`         | DONE     |                                                    |

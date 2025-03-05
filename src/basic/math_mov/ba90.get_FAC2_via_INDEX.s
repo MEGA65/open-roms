@@ -1,36 +1,18 @@
 ;; #LAYOUT# STD *       #TAKE
+;; #LAYOUT# X16 BASIC_0 #TAKE-OFFSET 2000
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
 ;
-; Math package - fetch FAC2 from memory location
-;
-; Input:
-; - .A - address low byte
-; - .Y - address high byte
-;
-; Output:
-; - .A - FAC1 exponent (yes, really - Codebase64 is right)
-; - .Y - 0 (experimentation with original ROM)
-;
-; Preserves:
-; - .X - (experimentation with original ROM)
+; Math package - Mov MEM to FAC2 with address in INDEX zero page register
 ;
 ; See also:
-; - [CM64] Computes Mapping the Commodore 64 - page 114
-; - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
-; - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
+; - https://sourceforge.net/p/acme-crossass/code-0/38/tree/trunk/ACME_Lib/cbm/c64/float.a?force=True
 ;
 
-; XXX test this
+; XXX implement, test
 
-mov_MEM_FAC2:
-
-	; Original routines use $22/$23 location for a vector too, see here:
-	; - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
-
-	sty INDEX+1
-	sta INDEX+0
+get_FAC2_via_INDEX:
 
 	; Now copy the data from RAM to FAC2, for the format description see:
 	; - https://www.c64-wiki.com/wiki/Floating_point_arithmetic#Representation_in_the_C-64

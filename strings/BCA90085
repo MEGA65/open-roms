@@ -1,0 +1,3 @@
+$BC + LDA #$00 + STA fragment
+
+Fragment of clearing variable in zero page

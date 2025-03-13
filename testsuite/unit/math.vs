@@ -382,5 +382,123 @@ print "COMPARE"
 compare $62 $65 $1001
 print "END"
 
+print "TEST: FIN 1"
+fill $61 $66 FF FF FF FF FF CC
+fill $7A $7B $00 $05
+fill $500 $501 31 00
+r A=$31
+r FL=$20
+r PC=$BCF3
+ret
+fill $1001 $1006 81 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+
+print "TEST: FIN 17"
+fill $61 $66 FF FF FF FF FF CC
+fill $7A $7B $00 $05
+fill $500 $502 31 37 00
+r A=$31
+r FL=$20
+r PC=$BCF3
+ret
+fill $1001 $1006 85 88 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: FIN +17"
+fill $61 $66 FF FF FF FF FF CC
+fill $7A $7B $00 $05
+fill $500 $503 2B 31 37 00
+r A=$2B
+r FL=$21
+r PC=$BCF3
+ret
+fill $1001 $1006 85 88 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: FIN -17"
+fill $61 $66 FF FF FF FF FF CC
+fill $7A $7B $00 $05
+fill $500 $503 2D 31 37 00
+r A=$2D
+r FL=$21
+r PC=$BCF3
+ret
+fill $1001 $1006 85 88 00 00 00 FF
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: FIN 20E1"
+fill $61 $66 FF FF FF FF FF CC
+fill $7A $7B $00 $05
+fill $500 $504 32 30 45 31 00
+r A=$32
+r FL=$20
+r PC=$BCF3
+ret
+fill $1001 $1006 88 C8 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: FIN 20.0E1"
+fill $61 $66 FF FF FF FF FF CC
+fill $7A $7B $00 $05
+fill $500 $506 32 30 2E 30 45 31 00
+r A=$32
+r FL=$20
+r PC=$BCF3
+ret
+fill $1001 $1006 88 C8 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: FIN 20.0E+1"
+fill $61 $66 FF FF FF FF FF CC
+fill $7A $7B $00 $05
+fill $500 $507 32 30 2E 30 45 2B 31 00
+r A=$32
+r FL=$20
+r PC=$BCF3
+ret
+fill $1001 $1006 88 C8 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: FIN 200E-1"
+fill $61 $66 FF FF FF FF FF CC
+fill $7A $7B $00 $05
+fill $500 $507 32 30 30 45 2D 31 00
+r A=$32
+r FL=$20
+r PC=$BCF3
+ret
+fill $1001 $1006 88 C8 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: FIN 123E-100"
+fill $61 $66 FF FF FF FF FF CC
+fill $7A $7B $00 $05
+fill $500 $509 31 32 33 45 2D 31 30 30 00
+r A=$32
+r FL=$20
+r PC=$BCF3
+ret
+fill $1001 $1001 00
+print "COMPARE"
+compare $61 $61 $1001
+print "END"
+
 
 q

@@ -1,0 +1,3 @@
+$B86A + LDA $5E
+
+Fragment of address of well known floating point function and a load from zero page

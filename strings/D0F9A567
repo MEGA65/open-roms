@@ -1,0 +1,3 @@
+BNE $F9 + LDA $67
+
+Loop fragment + load from zero page

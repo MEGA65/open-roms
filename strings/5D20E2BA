@@ -1,0 +1,3 @@
+$5D + JSR $BAE2
+
+Fragment + call to well known floating point function

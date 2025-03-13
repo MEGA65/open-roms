@@ -239,7 +239,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC5B`   | `FCOMP`                | DONE     |                                                    |
 | `$BC9B`   | `QINT`                 | NOT DONE | convert FAC1 to 32 bit signed integer              |
 | `$BCCC`   | `int_FAC1`             | DONE     |                                                    |
-| `$BCF3`   | `FIN`                  | NOT DONE | imports string to FAC1, ignores spaces             |
+| `$BCF3`   | `FIN`                  | PARTIAL  | Only for 38k memory model + not fully tested yet   |
 | `$BD7E`   | `FINLOG`               | NOT DONE |                                                    |
 | `$BDDD`   | `FOUT`                 | NOT DONE | outputs FAC1 to string at $0100                    |
 | `$BF71`   | `sqr_FAC1`             | PARTIAL  | needs `sqr_FAC2`                                   |

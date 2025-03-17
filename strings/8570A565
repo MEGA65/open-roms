@@ -1,0 +1,3 @@
+STA $70 + LDA $65
+
+Store to well known zero page variable and load from another

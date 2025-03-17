@@ -1,0 +1,3 @@
+CMP #$2D + BNE $04
+
+Compare with ASCII minus and branch

@@ -1,0 +1,3 @@
+RTS + JSR $0073 + BCC fragment
+
+Fragments + Call to well known zero page address

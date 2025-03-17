@@ -1,0 +1,3 @@
+JSR $BAE2 + JSR fragment
+
+Call well known floating point function + fragment

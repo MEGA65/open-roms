@@ -1,0 +1,3 @@
+CMP #$30 + BCC $04 + CMP #$3C + BCC fragment
+
+Comparisons of some ASCII values

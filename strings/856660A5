@@ -1,0 +1,3 @@
+STA $66 + RTS + LDA fragment
+
+Store to well known zero page location + fragment

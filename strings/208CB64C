@@ -1,0 +1,3 @@
+JSR $B68C + JMP fragment
+
+Call some place in ROM + jump fragment

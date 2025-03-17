@@ -202,7 +202,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B391`   | `GIVAYF`               | PARTIAL  | not fully tested yet                               |
 | `$B3A2`   | `convert_Y_to_FAC1`    | DONE     |                                                    |
 | `$B794`   | `convert_u8_A_to_FAC1` | DONE     |                                                    |
-| `$B7B5`   | `STRVAL`               | NOT DONE | imports string to FAC1                             |
+| `$B7B5`   | `STRVAL`               | PARTIAL  | Only for 38k memory model                          |
 | `$B7F7`   | `convert_FAC1_to_ADDR` | NOT DONE |                                                    |
 | `$B849`   | `add_HALF_FAC1`        | DONE     |                                                    |
 | `$B850`   | `sub_MEM_FAC1`         | DONE     |                                                    |

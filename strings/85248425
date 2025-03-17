@@ -1,0 +1,3 @@
+STA $24 + STY $25
+
+Store YA to well known zero page vector

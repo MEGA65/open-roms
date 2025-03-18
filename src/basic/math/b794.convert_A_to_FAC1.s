@@ -4,10 +4,11 @@
 ;; #LAYOUT# *   *       #IGNORE
 
 ;
-; Math package - XXX
+; Math package - Convert A (uint8) to FAC1
 ;
 ; - https://sta.c64.org/cbm64basconv.html
 ;
-; XXX add name, label, documentation, implement, test
 
-	+STUB_IMPLEMENTATION
+convert_u8_A_to_FAC1:
+    tay
+    jmp convert_Y_to_FAC1

@@ -1,0 +1,3 @@
+JMP $BC3C + LDA fragment
+
+Jump to well known floating point function + fragment

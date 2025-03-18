@@ -10,8 +10,7 @@
 ; - https://www.c64-wiki.com/wiki/BASIC-ROM
 ;
 
-; XXX implement, test
-
 compute_ST:
 
-	+STUB_IMPLEMENTATION
+	lda IOSTATUS
+	jmp convert_A_to_FAC1

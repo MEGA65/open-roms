@@ -500,5 +500,35 @@ print "COMPARE"
 compare $61 $61 $1001
 print "END"
 
+print "TEST: FINLOG 1.0 + 1"
+fill $61 $66 81 80 00 00 00 00
+r A=1
+r PC=$BD7E
+ret
+fill $1001 $1006 82 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: FINLOG 1.0 + 0"
+fill $61 $66 81 80 00 00 00 00
+r A=0
+r PC=$BD7E
+ret
+fill $1001 $1006 81 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
+print "TEST: FINLOG 2.0 + 9"
+fill $61 $66 82 80 00 00 00 00
+r A=9
+r PC=$BD7E
+ret
+fill $1001 $1006 84 B0 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+print "END"
+
 
 q

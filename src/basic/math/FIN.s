@@ -50,11 +50,8 @@ FIN_loop:
     sbc #48             ; Convert to number
     sta FIN_DIGIT
     jsr mul10_FAC1
-    jsr mov_FAC1_FAC2
     lda FIN_DIGIT
-    jsr convert_A_to_FAC1
-    jsr add_FAC2_FAC1
-
+    jsr FINLOG
     lda FIN_DECFOUND    ; Have we passed the decimal sign?
     bpl FIN_next
     inc FIN_NUMDEC

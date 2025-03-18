@@ -1,0 +1,3 @@
+PLA + JSR $BC3C
+
+Pull accumulator + call well known floating point function

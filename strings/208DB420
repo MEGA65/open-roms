@@ -1,0 +1,3 @@
+JSR $B38D + JSR fragment
+
+Call to address in ROM + fragment

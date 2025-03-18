@@ -201,7 +201,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B1BF`   | `convert_FAC1_to_s16`  | NOT DONE |                                                    |
 | `$B391`   | `GIVAYF`               | PARTIAL  | not fully tested yet                               |
 | `$B3A2`   | `convert_Y_to_FAC1`    | DONE     |                                                    |
-| `$B794`   | `convert_A_to_FAC1`    | NOT DONE |                                                    |
+| `$B794`   | `convert_u8_A_to_FAC1` | DONE     |                                                    |
 | `$B7B5`   | `STRVAL`               | NOT DONE | imports string to FAC1                             |
 | `$B7F7`   | `convert_FAC1_to_ADDR` | NOT DONE |                                                    |
 | `$B849`   | `add_HALF_FAC1`        | DONE     |                                                    |

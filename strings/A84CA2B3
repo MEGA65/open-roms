@@ -1,0 +1,3 @@
+TAY + JMP $B3A2
+
+Transfer to Y + Jump to well known floating point function (that needs its argument in Y)

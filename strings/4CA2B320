@@ -1,0 +1,3 @@
+JMP $B3A2 + JSR fragment
+
+Call to well known floating point function + fragment

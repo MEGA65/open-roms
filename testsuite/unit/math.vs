@@ -530,5 +530,17 @@ print "COMPARE"
 compare $61 $66 $1001
 print "END"
 
+print "TEST: STRVAL 200E-1"
+fill $61 $66 FF FF FF FF FF CC
+fill $22 $23 $00 $05
+fill $500 $507 32 30 30 45 2D 31 31
+r A=6
+r PC=$B7B5
+ret
+fill $1001 $1006 88 C8 00 00 00 00
+print "COMPARE"
+compare $61 $61 $1001
+print "END"
+
 
 q

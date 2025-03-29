@@ -78,6 +78,12 @@ std::vector<ConstEntry> GLOBAL_constants =
 	ConstEntry( "POLY_EXP_6", 0.24022638460   ),
 	ConstEntry( "POLY_EXP_7", 0.69314718618   ),
 	ConstEntry( "POLY_EXP_8", 1.0             ),
+
+    // Constants for log approximation, source as for exp above
+    ConstEntry( "POLY_LOG_1", 0.43425594189   ),
+    ConstEntry( "POLY_LOG_2", 0.57658454124   ),
+    ConstEntry( "POLY_LOG_3", 0.96180075919   ),
+    ConstEntry( "POLY_LOG_4", 2.8853900731    ),
 };
 
 //

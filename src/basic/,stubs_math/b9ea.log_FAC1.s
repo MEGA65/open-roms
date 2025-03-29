@@ -18,3 +18,13 @@
 log_FAC1:
 
 	+STUB_IMPLEMENTATION
+
+
+poly_log:
+
+    !byte $03                          ; series length - 1
+
+    +PUT_CONST_POLY_LOG_1
+    +PUT_CONST_POLY_LOG_2
+    +PUT_CONST_POLY_LOG_3
+    +PUT_CONST_POLY_LOG_4

@@ -67,6 +67,17 @@ std::vector<ConstEntry> GLOBAL_constants =
 	ConstEntry( "POLY_SIN_4",  0.00833332926445715285723741015926085083  ),
 	ConstEntry( "POLY_SIN_5", -0.166666665414391662957238076832950332    ),
 	ConstEntry( "POLY_SIN_6",  0.99999999988985190065414932682350994     ),
+
+	// Constants for exp approximation, taken from https://www.c64-wiki.com/wiki/POLY1
+	// original source is probably "Computer Approximations" by John Fraser Hart et al. (ISBN 0-88275-642-7)
+	ConstEntry( "POLY_EXP_1", 2.1498763701e-5 ),
+	ConstEntry( "POLY_EXP_2", 1.4352314037e-4 ),
+	ConstEntry( "POLY_EXP_3", 1.3422634825e-3 ),
+	ConstEntry( "POLY_EXP_4", 9.6140170135e-3 ),
+	ConstEntry( "POLY_EXP_5", 5.5505126860e-2 ),
+	ConstEntry( "POLY_EXP_6", 0.24022638460   ),
+	ConstEntry( "POLY_EXP_7", 0.69314718618   ),
+	ConstEntry( "POLY_EXP_8", 1.0             ),
 };
 
 //

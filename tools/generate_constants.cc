@@ -84,6 +84,20 @@ std::vector<ConstEntry> GLOBAL_constants =
     ConstEntry( "POLY_LOG_2", 0.57658454124   ),
     ConstEntry( "POLY_LOG_3", 0.96180075919   ),
     ConstEntry( "POLY_LOG_4", 2.8853900731    ),
+
+    // Constants for atn approximation, source as for exp above
+    ConstEntry( "POLY_ATN_1", -6.8479391189e-4 ),
+    ConstEntry( "POLY_ATN_2", 4.8509421558e-3  ),
+    ConstEntry( "POLY_ATN_3", -1.6111701843e-2 ),
+    ConstEntry( "POLY_ATN_4", 3.4209638048e-2  ),
+    ConstEntry( "POLY_ATN_5", -5.4279132761e-2 ),
+    ConstEntry( "POLY_ATN_6", 7.2457196540e-2  ),
+    ConstEntry( "POLY_ATN_7", -8.9802395378e-2 ),
+    ConstEntry( "POLY_ATN_8", 0.11093241343    ),
+    ConstEntry( "POLY_ATN_9", -0.14283980767   ),
+    ConstEntry( "POLY_ATN_10", 0.19999912049   ),
+    ConstEntry( "POLY_ATN_11", -0.33333331568  ),
+    ConstEntry( "POLY_ATN_12", 1.0             ),
 };
 
 //

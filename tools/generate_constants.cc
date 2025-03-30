@@ -58,15 +58,44 @@ std::vector<ConstEntry> GLOBAL_constants =
 	ConstEntry(     "LOG_2", std::log(2.0)        ),
 	ConstEntry( "INV_LOG_2", 1.0 / std::log(2.0)  ),
 
-	// Constants for sine approximation, minimized abs. error, degree 11, for [0, pi/2], from:
-	// - https://publik-void.github.io/sin-cos-approximations/
+	// Constants for exp approximation, taken from https://www.c64-wiki.com/wiki/POLY1
+	// original source is probably "Computer Approximations" by John Fraser Hart et al. (ISBN 0-88275-642-7)
+	ConstEntry( "POLY_EXP_1", 2.1498763701e-5 ),
+	ConstEntry( "POLY_EXP_2", 1.4352314037e-4 ),
+	ConstEntry( "POLY_EXP_3", 1.3422634825e-3 ),
+	ConstEntry( "POLY_EXP_4", 9.6140170135e-3 ),
+	ConstEntry( "POLY_EXP_5", 5.5505126860e-2 ),
+	ConstEntry( "POLY_EXP_6", 0.24022638460   ),
+	ConstEntry( "POLY_EXP_7", 0.69314718618   ),
+	ConstEntry( "POLY_EXP_8", 1.0             ),
 
-	ConstEntry( "POLY_SIN_1", -2.3794713545277060334805162803882547e-8   ),
-	ConstEntry( "POLY_SIN_2",  2.75188556386854406868696924998396177e-6  ),
-	ConstEntry( "POLY_SIN_3", -0.000198407028626057951892931706291369095 ),
-	ConstEntry( "POLY_SIN_4",  0.00833332926445715285723741015926085083  ),
-	ConstEntry( "POLY_SIN_5", -0.166666665414391662957238076832950332    ),
-	ConstEntry( "POLY_SIN_6",  0.99999999988985190065414932682350994     ),
+    // Constants for sin approximation, source as for exp above
+	ConstEntry( "POLY_SIN_1", -14.381390672 ),
+	ConstEntry( "POLY_SIN_2", 42.007797122  ),
+	ConstEntry( "POLY_SIN_3", -76.704170257 ),
+	ConstEntry( "POLY_SIN_4", 81.605223686  ),
+	ConstEntry( "POLY_SIN_5", -41.341702104 ),
+	ConstEntry( "POLY_SIN_6", 6.2831853069  ),
+
+    // Constants for log approximation, source as for exp above
+    ConstEntry( "POLY_LOG_1", 0.43425594189   ),
+    ConstEntry( "POLY_LOG_2", 0.57658454124   ),
+    ConstEntry( "POLY_LOG_3", 0.96180075919   ),
+    ConstEntry( "POLY_LOG_4", 2.8853900731    ),
+
+    // Constants for atn approximation, source as for exp above
+    ConstEntry( "POLY_ATN_1", -6.8479391189e-4 ),
+    ConstEntry( "POLY_ATN_2", 4.8509421558e-3  ),
+    ConstEntry( "POLY_ATN_3", -1.6111701843e-2 ),
+    ConstEntry( "POLY_ATN_4", 3.4209638048e-2  ),
+    ConstEntry( "POLY_ATN_5", -5.4279132761e-2 ),
+    ConstEntry( "POLY_ATN_6", 7.2457196540e-2  ),
+    ConstEntry( "POLY_ATN_7", -8.9802395378e-2 ),
+    ConstEntry( "POLY_ATN_8", 0.11093241343    ),
+    ConstEntry( "POLY_ATN_9", -0.14283980767   ),
+    ConstEntry( "POLY_ATN_10", 0.19999912049   ),
+    ConstEntry( "POLY_ATN_11", -0.33333331568  ),
+    ConstEntry( "POLY_ATN_12", 1.0             ),
 };
 
 //

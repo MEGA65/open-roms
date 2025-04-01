@@ -1,0 +1,5 @@
+60 20 2B BC 85
+
+RTS + JSR $BC2B + STA fragment
+
+Fragments + call to well known floating point function

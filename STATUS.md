@@ -222,7 +222,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BB0F`   | `div_MEM_FAC1`         | DONE     |                                                    |
 | `$BB12`   | `div_FAC2_FAC1`        | DONE     |                                                    |
 | `$BBA2`   | `mov_MEM_FAC1`         | DONE     |                                                    |
-| `$BBA6`   | `get_FAC2_via_INDEX`   | NOT DONE |                                                    |
+| `$BBA6`   | `get_FAC1_via_INDEX`   | DONE     |                                                    |
 | `$BBC7`   | `mov_r_FAC1_TMP2`      | PARTIAL  | not fully tested yet                               |
 | `$BBCA`   | `mov_r_FAC1_TMP1`      | PARTIAL  | not fully tested yet                               |
 | `$BBD0`   | `mov_r_FAC1_VAR`       | PARTIAL  | not fully tested yet                               |

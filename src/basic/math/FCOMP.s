@@ -32,11 +32,9 @@ FCOMP:
     php
 
     ldy #$01
-    lda #$7F                ; Expand sign of RAM float into A as $FF or $00
-    cmp (INDEX+2),Y
-    adc #$80
-    cmp FAC1_sign
-    bne FCOMP_greater_than  ; FAC < or > RAM, will be swapped to correct
+    lda (INDEX+2),Y
+    eor FAC1_sign           ; Check if signs are different
+    bmi FCOMP_greater_than  ; FAC < or > RAM, will be swapped to correct
 
     dey
     lda (INDEX+2),Y         ; Exponent of RAM float into A
@@ -76,17 +74,17 @@ FCOMP_equal:
 
 
 FCOMP_less_than:
-    lda #$FF
-    cmp FAC1_sign
-    bne @1
+    lda FAC1_sign
+    bpl FCOMP_FF
+FCOMP_01:
     lda #$01
-@1: plp
+    plp
     rts
-
+    
 FCOMP_greater_than:
-    lda #$01
-    cmp FAC1_sign
-    bcs @1
+    lda FAC1_sign
+    bpl FCOMP_01
+FCOMP_FF:
     lda #$FF
-@1: plp
+    plp
     rts

@@ -20,7 +20,11 @@ sgn_FAC1_A:
 	lda FAC1_exponent
 	beq @1
 	lda FAC1_sign
-	bne @1
+	bmi @2
 	lda #$01
 @1:
 	rts
+	
+@2:
+    lda #$FF
+    rts

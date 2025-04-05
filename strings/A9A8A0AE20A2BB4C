@@ -1,0 +1,3 @@
+LDA #$A8 + LDY #$AE + JSR $BBA2 + JMP fragment
+
+Loading well known address of math constant pi into AY and call well known floating point function (mov_MEM_FAC1)

@@ -1,0 +1,3 @@
+$6E + ORA #$80 + STA $6A + DEY + LDA ($22),Y + STA $69 + LDA $61 + RTS
+
+Fragment of copying using a well known index vector from a mem float into FAC2

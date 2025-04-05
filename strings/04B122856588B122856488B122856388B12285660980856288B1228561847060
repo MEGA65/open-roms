@@ -1,0 +1,3 @@
+$04 + LDA ($22),Y + STA $65 + DEY + LDA ($22),Y + STA $64 + DEY + LDA ($22),Y + STA $63 + DEY + LDA ($22),Y + STA $66 + ORA #$80 + STA $62 + DEY + LDA ($22),Y + STA $61 + STY $70 + RTS
+
+Load FAC1 (well known zero page locations) from memory using well known vector in zero page (INDEX)

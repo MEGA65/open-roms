@@ -3,47 +3,43 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
-; Math package - Mov MEM to FAC2 with address in INDEX zero page register
+; Math package - Mov MEM to FAC1 with address in INDEX zero page register
 ;
 ; See also:
 ; - https://sourceforge.net/p/acme-crossass/code-0/38/tree/trunk/ACME_Lib/cbm/c64/float.a?force=True
 ;
 
-; XXX implement, test
-
-get_FAC2_via_INDEX:
-
-	; Now copy the data from RAM to FAC2, for the format description see:
-	; - https://www.c64-wiki.com/wiki/Floating_point_arithmetic#Representation_in_the_C-64
+get_FAC1_via_INDEX:
 
 	; Copy the mantissa
 
 	ldy #$04
 	lda (INDEX), y
-	sta FAC2_mantissa+3
+	sta FAC1_mantissa+3
 
 	dey
 	lda (INDEX), y
-	sta FAC2_mantissa+2
+	sta FAC1_mantissa+2
 
 	dey
 	lda (INDEX), y
-	sta FAC2_mantissa+1
+	sta FAC1_mantissa+1
 
 	dey
 	lda (INDEX), y
-	sta FAC2_sign
+	sta FAC1_sign
 	ora #$80                           ; clear the sign bit
-	sta FAC2_mantissa+0
+	sta FAC1_mantissa+0
 
 	; Copy the exponent
 
 	dey
 	lda (INDEX), y
-	sta FAC2_exponent
+	sta FAC1_exponent
 
-	; Return the FAC1 exponent
+	; Set low order mantissa to 0 - this should give the
+	; most precision while operating on integers
 
-	lda FAC1_exponent
+	sty FACOV
+
 	rts

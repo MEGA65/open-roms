@@ -1,0 +1,3 @@
+LDY #$04 + LDA ($22),Y + STA $6D +  DEY + LDA ($22),Y + STA $6C + DEY + LDA ($22),Y + STA $6B + DEY + LDA ($22),Y + STA $6E
+
+Load parts of the mantissa of FAC2 and its sign (well known zero page locations) from memory using well known vector in zero page (INDEX)

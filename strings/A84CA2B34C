@@ -1,0 +1,3 @@
+TAY + JMP $B3A2 + JMP fragment
+
+Fragments + jump to well known floating point function

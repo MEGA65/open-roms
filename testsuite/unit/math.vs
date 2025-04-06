@@ -552,5 +552,112 @@ print "COMPARE"
 compare $61 $61 $1001
 print "END"
 
+print "TEST: div FAC2 FAC1 0.0 / 1.0 = 0.0"
+fill $61 $66 81 80 00 00 00 00
+fill $70 $70 00
+fill $69 $6E 00 FF FF FF FF 00
+r PC=$BB12
+ret
+print "COMPARE"
+compare $61 $61 $69
+compare $70 $70 $6E  ; FACOV = 0
+print "END"
+
+print "TEST: div FAC2 FAC1 1.0 / 1.0 = 1.0"
+fill $61 $66 81 80 00 00 00 00
+fill $70 $70 00
+fill $69 $6E 81 80 00 00 00 00
+r PC=$BB12
+ret
+fill $1001 $1006 81 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $6E  ; FACOV = 0
+print "END"
+
+print "TEST: div FAC2 FAC1 -1.0 / 1.0 = -1.0"
+fill $61 $66 81 80 00 00 00 80
+fill $70 $70 00
+fill $69 $6E 81 80 00 00 00 00
+r PC=$BB12
+ret
+fill $1001 $1006 81 80 00 00 00 80
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $1003  ; FACOV = 0
+print "END"
+
+print "TEST: div FAC2 FAC1 1.0 / -1.0 = -1.0"
+fill $61 $66 81 80 00 00 00 00
+fill $70 $70 00
+fill $69 $6E 81 80 00 00 00 80
+r PC=$BB12
+ret
+fill $1001 $1006 81 80 00 00 00 80
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $1003  ; FACOV = 0
+print "END"
+
+print "TEST: div FAC2 FAC1 1.0 / 2.0 = 0.5"
+fill $61 $66 82 80 00 00 00 00
+fill $70 $70 00
+fill $69 $6E 81 80 00 00 00 00
+r PC=$BB12
+ret
+fill $1001 $1006 80 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $1003  ; FACOV = 0
+print "END"
+
+print "TEST: div FAC2 FAC1 2.0 / 0.5 = 4.0"
+fill $61 $66 80 80 00 00 00 00
+fill $70 $70 00
+fill $69 $6E 82 80 00 00 00 00
+r PC=$BB12
+ret
+fill $1001 $1006 83 80 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $1003  ; FACOV = 0
+print "END"
+
+print "TEST: div FAC2 FAC1 3.0 / 0.5 = 6.0"
+fill $61 $66 80 80 00 00 00 00
+fill $70 $70 00
+fill $69 $6E 82 C0 00 00 00 00
+r PC=$BB12
+ret
+fill $1001 $1006 83 C0 00 00 00 00
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $1003  ; FACOV = 0
+print "END"
+
+print "TEST: div FAC2 FAC1 1.0 / 10.0 = 0.1"
+fill $61 $66 84 A0 00 00 00 00
+fill $70 $70 00
+fill $69 $6E 81 80 00 00 00 00
+r PC=$BB12
+ret
+# Slight rounding error here. Should be CC at the end
+fill $1001 $1006 7D CC CC CC C8 00
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $1006  ; FACOV = 0
+print "END"
+
+print "TEST: div10_FAC1 1.0 = 0.1"
+fill $61 $66 81 80 00 00 00 00
+fill $70 $70 00
+r PC=$BAFE
+ret
+# Slight rounding error here. Should be CC at the end
+fill $1001 $1007 7D CC CC CC C8 20 00
+print "COMPARE"
+compare $61 $66 $1001
+compare $70 $70 $1007  ; FACOV = 0
+print "END"
 
 q

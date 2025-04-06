@@ -1,0 +1,3 @@
+$BBA2 + JMP $BB12
+
+Fragment of well known floating point function address + JMP to other well known floating point function

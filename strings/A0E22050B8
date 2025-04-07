@@ -1,0 +1,3 @@
+LDY #$E2 + JSR $B850
+
+Partial load of input + call to known floating point function

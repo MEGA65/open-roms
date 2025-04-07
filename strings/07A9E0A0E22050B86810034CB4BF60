@@ -1,0 +1,3 @@
+$07 + LDA #$E0 + LDY #$E2 + JSR $B850 + PLA + BPL $03 + JMP $BFB4 + RTS
+
+Load address of known constant into YA + call well known floating point function + branch on top of stack and call other well known floating point function.

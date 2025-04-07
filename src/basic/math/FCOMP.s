@@ -12,7 +12,7 @@
 ;
 ; Output:
 ; - .A - $00 for equal, $01 for FAC1 > RAM, $FF for FAC1 < RAM
-; - flags N/Z, depending on whether FAC1 is 0, positive, or negative
+; - flags N/Z, Z=1 if equal, N=1 if FAC1 < RAM, Z=0, N=0 if FAC1 > RAM
 ;
 ; Notes:
 ; - uses vector at $24, leaves FAC1 and FAC2 unchanged (Codebase64)
@@ -27,9 +27,6 @@
 FCOMP: 
     sta INDEX+2
     sty INDEX+3
-
-    jsr sgn_FAC1_A          ; Set N/Z flag for FAC1 and store on stack
-    php
 
     ldy #$01
     lda (INDEX+2),Y
@@ -69,7 +66,6 @@ FCOMP:
 
 FCOMP_equal:
     lda #$00
-    plp
     rts
 
 
@@ -78,7 +74,6 @@ FCOMP_less_than:
     bpl FCOMP_FF
 FCOMP_01:
     lda #$01
-    plp
     rts
     
 FCOMP_greater_than:
@@ -86,5 +81,4 @@ FCOMP_greater_than:
     bpl FCOMP_01
 FCOMP_FF:
     lda #$FF
-    plp
     rts

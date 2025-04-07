@@ -1,0 +1,3 @@
+STA $24 + STY $25 + LDY fragment
+
+Store YA to well known vector address in the zero page

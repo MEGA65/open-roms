@@ -1,0 +1,1 @@
+12 floating point numbers making upp the approximation polynomial for the ATN function. This polynomial is described in "Computer Approximations" by John Fraser Hart et al. (ISBN 0-88275-642-7) according to https://www.c64-wiki.com/wiki/POLY1

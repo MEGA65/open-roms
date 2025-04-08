@@ -1,0 +1,3 @@
+$DA + $A2 + LDA $66 + PHA
+
+Fragment + push FAC1 sign on stack

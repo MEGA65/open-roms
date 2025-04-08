@@ -256,7 +256,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$E264`   | `cos_FAC1`             | PARTIAL  | not fully tested yet                               |
 | `$E26B`   | `sin_FAC1`             | PARTIAL  | not fully tested yet                               |
 | `$E2B4`   | `tan_FAC1`             | NOT DONE |                                                    |
-| `$E30E`   | `atn_FAC1`             | NOT DONE |                                                    |
+| `$E30E`   | `atn_FAC1`             | PARTIAL  | not fully tested yet                               |
 
 <br />
 

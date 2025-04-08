@@ -1,0 +1,3 @@
+LDY #$B9 + JSR $BB0F
+
+Partially set input and call well known floating point function

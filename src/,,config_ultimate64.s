@@ -96,8 +96,8 @@
 ; --- Eye candy
 
 ;; #CONFIG# COLORS_BRAND               YES
-;; #CONFIG# BANNER_SIMPLE              NO
-;; #CONFIG# BANNER_FANCY               YES
+;; #CONFIG# BANNER_SIMPLE              YES
+;; #CONFIG# BANNER_FANCY               NO
 ;; #CONFIG# SHOW_FEATURES              YES
 
 

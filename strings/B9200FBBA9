@@ -1,0 +1,3 @@
+$B9 + JSR $BB0F + LDA fragment
+
+Fragments + call to known floating point function

@@ -1,0 +1,3 @@
+$E0 + LDY #$E2 + JSR fragment
+
+Code fragment of loading address into AY and calling some function

@@ -1,0 +1,3 @@
+LDA #$5C + LDY #$00
+
+Load address of known zero page temporary floating point register into YA

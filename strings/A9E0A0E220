@@ -1,0 +1,3 @@
+LDA #$E0 + LDY #$E2 + JSR fragment
+
+Load address of known constant and call some function

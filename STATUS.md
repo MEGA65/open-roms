@@ -253,10 +253,10 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$E097`   | `rnd_FAC1`             | DONE     |                                                    |
 | `$E09A`   | `rnd_A`                | DONE     |                                                    |
 | `$E0BE`   | `rnd_generate`         | DONE     |                                                    |
-| `$E264`   | `cos_FAC1`             | PARTIAL  | needs `sin_FAC1`                                   |
-| `$E26B`   | `sin_FAC1`             | NOT DONE | some work already started                          |
+| `$E264`   | `cos_FAC1`             | PARTIAL  | not fully tested yet                               |
+| `$E26B`   | `sin_FAC1`             | PARTIAL  | not fully tested yet                               |
 | `$E2B4`   | `tan_FAC1`             | PARTIAL  | not fully tested yet                               |
-| `$E30E`   | `atn_FAC1`             | NOT DONE |                                                    |
+| `$E30E`   | `atn_FAC1`             | PARTIAL  | not fully tested yet                               |
 
 <br />
 

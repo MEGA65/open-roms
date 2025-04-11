@@ -1,0 +1,3 @@
+$B9 + JSR $B867
+
+Fragment + call to known floating point function

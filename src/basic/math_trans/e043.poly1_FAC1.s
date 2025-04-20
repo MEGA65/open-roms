@@ -21,6 +21,9 @@
 ; - https://www.c64-wiki.com/wiki/POLY1
 
 
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 poly1_FAC1:
     jsr store_YA_in_ZP              ; Store YA in second INDEX pointer
     jsr mov_r_FAC1_TMP1             ; TMPF1 <- FAC1  (rounds)
@@ -30,3 +33,6 @@ poly1_FAC1:
     ldy #$00                        ; FAC1 <- FAC1 * TEMPF1
     lda #TEMPF1
     jmp mul_MEM_FAC1
+
+
+}

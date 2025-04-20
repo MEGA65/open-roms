@@ -35,6 +35,7 @@ SRCDIR_BASIC   = $(SRCDIR_COMMON) \
                  src/basic/math \
                  src/basic/math_consts \
                  src/basic/math_mov \
+                 src/basic/math_trans \
                  src/basic/memory \
                  src/basic/print \
                  src/basic/rom_revision \

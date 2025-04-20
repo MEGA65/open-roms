@@ -17,8 +17,14 @@
 ; - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 ;
 
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 pwr_FAC2_MEM:
 
 	jsr mov_MEM_FAC1
 
 	; FALLTROUGH to pwr_FAC2_FAC1
+
+
+}

@@ -88,6 +88,11 @@
 ;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 
+; --- BASIC features
+
+;; #CONFIG# TRANSCENDENTAL_FUNCTIONS   NO
+
+
 ; --- Built-in DOS configuration
 
 ;; #CONFIG# UNIT_SDCARD                27

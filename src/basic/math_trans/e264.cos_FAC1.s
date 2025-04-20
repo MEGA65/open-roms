@@ -13,9 +13,16 @@
 ; - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 ;
 
+
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 COS:
     ldy #>const_HALF_PI
     lda #<const_HALF_PI
     jsr add_MEM_FAC1
     
     ; FALLTHROUGH to SIN
+
+
+}

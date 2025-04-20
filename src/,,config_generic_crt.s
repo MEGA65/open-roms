@@ -105,6 +105,11 @@
 ;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 
+; --- BASIC features
+
+;; #CONFIG# TRANSCENDENTAL_FUNCTIONS   NO
+
+
 ; --- Eye candy
 
 ;; #CONFIG# COLORS_BRAND               YES

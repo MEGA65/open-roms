@@ -24,6 +24,9 @@
 ;
 
 
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 poly2_FAC1:
     jsr store_YA_in_ZP
 
@@ -67,3 +70,6 @@ store_YA_in_ZP:     ; Used also by poly1
     sty INDEX+3     ; Store YA in second INDEX pointer
     sta INDEX+2
     rts
+
+
+}

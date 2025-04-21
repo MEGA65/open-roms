@@ -35,4 +35,6 @@ poly1_FAC1:
     jmp mul_MEM_FAC1
 
 
+} else {
+    jmp do_NOT_IMPLEMENTED_error
 }

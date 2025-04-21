@@ -60,4 +60,6 @@ atn_out:
     rts
 
 
+} else {
+    jmp do_NOT_IMPLEMENTED_error
 }

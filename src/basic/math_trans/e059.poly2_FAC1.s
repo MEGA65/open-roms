@@ -72,4 +72,6 @@ store_YA_in_ZP:     ; Used also by poly1
     rts
 
 
+} else {
+    jmp do_NOT_IMPLEMENTED_error
 }

@@ -31,4 +31,6 @@ tan_FAC1:
     jmp div_FAC2_FAC1           ; FAC1 = tan(x)
 
 
+} else {
+    jmp do_NOT_IMPLEMENTED_error
 }

@@ -25,4 +25,6 @@ sqr_FAC1:
 	; FALLLTROUGH to sqr_FAC2
 
 
+} else {
+    jmp do_NOT_IMPLEMENTED_error
 }

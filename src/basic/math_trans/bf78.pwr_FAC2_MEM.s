@@ -27,4 +27,6 @@ pwr_FAC2_MEM:
 	; FALLTROUGH to pwr_FAC2_FAC1
 
 
+} else {
+    jmp do_NOT_IMPLEMENTED_error
 }

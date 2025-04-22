@@ -22,6 +22,8 @@
 ; 5. Multiply by LOG(2) giving LOG(X)
 
 
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
 
 log_FAC1:
     lda FAC1_exponent           ; Store exponent for later
@@ -62,3 +64,8 @@ log_FAC1:
     ldy #>const_LOG_2           ; FAC1 <- FAC1 * log(2.0)
     lda #<const_LOG_2
     jmp mul_MEM_FAC1
+
+
+} else {
+    jmp do_NOT_IMPLEMENTED_error
+}

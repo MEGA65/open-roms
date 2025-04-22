@@ -5,6 +5,10 @@
 
 ; Polynomial for the exponential function
 
+
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 poly_exp:
 
     !byte $07                          ; series length - 1
@@ -17,3 +21,6 @@ poly_exp:
     +PUT_CONST_POLY_EXP_6
     +PUT_CONST_POLY_EXP_7
     +PUT_CONST_POLY_EXP_8
+
+
+}

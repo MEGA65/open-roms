@@ -5,6 +5,10 @@
 
 ; Polynomial for the atn function
 
+
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 poly_atn:
 
     !byte $0B                          ; series length - 1
@@ -21,3 +25,6 @@ poly_atn:
     +PUT_CONST_POLY_ATN_10
     +PUT_CONST_POLY_ATN_11
     +PUT_CONST_POLY_ATN_12
+
+
+}

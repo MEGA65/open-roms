@@ -15,8 +15,16 @@
 ; - https://codebase64.org/doku.php?id=base:kernal_floating_point_mathematics
 ;
 
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 sqr_FAC1:
 
 	jsr mov_FAC1_FAC2
 	
 	; FALLLTROUGH to sqr_FAC2
+
+
+} else {
+    jmp do_NOT_IMPLEMENTED_error
+}

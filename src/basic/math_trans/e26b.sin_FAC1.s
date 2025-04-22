@@ -12,6 +12,8 @@
 ; - https://www.c64-wiki.com/wiki/SIN
 
 
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
 
 sin_FAC1:
 
@@ -53,3 +55,8 @@ sin_next:
     ldy #>poly_sin
     lda #<poly_sin
     jmp poly1_FAC1
+    
+
+} else {
+    jmp do_NOT_IMPLEMENTED_error
+}

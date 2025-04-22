@@ -6,6 +6,9 @@
 ; Polynomial for the sine function
 
 
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 poly_sin:
 
 	!byte $05                          ; series length - 1
@@ -21,3 +24,6 @@ poly_sin:
 ; Constant 0.75 needed for sine calculation
 sin_three_quarters:
     !byte $80, $40, $00, $00, $00
+
+
+}

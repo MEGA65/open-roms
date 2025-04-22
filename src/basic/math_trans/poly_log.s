@@ -5,6 +5,10 @@
 
 ; Polynomial for the logarithm function
 
+
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 poly_log:
 
     !byte $03                          ; series length - 1
@@ -13,3 +17,6 @@ poly_log:
     +PUT_CONST_POLY_LOG_2
     +PUT_CONST_POLY_LOG_3
     +PUT_CONST_POLY_LOG_4
+
+
+}

@@ -13,6 +13,10 @@
 
 ; tan(x) = sin(x) / cos(x)
 
+
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 tan_FAC1:
     jsr mov_r_FAC1_TMP1         ; TMP1 = x
     jsr sin_FAC1                ; FAC1 = sin(x)
@@ -25,3 +29,8 @@ tan_FAC1:
     ldy #0
     jsr mov_MEM_FAC2            ; FAC2 = sin(x)
     jmp div_FAC2_FAC1           ; FAC1 = tan(x)
+
+
+} else {
+    jmp do_NOT_IMPLEMENTED_error
+}

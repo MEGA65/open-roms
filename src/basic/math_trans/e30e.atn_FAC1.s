@@ -19,6 +19,9 @@
 ; 5. Adjust sign of result and offset with pi/2 if needed as per above
 
 
+!ifdef CONFIG_TRANSCENDENTAL_FUNCTIONS {
+
+
 atn_FAC1:
     lda FAC1_sign               ; Save sign of FAC1 on the stack
     pha
@@ -55,3 +58,8 @@ atn_skipoffset:
     
 atn_out:
     rts
+
+
+} else {
+    jmp do_NOT_IMPLEMENTED_error
+}

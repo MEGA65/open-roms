@@ -1,0 +1,3 @@
+DEX + BNE $F9 + STX $70 + RTS
+
+Loop fragment + store to well known zero page location

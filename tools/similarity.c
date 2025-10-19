@@ -20,20 +20,31 @@ int matches[MAX_SIZE];
 
 int phase_mask[MAX_SIZE+MAX_SIZE];
 
+#define NUM_CHUNKS 1
+// Pairs of start, end memory addresses of known exact similarity with the open source Microsoft BASIC
+unsigned short microsoft_basic_chunks[NUM_CHUNKS * 2] = {0xBC0C, 0xBC1A};
+
+
 int main(int argc,char **argv)
 {
   int verbose=0;
-  
+  int basic = 0;
+
   if (argc<3) {
-    fprintf(stderr,"usage: similarity <file1> <file2> [verbose]\n");
+    fprintf(stderr,"usage: similarity <file1> <file2> [--verbose] [--basic]\n");
     exit(-1);
   }
-  if (argc==4) {
-    if (!strcmp(argv[3],"verbose")) verbose=1;
-    else {
-      fprintf(stderr,"Unrecognised directive.\n");
-      exit(-1);
-    }    
+  if (argc >= 4) {
+    for (int i = 3; i < argc; i++) {
+      if (!strcmp(argv[i], "--verbose")) {
+        verbose = 1;
+      } else if (!strcmp(argv[i], "--basic")) {
+        basic = 1;
+      } else {
+        fprintf(stderr, "Unrecognised directive.\n");
+        exit(-1);
+      }
+    }
   }
 
   for(int i=0;i<MAX_SIZE;i++) matches[i]=0;
@@ -51,7 +62,7 @@ int main(int argc,char **argv)
   }
   stat(argv[1], &st);
   s1=st.st_size;
-  f1 = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE | MAP_POPULATE, fd, 0);
+  f1 = mmap(NULL, st.st_size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_POPULATE, fd, 0);
   if (f1== MAP_FAILED) {
     fprintf(stderr,"Could not mmap '%s'\n",argv[1]);
     exit(-1);
@@ -67,6 +78,14 @@ int main(int argc,char **argv)
   if (f2 == MAP_FAILED) {
     fprintf(stderr,"Could not mmap '%s'\n",argv[2]);
     exit(-1);
+  }
+
+  if (basic) {
+    for (int i = 0; i < NUM_CHUNKS; i++) {
+      for (int addr = microsoft_basic_chunks[i * 2]; addr <= microsoft_basic_chunks[i * 2 + 1]; addr++) {
+        f1[addr - 0xA000] = 0;
+      }
+    }
   }
 
   fprintf(stderr,"Searching files for similarities...\n");

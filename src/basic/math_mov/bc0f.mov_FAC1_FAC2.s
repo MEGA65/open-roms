@@ -7,12 +7,19 @@
 ; See LICENSE for more information.
 
 ;
-; Math package - round and move FAC1 to FAC2
+; Math package - move FAC1 to FAC2
 ;
-; This is identical to the original Microsoft implementation where it was named MOVAF.
+; This is verified to be identical to the original Microsoft implementation where it was named MOVEF.
 ;
 ; Output:
 ; - .A - FAC1 exponent
+; - .X - always 0
+
+; Preserves:
+; - .Y
+;
+; Note:
+; - Always clears FACOV, not sure why
 ;
 ; See also:
 ; - https://github.com/microsoft/BASIC-M6502/blob/7460af2c03ae19c0e60ff327489229d2005b9357/m6502.asm#L5540C1-L5548C12
@@ -21,9 +28,14 @@
 ; - https://www.c64-wiki.com/wiki/Floating_point_arithmetic
 ;
 
-mov_r_FAC1_FAC2:
+mov_FAC1_FAC2:
 
-	; First round FAC1
-	jsr round_FAC1
+    ldx #6
 
-	; FALLTROUGH to mov_FAC1_FAC2
+@1
+    lda FAC1_exponent - 1,X
+    sta FAC2_exponent - 1,X
+    dex
+    bne @1
+    stx FACOV           ; Always zero
+    rts

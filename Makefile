@@ -931,7 +931,7 @@ testremote: build/kernal_custom.rom build/basic_custom.rom $(TARGET_CHR_PXL) bui
 
 testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN $(ROM_CBM_KERNAL) $(ROM_CBM_BASIC)
 	$(TOOL_SIMILARITY) $(ROM_CBM_KERNAL) $(DIR_GEN)/OUTx_x.BIN
-	$(TOOL_SIMILARITY) $(ROM_CBM_BASIC)  $(DIR_GEN)/OUTx_x.BIN
+	$(TOOL_SIMILARITY) $(ROM_CBM_BASIC)  $(DIR_GEN)/OUTx_x.BIN --basic
 
 build/testresults: testsuite/unit/testresults.cc
 	$(CXX) -std=c++20 -O2 -Wall -o $@ $<

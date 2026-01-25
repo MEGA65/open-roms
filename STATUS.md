@@ -235,7 +235,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC39`   | `sgn_FAC1`             | DONE     |                                                    |
 | `$BC3C`   | `convert_A_to_FAC1`    | DONE     |                                                    |
 | `$BC44`   | `convert_i16_to_FAC1`  | DONE     |                                                    |
-| `$BC58`   | `abs_FAC1`             | NOT DONE |                                                    |
+| `$BC58`   | `abs_FAC1`             | DONE     | From the Microsoft BASIC, original name: ABS       |
 | `$BC5B`   | `FCOMP`                | DONE     |                                                    |
 | `$BC9B`   | `QINT`                 | NOT DONE | convert FAC1 to 32 bit signed integer              |
 | `$BCCC`   | `int_FAC1`             | DONE     |                                                    |

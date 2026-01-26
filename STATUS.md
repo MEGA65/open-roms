@@ -224,7 +224,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BBA2`   | `mov_MEM_FAC1`         | DONE     |                                                    |
 | `$BBA6`   | `get_FAC1_via_INDEX`   | DONE     |                                                    |
 | `$BBC7`   | `mov_r_FAC1_TMP2`      | PARTIAL  | not fully tested yet                               |
-| `$BBCA`   | `mov_r_FAC1_TMP1`      | PARTIAL  | not fully tested yet                               |
+| `$BBCA`   | `mov_r_FAC1_TMP1`      | DONE     | From the Microsoft BASIC, original name: MOV1F     |
 | `$BBD0`   | `mov_r_FAC1_VAR`       | DONE     | From the Microsoft BASIC, original name: MOVVF     |
 | `$BBD4`   | `mov_r_FAC1_MEM`       | DONE     | From the Microsoft BASIC, original name: MOVMF     |
 | `$BBFC`   | `mov_FAC2_FAC1`        | DONE     | From the Microsoft BASIC, original name: MOVFA     |

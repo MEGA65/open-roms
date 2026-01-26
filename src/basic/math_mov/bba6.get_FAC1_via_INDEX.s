@@ -3,6 +3,11 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+;
+; This is verified to be identical to the original Microsoft implementation where it was part of MOVFM.
+;
 ; Math package - Mov MEM to FAC1 with address in INDEX zero page register
 ;
 ; See also:

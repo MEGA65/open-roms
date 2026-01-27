@@ -1,0 +1,3 @@
+STX $22 + STY $23 + LDY #4
+
+Store XY pointer into INDEX in zero page + snippet

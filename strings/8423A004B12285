@@ -1,0 +1,3 @@
+STY $23 + LDY #4 + LDA $85,Y
+
+Store into INDEX pointer + loop fragment

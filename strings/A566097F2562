@@ -1,0 +1,3 @@
+LDA $66 +  ORA #$7F + AND $62
+
+Floating point fragment

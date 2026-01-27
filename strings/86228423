@@ -1,0 +1,3 @@
+STX $22 + STY $23
+
+Store XY to well known zero page INDEX pointer

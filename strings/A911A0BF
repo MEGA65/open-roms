@@ -1,0 +1,3 @@
+LDA #$11 + LDY #$BF
+
+Move pointer to area of well known vector of powers of 10 into AY

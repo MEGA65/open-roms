@@ -1,0 +1,3 @@
+$60 + STA $22 + STY $23 + LDY #4 + LDA $22,Y + $85
+
+Storing AY into zero page INDEX and loop fragment

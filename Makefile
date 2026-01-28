@@ -128,7 +128,7 @@ GEN_ZVM        = build/,generated/,z80_tables.s
 DIR_ZMAC       = 3rdparty/zmac/src
 DIR_ZMAC_TMP   = build/,tmp_zmac
 HDR_ZMAC       = $(filter-out $(wildcard $(DIR_ZMAC)/_*.h),$(wildcard $(DIR_ZMAC)/*.h))
-SRC_ZMAC       = $(DIR_ZMAC)/mio.c $(DIR_ZMAC)/doc.c $(DIR_ZMAC)/zi80dis.cpp
+SRC_ZMAC       = $(DIR_ZMAC)/mio.c $(DIR_ZMAC)/doc.c $(DIR_ZMAC)/zi80dis.c
 SRC_Z80TEST    = 3rdparty/z80exer/cpm/zexdoc.src
 
 GEN_ZMAC_C     = $(DIR_ZMAC_TMP)/zmac.c

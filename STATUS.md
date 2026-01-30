@@ -241,6 +241,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC5B`   | `FCOMP`                | DONE     |                                                    |
 | `$BC9B`   | `QINT`                 | NOT DONE | convert FAC1 to 32 bit signed integer              |
 | `$BCCC`   | `int_FAC1`             | DONE     |                                                    |
+| `$BCE9`   | `clear_FAC1`           | DONE     | From the Microsoft BASIC, original name: CLRFAC    |
 | `$BCF3`   | `FIN`                  | PARTIAL  | Only for 38k memory model + not fully tested yet   |
 | `$BD7E`   | `FINLOG`               | DONE     |                                                    |
 | `$BDDD`   | `FOUT`                 | NOT DONE | outputs FAC1 to string at $0100                    |

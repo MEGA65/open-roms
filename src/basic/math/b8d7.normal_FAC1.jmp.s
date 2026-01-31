@@ -5,4 +5,5 @@
 
 ; Just a compatibility jump - our routine is longer than original one
 
-	jmp normal_FAC1
+normal_FAC1:
+	jmp normal_FAC1_impl

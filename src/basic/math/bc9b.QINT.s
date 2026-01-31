@@ -3,8 +3,12 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - Quick conversion of FAC1 to 32 bit signed integer
+;
+; This is verified to be identical to the original Microsoft implementation where it was named QINT.
 ;
 ; Output:
 ; - $62-$65, big-endian order

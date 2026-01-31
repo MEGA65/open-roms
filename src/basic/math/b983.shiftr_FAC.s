@@ -45,7 +45,7 @@ shiftr_FAC:
     sbc #8              ; Go back to previous value
     tay
     lda FACOV
-    bcs shiftr_FAC
+    bcs shftrt
 .sext:
     asl 1,X
     bcc @2

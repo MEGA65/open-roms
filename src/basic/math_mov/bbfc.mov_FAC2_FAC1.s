@@ -32,7 +32,7 @@ mov_FAC2_FAC1:
     lda FAC2_sign
 
 mov_FAC2_FAC1_sign:
-    sta FAC2_sign
+    sta FAC1_sign
 
     ; Copy the mantissa and the exponent
 

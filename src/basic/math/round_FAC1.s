@@ -12,7 +12,7 @@
 
 ; XXX test this
 
-round_FAC1:
+round_FAC1_impl:
 
 	; If number is 0, do not do anything
 

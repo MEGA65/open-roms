@@ -39,6 +39,7 @@ inv_FAC1_mantissa:
     lda FACOV
     eor #$FF
     sta FACOV
+    inc FACOV
     bne inc_FAC1_ret
     
     ; Fallthrough to inc_FAC1

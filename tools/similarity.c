@@ -92,7 +92,11 @@ int main(int argc,char **argv)
   if (basic) {
     for (int i = 0; i < NUM_CHUNKS; i++) {
       for (int addr = microsoft_basic_chunks[i * 2]; addr <= microsoft_basic_chunks[i * 2 + 1]; addr++) {
-        f1[addr - 0xA000] = 0;
+        short index = addr - 0xA000;
+        if (f1[index] != f2[index]) {
+            printf("BASIC does not match MS BASIC at %X (%X != %X)\n", addr, f1[index], f2[index]);
+        }
+        f1[index] = 0;
       }
     }
   }

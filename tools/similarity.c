@@ -96,7 +96,7 @@ int main(int argc,char **argv)
         if (f1[index] != f2[index]) {
             printf("BASIC does not match MS BASIC at %X (%X != %X)\n", addr, f1[index], f2[index]);
         }
-        f1[index] = 0;
+        f1[index] = 0xFF;
       }
     }
   }

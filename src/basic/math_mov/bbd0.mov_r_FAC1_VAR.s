@@ -20,7 +20,7 @@
 
 mov_r_FAC1_VAR:
 
-	ldx #FORPNT+0
-	ldy #FORPNT+1
+	ldx FORPNT+0
+	ldy FORPNT+1
 
 	; FALLTROUGH to mov_r_FAC1_MEM

@@ -5,5 +5,6 @@
 
 ; Just a compatibility jump - our routine is longer than original one
 
-	jmp round_FAC1
+round_FAC1:
+	jmp round_FAC1_impl
 	

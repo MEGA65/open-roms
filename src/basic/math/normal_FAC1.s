@@ -13,7 +13,7 @@
 
 ; XXX test this
 
-normal_FAC1:
+normal_FAC1_impl:
 
 	lda FAC1_exponent
 	beq normal_FAC1_end                     ; branch if our float is 0

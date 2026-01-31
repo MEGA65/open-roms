@@ -1,0 +1,3 @@
+LDA $64 + EOR #$FF
+
+Invert value at floating point variable in zero page

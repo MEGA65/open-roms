@@ -1,0 +1,3 @@
+BNE $EC + CLC + RTS
+
+Fragment at the end of some function

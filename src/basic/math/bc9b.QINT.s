@@ -33,7 +33,7 @@ QINT:
 	tax
 	lda #$FF
 	sta BITS
-	jsr neg_FAC1_mantissa
+	jsr inv_FAC1_mantissa
 	txa
 @1: ldx #FAC1_exponent
     cmp #$F9

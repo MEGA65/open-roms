@@ -10,19 +10,19 @@
 ;
 ; This is verified to be identical to the original Microsoft implementation where it was named NEGFAC.
 ;
-; The alternative entry point neg_FAC1_mantissa (NEGFCH) will negate only the mantissa
+; The alternative entry point inv_FAC1_mantissa (NEGFCH) will negate only the mantissa
 ;
 ; See also:
 ; - https://www.c64-wiki.com/wiki/BASIC-ROM
 ; - https://sta.c64.org/cbm64basconv.html
 ;
 
-neg_FAC1:
+inv_FAC1:
 	lda FAC1_sign
 	eor #$FF
 	sta FAC1_sign
 
-neg_FAC1_mantissa:
+inv_FAC1_mantissa:
 
     lda FAC1_mantissa+0
     eor #$FF

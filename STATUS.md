@@ -218,8 +218,8 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B9EA`   | `log_FAC1`             | PARTIAL  | not fully tested yet                               |
 | `$BA28`   | `mul_MEM_FAC1`         | DONE     |                                                    |
 | `$BA2B`   | `mul_FAC2_FAC1`        | DONE     |                                                    |
-| `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
-| `$BA90`   | `get_FAC2_via_INDEX`   | DONE     |                                                    |
+| `$BA8C`   | `mov_MEM_FAC2`         | DONE     | From the Microsoft BASIC, original name: CONUPK    |
+| `$BA90`   | `get_FAC2_via_INDEX`   | DONE     | From the Microsoft BASIC, no label                 |
 | `$BAE2`   | `mul10_FAC1`           | DONE     |                                                    |
 | `$BAFE`   | `div10_FAC1_p`         | DONE     |                                                    |
 | `$BB0F`   | `div_MEM_FAC1`         | DONE     |                                                    |

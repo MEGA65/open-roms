@@ -31,7 +31,8 @@
 	!addr TEMPPT    = $16 ;          pointer to the first available slot in the temporary string descriptor stack
 	!addr LASTPT    = $17 ; $17-$18  pointer to the last used slot in the temporary string descriptor
 	!addr TEMPST    = $19 ; $19-$21  temporary string stack descriptors
-	!addr INDEX     = $22 ; $22-$25  temporary variables, [!] our usage might be different
+	!addr INDEX     = $22 ; $22-$23  INDEX1 vector
+	!addr INDEX2    = $24 ; $24-$25  INDEX2 vector
 	!addr RESHO     = $26 ; $26-$2A  temporary variables, [!] our usage might be different
 	!addr TXTTAB    = $2B ; $2B-$2C  start of BASIC code
 	!addr VARTAB    = $2D ; $2D-$2E  end of BASIC code, start of variables

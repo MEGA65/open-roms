@@ -239,7 +239,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC3C`   | `convert_A_to_FAC1`    | DONE     | From the Microsoft BASIC, original name: FLOAT     |
 | `$BC44`   | `convert_i16_to_FAC1`  | DONE     | From the Microsoft BASIC, original name: FLOATS    |
 | `$BC58`   | `abs_FAC1`             | DONE     | From the Microsoft BASIC, original name: ABS       |
-| `$BC5B`   | `FCOMP`                | DONE     |                                                    |
+| `$BC5B`   | `FCOMP`                | DONE     | From the Microsoft BASIC, original name: FCOMP     |
 | `$BC9B`   | `QINT`                 | DONE     | From the Microsoft BASIC, original name: QINT      |
 | `$BCCC`   | `int_FAC1`             | DONE     | From the Microsoft BASIC, original name: INT       |
 | `$BCE9`   | `clear_FAC1`           | DONE     | From the Microsoft BASIC, original name: CLRFAC    |

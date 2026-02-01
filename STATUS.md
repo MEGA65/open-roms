@@ -237,7 +237,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC2B`   | `sgn_FAC1_A`           | DONE     | From the Microsoft BASIC, original name: SIGN      |
 | `$BC39`   | `sgn_FAC1`             | DONE     | From the Microsoft BASIC, original name: SGN       |
 | `$BC3C`   | `convert_A_to_FAC1`    | DONE     | From the Microsoft BASIC, original name: FLOAT     |
-| `$BC44`   | `convert_i16_to_FAC1`  | DONE     |                                                    |
+| `$BC44`   | `convert_i16_to_FAC1`  | DONE     | From the Microsoft BASIC, original name: FLOATS    |
 | `$BC58`   | `abs_FAC1`             | DONE     | From the Microsoft BASIC, original name: ABS       |
 | `$BC5B`   | `FCOMP`                | DONE     |                                                    |
 | `$BC9B`   | `QINT`                 | DONE     | From the Microsoft BASIC, original name: QINT      |

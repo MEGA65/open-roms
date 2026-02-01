@@ -199,7 +199,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$AF9A`   | `compute_ST`           | DONE     |                                                    |
 | `$B1AA`   | `FACINX`               | NOT DONE | convert FAC1 to 16-bit signed integer              |
 | `$B1BF`   | `convert_FAC1_to_s16`  | NOT DONE |                                                    |
-| `$B391`   | `GIVAYF`               | PARTIAL  | not fully tested yet                               |
+| `$B391`   | `GIVAYF`               | DONE     | From the Microsoft BASIC, original name: GIVAYF    |
 | `$B3A2`   | `convert_Y_to_FAC1`    | DONE     | From the Microsoft BASIC, original name: SNGFLT    |
 | `$B794`   | `convert_u8_A_to_FAC1` | DONE     |                                                    |
 | `$B7B5`   | `STRVAL`               | PARTIAL  | Only for 38k memory model                          |

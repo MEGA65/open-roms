@@ -3,13 +3,17 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - convert uint8 in Y to FAC1
 ;
 ; Input: Y - uint8 to convert to float
 ; Result: FAC1
 ;
 ; Stores Y into first FAC1 mantissa byte, clears the second and calls convert_i16_to_FAC1
+;
+; This is verified to be identical to the original Microsoft implementation where it was named SNGFLT.
 ;
 ; - https://www.c64-wiki.com/wiki/BASIC-ROM
 ; - https://sta.c64.org/cbm64basconv.html
@@ -18,7 +22,5 @@
 ;
 
 convert_Y_to_FAC1:
-    sty FAC1_mantissa+1
-    lda #$00
-    sta FAC1_mantissa
-    jmp convert_i16_to_FAC1
+    lda #0
+    beq GIVAYF      ; Always branches

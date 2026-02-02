@@ -205,7 +205,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B7B5`   | `STRVAL`               | PARTIAL  | Only for 38k memory model                          |
 | `$B7F7`   | `convert_FAC1_to_ADDR` | NOT DONE |                                                    |
 | `$B849`   | `add_HALF_FAC1`        | DONE     | From the Microsoft BASIC, original name: FADDH     |
-| `$B850`   | `sub_MEM_FAC1`         | DONE     |                                                    |
+| `$B850`   | `sub_MEM_FAC1`         | DONE     | From the Microsoft BASIC, original name: FSUB      |
 | `$B853`   | `sub_FAC2_FAC1`        | DONE     |                                                    |
 | `$B862`   | `add_align_exponents`  | DONE     |                                                    |
 | `$B867`   | `add_MEM_FAC1`         | DONE     |                                                    |

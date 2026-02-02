@@ -3,12 +3,16 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - add memory variable to FAC1
 ;
 ; Input:
 ; - .A - address low byte
 ; - .Y - address high byte
+;
+; This is verified to be identical to the original Microsoft implementation where it was named FADD.
 ;
 ; See also:
 ; - [CM64] Computes Mapping the Commodore 64 - page 112

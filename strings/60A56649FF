@@ -1,0 +1,3 @@
+RTS + LDA $66 + EOR #$FF
+
+Load and invert value from floating point area of zero page

@@ -1,0 +1,3 @@
+$6E + EOR $66 + STA $6F
+
+Manipulate floating point area in zero page (from BASIC)

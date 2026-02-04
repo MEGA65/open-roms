@@ -8,7 +8,11 @@
 !addr memmove__size   = RESHO+2
 !addr memmove__tmp    = RESHO+4
 
+;
+; Error codes
+;
 
+err_overflow = $0F
 
 ;
 ; Helper aliases to make the code more readable

@@ -3,7 +3,10 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-; Just a compatibility jump - our routine is longer than original one
 
 
-	jmp add_align_exponents
+; XXX provide documentation and implementation
+
+error:
+
+    +STUB_IMPLEMENTATION

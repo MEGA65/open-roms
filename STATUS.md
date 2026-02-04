@@ -199,27 +199,30 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$AF9A`   | `compute_ST`           | DONE     |                                                    |
 | `$B1AA`   | `FACINX`               | NOT DONE | convert FAC1 to 16-bit signed integer              |
 | `$B1BF`   | `convert_FAC1_to_s16`  | NOT DONE |                                                    |
-| `$B391`   | `GIVAYF`               | PARTIAL  | not fully tested yet                               |
-| `$B3A2`   | `convert_Y_to_FAC1`    | DONE     |                                                    |
+| `$B391`   | `GIVAYF`               | DONE     | From the Microsoft BASIC, original name: GIVAYF    |
+| `$B3A2`   | `convert_Y_to_FAC1`    | DONE     | From the Microsoft BASIC, original name: SNGFLT    |
 | `$B794`   | `convert_u8_A_to_FAC1` | DONE     |                                                    |
 | `$B7B5`   | `STRVAL`               | PARTIAL  | Only for 38k memory model                          |
 | `$B7F7`   | `convert_FAC1_to_ADDR` | NOT DONE |                                                    |
 | `$B849`   | `add_HALF_FAC1`        | DONE     | From the Microsoft BASIC, original name: FADDH     |
-| `$B850`   | `sub_MEM_FAC1`         | DONE     |                                                    |
-| `$B853`   | `sub_FAC2_FAC1`        | DONE     |                                                    |
-| `$B862`   | `add_align_exponents`  | DONE     |                                                    |
-| `$B867`   | `add_MEM_FAC1`         | DONE     |                                                    |
-| `$B86A`   | `add_FAC2_FAC1`        | DONE     |                                                    |
+| `$B850`   | `sub_MEM_FAC1`         | DONE     | From the Microsoft BASIC, original name: FSUB      |
+| `$B853`   | `sub_FAC2_FAC1`        | DONE     | From the Microsoft BASIC, original name: FSUBT     |
+| `$B862`   | `add_align_exponents`  | DONE     | From the Microsoft BASIC, original name: FADD5     |
+| `$B867`   | `add_MEM_FAC1`         | DONE     | From the Microsoft BASIC, original name: FADD      |
+| `$B86A`   | `add_FAC2_FAC1`        | DONE     | From the Microsoft BASIC, original name: FADDT     |
 | `$B8D2`   | `abs_and_normal_FAC`   | DONE     | From the Microsoft BASIC, original name: FADFLT    |
-| `$B8FE`   | `normal_FAC1`          | DONE     |                                                    |
+| `$B8D7`   | `normal_FAC1`          | DONE     | From the Microsoft BASIC, original name: NORMAL    |
+| `$B8F7`   | `zero_FAC1`            | DONE     | From the Microsoft BASIC, original name: ZEROFC    |
+| `$B8FE`   | `add_mantissas_FAC1..` | DONE     | From the Microsoft BASIC, original name: FADD2     |
+| `$B936`   | `shift_carry_into_FAC` | DONE     | From the Microsoft BASIC, original name: SQUEEZ    |
 | `$B947`   | `inv_FAC1_mantissa`    | DONE     | From the Microsoft BASIC, original name: NEGFAC    |
 | `$B96F`   | `inc_FAC1`             | DONE     | From the Microsoft BASIC, original name: INCFAC    |
 | `$B983`   | `shiftr_FAC1`          | DONE     | From the Microsoft BASIC, original name: SHIFTR    |
 | `$B9EA`   | `log_FAC1`             | PARTIAL  | not fully tested yet                               |
 | `$BA28`   | `mul_MEM_FAC1`         | DONE     |                                                    |
 | `$BA2B`   | `mul_FAC2_FAC1`        | DONE     |                                                    |
-| `$BA8C`   | `mov_MEM_FAC2`         | DONE     |                                                    |
-| `$BA90`   | `get_FAC2_via_INDEX`   | DONE     |                                                    |
+| `$BA8C`   | `mov_MEM_FAC2`         | DONE     | From the Microsoft BASIC, original name: CONUPK    |
+| `$BA90`   | `get_FAC2_via_INDEX`   | DONE     | From the Microsoft BASIC, no label                 |
 | `$BAE2`   | `mul10_FAC1`           | DONE     |                                                    |
 | `$BAFE`   | `div10_FAC1_p`         | DONE     |                                                    |
 | `$BB0F`   | `div_MEM_FAC1`         | DONE     |                                                    |
@@ -234,12 +237,12 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC0C`   | `mov_r_FAC1_FAC2`      | DONE     | From the Microsoft BASIC, original name: MOVAF     |
 | `$BC0F`   | `mov_FAC1_FAC2`        | DONE     | From the Microsoft BASIC, original name: MOVEF     |
 | `$BC1B`   | `round_FAC1`           | PARTIAL  | not fully tested yet                               |
-| `$BC2B`   | `sgn_FAC1_A`           | DONE     |                                                    |
-| `$BC39`   | `sgn_FAC1`             | DONE     |                                                    |
-| `$BC3C`   | `convert_A_to_FAC1`    | DONE     |                                                    |
-| `$BC44`   | `convert_i16_to_FAC1`  | DONE     |                                                    |
+| `$BC2B`   | `sgn_FAC1_A`           | DONE     | From the Microsoft BASIC, original name: SIGN      |
+| `$BC39`   | `sgn_FAC1`             | DONE     | From the Microsoft BASIC, original name: SGN       |
+| `$BC3C`   | `convert_A_to_FAC1`    | DONE     | From the Microsoft BASIC, original name: FLOAT     |
+| `$BC44`   | `convert_i16_to_FAC1`  | DONE     | From the Microsoft BASIC, original name: FLOATS    |
 | `$BC58`   | `abs_FAC1`             | DONE     | From the Microsoft BASIC, original name: ABS       |
-| `$BC5B`   | `FCOMP`                | DONE     |                                                    |
+| `$BC5B`   | `FCOMP`                | DONE     | From the Microsoft BASIC, original name: FCOMP     |
 | `$BC9B`   | `QINT`                 | DONE     | From the Microsoft BASIC, original name: QINT      |
 | `$BCCC`   | `int_FAC1`             | DONE     | From the Microsoft BASIC, original name: INT       |
 | `$BCE9`   | `clear_FAC1`           | DONE     | From the Microsoft BASIC, original name: CLRFAC    |

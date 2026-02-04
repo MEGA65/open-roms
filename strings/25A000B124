@@ -1,0 +1,3 @@
+$25 + LDY #$00 + LDA ($24),Y
+
+Clear via index vector 2 in zero page

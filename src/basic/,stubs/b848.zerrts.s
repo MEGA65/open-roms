@@ -3,6 +3,7 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-; Just a compatibility jump - our routine is longer than original one
 
-	jmp FCOMP
+ZERRTS:  ; FIXME: Here for the time being. Should be moved to FNWAIT
+
+    rts

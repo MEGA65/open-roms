@@ -209,7 +209,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B853`   | `sub_FAC2_FAC1`        | DONE     | From the Microsoft BASIC, original name: FSUBT     |
 | `$B862`   | `add_align_exponents`  | DONE     | From the Microsoft BASIC, original name: FADD5     |
 | `$B867`   | `add_MEM_FAC1`         | DONE     | From the Microsoft BASIC, original name: FADD      |
-| `$B86A`   | `add_FAC2_FAC1`        | DONE     |                                                    |
+| `$B86A`   | `add_FAC2_FAC1`        | DONE     | From the Microsoft BASIC, original name: FADDT     |
 | `$B8D2`   | `abs_and_normal_FAC`   | DONE     | From the Microsoft BASIC, original name: FADFLT    |
 | `$B8D7`   | `normal_FAC1`          | DONE     | From the Microsoft BASIC, original name: NORMAL    |
 | `$B8F7`   | `zero_FAC1`            | DONE     | From the Microsoft BASIC, original name: ZEROFC    |

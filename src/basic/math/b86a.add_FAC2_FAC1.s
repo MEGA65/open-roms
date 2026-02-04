@@ -31,7 +31,7 @@ add_FAC2_FAC1:
     lda FAC2_exponent
 FADDC:
     tay
-    beq FADDC;ZERRTS
+    beq ZERRTS
     sec
     sbc FAC1_exponent
     beq FADD4           ; No shifting

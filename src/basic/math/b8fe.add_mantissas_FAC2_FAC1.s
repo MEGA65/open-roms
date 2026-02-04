@@ -36,6 +36,6 @@ add_mantissas_FAC2_FAC1:
 
     lda FAC1_mantissa+0
     adc FAC2_mantissa+0
-    sta FAC2_mantissa+0
+    sta FAC1_mantissa+0
 
     jmp shift_carry_into_FAC1

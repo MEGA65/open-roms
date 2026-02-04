@@ -211,8 +211,8 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B867`   | `add_MEM_FAC1`         | DONE     | From the Microsoft BASIC, original name: FADD      |
 | `$B86A`   | `add_FAC2_FAC1`        | DONE     |                                                    |
 | `$B8D2`   | `abs_and_normal_FAC`   | DONE     | From the Microsoft BASIC, original name: FADFLT    |
+| `$B8D7`   | `normal_FAC1`          | DONE     | From the Microsoft BASIC, original name: NORMAL    |
 | `$B8F7`   | `zero_FAC1`            | DONE     | From the Microsoft BASIC, original name: ZEROFC    |
-| `$B8FE`   | `normal_FAC1`          | DONE     |                                                    |
 | `$B947`   | `inv_FAC1_mantissa`    | DONE     | From the Microsoft BASIC, original name: NEGFAC    |
 | `$B96F`   | `inc_FAC1`             | DONE     | From the Microsoft BASIC, original name: INCFAC    |
 | `$B983`   | `shiftr_FAC1`          | DONE     | From the Microsoft BASIC, original name: SHIFTR    |

@@ -213,6 +213,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$B8D2`   | `abs_and_normal_FAC`   | DONE     | From the Microsoft BASIC, original name: FADFLT    |
 | `$B8D7`   | `normal_FAC1`          | DONE     | From the Microsoft BASIC, original name: NORMAL    |
 | `$B8F7`   | `zero_FAC1`            | DONE     | From the Microsoft BASIC, original name: ZEROFC    |
+| `$B8FE`   | `add_mantissas_FAC1..` | DONE     | From the Microsoft BASIC, original name: FADD2     |
 | `$B936`   | `shift_carry_into_FAC` | DONE     | From the Microsoft BASIC, original name: SQUEEZ    |
 | `$B947`   | `inv_FAC1_mantissa`    | DONE     | From the Microsoft BASIC, original name: NEGFAC    |
 | `$B96F`   | `inc_FAC1`             | DONE     | From the Microsoft BASIC, original name: INCFAC    |

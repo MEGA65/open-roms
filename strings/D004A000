@@ -1,0 +1,3 @@
+BNE $04 + LDY #$00
+
+Fragments

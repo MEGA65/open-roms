@@ -1,0 +1,3 @@
+RTS + JMP $B86A
+
+Fragment + jump to floating point function

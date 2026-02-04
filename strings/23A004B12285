@@ -1,0 +1,3 @@
+$23 + LDY #$04 + LDA ($22),Y + STA
+
+Loop fragment load from index pointer

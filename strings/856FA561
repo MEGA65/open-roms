@@ -1,0 +1,3 @@
+STA $6F + LDA $61
+
+Store and load from/to floating point area in zero page

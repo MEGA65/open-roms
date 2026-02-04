@@ -1,0 +1,3 @@
+SEC + SBC $61 + BEQ
+
+Sub from floating point area in zero page

@@ -1,0 +1,3 @@
+EOR #$FF + ADC #$01
+
+Two's complement

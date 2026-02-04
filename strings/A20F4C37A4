@@ -1,0 +1,3 @@
+LDX #$0F + JMP $A437
+
+Emit overflow error from BASIC

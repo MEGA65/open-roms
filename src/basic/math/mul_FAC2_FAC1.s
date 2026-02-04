@@ -64,7 +64,7 @@ mul_FAC2_FAC1:
 	sta RESHO+1
 @2:
 	lda RESHO+1
-	+bne set_FAC1_max                ; overflow
+	+bne overflow_error               ; overflow
 
 	lda RESHO+0
 	sta FAC1_exponent
@@ -124,7 +124,7 @@ mul_FAC2_FAC1:
 	lda FAC1_exponent
 	clc
 	adc #$08
-	+bcs set_FAC1_max                ; branch if overflow
+	+bcs overflow_error                ; branch if overflow
 	sta FAC1_exponent
 	jmp normal_FAC1
 

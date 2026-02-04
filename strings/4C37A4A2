@@ -1,0 +1,3 @@
+JMP $A437 + LDX
+
+Jump to error routine in BASIC

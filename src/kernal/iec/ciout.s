@@ -30,7 +30,7 @@ ciout_store_in_buffer:
 
 	; Store in the buffer data to be sent next, return
 	pla
-	sta BSOUR
+	sta TBTCNT
 	rts
 	
 ciout_send_byte:

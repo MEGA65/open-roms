@@ -29,6 +29,9 @@ CIOUT:
 ciout_store_in_buffer:
 
 	; Store in the buffer data to be sent next, return
+	;
+	; The CBM KERNAL uses BSOUR to buffer the byte. As a result of the clean-room
+	; process, it happened that our tx code uses TBTCNT.
 	pla
 	sta TBTCNT
 	rts

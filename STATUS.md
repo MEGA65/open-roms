@@ -47,6 +47,15 @@ The following ROM features are currently missing:
 * RS-232 support
 * NMI handling is incomplete
 
+# Features implemented differently
+
+## Serial buffer byte location
+
+The KERNAL CIOUT routine buffers the byte to be sent into a zero page location, because only when the next byte is sent
+or when UNLSN occurs, it is known whether the byte should be sent with EOI or not. In the CBM KERNAL, this location is
+BSOUR ($0095). The Open ROM KERNAL, this location is TBTCNT ($00A4).
+
+The CBM KERNAL already uses TBTCNT for serial input, so using it for output as well, could be more consistent.
 
 # Hardware support status
 

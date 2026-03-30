@@ -237,7 +237,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BBFC`   | `mov_FAC2_FAC1`        | DONE     | From the Microsoft BASIC, original name: MOVFA     |
 | `$BC0C`   | `mov_r_FAC1_FAC2`      | DONE     | From the Microsoft BASIC, original name: MOVAF     |
 | `$BC0F`   | `mov_FAC1_FAC2`        | DONE     | From the Microsoft BASIC, original name: MOVEF     |
-| `$BC1B`   | `round_FAC1`           | PARTIAL  | not fully tested yet                               |
+| `$BC1B`   | `round_FAC1`           | DONE     | From the Microsoft BASIC, original name: ROUND     |
 | `$BC2B`   | `sgn_FAC1_A`           | DONE     | From the Microsoft BASIC, original name: SIGN      |
 | `$BC39`   | `sgn_FAC1`             | DONE     | From the Microsoft BASIC, original name: SGN       |
 | `$BC3C`   | `convert_A_to_FAC1`    | DONE     | From the Microsoft BASIC, original name: FLOAT     |

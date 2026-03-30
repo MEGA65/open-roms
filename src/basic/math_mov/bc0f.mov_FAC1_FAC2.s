@@ -38,4 +38,5 @@ mov_FAC1_FAC2:
     dex
     bne @1
     stx FACOV           ; Always zero
+MOVRTS:
     rts

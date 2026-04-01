@@ -32,7 +32,7 @@ div_FAC2_FAC1:
 	; Handle special case - dividing 0 by non-zero value
 
 	lda FAC2_exponent
-	+beq set_FAC1_zero
+	+beq clear_FAC1
 
 	; Multiply signs
 
@@ -59,7 +59,7 @@ div_FAC2_FAC1:
 @1:
 
     lda RESHO+1
-    +bmi set_FAC1_zero                ; result too low, set 0 and quit
+    +bmi clear_FAC1                ; result too low, set 0 and quit
 
 	lda RESHO+0
 	sta FAC1_exponent

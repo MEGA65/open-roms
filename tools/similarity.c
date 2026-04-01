@@ -20,15 +20,14 @@ int matches[MAX_SIZE];
 
 int phase_mask[MAX_SIZE+MAX_SIZE];
 
-#define NUM_CHUNKS 7
+#define NUM_CHUNKS 6
 // Pairs of start, end memory addresses of known exact similarity with the open source Microsoft BASIC
 unsigned short microsoft_basic_chunks[NUM_CHUNKS * 2] = {
     0xB391, 0xB39D,
     0xB3A2, 0xB3A5,
     0xB849, 0xB97D,
     0xB983, 0xB9BB,
-    0xBA28, 0xBA2A,
-    0xBA8C, 0xBAB6,
+    0xBA28, 0xBAE1,
     0xBB8F, 0xBCF2,
 };
 

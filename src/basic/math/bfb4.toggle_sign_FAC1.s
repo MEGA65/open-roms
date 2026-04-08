@@ -3,8 +3,12 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - toggle FAC1 sign (if not 0)
+;
+; This is verified to be identical to the original Microsoft implementation where it was named NEGOP.
 ;
 ; See also:
 ; - [CM64] Computes Mapping the Commodore 64 - page 117
@@ -12,20 +16,10 @@
 ;
 
 toggle_sign_FAC1:
-
-	lda FAC1_exponent
-	beq toggle_sign_FAC1_end           ; do not toggle the sign if value is 0
-
-	; FALLTROUGH
-
-toggle_sign_FAC1_skipcheck:            ; entry for other routines
-
-	lda FAC1_sign
-	eor #$FF
-	sta FAC1_sign
-
-	; FALLTROUGH
-
-toggle_sign_FAC1_end:
-
-	rts
+        lda FAC1_exponent
+        beq NEGRTS
+        lda FAC1_sign
+        eor #$FF
+        sta FAC1_sign
+NEGRTS:
+        rts

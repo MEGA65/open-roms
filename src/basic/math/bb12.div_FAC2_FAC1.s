@@ -3,18 +3,19 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - divide FAC2 (dividend) by FAC1 (divisor)
 ;
+; This is verified to be identical to the original Microsoft implementation where it was named FDIVT.
+;
 ; Input:
-; - .A - must load FAC1 exponent ($61) beforehand to set the zero flag (but our routine does not need this)
+;   ZF - If FAC1 is zero
 ;
 ; Output:
 ; - FAC1
 ;
-; Note:
-; - some documentation suggest this is a division leaving quotient and remainder (left in FAC2),
-;   but it seems (experimentation) that this is not true
 ;
 ; See also:
 ; - [CM64] Computes Mapping the Commodore 64 - page 114
@@ -26,60 +27,80 @@ div_FAC2_FAC1:
 
 	; 'Pamiętaj, cholero - nie dziel przez zero!' - ancient polish proverb
 
-	lda FAC1_exponent
-	+beq do_DIVISION_BY_ZERO_error
-
-	; Handle special case - dividing 0 by non-zero value
-
-	lda FAC2_exponent
-	+beq clear_FAC1
-
-	; Multiply signs
-
-	lda FAC1_sign
-	eor FAC2_sign
-	sta FAC1_sign
-
-	; Subtract the exponents
-
-	lda #$A0                            ; correction for bias and FAC2 digits
-	sta RESHO+0
-	lda #$00
-	sta RESHO+1
-
-	lda FAC2_exponent                   ; add FAC2 exponent to temporary variable 
-	jsr muldiv_RESHO_01_add_A
-
-    lda RESHO+0                         ; subtract FAC1 exponent from temporary variable
+    beq DV0ERR          ; Can't divide by zero!
+    jsr round_FAC1      ; TAKE FACOV INTO ACCT IN FAC.
+	lda #0              ; NEGATE FACEXP.
     sec
     sbc FAC1_exponent
-    sta RESHO+0
-    bcs @1
-    dec RESHO+1
-@1:
+    sta FAC1_exponent
+    jsr MULDIV          ; FIX UP EXPONENTS.
+    inc FAC1_exponent   ; SCALE IT RIGHT.
+    ;beq GOOVER         ; OVERFLOW.
+    !byte $F0, $BA      ; This is a workaround for beq GOOVER beause build_segment doesn't always place code in order in the first pass
+    ldx #$FC        	; SETUP PROCEDURE.
+    lda #1
+DIVIDE: 				; THIS IS THE BEST CODE IN THE WHOLE PILE.
+    ldy FAC2_mantissa+0 ; SEE WHAT RELATION HOLDS.
+    cpy FAC1_mantissa+0
+    bne	SAVQUO	    	;[C]=0,1. N(C=0)=0.
+    ldy FAC2_mantissa+1
+    cpy FAC1_mantissa+1
+    bne SAVQUO
+    ldy FAC2_mantissa+2
+    cpy FAC1_mantissa+2
+    bne SAVQUO
+    ldy FAC2_mantissa+3
+    cpy FAC1_mantissa+3
 
-    lda RESHO+1
-    +bmi clear_FAC1                ; result too low, set 0 and quit
-
-	lda RESHO+0
-	sta FAC1_exponent
-
-	; Divide the mantissas
-	jsr div_FAC1_denorm
-	jsr muldiv_RESHO_set_0
-	jsr div_mantissas
-
-	; Copy the result to FAC1 - XXX we probably already have similar code somewhere...
-
+SAVQUO:
+    php
+    rol                 ; SAVE RESULT.
+    bcc QSHFT           ; IF NOT DONE, CONTINUE.
+    inx
+    sta RESHO+3,X
+    beq LD100
+    bpl DIVNRM          ; NOTE THIS REQ 1 MO RAM THEN NECESS.
+    lda #1
+QSHFT:
+    plp                 ; RETURN CONDITION CODES.
+	bcs DIVSUB          ; FAC .LE. ARG.
+SHFARG:
+    asl FAC2_mantissa+3	; SHIFT ARG ONE PLACE LEFT.
+	rol FAC2_mantissa+2
+	rol FAC2_mantissa+1
+	rol FAC2_mantissa+0
+	bcs SAVQUO		    ; SAVE A RESULT OF ONE FOR THIS POSITION AND DIVIDE.
+    bmi DIVIDE		    ; IF MSB ON, GO DECIDE WHETHER TO SUB.
+	bpl SAVQUO
+DIVSUB:
+    tay             	; NOTICE C MUST BE ON HERE.
 	lda FAC2_mantissa+3
-	sta FAC1_mantissa+3
+	sbc FAC1_mantissa+3
+	sta FAC2_mantissa+3
 	lda FAC2_mantissa+2
-	sta FAC1_mantissa+2
-	lda FAC2_mantissa+1
-	sta FAC1_mantissa+1
-	lda FAC2_mantissa+0
-	sta FAC1_mantissa+0
-
-	; Normalize and quit
-	
-	jmp normal_FAC1
+	sbc FAC1_mantissa+2
+	sta FAC2_mantissa+2
+    lda FAC2_mantissa+1
+    sbc FAC1_mantissa+1
+    sta FAC2_mantissa+1
+    lda FAC2_mantissa+0
+    sbc FAC1_mantissa+0
+	sta FAC2_mantissa+0
+	tya
+	jmp SHFARG
+LD100:
+    lda #$40            ; ONLY WANT TWO MORE BITS.
+	bne QSHFT   		; ALWAYS BRANCHES.
+DIVNRM:
+    asl                 ; GET LAST TWO BITS INTO MSB AND B6.
+    asl
+    asl
+    asl
+    asl
+    asl
+    sta FACOV
+	plp                 ; TO GET GARBAGE OFF STACK.
+	jmp	mov_RES_FAC1  	; MOVE RESULT INTO FAC, THEN NORMALIZE RESULT AND RETURN.
+DV0ERR:
+    ldx #B_ERR_DIVISION_BY_ZERO
+	jmp error

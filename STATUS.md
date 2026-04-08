@@ -255,7 +255,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BF74`   | `sqr_FAC2`             | NOT DONE |                                                    |
 | `$BF78`   | `pwr_FAC2_MEM`         | PARTIAL  | needs `pwr_FAC2_FAC1`                              |
 | `$BF7B`   | `pwr_FAC2_FAC1`        | NOT DONE |                                                    |
-| `$BFB4`   | `toggle_sign_FAC1`     | DONE     |                                                    |
+| `$BFB4`   | `toggle_sign_FAC1`     | DONE     | From the Microsoft BASIC, original name: NEGOP     |
 | `$BFED`   | `exp_FAC1`             | NOT DONE |                                                    |
 | `$E043`   | `poly1_FAC1`           | PARTIAL  | not fully tested yet                               |
 | `$E059`   | `poly2_FAC1`           | PARTIAL  | not fully tested yet                               |

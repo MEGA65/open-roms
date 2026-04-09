@@ -136,3 +136,10 @@
 		bvc *+5
 		jmp @dst
 } }
+
+
+; 32-bit integer constant in big endian order
+
+!macro be32 @val {
+  !byte (@val >> 24) & $FF, (@val >> 16) & $FF, (@val >> 8) & $FF, (@val) & $FF
+}

@@ -49,6 +49,7 @@
 	!addr INPPTR    = $43 ; $43-$44  -- NOT IMPLEMENTED --
 	!addr VARNAM    = $45 ; $45-$46  current variable name
 	!addr VARPNT    = $47 ; $47-$48  current variable/descriptor pointer
+	!addr FDECPT    = VARPNT
 	!addr FORPNT    = $49 ; $49-$4A  -- NOT IMPLEMENTED --
 	!addr OPPTR     = $4B ; $4B-$4C  helper variable for expression computation, [!] our usage details are different
 	!addr OPMASK    = $4D ;          -- NOT IMPLEMENTED --
@@ -59,7 +60,8 @@
 	!addr OLDOV     = $56 ;          old floating point overflow byte
 	!addr TEMPF1    = $57 ; $57-$5B  BASIC numeric work area
 	!addr TEMPF2    = $5C ; $5C-$60  BASIC numeric work area
-
+    !addr DECCNT    = $5D ; Number of digits after decimal point
+    !addr TENEXP    = $5E ; Exponent count
 	!addr __FAC1    = $61 ; $61-$66  floating point accumulator 1
 	!addr FAC1_exponent   = $61
 	!addr FAC1_mantissa   = $62 ; $62 - $65
@@ -162,6 +164,8 @@
 	;
 	; Page 1
 	;
+
+    !addr FBUFFR    = $100  ; FOUT string buffer
 
 	!addr STACK     = $100  ; $100-$1FF, processor stack
 

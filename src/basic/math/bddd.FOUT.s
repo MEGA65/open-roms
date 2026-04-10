@@ -28,8 +28,8 @@ FOUTC:
         bit FAC1_sign
         bpl FOUT1
         lda #$2D
-FOUT1:          ; FIXME FBUFFR is $0100 13 bytes fstring buffer
-        sta FBUFFR-1,Y  ; STore the character.
+FOUT1:
+        sta FBUFFR-1,Y  ; Store the character.
         sta FAC1_sign   ; Make FAC1 pos for QINT
         sty FBUFPT      ; Save for later
         iny

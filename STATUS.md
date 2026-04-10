@@ -250,7 +250,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BCE9`   | `clear_FAC1`           | DONE     | From the Microsoft BASIC, original name: CLRFAC    |
 | `$BCF3`   | `FIN`                  | PARTIAL  | Only for 38k memory model + not fully tested yet   |
 | `$BD7E`   | `FINLOG`               | DONE     | From the Microsoft BASIC, original name: FINLOG    |
-| `$BDDD`   | `FOUT`                 | NOT DONE | outputs FAC1 to string at $0100                    |
+| `$BDDD`   | `FOUT`                 | DONE     | From the Microsoft BASIC, original name: FOUT      |
 | `$BF71`   | `sqr_FAC1`             | PARTIAL  | needs `sqr_FAC2`                                   |
 | `$BF74`   | `sqr_FAC2`             | NOT DONE |                                                    |
 | `$BF78`   | `pwr_FAC2_MEM`         | PARTIAL  | needs `pwr_FAC2_FAC1`                              |

@@ -1,0 +1,3 @@
+$00 + SEC + SBC $5E
+
+Subtract from TENEXP in zero page used by BASIC

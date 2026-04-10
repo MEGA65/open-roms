@@ -1,0 +1,3 @@
+LDA #0 + SEC + SBC
+
+Subtract from zero

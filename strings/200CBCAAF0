@@ -1,0 +1,3 @@
+JSR $BC0C + TAX + BEQ
+
+Call MOVAF in BASIC + fragment

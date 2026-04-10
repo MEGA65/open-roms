@@ -58,6 +58,11 @@ std::vector<ConstEntry> GLOBAL_constants =
 	ConstEntry(     "LOG_2", std::log(2.0)        ),
 	ConstEntry( "INV_LOG_2", 1.0 / std::log(2.0)  ),
 
+    // Constants for FOUT
+    ConstEntry(    "NZ0999", 99999999.9           ),        // Comment in MS-BASIC says 99999999.9499, but that is off by one ulp
+    ConstEntry(    "NZ9999", 999999999.2          ),        // Comment is MS-BASIC says 999999999.499, but that is off by one ulp
+    ConstEntry(     "NZMIL", 1e9                  ),
+
 	// Constants for exp approximation, taken from https://www.c64-wiki.com/wiki/POLY1
 	// original source is probably "Computer Approximations" by John Fraser Hart et al. (ISBN 0-88275-642-7)
 	ConstEntry( "POLY_EXP_1", 2.1498763701e-5 ),

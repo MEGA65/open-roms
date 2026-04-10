@@ -1,0 +1,3 @@
+STY $71 + LDY #0
+
+Store to FBUFPT zero page variable used by BASIC and clear Y

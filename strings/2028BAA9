@@ -1,0 +1,3 @@
+JSR $BA28 + LDA
+
+Jump to FMULT subroutine in BASIC

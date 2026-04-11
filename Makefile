@@ -929,9 +929,9 @@ test_m65: build/mega65.rom
 testremote: build/kernal_custom.rom build/basic_custom.rom $(TARGET_CHR_PXL) build/symbols_custom.vs
 	x64 -kernal build/kernal_custom.rom -basic build/basic_custom.rom -chargen $(TARGET_CHR_PXL) -moncommands build/symbols_custom.vs -remotemonitor
 
-testsimilarity: $(TOOL_SIMILARITY) $(DIR_GEN)/OUTx_x.BIN $(ROM_CBM_KERNAL) $(ROM_CBM_BASIC)
-	$(TOOL_SIMILARITY) $(ROM_CBM_KERNAL) $(DIR_GEN)/OUTx_x.BIN
-	$(TOOL_SIMILARITY) $(ROM_CBM_BASIC)  $(DIR_GEN)/OUTx_x.BIN --basic
+testsimilarity: $(TOOL_SIMILARITY) $(DIR_TST38)/OUTx_x.BIN $(ROM_CBM_KERNAL) $(ROM_CBM_BASIC)
+	$(TOOL_SIMILARITY) $(ROM_CBM_KERNAL) $(DIR_TST38)/OUTx_x.BIN
+	$(TOOL_SIMILARITY) $(ROM_CBM_BASIC)  $(DIR_TST38)/OUTx_x.BIN --basic
 
 build/testresults: testsuite/unit/testresults.cc
 	$(CXX) -std=c++20 -O2 -Wall -o $@ $<

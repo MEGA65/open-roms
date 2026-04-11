@@ -280,7 +280,10 @@ In addition to the routines, the following floating-number constants are availab
 | `$B9DB`   | `const_SQR_2`               | DONE     | sqr(2.0)                                      |
 | `$B9E0`   | `const_NEG_HALF`            | DONE     | -0.5                                          |
 | `$B9E5`   | `const_LOG_2`               | DONE     | log_e(2.0)                                    |
-| `$BAF9`   | `const_TEN`                 | DONE     | 10.0                                          |      
+| `$BAF9`   | `const_TEN`                 | DONE     | 10.0                                          |
+| `$BDB3`   | `const_NZ0999`              | DONE     | 99999999.9                                    |
+| `$BDB8`   | `const_NZ9999`              | DONE     | 999999999.2                                   |
+| `$BDBD`   | `const_NZMIL`               | DONE     | 1000000000.0                                  |
 | `$BF11`   | `const_HALF`                | DONE     | 0.5                                           |
 | `$BFBF`   | `const_INV_LOG_2`           | DONE     | 1.0 / log_e(2.0)                              |
 | `$BFE8`   | `const_ONE` duplicate       | DONE     | 1.0                                           |
@@ -288,6 +291,29 @@ In addition to the routines, the following floating-number constants are availab
 | `$E2E5`   | `const_DOUBLE_PI`           | DONE     | PI * 2.0                                      |
 | `$E2EA`   | `const_QUARTER`             | DONE     | 0.25                                          |
 | `$E309`   | `const_DOUBLE_PI` duplicate | DONE     | PI * 2.0                                      |
+
+And the following big endian int32 constants at their original locations:
+
+| Address   | Name                        | Status   |  Remarks                                      |
+| :-------: | :-------------------------- | :------: | :-------------------------------------------: |
+| `$BF16`   | `FOUTBL`                    | DONE     | 100000000                                     |
+| `$BF1A`   | `FOUTBL` + 4                | DONE     | 10000000                                      |
+| `$BF1E`   | `FOUTBL` + 8                | DONE     | -1000000                                      |
+| `$BF22`   | `FOUTBL` + 12               | DONE     | 100000                                        |
+| `$BF26`   | `FOUTBL` + 16               | DONE     | -10000                                        |
+| `$BF2A`   | `FOUTBL` + 20               | DONE     | 1000                                          |
+| `$BF2E`   | `FOUTBL` + 24               | DONE     | -100                                          |
+| `$BF32`   | `FOUTBL` + 28               | DONE     | 10                                            |
+| `$BF36`   | `FOUTBL` + 32               | DONE     | -1                                            |
+| `$BF3A`   | `FDCEND`                    | DONE     | -2160000                                      |
+| `$BF3E`   | `FDCEND` + 4                | DONE     | 216000                                        |
+| `$BF42`   | `FDCEND` + 8                | DONE     | -36000                                        |
+| `$BF46`   | `FDCEND` + 12               | DONE     | 3600                                          |
+| `$BF4A`   | `FDCEND` + 16               | DONE     | -600                                          |
+| `$BF4E`   | `FDCEND` + 20               | DONE     | 60                                            |
+
+
+
 
 ### Other unofficial BASIC routines/locations
 

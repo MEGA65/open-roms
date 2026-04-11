@@ -98,14 +98,14 @@
 
 ;; #CONFIG# PANIC_SCREEN               YES
 ;; #CONFIG# DOS_WEDGE                  NO
-;; #CONFIG# TAPE_WEDGE                 YES
+;; #CONFIG# TAPE_WEDGE                 NO
 ;; #CONFIG# TAPE_HEAD_ALIGN            NO
 ;; #CONFIG# BCD_SAFE_INTERRUPTS        YES
 
 
 ; --- BASIC features
 
-;; #CONFIG# TRANSCENDENTAL_FUNCTIONS   NO
+;; #CONFIG# TRANSCENDENTAL_FUNCTIONS   YES
 
 
 ; --- Eye candy

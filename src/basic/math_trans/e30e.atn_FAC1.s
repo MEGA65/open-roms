@@ -2,8 +2,12 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - arc tangent of FAC1
+;
+; This is verified to be identical to the original Microsoft implementation where it was named ATN
 ;
 ; See also:
 ; - [CM64] Computes Mapping the Commodore 64 - page 211
@@ -23,41 +27,34 @@
 
 
 atn_FAC1:
-    lda FAC1_sign               ; Save sign of FAC1 on the stack
-    pha
-    lda #$00                    ; FAC1 = abs(FAC1)
-    sta FAC1_sign
-    sta TEMPF1                  ; AX not scaled
-
-    lda #<const_ONE
-    ldy #>const_ONE
-    jsr FCOMP
-    bmi atn_skipscale
-
-    lda #<const_ONE
-    ldy #>const_ONE
-    jsr div_MEM_FAC1
-    inc TEMPF1                  ; AX scaled
-
-atn_skipscale:
-    lda #<poly_atn
-    ldy #>poly_atn
-    jsr poly1_FAC1
-
-    lda TEMPF1
-    beq atn_skipoffset
-
-    lda #<const_HALF_PI
-    ldy #>const_HALF_PI
-    jsr sub_MEM_FAC1
-
-atn_skipoffset:
-    pla
-    bpl atn_out
-    jmp toggle_sign_FAC1
-    
-atn_out:
-    rts
+        lda FAC1_sign           ; What is sign?
+        pha 			        ; (Meanwhile save it for later)
+        bpl ATN1
+        jsr toggle_sign_FAC1    ; If negative, negate FAC1, use arctan(x) = -arctan(-x)
+ATN1:
+        lda FAC1_exponent
+        pha                     ; Save this too for later
+        cmp #$81                ; See if FAC1 >= 1.0
+        bcc ATN2                ; It is less than 1
+        lda #<const_ONE         ; Get pointer to 1.0
+        ldy #>const_ONE
+        jsr div_MEM_FAC1        ; Compute reciprocal. Use arctan(x) = pi/2 - arctan(1/x)
+ATN2:
+        lda #<poly_atn          ; Pointer to arctan polynomial
+        ldy #>poly_atn          
+        jsr poly1_FAC1
+        pla
+        cmp #$81                ; Was original argument < 1 ?
+        bcc ATN3                ; Yes
+        lda #<const_HALF_PI
+        ldy #>const_HALF_PI
+        jsr sub_MEM_FAC1        ; Subtract arctan from pi/2
+ATN3:
+        pla                     ; Was original argument positive?
+        bpl ATN4                ; Yes
+        jmp toggle_sign_FAC1    ; If negative, negate result
+ATN4:
+        rts
 
 
 } else {

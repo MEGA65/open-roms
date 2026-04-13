@@ -20,7 +20,7 @@ int matches[MAX_SIZE];
 
 int phase_mask[MAX_SIZE+MAX_SIZE];
 
-#define NUM_CHUNKS 9
+#define NUM_CHUNKS 10
 // Pairs of start, end memory addresses of known exact similarity with the open source Microsoft BASIC
 unsigned short microsoft_basic_chunks[NUM_CHUNKS * 2] = {
     0xB391, 0xB39D,
@@ -32,6 +32,7 @@ unsigned short microsoft_basic_chunks[NUM_CHUNKS * 2] = {
     0xBDB3, 0xBDC1,
     0xBDDD, 0xBF51,
     0xBFB4, 0xBFEC,
+    0xE30E, 0xE33D,
 };
 
 
@@ -40,6 +41,7 @@ int main(int argc,char **argv)
 {
   int verbose=0;
   int basic = 0;
+  int high =0;
 
   if (argc<3) {
     fprintf(stderr,"usage: similarity <file1> <file2> [--verbose] [--basic]\n");
@@ -51,6 +53,8 @@ int main(int argc,char **argv)
         verbose = 1;
       } else if (!strcmp(argv[i], "--basic")) {
         basic = 1;
+      } else if (!strcmp(argv[i], "--high")) {
+        high = 1;
       } else {
         fprintf(stderr, "Unrecognised directive.\n");
         exit(-1);
@@ -94,11 +98,21 @@ int main(int argc,char **argv)
   if (basic) {
     for (int i = 0; i < NUM_CHUNKS; i++) {
       for (int addr = microsoft_basic_chunks[i * 2]; addr <= microsoft_basic_chunks[i * 2 + 1]; addr++) {
-        short index = addr - 0xA000;
-        if (f1[index] != f2[index]) {
-            printf("BASIC does not match MS BASIC at %X (%X != %X)\n", addr, f1[index], f2[index]);
+        short index1, index2;
+        if (high && addr < 0xE000 || !high && addr >= 0xE000) {
+          continue;
         }
-        f1[index] = 0xFF;
+        if (!high) {
+          index1 = addr - 0xA000;
+          index2 = index1;
+        } else {
+          index1 = addr - 0xE000;
+          index2 = addr - 0xA000;
+        }
+        if (f1[index1] != f2[index2]) {
+            printf("BASIC does not match MS BASIC at %X (%X != %X)\n", addr, f1[index1], f2[index2]);
+        }
+        f1[index1] = 0xFF;
       }
     }
   }

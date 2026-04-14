@@ -69,6 +69,7 @@
 	!addr FAC1_sign       = $66
 
 	!addr SGNFLG    = $67 ;          Also used as number of terms of series evaluation
+	!addr DEGREE    = SGNFLG
 	!addr BITS      = $68 ;          FAC1 overflow
 
 	!addr __FAC2    = $69 ; $69-$6E  floating point accumulator 2 [!] also used for memory move pointers
@@ -78,7 +79,8 @@
 
 	!addr ARISGN    = $6F ;          -- NOT IMPLEMENTED --
 	!addr FACOV     = $70 ;          FAC1 low order mantissa
-	!addr FBUFPT    = $71 ; $71-$72  -- NOT IMPLEMENTED --
+	!addr FBUFPT    = $71 ; $71-$72
+	!addr POLYPT    = FBUFPT
 	!addr CHRGET    = $73 ; $73-$8A  copied from $E3A2 during cold start
 	!addr CHRGOT    = $79 ; same area as CHRGET
 	!addr TXTPTR    = $7A ; $7A-$7B  current BASIC statement pointer

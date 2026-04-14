@@ -2,8 +2,12 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - evaluate polynomial with odd powers only for FAC1 value
+;
+; This is verified to be identical to the original Microsoft implementation where it was named POLYX.
 ;
 ; Input:
 ; - .A - table address low byte
@@ -25,14 +29,15 @@
 
 
 poly1_FAC1:
-    jsr store_YA_in_ZP              ; Store YA in second INDEX pointer
-    jsr mov_r_FAC1_TMP1             ; TMPF1 <- FAC1  (rounds)
-    jsr mov_FAC1_FAC2               ; FAC2 <- FAC1
-    jsr mul_FAC2_FAC1               ; FAC1 <- FAC1 * FAC2  (x^2)
-    jsr poly2_table_in_index2       ; poly2: skip storing YA to ZP
-    ldy #$00                        ; FAC1 <- FAC1 * TEMPF1
-    lda #TEMPF1
-    jmp mul_MEM_FAC1
+        sta POLYPT            ; Retain polynomial pointer for later
+        sty POLYPT+1
+        jsr mov_r_FAC1_TMP1     ; Save FAC1 in TMP1
+        lda #TEMPF1
+        jsr mul_MEM_FAC1        ; Compute x^2
+        jsr POLY1               ; Compute P(x^2)
+        lda #<TEMPF1
+        ldy #>TEMPF1
+        jmp mul_MEM_FAC1        ; Multiply by FAC1 again
 
 
 } else {

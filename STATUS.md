@@ -263,7 +263,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$E09A`   | `rnd_A`                | DONE     |                                                    |
 | `$E0BE`   | `rnd_generate`         | DONE     |                                                    |
 | `$E264`   | `cos_FAC1`             | DONE     | From the Microsoft BASIC, original name: COS       |
-| `$E26B`   | `sin_FAC1`             | PARTIAL  | not fully tested yet                               |
+| `$E26B`   | `sin_FAC1`             | DONE     | From the Microsoft BASIC, original name: SIN       |
 | `$E2B4`   | `tan_FAC1`             | PARTIAL  | not fully tested yet                               |
 | `$E30E`   | `atn_FAC1`             | DONE     | From the Microsoft BASIC, original name: ATN       |
 

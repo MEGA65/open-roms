@@ -2,8 +2,13 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - tangent of FAC1 in radians
+;
+; This is verified to be almost identical to the original Microsoft implementation where it was named TAN.
+; The difference is the optimization of the jsr to mov_r_FAC1_MEM
 ;
 ; See also:
 ; - [CM64] Computes Mapping the Commodore 64 - page 210
@@ -18,17 +23,28 @@
 
 
 tan_FAC1:
-    jsr mov_r_FAC1_TMP1         ; TMP1 = x
-    jsr sin_FAC1                ; FAC1 = sin(x)
-    jsr mov_r_FAC1_TMP2         ; TMP2 = sin(x)
-    lda #TEMPF1
-    ldy #0
-    jsr mov_MEM_FAC1            ; FAC1 = x
-    jsr COS                     ; FAC1 = cos(x)
-    lda #TEMPF2
-    ldy #0
-    jsr mov_MEM_FAC2            ; FAC2 = sin(x)
-    jmp div_FAC2_FAC1           ; FAC1 = tan(x)
+
+        jsr mov_r_FAC1_TMP1         ; Mov FAC1 into temporary
+        lda #$00
+        sta TANSGN                  ; Remember whether to negate
+        jsr sin_FAC1                ; Compute the sin
+        ldx #<TEMPF3
+        ldy #>TEMPF3
+        jsr mov_r_FAC1_MEM          ; In the original BASIC this does jsr GMOVMF that jmps to mov_r_FAC1_MEM
+        lda #<TEMPF1
+        ldy #>TEMPF1
+        jsr mov_MEM_FAC1            ; Put this memory loc into FAC1
+        lda #$00
+        sta FAC1_sign               ; Start off positive
+        lda TANSGN
+        jsr COSC                    ; Compute cosine
+        lda #<TEMPF3                ; Address of sine value
+        ldy #>TEMPF3
+GFDIV:
+        jmp div_MEM_FAC1            ; Divide sine by cosine and return
+COSC:
+        pha
+        jmp SIN1
 
 
 } else {

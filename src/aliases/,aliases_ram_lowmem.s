@@ -53,7 +53,8 @@
 	!addr FORPNT    = $49 ; $49-$4A  -- NOT IMPLEMENTED --
 	!addr OPPTR     = $4B ; $4B-$4C  helper variable for expression computation, [!] our usage details are different
 	!addr OPMASK    = $4D ;          -- NOT IMPLEMENTED --
-	!addr DEFPNT    = $4E ; $4E-$4F  -- NOT IMPLEMENTED --
+	!addr DEFPNT    = $4E ; $4E-$4F
+	!addr TEMPF3    = DEFPNT
 	!addr DSCPNT    = $50 ; $50-$52  temporary area fro string handling, [!] our usage might differ
 	!addr FOUR6     = $53 ;          size of variable content (float = 5, integer = 2, string descriptor = 3)
 	!addr JMPER     = $54 ; $54-$56  -- NOT IMPLEMENTED --

@@ -33,7 +33,7 @@ unsigned short microsoft_basic_chunks[NUM_CHUNKS * 2] = {
     0xBDDD, 0xBF51,
     0xBFB4, 0xBFEC,
     0xE264, 0xE2C2,     // Two byte gap here is an optimization
-    0xE2C5, 0xE2E4,
+    0xE2C5, 0xE2E9,
     0xE2EF, 0xE37A,
 };
 

@@ -2,8 +2,12 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - evaluate polynomial with odd and even powers for FAC1 value
+;
+; This is verified to be identical to the original Microsoft implementation where it was named POLY.
 ;
 ; Input:
 ; - .A - table address low byte
@@ -28,48 +32,40 @@
 
 
 poly2_FAC1:
-    jsr store_YA_in_ZP
+        sta POLYPT
+        sty POLYPT+1
+        
+POLY1:
+        jsr mov_r_FAC1_TMP2     ; Save FAC1
+        lda (POLYPT),Y
+        sta DEGREE
+        ldy POLYPT
+        iny
+        tya
+        bne POLY3
+        inc POLYPT+1
+POLY3:
+        sta POLYPT
+        ldy POLYPT+1
+POLY2:
+        jsr mul_MEM_FAC1
+        lda POLYPT             ; Get current pointer
+        ldy POLYPT+1
+        clc
+        adc #5
+        bcc POLY4
+        iny
+POLY4:
+        sta POLYPT
+        sty POLYPT+1
+        jsr add_MEM_FAC1        ; Add in constant
+        lda #<TEMPF2            ; Multiply the original FAC1
+        ldy #>TEMPF2
+        dec DEGREE              ; Done?
+        bne POLY2
+RANDRT:
+        rts                     ; Yes
 
-poly2_table_in_index2:  ; Called from poly1
-    ldy #$00            ; FAC1 -> TMPF2
-    ldx #TEMPF2
-    jsr mov_FAC1_MEM
-
-    ldx #$80            ; 0 -> FAC1
-    stx FAC1_exponent
-
-    ldx #0
-    lda (INDEX+2, x)    ; degree (degree+1 = num coeffs)
-    sta SGNFLG          ; number of terms register
-    inc INDEX+2
-    bcc @1
-    inc INDEX+3
-
-@1:
-    lda INDEX+2
-    ldy INDEX+3
-    jsr add_MEM_FAC1    ; Add with coefficient
-    ldy #$00
-    lda #TEMPF2
-    jsr mul_MEM_FAC1    ; Multiply with x
-
-    clc                 ; Add 5 to table pointer
-    lda #$05
-    adc INDEX+2
-    sta INDEX+2
-    bcc @2
-    inc INDEX+3
-
-@2:
-    dec SGNFLG
-    bpl @1
-    rts
-
-
-store_YA_in_ZP:     ; Used also by poly1
-    sty INDEX+3     ; Store YA in second INDEX pointer
-    sta INDEX+2
-    rts
 
 
 } else {

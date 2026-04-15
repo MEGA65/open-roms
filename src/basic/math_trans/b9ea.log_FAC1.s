@@ -3,9 +3,12 @@
 ;; #LAYOUT# *   BASIC_0 #TAKE
 ;; #LAYOUT# *   *       #IGNORE
 
-;
+; This file is under the MIT license, it contains code released by Microsoft Corporation.
+; See LICENSE for more information.
+
 ; Math package - natural logarigthm of FAC1
 ;
+; This is verified to be identical to the original Microsoft implementation where it was named LOG.
 ;
 ; See also:
 ; - [CM64] Computes Mapping the Commodore 64 - page 113
@@ -26,44 +29,43 @@
 
 
 log_FAC1:
-    lda FAC1_exponent           ; Store exponent for later
-    pha
 
-    ldx #$80                    ; Set exponent to 0 so that FAC1 becomes XF
-    stx FAC1_exponent
+        jsr sgn_FAC1_A          ; Is it positive
+        beq LOGERR
+        bpl LOG1
+LOGERR:
+        jmp illegal_quantity_error   ; Can't tolerate neg or zero
+LOG1:
+        lda FAC1_exponent
+        sbc #$7F                ; Remove bias (carry is off)
+        pha                     ; Save awhile
+        lda #$80
+        sta FAC1_exponent       ; Result is FAC1 in range [0.5,1]
+        lda #<const_INV_SQR_2   ; Get pointer to SQR(0.5)
+        ldy #>const_INV_SQR_2
 
-    ldy #>const_INV_SQR_2       ; FAC1 <- FAC1 + sqrt(0.5)
-    lda #<const_INV_SQR_2
-    jsr add_MEM_FAC1
+; Calculate (F - SQR(.5)) / (F + SQR(.5))
 
-    ldy #>const_SQR_2           ; FAC1 <- sqrt(2.0) / FAC1
-    lda #<const_SQR_2
-    jsr div_MEM_FAC1
-
-    ldy #>const_ONE             ; FAC1 <- 1.0 - FAC1
-    lda #<const_ONE
-    jsr sub_MEM_FAC1
-
-    ldy #>poly_log              ; FAC1 <- log_poly(FAC1)
-    lda #<poly_log
-    jsr poly1_FAC1
-    
-    ldy #>const_NEG_HALF        ; FAC1 <- FAC1 - 0.5
-    lda #<const_NEG_HALF
-    jsr add_MEM_FAC1
-    
-    jsr mov_FAC1_FAC2           ; FAC2 <- FAC1
-
-    pla                         ; FAC1 <- N
-    sec
-    sbc #$80
-    jsr convert_A_to_FAC1
-
-    jsr add_FAC2_FAC1           ; FAC1 <- FAC1 + FAC2
-
-    ldy #>const_LOG_2           ; FAC1 <- FAC1 * log(2.0)
-    lda #<const_LOG_2
-    jmp mul_MEM_FAC1
+        jsr add_MEM_FAC1        ; Add to FAC1
+        lda #<const_SQR_2       ; Get SQR(2.)
+        ldy #>const_SQR_2
+        jsr div_MEM_FAC1
+        lda #<const_ONE
+        ldy #>const_ONE
+        jsr sub_MEM_FAC1
+        lda #<poly_log
+        ldy #>poly_log
+        jsr poly1_FAC1          ; Evaluate approximation polynomial
+        lda #<const_NEG_HALF    ; Add in last constant
+        ldy #>const_NEG_HALF
+        jsr add_MEM_FAC1
+        pla                     ; Get exponent back
+        jsr FINLOG              ; Add it in
+MULLN2:
+        lda #<const_LOG_2       ; Multiply result by log(2.0)
+        ldy #>const_LOG_2
+        
+        ; FALLTHROUGH to mul_MEM_FAC1
 
 
 } else {

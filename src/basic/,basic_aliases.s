@@ -12,6 +12,7 @@
 ; Error codes
 ;
 
+err_illegal_quantity = $0E
 err_overflow = $0F
 
 ;

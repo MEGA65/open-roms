@@ -252,7 +252,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BD7E`   | `FINLOG`               | DONE     | From the Microsoft BASIC, original name: FINLOG    |
 | `$BDDD`   | `FOUT`                 | DONE     | From the Microsoft BASIC, original name: FOUT      |
 | `$BF71`   | `sqr_FAC1`             | DONE     | From the Microsoft BASIC, original name: SQR       |
-| `$BF74`   | `sqr_FAC2`             | NOT DONE |                                                    |
+| `$BF74`   | `sqr_FAC2`             | DONE     | From the Microsoft BASIC, no label                 |
 | `$BF78`   | `pwr_FAC2_MEM`         | PARTIAL  | needs `pwr_FAC2_FAC1`                              |
 | `$BF7B`   | `pwr_FAC2_FAC1`        | NOT DONE |                                                    |
 | `$BFB4`   | `toggle_sign_FAC1`     | DONE     | From the Microsoft BASIC, original name: NEGOP     |

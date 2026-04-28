@@ -1,0 +1,3 @@
+JSR $BFB4 + LDA
+
+Call to known function in BASIC + fragment

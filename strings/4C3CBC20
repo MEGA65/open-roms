@@ -1,0 +1,3 @@
+JMP $BC3C + JSR
+
+Jump to floating point routine + fragment

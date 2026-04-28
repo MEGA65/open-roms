@@ -1,0 +1,3 @@
+BCC $01 + INY + STA
+
+Loop fragment

@@ -1,0 +1,3 @@
+LDX #$4E + LDY #$00 + JSR $BBD4
+
+From the exp function in BASIC

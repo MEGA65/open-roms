@@ -1,0 +1,3 @@
+LDX $23 + STX $7B
+
+Move from one known zero page variable to another

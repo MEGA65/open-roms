@@ -1,0 +1,3 @@
+LDA #$4E + LDY #$00
+
+Load AY with pointer to temporary floating point storage in zero page

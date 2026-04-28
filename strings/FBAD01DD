@@ -1,0 +1,3 @@
+fragment + LDA $DD01
+
+Load from hardware register

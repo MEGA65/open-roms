@@ -1,0 +1,3 @@
+JMP $FFBA + JSR
+
+Jump to SETFLS in KERNAL + fragment

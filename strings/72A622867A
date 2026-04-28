@@ -1,0 +1,3 @@
+$72 + LDX $22 + STX $7A
+
+Fragment from BASIC moving INDEX1 into TXTPTR

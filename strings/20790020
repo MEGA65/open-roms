@@ -1,0 +1,3 @@
+JSR $0079 + JSR
+
+Call CHRGOT routine in zero page + fragment

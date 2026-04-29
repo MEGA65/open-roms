@@ -118,6 +118,11 @@
 ;; #CONFIG# SHOW_FEATURES              YES
 
 
+; --- BASIC features
+
+;; #CONFIG# TRANSCENDENTAL_FUNCTIONS   YES
+
+
 ; --- Debug options
 
 ;; #CONFIG# DBG_STUBS_BRK              NO

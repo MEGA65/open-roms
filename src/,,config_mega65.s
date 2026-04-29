@@ -90,7 +90,7 @@
 
 ; --- BASIC features
 
-;; #CONFIG# TRANSCENDENTAL_FUNCTIONS   NO
+;; #CONFIG# TRANSCENDENTAL_FUNCTIONS   YES
 
 
 ; --- Built-in DOS configuration

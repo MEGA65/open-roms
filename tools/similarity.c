@@ -102,7 +102,7 @@ int main(int argc,char **argv)
     for (int i = 0; i < NUM_CHUNKS; i++) {
       for (int addr = microsoft_basic_chunks[i * 2]; addr <= microsoft_basic_chunks[i * 2 + 1]; addr++) {
         short index1, index2;
-        if (high && addr < 0xE000 || !high && addr >= 0xE000) {
+        if ((high && addr < 0xE000) || (!high && addr >= 0xE000)) {
           continue;
         }
         if (!high) {

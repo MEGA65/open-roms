@@ -63,6 +63,8 @@
 	!addr TEMPF2    = $5C ; $5C-$60  BASIC numeric work area
     !addr DECCNT    = $5D ; Number of digits after decimal point
     !addr TENEXP    = $5E ; Exponent count
+    !addr DPTFLG    = $5F ; Decimal point flag for FIN
+    !addr EXPSGN    = $60 ; Exponent sign for FIN
 	!addr __FAC1    = $61 ; $61-$66  floating point accumulator 1
 	!addr FAC1_exponent   = $61
 	!addr FAC1_mantissa   = $62 ; $62 - $65

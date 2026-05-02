@@ -248,7 +248,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC9B`   | `QINT`                 | DONE     | From the Microsoft BASIC, original name: QINT      |
 | `$BCCC`   | `int_FAC1`             | DONE     | From the Microsoft BASIC, original name: INT       |
 | `$BCE9`   | `clear_FAC1`           | DONE     | From the Microsoft BASIC, original name: CLRFAC    |
-| `$BCF3`   | `FIN`                  | PARTIAL  | Only for 38k memory model + not fully tested yet   |
+| `$BCF3`   | `FIN`                  | DOME     | From the Microsoft BASIC Only for 38k memory model |
 | `$BD7E`   | `FINLOG`               | DONE     | From the Microsoft BASIC, original name: FINLOG    |
 | `$BDDD`   | `FOUT`                 | DONE     | From the Microsoft BASIC, original name: FOUT      |
 | `$BF71`   | `sqr_FAC1`             | DONE     | From the Microsoft BASIC, original name: SQR       |

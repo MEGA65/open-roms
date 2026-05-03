@@ -52,6 +52,8 @@ std::vector<ConstEntry> GLOBAL_constants =
 
 	ConstEntry(   "HALF_PI", M_PI / 2.0           ),
 	ConstEntry(        "PI", M_PI                 ),
+	ConstEntry(     "PI_MS", 3.1415926529         ),      // This is the value of PI used in the Microsoft BASIC. It is only the third closest approximation
+
 	ConstEntry( "DOUBLE_PI", M_PI * 2.0           ),
 	ConstEntry(     "SQR_2", std::sqrt(2.0)       ),
 	ConstEntry( "INV_SQR_2", 1.0 / std::sqrt(2.0) ),

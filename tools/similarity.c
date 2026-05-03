@@ -20,20 +20,19 @@ int matches[MAX_SIZE];
 
 int phase_mask[MAX_SIZE+MAX_SIZE];
 
-#define NUM_CHUNKS 13
+#define NUM_CHUNKS 12
 // Pairs of start, end memory addresses of known exact similarity with the open source Microsoft BASIC
 unsigned short microsoft_basic_chunks[NUM_CHUNKS * 2] = {
+    0xAEA8, 0xAEAC,
+    0xB1A5, 0xB1A9,
     0xB248, 0xB24C,
     0xB391, 0xB39D,
     0xB3A2, 0xB3A5,
     0xB849, 0xB97D, 
-    0xB983, 0xBCF2,
-    0xBD7E, 0xBD90,
-    0xBDB3, 0xBDC1,
+    0xB983, 0xBDC1,
     0xBDDD, 0xBF51,
-    0xBF71, 0xBF7A,
-    0xBFB4, 0xBFEC,
-    0xE043, 0xE08C,
+    0xBF71, 0xBFFF,
+    0xE000, 0xE08C,
     0xE264, 0xE2C2,     // Two byte gap here is an optimization
     0xE2C5, 0xE37A,
 };
@@ -102,7 +101,7 @@ int main(int argc,char **argv)
     for (int i = 0; i < NUM_CHUNKS; i++) {
       for (int addr = microsoft_basic_chunks[i * 2]; addr <= microsoft_basic_chunks[i * 2 + 1]; addr++) {
         short index1, index2;
-        if (high && addr < 0xE000 || !high && addr >= 0xE000) {
+        if ((high && addr < 0xE000) || (!high && addr >= 0xE000)) {
           continue;
         }
         if (!high) {
@@ -306,16 +305,18 @@ int main(int argc,char **argv)
 	    fclose(f);
 	  }
 
-	  // Otherwise, the match is unexplained.
-	  matches[k]++;
-	  
-	  // Display particularly long matches
-	  printf("$%04X = $%04X :",i,j);
-	  for(int b=0;b<k;b++) {
-	    printf(" %02X",f1[i+b]);
+      if (k > 3) {
+
+	    // Otherwise, the match is unexplained.
+        matches[k]++;
+
+	    // Display particularly long matches
+	    printf("$%04X = $%04X :",i,j);
+	    for(int b=0;b<k;b++) {
+	      printf(" %02X",f1[i+b]);
+	    }
+	    printf("\n");
 	  }
-	  printf("\n");
-	  
 	}
       }
     }

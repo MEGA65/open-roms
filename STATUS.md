@@ -248,15 +248,15 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BC9B`   | `QINT`                 | DONE     | From the Microsoft BASIC, original name: QINT      |
 | `$BCCC`   | `int_FAC1`             | DONE     | From the Microsoft BASIC, original name: INT       |
 | `$BCE9`   | `clear_FAC1`           | DONE     | From the Microsoft BASIC, original name: CLRFAC    |
-| `$BCF3`   | `FIN`                  | PARTIAL  | Only for 38k memory model + not fully tested yet   |
+| `$BCF3`   | `FIN`                  | DOME     | From the Microsoft BASIC Only for 38k memory model |
 | `$BD7E`   | `FINLOG`               | DONE     | From the Microsoft BASIC, original name: FINLOG    |
 | `$BDDD`   | `FOUT`                 | DONE     | From the Microsoft BASIC, original name: FOUT      |
 | `$BF71`   | `sqr_FAC1`             | DONE     | From the Microsoft BASIC, original name: SQR       |
 | `$BF74`   | `sqr_FAC2`             | DONE     | From the Microsoft BASIC, no label                 |
 | `$BF78`   | `pwr_FAC2_MEM`         | DONE     | From the Microsoft BASIC, no label                 |
-| `$BF7B`   | `pwr_FAC2_FAC1`        | NOT DONE |                                                    |
+| `$BF7B`   | `pwr_FAC2_FAC1`        | DONE     | From the Microsoft BASIC, original name: FPWRT     |
 | `$BFB4`   | `toggle_sign_FAC1`     | DONE     | From the Microsoft BASIC, original name: NEGOP     |
-| `$BFED`   | `exp_FAC1`             | NOT DONE |                                                    |
+| `$BFED`   | `exp_FAC1`             | DONE     | From the Microsoft BASIC, original name: EXP       |
 | `$E043`   | `poly1_FAC1`           | DONE     | From the Microsoft BASIC, original name: POLYX     |
 | `$E059`   | `poly2_FAC1`           | DONE     | From the Microsoft BASIC, original name: POLY      |
 | `$E097`   | `rnd_FAC1`             | DONE     |                                                    |

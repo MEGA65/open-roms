@@ -1,0 +1,3 @@
+JSR $BC5B
+
+Call to known BASIC function FCOMP

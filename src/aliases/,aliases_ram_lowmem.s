@@ -15,6 +15,7 @@
 	!addr ADRAY1    = $03 ; $03-$04
 	!addr ADRAY2    = $05 ; $05-$06
 	!addr CHARAC    = $07 ;          [!] our implementation might be different  XXX give more details
+	!addr INTEGR    = CHARAC
 	!addr ENDCHR    = $08 ;          [!] our implementation might be different  XXX give more details
 	!addr TRMPOS    = $09 ;          -- NOT IMPLEMENTED -- [!] on MEGA65 also used by DOS Wedge under MONITOR
 	!addr VERCKB    = $0A ;          flag used by BASIC, 0 - LOAD, 1 - VERIFY, [!] on MEGA65 also used by DOS Wedge
@@ -63,6 +64,8 @@
 	!addr TEMPF2    = $5C ; $5C-$60  BASIC numeric work area
     !addr DECCNT    = $5D ; Number of digits after decimal point
     !addr TENEXP    = $5E ; Exponent count
+    !addr DPTFLG    = $5F ; Decimal point flag for FIN
+    !addr EXPSGN    = $60 ; Exponent sign for FIN
 	!addr __FAC1    = $61 ; $61-$66  floating point accumulator 1
 	!addr FAC1_exponent   = $61
 	!addr FAC1_mantissa   = $62 ; $62 - $65

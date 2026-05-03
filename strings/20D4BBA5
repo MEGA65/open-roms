@@ -1,0 +1,3 @@
+JSR $BBD4 + LDA
+
+Call known floating point move function in BASIC

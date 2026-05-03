@@ -256,7 +256,7 @@ Floating point mathematical routines - not official, but well known and broadly 
 | `$BF78`   | `pwr_FAC2_MEM`         | DONE     | From the Microsoft BASIC, no label                 |
 | `$BF7B`   | `pwr_FAC2_FAC1`        | NOT DONE |                                                    |
 | `$BFB4`   | `toggle_sign_FAC1`     | DONE     | From the Microsoft BASIC, original name: NEGOP     |
-| `$BFED`   | `exp_FAC1`             | NOT DONE |                                                    |
+| `$BFED`   | `exp_FAC1`             | DONE     | From the Microsoft BASIC, original name: EXP       |
 | `$E043`   | `poly1_FAC1`           | DONE     | From the Microsoft BASIC, original name: POLYX     |
 | `$E059`   | `poly2_FAC1`           | DONE     | From the Microsoft BASIC, original name: POLY      |
 | `$E097`   | `rnd_FAC1`             | DONE     |                                                    |

@@ -15,6 +15,7 @@
 	!addr ADRAY1    = $03 ; $03-$04
 	!addr ADRAY2    = $05 ; $05-$06
 	!addr CHARAC    = $07 ;          [!] our implementation might be different  XXX give more details
+	!addr INTEGR    = CHARAC
 	!addr ENDCHR    = $08 ;          [!] our implementation might be different  XXX give more details
 	!addr TRMPOS    = $09 ;          -- NOT IMPLEMENTED -- [!] on MEGA65 also used by DOS Wedge under MONITOR
 	!addr VERCKB    = $0A ;          flag used by BASIC, 0 - LOAD, 1 - VERIFY, [!] on MEGA65 also used by DOS Wedge

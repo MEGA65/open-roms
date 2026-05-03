@@ -305,16 +305,18 @@ int main(int argc,char **argv)
 	    fclose(f);
 	  }
 
-	  // Otherwise, the match is unexplained.
-	  matches[k]++;
-	  
-	  // Display particularly long matches
-	  printf("$%04X = $%04X :",i,j);
-	  for(int b=0;b<k;b++) {
-	    printf(" %02X",f1[i+b]);
+      if (k > 3) {
+
+	    // Otherwise, the match is unexplained.
+        matches[k]++;
+
+	    // Display particularly long matches
+	    printf("$%04X = $%04X :",i,j);
+	    for(int b=0;b<k;b++) {
+	      printf(" %02X",f1[i+b]);
+	    }
+	    printf("\n");
 	  }
-	  printf("\n");
-	  
 	}
       }
     }

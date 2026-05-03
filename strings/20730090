@@ -1,0 +1,3 @@
+JSR $0073 + BCC
+
+Call CHRGET in zero page. From BASIC

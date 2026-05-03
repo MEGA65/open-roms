@@ -1,0 +1,3 @@
+RTS + JSR $B3A6
+
+Call BASIC error function

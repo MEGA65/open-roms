@@ -136,6 +136,7 @@ GEN_ZMAC_H     = $(DIR_ZMAC_TMP)/doc.inl
 
 # List of build directories
 
+DIR_C64        = build/target_c64
 DIR_CUS        = build/target_custom
 DIR_GEN        = build/target_generic
 DIR_GENCRT     = build/target_generic_crt
@@ -149,6 +150,7 @@ DIR_X16        = build/target_cx16
 # List of config files
 
 CFG_CUS        = src/,,config_custom.s 
+CFG_C64        = src/,,config_c64.s
 CFG_GEN        = src/,,config_generic.s
 CFG_GENCRT     = src/,,config_generic_crt.s
 CFG_TST38      = src/,,config_testing_38K.s
@@ -161,6 +163,7 @@ CFG_U64CRT     = src/,,config_ultimate64_crt.s
 # List of files with generated strings
 
 GEN_STR_CUS    = $(DIR_CUS)/,generated/,packed_strings.s
+GEN_STR_C64    = $(DIR_C64)/,generated/,packed_strings.s
 GEN_STR_GEN    = $(DIR_GEN)/,generated/,packed_strings.s
 GEN_STR_GENCRT = $(DIR_GENCRT)/,generated/,packed_strings.s
 GEN_STR_TST38  = $(DIR_TST38)/,generated/,packed_strings.s
@@ -208,6 +211,7 @@ TARGET_CHR_ORF     = build/chargen_openroms.rom
 TARGET_CHR_PXL     = build/chargen_pxlfont.rom
 
 TARGET_CUS_B       = build/basic_custom.rom
+TARGET_C64_B       = build/basic_c64.rom
 TARGET_GEN_B       = build/basic_generic.rom
 TARGET_GENCRT_B    = build/basic_generic_crt.rom
 TARGET_TST38_B     = build/basic_testing_38K.rom
@@ -216,6 +220,7 @@ TARGET_U64_B       = build/basic_ultimate64.rom
 TARGET_U64CRT_B    = build/basic_ultimate64_crt.rom
 
 TARGET_CUS_K       = build/kernal_custom.rom
+TARGET_C64_K       = build/kernal_c64.rom
 TARGET_GEN_K       = build/kernal_generic.rom
 TARGET_GENCRT_K    = build/kernal_generic_crt.rom
 TARGET_TST38_K     = build/kernal_testing_38K.rom
@@ -231,6 +236,7 @@ TARGET_M65_x_PXL   = build/mega65.rom
 TARGET_X16_x       = build/cx16-dummy.rom
 
 TARGET_LIST_CUS    = $(TARGET_CUS_B) $(TARGET_CUS_K)
+TARGET_LIST_C64    = $(TARGET_C64_B) $(TARGET_C64_K)
 TARGET_LIST_GEN    = $(TARGET_GEN_B) $(TARGET_GEN_K)
 TARGET_LIST_GENCRT = $(TARGET_GENCRT_B) $(TARGET_GENCRT_K) $(TARGET_GENCRT_X)
 TARGET_LIST_TST38  = $(TARGET_TST38_B) $(TARGET_TST38_K)
@@ -242,6 +248,7 @@ TARGET_Z80TEST     = ./build/cpm/Z80TEST.COM
 
 TARGET_LIST        = $(TARGET_CHR_ORF)     \
                      $(TARGET_LIST_CUS)    \
+                     $(TARGET_LIST_C64)    \
                      $(TARGET_LIST_GEN)    \
                      $(TARGET_LIST_GENCRT) \
                      $(TARGET_LIST_TST38)  \
@@ -376,6 +383,8 @@ build/patched_chargen/pxlfont.pcg: $(TOOL_PATCH_CHARGEN) $(TARGET_CHR_PXL)
 
 $(DIR_CUS)/OUTB_x.BIN $(DIR_CUS)/BASIC_combined.vs: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_CUS) $(GEN_STR_CUS) $(DIR_CUS)/KERNAL_combined.sym
+$(DIR_C64)/OUTB_x.BIN $(DIR_C64)/BASIC_combined.vs: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_C64) $(GEN_STR_C64) $(DIR_C64)/KERNAL_combined.sym
 $(DIR_GEN)/OUTB_x.BIN $(DIR_GEN)/BASIC_combined.vs: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_BASIC) $(CFG_GEN) $(GEN_STR_GEN) $(DIR_GEN)/KERNAL_combined.sym
 $(DIR_TST38)/OUTB_x.BIN $(DIR_TST38)/BASIC_combined.vs: \
@@ -387,6 +396,8 @@ $(DIR_U64)/OUTB_x.BIN $(DIR_U64)/BASIC_combined.vs: \
 
 $(DIR_CUS)/OUTK_x.BIN $(DIR_CUS)/KERNAL_combined.vs $(DIR_CUS)/KERNAL_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_CUS) $(GEN_STR_CUS)
+$(DIR_C64)/OUTK_x.BIN $(DIR_C64)/KERNAL_combined.vs $(DIR_C64)/KERNAL_combined.sym: \
+    $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_C64) $(GEN_STR_C64)
 $(DIR_GEN)/OUTK_x.BIN $(DIR_GEN)/KERNAL_combined.vs $(DIR_GEN)/KERNAL_combined.sym: \
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_GEN) $(GEN_STR_GEN)
 $(DIR_TST38)/OUTK_x.BIN $(DIR_TST38)/KERNAL_combined.vs $(DIR_TST38)/KERNAL_combined.sym: \
@@ -445,6 +456,7 @@ $(DIR_X16)/kernal.seg_1 $(DIR_X16)/KERNAL_1_combined.vs $(DIR_X16)/KERNAL_1_comb
     $(TOOL_ASSEMBLER) $(TOOL_BUILD_SEGMENT) $(DEP_KERNAL) $(CFG_X16) $(GEN_STR_X16) $(DIR_X16)/KERNAL_0_combined.sym
 
 $(DIR_CUS)/OUTx_x.BIN:     $(DIR_CUS)/OUTB_x.BIN     $(DIR_CUS)/OUTK_x.BIN
+$(DIR_C64)/OUTx_x.BIN:     $(DIR_C64)/OUTB_x.BIN     $(DIR_C64)/OUTK_x.BIN
 $(DIR_GEN)/OUTx_x.BIN:     $(DIR_GEN)/OUTB_x.BIN     $(DIR_GEN)/OUTK_x.BIN
 $(DIR_GENCRT)/OUTx_0.BIN:  $(DIR_GENCRT)/OUTB_0.BIN  $(DIR_GENCRT)/OUTK_0.BIN
 $(DIR_TST38)/OUTx_x.BIN:   $(DIR_TST38)/OUTB_x.BIN   $(DIR_TST38)/OUTK_x.BIN
@@ -455,18 +467,21 @@ $(DIR_U64CRT)/OUTx_0.BIN:  $(DIR_U64CRT)/OUTB_0.BIN  $(DIR_U64CRT)/OUTK_0.BIN
 $(DIR_X16)/OUTx_0.BIN:     $(DIR_X16)/OUTB_0.BIN     $(DIR_X16)/OUTK_0.BIN
 
 $(TARGET_CUS_B):    $(DIR_CUS)/OUTx_x.BIN
+$(TARGET_C64_B):    $(DIR_C64)/OUTx_x.BIN
 $(TARGET_GEN_B):    $(DIR_GEN)/OUTx_x.BIN
 $(TARGET_TST38_B):  $(DIR_TST38)/OUTx_x.BIN
 $(TARGET_TST60_B):  $(DIR_TST60)/OUTx_x.BIN
 $(TARGET_U64_B):    $(DIR_U64)/OUTx_x.BIN
 
 $(TARGET_CUS_K):    $(DIR_CUS)/OUTx_x.BIN
+$(TARGET_C64_K):    $(DIR_C64)/OUTx_x.BIN
 $(TARGET_GEN_K):    $(DIR_GEN)/OUTx_x.BIN
 $(TARGET_TST38_K):  $(DIR_TST38)/OUTx_x.BIN
 $(TARGET_TST60_K):  $(DIR_TST60)/OUTx_x.BIN
 $(TARGET_U64_K):    $(DIR_U64)/OUTx_x.BIN
 
 build/symbols_custom.vs:          $(DIR_CUS)/BASIC_combined.vs       $(DIR_CUS)/KERNAL_combined.vs
+build/symbols_c64.vs:             $(DIR_C64)/BASIC_combined.vs       $(DIR_C64)/KERNAL_combined.vs
 build/symbols_generic.vs:         $(DIR_GEN)/BASIC_combined.vs       $(DIR_GEN)/KERNAL_combined.vs
 build/symbols_generic_crt.vs:     $(DIR_GENCRT)/BASIC_0_combined.vs  $(DIR_GENCRT)/KERNAL_0_combined.vs
 build/symbols_testing_38K.vs:     $(DIR_TST38)/BASIC_combined.vs     $(DIR_TST38)/KERNAL_combined.vs
@@ -479,6 +494,10 @@ build/symbols_ultimate64_crt.vs:  $(DIR_U64CRT)/BASIC_0_combined.vs  $(DIR_U64CR
 $(GEN_STR_CUS): $(TOOL_GENERATE_STRINGS) $(CFG_CUS)
 	@mkdir -p $(DIR_CUS)/,generated
 	$(TOOL_GENERATE_STRINGS) -o $@ -c $(CFG_CUS)
+
+$(GEN_STR_C64): $(TOOL_GENERATE_STRINGS) $(CFG_C64)
+	@mkdir -p $(DIR_C64)/,generated
+	$(TOOL_GENERATE_STRINGS) -o $@ -c $(CFG_C64)
 
 $(GEN_STR_GEN): $(TOOL_GENERATE_STRINGS) $(CFG_GEN)
 	@mkdir -p $(DIR_GEN)/,generated
@@ -521,6 +540,7 @@ build/,generated/,z80_tables.s: $(TOOL_GENERATE_Z80_TABLES)
 	$(TOOL_GENERATE_Z80_TABLES) -o build/,generated/,z80_tables.s
 
 GEN_STR_custom         = $(GEN_STR_CUS)
+GEN_STR_c64            = $(GEN_STR_C64)
 GEN_STR_generic        = $(GEN_STR_GEN)
 GEN_STR_generic_crt    = $(GEN_STR_GENCRT)
 GEN_STR_testing_38K    = $(GEN_STR_TST38)

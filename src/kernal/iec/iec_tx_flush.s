@@ -16,7 +16,11 @@ iec_tx_flush:
 	lda C3PO
 	beq @1
 	sec ; send it with EOI
-	jsr iec_tx_byte ; send the command regardless of the status
+!ifdef CONFIG_IEC_JIFFYDOS {
+    jsr iec_tx_dispatch ; send the command regardless of the status
+} else {
+    jsr iec_tx_byte
+}
 @1:
 	pla
 	rts

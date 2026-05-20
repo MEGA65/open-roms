@@ -61,17 +61,18 @@ jiffydos_tx_byte:
 	ora C3PO
 	sta CIA2_PRA                       ; bits 6 and 7 on CLK/DATA
 
-	; Send low nibble; cycles: 4 + 3 + 4 + 2 + 2 + 2 + 4 = 21
+	; Send low nibble; cycles: 4 + 3 + 4 + 2 + 2 + 2 + 3 + 4 = 24
 	pla                                ; retrieve low nibble from stack
 	ora C3PO                           ; restore VIC-II and RS-232 bits
 	sta CIA2_PRA
 	lsr
 	lsr
 	and #%00110000                     ; clear everything but CLK/DATA
+	ora C3PO
 	sta CIA2_PRA
 
-	; Signal EOI if needed; cycles till no EOI: 3 + 3 + 2 + 2 + 4 = 14 
-	lda C3PO
+	; Signal EOI if needed; cycles till no EOI: 2 + 3 + 2 + 2 + 4 = 13
+	and #%00000011
 	ldx IECPROTO
 	beq jiffydos_tx_byte_wait_eoi
 
@@ -100,7 +101,7 @@ jiffydos_tx_byte_wait_eoi:
 	sta CIA2_PRA
 	jsr iec_wait20us
 	lda C3PO
-	
+
 	; According to protocol analysis by Michael Steil (step S8) we should pull the DATA here
 	; to signal there was no error; but DATA pulled by the controller is a normal state
 	; (which should be stored in C3PO), so there is nothing to do here.

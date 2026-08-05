@@ -9,10 +9,15 @@
 ;
 
 
+!ifndef CONFIG_BASIC_MINIMAL_INTMATH {
+
 cmd_for:
 	+nop
 cmd_next:
 	+nop
+
+}
+
 cmd_data:
 	+nop
 cmd_inputhash:

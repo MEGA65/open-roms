@@ -216,11 +216,17 @@ assign_float:
 	; XXX
 
 } else ifdef CONFIG_MEMORY_MODEL_46K_OR_50K {
-	; XXX consider optimized version without multiple JSRs
 
-	; XXX
-	; XXX: implement this
-	; XXX
+!ifdef CONFIG_BASIC_MINIMAL_INTMATH {
+
+	; store FAC1 (5 bytes) into the float variable
+	; (same plain access as assign_string below)
+
+	jsr store_fac1_var
+
+	rts
+
+} ; CONFIG_BASIC_MINIMAL_INTMATH
 
 } else { ; CONFIG_MEMORY_MODEL_38K
 

@@ -24,6 +24,11 @@
 ;; #CONFIG# MEMORY_MODEL_50K           YES
 
 
+; --- BASIC runtime options
+
+;; #CONFIG# BASIC_MINIMAL_INTMATH      NO
+
+
 ; --- IEC bus configuration
 
 ;; #CONFIG# IEC                        YES

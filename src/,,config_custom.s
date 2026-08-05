@@ -123,6 +123,8 @@
 ; --- Eye candy
 
 ;; #CONFIG# COLORS_BRAND               NO
+;; #CONFIG# BASIC_MINIMAL_INTMATH      NO
+
 ;; #CONFIG# BANNER_SIMPLE              NO
 ;; #CONFIG# BANNER_FANCY               YES
 ;; #CONFIG# SHOW_FEATURES              YES

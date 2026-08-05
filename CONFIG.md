@@ -259,6 +259,16 @@ Selects the default system palette - MEGA65 only.
 
 ## Software features
 
+### `BASIC_MINIMAL_INTMATH`
+
+If enabled, provides a minimal integer-only subset of the BASIC expression
+evaluation: unsigned integer literals (up to 65535, no decimals or exponents),
+integer `+` and `*` (16 bit, wrap-around), printing of integral numeric values,
+float variable assignment, and a minimal `FOR`/`NEXT` (step 1 only).
+This is a transitional implementation for as long as the full floating point
+support in FRMEVL is not finished. Feature needs several hundred bytes in the
+BASIC segment. If unsure - disable.
+
 ### `PANIC_SCREEN`
 
 If enabled, certain fatal errors will produce a nice bluescreen instead of just resetting the machine.

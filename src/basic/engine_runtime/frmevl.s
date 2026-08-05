@@ -79,7 +79,32 @@ FRMEVL_loop:
 	jsr fetch_variable
 	bcs FRMEVL_fetch_float
 
-	; Found the variable - copy descriptor to FAC1
+!ifdef CONFIG_BASIC_MINIMAL_INTMATH {
+
+	; Found the variable - float variables need all the
+	; 5 bytes copied to FAC1 (strings keep using the 3-byte descriptor)
+
+	bit VARNAM+0
+	bmi FRMEVL_fetch_var_string
+
+	ldy #$00
+@fv1:
+	lda (VARPNT),y
+	sta __FAC1,y
+	iny
+	cpy #$05
+	bne @fv1
+
+	lda #$00                           ; our variables store no sign byte
+	sta __FAC1+5
+
+	jmp FRMEVL_got_value_float
+
+FRMEVL_fetch_var_string:
+
+} ; CONFIG_BASIC_MINIMAL_INTMATH
+
+	; Copy descriptor to FAC1
 
 !ifdef CONFIG_MEMORY_MODEL_60K {
 	
@@ -174,9 +199,17 @@ FRMEVL_fetch_PI:
 
 FRMEVL_fetch_float:
 
+!ifdef CONFIG_BASIC_MINIMAL_INTMATH {
+
+	jmp frmevl_fetch_int
+
+} else {
+
 	; XXX implement this
 
 	jmp do_NOT_IMPLEMENTED_error
+
+}
 
 	; FALLTROUGH
 
@@ -300,9 +333,28 @@ FRMEVL_push_value_operator:
 	ldx VALTYP
 	bmi FRMEVL_push_string
 
-	; Push float
+!ifdef CONFIG_BASIC_MINIMAL_INTMATH {
 
-	; XXX implement this
+	; Push float - FAC1 content (5 bytes) followed by the type byte;
+	; mirrors the string push below, operators pop type first
+
+	lda __FAC1+0
+	pha
+	lda __FAC1+1
+	pha
+	lda __FAC1+2
+	pha
+	lda __FAC1+3
+	pha
+	lda __FAC1+4
+	pha
+
+	txa
+	pha
+
+	jmp FRMEVL_push_operator_address
+
+} ; CONFIG_BASIC_MINIMAL_INTMATH
 
 FRMEVL_push_string:
 

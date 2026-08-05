@@ -67,10 +67,18 @@ cmd_print_string:
 
 cmd_print_float:
 
+!ifdef CONFIG_BASIC_MINIMAL_INTMATH {
+
+	jsr print_FAC1
+
+} else {
+
 	; XXX probably we should also check INTFLG here
 	; XXX provide implementation
 
 	jmp do_NOT_IMPLEMENTED_error
+
+}
 
 	; FALLTROUGH
 
